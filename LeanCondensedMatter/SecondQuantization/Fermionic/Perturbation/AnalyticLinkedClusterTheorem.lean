@@ -40,16 +40,6 @@ theorem normalizedAnalyticDysonPartitionFunction_zero
   rw [analyticDysonPartitionFunction_zero ε hβ V]
   exact inv_mul_cancel₀ (freePartitionFunction_ne_zero ε β)
 
-omit [LinearOrder Mode] in
-/-- The normalized partition function is analytic at zero coupling. -/
-theorem analyticAt_normalizedAnalyticDysonPartitionFunction_zero
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    AnalyticAt ℂ (normalizedAnalyticDysonPartitionFunction ε β V) 0 := by
-  change AnalyticAt ℂ
-    ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) 0
-  exact (analyticAt_analyticDysonPartitionFunction_zero ε hβ V).const_smul
-
 /-- The Taylor series of the normalized partition function, obtained by scaling the Dyson series. -/
 noncomputable def normalizedDysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
@@ -67,6 +57,14 @@ theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V)
     ((freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V) 0
   exact (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).const_smul
+
+omit [LinearOrder Mode] in
+/-- The normalized partition function is analytic at zero coupling. -/
+theorem analyticAt_normalizedAnalyticDysonPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    AnalyticAt ℂ (normalizedAnalyticDysonPartitionFunction ε β V) 0 :=
+  (hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V).analyticAt
 
 omit [LinearOrder Mode] in
 /-- The analytic normalized-series coefficient agrees with the existing formal normalization. -/
@@ -102,17 +100,6 @@ theorem analyticNormalizedLogPartitionFunction_zero
     normalizedAnalyticDysonPartitionFunction_zero ε hβ V]
   exact Complex.log_one
 
-omit [LinearOrder Mode] in
-/-- The selected logarithm branch is analytic at zero coupling. -/
-theorem analyticAt_analyticNormalizedLogPartitionFunction_zero
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    AnalyticAt ℂ (analyticNormalizedLogPartitionFunction ε β V) 0 := by
-  change AnalyticAt ℂ
-    (fun z => Complex.log (normalizedAnalyticDysonPartitionFunction ε β V z)) 0
-  exact (analyticAt_normalizedAnalyticDysonPartitionFunction_zero ε hβ V).clog
-    (by rw [normalizedAnalyticDysonPartitionFunction_zero ε hβ V]; exact Complex.one_mem_slitPlane)
-
 /-- The Taylor series of the principal complex logarithm at `1`. -/
 noncomputable def complexLogFPowerSeriesAtOne : FormalMultilinearSeries ℂ ℂ ℂ :=
   FormalMultilinearSeries.ofScalars ℂ (fun n => -(-1 : ℂ) ^ n / n)
@@ -141,6 +128,14 @@ theorem hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction
     (fun x => Complex.log (normalizedAnalyticDysonPartitionFunction ε β V x))
     (complexLogFPowerSeriesAtOne.comp (normalizedDysonPartitionFPowerSeries ε β V)) 0
   exact h
+
+omit [LinearOrder Mode] in
+/-- The selected logarithm branch is analytic at zero coupling. -/
+theorem analyticAt_analyticNormalizedLogPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    AnalyticAt ℂ (analyticNormalizedLogPartitionFunction ε β V) 0 :=
+  (hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction ε hβ V).analyticAt
 
 omit [LinearOrder Mode] in
 /-- The `n`-th derivative of the analytic logarithm is `n!` times the scalar coefficient of its
