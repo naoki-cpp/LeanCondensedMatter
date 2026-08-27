@@ -33,7 +33,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open Filter
+open Filter QuantumTheory.Transport
 
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
@@ -80,12 +80,26 @@ theorem cleanInterbandBastinPairEnergyShellIntegral_eq
     cleanInterbandBastinPairRadialEnergyDensity energyShellBerryWeight
   rw [intervalIntegral.integral_const_mul]
 
-/-- Zero-temperature occupation-weighted radial clean Bastin-pair density. This is the clean pair
-factor `-2π e²` multiplying the canonical occupation-weighted Berry density. -/
+/-- Zero-temperature occupation-weighted radial clean Bastin-pair density. The generic spectral
+occupation acts directly on the clean Bastin profile at the signed band energy. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
     (band : Band) (e m fermiEnergy energy : ℝ) : ℝ :=
-  (-2 * Real.pi * e ^ 2) *
-    zeroTemperatureOccupiedRadialBerryEnergyDensity band m fermiEnergy energy
+  bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
+      (fun band energy => bandSign band * energy) band energy *
+    cleanInterbandBastinPairRadialEnergyDensity band e m energy
+
+/-- The occupation-weighted clean Bastin density is `-2π e²` times the corresponding
+occupation-weighted Berry density. -/
+theorem zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity_eq
+    (band : Band) (e m fermiEnergy energy : ℝ) :
+    zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
+        band e m fermiEnergy energy =
+      (-2 * Real.pi * e ^ 2) *
+        zeroTemperatureOccupiedRadialBerryEnergyDensity band m fermiEnergy energy := by
+  unfold zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
+    cleanInterbandBastinPairRadialEnergyDensity
+    zeroTemperatureOccupiedRadialBerryEnergyDensity
+  ring
 
 /-- Occupied clean Bastin-pair weight of one band inside the common positive-energy cutoff interval
 `[m, Λ]`. -/
@@ -103,9 +117,12 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq
       (-2 * Real.pi * e ^ 2) *
         zeroTemperatureOccupiedBandBerryWeightCutoff band m fermiEnergy Λ := by
   unfold zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff
-    zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
     zeroTemperatureOccupiedBandBerryWeightCutoff
-  rw [intervalIntegral.integral_const_mul]
+  rw [← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro energy _
+  exact zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity_eq
+    band e m fermiEnergy energy
 
 /-- Canonical zero-temperature occupied clean Bastin-pair radial weight at finite cutoff. Both
 bands use the same cutoff interval and occupation selects their contributing states. -/
