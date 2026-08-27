@@ -87,7 +87,7 @@ theorem exactSecondMoment_eq_strength_smul
       apply Finset.sum_congr rfl
       intro ω _
       rw [model.impurityPotential_eq ω]
-      module
+      simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two]
     _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
       rw [← Finset.sum_smul]
 
