@@ -221,6 +221,35 @@ theorem adiabaticIntegrable_of_pos
       system expectation A B ω η hneg
     simp [Set.piecewise, hτ, hzero]
 
+/-- Causality reduces the fixed-rate frequency integrand to the open positive half-line. -/
+theorem integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+    (expectation : NormalizedExpectation H)
+    (A B : H →L[ℂ] H) (omega eta : ℝ) :
+    (∫ τ : ℝ,
+        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ) =
+      ∫ τ : ℝ in Ioi 0,
+        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ := by
+  calc
+    (∫ τ : ℝ,
+        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ) =
+      ∫ τ : ℝ,
+        (Ici (0 : ℝ)).indicator
+          (adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta) τ := by
+      apply integral_congr_ae
+      filter_upwards [] with τ
+      by_cases hτ : τ ∈ Ici (0 : ℝ)
+      · simp [hτ]
+      · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
+        have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
+          system expectation A B omega eta hneg
+        simp [hτ, hzero]
+    _ = ∫ τ : ℝ in Ici 0,
+        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ :=
+      integral_indicator measurableSet_Ici
+    _ = ∫ τ : ℝ in Ioi 0,
+        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ :=
+      integral_Ici_eq_integral_Ioi
+
 /-- Fixed-rate susceptibility requiring only the physical hypothesis `η > 0`.
 
 The underlying explicit `AdiabaticIntegrable` proof is supplied by

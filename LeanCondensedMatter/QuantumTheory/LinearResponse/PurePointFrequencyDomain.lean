@@ -152,30 +152,9 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehman
         (purePointNormalizedExpectation system data) A B omega eta hη =
       purePointLehmannSeries system data A B omega eta := by
   rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
-    adiabaticFrequencyDomainSusceptibility]
-  have hcausal :
-      (∫ τ : ℝ,
-        adiabaticFrequencySusceptibilityIntegrand system
-          (purePointNormalizedExpectation system data) A B omega eta τ) =
-      ∫ τ : ℝ in Ici 0,
-        adiabaticFrequencySusceptibilityIntegrand system
-          (purePointNormalizedExpectation system data) A B omega eta τ := by
-    calc
-      _ = ∫ τ : ℝ,
-          (Ici (0 : ℝ)).indicator
-            (adiabaticFrequencySusceptibilityIntegrand system
-              (purePointNormalizedExpectation system data) A B omega eta) τ := by
-        apply integral_congr_ae
-        filter_upwards [] with τ
-        by_cases hτ : τ ∈ Ici (0 : ℝ)
-        · simp [Set.indicator_of_mem hτ]
-        · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
-          simp [hτ,
-            adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-              system (purePointNormalizedExpectation system data) A B omega eta hneg]
-      _ = _ := integral_indicator measurableSet_Ici
-  rw [hcausal]
-  rw [integral_Ici_eq_integral_Ioi]
+    adiabaticFrequencyDomainSusceptibility,
+    integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+      system (purePointNormalizedExpectation system data) A B omega eta]
   calc
     (∫ τ : ℝ in Ioi 0,
         adiabaticFrequencySusceptibilityIntegrand system

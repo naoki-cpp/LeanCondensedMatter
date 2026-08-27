@@ -52,33 +52,8 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
       ∫ τ : ℝ,
         adiabaticFrequencySusceptibilityIntegrand
           system expectation J J ω η τ
-  have hcausal :
-      (∫ τ : ℝ,
-          adiabaticFrequencySusceptibilityIntegrand
-            system expectation J J ω η τ) =
-        ∫ τ : ℝ in Ioi 0,
-          adiabaticFrequencySusceptibilityIntegrand
-            system expectation J J ω η τ := by
-    calc
-      _ = ∫ τ : ℝ,
-          (Ici (0 : ℝ)).indicator
-            (adiabaticFrequencySusceptibilityIntegrand
-              system expectation J J ω η) τ := by
-        apply integral_congr_ae
-        filter_upwards [] with τ
-        by_cases hτ : τ ∈ Ici (0 : ℝ)
-        · simp [Set.indicator_of_mem hτ]
-        · have hneg : τ < 0 := by
-            simpa [Set.mem_Ici, not_le] using hτ
-          simp [hτ,
-            adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-              system expectation J J ω η hneg]
-      _ = ∫ τ : ℝ in Ici 0,
-          adiabaticFrequencySusceptibilityIntegrand
-            system expectation J J ω η τ :=
-        integral_indicator measurableSet_Ici
-      _ = _ := integral_Ici_eq_integral_Ioi
-  rw [hcausal]
+  rw [integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+    system expectation J J ω η]
   apply setIntegral_congr_fun measurableSet_Ioi
   intro τ hτ
   have hτnonneg : 0 ≤ τ := le_of_lt hτ
