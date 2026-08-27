@@ -145,17 +145,12 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_co
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     iteratedDeriv n (analyticNormalizedLogPartitionFunction ε β V) 0 =
       (n.factorial : ℂ) * (analyticNormalizedLogFPowerSeries ε β V).coeff n := by
-  have hcanonical :=
-    (analyticAt_analyticNormalizedLogPartitionFunction_zero ε hβ V).hasFPowerSeriesAt
-  have hseries := hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction ε hβ V
-  have heq := hcanonical.eq_formalMultilinearSeries hseries
-  have hcoeff := congrArg
-    (fun p : FormalMultilinearSeries ℂ ℂ ℂ => p.coeff n) heq
-  simp only [FormalMultilinearSeries.coeff_ofScalars] at hcoeff
-  have hfac : (n.factorial : ℂ) ≠ 0 := by
-    exact_mod_cast Nat.factorial_ne_zero n
-  have hmul := (div_eq_iff hfac).mp hcoeff
-  simpa [mul_comm] using hmul
+  rcases hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction ε hβ V with ⟨r, hseries⟩
+  have hfactor := hseries.factorial_smul (1 : ℂ) n
+  rw [iteratedDeriv_eq_iteratedFDeriv]
+  rw [← hfactor]
+  rw [FormalMultilinearSeries.apply_eq_pow_smul_coeff]
+  simp only [one_pow, one_smul, nsmul_eq_mul]
 
 end
 end Fermionic
