@@ -100,20 +100,14 @@ theorem pauliGreenOperator_polar_eq
     pauliGreenOperator side v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening =
       inversionSymmetrizedPauliGreenOperator side v m p 0 probeEnergy broadening +
-        Real.cos θ •
-          (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaX) +
-        Real.sin θ •
-          (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaY) := by
-  have real_smul_complex_smul (r : ℝ) (z : ℂ)
-      (A : DiracHilbert →L[ℂ] DiracHilbert) :
-      r • (z • A) = (((r : ℝ) : ℂ) * z) • A := by
-    simpa only [RCLike.algebraMap_eq_ofReal, smul_smul] using
-      (algebraMap_smul ℂ r (z • A)).symm
+        (((Real.cos θ : ℝ) : ℂ) •
+          (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaX)) +
+        (((Real.sin θ : ℝ) : ℂ) •
+          (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaY)) := by
   rw [inversionSymmetrizedPauliGreenOperator_eq_evenChannels]
   rw [pauliGreenOperator]
   rw [pauliGreenScalarCoefficient_polar, pauliGreenXCoefficient_polar,
     pauliGreenYCoefficient_polar, pauliGreenZCoefficient_polar]
-  rw [real_smul_complex_smul, real_smul_complex_smul]
   module
 
 /-- Full polar-angle integral of the clean Green operator at fixed radial momentum. -/
@@ -137,26 +131,34 @@ theorem continuumAngularGreenIntegral_eq
     pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaX
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
     pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaY
+  have hcos : Continuous (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ)) :=
+    Complex.continuous_ofReal.comp Real.continuous_cos
+  have hsin : Continuous (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ)) :=
+    Complex.continuous_ofReal.comp Real.continuous_sin
   have heven : IntervalIntegrable (fun _ : ℝ => even) volume 0 (2 * Real.pi) :=
     (continuous_const : Continuous (fun _ : ℝ => even)).intervalIntegrable 0 (2 * Real.pi)
-  have hx : IntervalIntegrable (fun θ : ℝ => Real.cos θ • xPart) volume 0 (2 * Real.pi) :=
-    (Real.continuous_cos.smul
-      (continuous_const : Continuous (fun _ : ℝ => xPart))).intervalIntegrable 0 (2 * Real.pi)
-  have hy : IntervalIntegrable (fun θ : ℝ => Real.sin θ • yPart) volume 0 (2 * Real.pi) :=
-    (Real.continuous_sin.smul
-      (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable 0 (2 * Real.pi)
+  have hx : IntervalIntegrable
+      (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) • xPart) volume 0 (2 * Real.pi) :=
+    (hcos.smul (continuous_const : Continuous (fun _ : ℝ => xPart))).intervalIntegrable
+      0 (2 * Real.pi)
+  have hy : IntervalIntegrable
+      (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • yPart) volume 0 (2 * Real.pi) :=
+    (hsin.smul (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable
+      0 (2 * Real.pi)
   unfold continuumAngularGreenIntegral
   have hfun :
       (fun θ : ℝ =>
         pauliGreenOperator side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening) =
-        fun θ : ℝ => even + Real.cos θ • xPart + Real.sin θ • yPart := by
+        fun θ : ℝ =>
+          even + ((Real.cos θ : ℝ) : ℂ) • xPart + ((Real.sin θ : ℝ) : ℂ) • yPart := by
     funext θ
     exact pauliGreenOperator_polar_eq side v m p θ probeEnergy broadening
   rw [hfun]
   rw [intervalIntegral.integral_add (heven.add hx) hy]
   rw [intervalIntegral.integral_add heven hx]
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
+  rw [RCLike.intervalIntegral_ofReal, RCLike.intervalIntegral_ofReal]
   simp [even, xPart, yPart]
 
 end
