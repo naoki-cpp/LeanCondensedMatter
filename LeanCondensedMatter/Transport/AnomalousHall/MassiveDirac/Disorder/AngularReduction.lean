@@ -145,6 +145,14 @@ theorem continuumAngularGreenIntegral_eq
       (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • yPart) volume 0 (2 * Real.pi) :=
     (hsin.smul (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable
       0 (2 * Real.pi)
+  have hcosIntegral :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
+    rw [RCLike.intervalIntegral_ofReal]
+    simp
+  have hsinIntegral :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+    rw [RCLike.intervalIntegral_ofReal]
+    simp
   unfold continuumAngularGreenIntegral
   have hfun :
       (fun θ : ℝ =>
@@ -158,8 +166,8 @@ theorem continuumAngularGreenIntegral_eq
   rw [intervalIntegral.integral_add (heven.add hx) hy]
   rw [intervalIntegral.integral_add heven hx]
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rw [RCLike.intervalIntegral_ofReal, RCLike.intervalIntegral_ofReal]
-  simp [even, xPart, yPart]
+  rw [hcosIntegral, hsinIntegral]
+  simp [even]
 
 end
 
