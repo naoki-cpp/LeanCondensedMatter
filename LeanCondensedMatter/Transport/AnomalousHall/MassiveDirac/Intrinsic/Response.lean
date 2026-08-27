@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Transport.Analysis.BandOccupation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
