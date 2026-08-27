@@ -7,7 +7,7 @@ set_option linter.style.header false
 
 The exact finite-broadening Bastin trace from `MassiveDiracBastinBerry` is already written with the
 gauge-free two-band projector resolvent. The projector/resolvent algebra itself is owned by
-`MassiveDirac/Streda/Spectral`; this file starts from that spectral API and expands the Bastin
+`MassiveDirac/Model/OperatorSpectral`; this file starts from that spectral API and expands the Bastin
 expression into the four ordered band blocks
 
 ```text
