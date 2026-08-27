@@ -35,8 +35,9 @@ theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMom
   rw [Combinatorics.powerSeriesMomentCoeff,
     ← coeff_normalizedDysonPartitionFPowerSeries_eq_formal]
   rcases hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V with ⟨r, hseries⟩
-  simpa [iteratedDeriv_eq_iteratedFDeriv, FormalMultilinearSeries.coeff, nsmul_eq_mul] using
-    (hseries.factorial_smul (1 : ℂ) n).symm
+  rw [iteratedDeriv_eq_iteratedFDeriv, ← hseries.factorial_smul (1 : ℂ) n,
+    FormalMultilinearSeries.apply_eq_pow_smul_coeff]
+  simp only [one_pow, one_smul, nsmul_eq_mul]
 
 omit [LinearOrder Mode] in
 /-- Leibniz recurrence obtained from the local identity `(log F)' * F = F'`, where `F` is the
