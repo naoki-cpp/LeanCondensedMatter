@@ -30,6 +30,7 @@ Transport/
 │   ├── Spectral.lean
 │   └── EnergyDerivative.lean
 ├── Analysis/
+│   ├── BandOccupation.lean
 │   ├── LorentzianKernel.lean
 │   ├── LorentzianPole.lean
 │   └── ZeroTemperatureOccupation.lean
@@ -149,6 +150,7 @@ Transport/AnomalousHall/MassiveDirac/
 ├── Model/
 │   ├── Basic.lean
 │   ├── CurrentBridge.lean
+│   ├── Occupation.lean
 │   └── Spectral.lean
 ├── Intrinsic/
 │   ├── BerryBridge.lean
@@ -172,9 +174,10 @@ The historical flat Model, Intrinsic, Středa, and Bastin forwarding modules wer
 repository-wide consumer audits showed no remaining imports. Concrete implementations now live only
 under the canonical `MassiveDirac/{Model,Intrinsic,Streda,Bastin}/` hierarchy.
 
-This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian kernel/tail
-analysis, zero-temperature occupation/Fermi-edge weights, and regular-factor Lorentzian pole
-extraction now live under `Transport/Analysis/` and are consumed by the massive-Dirac specialization.
+This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
+Fermi-surface notions, Lorentzian kernel/tail analysis, zero-temperature occupation/Fermi-edge
+weights, and regular-factor Lorentzian pole extraction live under `Transport/Analysis/` and are
+consumed by the massive-Dirac specialization.
 
 ## Generic / concrete boundary
 
