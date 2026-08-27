@@ -74,6 +74,11 @@ theorem exactSecondMoment_eq_strength_smul
       model.secondMomentStrength • kernel := by
   rw [model.ensemble.exactSecondMoment_eq_operatorAverage]
   unfold FiniteDisorderEnsemble.operatorAverage secondMomentStrength
+  change
+    (∑ ω, (model.ensemble.probability ω : ℂ) •
+      ((model.ensemble.impurityPotential ω).1 * kernel *
+        (model.ensemble.impurityPotential ω).1)) =
+      (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel
   rw [← Finset.sum_smul]
   apply Finset.sum_congr rfl
   intro ω _
