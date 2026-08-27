@@ -32,14 +32,14 @@ theorem lowerBand_isFilled_of_pos_fermiEnergy
 
 /-- The upper-band zero-temperature occupied region is exactly the region where the positive Dirac
 energy lies below the Fermi energy. -/
-@[simp] theorem mem_upperBand_occupiedRegion_iff
+theorem mem_upperBand_occupiedRegion_iff
     (v m fermiEnergy : ℝ) (p : ℝ × ℝ) :
     p ∈ occupiedRegion (bandEnergyOnMomentum v m) fermiEnergy .upper ↔
       energy v m p.1 p.2 < fermiEnergy := by
   simp [occupiedRegion, bandEnergyOnMomentum]
 
 /-- The upper-band Fermi surface is the level set of the positive Dirac energy. -/
-@[simp] theorem mem_upperBand_fermiSurface_iff
+theorem mem_upperBand_fermiSurface_iff
     (v m fermiEnergy : ℝ) (p : ℝ × ℝ) :
     p ∈ fermiSurface (bandEnergyOnMomentum v m) fermiEnergy .upper ↔
       energy v m p.1 p.2 = fermiEnergy := by
@@ -54,7 +54,7 @@ theorem lowerBand_zeroTemperatureOccupation_eq_one
   exact lowerBand_isFilled_of_pos_fermiEnergy v m fermiEnergy hfermi p
 
 /-- Upper-band zero-temperature occupation is one exactly below the positive-energy Fermi surface. -/
-@[simp] theorem upperBand_zeroTemperatureOccupation_eq_one_iff
+theorem upperBand_zeroTemperatureOccupation_eq_one_iff
     (v m fermiEnergy : ℝ) (p : ℝ × ℝ) :
     bandStateOccupation (zeroTemperatureOccupation fermiEnergy)
         (bandEnergyOnMomentum v m) .upper p = 1 ↔
