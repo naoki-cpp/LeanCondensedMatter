@@ -68,27 +68,18 @@ theorem hasDerivAt_pauliGreenDenominator_radial
     HasDerivAt
       (fun q : ℝ => pauliGreenDenominator side v m q 0 probeEnergy broadening)
       (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-  have hp : HasDerivAt (fun q : ℝ => (q : ℂ)) 1 p :=
-    (hasDerivAt_id p).ofReal_comp
-  have hp2 : HasDerivAt (fun q : ℝ => (q : ℂ) ^ 2) (2 * (p : ℂ)) p := by
-    simpa only [pow_two, one_mul, mul_one, two_mul] using hp.mul hp
-  have hterm :
-      HasDerivAt (fun q : ℝ => (v : ℂ) ^ 2 * (q : ℂ) ^ 2)
-        ((v : ℂ) ^ 2 * (2 * (p : ℂ))) p :=
-    hp2.const_mul ((v : ℂ) ^ 2)
-  have hpoly :
+  have hcomplex :
       HasDerivAt
-        (fun q : ℝ =>
+        (fun z : ℂ =>
           spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2 -
-            (v : ℂ) ^ 2 * (q : ℂ) ^ 2)
-        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-    have hbase := (hasDerivAt_const p
-      (spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2)).sub hterm
-    rw [show
-      (-2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) =
-        -((v : ℂ) ^ 2 * (2 * (p : ℂ))) by ring]
-    simpa only [zero_sub] using hbase
-  convert hpoly using 1
+            (v : ℂ) ^ 2 * z ^ 2)
+        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) (p : ℂ) := by
+    convert (hasDerivAt_const (p : ℂ)
+      (spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2)).sub
+        (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
+      first | rfl | ring
+  have hreal := hcomplex.comp_ofReal
+  convert hreal using 1
   funext q
   exact pauliGreenDenominator_radial_eq side v m probeEnergy broadening q
 
