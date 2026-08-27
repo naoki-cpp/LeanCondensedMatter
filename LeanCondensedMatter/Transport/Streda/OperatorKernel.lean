@@ -156,6 +156,78 @@ theorem hasDerivAt_regularizedStredaSurfacePrimitiveOperator
       hamiltonian hself current₁ current₂ energy broadening hbroadening).const_smul
       (-(1 / 2 : ℂ))
 
+private theorem continuous_retardedAdvancedResolventDifference_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      retardedAdvancedResolventDifference hamiltonian energy broadening) := by
+  unfold retardedAdvancedResolventDifference
+  exact
+    (continuous_retardedResolvent_energy
+      hamiltonian hself broadening hbroadening).sub
+      (continuous_advancedResolvent_energy
+        hamiltonian hself broadening hbroadening)
+
+private theorem continuous_retardedAdvancedResolventDifferenceDerivative_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      retardedAdvancedResolventDifferenceDerivative hamiltonian energy broadening) := by
+  unfold retardedAdvancedResolventDifferenceDerivative
+  exact
+    ((continuous_retardedResolvent_energy
+      hamiltonian hself broadening hbroadening).pow 2).neg.sub
+      (((continuous_advancedResolvent_energy
+        hamiltonian hself broadening hbroadening).pow 2).neg)
+
+private theorem continuous_smrckaStredaSurfaceFactorDerivative_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      smrckaStredaSurfaceFactorDerivative
+        hamiltonian current₁ current₂ energy broadening) := by
+  have hretarded :=
+    continuous_retardedResolvent_energy hamiltonian hself broadening hbroadening
+  have hadvanced :=
+    continuous_advancedResolvent_energy hamiltonian hself broadening hbroadening
+  have hdifference :=
+    continuous_retardedAdvancedResolventDifference_energy
+      hamiltonian hself broadening hbroadening
+  have hdifferenceDerivative :=
+    continuous_retardedAdvancedResolventDifferenceDerivative_energy
+      hamiltonian hself broadening hbroadening
+  have hleftDerivative :
+      Continuous (fun energy : ℝ =>
+        current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
+          current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) := by
+    exact
+      ((continuous_const.mul (hretarded.pow 2).neg).mul continuous_const).sub
+        ((continuous_const.mul (hadvanced.pow 2).neg).mul continuous_const)
+  have hleft :
+      Continuous (fun energy : ℝ =>
+        current₁ * retardedResolvent hamiltonian energy broadening * current₂ -
+          current₂ * advancedResolvent hamiltonian energy broadening * current₁) := by
+    exact
+      ((continuous_const.mul hretarded).mul continuous_const).sub
+        ((continuous_const.mul hadvanced).mul continuous_const)
+  unfold smrckaStredaSurfaceFactorDerivative
+  exact (hleftDerivative.mul hdifference).add (hleft.mul hdifferenceDerivative)
+
+/-- At fixed positive broadening, the exact surface-primitive derivative is continuous in energy. -/
+theorem continuous_regularizedStredaSurfacePrimitiveOperatorDerivative_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      regularizedStredaSurfacePrimitiveOperatorDerivative
+        hamiltonian current₁ current₂ energy broadening) := by
+  unfold regularizedStredaSurfacePrimitiveOperatorDerivative
+  exact
+    (continuous_smrckaStredaSurfaceFactorDerivative_energy
+      hamiltonian hself current₁ current₂ broadening hbroadening).const_smul
+      (-(1 / 2 : ℂ))
+
 /-- Canonical static Kubo–Bastin operator integrand at fixed finite broadening, with the overall
 physical prefactor omitted. -/
 noncomputable def regularizedBastinOperatorIntegrand
@@ -174,6 +246,47 @@ noncomputable def regularizedStredaResidualSeaOperatorKernel
       hamiltonian current₁ current₂ energy broadening -
     regularizedStredaSurfacePrimitiveOperatorDerivative
       hamiltonian current₁ current₂ energy broadening
+
+/-- At fixed positive broadening, the canonical static Bastin operator integrand is continuous in
+real energy. -/
+theorem continuous_regularizedBastinOperatorIntegrand_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      regularizedBastinOperatorIntegrand
+        hamiltonian current₁ current₂ energy broadening) := by
+  have hretarded :=
+    continuous_retardedResolvent_energy hamiltonian hself broadening hbroadening
+  have hadvanced :=
+    continuous_advancedResolvent_energy hamiltonian hself broadening hbroadening
+  have hdifference :=
+    continuous_retardedAdvancedResolventDifference_energy
+      hamiltonian hself broadening hbroadening
+  have hleftDerivative :
+      Continuous (fun energy : ℝ =>
+        current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
+          current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) := by
+    exact
+      ((continuous_const.mul (hretarded.pow 2).neg).mul continuous_const).sub
+        ((continuous_const.mul (hadvanced.pow 2).neg).mul continuous_const)
+  unfold regularizedBastinOperatorIntegrand
+  exact (hleftDerivative.mul hdifference).neg
+
+/-- At fixed positive broadening, the residual sea operator kernel is continuous in real energy. -/
+theorem continuous_regularizedStredaResidualSeaOperatorKernel_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      regularizedStredaResidualSeaOperatorKernel
+        hamiltonian current₁ current₂ energy broadening) := by
+  unfold regularizedStredaResidualSeaOperatorKernel
+  exact
+    (continuous_regularizedBastinOperatorIntegrand_energy
+      hamiltonian hself current₁ current₂ broadening hbroadening).sub
+      (continuous_regularizedStredaSurfacePrimitiveOperatorDerivative_energy
+        hamiltonian hself current₁ current₂ broadening hbroadening)
 
 /-- Pointwise finite-broadening decomposition into the surface-primitive derivative and the
 residual sea kernel. -/

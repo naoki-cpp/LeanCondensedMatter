@@ -89,6 +89,28 @@ theorem hasDerivAt_advancedResolvent_energy
     hasDerivAt_resolvent_spectralParameter_energy
       .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
 
+/-- At fixed positive broadening, the retarded resolvent is continuous along the real-energy axis. -/
+theorem continuous_retardedResolvent_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ => retardedResolvent hamiltonian energy broadening) := by
+  rw [continuous_iff_continuousAt]
+  intro energy
+  exact
+    (hasDerivAt_retardedResolvent_energy
+      hamiltonian hself energy broadening hbroadening).continuousAt
+
+/-- At fixed positive broadening, the advanced resolvent is continuous along the real-energy axis. -/
+theorem continuous_advancedResolvent_energy
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
+  rw [continuous_iff_continuousAt]
+  intro energy
+  exact
+    (hasDerivAt_advancedResolvent_energy
+      hamiltonian hself energy broadening hbroadening).continuousAt
+
 end
 
 end QuantumTheory.Transport
