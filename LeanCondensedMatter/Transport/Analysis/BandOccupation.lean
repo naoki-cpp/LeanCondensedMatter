@@ -83,6 +83,22 @@ theorem bandStateOccupation_zeroTemperature_eq_zero_of_le
     zeroTemperatureOccupation_eq_zero (fermiEnergy := fermiEnergy)
       (energy := energy band k) h
 
+/-- Every state of a filled band has unit occupation under the strict zero-temperature Fermi step. -/
+theorem bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand
+    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band)
+    (hfilled : IsFilledBand energy fermiEnergy band) (k : K) :
+    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 1 :=
+  bandStateOccupation_zeroTemperature_eq_one_of_lt
+    energy fermiEnergy band k (hfilled k)
+
+/-- Every state of an empty band has zero occupation under the strict zero-temperature Fermi step. -/
+theorem bandStateOccupation_zeroTemperature_eq_zero_of_isEmptyBand
+    (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band)
+    (hempty : IsEmptyBand energy fermiEnergy band) (k : K) :
+    bandStateOccupation (zeroTemperatureOccupation fermiEnergy) energy band k = 0 :=
+  bandStateOccupation_zeroTemperature_eq_zero_of_le
+    energy fermiEnergy band k (hempty k)
+
 /-- A zero-temperature state has occupation one exactly when it lies in the strict occupied region. -/
 @[simp] theorem bandStateOccupation_zeroTemperature_eq_one_iff
     (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K) :
