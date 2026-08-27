@@ -108,11 +108,11 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   · simp only [bandSign_lower, bandEnergy_lower]
     push_cast
     simp only [neg_smul, one_smul]
-    have hmul : Q * (1 - Q) = -(1 - Q) := by
+    have hmul : Q * (1 + -Q) = -(1 + -Q) := by
       calc
-        Q * (1 - Q) = Q - Q * Q := by noncomm_ring
+        Q * (1 + -Q) = Q - Q * Q := by noncomm_ring
         _ = Q - 1 := by rw [hQ]
-        _ = -(1 - Q) := by abel
+        _ = -(1 + -Q) := by abel
     rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul]
     module
   · simp only [bandSign_upper, bandEnergy_upper]
@@ -144,11 +144,11 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
     push_cast
     simp only [neg_smul, one_smul]
     rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-    have hmul : (1 - Q) * (1 - Q) = (2 : ℂ) • (1 - Q) := by
+    have hmul : (1 + -Q) * (1 + -Q) = (2 : ℂ) • (1 + -Q) := by
       calc
-        (1 - Q) * (1 - Q) = 1 - Q - Q + Q * Q := by noncomm_ring
+        (1 + -Q) * (1 + -Q) = 1 - Q - Q + Q * Q := by noncomm_ring
         _ = 1 - Q - Q + 1 := by rw [hQ]
-        _ = (2 : ℂ) • (1 - Q) := by module
+        _ = (2 : ℂ) • (1 + -Q) := by module
     rw [hmul, smul_smul]
     module
   · simp only [bandSign_upper]
