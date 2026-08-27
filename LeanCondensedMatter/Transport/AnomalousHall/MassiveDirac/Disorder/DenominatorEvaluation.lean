@@ -77,7 +77,7 @@ theorem hasDerivAt_pauliGreenDenominator_radial
     convert (hasDerivAt_const (p : ℂ)
       (spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2)).sub
         (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
-      first | rfl | ring
+      simp only [id] <;> ring
   have hreal := hcomplex.comp_ofReal
   convert hreal using 1
   funext q
