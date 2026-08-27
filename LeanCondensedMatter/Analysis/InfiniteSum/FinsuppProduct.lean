@@ -61,23 +61,6 @@ private theorem hasSum_prod_option_reindex
   simpa only [Fintype.prod_option] using
     ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod)
 
-private theorem hasSum_mul_of_summable_norm'
-    {α β R : Type*} [NormedCommRing R] [CompleteSpace R]
-    {f : α → R} {g : β → R} {a b : R}
-    (hf : HasSum f a) (hg : HasSum g b)
-    (habsF : Summable (fun i => ‖f i‖))
-    (habsG : Summable (fun i => ‖g i‖)) :
-    HasSum (fun p : α × β => f p.1 * g p.2) (a * b) :=
-  hf.mul hg (summable_mul_of_summable_norm habsF habsG)
-
-private theorem summable_mul_explicit
-    {α β R : Type*} [NormedCommRing R] [CompleteSpace R]
-    (u : α → R) (v : β → R)
-    (hu : Summable (fun i => ‖u i‖))
-    (hv : Summable (fun j => ‖v j‖)) :
-    Summable (fun p : α × β => u p.1 * v p.2) :=
-  (hu.mul_norm hv).of_norm
-
 private theorem hasSum_prod_fin_zero
     {R : Type*} [NormedCommRing R] (f : Fin 0 → ℕ → R) (a : Fin 0 → R) :
     HasSum (fun n : Fin 0 →₀ ℕ => ∏ i : Fin 0, f i (n i)) (∏ i : Fin 0, a i) := by
@@ -150,7 +133,7 @@ private theorem hasSum_prod_finSucc_option
     fun n => ∏ i : Fin k, f i.succ (n i)
   have hmul : Summable
       (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2) :=
-    summable_mul_explicit (f 0) tail habsHead habsTail
+    summable_mul_of_summable_norm habsHead habsTail
   have htail' : HasSum tail (∏ i : Fin k, a i.succ) := htail
   have hprod : HasSum
       (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2)
