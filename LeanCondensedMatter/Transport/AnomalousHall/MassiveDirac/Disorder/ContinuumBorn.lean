@@ -11,9 +11,9 @@ This Phase 4 consumer introduces the first model-specific continuum momentum-sca
 closure for the massive-Dirac AHE program.  It is deliberately separate from the exact finite
 scalar ensemble in `Disorder/ScalarCovariance.lean`.
 
-The clean Green operator is first paired under momentum inversion.  The exact symmetry theorem from
-`PropagatorSymmetry.lean` removes the odd `σₓ` and `σᵧ` channels.  After radial reduction, the
-finite-cutoff Born kernel therefore has the form
+The clean Green operator is first paired under momentum inversion using the exact symmetry API from
+`PropagatorSymmetry.lean`.  After radial reduction, the finite-cutoff Born kernel therefore has the
+form
 
 ```text
 Σ_s(ε; pMax) = Σ₀,s(ε; pMax) I + Σ_z,s(ε; pMax) σ_z.
@@ -33,25 +33,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-/-- Pair a clean propagator with its momentum-inverted partner.  This wrapper is introduced only
-now that the continuum Born consumer needs an explicit inversion-symmetric integrand. -/
-noncomputable def inversionSymmetrizedPauliGreenOperator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  (1 / 2 : ℂ) •
-    (pauliGreenOperator side v m px py probeEnergy broadening +
-      pauliGreenOperator side v m (-px) (-py) probeEnergy broadening)
-
-/-- Exact momentum-inversion symmetrization retains only the scalar and `σ_z` Pauli channels. -/
-theorem inversionSymmetrizedPauliGreenOperator_eq_evenChannels
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
-    inversionSymmetrizedPauliGreenOperator side v m px py probeEnergy broadening =
-      pauliGreenScalarCoefficient side v m px py probeEnergy broadening • 1 +
-        pauliGreenZCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaZ := by
-  unfold inversionSymmetrizedPauliGreenOperator
-  rw [pauliGreenOperator_add_neg_momentum]
-  module
 
 /-- Scalar-channel radial integrand after inversion/angular reduction, including the `p dp`
 Jacobian. -/
