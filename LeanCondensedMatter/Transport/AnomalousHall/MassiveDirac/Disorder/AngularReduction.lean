@@ -40,8 +40,14 @@ open scoped Interval
 @[simp] theorem energySq_polar (v m p θ : ℝ) :
     energySq v m (p * Real.cos θ) (p * Real.sin θ) = energySq v m p 0 := by
   unfold energySq
-  have htrig := Real.sin_sq_add_cos_sq θ
-  nlinarith
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    rw [add_comm]
+    exact Real.sin_sq_add_cos_sq θ
+  calc
+    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
+        v ^ 2 * p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) + m ^ 2 := by ring
+    _ = v ^ 2 * p ^ 2 + m ^ 2 := by rw [htrig]; ring
+    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
 /-- The Green denominator is independent of the polar angle. -/
 @[simp] theorem pauliGreenDenominator_polar
@@ -102,6 +108,7 @@ theorem pauliGreenOperator_polar_eq
   rw [pauliGreenOperator]
   rw [pauliGreenScalarCoefficient_polar, pauliGreenXCoefficient_polar,
     pauliGreenYCoefficient_polar, pauliGreenZCoefficient_polar]
+  simp [smul_smul, Complex.real_smul, mul_comm]
   module
 
 /-- Full polar-angle integral of the clean Green operator at fixed radial momentum. -/
@@ -126,11 +133,13 @@ theorem continuumAngularGreenIntegral_eq
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
     pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaY
   have heven : IntervalIntegrable (fun _ : ℝ => even) volume 0 (2 * Real.pi) :=
-    continuous_const.intervalIntegrable
+    (continuous_const : Continuous (fun _ : ℝ => even)).intervalIntegrable 0 (2 * Real.pi)
   have hx : IntervalIntegrable (fun θ : ℝ => Real.cos θ • xPart) volume 0 (2 * Real.pi) :=
-    (Real.continuous_cos.smul continuous_const).intervalIntegrable
+    (Real.continuous_cos.smul
+      (continuous_const : Continuous (fun _ : ℝ => xPart))).intervalIntegrable 0 (2 * Real.pi)
   have hy : IntervalIntegrable (fun θ : ℝ => Real.sin θ • yPart) volume 0 (2 * Real.pi) :=
-    (Real.continuous_sin.smul continuous_const).intervalIntegrable
+    (Real.continuous_sin.smul
+      (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable 0 (2 * Real.pi)
   unfold continuumAngularGreenIntegral
   have hfun :
       (fun θ : ℝ =>
