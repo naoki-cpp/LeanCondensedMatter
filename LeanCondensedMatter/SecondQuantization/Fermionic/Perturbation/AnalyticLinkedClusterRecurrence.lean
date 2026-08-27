@@ -35,8 +35,9 @@ theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMom
   rw [Combinatorics.powerSeriesMomentCoeff,
     ← coeff_normalizedDysonPartitionFPowerSeries_eq_formal]
   rcases hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V with ⟨r, hseries⟩
-  rw [iteratedDeriv_eq_iteratedFDeriv, ← hseries.factorial_smul (1 : ℂ) n,
-    FormalMultilinearSeries.apply_eq_pow_smul_coeff]
+  rw [iteratedDeriv_eq_iteratedFDeriv]
+  rw [← hseries.factorial_smul (1 : ℂ) n]
+  rw [FormalMultilinearSeries.apply_eq_pow_smul_coeff]
   simp only [one_pow, one_smul, nsmul_eq_mul]
 
 omit [LinearOrder Mode] in
