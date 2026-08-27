@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
