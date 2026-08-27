@@ -146,8 +146,9 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_co
     iteratedDeriv n (analyticNormalizedLogPartitionFunction ε β V) 0 =
       (n.factorial : ℂ) * (analyticNormalizedLogFPowerSeries ε β V).coeff n := by
   rcases hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction ε hβ V with ⟨r, hseries⟩
-  simpa [iteratedDeriv_eq_iteratedFDeriv, FormalMultilinearSeries.coeff, nsmul_eq_mul] using
-    (hseries.factorial_smul (1 : ℂ) n).symm
+  rw [iteratedDeriv_eq_iteratedFDeriv, ← hseries.factorial_smul (1 : ℂ) n,
+    FormalMultilinearSeries.apply_eq_pow_smul_coeff]
+  simp only [one_pow, one_smul, nsmul_eq_mul]
 
 end
 end Fermionic
