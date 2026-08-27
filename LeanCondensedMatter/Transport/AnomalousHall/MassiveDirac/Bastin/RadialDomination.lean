@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -17,29 +18,6 @@ those two inputs in a form adapted to uniform spectator and dominated-convergenc
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
-
-/-- The positive Dirac energy is nonnegative for every momentum. -/
-theorem energy_nonneg (v m px py : ℝ) :
-    0 ≤ energy v m px py := by
-  exact Real.sqrt_nonneg _
-
-/-- For nonnegative mass, the massive-Dirac energy is bounded below by the mass uniformly in
-momentum. -/
-theorem mass_le_energy (v m px py : ℝ) (_hm : 0 ≤ m) :
-    m ≤ energy v m px py := by
-  have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
-    positivity
-  have hsq : m ^ 2 ≤ energy v m px py ^ 2 := by
-    rw [energy_sq]
-    unfold energySq
-    linarith
-  have hE := energy_nonneg v m px py
-  nlinarith [_hm]
-
-/-- For positive mass the model stays uniformly away from the Dirac degeneracy. -/
-theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
-    0 < energy v m px py := by
-  exact lt_of_lt_of_le hm (mass_le_energy v m px py hm.le)
 
 /-- The absolute interband gap is bounded below by `2m`, uniformly in momentum. -/
 theorem two_mul_mass_le_abs_interbandEnergyGap
