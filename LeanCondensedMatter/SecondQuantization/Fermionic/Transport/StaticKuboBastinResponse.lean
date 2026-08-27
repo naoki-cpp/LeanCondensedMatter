@@ -31,7 +31,7 @@ variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
 /-- Neutral response-channel packaging used by the static directional charge-current target. -/
-noncomputable def staticDirectionalChargeResponseChannel
+private noncomputable def staticDirectionalChargeResponseChannel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
