@@ -117,6 +117,7 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
       finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
         system data interpolation geometry direction K q omega eta mn := by
   unfold finiteKuboBastinSpectralDirectionalCurrentTerm
+    purePointKuboBastinSpectralVertexTerm
     finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     finiteKuboBastinDirectionalTransitionFactor
   rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
@@ -152,6 +153,8 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
       finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by
   unfold finiteKuboBastinSpectralDirectionalConductivity
+    finiteKuboBastinSpectralVertexResponse
+    finiteKuboBastinSpectralVertexSum
     finiteKuboBastinOccupationResolvedDirectionalConductivity
   congr 1
   congr 1

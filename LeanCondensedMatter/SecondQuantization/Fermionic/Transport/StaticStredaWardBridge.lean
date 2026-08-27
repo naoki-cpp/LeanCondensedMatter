@@ -48,9 +48,12 @@ noncomputable def finiteStaticKuboBastinCurrentCurrentResponse
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
-  ∑ mn : ι × ι,
-    finiteKuboBastinSpectralDirectionalCurrentTerm
-      system data geometry direction K q 0 eta mn
+  finiteKuboBastinSpectralVertexSum system data
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    0 eta
 
 /-- The static vector-potential response is exactly the current-current spectral sum plus the
 explicit Peierls contact expectation. -/
