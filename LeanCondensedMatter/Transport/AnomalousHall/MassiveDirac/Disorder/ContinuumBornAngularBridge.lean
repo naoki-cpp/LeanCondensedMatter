@@ -97,8 +97,7 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
     (finiteCutoffContinuumBornGreenIntegral side v m probeEnergy broadening pMax)]
   simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
   congr 1
-  push_cast
-  ring
+  ac_rfl
 
 end
 
