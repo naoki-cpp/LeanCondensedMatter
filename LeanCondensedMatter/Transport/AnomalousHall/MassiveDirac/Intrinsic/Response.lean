@@ -118,11 +118,11 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq
     linarith [hm, hmF, hε.1]
   simp [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc]
 
-/-- In `0 < m ≤ εF ≤ Λ`, zero-temperature occupation truncates the upper-band Berry integral at
-`εF`. The strict endpoint convention differs only at the singleton `{εF}`, which is invisible to
+/-- If `m ≤ εF ≤ Λ`, zero-temperature occupation truncates the upper-band Berry integral at `εF`.
+The strict endpoint convention differs only at the singleton `{εF}`, which is invisible to
 Lebesgue integration. -/
 theorem zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq
-    (m εF Λ : ℝ) (_hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
+    (m εF Λ : ℝ) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBandBerryWeightCutoff .upper m εF Λ =
       energyShellBerryWeight .upper m m εF := by
   unfold zeroTemperatureOccupiedBandBerryWeightCutoff energyShellBerryWeight
@@ -163,7 +163,7 @@ theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_valence_add_conduction
       valenceBerryWeightCutoff m Λ + conductionBerryWeight m εF := by
   unfold zeroTemperatureOccupiedBerryWeightCutoff
   rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hm hmF hFΛ,
-    zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hm hmF hFΛ]
+    zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ]
   rfl
 
 /-- Finite-cutoff lower-band contribution: `1/2 - m/(2Λ)`. -/
