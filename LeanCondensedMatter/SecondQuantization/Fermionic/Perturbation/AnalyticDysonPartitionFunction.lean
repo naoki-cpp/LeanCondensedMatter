@@ -57,16 +57,6 @@ theorem hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
   exact Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
     (fermionEnergy ε) hβ V lam
 
-omit [LinearOrder Mode] in
-/-- The specialized Common Dyson trace coefficients sum by `tsum` to the analytic partition
-function. -/
-theorem tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) :
-    (∑' n : ℕ, lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n) =
-      analyticDysonPartitionFunction ε β V lam :=
-  (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V lam).tsum_eq
-
 /-- The one-variable formal multilinear series of specialized Common Dyson trace coefficients. -/
 noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
@@ -144,7 +134,7 @@ theorem analyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
-  rw [← tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
+  rw [← (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0).tsum_eq,
     tsum_eq_single 0]
   · rw [← dysonPartitionCoeff_eq_dysonTraceCoeff, dysonPartitionCoeff_zero]
     simp
