@@ -31,10 +31,6 @@ theorem hasSum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
   unfold oneModeBoltzmannWeight
   simpa only [Real.exp_nat_mul] using hgeo
 
-theorem summable_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
-    Summable (oneModeBoltzmannWeight β ε) :=
-  (hasSum_oneModeBoltzmannWeight h).summable
-
 /-- The one-mode Boltzmann series is summable exactly when `0 < βε`. -/
 theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
     Summable (oneModeBoltzmannWeight β ε) ↔ 0 < β * ε := by
@@ -47,11 +43,6 @@ theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
   constructor
   · intro h; linarith
   · intro h; linarith
-
-/-- The one-mode free partition series has its geometric closed form. -/
-theorem tsum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
-    ∑' k, oneModeBoltzmannWeight β ε k = (1 - Real.exp (-β * ε))⁻¹ :=
-  (hasSum_oneModeBoltzmannWeight h).tsum_eq
 
 end Bosonic
 end SecondQuantization
