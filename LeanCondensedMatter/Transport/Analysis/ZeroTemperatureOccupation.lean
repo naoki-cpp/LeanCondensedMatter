@@ -36,6 +36,13 @@ def zeroTemperatureOccupation (fermiEnergy energy : ℝ) : ℝ :=
     zeroTemperatureOccupation fermiEnergy energy = 0 := by
   simp [zeroTemperatureOccupation, not_lt.mpr h]
 
+/-- The complex norm of the zero-temperature occupation is at most one. -/
+theorem norm_zeroTemperatureOccupation_complex_le_one
+    (fermiEnergy energy : ℝ) :
+    ‖((zeroTemperatureOccupation fermiEnergy energy : ℝ) : ℂ)‖ ≤ 1 := by
+  by_cases h : energy < fermiEnergy <;>
+    simp [zeroTemperatureOccupation, h]
+
 /-- Below the Fermi level, zero-temperature occupation is identically one on the symmetric window
 with radius half the spectral distance to the Fermi level. -/
 theorem zeroTemperatureOccupation_eq_one_on_center_window
@@ -188,26 +195,6 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem
       rw [show (-radius) / broadening = -(radius / broadening) by ring,
         Real.arctan_neg]
       ring
-
-private theorem tendsto_arctan_pos_div_broadening
-    (distance : ℝ) (hdistance : 0 < distance) :
-    Tendsto
-      (fun broadening : ℝ => Real.arctan (distance / broadening))
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (Real.pi / 2)) := by
-  have hinv : Tendsto (fun broadening : ℝ => broadening⁻¹)
-      (nhdsWithin 0 (Set.Ioi 0)) atTop :=
-    tendsto_inv_nhdsGT_zero
-  have hscaled : Tendsto (fun broadening : ℝ => distance * broadening⁻¹)
-      (nhdsWithin 0 (Set.Ioi 0)) atTop := by
-    exact (tendsto_const_nhds : Tendsto (fun _ : ℝ => distance)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).pos_mul_atTop hdistance hinv
-  have harctanWithin := Real.tendsto_arctan_atTop.comp hscaled
-  have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-  change Tendsto
-    (fun broadening : ℝ => Real.arctan (distance * broadening⁻¹))
-    (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) at harctan
-  simpa only [div_eq_mul_inv] using harctan
 
 private theorem tendsto_arctan_neg_div_broadening
     (distance : ℝ) (hdistance : distance < 0) :
