@@ -11,10 +11,12 @@ derivative, a canonical static Bastin integrand, and a residual sea kernel. In f
 ordinary trace turns these into scalar energy kernels. This module inserts those traced kernels into
 `RegularizedStredaIntegralData`.
 
-The remaining hypotheses are deliberately visible: the occupation and its derivative, finite
-interval integrability, the integration-by-parts boundary condition, and equality of a chosen
-response with the canonical traced Bastin energy integral. The last equality is not inferred from
-the finite-frequency response proved earlier in the field layer.
+The remaining hypotheses are deliberately visible: the occupation and its derivative, integrability
+of the occupation derivative, the integration-by-parts boundary condition, and equality of a chosen
+response with the canonical traced Bastin energy integral. Integrability of the canonical traced
+surface derivative and occupied surface/sea products is derived from positive-broadening kernel
+continuity rather than supplied separately. The response equality is not inferred from the
+finite-frequency response proved earlier in the field layer.
 
 No zero-broadening, DC, disorder, trace-per-unit-volume, magnetic-density derivative, or
 thermodynamic-limit statement is made.
@@ -31,7 +33,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] [FiniteDimensional ℂ H]
 
 /-- Analytic hypotheses needed to instantiate `RegularizedStredaIntegralData` with the canonical
-finite-dimensional traced resolvent kernels. -/
+finite-dimensional traced resolvent kernels. Integrability of the canonical traced kernels and their
+products with the continuous occupation is derived automatically. -/
 structure TracedStredaAnalyticData
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (broadening lowerEnergy upperEnergy : ℝ)
@@ -47,23 +50,6 @@ structure TracedStredaAnalyticData
       HasDerivAt occupation (occupationDerivative energy) energy
   occupationDerivative_intervalIntegrable :
     IntervalIntegrable occupationDerivative volume lowerEnergy upperEnergy
-  surfacePrimitiveDerivative_intervalIntegrable :
-    IntervalIntegrable
-      (fun energy => regularizedStredaSurfacePrimitiveTraceDerivative
-        hamiltonian current₁ current₂ energy broadening)
-      volume lowerEnergy upperEnergy
-  surfaceProduct_intervalIntegrable :
-    IntervalIntegrable
-      (fun energy => occupation energy *
-        regularizedStredaSurfacePrimitiveTraceDerivative
-          hamiltonian current₁ current₂ energy broadening)
-      volume lowerEnergy upperEnergy
-  seaProduct_intervalIntegrable :
-    IntervalIntegrable
-      (fun energy => occupation energy *
-        regularizedStredaResidualSeaTraceKernel
-          hamiltonian current₁ current₂ energy broadening)
-      volume lowerEnergy upperEnergy
   /-- Explicit vanishing of the finite-interval integration-by-parts boundary term. -/
   boundary_vanishes :
     occupation upperEnergy *
@@ -119,9 +105,22 @@ noncomputable def TracedStredaAnalyticData.toRegularizedStredaIntegralData
   occupationDerivative_intervalIntegrable :=
     data.occupationDerivative_intervalIntegrable
   surfacePrimitiveDerivative_intervalIntegrable :=
-    data.surfacePrimitiveDerivative_intervalIntegrable
-  surfaceProduct_intervalIntegrable := data.surfaceProduct_intervalIntegrable
-  seaProduct_intervalIntegrable := data.seaProduct_intervalIntegrable
+    ContinuousOn.intervalIntegrable
+      (continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
+        hamiltonian data.hamiltonian_selfAdjoint current₁ current₂
+        broadening data.broadening_pos).continuousOn
+  surfaceProduct_intervalIntegrable :=
+    ContinuousOn.intervalIntegrable
+      (data.occupation_continuous.mul
+        (continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
+          hamiltonian data.hamiltonian_selfAdjoint current₁ current₂
+          broadening data.broadening_pos).continuousOn)
+  seaProduct_intervalIntegrable :=
+    ContinuousOn.intervalIntegrable
+      (data.occupation_continuous.mul
+        (continuous_regularizedStredaResidualSeaTraceKernel_energy
+          hamiltonian data.hamiltonian_selfAdjoint current₁ current₂
+          broadening data.broadening_pos).continuousOn)
   boundary_vanishes := data.boundary_vanishes
 
 /-- The abstract Bastin integral of the instantiated data is exactly the canonical traced Bastin
