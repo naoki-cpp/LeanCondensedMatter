@@ -1,16 +1,15 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
 
 set_option linter.style.header false
 
 /-!
-# Gauge-free spectral resolvent for the massive Dirac model
+# Bounded-operator spectral resolvent of the massive-Dirac model
 
-The generic transport layer defines retarded and advanced Green operators as algebraic resolvents
-of bounded self-adjoint operators.  The massive-Dirac model already has explicit gauge-independent
-rank-one band projectors `P₋` and `P₊`.  This file connects those two descriptions directly, without
-choosing eigenvectors or constructing `PurePointLehmannData`.
+The massive-Dirac model has explicit gauge-independent rank-one band projectors `P₋` and `P₊`.
+This module transports those projectors to the bounded-operator realization and connects them to the
+generic transport resolvent, without choosing eigenvectors or introducing a response formalism.
 
 Away from the band degeneracy,
 
@@ -18,11 +17,10 @@ Away from the band degeneracy,
 G(z) = (z - E₋)⁻¹ P₋ + (z - E₊)⁻¹ P₊
 ```
 
-is a left inverse of `z I - H₀`.  This module also owns the operator-projector algebra and scalar
-coefficient form of that spectral expansion, including its square. At positive retarded/advanced
-broadening the generic resolvent is the corresponding two-projector expansion. This is the spectral
-bridge needed before expanding the Bastin/Středa trace into interband projector traces and comparing
-it with Berry curvature.
+is a left inverse of `z I - H₀`. The operator-projector algebra and scalar coefficient form of that
+spectral expansion, including its square and the retarded/advanced specializations, are therefore
+model-level spectral infrastructure. Kubo–Bastin, Středa, propagator, and disorder consumers remain
+downstream.
 -/
 
 namespace AnomalousHall.MassiveDirac

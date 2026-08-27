@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Spectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.CurrentOperatorBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
@@ -13,8 +13,8 @@ massive-Dirac spectral projectors. This file makes that common block explicit wi
 eigenvector gauge.
 
 First, the generic retarded/advanced resolvents in the Bastin integrand are replaced by the exact
-projector resolvents proved in `MassiveDiracStredaSpectral`. Second, the direction-indexed interband
-operator trace
+projector resolvents owned by `MassiveDirac/Model/OperatorSpectral`. Second, the direction-indexed
+interband operator trace
 
 ```text
 Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,

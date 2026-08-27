@@ -143,15 +143,17 @@ disorder average.
 
 ## AHE benchmark hierarchy
 
-The massive-Dirac benchmark is now physically structured as
+The massive-Dirac benchmark is physically structured as
 
 ```text
 Transport/AnomalousHall/MassiveDirac/
 ├── Model/
 │   ├── Basic.lean
+│   ├── Operator.lean
 │   ├── CurrentBridge.lean
 │   ├── Occupation.lean
-│   └── Spectral.lean
+│   ├── Spectral.lean
+│   └── OperatorSpectral.lean
 ├── Intrinsic/
 │   ├── BerryBridge.lean
 │   ├── BerrySymmetry.lean
@@ -159,9 +161,7 @@ Transport/AnomalousHall/MassiveDirac/
 │   └── Conductivity.lean
 ├── Streda/
 │   ├── Response.lean
-│   ├── Integral.lean
-│   ├── CurrentOperatorBridge.lean
-│   └── Spectral.lean
+│   └── Integral.lean
 └── Bastin/
     ├── Berry / Bands / Limit / Lorentzian / Occupation / ...
     ├── Pole*       -- model-specific pole factor/window/specialization bridge
@@ -173,6 +173,19 @@ Transport/AnomalousHall/MassiveDirac/
 The historical flat Model, Intrinsic, Středa, and Bastin forwarding modules were removed after
 repository-wide consumer audits showed no remaining imports. Concrete implementations now live only
 under the canonical `MassiveDirac/{Model,Intrinsic,Streda,Bastin}/` hierarchy.
+
+Within the concrete benchmark, `Model/Operator.lean` owns the exact matrix-to-bounded-operator
+realization (`DiracHilbert`, Hamiltonian/current operators, self-adjointness, the bounded free-system
+adapter, and the matrix/operator trace bridge). `Model/CurrentBridge.lean` owns both the matrix and
+bounded canonical charge-current identifications. `Model/OperatorSpectral.lean` owns the transported
+band-projector algebra and gauge-free projector resolvent. These are response-independent model
+facts and are consumed directly by `Propagator`, disorder, and Bastin code without importing the
+model-specific Středa layer.
+
+`MassiveDirac/Streda/Response.lean` now owns only the pointwise Bastin/Středa trace specialization,
+and `Streda/Integral.lean` owns the finite-energy surface/sea decomposition. The retired
+`Streda/CurrentOperatorBridge.lean` and `Streda/Spectral.lean` paths must not be recreated as
+compatibility shims; repository consumers use the canonical `Model` owners directly.
 
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
 Fermi-surface notions, Lorentzian kernel/tail analysis, zero-temperature occupation/Fermi-edge

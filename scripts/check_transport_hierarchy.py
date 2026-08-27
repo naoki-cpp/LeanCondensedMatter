@@ -110,6 +110,61 @@ def main() -> int:
     ):
         require_import(errors, ahe_umbrella, module, root=ROOT, description="AHE public umbrella")
 
+    massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
+    massive_dirac_model_umbrella = massive_dirac_root / "Model.lean"
+    operator_module = f"{MD}.Model.Operator"
+    operator_spectral_module = f"{MD}.Model.OperatorSpectral"
+    for module in (operator_module, operator_spectral_module):
+        require_import(
+            errors,
+            massive_dirac_model_umbrella,
+            module,
+            root=ROOT,
+            description="massive-Dirac model public umbrella",
+        )
+
+    propagator_path = massive_dirac_root / "Propagator.lean"
+    scalar_disorder_path = massive_dirac_root / "Disorder" / "ScalarCovariance.lean"
+    require_import(
+        errors,
+        propagator_path,
+        operator_spectral_module,
+        root=ROOT,
+        description="massive-Dirac propagator model ownership",
+    )
+    require_import(
+        errors,
+        scalar_disorder_path,
+        operator_module,
+        root=ROOT,
+        description="massive-Dirac disorder model ownership",
+    )
+    streda_prefix = f"{MD}.Streda."
+    for path in (propagator_path, scalar_disorder_path):
+        if any(module.startswith(streda_prefix) for module in lean_imports(path)):
+            errors.append(
+                f"{path.relative_to(ROOT)} must depend on MassiveDirac.Model, not MassiveDirac.Streda"
+            )
+
+    massive_dirac_streda_umbrella = massive_dirac_root / "Streda.lean"
+    for module in (f"{MD}.Streda.Response", f"{MD}.Streda.Integral"):
+        require_import(
+            errors,
+            massive_dirac_streda_umbrella,
+            module,
+            root=ROOT,
+            description="massive-Dirac Streda public umbrella",
+        )
+    for retired_path in (
+        massive_dirac_root / "Streda" / "CurrentOperatorBridge.lean",
+        massive_dirac_root / "Streda" / "Spectral.lean",
+    ):
+        if retired_path.exists():
+            errors.append(
+                f"{retired_path.relative_to(ROOT)} is retired; "
+                "bounded current/spectral infrastructure belongs under MassiveDirac/Model"
+            )
+
     massive_dirac_bastin_umbrella = TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin.lean"
     pole_extraction_module = f"{MD}.Bastin.PoleExtraction"
     require_import(

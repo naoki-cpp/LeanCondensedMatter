@@ -1,13 +1,16 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
 
 set_option linter.style.header false
 
 /-!
 # Massive-Dirac model
 
-Public umbrella for the model Hamiltonian, current bridge, spectral occupation, and
-spectral/projector algebra. Canonical implementations live under `MassiveDirac/Model/`.
+Public umbrella for the matrix model, bounded-operator realization, current bridge, spectral
+occupation, and matrix/operator spectral-projector algebra. Canonical implementations live under
+`MassiveDirac/Model/`.
 -/
