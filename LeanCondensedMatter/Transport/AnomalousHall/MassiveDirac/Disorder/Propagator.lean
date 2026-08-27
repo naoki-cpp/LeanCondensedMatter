@@ -1,0 +1,231 @@
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Spectral
+
+set_option linter.style.header false
+
+/-!
+# Pauli decomposition of the massive-Dirac Green operator
+
+This Phase 4 consumer rewrites the existing generic retarded/advanced resolvent of the clean
+massive-Dirac Hamiltonian in the Pauli basis needed by the scalar-disorder Born calculation.
+For either spectral side `s`, with `z_s = ε + s iη`, the model identity is
+
+```text
+G_s = (z_s I - H₀)⁻¹
+    = (z_s I + H₀) / (z_s² - E²)
+    = g₀ I + gₓ σₓ + gᵧ σᵧ + g_z σ_z.
+```
+
+The object identified below is the repository's existing resolvent; this file does not introduce a
+parallel Green-function formalism. No momentum integration, angular average, Born closure, SCBA,
+or vertex resummation is performed here.
+-/
+
+namespace AnomalousHall.MassiveDirac
+
+noncomputable section
+
+open QuantumTheory.Transport
+
+/-- Common quadratic denominator `z_s² - E²` of the two-band Green operator. -/
+def pauliGreenDenominator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  spectralParameter side probeEnergy broadening ^ 2 -
+    ((energySq v m px py : ℝ) : ℂ)
+
+/-- Identity-matrix coefficient in the massive-Dirac Green operator. -/
+def pauliGreenScalarCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+    spectralParameter side probeEnergy broadening
+
+/-- `σₓ` coefficient in the massive-Dirac Green operator. -/
+def pauliGreenXCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+    ((v * px : ℝ) : ℂ)
+
+/-- `σᵧ` coefficient in the massive-Dirac Green operator. -/
+def pauliGreenYCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+    ((v * py : ℝ) : ℂ)
+
+/-- `σ_z` coefficient in the massive-Dirac Green operator. -/
+def pauliGreenZCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+    ((m : ℝ) : ℂ)
+
+/-- Pauli-basis Green-operator candidate. The theorems below identify it with the existing generic
+resolvent at nonzero broadening. -/
+noncomputable def pauliGreenOperator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  pauliGreenScalarCoefficient side v m px py probeEnergy broadening • 1 +
+    pauliGreenXCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaX +
+    pauliGreenYCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaY +
+    pauliGreenZCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaZ
+
+/-- The bounded massive-Dirac Hamiltonian has the same explicit Pauli decomposition as its matrix
+representative. -/
+theorem hamiltonianOperator_eq_pauli (v m px py : ℝ) :
+    hamiltonianOperator v m px py =
+      (((v * px : ℝ) : ℂ)) • matrixOperator sigmaX +
+        (((v * py : ℝ) : ℂ)) • matrixOperator sigmaY +
+          (((m : ℝ) : ℂ)) • matrixOperator sigmaZ := by
+  unfold hamiltonianOperator hamiltonian matrixOperator
+  simp
+
+/-- Transporting `H₀² = E² I` to `DiracHilbert` gives the bounded-operator square identity used by
+the closed resolvent form. -/
+theorem hamiltonianOperator_mul_self (v m px py : ℝ) :
+    hamiltonianOperator v m px py * hamiltonianOperator v m px py =
+      (((energySq v m px py : ℝ) : ℂ)) •
+        (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (hamiltonian v m px py) * φ (hamiltonian v m px py) = _
+  calc
+    φ (hamiltonian v m px py) * φ (hamiltonian v m px py) =
+        φ (hamiltonian v m px py * hamiltonian v m px py) := by
+      symm
+      exact map_mul φ _ _
+    _ = φ ((((energySq v m px py : ℝ) : ℂ)) • (1 : Matrix2)) := by
+      rw [hamiltonian_mul_self]
+    _ = (((energySq v m px py : ℝ) : ℂ)) • φ (1 : Matrix2) := by
+      exact map_smul φ _ _
+    _ = (((energySq v m px py : ℝ) : ℂ)) •
+        (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
+      rw [map_one]
+
+/-- Nonzero broadening keeps the quadratic two-band denominator away from zero. -/
+theorem pauliGreenDenominator_ne_zero
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    pauliGreenDenominator side v m px py probeEnergy broadening ≠ 0 := by
+  have hminus := spectralParameter_sub_real_ne_zero
+    side probeEnergy broadening (energy v m px py) hbroadening
+  have hplus := spectralParameter_sub_real_ne_zero
+    side probeEnergy broadening (-energy v m px py) hbroadening
+  have hEsq :
+      (((energySq v m px py : ℝ) : ℂ)) =
+        (((energy v m px py : ℝ) : ℂ)) ^ 2 := by
+    norm_cast
+    exact (energy_sq v m px py).symm
+  unfold pauliGreenDenominator
+  rw [hEsq]
+  rw [show
+    spectralParameter side probeEnergy broadening ^ 2 -
+          (((energy v m px py : ℝ) : ℂ)) ^ 2 =
+        (spectralParameter side probeEnergy broadening -
+            ((energy v m px py : ℝ) : ℂ)) *
+          (spectralParameter side probeEnergy broadening +
+            ((energy v m px py : ℝ) : ℂ)) by ring]
+  exact mul_ne_zero hminus (by simpa using hplus)
+
+/-- The explicit Pauli decomposition is the usual closed numerator/denominator form
+`(z_s I + H₀)/(z_s²-E²)`. -/
+theorem pauliGreenOperator_eq_closedForm
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
+    pauliGreenOperator side v m px py probeEnergy broadening =
+      (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ •
+        (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
+            (spectralParameter side probeEnergy broadening) +
+          hamiltonianOperator v m px py) := by
+  rw [hamiltonianOperator_eq_pauli]
+  simp [pauliGreenOperator, pauliGreenScalarCoefficient,
+    pauliGreenXCoefficient, pauliGreenYCoefficient, pauliGreenZCoefficient,
+    Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
+
+private theorem spectralShift_mul_pauliGreenOperator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
+          (spectralParameter side probeEnergy broadening) -
+        hamiltonianOperator v m px py) *
+      pauliGreenOperator side v m px py probeEnergy broadening = 1 := by
+  rw [pauliGreenOperator_eq_closedForm]
+  rw [mul_smul_comm]
+  have hquadratic :
+      (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
+            (spectralParameter side probeEnergy broadening) -
+          hamiltonianOperator v m px py) *
+        (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
+            (spectralParameter side probeEnergy broadening) +
+          hamiltonianOperator v m px py) =
+        pauliGreenDenominator side v m px py probeEnergy broadening •
+          (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
+    rw [sub_mul, mul_add, mul_add]
+    rw [hamiltonianOperator_mul_self]
+    simp [Algebra.algebraMap_eq_smul_one, pauliGreenDenominator, smul_smul, sub_smul]
+  rw [hquadratic, smul_smul]
+  simp [pauliGreenDenominator_ne_zero side v m px py probeEnergy broadening hbroadening]
+
+/-- The generic side-indexed resolvent equals the explicit massive-Dirac Pauli decomposition. -/
+theorem resolvent_spectralParameter_eq_pauliGreenOperator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    resolvent (hamiltonianOperator v m px py)
+        (spectralParameter side probeEnergy broadening) =
+      pauliGreenOperator side v m px py probeEnergy broadening := by
+  let shift : DiracHilbert →L[ℂ] DiracHilbert :=
+    algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
+        (spectralParameter side probeEnergy broadening) -
+      hamiltonianOperator v m px py
+  let candidate := pauliGreenOperator side v m px py probeEnergy broadening
+  have hleft : shift * candidate = 1 := by
+    exact spectralShift_mul_pauliGreenOperator
+      side v m px py probeEnergy broadening hbroadening
+  have hright :
+      resolvent (hamiltonianOperator v m px py)
+          (spectralParameter side probeEnergy broadening) * shift = 1 := by
+    exact resolvent_mul_spectralShift side
+      (hamiltonianOperator v m px py)
+      (hamiltonianOperator_isSelfAdjoint v m px py)
+      probeEnergy broadening hbroadening
+  calc
+    resolvent (hamiltonianOperator v m px py)
+        (spectralParameter side probeEnergy broadening) =
+      resolvent (hamiltonianOperator v m px py)
+          (spectralParameter side probeEnergy broadening) * 1 := by simp
+    _ = resolvent (hamiltonianOperator v m px py)
+          (spectralParameter side probeEnergy broadening) * (shift * candidate) := by
+      rw [hleft]
+    _ = (resolvent (hamiltonianOperator v m px py)
+          (spectralParameter side probeEnergy broadening) * shift) * candidate := by
+      rw [mul_assoc]
+    _ = candidate := by rw [hright, one_mul]
+    _ = pauliGreenOperator side v m px py probeEnergy broadening := rfl
+
+/-- Retarded massive-Dirac Green operator in the Pauli basis. -/
+theorem retardedResolvent_eq_pauliGreenOperator
+    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+      pauliGreenOperator .retarded v m px py probeEnergy broadening := by
+  simpa only [retardedResolvent, spectralParameter_retarded] using
+    resolvent_spectralParameter_eq_pauliGreenOperator .retarded
+      v m px py probeEnergy broadening (ne_of_gt hbroadening)
+
+/-- Advanced massive-Dirac Green operator in the Pauli basis. -/
+theorem advancedResolvent_eq_pauliGreenOperator
+    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+      pauliGreenOperator .advanced v m px py probeEnergy broadening := by
+  simpa only [advancedResolvent, spectralParameter_advanced] using
+    resolvent_spectralParameter_eq_pauliGreenOperator .advanced
+      v m px py probeEnergy broadening (ne_of_gt hbroadening)
+
+/-- The explicit Pauli forms retain the canonical retarded/advanced adjoint relation. -/
+theorem star_pauliGreenOperator_retarded_eq_advanced
+    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    star (pauliGreenOperator .retarded v m px py probeEnergy broadening) =
+      pauliGreenOperator .advanced v m px py probeEnergy broadening := by
+  rw [← retardedResolvent_eq_pauliGreenOperator v m px py probeEnergy broadening hbroadening]
+  rw [← advancedResolvent_eq_pauliGreenOperator v m px py probeEnergy broadening hbroadening]
+  exact star_retardedResolvent
+    (hamiltonianOperator v m px py)
+    (hamiltonianOperator_isSelfAdjoint v m px py)
+    probeEnergy broadening
+
+end
+
+end AnomalousHall.MassiveDirac
