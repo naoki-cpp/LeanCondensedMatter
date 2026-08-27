@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Transport.Analysis.BandOccupation
 
 set_option linter.style.header false
@@ -136,6 +136,37 @@ theorem energy_metallicFermiRadius
       0 ≤ energy v m (metallicFermiRadius v m fermiEnergy) 0 :=
     Real.sqrt_nonneg _
   nlinarith
+
+/-- At the occupation-derived metallic Fermi radius, the squared radial energy derivative has the
+standard massive-Dirac Fermi-surface form
+`v^2 * (1 - m^2 / epsilon_F^2)`. -/
+theorem radialEnergyDerivative_sq_metallicFermiRadius
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
+    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) ^ 2 =
+      v ^ 2 * (1 - m ^ 2 / fermiEnergy ^ 2) := by
+  have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
+  unfold radialEnergyDerivative
+  rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF]
+  rw [div_pow, mul_pow,
+    metallicFermiRadius_sq v m fermiEnergy hm hmF]
+  field_simp [hfermiNe, hv]
+
+/-- In the strictly metallic regime `0 < m < epsilon_F`, the squared Fermi-surface radial
+derivative is strictly positive when `v ≠ 0`. -/
+theorem radialEnergyDerivative_sq_metallicFermiRadius_pos
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
+    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    0 < radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) ^ 2 := by
+  rw [radialEnergyDerivative_sq_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
+  have hvSq : 0 < v ^ 2 := sq_pos_of_ne_zero hv
+  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_pos (lt_trans hm hmF)
+  have hmSqLt : m ^ 2 < fermiEnergy ^ 2 := by
+    nlinarith
+  have hratio : m ^ 2 / fermiEnergy ^ 2 < 1 := by
+    exact (div_lt_one hfermiSq).2 hmSqLt
+  positivity
 
 /-- The upper-band energy at the explicit metallic Fermi radius is exactly `ε_F`. -/
 theorem bandEnergy_upper_metallicFermiRadius
