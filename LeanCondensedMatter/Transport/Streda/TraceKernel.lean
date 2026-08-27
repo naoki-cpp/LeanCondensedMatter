@@ -12,7 +12,9 @@ finite Kubo–Bastin formula only after applying the ordinary finite-dimensional
 proves that:
 
 * differentiation of the real-energy Středa operator path descends through the trace;
-* the traced surface primitive has the traced operator derivative; and
+* the traced surface primitive has the traced operator derivative;
+* the canonical traced derivative and residual sea kernels are continuous at positive broadening;
+  and
 * the operator pointwise Bastin decomposition descends to scalar trace kernels.
 
 No occupation integral or identification with the finite-frequency response from the field layer
@@ -76,6 +78,34 @@ theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
   exact hasDerivAt_finiteDimensionalOperatorTrace_comp
     (hasDerivAt_regularizedStredaSurfacePrimitiveOperator
       hamiltonian hself current₁ current₂ energy broadening hbroadening)
+
+/-- At fixed positive broadening, the traced surface-primitive derivative is continuous in energy. -/
+theorem continuous_regularizedStredaSurfacePrimitiveTraceDerivative_energy
+    [CompleteSpace H]
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      regularizedStredaSurfacePrimitiveTraceDerivative
+        hamiltonian current₁ current₂ energy broadening) := by
+  unfold regularizedStredaSurfacePrimitiveTraceDerivative
+  exact (finiteDimensionalOperatorTrace (H := H)).continuous.comp
+    (continuous_regularizedStredaSurfacePrimitiveOperatorDerivative_energy
+      hamiltonian hself current₁ current₂ broadening hbroadening)
+
+/-- At fixed positive broadening, the traced residual sea kernel is continuous in energy. -/
+theorem continuous_regularizedStredaResidualSeaTraceKernel_energy
+    [CompleteSpace H]
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (current₁ current₂ : H →L[ℂ] H)
+    (broadening : ℝ) (hbroadening : 0 < broadening) :
+    Continuous (fun energy : ℝ =>
+      regularizedStredaResidualSeaTraceKernel
+        hamiltonian current₁ current₂ energy broadening) := by
+  unfold regularizedStredaResidualSeaTraceKernel
+  exact (finiteDimensionalOperatorTrace (H := H)).continuous.comp
+    (continuous_regularizedStredaResidualSeaOperatorKernel_energy
+      hamiltonian hself current₁ current₂ broadening hbroadening)
 
 /-- The pointwise operator decomposition descends to the ordinary finite-dimensional trace. -/
 theorem regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea
