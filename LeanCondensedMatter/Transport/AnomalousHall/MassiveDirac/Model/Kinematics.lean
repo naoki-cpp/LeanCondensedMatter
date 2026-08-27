@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic
 
