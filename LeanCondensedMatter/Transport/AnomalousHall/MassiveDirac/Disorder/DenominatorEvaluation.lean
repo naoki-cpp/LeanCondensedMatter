@@ -168,6 +168,7 @@ private theorem continuumBornDenominatorLogPrefactor_eq_ofReal (v : ℝ) :
     -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
       ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) := by
   push_cast
+  rfl
 
 /-- Exact finite-cutoff real part of the shared denominator integral.  Its endpoint dependence is a
 real logarithm of denominator norms; no ultraviolet limit is taken here. -/
@@ -182,6 +183,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq
   rw [finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
     side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening]
   rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [Complex.re_ofReal_mul]
   simp [Complex.log_re]
 
 /-- Exact finite-cutoff imaginary part of the shared denominator integral.  Its endpoint dependence
@@ -197,6 +199,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_im_eq
   rw [finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
     side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening]
   rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [Complex.im_ofReal_mul]
   simp [Complex.log_im]
 
 end
