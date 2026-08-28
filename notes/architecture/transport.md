@@ -112,26 +112,29 @@ The exact/approximate split remains explicit:
 
 ```text
 Disorder/Finite
-   ├──→ Disorder/Resolvent ────────────────────────────────┐
-   └──→ Disorder/Moments ──→ BornCommon ──┬──→ RetardedBorn
-                       │                   └──→ AdvancedBorn
-                       └────────────────────────→ SCBA
+   ├──→ Disorder/Resolvent ───────→ BornCommon ──┬──→ RetardedBorn
+   └──→ Disorder/Moments ─────────→ BornCommon   └──→ AdvancedBorn
+                       └────────────────────────────→ SCBA
 
-Transport/Resolvent.Basic ─────────────────────→ SCBA
+Transport/Resolvent.Basic ──→ Disorder/Resolvent
+                         └──→ SCBA
 ```
 
 `Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages.
-`Disorder/Resolvent` owns the exact configuration-wise retarded/advanced Green operators and Dyson
-identities. `Disorder/Moments` owns the canonical bounded complex-linear exact second-moment action
-`C₂(X) = E[Vω X Vω]`, proves its finite-average and adjoint-compatibility properties, and owns the
-separate `IsCentered` property used to cancel first-order disorder insertions.
+`Disorder/Resolvent` owns the exact side-indexed clean/configuration Green operators together with
+conventional retarded/advanced specializations. Its exact Dyson identities remain explicitly
+retarded/advanced because adjunction reverses noncommutative product order. `Disorder/Moments` owns
+the canonical bounded complex-linear exact second-moment action `C₂(X) = E[Vω X Vω]`, proves its
+finite-average and adjoint-compatibility properties, and owns the separate `IsCentered` property
+used to cancel first-order disorder insertions.
 
-`Disorder/BornCommon` owns only genuinely R/A-neutral algebra shared by both first-Born
-specializations: centered first-order insertion cancellation, averaging of a configuration-wise
-second-order expansion, the common second-order expression `G₀ + G₀ Σ G₀`, and its exact closure
-error. Orientation-sensitive Dyson remainders, physical retarded/advanced self-energy names, and
-closure hypotheses stay in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn`. Those modules remain
-siblings and must not import one another.
+`Disorder/BornCommon` owns genuinely R/A-neutral first-Born data and algebra shared by both physical
+specializations: the side-indexed `bornSelfEnergy` and `bornResolventApproximation`, centered
+first-order insertion cancellation, averaging of a configuration-wise second-order expansion, the
+common second-order expression `G₀ + G₀ Σ G₀`, and its exact closure error algebra. Conventional
+retarded/advanced self-energy and approximation names stay in `Disorder/RetardedBorn` and
+`Disorder/AdvancedBorn` as physical specializations. Orientation-sensitive exact Dyson remainders
+and closure hypotheses also stay in those sibling modules; the siblings must not import one another.
 
 The Born self-energy and approximation objects use the canonical exact second moment and therefore
 do not themselves require centered disorder. Centering is required only when an exact averaged

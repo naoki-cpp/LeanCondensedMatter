@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Disorder.Resolvent
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -8,12 +9,12 @@ set_option linter.style.header false
 
 This module owns algebra common to retarded and advanced first-Born closures. It keeps the
 retarded and advanced physical specializations as sibling modules while centralizing centered
-first-order cancellation, second-order finite averaging, and the R/A-neutral second-order Born
-approximation/error formulas.
+first-order cancellation, the side-indexed Born self-energy and resolvent approximation, second-order
+finite averaging, and the R/A-neutral second-order Born approximation/error formulas.
 
-Orientation-sensitive Dyson remainders, retarded/advanced self-energies, and physical closure
-hypotheses remain in their specialization modules. No resolvent choice, self-consistency, vertex
-correction, Ward identity, trace-per-volume construction, or thermodynamic limit is introduced here.
+Orientation-sensitive Dyson remainders and physical closure hypotheses remain in their
+specialization modules. No self-consistency, vertex correction, Ward identity, trace-per-volume
+construction, or thermodynamic limit is introduced here.
 -/
 
 namespace QuantumTheory
@@ -65,11 +66,32 @@ theorem operatorAverage_eq_free_add_remainder_of_secondOrder
       rw [operatorAverage_const ensemble, hfirst]
       simp
 
+/-- Side-indexed first-Born self-energy: the exact finite second moment evaluated on the clean
+spectral-side Green operator. This definition does not require centered disorder. -/
+noncomputable def bornSelfEnergy
+    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
+  ensemble.exactSecondMoment (ensemble.freeGreen side energy broadening)
+
+/-- The side-indexed Born self-energy is the exact finite second moment with the corresponding
+clean spectral-side propagator. -/
+theorem bornSelfEnergy_eq_secondMoment
+    (side : SpectralSide) (energy broadening : ℝ) :
+    ensemble.bornSelfEnergy side energy broadening =
+      ensemble.exactSecondMoment (ensemble.freeGreen side energy broadening) :=
+  rfl
+
 omit [CompleteSpace H] in
 /-- R/A-neutral second-order Born resolvent expression `G₀ + G₀ Σ G₀`. -/
 noncomputable def secondOrderBornResolventApproximation
     (freeGreen selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   freeGreen + freeGreen * selfEnergy * freeGreen
+
+/-- Side-indexed second-order Born approximation `G₀ˢ + G₀ˢ Σˢ G₀ˢ`. -/
+noncomputable def bornResolventApproximation
+    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
+  secondOrderBornResolventApproximation
+    (ensemble.freeGreen side energy broadening)
+    (ensemble.bornSelfEnergy side energy broadening)
 
 omit [CompleteSpace H] in
 /-- R/A-neutral closure error between an exact second-order remainder and `G₀ Σ G₀`. -/
