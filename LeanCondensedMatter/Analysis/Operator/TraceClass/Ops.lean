@@ -25,27 +25,6 @@ namespace ContinuousLinearMap
 
 variable {T : H →L[ℂ] H}
 
-omit [CompleteSpace H] in
-/-- The diagonal sum of a finite-rank orthogonal projection against any Hilbert basis equals its
-rank. -/
-theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : HilbertBasis ι ℂ H)
-    (V : Submodule ℂ H) [FiniteDimensional ℂ V] :
-    ∑' i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 = (Module.finrank ℂ V : ℝ) := by
-  classical
-  let f : Fin (Module.finrank ℂ V) → V := ⇑(stdOrthonormalBasis ℂ V)
-  have hpoint : ∀ i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 =
-      ∑ j, ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2 := by
-    intro i
-    rw [← (stdOrthonormalBasis ℂ V).sum_sq_norm_inner_right (V.orthogonalProjectionOnto (b i))]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    rw [Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left]
-  simp_rw [hpoint]
-  rw [Summable.tsum_finsetSum fun j _ => (b.hasSum_norm_sq_inner (f j : H)).summable]
-  simp_rw [(b.hasSum_norm_sq_inner (f _ : H)).tsum_eq]
-  have hnorm1 : ∀ j : Fin (Module.finrank ℂ V), ‖(f j : H)‖ = 1 :=
-    fun j => (stdOrthonormalBasis ℂ V).orthonormal.1 j
-  simp [hnorm1]
-
 /-- The eigenvector expansion of a compact self-adjoint operator, paired with a vector, sums to the
 lossless real diagonal expectation. -/
 theorem hasSum_eigen_expansion_diagonalExpectationValue
