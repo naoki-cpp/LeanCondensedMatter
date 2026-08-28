@@ -13,9 +13,9 @@ For a bounded self-adjoint Hamiltonian `H`, define the two spectral sides
 zˢ(E, η) = E + s iη,  s = ±1,
 ```
 
-with `s = +1` for the retarded side and `s = -1` for the advanced side. The conventional
-retarded/advanced names remain as public specializations of the small common core used by proofs
-that genuinely do not depend on the side.
+with `s = +1` for the retarded side and `s = -1` for the advanced side. The canonical Green
+operator is `spectralResolvent side H E η`; conventional retarded/advanced names remain public
+specializations of that common core.
 
 The spectrum of a self-adjoint element of the endomorphism C⋆-algebra is real. Therefore both
 spectral parameters lie in the resolvent set whenever `η ≠ 0`, without a finite-dimensional
@@ -113,6 +113,12 @@ theorem advancedSpectralParameter_im (energy broadening : ℝ) :
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- Green operator on either spectral side, `((E + s iη) I - H)⁻¹`. -/
+noncomputable def spectralResolvent
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H)
+    (energy broadening : ℝ) : H →L[ℂ] H :=
+  resolvent hamiltonian (spectralParameter side energy broadening)
+
 /-- Retarded Green operator `((E + iη) I - H)⁻¹`. -/
 noncomputable def retardedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -122,6 +128,24 @@ noncomputable def retardedResolvent
 noncomputable def advancedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
   resolvent hamiltonian (advancedSpectralParameter energy broadening)
+
+omit [CompleteSpace H] in
+@[simp]
+theorem spectralResolvent_retarded
+    (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
+    spectralResolvent .retarded hamiltonian energy broadening =
+      retardedResolvent hamiltonian energy broadening := by
+  unfold spectralResolvent retardedResolvent
+  rw [spectralParameter_retarded]
+
+omit [CompleteSpace H] in
+@[simp]
+theorem spectralResolvent_advanced
+    (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
+    spectralResolvent .advanced hamiltonian energy broadening =
+      advancedResolvent hamiltonian energy broadening := by
+  unfold spectralResolvent advancedResolvent
+  rw [spectralParameter_advanced]
 
 /-- A nonreal scalar cannot belong to the spectrum of a self-adjoint bounded operator. -/
 theorem spectralParameter_not_mem_spectrum_of_im_ne_zero
@@ -176,7 +200,7 @@ theorem advancedSpectralParameter_mem_resolventSet
     (advancedSpectralParameter_not_mem_spectrum
       hamiltonian hself energy broadening hbroadening)
 
-/-- The side-indexed shifted operator multiplied by its resolvent is the identity. -/
+/-- The side-indexed shifted operator multiplied by the generic resolvent is the identity. -/
 theorem spectralShift_mul_resolvent
     (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
@@ -187,7 +211,7 @@ theorem spectralShift_mul_resolvent
   rw [spectrum.resolvent_eq hres]
   exact hres.mul_val_inv
 
-/-- The side-indexed resolvent multiplied by its shifted operator is the identity. -/
+/-- The generic resolvent multiplied by its side-indexed shifted operator is the identity. -/
 theorem resolvent_mul_spectralShift
     (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
@@ -199,14 +223,34 @@ theorem resolvent_mul_spectralShift
   rw [spectrum.resolvent_eq hres]
   exact hres.val_inv_mul
 
+/-- The side-indexed shifted operator multiplied by the canonical spectral resolvent is the
+identity. -/
+theorem spectralShift_mul_spectralResolvent
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) *
+        spectralResolvent side hamiltonian energy broadening = 1 := by
+  simpa only [spectralResolvent] using
+    spectralShift_mul_resolvent side hamiltonian hself energy broadening hbroadening
+
+/-- The canonical spectral resolvent multiplied by its side-indexed shift is the identity. -/
+theorem spectralResolvent_mul_spectralShift
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    spectralResolvent side hamiltonian energy broadening *
+        (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) =
+      1 := by
+  simpa only [spectralResolvent] using
+    resolvent_mul_spectralShift side hamiltonian hself energy broadening hbroadening
+
 /-- The shifted retarded operator multiplied by its resolvent is the identity. -/
 theorem retardedShift_mul_resolvent
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     (algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) - hamiltonian) *
         retardedResolvent hamiltonian energy broadening = 1 := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    spectralShift_mul_resolvent .retarded hamiltonian hself energy broadening
+  simpa only [spectralResolvent_retarded, spectralParameter_retarded] using
+    spectralShift_mul_spectralResolvent .retarded hamiltonian hself energy broadening
       (ne_of_gt hbroadening)
 
 /-- The retarded resolvent multiplied by its shifted operator is the identity. -/
@@ -216,8 +260,8 @@ theorem resolvent_mul_retardedShift
     retardedResolvent hamiltonian energy broadening *
         (algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) - hamiltonian) =
       1 := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    resolvent_mul_spectralShift .retarded hamiltonian hself energy broadening
+  simpa only [spectralResolvent_retarded, spectralParameter_retarded] using
+    spectralResolvent_mul_spectralShift .retarded hamiltonian hself energy broadening
       (ne_of_gt hbroadening)
 
 /-- The shifted advanced operator multiplied by its resolvent is the identity. -/
@@ -226,8 +270,8 @@ theorem advancedShift_mul_resolvent
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     (algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy broadening) - hamiltonian) *
         advancedResolvent hamiltonian energy broadening = 1 := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    spectralShift_mul_resolvent .advanced hamiltonian hself energy broadening
+  simpa only [spectralResolvent_advanced, spectralParameter_advanced] using
+    spectralShift_mul_spectralResolvent .advanced hamiltonian hself energy broadening
       (ne_of_gt hbroadening)
 
 /-- The advanced resolvent multiplied by its shifted operator is the identity. -/
@@ -237,8 +281,8 @@ theorem resolvent_mul_advancedShift
     advancedResolvent hamiltonian energy broadening *
         (algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy broadening) - hamiltonian) =
       1 := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    resolvent_mul_spectralShift .advanced hamiltonian hself energy broadening
+  simpa only [spectralResolvent_advanced, spectralParameter_advanced] using
+    spectralResolvent_mul_spectralShift .advanced hamiltonian hself energy broadening
       (ne_of_gt hbroadening)
 
 /-- Complex conjugation exchanges the retarded and advanced spectral parameters. -/

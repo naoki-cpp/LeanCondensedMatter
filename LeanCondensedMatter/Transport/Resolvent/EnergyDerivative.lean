@@ -14,8 +14,8 @@ dG(z) / dz = -G(z)^2.
 
 The Středa energy integral instead differentiates the real-energy paths
 `E ↦ Gˢ(E, η)` at fixed nonzero broadening. This module derives the common side-indexed real
-derivative by composing the complex resolvent derivative with the affine spectral path
-`E ↦ E + s iη`, then retains the conventional retarded/advanced names as specializations.
+derivative and continuity theorem for `spectralResolvent`, then retains the conventional
+retarded/advanced names as specializations.
 
 The result remains dimension-independent and contains no trace, conductivity, zero-broadening,
 or thermodynamic-limit statement.
@@ -35,14 +35,14 @@ private theorem hasDerivAt_spectralParameter_energy
     (Complex.ofRealCLM.hasDerivAt.add_const
       (((side.sign * broadening : ℝ) : ℂ) * Complex.I))
 
-/-- A resolvent on either spectral side differentiated along the real-energy axis is `-Gˢ²`. -/
-theorem hasDerivAt_resolvent_spectralParameter_energy
+/-- A spectral resolvent differentiated along the real-energy axis is `-Gˢ²`. -/
+theorem hasDerivAt_spectralResolvent_energy
     (side : SpectralSide)
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     HasDerivAt
-      (fun x : ℝ => resolvent hamiltonian (spectralParameter side x broadening))
-      (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
+      (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
+      (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
       energy := by
   have houter : HasFDerivAt (resolvent hamiltonian)
       ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
@@ -67,7 +67,21 @@ theorem hasDerivAt_resolvent_spectralParameter_energy
     (resolvent hamiltonian ∘ fun x : ℝ => spectralParameter side x broadening)
     (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
     energy
-  exact hcomp
+  simpa only [spectralResolvent] using hcomp
+
+/-- Compatibility name for the side-indexed real-energy derivative written with the generic
+`resolvent` and `spectralParameter` expressions. -/
+theorem hasDerivAt_resolvent_spectralParameter_energy
+    (side : SpectralSide)
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    HasDerivAt
+      (fun x : ℝ => resolvent hamiltonian (spectralParameter side x broadening))
+      (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
+      energy := by
+  simpa only [spectralResolvent] using
+    hasDerivAt_spectralResolvent_energy
+      side hamiltonian hself energy broadening hbroadening
 
 /-- The retarded resolvent differentiated along the real-energy axis is `-(Gᴿ)^2`. -/
 theorem hasDerivAt_retardedResolvent_energy
@@ -75,8 +89,8 @@ theorem hasDerivAt_retardedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
       (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    hasDerivAt_resolvent_spectralParameter_energy
+  simpa only [spectralResolvent_retarded] using
+    hasDerivAt_spectralResolvent_energy
       .retarded hamiltonian hself energy broadening (ne_of_gt hbroadening)
 
 /-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
@@ -85,31 +99,40 @@ theorem hasDerivAt_advancedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    hasDerivAt_resolvent_spectralParameter_energy
+  simpa only [spectralResolvent_advanced] using
+    hasDerivAt_spectralResolvent_energy
       .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
+
+/-- At fixed nonzero broadening, either spectral-side resolvent is continuous along the real-energy
+axis. -/
+theorem continuous_spectralResolvent_energy
+    (side : SpectralSide)
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) := by
+  rw [continuous_iff_continuousAt]
+  intro energy
+  exact
+    (hasDerivAt_spectralResolvent_energy
+      side hamiltonian hself energy broadening hbroadening).continuousAt
 
 /-- At fixed positive broadening, the retarded resolvent is continuous along the real-energy axis. -/
 theorem continuous_retardedResolvent_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (broadening : ℝ) (hbroadening : 0 < broadening) :
     Continuous (fun energy : ℝ => retardedResolvent hamiltonian energy broadening) := by
-  rw [continuous_iff_continuousAt]
-  intro energy
-  exact
-    (hasDerivAt_retardedResolvent_energy
-      hamiltonian hself energy broadening hbroadening).continuousAt
+  simpa only [spectralResolvent_retarded] using
+    continuous_spectralResolvent_energy .retarded hamiltonian hself broadening
+      (ne_of_gt hbroadening)
 
 /-- At fixed positive broadening, the advanced resolvent is continuous along the real-energy axis. -/
 theorem continuous_advancedResolvent_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (broadening : ℝ) (hbroadening : 0 < broadening) :
     Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
-  rw [continuous_iff_continuousAt]
-  intro energy
-  exact
-    (hasDerivAt_advancedResolvent_energy
-      hamiltonian hself energy broadening hbroadening).continuousAt
+  simpa only [spectralResolvent_advanced] using
+    continuous_spectralResolvent_energy .advanced hamiltonian hself broadening
+      (ne_of_gt hbroadening)
 
 end
 
