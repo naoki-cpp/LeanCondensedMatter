@@ -16,8 +16,10 @@ an antiderivative.  For nonzero Dirac velocity this gives the explicit endpoint 
 J_s(pMax) = -(2 v²)⁻¹ [log D_s(pMax) - log D_s(0)].
 ```
 
-The result remains at finite cutoff and finite nonzero broadening.  No ultraviolet limit,
-zero-broadening limit, real/imaginary self-energy split, or scattering-rate identification is made.
+The same finite-cutoff formula separates exactly into a logarithmic norm difference for the real
+part and a principal-argument difference for the imaginary part.  The results remain at finite
+cutoff and finite nonzero broadening.  No ultraviolet limit, zero-broadening limit, scattering-rate
+identification, or renormalization prescription is made.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -161,6 +163,41 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
   apply (mul_left_cancel₀ hcoeff)
   rw [hmain]
   field_simp
+
+private theorem continuumBornDenominatorLogPrefactor_eq_ofReal (v : ℝ) :
+    -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
+      ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) := by
+  push_cast
+
+/-- Exact finite-cutoff real part of the shared denominator integral.  Its endpoint dependence is a
+real logarithm of denominator norms; no ultraviolet limit is taken here. -/
+theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq
+    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ)
+    (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0) :
+    (finiteCutoffContinuumBornDenominatorIntegral
+      side v m probeEnergy broadening pMax).re =
+      -(((2 : ℝ) * v ^ 2)⁻¹) *
+        (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy broadening‖ -
+          Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy broadening‖) := by
+  rw [finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
+    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening]
+  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  simp [Complex.log_re]
+
+/-- Exact finite-cutoff imaginary part of the shared denominator integral.  Its endpoint dependence
+is a difference of principal arguments; no zero-broadening or scattering-rate limit is taken here. -/
+theorem finiteCutoffContinuumBornDenominatorIntegral_im_eq
+    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ)
+    (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0) :
+    (finiteCutoffContinuumBornDenominatorIntegral
+      side v m probeEnergy broadening pMax).im =
+      -(((2 : ℝ) * v ^ 2)⁻¹) *
+        ((pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg -
+          (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg) := by
+  rw [finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
+    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening]
+  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  simp [Complex.log_im]
 
 end
 
