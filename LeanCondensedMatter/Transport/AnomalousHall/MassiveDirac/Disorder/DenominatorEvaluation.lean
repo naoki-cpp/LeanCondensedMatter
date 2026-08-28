@@ -17,9 +17,10 @@ J_s(pMax) = -(2 v²)⁻¹ [log D_s(pMax) - log D_s(0)].
 ```
 
 The same finite-cutoff formula separates exactly into a logarithmic norm difference for the real
-part and a principal-argument difference for the imaginary part.  The results remain at finite
-cutoff and finite nonzero broadening.  No ultraviolet limit, zero-broadening limit, scattering-rate
-identification, or renormalization prescription is made.
+part and a principal-argument difference for the imaginary part.  The denominator norm is also
+exposed as the square root of a real polynomial with quartic cutoff dependence.  The results remain
+at finite cutoff and finite nonzero broadening.  No ultraviolet limit, zero-broadening limit,
+scattering-rate identification, or renormalization prescription is made.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -40,6 +41,15 @@ theorem pauliGreenDenominator_radial_eq
   push_cast
   ring
 
+/-- The radial denominator has real part `ε² - η² - m² - v²p²`, independent of spectral side. -/
+@[simp]
+theorem pauliGreenDenominator_radial_re
+    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
+    (pauliGreenDenominator side v m p 0 probeEnergy broadening).re =
+      probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
+  cases side <;>
+    simp [pauliGreenDenominator_radial_eq, spectralParameter, SpectralSide.sign, pow_two]
+
 /-- The radial denominator has momentum-independent imaginary part
 `2 s ε η`. -/
 @[simp]
@@ -50,6 +60,27 @@ theorem pauliGreenDenominator_radial_im
   rw [pauliGreenDenominator_radial_eq]
   simp [spectralParameter, pow_two]
   ring
+
+/-- The squared radial denominator norm is a real polynomial whose cutoff dependence is quartic. -/
+theorem pauliGreenDenominator_radial_sq_norm
+    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
+    ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖ ^ 2 =
+      (probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
+        (2 * probeEnergy * broadening) ^ 2 := by
+  rw [Complex.sq_norm, Complex.normSq_apply]
+  rw [pauliGreenDenominator_radial_re, pauliGreenDenominator_radial_im]
+  cases side <;> simp [SpectralSide.sign] <;> ring
+
+/-- The radial denominator norm is the square root of its explicit real polynomial. -/
+theorem pauliGreenDenominator_radial_norm_eq_sqrt
+    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
+    ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖ =
+      Real.sqrt
+        ((probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
+          (2 * probeEnergy * broadening) ^ 2) := by
+  rw [Complex.norm_def, Complex.normSq_apply]
+  rw [pauliGreenDenominator_radial_re, pauliGreenDenominator_radial_im]
+  cases side <;> simp [SpectralSide.sign] <;> congr 1 <;> ring
 
 /-- At nonzero probe energy and broadening, the whole radial denominator path lies in the principal
 complex-log slit plane. -/
@@ -185,6 +216,27 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq
   rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
   rw [Complex.re_ofReal_mul]
   simp [Complex.log_re]
+
+/-- Exact finite-cutoff real part with all cutoff dependence exposed through a real polynomial. -/
+theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq_log_sqrt_polynomial
+    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ)
+    (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0) :
+    (finiteCutoffContinuumBornDenominatorIntegral
+      side v m probeEnergy broadening pMax).re =
+      -(((2 : ℝ) * v ^ 2)⁻¹) *
+        (Real.log
+            (Real.sqrt
+              ((probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2) ^ 2 +
+                (2 * probeEnergy * broadening) ^ 2)) -
+          Real.log
+            (Real.sqrt
+              ((probeEnergy ^ 2 - broadening ^ 2 - m ^ 2) ^ 2 +
+                (2 * probeEnergy * broadening) ^ 2))) := by
+  rw [finiteCutoffContinuumBornDenominatorIntegral_re_eq
+    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening]
+  rw [pauliGreenDenominator_radial_norm_eq_sqrt]
+  rw [pauliGreenDenominator_radial_norm_eq_sqrt]
+  simp
 
 /-- Exact finite-cutoff imaginary part of the shared denominator integral.  Its endpoint dependence
 is a difference of principal arguments; no zero-broadening or scattering-rate limit is taken here. -/
