@@ -113,7 +113,7 @@ private theorem integral_cos_sq_zero_two_pi :
           (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 0 := by
     rw [← intervalIntegral.integral_sub hcos hsin]
     simpa using
-      (intervalIntegral.integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
+      (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
   have hsum :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) +
           (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 2 * Real.pi := by
