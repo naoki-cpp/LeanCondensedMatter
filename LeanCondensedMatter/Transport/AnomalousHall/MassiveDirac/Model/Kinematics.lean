@@ -113,7 +113,7 @@ private theorem integral_cos_sq_zero_two_pi :
           (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 0 := by
     rw [← intervalIntegral.integral_sub hcos hsin]
     simpa using
-      (Real.integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
+      (intervalIntegral.integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
   have hsum :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) +
           (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 2 * Real.pi := by
@@ -146,7 +146,7 @@ theorem isotropicMeanSquareRadialGroupVelocityX_eq
     ring
   rw [hfun, intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi] <;> ring
+  field_simp [hpi]
 
 end
 
