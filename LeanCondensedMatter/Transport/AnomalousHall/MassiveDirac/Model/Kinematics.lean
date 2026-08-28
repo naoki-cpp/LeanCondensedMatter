@@ -100,8 +100,7 @@ theorem continuous_radialEnergyDerivative
 def radialGroupVelocityX (v m p θ : ℝ) : ℝ :=
   radialEnergyDerivative v m p * Real.cos θ
 
-/-- The full-angle integral of `cos² θ` over a two-dimensional Fermi circle is `π`. -/
-theorem integral_cos_sq_zero_two_pi :
+private theorem integral_cos_sq_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
   have hcos :
       IntervalIntegrable (fun θ : ℝ => Real.cos θ ^ 2) volume 0 (2 * Real.pi) :=
