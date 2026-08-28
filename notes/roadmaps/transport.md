@@ -89,8 +89,8 @@ The exact finite-disorder layer provides:
 finite normalized ensemble Ω
   → self-adjoint impurity potentials Vω
   → exact configuration Hamiltonians Hω = H₀ + Vω
-  → exact configuration retarded/advanced resolvents
-  → configuration-wise Dyson identities
+  → exact side-indexed clean/configuration Green operators
+  → retarded/advanced Green specializations and configuration-wise Dyson identities
   → exact finite scalar/operator ensemble averages
   → canonical bounded complex-linear second moment C₂(X) = E[Vω X Vω].
 ```
@@ -103,17 +103,17 @@ weight is assumed. The ensemble average remains outside each exact configuration
 The first-Born boundary then separates exact and approximate statements:
 
 - the explicit centered-disorder property `E[Vω] = 0`;
-- shared retarded/advanced-neutral averaging and closure algebra in `Disorder.BornCommon`;
+- side-indexed `bornSelfEnergy` and `bornResolventApproximation` plus shared averaging/closure algebra in `Disorder.BornCommon`;
 - exact first and once-iterated retarded/advanced Dyson identities;
 - exact vanishing of the averaged first-order term under centering;
 - exact second-order remainders retaining the full configuration resolvent;
-- clean-propagator retarded and advanced Born self-energies;
-- named Born resolvent approximations and exact closure errors;
+- conventional retarded and advanced Born self-energy/approximation names as physical specializations;
+- named exact closure errors;
 - equality with a Born approximation only under an explicit closure hypothesis.
 
-The retarded and advanced physical specializations remain siblings. Shared proof-only algebra belongs
-in `BornCommon`; orientation-sensitive Dyson products and physical R/A names stay in the respective
-specializations unless an adjoint theorem gives a genuinely simpler common owner.
+The retarded and advanced physical specializations remain siblings. Shared side-indexed Born data and
+R/A-neutral algebra belong in `BornCommon`; orientation-sensitive Dyson products, exact remainders,
+closure hypotheses, and conventional physical R/A names stay in the respective specializations.
 
 The first-Born layer itself does not identify Born expressions with the exact disorder average
 without the stated closure hypothesis and does not introduce a dressed internal propagator or a
