@@ -48,8 +48,7 @@ theorem pauliGreenDenominator_radial_re
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).re =
       probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
   cases side <;>
-    simp [pauliGreenDenominator_radial_eq, spectralParameter, SpectralSide.sign, pow_two] <;>
-    ring
+    simp [pauliGreenDenominator_radial_eq, spectralParameter, SpectralSide.sign, pow_two]
 
 /-- The radial denominator has momentum-independent imaginary part
 `2 s ε η`. -/
