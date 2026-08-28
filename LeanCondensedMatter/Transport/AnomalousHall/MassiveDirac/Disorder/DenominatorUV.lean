@@ -41,9 +41,11 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
         (fun p : ℝ => v ^ 2 * p ^ 2 -
           (probeEnergy ^ 2 - broadening ^ 2 - m ^ 2))
         atTop atTop := by
-    simpa [sub_eq_add_neg] using
-      tendsto_atTop_add_const_right atTop
-        (-(probeEnergy ^ 2 - broadening ^ 2 - m ^ 2)) hlead
+    have hshift0 := tendsto_atTop_add_const_right atTop
+      (-(probeEnergy ^ 2 - broadening ^ 2 - m ^ 2)) hlead
+    convert hshift0 using 1
+    funext p
+    ring
   have hsq :
       Tendsto
         (fun p : ℝ =>
