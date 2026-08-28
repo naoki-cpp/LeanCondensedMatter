@@ -14,6 +14,7 @@
         {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
         {"id": "modelOperator", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator"]},
         {"id": "modelCurrentBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge"]},
+        {"id": "modelKinematics", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics"]},
         {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation"]},
         {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral"]},
         {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral"]},
@@ -25,7 +26,8 @@
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelOperator"},
         {"upstream": "modelOperator", "downstream": "modelCurrentBridge"},
-        {"upstream": "modelBasic", "downstream": "modelOccupation"},
+        {"upstream": "modelBasic", "downstream": "modelKinematics"},
+        {"upstream": "modelKinematics", "downstream": "modelOccupation"},
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelOperatorSpectral"},
