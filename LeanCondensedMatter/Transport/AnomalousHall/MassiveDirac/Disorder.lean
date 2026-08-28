@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Denomin
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ChannelBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleDecay
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -26,9 +27,10 @@ cutoff dependence through the corresponding quartic real denominator polynomial,
 resulting logarithmic ultraviolet divergence of the real part at fixed nonzero broadening, takes the
 metallic positive-broadening limit of the shared imaginary part separately at fixed finite cutoff,
 propagates that limit through the existing scalar and `σ_z` Born channel factorization while proving
-the scalar `η Re J_s` cross term vanishes, and lifts those channel limits through the existing
-continuum disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients.
-Scattering-rate and lifetime identification, upper-band on-shell projection, renormalization, SCBA,
-current-vertex resummation, simultaneous UV / zero-broadening limits, and crossed diagrams remain
-separate.
+the scalar `η Re J_s` cross term vanishes, lifts those channel limits through the existing continuum
+disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients, and projects the
+retarded self-energy onto the metallic upper-band Fermi circle to obtain the single-particle decay
+width and positive `τ_q` convention.  The single-particle lifetime is not identified with the
+transport lifetime.  Renormalization, SCBA, current-vertex resummation, simultaneous UV /
+zero-broadening limits, and crossed diagrams remain separate.
 -/
