@@ -107,11 +107,13 @@ pure-point action of resolvents. Retarded/advanced names are public physical spe
 Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than re-owning
 resolvent algebra.
 
-`Resolvent/SelfEnergy.lean` owns the model-independent Dyson relation
-`IsSelfEnergy G₀ G Σ`, stated without requiring inverses as `G = G₀ + G₀ Σ G`, and proves its
-inverse-difference characterization `Σ = G₀⁻¹ - G⁻¹` when compatible inverses are supplied.
-Approximation layers may construct candidate self-energies without thereby proving this exact
-relation for a separately truncated Green approximation.
+`Resolvent/SelfEnergy.lean` owns the model-independent two-sided Dyson relation
+`IsSelfEnergy G₀ G Σ`, stated without requiring inverses as both
+`G = G₀ + G₀ Σ G` and `G = G₀ + G Σ G₀`. Keeping both noncommutative orientations makes the
+abstraction stable under adjunction. The module proves the inverse-difference characterization
+`Σ = G₀⁻¹ - G⁻¹` when compatible two-sided inverses are supplied. Approximation layers may construct
+candidate self-energies without thereby proving this exact relation for a separately truncated Green
+approximation.
 
 ## Disorder boundary
 
@@ -151,8 +153,8 @@ Born resolvent expression is not asserted to satisfy the exact `IsSelfEnergy` re
 the same canonical `exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no
 second covariance function or separately supplied linearity/adjoint-compatibility assumption. The
 SCBA Green and self-energy solution itself remains approximation data and is not identified with the
-exact disorder average, while its supplied inverse equations do imply the abstract `IsSelfEnergy`
-relation on either spectral side.
+exact disorder average, while its supplied two-sided inverse equations do imply the abstract
+`IsSelfEnergy` relation on either spectral side.
 
 ## AHE benchmark hierarchy
 
