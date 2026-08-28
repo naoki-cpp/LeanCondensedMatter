@@ -74,6 +74,7 @@ theorem diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ
     SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ))) := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
   let T := diagonalOp b (fun i => (a i : ℂ))
+  let hcompact : IsCompactOperator T := diagonalOp_isCompact b (fun i => (a i : ℂ)) hac
   let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
   have hdiag_point :
       (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
@@ -87,10 +88,8 @@ theorem diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ
   have hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i) := by
     rw [hdiag_point]
     exact Summable.of_norm ha
-  exact SpectralTraceClass.ofPositive
-    (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos
-    (hasSummableRealEigenvalues_of_positive_of_summable_diagonal
-      (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos b hdiag)
+  exact SpectralTraceClass.ofPositive hcompact hpos
+    (hasSummableRealEigenvalues_of_positive_of_summable_diagonal hcompact hpos b hdiag)
 
 /-- The spectral trace of a diagonal operator with nonnegative weights is their sum. -/
 theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
