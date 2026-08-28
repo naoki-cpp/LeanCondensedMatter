@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
-import LeanCondensedMatter.Transport.Resolvent.Basic
+import LeanCondensedMatter.Transport.Resolvent.SelfEnergy
 
 set_option linter.style.header false
 
@@ -247,6 +247,26 @@ theorem green_mul_shift (side : SpectralSide) :
       simpa only [scbaAdvancedShift, advancedSelfEnergy,
         advancedGreen] using
         solution.green_mul_advancedShift
+
+/-- The SCBA self-energy satisfies the abstract Dyson self-energy relation on either spectral side. -/
+theorem isSelfEnergy (side : SpectralSide) :
+    IsSelfEnergy
+      (spectralResolvent side ensemble.baseHamiltonian.1 energy broadening)
+      (solution.green side)
+      (solution.selfEnergy side) := by
+  refine IsSelfEnergy.of_shift
+    (freeShift :=
+      algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+        ensemble.baseHamiltonian.1)
+    (dressedShift :=
+      ensemble.scbaShift side energy broadening (solution.selfEnergy side))
+    ?_ ?_ ?_
+  · exact spectralResolvent_mul_spectralShift
+      side ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
+      energy broadening (ne_of_gt solution.broadening_pos)
+  · exact solution.shift_mul_green side
+  · unfold FiniteDisorderEnsemble.scbaShift
+    noncomm_ring
 
 /-- Finite SCBA Ward-consistency identity. The retarded and advanced self-energy difference is the
 canonical exact second-moment action applied to the Green-operator difference. -/
