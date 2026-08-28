@@ -5,7 +5,7 @@ import Mathlib.Tactic
 set_option linter.style.header false
 
 /-!
-# Relaxation-time longitudinal conductivity benchmark
+# Zero-temperature relaxation-time longitudinal conductivity benchmark
 
 This file introduces the first finite longitudinal electrical-conductivity benchmark for the
 metallic two-dimensional massive Dirac model.  The Fermi-surface kinematics are exact consequences
@@ -19,14 +19,16 @@ isotropic Fermi-circle Jacobian in the physical-momentum convention,
 D_F = [1 / (2πℏ)^2] * [2π p_F / |dE/dp|_F],
 ```
 
-and is then reduced to the standard massive-Dirac expression.  The finite benchmark is
+and is then reduced to the standard massive-Dirac expression.  At zero temperature, where the
+longitudinal intraband weight is supported on the Fermi surface, the finite benchmark is
 
 ```text
 σxx^RTA = e^2 D_F <v_x^2>_FS τ_tr.
 ```
 
 No self-energy, single-particle lifetime, vertex correction, or exact clean DC conductivity is
-identified with `τ_tr` in this module.
+identified with `τ_tr` in this module.  A finite-temperature extension must replace the sharp
+Fermi-surface factor by the appropriate energy integral weighted by the occupation derivative.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -93,31 +95,32 @@ theorem upperBandFermiSurfaceDensityOfStates_eq
   field_simp [hhbar, hv, hpFne, hfermiNe, hpi]
   ring
 
-/-- Relaxation-time-approximation benchmark for the longitudinal electrical conductivity.
+/-- Zero-temperature Fermi-surface relaxation-time-approximation benchmark for the longitudinal
+electrical conductivity.
 
 The supplied `transportLifetime` is `τ_tr`, a positive current-relaxation time.  This definition does
 not claim that `τ_tr` follows from the clean Hamiltonian or from a self-energy broadening. -/
-def relaxationTimeApproximationLongitudinalConductivity
+def zeroTemperatureRelaxationTimeLongitudinalConductivity
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime) : ℝ :=
   e ^ 2 * upperBandFermiSurfaceDensityOfStates hbar v m fermiEnergy *
     isotropicFermiSurfaceMeanSquareVelocityX v m fermiEnergy *
       transportLifetime.lifetime
 
-/-- Closed massive-Dirac relaxation-time benchmark
+/-- Closed single-cone zero-temperature massive-Dirac relaxation-time benchmark
 
 `σxx^RTA = e² τ_tr (ε_F² - m²) / (4π ℏ² ε_F)`.
 -/
-theorem relaxationTimeApproximationLongitudinalConductivity_eq
+theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_eq
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime)
     (hhbar : hbar ≠ 0) (hv : v ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
-    relaxationTimeApproximationLongitudinalConductivity
+    zeroTemperatureRelaxationTimeLongitudinalConductivity
         e hbar v m fermiEnergy transportLifetime =
       e ^ 2 * transportLifetime.lifetime * (fermiEnergy ^ 2 - m ^ 2) /
         (4 * Real.pi * hbar ^ 2 * fermiEnergy) := by
-  unfold relaxationTimeApproximationLongitudinalConductivity
+  unfold zeroTemperatureRelaxationTimeLongitudinalConductivity
   rw [upperBandFermiSurfaceDensityOfStates_eq hbar v m fermiEnergy hhbar hv hm hmF,
     isotropicFermiSurfaceMeanSquareVelocityX_eq v m fermiEnergy hv hm hmF.le]
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
@@ -125,16 +128,16 @@ theorem relaxationTimeApproximationLongitudinalConductivity_eq
   field_simp [hhbar, hv, hfermiNe, hpi]
   ring
 
-/-- With nonzero charge and nonzero `ℏ`, the finite RTA longitudinal conductivity is positive in the
-strict metallic regime. -/
-theorem relaxationTimeApproximationLongitudinalConductivity_pos
+/-- With nonzero charge and nonzero `ℏ`, the finite zero-temperature RTA longitudinal conductivity
+is positive in the strict metallic regime. -/
+theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_pos
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime)
     (he : e ≠ 0) (hhbar : hbar ≠ 0) (hv : v ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
-    0 < relaxationTimeApproximationLongitudinalConductivity
+    0 < zeroTemperatureRelaxationTimeLongitudinalConductivity
       e hbar v m fermiEnergy transportLifetime := by
-  rw [relaxationTimeApproximationLongitudinalConductivity_eq
+  rw [zeroTemperatureRelaxationTimeLongitudinalConductivity_eq
     e hbar v m fermiEnergy transportLifetime hhbar hv hm hmF]
   have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
   have hgap : 0 < fermiEnergy ^ 2 - m ^ 2 := by
