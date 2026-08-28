@@ -7,6 +7,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Denomin
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ChannelBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.UpperBandDamping
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -28,8 +29,9 @@ resulting logarithmic ultraviolet divergence of the real part at fixed nonzero b
 metallic positive-broadening limit of the shared imaginary part separately at fixed finite cutoff,
 propagates that limit through the existing scalar and `σ_z` Born channel factorization while proving
 the scalar `η Re J_s` cross term vanishes, lifts those channel limits through the existing continuum
-disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients, and projects
-the retarded damping onto the gauge-independent metallic upper-band Fermi-surface projector.
-Scattering-rate and lifetime identification, renormalization, SCBA, current-vertex resummation,
-simultaneous UV / zero-broadening limits, and crossed diagrams remain separate.
+disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients, projects the
+retarded damping onto the gauge-independent metallic upper-band Fermi-surface projector, and derives
+the corresponding microscopic single-particle scattering rate and reciprocal lifetime convention.
+Transport-lifetime identification, renormalization, SCBA, current-vertex resummation, simultaneous
+UV / zero-broadening limits, and crossed diagrams remain separate.
 -/
