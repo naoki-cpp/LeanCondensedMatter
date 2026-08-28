@@ -27,6 +27,8 @@ construct a positive lifetime.  No identification with a transport lifetime is m
 namespace QuantumTheory
 namespace Transport
 
+noncomputable section
+
 /-- Single-particle decay half-width extracted from a retarded self-energy, `Γ_q = -Im Σᴿ`. -/
 def retardedSelfEnergyDecayWidth (retardedSelfEnergy : ℂ) : ℝ :=
   -retardedSelfEnergy.im
@@ -61,6 +63,8 @@ theorem retardedSelfEnergyDecayWidth_pos
     (retardedSelfEnergy : ℂ) (him : retardedSelfEnergy.im < 0) :
     0 < retardedSelfEnergyDecayWidth retardedSelfEnergy := by
   simpa [retardedSelfEnergyDecayWidth] using neg_pos.mpr him
+
+end
 
 end Transport
 end QuantumTheory
