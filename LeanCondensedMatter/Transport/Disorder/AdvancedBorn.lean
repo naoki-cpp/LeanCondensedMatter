@@ -97,6 +97,14 @@ theorem bornAdvancedSelfEnergy_eq_secondMoment
       ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) :=
   rfl
 
+@[simp]
+theorem bornSelfEnergy_advanced
+    (energy broadening : ℝ) :
+    ensemble.bornSelfEnergy .advanced energy broadening =
+      ensemble.bornAdvancedSelfEnergy energy broadening := by
+  unfold bornSelfEnergy bornAdvancedSelfEnergy
+  rw [freeGreen_advanced]
+
 /-- Canonical second-order Born approximation to the averaged advanced Green operator. This
 definition does not require centering. -/
 noncomputable def bornAdvancedResolventApproximation
@@ -104,6 +112,14 @@ noncomputable def bornAdvancedResolventApproximation
   secondOrderBornResolventApproximation
     (ensemble.freeAdvancedGreen energy broadening)
     (bornAdvancedSelfEnergy ensemble energy broadening)
+
+@[simp]
+theorem bornResolventApproximation_advanced
+    (energy broadening : ℝ) :
+    ensemble.bornResolventApproximation .advanced energy broadening =
+      ensemble.bornAdvancedResolventApproximation energy broadening := by
+  unfold bornResolventApproximation bornAdvancedResolventApproximation
+  rw [freeGreen_advanced, bornSelfEnergy_advanced]
 
 /-- Exact error between the full averaged advanced Dyson remainder and the advanced Born closure.
 Its definition does not assert that centered disorder holds or that the error is small. -/
