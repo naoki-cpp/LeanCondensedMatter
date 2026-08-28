@@ -112,7 +112,7 @@ private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
   rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     v m fermiEnergy broadening disorderStrength hbar pMax
     hvelocity hm hmF hbroadening]
-  simp [Complex.im_ofReal_mul]
+  simp
 
 /-- Positive-momentum-measure Born damping energy of the metallic upper band.  Its interpretation
 below uses nonzero `ℏ`, nonzero velocity, positive disorder strength, and the strict metallic regime. -/
