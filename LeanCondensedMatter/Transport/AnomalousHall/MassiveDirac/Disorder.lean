@@ -4,6 +4,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Denomin
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorEvaluation
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorUV
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorBroadeningLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ChannelBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -21,8 +22,10 @@ channels through one common finite-cutoff radial denominator integral, evaluates
 integral by a principal complex-log endpoint formula, separates its exact finite-broadening real and
 imaginary parts into logarithmic norm and principal-argument differences, exposes the real-part
 cutoff dependence through the corresponding quartic real denominator polynomial, proves the
-resulting logarithmic ultraviolet divergence of the real part at fixed nonzero broadening, and takes
-the metallic positive-broadening limit of the imaginary part separately at fixed finite cutoff.
-Scattering-rate extraction, renormalization, SCBA, current-vertex resummation, simultaneous UV /
-zero-broadening limits, and crossed diagrams remain separate.
+resulting logarithmic ultraviolet divergence of the real part at fixed nonzero broadening, takes the
+metallic positive-broadening limit of the shared imaginary part separately at fixed finite cutoff,
+and propagates that limit through the existing scalar and `σ_z` Born channel factorization while
+proving the scalar `η Re J_s` cross term vanishes.
+Scattering-rate extraction, lifetime identification, renormalization, SCBA, current-vertex
+resummation, simultaneous UV / zero-broadening limits, and crossed diagrams remain separate.
 -/
