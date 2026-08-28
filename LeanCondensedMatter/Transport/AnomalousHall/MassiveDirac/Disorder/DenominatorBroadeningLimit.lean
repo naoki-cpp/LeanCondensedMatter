@@ -7,34 +7,11 @@ set_option linter.style.header false
 /-!
 # Zero-broadening limit of the continuum Born denominator imaginary part
 
-This Phase 4 slice treats the metallic `η → 0⁺` limit of the imaginary part of the shared
-massive-Dirac continuum Born denominator integral at a fixed finite radial cutoff.  In the positive
-mass metallic regime `0 < m < ε`, the zero-broadening denominator is positive at `p = 0`.  When the
-fixed cutoff lies beyond the on-shell circle,
-
-```text
-ε² - m² < v² pMax²,
-```
-
-the cutoff endpoint lies on the negative real axis at zero broadening.  The retarded denominator
-approaches that branch cut from the upper half-plane and the advanced denominator from the lower
-half-plane.  Therefore
-
-```text
-arg D_R(0) → 0,      arg D_R(pMax) → +π,
-arg D_A(0) → 0,      arg D_A(pMax) → -π,
-```
-
-and the exact finite-cutoff principal-log formula gives
-
-```text
-Im J_R → -π / (2v²),
-Im J_A → +π / (2v²).
-```
-
-The cutoff remains finite and fixed.  No simultaneous ultraviolet limit, scattering-rate
-identification, renormalization prescription, SCBA/NCA current vertex, or exact-disorder-average
-claim is made here.
+At fixed finite cutoff in the positive-mass metallic regime `0 < m < ε`, this file proves the
+positive-broadening limit of the imaginary part of the shared continuum Born denominator integral.
+When `ε² - m² < v² pMax²`, the retarded cutoff denominator approaches the negative-real branch cut
+from above and the advanced denominator from below. Hence `Im J_R → -π/(2v²)` and
+`Im J_A → +π/(2v²)`. No simultaneous UV limit or scattering-rate identification is made.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -47,14 +24,12 @@ open QuantumTheory.Transport
 private theorem tendsto_pauliGreenDenominator_radial_broadening_zero
     (side : SpectralSide) (v m probeEnergy p : ℝ) :
     Tendsto
-      (fun broadening : ℝ =>
-        pauliGreenDenominator side v m p 0 probeEnergy broadening)
+      (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (pauliGreenDenominator side v m p 0 probeEnergy 0)) := by
   have hcontinuous :
       ContinuousAt
-        (fun broadening : ℝ =>
-          pauliGreenDenominator side v m p 0 probeEnergy broadening) 0 := by
+        (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening) 0 := by
     unfold pauliGreenDenominator energySq spectralParameter
     fun_prop
   exact hcontinuous.tendsto.mono_left inf_le_left
@@ -65,15 +40,11 @@ private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
     Tendsto
       (fun broadening : ℝ =>
         (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds 0) := by
-  have henergy : 0 < probeEnergy := lt_trans hm hmE
-  have hre :
-      0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
+  have hre : 0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
     rw [pauliGreenDenominator_radial_re]
     nlinarith
-  have him :
-      (pauliGreenDenominator side v m 0 0 probeEnergy 0).im = 0 := by
+  have him : (pauliGreenDenominator side v m 0 0 probeEnergy 0).im = 0 := by
     rw [pauliGreenDenominator_radial_im]
     simp
   have hslit : pauliGreenDenominator side v m 0 0 probeEnergy 0 ∈ Complex.slitPlane := by
@@ -81,10 +52,8 @@ private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
     exact Or.inl hre
   have harg :=
     (Complex.continuousAt_arg hslit).tendsto.comp
-      (tendsto_pauliGreenDenominator_radial_broadening_zero
-        side v m probeEnergy 0)
-  have hargZero :
-      (pauliGreenDenominator side v m 0 0 probeEnergy 0).arg = 0 := by
+      (tendsto_pauliGreenDenominator_radial_broadening_zero side v m probeEnergy 0)
+  have hargZero : (pauliGreenDenominator side v m 0 0 probeEnergy 0).arg = 0 := by
     rw [Complex.arg_eq_zero_iff]
     exact ⟨hre.le, him⟩
   rw [hargZero] at harg
@@ -97,15 +66,12 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
     Tendsto
       (fun broadening : ℝ =>
         (pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (side.sign * Real.pi)) := by
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi)) := by
   have henergy : 0 < probeEnergy := lt_trans hm hmE
-  have hre :
-      (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
+  have hre : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
     rw [pauliGreenDenominator_radial_re]
     nlinarith
-  have him :
-      (pauliGreenDenominator side v m pMax 0 probeEnergy 0).im = 0 := by
+  have him : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).im = 0 := by
     rw [pauliGreenDenominator_radial_im]
     simp
   have hden := tendsto_pauliGreenDenominator_radial_broadening_zero
@@ -115,30 +81,28 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
       have hwithin :
           Tendsto
             (fun broadening : ℝ =>
-              pauliGreenDenominator SpectralSide.retarded
-                v m pMax 0 probeEnergy broadening)
+              pauliGreenDenominator .retarded v m pMax 0 probeEnergy broadening)
             (nhdsWithin 0 (Set.Ioi 0))
             (nhdsWithin
-              (pauliGreenDenominator SpectralSide.retarded v m pMax 0 probeEnergy 0)
+              (pauliGreenDenominator .retarded v m pMax 0 probeEnergy 0)
               {z : ℂ | 0 ≤ z.im}) := by
         rw [tendsto_nhdsWithin_iff]
         refine ⟨hden, ?_⟩
         filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
         rw [pauliGreenDenominator_radial_im]
-        simp only [SpectralSide.sign_retarded, one_mul]
-        positivity
+        simp only [SpectralSide.sign_retarded]
+        nlinarith [mul_pos henergy hbroadening]
       have harg :=
         (Complex.tendsto_arg_nhdsWithin_im_nonneg_of_re_neg_of_im_zero hre him).comp hwithin
-      simpa [SpectralSide.sign] using harg
+      simpa [Function.comp_def, SpectralSide.sign] using harg
   | advanced =>
       have hwithin :
           Tendsto
             (fun broadening : ℝ =>
-              pauliGreenDenominator SpectralSide.advanced
-                v m pMax 0 probeEnergy broadening)
+              pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
             (nhdsWithin 0 (Set.Ioi 0))
             (nhdsWithin
-              (pauliGreenDenominator SpectralSide.advanced v m pMax 0 probeEnergy 0)
+              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy 0)
               {z : ℂ | z.im < 0}) := by
         rw [tendsto_nhdsWithin_iff]
         refine ⟨hden, ?_⟩
@@ -148,10 +112,9 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
         nlinarith [mul_pos henergy hbroadening]
       have harg :=
         (Complex.tendsto_arg_nhdsWithin_im_neg_of_re_neg_of_im_zero hre him).comp hwithin
-      simpa [SpectralSide.sign] using harg
+      simpa [Function.comp_def, SpectralSide.sign] using harg
 
-/-- At fixed finite cutoff beyond the on-shell circle, the metallic positive-broadening limit of the
-shared Born denominator integral has imaginary part `-s π/(2v²)`. -/
+/-- At fixed finite cutoff beyond the on-shell circle, `Im J_s → -sπ/(2v²)` as `η → 0⁺`. -/
 theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
     (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
@@ -172,8 +135,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
         (fun broadening : ℝ =>
           (pauliGreenDenominator side v m pMax 0 probeEnergy broadening).arg -
             (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (side.sign * Real.pi)) := by
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi)) := by
     simpa using hargCutoff.sub hargZero
   have hcoeff :
       Tendsto
@@ -187,8 +149,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
   exact (finiteCutoffContinuumBornDenominatorIntegral_im_eq
     side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
 
-/-- Retarded specialization: `Im J_R → -π/(2v²)` at fixed finite cutoff beyond the on-shell
-circle. -/
+/-- Retarded specialization: `Im J_R → -π/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedDenominatorIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
     (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
@@ -203,8 +164,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedDenominatorIntegral_im_broadeni
     (tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
       .retarded v m probeEnergy pMax hvelocity hm hmE hcutoff)
 
-/-- Advanced specialization: `Im J_A → +π/(2v²)` at fixed finite cutoff beyond the on-shell
-circle. -/
+/-- Advanced specialization: `Im J_A → +π/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornAdvancedDenominatorIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
     (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
