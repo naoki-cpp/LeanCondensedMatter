@@ -72,7 +72,7 @@ theorem eq_inverse_sub_inverse
         rw [mul_assoc, hdressed, mul_one]
       _ = freeInverse *
           (freeGreen + freeGreen * selfEnergy * dressedGreen) * dressedInverse := by
-        rw [hself]
+        exact congrArg (fun x : A => freeInverse * x * dressedInverse) hself
       _ = (freeInverse * freeGreen) * dressedInverse +
           (freeInverse * freeGreen) * selfEnergy * (dressedGreen * dressedInverse) := by
         noncomm_ring
