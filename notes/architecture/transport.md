@@ -112,10 +112,9 @@ The exact/approximate split remains explicit:
 
 ```text
 Disorder/Finite
-   ├──→ Disorder/Resolvent ──────┐
-   └──→ Disorder/Moments ────────┼──→ BornCommon ──┬──→ RetardedBorn
-                       │         │                  └──→ AdvancedBorn
-                       └─────────┴──────────────────────→ SCBA
+   ├──→ Disorder/Resolvent ───────→ BornCommon ──┬──→ RetardedBorn
+   └──→ Disorder/Moments ─────────→ BornCommon   └──→ AdvancedBorn
+                       └────────────────────────────→ SCBA
 
 Transport/Resolvent.Basic ──→ Disorder/Resolvent
                          └──→ SCBA
