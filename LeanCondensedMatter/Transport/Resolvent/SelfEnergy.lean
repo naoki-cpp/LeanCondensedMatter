@@ -9,16 +9,19 @@ This module isolates the model-independent algebraic meaning of a self-energy fr
 Born, self-consistent Born, interaction, or disorder construction.
 
 At a fixed spectral parameter, `IsSelfEnergy G₀ G Σ` means that the dressed Green operator satisfies
-the left Dyson equation
+both noncommutative Dyson orientations
 
 ```text
-G = G₀ + G₀ Σ G.
+G = G₀ + G₀ Σ G,
+G = G₀ + G Σ G₀.
 ```
 
-This relation does not require inverses in its definition. When compatible inverses are available,
-it recovers the conventional identity `Σ = G₀⁻¹ - G⁻¹`. Approximation schemes may construct
-candidate self-energies without thereby asserting that a separately truncated Green approximation
-satisfies the exact Dyson relation.
+Keeping both orientations in the abstract relation makes it stable under adjunction: the adjoint of
+the left Dyson equation is the right Dyson equation for the adjointed data, and conversely. The
+relation does not require inverses in its definition. When compatible two-sided inverses are
+available, it recovers the conventional identity `Σ = G₀⁻¹ - G⁻¹`. Approximation schemes may
+construct candidate self-energies without thereby asserting that a separately truncated Green
+approximation satisfies the exact Dyson relation.
 -/
 
 namespace QuantumTheory
@@ -28,33 +31,62 @@ section
 
 variable {A : Type*} [Ring A]
 
-/-- `selfEnergy` is a self-energy relating `freeGreen` and `dressedGreen` when the left Dyson
-relation `G = G₀ + G₀ Σ G` holds. -/
+/-- `selfEnergy` is a self-energy relating `freeGreen` and `dressedGreen` when both the left- and
+right-oriented Dyson relations hold. -/
 def IsSelfEnergy (freeGreen dressedGreen selfEnergy : A) : Prop :=
-  dressedGreen = freeGreen + freeGreen * selfEnergy * dressedGreen
+  dressedGreen = freeGreen + freeGreen * selfEnergy * dressedGreen ∧
+    dressedGreen = freeGreen + dressedGreen * selfEnergy * freeGreen
 
 namespace IsSelfEnergy
 
-/-- A Dyson self-energy follows from inverse equations for the free and dressed shifts together
-with `freeShift = dressedShift + selfEnergy`. -/
+/-- The left-oriented Dyson equation carried by an abstract self-energy relation. -/
+theorem leftDyson
+    {freeGreen dressedGreen selfEnergy : A}
+    (hself : IsSelfEnergy freeGreen dressedGreen selfEnergy) :
+    dressedGreen = freeGreen + freeGreen * selfEnergy * dressedGreen :=
+  hself.1
+
+/-- The right-oriented Dyson equation carried by an abstract self-energy relation. -/
+theorem rightDyson
+    {freeGreen dressedGreen selfEnergy : A}
+    (hself : IsSelfEnergy freeGreen dressedGreen selfEnergy) :
+    dressedGreen = freeGreen + dressedGreen * selfEnergy * freeGreen :=
+  hself.2
+
+/-- A Dyson self-energy follows from two-sided inverse equations for the free and dressed shifts
+together with `freeShift = dressedShift + selfEnergy`. -/
 theorem of_shift
     {freeGreen dressedGreen selfEnergy freeShift dressedShift : A}
-    (hfree : freeGreen * freeShift = 1)
-    (hdressed : dressedShift * dressedGreen = 1)
+    (hfreeGreenShift : freeGreen * freeShift = 1)
+    (hfreeShiftGreen : freeShift * freeGreen = 1)
+    (hdressedShiftGreen : dressedShift * dressedGreen = 1)
+    (hdressedGreenShift : dressedGreen * dressedShift = 1)
     (hshift : freeShift = dressedShift + selfEnergy) :
     IsSelfEnergy freeGreen dressedGreen selfEnergy := by
-  unfold IsSelfEnergy
-  calc
-    dressedGreen = (freeGreen * freeShift) * dressedGreen := by
-      rw [hfree, one_mul]
-    _ = freeGreen * (dressedShift + selfEnergy) * dressedGreen := by
-      rw [hshift]
-    _ = freeGreen * (dressedShift * dressedGreen) +
-        freeGreen * selfEnergy * dressedGreen := by
-      noncomm_ring
-    _ = freeGreen + freeGreen * selfEnergy * dressedGreen := by
-      rw [hdressed]
-      simp
+  constructor
+  · calc
+      dressedGreen = (freeGreen * freeShift) * dressedGreen := by
+        rw [hfreeGreenShift, one_mul]
+      _ = freeGreen * (dressedShift + selfEnergy) * dressedGreen := by
+        rw [hshift]
+      _ = freeGreen * (dressedShift * dressedGreen) +
+          freeGreen * selfEnergy * dressedGreen := by
+        noncomm_ring
+      _ = freeGreen + freeGreen * selfEnergy * dressedGreen := by
+        rw [hdressedShiftGreen]
+        simp
+  · calc
+      dressedGreen = dressedGreen * (freeShift * freeGreen) := by
+        rw [hfreeShiftGreen, mul_one]
+      _ = dressedGreen * (dressedShift + selfEnergy) * freeGreen := by
+        rw [hshift]
+        noncomm_ring
+      _ = (dressedGreen * dressedShift) * freeGreen +
+          dressedGreen * selfEnergy * freeGreen := by
+        noncomm_ring
+      _ = freeGreen + dressedGreen * selfEnergy * freeGreen := by
+        rw [hdressedGreenShift]
+        simp
 
 /-- With a left inverse of the free Green operator and a right inverse of the dressed Green
 operator, the Dyson relation implies the conventional inverse-difference formula
@@ -71,7 +103,7 @@ theorem eq_inverse_sub_inverse
         rw [mul_assoc, hdressed, mul_one]
       _ = freeInverse *
           (freeGreen + freeGreen * selfEnergy * dressedGreen) * dressedInverse := by
-        exact congrArg (fun x : A => freeInverse * x * dressedInverse) hself
+        exact congrArg (fun x : A => freeInverse * x * dressedInverse) hself.leftDyson
       _ = (freeInverse * freeGreen) * dressedInverse +
           (freeInverse * freeGreen) * selfEnergy * (dressedGreen * dressedInverse) := by
         noncomm_ring
@@ -84,30 +116,44 @@ theorem eq_inverse_sub_inverse
     _ = freeInverse - dressedInverse := by
       rw [← hinverse]
 
-/-- Conversely, an inverse-difference self-energy satisfies the Dyson relation when the free inverse
-is a right inverse and the dressed inverse is a left inverse. -/
+/-- Conversely, an inverse-difference self-energy satisfies both Dyson orientations when the free
+and dressed Green operators have the supplied two-sided inverses. -/
 theorem of_inverse_sub_inverse
     {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A}
     (hself : selfEnergy = freeInverse - dressedInverse)
-    (hfree : freeGreen * freeInverse = 1)
-    (hdressed : dressedInverse * dressedGreen = 1) :
+    (hfreeLeft : freeInverse * freeGreen = 1)
+    (hfreeRight : freeGreen * freeInverse = 1)
+    (hdressedLeft : dressedInverse * dressedGreen = 1)
+    (hdressedRight : dressedGreen * dressedInverse = 1) :
     IsSelfEnergy freeGreen dressedGreen selfEnergy := by
-  unfold IsSelfEnergy
-  rw [hself]
-  symm
-  calc
-    freeGreen + freeGreen * (freeInverse - dressedInverse) * dressedGreen =
-        freeGreen + (freeGreen * freeInverse) * dressedGreen -
-          freeGreen * (dressedInverse * dressedGreen) := by
-      noncomm_ring
-    _ = freeGreen + dressedGreen - freeGreen := by
-      rw [hfree, hdressed]
-      simp
-    _ = dressedGreen := by
-      noncomm_ring
+  constructor
+  · rw [hself]
+    symm
+    calc
+      freeGreen + freeGreen * (freeInverse - dressedInverse) * dressedGreen =
+          freeGreen + (freeGreen * freeInverse) * dressedGreen -
+            freeGreen * (dressedInverse * dressedGreen) := by
+        noncomm_ring
+      _ = freeGreen + dressedGreen - freeGreen := by
+        rw [hfreeRight, hdressedLeft]
+        simp
+      _ = dressedGreen := by
+        noncomm_ring
+  · rw [hself]
+    symm
+    calc
+      freeGreen + dressedGreen * (freeInverse - dressedInverse) * freeGreen =
+          freeGreen + dressedGreen * (freeInverse * freeGreen) -
+            (dressedGreen * dressedInverse) * freeGreen := by
+        noncomm_ring
+      _ = freeGreen + dressedGreen - freeGreen := by
+        rw [hfreeLeft, hdressedRight]
+        simp
+      _ = dressedGreen := by
+        noncomm_ring
 
-/-- For two-sided inverses, the Dyson relation is equivalent to the inverse-difference definition of
-self-energy. -/
+/-- For two-sided inverses, the two-sided Dyson relation is equivalent to the inverse-difference
+definition of self-energy. -/
 theorem iff_eq_inverse_sub_inverse
     {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A}
     (hfreeLeft : freeInverse * freeGreen = 1)
@@ -120,7 +166,7 @@ theorem iff_eq_inverse_sub_inverse
   · intro hself
     exact hself.eq_inverse_sub_inverse hfreeLeft hdressedRight
   · intro hself
-    exact of_inverse_sub_inverse hself hfreeRight hdressedLeft
+    exact of_inverse_sub_inverse hself hfreeLeft hfreeRight hdressedLeft hdressedRight
 
 end IsSelfEnergy
 
