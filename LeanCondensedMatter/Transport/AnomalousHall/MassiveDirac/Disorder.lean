@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ScalarC
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ContinuumBornAngularBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorFactorization
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorEvaluation
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorUV
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -16,8 +17,10 @@ model-specific finite-cutoff continuum Born closure, while sharing the clean Pau
 and exact momentum-inversion symmetry.  The continuum closure includes an explicit full-angle polar
 Green integral proving the `2π` radial-reduction factor, factors its surviving scalar and `σ_z`
 channels through one common finite-cutoff radial denominator integral, evaluates that shared
-integral by a principal complex-log endpoint formula, and separates its exact finite-broadening real
-and imaginary parts into logarithmic norm and principal-argument differences.  UV and
-zero-broadening limits, scattering-rate extraction, renormalization, SCBA, current-vertex
+integral by a principal complex-log endpoint formula, separates its exact finite-broadening real and
+imaginary parts into logarithmic norm and principal-argument differences, exposes the real-part
+cutoff dependence through the corresponding quartic real denominator polynomial, and proves the
+resulting logarithmic ultraviolet divergence of the real part at fixed nonzero broadening.
+Zero-broadening limits, scattering-rate extraction, renormalization, SCBA, current-vertex
 resummation, and crossed diagrams remain separate.
 -/
