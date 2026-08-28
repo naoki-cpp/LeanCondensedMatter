@@ -75,7 +75,7 @@ theorem continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate
         continuumBornUpperBandSingleParticleScatteringRate
           v m fermiEnergy disorderStrength hbar := by
   unfold continuumBornUpperBandSingleParticleScatteringRate
-  (field_simp [hhbar]; ring)
+  field_simp [hhbar]
 
 /-- Upper-band Born single-particle lifetime, defined only as the reciprocal of the microscopic
 Born scattering rate.  It is not an independent relaxation-time input. -/
@@ -134,7 +134,7 @@ theorem continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime
   rw [continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate
     v m fermiEnergy disorderStrength hbar (ne_of_gt hhbar)]
   unfold continuumBornUpperBandSingleParticleLifetime
-  (field_simp [hrateNe]; ring)
+  field_simp [hrateNe]
 
 end
 
