@@ -139,7 +139,7 @@ theorem finiteCutoffContinuumBornUpperOnShellSelfEnergy_im_eq
   rw [bandDiagonalPauliExpectation_eq .upper
     v m (metallicFermiRadius v m fermiEnergy) 0 _ _ hE]
   rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
-  simp [bandSign_upper, Complex.add_im, Complex.im_ofReal_mul]
+  simp [bandSign_upper, Complex.add_im]
 
 /-- Finite-broadening upper-band on-shell single-particle decay half-width
 `Γ_q(η) = -Im Σ⁺ᴿ(ε_F;η)`. -/
