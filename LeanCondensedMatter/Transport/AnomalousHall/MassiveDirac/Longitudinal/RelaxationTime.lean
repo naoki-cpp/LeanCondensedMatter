@@ -10,7 +10,10 @@ set_option linter.style.header false
 This file introduces the first finite longitudinal electrical-conductivity benchmark for the
 metallic two-dimensional massive Dirac model.  The Fermi-surface kinematics are exact consequences
 of the clean spectrum, while the positive transport lifetime `τ_tr` is an explicit phenomenological
-input of the relaxation-time approximation.
+input of the relaxation-time approximation.  This benchmark supplies one scalar `τ_tr` outside the
+Fermi-surface angular average, so it assumes that the transport lifetime is uniform around the
+isotropic Fermi circle.  An angle-dependent lifetime would instead require the Fermi-surface average
+of `v_x² τ_tr(θ)`.
 
 The Fermi-level state-count factor is not inserted as a closed formula.  It is defined from the
 isotropic Fermi-circle Jacobian in the physical-momentum convention,
@@ -98,8 +101,10 @@ theorem upperBandFermiSurfaceDensityOfStates_eq
 /-- Zero-temperature Fermi-surface relaxation-time-approximation benchmark for the longitudinal
 electrical conductivity.
 
-The supplied `transportLifetime` is `τ_tr`, a positive current-relaxation time.  This definition does
-not claim that `τ_tr` follows from the clean Hamiltonian or from a self-energy broadening. -/
+The supplied `transportLifetime` is `τ_tr`, a positive current-relaxation time assumed uniform around
+the isotropic Fermi circle, which is why it multiplies the angularly averaged `v_x²` as one scalar.
+This definition does not claim that `τ_tr` follows from the clean Hamiltonian or from a self-energy
+broadening. -/
 def zeroTemperatureRelaxationTimeLongitudinalConductivity
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime) : ℝ :=
