@@ -68,10 +68,7 @@ theorem hasDerivAt_energy_radial
     exact HasDerivAt.const_mul (v ^ 2) hpow
   have hpoly :
       HasDerivAt (fun q : ℝ => energySq v m q 0) (v ^ 2 * (2 * p)) p := by
-    have hadd := hmul.add_const (m ^ 2)
-    convert hadd using 1
-    funext q
-    simp [energySq]
+    simpa [energySq] using hmul.add_const (m ^ 2)
   have hsq_ne : energySq v m p 0 ≠ 0 := by
     unfold energySq
     positivity
