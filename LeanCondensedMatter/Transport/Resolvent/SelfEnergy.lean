@@ -53,6 +53,19 @@ theorem rightDyson
     dressedGreen = freeGreen + dressedGreen * selfEnergy * freeGreen :=
   hself.2
 
+/-- The two-sided Dyson self-energy relation is preserved by adjunction. The two Dyson orientations
+are exchanged because `star` reverses noncommutative multiplication order. -/
+theorem star_closed
+    [StarRing A]
+    {freeGreen dressedGreen selfEnergy : A}
+    (hself : IsSelfEnergy freeGreen dressedGreen selfEnergy) :
+    IsSelfEnergy (star freeGreen) (star dressedGreen) (star selfEnergy) := by
+  constructor
+  · have h := congrArg (fun x : A => star x) hself.rightDyson
+    simpa only [star_add, star_mul, star_star, mul_assoc] using h
+  · have h := congrArg (fun x : A => star x) hself.leftDyson
+    simpa only [star_add, star_mul, star_star, mul_assoc] using h
+
 /-- A Dyson self-energy follows from two-sided inverse equations for the free and dressed shifts
 together with `freeShift = dressedShift + selfEnergy`. -/
 theorem of_shift

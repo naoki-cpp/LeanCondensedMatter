@@ -80,6 +80,25 @@ theorem bornSelfEnergy_eq_secondMoment
       ensemble.exactSecondMoment (ensemble.freeGreen side energy broadening) :=
   rfl
 
+/-- The advanced first-Born self-energy is the adjoint of the retarded first-Born self-energy. -/
+theorem star_bornSelfEnergy_retarded
+    (energy broadening : ℝ) :
+    star (ensemble.bornSelfEnergy .retarded energy broadening) =
+      ensemble.bornSelfEnergy .advanced energy broadening := by
+  calc
+    star (ensemble.bornSelfEnergy .retarded energy broadening) =
+        star (ensemble.exactSecondMoment
+          (ensemble.freeGreen .retarded energy broadening)) := rfl
+    _ = ensemble.exactSecondMoment
+        (star (ensemble.freeGreen .retarded energy broadening)) :=
+      (ensemble.exactSecondMoment_star
+        (ensemble.freeGreen .retarded energy broadening)).symm
+    _ = ensemble.exactSecondMoment
+        (ensemble.freeGreen .advanced energy broadening) := by
+      rw [ensemble.freeGreen_retarded, ensemble.freeGreen_advanced,
+        ensemble.star_freeRetardedGreen]
+    _ = ensemble.bornSelfEnergy .advanced energy broadening := rfl
+
 omit [CompleteSpace H] in
 /-- R/A-neutral second-order Born resolvent expression `G₀ + G₀ Σ G₀`. -/
 noncomputable def secondOrderBornResolventApproximation
