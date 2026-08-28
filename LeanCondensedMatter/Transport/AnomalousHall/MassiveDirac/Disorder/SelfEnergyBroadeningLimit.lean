@@ -67,8 +67,7 @@ theorem continuumBornDampingPrefactor_eq
       disorderStrength / (4 * hbar ^ 2 * v ^ 2) := by
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   unfold continuumBornAngularMeasurePrefactor momentumMeasurePrefactor
-  field_simp [hhbar, hvelocity, hpi]
-  <;> ring
+  field_simp [hhbar, hvelocity, hpi] <;> ring
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the scalar Pauli
 coefficient appearing in the continuum Born self-energy has the side-indexed metallic limit. -/
