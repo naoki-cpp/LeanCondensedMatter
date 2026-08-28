@@ -105,7 +105,6 @@ noncomputable def secondOrderBornResolventApproximation
     (freeGreen selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   freeGreen + freeGreen * selfEnergy * freeGreen
 
-omit [CompleteSpace H] in
 /-- Adjointing the R/A-neutral second-order Born expression adjoints its free Green operator and
 self-energy. The symmetric `G₀ Σ G₀` placement restores the original multiplication order. -/
 theorem star_secondOrderBornResolventApproximation
@@ -113,8 +112,7 @@ theorem star_secondOrderBornResolventApproximation
     star (secondOrderBornResolventApproximation freeGreen selfEnergy) =
       secondOrderBornResolventApproximation (star freeGreen) (star selfEnergy) := by
   unfold secondOrderBornResolventApproximation
-  simp only [star_add, star_mul]
-  rw [mul_assoc]
+  simp only [star_add, star_mul, mul_assoc]
 
 /-- Side-indexed second-order Born approximation `G₀ˢ + G₀ˢ Σˢ G₀ˢ`. -/
 noncomputable def bornResolventApproximation
@@ -128,8 +126,8 @@ theorem star_bornResolventApproximation_retarded
     (energy broadening : ℝ) :
     star (ensemble.bornResolventApproximation .retarded energy broadening) =
       ensemble.bornResolventApproximation .advanced energy broadening := by
-  rw [bornResolventApproximation, star_secondOrderBornResolventApproximation,
-    bornResolventApproximation]
+  unfold bornResolventApproximation
+  rw [star_secondOrderBornResolventApproximation]
   rw [ensemble.star_bornSelfEnergy_retarded]
   rw [ensemble.freeGreen_retarded, ensemble.freeGreen_advanced,
     ensemble.star_freeRetardedGreen]
