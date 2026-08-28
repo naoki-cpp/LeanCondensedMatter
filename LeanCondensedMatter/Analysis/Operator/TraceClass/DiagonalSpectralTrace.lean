@@ -60,18 +60,6 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
   rw [← hf_tsum]
   exact hf_summable.tsum_le_tsum hf_le hdiag
 
-namespace SpectralTraceClass
-
-/-- Construct spectral-trace data from compactness, positivity, and summability of one Hilbert-basis
-lossless diagonal. -/
-theorem ofPositiveSummableDiagonal (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
-    (d : HilbertBasis ι ℂ H)
-    (hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) :
-    SpectralTraceClass T :=
-  ofPositive hcompact hpos
-    (hasSummableRealEigenvalues_of_positive_of_summable_diagonal hcompact hpos d hdiag)
-
-end SpectralTraceClass
 end ContinuousLinearMap
 
 namespace HilbertBasis
@@ -99,8 +87,10 @@ theorem diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ
   have hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i) := by
     rw [hdiag_point]
     exact Summable.of_norm ha
-  exact SpectralTraceClass.ofPositiveSummableDiagonal
-    (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos b hdiag
+  exact SpectralTraceClass.ofPositive
+    (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos
+    (hasSummableRealEigenvalues_of_positive_of_summable_diagonal
+      (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos b hdiag)
 
 /-- The spectral trace of a diagonal operator with nonnegative weights is their sum. -/
 theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
