@@ -33,6 +33,7 @@
         {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
         {"upstream": "resolvent", "downstream": "disorderResolvent"},
         {"upstream": "moments", "downstream": "bornCommon"},
+        {"upstream": "disorderResolvent", "downstream": "bornCommon"},
         {"upstream": "bornCommon", "downstream": "retardedBorn"},
         {"upstream": "bornCommon", "downstream": "advancedBorn"},
         {"upstream": "disorderResolvent", "downstream": "retardedBorn"},
