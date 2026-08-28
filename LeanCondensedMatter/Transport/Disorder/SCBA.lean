@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Resolvent.Basic
 import LeanCondensedMatter.Transport.Resolvent.SelfEnergy
 
 set_option linter.style.header false
