@@ -194,7 +194,20 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
               side v m probeEnergy broadening pMax).re)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     simpa using hcross
-  have hsum := hmain.add hcrossZero
+  have hsum :
+      Tendsto
+        (fun broadening : ℝ =>
+          probeEnergy *
+              (finiteCutoffContinuumBornDenominatorIntegral
+                side v m probeEnergy broadening pMax).im +
+            side.sign * broadening *
+              (finiteCutoffContinuumBornDenominatorIntegral
+                side v m probeEnergy broadening pMax).re)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (probeEnergy *
+            (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)))) := by
+    simpa using hmain.add hcrossZero
   refine hsum.congr' ?_
   filter_upwards with broadening
   exact (finiteCutoffContinuumBornScalarIntegral_im_eq
