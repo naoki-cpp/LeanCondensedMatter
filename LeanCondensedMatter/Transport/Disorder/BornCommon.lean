@@ -9,12 +9,14 @@ set_option linter.style.header false
 
 This module owns algebra common to retarded and advanced first-Born closures. It keeps the
 retarded and advanced physical specializations as sibling modules while centralizing centered
-first-order cancellation, the side-indexed Born self-energy and resolvent approximation, second-order
-finite averaging, and the R/A-neutral second-order Born approximation/error formulas.
+first-order cancellation, side-indexed Born self-energy and resolvent approximation data, the exact
+second-order remainder, and the retained Born closure error/hypothesis.
 
-Orientation-sensitive Dyson remainders and physical closure hypotheses remain in their
-specialization modules. No self-consistency, vertex correction, Ward identity, trace-per-volume
-construction, or thermodynamic limit is introduced here.
+The exact second-order remainder keeps the side-dependent noncommutative orientation inherited from
+the exact configuration Dyson identities, while the R/A pair is tied together by adjunction.
+Conventional retarded/advanced physical names remain in the sibling specialization modules. No
+self-consistency, vertex correction, Ward identity, trace-per-volume construction, or thermodynamic
+limit is introduced here.
 -/
 
 namespace QuantumTheory
@@ -65,6 +67,63 @@ theorem operatorAverage_eq_free_add_remainder_of_secondOrder
     _ = free + ensemble.operatorAverage remainder := by
       rw [operatorAverage_const ensemble, hfirst]
       simp
+
+/-- Exact averaged second-order Dyson remainder on either spectral side. The multiplication order is
+that of the exact configuration Dyson expansion on the selected side. -/
+noncomputable def exactSecondOrderRemainder
+    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
+  match side with
+  | .retarded =>
+      ensemble.operatorAverage (fun ω =>
+        ensemble.freeRetardedGreen energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeRetardedGreen energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.configurationRetardedGreen energy broadening ω)
+  | .advanced =>
+      ensemble.operatorAverage (fun ω =>
+        ensemble.configurationAdvancedGreen energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeAdvancedGreen energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeAdvancedGreen energy broadening)
+
+@[simp]
+theorem exactSecondOrderRemainder_retarded
+    (energy broadening : ℝ) :
+    ensemble.exactSecondOrderRemainder .retarded energy broadening =
+      ensemble.operatorAverage (fun ω =>
+        ensemble.freeRetardedGreen energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeRetardedGreen energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.configurationRetardedGreen energy broadening ω) :=
+  rfl
+
+@[simp]
+theorem exactSecondOrderRemainder_advanced
+    (energy broadening : ℝ) :
+    ensemble.exactSecondOrderRemainder .advanced energy broadening =
+      ensemble.operatorAverage (fun ω =>
+        ensemble.configurationAdvancedGreen energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeAdvancedGreen energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeAdvancedGreen energy broadening) :=
+  rfl
+
+/-- The exact advanced second-order remainder is the adjoint of the retarded remainder. -/
+theorem star_exactSecondOrderRemainder_retarded
+    (energy broadening : ℝ) :
+    star (ensemble.exactSecondOrderRemainder .retarded energy broadening) =
+      ensemble.exactSecondOrderRemainder .advanced energy broadening := by
+  rw [ensemble.exactSecondOrderRemainder_retarded,
+    ensemble.exactSecondOrderRemainder_advanced, ← ensemble.operatorAverage_star]
+  apply congrArg ensemble.operatorAverage
+  funext ω
+  simp [star_mul, ensemble.star_freeRetardedGreen,
+    ensemble.star_configurationRetardedGreen,
+    (ensemble.impurityPotential ω).2.star_eq, mul_assoc]
 
 /-- Side-indexed first-Born self-energy: the exact finite second moment evaluated on the clean
 spectral-side Green operator. This definition does not require centered disorder. -/
@@ -137,6 +196,56 @@ omit [CompleteSpace H] in
 noncomputable def secondOrderBornClosureError
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   exactRemainder - freeGreen * selfEnergy * freeGreen
+
+omit [CompleteSpace H] in
+/-- Adjointing the R/A-neutral closure error adjoints all three inputs. -/
+theorem star_secondOrderBornClosureError
+    (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
+    star (secondOrderBornClosureError freeGreen exactRemainder selfEnergy) =
+      secondOrderBornClosureError (star freeGreen) (star exactRemainder) (star selfEnergy) := by
+  unfold secondOrderBornClosureError
+  simp only [star_sub, star_mul, mul_assoc]
+
+/-- Side-indexed exact closure error between the full second-order Dyson remainder and the
+Born-truncated insertion. No smallness or vanishing is assumed. -/
+noncomputable def bornClosureError
+    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
+  secondOrderBornClosureError
+    (ensemble.freeGreen side energy broadening)
+    (ensemble.exactSecondOrderRemainder side energy broadening)
+    (ensemble.bornSelfEnergy side energy broadening)
+
+/-- The advanced exact Born closure error is the adjoint of the retarded closure error. -/
+theorem star_bornClosureError_retarded
+    (energy broadening : ℝ) :
+    star (ensemble.bornClosureError .retarded energy broadening) =
+      ensemble.bornClosureError .advanced energy broadening := by
+  unfold bornClosureError
+  rw [star_secondOrderBornClosureError]
+  rw [ensemble.star_exactSecondOrderRemainder_retarded,
+    ensemble.star_bornSelfEnergy_retarded]
+  rw [ensemble.freeGreen_retarded, ensemble.freeGreen_advanced,
+    ensemble.star_freeRetardedGreen]
+
+/-- Explicit side-indexed closure hypothesis required before identifying the exact averaged Green
+operator with the second-order Born approximation. -/
+structure BornClosureHypothesis
+    (side : SpectralSide) (energy broadening : ℝ) : Prop where
+  closureError_eq_zero :
+    ensemble.bornClosureError side energy broadening = 0
+
+/-- A retarded Born closure hypothesis automatically gives the advanced closure hypothesis by
+adjunction. -/
+theorem BornClosureHypothesis.toAdvanced
+    {energy broadening : ℝ}
+    (closure : ensemble.BornClosureHypothesis .retarded energy broadening) :
+    ensemble.BornClosureHypothesis .advanced energy broadening := by
+  constructor
+  have hstar := congrArg star closure.closureError_eq_zero
+  have hzero : star (ensemble.bornClosureError .retarded energy broadening) = 0 := by
+    simpa using hstar
+  rw [ensemble.star_bornClosureError_retarded] at hzero
+  exact hzero
 
 omit [CompleteSpace H] in
 /-- Adding an exact second-order remainder equals the Born-truncated expression plus the retained
