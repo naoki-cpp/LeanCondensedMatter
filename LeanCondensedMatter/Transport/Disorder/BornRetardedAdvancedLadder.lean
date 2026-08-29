@@ -82,7 +82,7 @@ noncomputable def bornRetardedAdvancedLadderIterate
   | n + 1 =>
       bareVertex +
         ensemble.bornRetardedAdvancedLadderMap energy broadening
-          (ensemble.bornRetardedAdvancedLadderIterate energy broadening bareVertex n)
+          (bornRetardedAdvancedLadderIterate energy broadening bareVertex n)
 
 @[simp]
 theorem bornRetardedAdvancedLadderIterate_zero
@@ -123,21 +123,33 @@ theorem bornRetardedAdvancedLadderResidual_eq_zero_iff
         ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
   constructor
   · intro hresidual
+    have hdiff :
+        candidate - bareVertex =
+          ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
+      apply sub_eq_zero.mp
+      simpa only [bornRetardedAdvancedLadderResidual] using hresidual
     calc
-      candidate =
-          (candidate - bareVertex -
-              ensemble.bornRetardedAdvancedLadderMap energy broadening candidate) +
-            (bareVertex +
-              ensemble.bornRetardedAdvancedLadderMap energy broadening candidate) := by
+      candidate = (candidate - bareVertex) + bareVertex := by
         noncomm_ring
+      _ = ensemble.bornRetardedAdvancedLadderMap energy broadening candidate + bareVertex := by
+        rw [hdiff]
       _ = bareVertex +
           ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
-        rw [hresidual]
-        simp
+        noncomm_ring
   · intro hfixed
+    have hdiff :
+        candidate - bareVertex =
+          ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
+      calc
+        candidate - bareVertex =
+            (bareVertex +
+              ensemble.bornRetardedAdvancedLadderMap energy broadening candidate) - bareVertex := by
+          rw [hfixed]
+        _ = ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
+          noncomm_ring
     unfold bornRetardedAdvancedLadderResidual
-    rw [hfixed]
-    noncomm_ring
+    rw [hdiff]
+    exact sub_self _
 
 /-- If two consecutive finite ladder iterates coincide, that iterate is already an exact algebraic
 fixed point of the Born RA ladder. -/
