@@ -8,6 +8,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Channel
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.UpperBandDamping
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleLifetime
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -32,6 +33,8 @@ the scalar `η Re J_s` cross term vanishes, lifts those channel limits through t
 disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients, projects the
 retarded damping onto the gauge-independent metallic upper-band Fermi-surface projector, and derives
 the corresponding microscopic single-particle scattering rate and reciprocal lifetime convention.
-Transport-lifetime identification, renormalization, SCBA, current-vertex resummation, simultaneous
-UV / zero-broadening limits, and crossed diagrams remain separate.
+The scalar lifetime is additionally exposed through the generic typed `PositiveSingleParticleLifetime`
+boundary, kept distinct from `PositiveTransportLifetime`.  Transport-lifetime identification,
+renormalization, SCBA, current-vertex resummation, simultaneous UV / zero-broadening limits, and
+crossed diagrams remain separate.
 -/
