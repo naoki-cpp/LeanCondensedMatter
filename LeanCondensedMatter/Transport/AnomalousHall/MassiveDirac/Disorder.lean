@@ -8,6 +8,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Channel
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.UpperBandDamping
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
@@ -22,7 +23,8 @@ The completed Phase 4 chain keeps the exact finite scalar-covariance specializat
 the model-specific finite-cutoff continuum Born closure, while sharing the clean Pauli-basis
 propagator and exact momentum-inversion symmetry.  It evaluates the common finite-cutoff radial
 denominator, separates ultraviolet-sensitive real and metallic on-shell imaginary pieces, projects
-the damping onto the upper band, and derives the microscopic single-particle scattering rate.
+the damping onto the upper band, derives the microscopic single-particle scattering rate, and
+separately derives the Born transport rate from the Fermi-circle current-relaxation weight.
 
 Phase 5 now includes the exact finite-broadening angular reduction of the retarded-advanced
 `x`-current rung.  The model-specific Pauli algebra proves that the full polar-angle integral closes
@@ -30,6 +32,7 @@ in the `σₓ`/`σᵧ` span, with identity and `σ_z` channels removed, while ke
 ladder resummation separate.  The operator order is aligned with the shared
 `Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
 
-Transport-lifetime identification, renormalization, SCBA, current-vertex resummation, simultaneous
-UV / zero-broadening limits, and crossed diagrams remain separate.
+Identification of the Born transport lifetime with the resummed current vertex, SCBA,
+simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity theorem
+remain separate.
 -/
