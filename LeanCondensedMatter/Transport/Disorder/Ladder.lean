@@ -4,23 +4,23 @@ import Mathlib.Tactic
 set_option linter.style.header false
 
 /-!
-# Finite retarded-advanced Born ladder algebra
+# Finite retarded-advanced ladder algebra
 
-This module owns the exact finite-dimensional algebra used by non-crossing vertex corrections.
-For a finite disorder ensemble, the retarded-advanced ladder action on a supplied bounded vertex
-`Γ` is
+This module owns the exact finite-dimensional algebra shared by non-crossing vertex corrections.
+For a finite disorder ensemble and supplied retarded/advanced Green operators, the ladder action is
 
 ```text
-L_RA(Γ) = C₂(G₀ᴿ Γ G₀ᴬ),
+L_RA(Γ) = C₂(Gᴿ Γ Gᴬ),
 ```
 
 where `C₂ = E[V (·) V]` is the same canonical exact second-moment action used by the Born
-self-energy.  The Green operators entering this kernel are the clean finite-ensemble propagators;
-using them as a non-self-consistent Born ladder is therefore an approximation choice made by
-consumers, not an exact disorder-averaged Green-function claim.
+self-energy.  The ladder itself is represented as a bounded complex-linear map.  The convenience
+specialization `freeRetardedAdvancedLadderCLM` inserts the clean finite-ensemble Green operators;
+SCBA and other consumers can reuse the same owner with their own supplied Green operators.
 
-The finite iterates and residual below are exact algebraic objects.  No convergence, inverse of
-`1 - L_RA`, Ward identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.
+The one-rung correction, finite fixed-point iterates, and residual below are exact algebraic
+objects.  No convergence, inverse of `1 - L_RA`, Ward identity, SCBA closure, crossed diagram, or
+thermodynamic limit is asserted here.
 -/
 
 namespace QuantumTheory
@@ -36,113 +36,128 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Retarded-advanced finite Born ladder map
-`L_RA(Γ) = C₂(G₀ᴿ Γ G₀ᴬ)` using the same exact second moment as the Born self-energy. -/
-noncomputable def retardedAdvancedLadderMap
-    (energy broadening : ℝ) (vertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  ensemble.exactSecondMoment
-    (ensemble.freeGreen .retarded energy broadening * vertex *
-      ensemble.freeGreen .advanced energy broadening)
+/-- Finite covariance ladder map `Γ ↦ C₂(Gᴿ Γ Gᴬ)` for supplied left/right Green operators.
+The same exact second moment owns both this map and the finite Born self-energy. -/
+noncomputable def retardedAdvancedLadderCLM
+    (retardedGreen advancedGreen : H →L[ℂ] H) :
+    (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
+  ensemble.exactSecondMomentCLM.comp
+    ((ContinuousLinearMap.mulLeftRight ℂ (H →L[ℂ] H)) retardedGreen advancedGreen)
 
-/-- The RA ladder map is literally the exact second moment of the `G₀ᴿ Γ G₀ᴬ` kernel. -/
-theorem retardedAdvancedLadderMap_eq_secondMoment
+/-- Evaluation of the finite covariance ladder is the expected operator insertion
+`C₂(Gᴿ Γ Gᴬ)`. -/
+@[simp]
+theorem retardedAdvancedLadderCLM_apply
+    (retardedGreen advancedGreen vertex : H →L[ℂ] H) :
+    ensemble.retardedAdvancedLadderCLM retardedGreen advancedGreen vertex =
+      ensemble.exactSecondMoment (retardedGreen * vertex * advancedGreen) :=
+  rfl
+
+/-- Non-self-consistent Born RA ladder obtained by inserting the clean finite-ensemble Green
+operators.  This specialization is an approximation choice for later physical consumers; the
+underlying covariance action remains exact finite-ensemble data. -/
+noncomputable def freeRetardedAdvancedLadderCLM
+    (energy broadening : ℝ) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
+  ensemble.retardedAdvancedLadderCLM
+    (ensemble.freeGreen .retarded energy broadening)
+    (ensemble.freeGreen .advanced energy broadening)
+
+/-- The clean RA specialization evaluates to
+`C₂(G₀ᴿ Γ G₀ᴬ)`. -/
+@[simp]
+theorem freeRetardedAdvancedLadderCLM_apply
     (energy broadening : ℝ) (vertex : H →L[ℂ] H) :
-    ensemble.retardedAdvancedLadderMap energy broadening vertex =
+    ensemble.freeRetardedAdvancedLadderCLM energy broadening vertex =
       ensemble.exactSecondMoment
         (ensemble.freeGreen .retarded energy broadening * vertex *
           ensemble.freeGreen .advanced energy broadening) :=
   rfl
 
 @[simp]
-theorem retardedAdvancedLadderMap_zero
+theorem freeRetardedAdvancedLadderCLM_zero
     (energy broadening : ℝ) :
-    ensemble.retardedAdvancedLadderMap energy broadening 0 = 0 := by
-  unfold retardedAdvancedLadderMap FiniteDisorderEnsemble.exactSecondMoment
-  simp
+    ensemble.freeRetardedAdvancedLadderCLM energy broadening 0 = 0 := by
+  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_zero
 
-/-- Additivity of the exact RA ladder map. -/
-theorem retardedAdvancedLadderMap_add
+/-- Additivity of the clean RA ladder specialization. -/
+theorem freeRetardedAdvancedLadderCLM_add
     (energy broadening : ℝ) (left right : H →L[ℂ] H) :
-    ensemble.retardedAdvancedLadderMap energy broadening (left + right) =
-      ensemble.retardedAdvancedLadderMap energy broadening left +
-        ensemble.retardedAdvancedLadderMap energy broadening right := by
-  unfold retardedAdvancedLadderMap FiniteDisorderEnsemble.exactSecondMoment
-  rw [mul_add, add_mul]
-  exact ensemble.exactSecondMomentCLM.map_add _ _
+    ensemble.freeRetardedAdvancedLadderCLM energy broadening (left + right) =
+      ensemble.freeRetardedAdvancedLadderCLM energy broadening left +
+        ensemble.freeRetardedAdvancedLadderCLM energy broadening right := by
+  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_add left right
 
-/-- Complex scalar linearity of the exact RA ladder map. -/
-theorem retardedAdvancedLadderMap_smul
+/-- Complex scalar linearity of the clean RA ladder specialization. -/
+theorem freeRetardedAdvancedLadderCLM_smul
     (energy broadening : ℝ) (scalar : ℂ) (vertex : H →L[ℂ] H) :
-    ensemble.retardedAdvancedLadderMap energy broadening (scalar • vertex) =
-      scalar • ensemble.retardedAdvancedLadderMap energy broadening vertex := by
-  unfold retardedAdvancedLadderMap FiniteDisorderEnsemble.exactSecondMoment
-  rw [mul_smul_comm, smul_mul_assoc]
-  exact ensemble.exactSecondMomentCLM.map_smul scalar _
+    ensemble.freeRetardedAdvancedLadderCLM energy broadening (scalar • vertex) =
+      scalar • ensemble.freeRetardedAdvancedLadderCLM energy broadening vertex := by
+  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_smul scalar vertex
 
-/-- One impurity rung acting on the supplied bare vertex. -/
+end FiniteDisorderEnsemble
+
+/-- One rung of a supplied finite ladder kernel acting on a bare bounded vertex. -/
 noncomputable def oneRungVertexCorrection
-    (energy broadening : ℝ) (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  ensemble.retardedAdvancedLadderMap energy broadening bareVertex
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
+  ladder bareVertex
 
-/-- Finite non-crossing ladder iterate.  `n = 0` is the bare vertex and each successor performs one
-more fixed-point update `Γ ↦ J + L_RA(Γ)`. -/
-noncomputable def finiteRALadderVertex
-    (energy broadening : ℝ) (bareVertex : H →L[ℂ] H) : ℕ → H →L[ℂ] H
+/-- Finite fixed-point ladder iterate.  `n = 0` is the bare vertex and each successor performs the
+exact algebraic update `Γ ↦ J + L(Γ)`. -/
+noncomputable def finiteLadderVertex
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex : H →L[ℂ] H) : ℕ → H →L[ℂ] H
   | 0 => bareVertex
-  | n + 1 => bareVertex +
-      ensemble.retardedAdvancedLadderMap energy broadening
-        (ensemble.finiteRALadderVertex energy broadening bareVertex n)
+  | n + 1 => bareVertex + ladder (finiteLadderVertex ladder bareVertex n)
 
 @[simp]
-theorem finiteRALadderVertex_zero
-    (energy broadening : ℝ) (bareVertex : H →L[ℂ] H) :
-    ensemble.finiteRALadderVertex energy broadening bareVertex 0 = bareVertex :=
+theorem finiteLadderVertex_zero
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex : H →L[ℂ] H) :
+    finiteLadderVertex ladder bareVertex 0 = bareVertex :=
   rfl
 
 @[simp]
-theorem finiteRALadderVertex_succ
-    (energy broadening : ℝ) (bareVertex : H →L[ℂ] H) (n : ℕ) :
-    ensemble.finiteRALadderVertex energy broadening bareVertex (n + 1) =
-      bareVertex + ensemble.retardedAdvancedLadderMap energy broadening
-        (ensemble.finiteRALadderVertex energy broadening bareVertex n) :=
+theorem finiteLadderVertex_succ
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex : H →L[ℂ] H) (n : ℕ) :
+    finiteLadderVertex ladder bareVertex (n + 1) =
+      bareVertex + ladder (finiteLadderVertex ladder bareVertex n) :=
   rfl
 
 /-- The first finite ladder update is the bare vertex plus its one-rung correction. -/
-theorem finiteRALadderVertex_one
-    (energy broadening : ℝ) (bareVertex : H →L[ℂ] H) :
-    ensemble.finiteRALadderVertex energy broadening bareVertex 1 =
-      bareVertex + ensemble.oneRungVertexCorrection energy broadening bareVertex :=
+theorem finiteLadderVertex_one
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex : H →L[ℂ] H) :
+    finiteLadderVertex ladder bareVertex 1 =
+      bareVertex + oneRungVertexCorrection ladder bareVertex :=
   rfl
 
-/-- Residual of the RA ladder fixed-point equation `Γ = J + L_RA(Γ)`. -/
-noncomputable def raLadderResidual
-    (energy broadening : ℝ) (bareVertex dressedVertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  dressedVertex - bareVertex -
-    ensemble.retardedAdvancedLadderMap energy broadening dressedVertex
+/-- Residual of the finite ladder fixed-point equation `Γ = J + L(Γ)`. -/
+noncomputable def ladderResidual
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex dressedVertex : H →L[ℂ] H) : H →L[ℂ] H :=
+  dressedVertex - bareVertex - ladder dressedVertex
 
-/-- Every exact fixed point has vanishing RA ladder residual. -/
-theorem raLadderResidual_eq_zero_of_fixedPoint
-    (energy broadening : ℝ) (bareVertex dressedVertex : H →L[ℂ] H)
-    (hfixed : dressedVertex = bareVertex +
-      ensemble.retardedAdvancedLadderMap energy broadening dressedVertex) :
-    ensemble.raLadderResidual energy broadening bareVertex dressedVertex = 0 := by
+/-- Every exact fixed point has vanishing ladder residual. -/
+theorem ladderResidual_eq_zero_of_fixedPoint
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex dressedVertex : H →L[ℂ] H)
+    (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
+    ladderResidual ladder bareVertex dressedVertex = 0 := by
   rw [hfixed]
-  simp [raLadderResidual]
+  simp [ladderResidual]
 
-/-- Vanishing RA ladder residual is exactly the algebraic fixed-point equation. -/
-theorem fixedPoint_of_raLadderResidual_eq_zero
-    (energy broadening : ℝ) (bareVertex dressedVertex : H →L[ℂ] H)
-    (hresidual : ensemble.raLadderResidual energy broadening bareVertex dressedVertex = 0) :
-    dressedVertex = bareVertex +
-      ensemble.retardedAdvancedLadderMap energy broadening dressedVertex := by
-  unfold raLadderResidual at hresidual
-  have hsub :
-      dressedVertex - bareVertex =
-        ensemble.retardedAdvancedLadderMap energy broadening dressedVertex := by
-    exact sub_eq_zero.mp hresidual
-  exact (sub_eq_iff_eq_add).mp hsub
-
-end FiniteDisorderEnsemble
+/-- Vanishing ladder residual implies the exact algebraic fixed-point equation. -/
+theorem fixedPoint_of_ladderResidual_eq_zero
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (bareVertex dressedVertex : H →L[ℂ] H)
+    (hresidual : ladderResidual ladder bareVertex dressedVertex = 0) :
+    dressedVertex = bareVertex + ladder dressedVertex := by
+  unfold ladderResidual at hresidual
+  have hsub : dressedVertex - bareVertex = ladder dressedVertex :=
+    sub_eq_zero.mp hresidual
+  simpa [add_comm] using (sub_eq_iff_eq_add).mp hsub
 
 end
 end Transport
