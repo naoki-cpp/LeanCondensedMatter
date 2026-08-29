@@ -141,7 +141,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral_eq_r
     funext p
     rw [continuumBornAngularRetardedAdvancedPauliXIntegral_eq]
     simp [continuumBornRetardedAdvancedPauliXRadialXIntegrand,
-      continuumBornRetardedAdvancedPauliXRadialYIntegrand, smul_add, smul_smul]]
+      continuumBornRetardedAdvancedPauliXRadialYIntegrand, smul_add, smul_smul]
   rw [intervalIntegral.integral_add hX hY,
     intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
   rfl
