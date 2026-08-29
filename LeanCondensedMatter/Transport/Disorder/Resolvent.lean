@@ -6,17 +6,18 @@ set_option linter.style.header false
 /-!
 # Exact finite-disorder resolvents and Dyson identities
 
-This module owns configuration-wise resolvent identities for an exact finite disorder ensemble,
-before any moment assumption or weak-disorder closure is imposed.
+This module owns exact resolvent data for a finite disorder ensemble before any moment assumption or
+weak-disorder closure is imposed.
 
 For the clean Hamiltonian `H₀` and each exact configuration Hamiltonian `Hω = H₀ + Vω`, it defines
-a side-indexed Green-operator core together with conventional retarded/advanced specializations, and
-proves the first and second-order Dyson identities with the complete configuration Green operator
-retained in the remainder. The advanced identities are derived from the retarded identities by
-adjunction.
+side-indexed clean and configuration Green operators together with their exact finite disorder
+average. Conventional retarded/advanced specializations remain public, and the averaged advanced
+Green operator is derived by adjunction from the averaged retarded one. The module also proves the
+first and second-order configuration-wise Dyson identities with the complete configuration Green
+operator retained in the remainder.
 
-No centering, covariance, Born approximation, closure hypothesis, self-consistency, disorder
-average identification, trace-per-volume construction, or thermodynamic limit is introduced here.
+No centering, covariance, Born approximation, closure hypothesis, self-consistency, effective
+self-energy identification, trace-per-volume construction, or thermodynamic limit is introduced here.
 -/
 
 namespace QuantumTheory
@@ -42,6 +43,12 @@ noncomputable def configurationGreen
     (side : SpectralSide) (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
   spectralResolvent side (ensemble.configurationHamiltonian ω).1 energy broadening
 
+/-- Exact finite disorder average of the complete configuration Green operator on either spectral
+side, `Ḡˢ = E[Gωˢ]`. No Born or self-consistent closure is imposed. -/
+noncomputable def averagedGreen
+    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
+  ensemble.operatorAverage (fun ω => ensemble.configurationGreen side energy broadening ω)
+
 /-- Exact clean retarded Green operator. -/
 noncomputable def freeRetardedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -52,6 +59,11 @@ noncomputable def configurationRetardedGreen
     (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
   retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
 
+/-- Exact finite disorder-averaged retarded Green operator. -/
+noncomputable def averagedRetardedGreen
+    (energy broadening : ℝ) : H →L[ℂ] H :=
+  ensemble.averagedGreen .retarded energy broadening
+
 /-- Exact clean advanced Green operator. -/
 noncomputable def freeAdvancedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -61,6 +73,11 @@ noncomputable def freeAdvancedGreen
 noncomputable def configurationAdvancedGreen
     (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
   advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
+
+/-- Exact finite disorder-averaged advanced Green operator. -/
+noncomputable def averagedAdvancedGreen
+    (energy broadening : ℝ) : H →L[ℂ] H :=
+  ensemble.averagedGreen .advanced energy broadening
 
 @[simp]
 theorem freeGreen_retarded
@@ -94,6 +111,20 @@ theorem configurationGreen_advanced
   unfold configurationGreen configurationAdvancedGreen
   rw [spectralResolvent_advanced]
 
+@[simp]
+theorem averagedGreen_retarded
+    (energy broadening : ℝ) :
+    ensemble.averagedGreen .retarded energy broadening =
+      ensemble.averagedRetardedGreen energy broadening :=
+  rfl
+
+@[simp]
+theorem averagedGreen_advanced
+    (energy broadening : ℝ) :
+    ensemble.averagedGreen .advanced energy broadening =
+      ensemble.averagedAdvancedGreen energy broadening :=
+  rfl
+
 /-- The clean advanced Green operator is the adjoint of the clean retarded Green operator. -/
 theorem star_freeRetardedGreen
     (energy broadening : ℝ) :
@@ -113,6 +144,19 @@ theorem star_configurationRetardedGreen
   exact star_retardedResolvent
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy broadening
+
+/-- The exact finite disorder-averaged advanced Green operator is the adjoint of the exact averaged
+retarded Green operator. -/
+theorem star_averagedRetardedGreen
+    (energy broadening : ℝ) :
+    star (ensemble.averagedRetardedGreen energy broadening) =
+      ensemble.averagedAdvancedGreen energy broadening := by
+  unfold averagedRetardedGreen averagedAdvancedGreen averagedGreen
+  rw [← ensemble.operatorAverage_star]
+  apply congrArg ensemble.operatorAverage
+  funext ω
+  rw [ensemble.configurationGreen_retarded, ensemble.configurationGreen_advanced,
+    ensemble.star_configurationRetardedGreen]
 
 /-- Exact first retarded resolvent identity
 `Gωᴿ = G₀ᴿ + G₀ᴿ Vω Gωᴿ` at positive broadening. -/

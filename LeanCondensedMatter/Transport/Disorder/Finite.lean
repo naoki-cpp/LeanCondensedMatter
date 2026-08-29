@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
+import Mathlib.Algebra.Star.BigOperators
 
 set_option linter.style.header false
 
@@ -139,6 +140,17 @@ theorem operatorAverage_add
     ensemble.operatorAverage (fun ω => left ω + right ω) =
       ensemble.operatorAverage left + ensemble.operatorAverage right := by
   simp [operatorAverage, smul_add, Finset.sum_add_distrib]
+
+/-- Exact finite operator averaging commutes with adjunction because every ensemble weight is real. -/
+theorem operatorAverage_star
+    (operator : Ω → H →L[ℂ] H) :
+    ensemble.operatorAverage (fun ω => star (operator ω)) =
+      star (ensemble.operatorAverage operator) := by
+  unfold operatorAverage
+  rw [star_sum]
+  apply Finset.sum_congr rfl
+  intro ω _
+  simp
 
 /-- Configuration-independent operators can be pulled through an exact finite operator average. -/
 theorem operatorAverage_mul_left_right

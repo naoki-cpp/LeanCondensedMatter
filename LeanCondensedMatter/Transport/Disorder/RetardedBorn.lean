@@ -58,16 +58,15 @@ noncomputable def exactSecondOrderRetardedRemainder
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationRetardedGreen energy broadening ω)
 
-/-- For centered disorder, the averaged exact resolvent is the clean resolvent plus the full exact
-second-order remainder. No Born closure has been made. -/
-theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
+/-- For centered disorder, the exact averaged retarded Green operator is the clean resolvent plus
+the full exact second-order remainder. No Born closure has been made. -/
+theorem averagedRetardedGreen_eq_free_add_exactRemainder
     (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    ensemble.operatorAverage
-        (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
+    ensemble.averagedRetardedGreen energy broadening =
       ensemble.freeRetardedGreen energy broadening +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-  simpa [exactSecondOrderRetardedRemainder] using
+  simpa [averagedRetardedGreen, averagedGreen, exactSecondOrderRetardedRemainder] using
     operatorAverage_eq_free_add_remainder_of_secondOrder
       ensemble
       (ensemble.freeRetardedGreen energy broadening)
@@ -134,16 +133,15 @@ noncomputable def bornRetardedClosureError
     (ensemble.exactSecondOrderRetardedRemainder energy broadening)
     (bornRetardedSelfEnergy ensemble energy broadening)
 
-/-- Exact decomposition of the averaged resolvent into the named Born approximation plus its
-closure error. Centering is used only through the exact averaged-Dyson reduction. -/
-theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
+/-- Exact decomposition of the averaged retarded Green operator into the named Born approximation
+plus its closure error. Centering is used only through the exact averaged-Dyson reduction. -/
+theorem averagedRetardedGreen_eq_bornApproximation_add_error
     (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    ensemble.operatorAverage
-        (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
+    ensemble.averagedRetardedGreen energy broadening =
       bornRetardedResolventApproximation ensemble energy broadening +
         bornRetardedClosureError ensemble energy broadening := by
-  rw [operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
+  rw [averagedRetardedGreen_eq_free_add_exactRemainder
     ensemble hcentered energy broadening hbroadening]
   unfold bornRetardedResolventApproximation bornRetardedClosureError
   exact free_add_remainder_eq_bornApproximation_add_error
@@ -161,14 +159,13 @@ structure RetardedBornClosureHypothesis
 
 /-- Equality with the Born approximation follows only after supplying both centered disorder and
 the explicit closure hypothesis. -/
-theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation
+theorem averagedRetardedGreen_eq_bornApproximation
     (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening)
     (closure : RetardedBornClosureHypothesis ensemble energy broadening) :
-    ensemble.operatorAverage
-        (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
+    ensemble.averagedRetardedGreen energy broadening =
       bornRetardedResolventApproximation ensemble energy broadening := by
-  rw [operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
+  rw [averagedRetardedGreen_eq_bornApproximation_add_error
     ensemble hcentered energy broadening hbroadening]
   rw [RetardedBornClosureHypothesis.closureError_eq_zero closure, add_zero]
 
