@@ -190,6 +190,7 @@ theorem resummedLadderVertex_sub_ladder_eq
         ladder (resummedLadderVertex ladder inverseData bareVertex) = bareVertex := by
   exact inverseData.rightInverse bareVertex
 
+omit [CompleteSpace H] in
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -200,6 +201,7 @@ theorem resummedLadderVertex_fixedPoint
   exact (sub_eq_iff_eq_add).mp
     (resummedLadderVertex_sub_ladder_eq ladder inverseData bareVertex)
 
+omit [CompleteSpace H] in
 /-- The named ladder residual vanishes for the conditional resummed vertex. -/
 theorem ladderResidual_resummedLadderVertex_eq_zero
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
