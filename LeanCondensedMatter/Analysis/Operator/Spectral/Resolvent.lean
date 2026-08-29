@@ -44,10 +44,11 @@ theorem resolvent_mul_spectralShift_of_not_mem
   exact hres.val_inv_mul
 
 /-- A resolvent acts on an eigenvector by the scalar resolvent factor. No self-adjointness is needed;
-only exclusion of the spectral parameter from the spectrum. -/
+only exclusion of the spectral parameter from the spectrum and the corresponding nonzero scalar
+shift. -/
 theorem resolvent_apply_eigenvector
     (operator : H →L[ℂ] H) (z eigenvalue : ℂ) {v : H}
-    (hz : z ∉ spectrum ℂ operator)
+    (hz : z ∉ spectrum ℂ operator) (hshift : z - eigenvalue ≠ 0)
     (hv : operator v = eigenvalue • v) :
     resolvent operator z v = (z - eigenvalue)⁻¹ • v := by
   let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - operator
@@ -56,12 +57,6 @@ theorem resolvent_apply_eigenvector
     simpa [S, G] using spectralShift_mul_resolvent_of_not_mem operator z hz
   have hGS : G * S = 1 := by
     simpa [S, G] using resolvent_mul_spectralShift_of_not_mem operator z hz
-  have hshift : z - eigenvalue ≠ 0 := by
-    intro hzero
-    have hzeq : z = eigenvalue := sub_eq_zero.mp hzero
-    subst z
-    apply hz
-    exact spectrum.nonempty_of_isEigenvalue hv
   have hS_v : S v = (z - eigenvalue) • v := by
     change z • v - operator v = _
     rw [hv]
