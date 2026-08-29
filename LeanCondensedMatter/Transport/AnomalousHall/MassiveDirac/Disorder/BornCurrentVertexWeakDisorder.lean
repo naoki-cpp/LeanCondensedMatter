@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Tactic
@@ -17,8 +16,8 @@ current-rung coefficient remains finite because the disorder-line prefactor cont
 
 At nonzero Born damping the normalized `σₓ` coefficient is evaluated exactly as an arctangent
 endpoint difference.  The weak-disorder limit and its connection to the microscopic transport
-lifetime are proved downstream in the same module; no Kubo conductivity or clean finite-DC claim is
-made here.
+lifetime are proved downstream in `BornCurrentVertexTransportBridge.lean`; no Kubo conductivity or
+clean finite-DC claim is made here.
 -/
 
 namespace AnomalousHall.MassiveDirac
