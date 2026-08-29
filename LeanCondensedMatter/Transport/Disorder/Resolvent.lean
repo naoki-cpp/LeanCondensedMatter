@@ -52,12 +52,12 @@ noncomputable def averagedGreen
 /-- Exact clean retarded Green operator. -/
 noncomputable def freeRetardedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  retardedResolvent ensemble.baseHamiltonian.1 energy broadening
+  ensemble.freeGreen .retarded energy broadening
 
 /-- Exact retarded Green operator of one disordered configuration. -/
 noncomputable def configurationRetardedGreen
     (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
+  ensemble.configurationGreen .retarded energy broadening ω
 
 /-- Exact finite disorder-averaged retarded Green operator. -/
 noncomputable def averagedRetardedGreen
@@ -67,12 +67,12 @@ noncomputable def averagedRetardedGreen
 /-- Exact clean advanced Green operator. -/
 noncomputable def freeAdvancedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  advancedResolvent ensemble.baseHamiltonian.1 energy broadening
+  ensemble.freeGreen .advanced energy broadening
 
 /-- Exact advanced Green operator of one disordered configuration. -/
 noncomputable def configurationAdvancedGreen
     (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
+  ensemble.configurationGreen .advanced energy broadening ω
 
 /-- Exact finite disorder-averaged advanced Green operator. -/
 noncomputable def averagedAdvancedGreen
@@ -83,33 +83,29 @@ noncomputable def averagedAdvancedGreen
 theorem freeGreen_retarded
     (energy broadening : ℝ) :
     ensemble.freeGreen .retarded energy broadening =
-      ensemble.freeRetardedGreen energy broadening := by
-  unfold freeGreen freeRetardedGreen
-  rw [spectralResolvent_retarded]
+      ensemble.freeRetardedGreen energy broadening :=
+  rfl
 
 @[simp]
 theorem freeGreen_advanced
     (energy broadening : ℝ) :
     ensemble.freeGreen .advanced energy broadening =
-      ensemble.freeAdvancedGreen energy broadening := by
-  unfold freeGreen freeAdvancedGreen
-  rw [spectralResolvent_advanced]
+      ensemble.freeAdvancedGreen energy broadening :=
+  rfl
 
 @[simp]
 theorem configurationGreen_retarded
     (energy broadening : ℝ) (ω : Ω) :
     ensemble.configurationGreen .retarded energy broadening ω =
-      ensemble.configurationRetardedGreen energy broadening ω := by
-  unfold configurationGreen configurationRetardedGreen
-  rw [spectralResolvent_retarded]
+      ensemble.configurationRetardedGreen energy broadening ω :=
+  rfl
 
 @[simp]
 theorem configurationGreen_advanced
     (energy broadening : ℝ) (ω : Ω) :
     ensemble.configurationGreen .advanced energy broadening ω =
-      ensemble.configurationAdvancedGreen energy broadening ω := by
-  unfold configurationGreen configurationAdvancedGreen
-  rw [spectralResolvent_advanced]
+      ensemble.configurationAdvancedGreen energy broadening ω :=
+  rfl
 
 @[simp]
 theorem averagedGreen_retarded
@@ -130,7 +126,7 @@ theorem star_freeRetardedGreen
     (energy broadening : ℝ) :
     star (ensemble.freeRetardedGreen energy broadening) =
       ensemble.freeAdvancedGreen energy broadening := by
-  unfold freeRetardedGreen freeAdvancedGreen
+  unfold freeRetardedGreen freeAdvancedGreen freeGreen
   exact star_retardedResolvent
     ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy broadening
 
@@ -140,7 +136,7 @@ theorem star_configurationRetardedGreen
     (energy broadening : ℝ) (ω : Ω) :
     star (ensemble.configurationRetardedGreen energy broadening ω) =
       ensemble.configurationAdvancedGreen energy broadening ω := by
-  unfold configurationRetardedGreen configurationAdvancedGreen
+  unfold configurationRetardedGreen configurationAdvancedGreen configurationGreen
   exact star_retardedResolvent
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy broadening
@@ -167,7 +163,7 @@ theorem configurationRetardedGreen_eq_free_add_dyson
         ensemble.freeRetardedGreen energy broadening *
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationRetardedGreen energy broadening ω := by
-  unfold configurationRetardedGreen freeRetardedGreen
+  unfold configurationRetardedGreen freeRetardedGreen configurationGreen freeGreen
   let shift₀ : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
       ensemble.baseHamiltonian.1
