@@ -46,8 +46,13 @@ private theorem energy_polar_eq_radial
     energy v m (p * Real.cos θ) (p * Real.sin θ) = energy v m p 0 := by
   unfold energy energySq
   congr 1
-  have htrig := Real.sin_sq_add_cos_sq θ
-  nlinarith
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    nlinarith [Real.sin_sq_add_cos_sq θ]
+  calc
+    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
+        v ^ 2 * (p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2)) + m ^ 2 := by ring
+    _ = v ^ 2 * (p ^ 2 * 1) + m ^ 2 := by rw [htrig]
+    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
 private theorem upperBandProjectorOverlap_re_eq
     (v m px py qx qy : ℝ)
@@ -87,11 +92,15 @@ theorem upperBandFermiSurfaceScalarOverlapWeight_eq
     exact hfermiNe
   unfold upperBandFermiSurfaceScalarOverlapWeight
   rw [upperBandProjectorOverlap_re_eq]
-  · rw [energy_polar_eq_radial]
-    rw [hE]
-    rw [metallicFermiRadius_sq v m fermiEnergy hm hmF]
-    field_simp [hfermiNe, hv]
-    ring
+  · rw [energy_polar_eq_radial, hE]
+    have hpFproduct :
+        metallicFermiRadius v m fermiEnergy *
+              (metallicFermiRadius v m fermiEnergy * Real.cos θ) +
+            0 * (metallicFermiRadius v m fermiEnergy * Real.sin θ) =
+          metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
+      ring
+    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hm hmF]
+    field_simp [hfermiNe, hv] <;> ring
   · exact hENe
   · rw [energy_polar_eq_radial]
     exact hENe
@@ -238,7 +247,6 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angu
   unfold continuumBornUpperBandFermiCircleRatePrefactor
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   field_simp [hvelocity, hhbar, hfermiNe]
-  ring
 
 /-- Upper-band Born transport scattering rate obtained from the same microscopic scalar-disorder
 normalization as `1/τ_sp`, but with the current-relaxing `1 - cos θ` angular weight. -/
@@ -263,7 +271,6 @@ theorem continuumBornUpperBandTransportScatteringRate_eq
   unfold continuumBornUpperBandFermiCircleRatePrefactor
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   field_simp [hvelocity, hhbar, hfermiNe]
-  ring
 
 /-- The Born transport scattering rate is positive for positive disorder strength and positive
 `ℏ` in the strict metallic regime. -/
@@ -342,8 +349,7 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
   have hdisorderNe : disorderStrength ≠ 0 := ne_of_gt hdisorder
   have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by positivity
   have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
-  field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe, hsum1, hsum3]
-  ring
+  field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe, hsum1, hsum3] <;> ring
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark.  This bridge does not identify the derivation with a
