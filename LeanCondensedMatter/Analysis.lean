@@ -11,6 +11,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
+import LeanCondensedMatter.Analysis.Lorentzian.Pole
 import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
 import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
@@ -74,7 +75,7 @@ set_option linter.style.header false
 
 Public entry point for the analysis infrastructure exported by LeanCondensedMatter. It collects the
 project's operator theory, Dyson and ordered-simplex analysis, functional calculus, finite-dimensional
-trace, Lorentzian kernel analysis, trace-class and Hilbert–Schmidt tools, and the analysis-level
+trace, Lorentzian kernel and pole analysis, trace-class and Hilbert–Schmidt tools, and the analysis-level
 inequalities used by downstream physics layers.
 
 `LeanCondensedMatter.lean` delegates the analysis export surface to this module. Implementation
