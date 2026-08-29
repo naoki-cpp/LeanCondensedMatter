@@ -48,7 +48,11 @@ theorem hasDerivAt_spectralResolvent_energy
     (hasDerivAt_resolvent_spectralParameter
       side hamiltonian hself energy broadening hbroadening).scomp
       energy (hasDerivAt_spectralParameter_energy side energy broadening)
-  simpa only [spectralResolvent, one_smul] using hcomp
+  change HasDerivAt
+    (resolvent hamiltonian ∘ fun x : ℝ => spectralParameter side x broadening)
+    (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
+    energy
+  simpa only [one_smul] using hcomp
 
 /-- Compatibility name for the side-indexed real-energy derivative written with the generic
 `resolvent` and `spectralParameter` expressions. -/
@@ -113,7 +117,6 @@ theorem continuous_advancedResolvent_energy
     Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
   simpa only [spectralResolvent_advanced] using
     continuous_spectralResolvent_energy .advanced hamiltonian hself broadening
-      (ne_of_gt hbroadening)
 
 end
 
