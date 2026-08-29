@@ -13,6 +13,9 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexNormalizationBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexTransportBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -31,13 +34,13 @@ separately derives the Born transport rate from the Fermi-circle current-relaxat
 
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
 rung, the weak-disorder Born-dressed Pauli propagator data, the Born-dressed angular/radial rung
-reduction, and the finite-cutoff integration of the resulting one-dimensional Green-product
-kernels.  The scalar and `σ_z` damping channels remain separate through the Pauli algebra, while
-the common retarded-advanced denominator product is exposed as a real sum of squares.  The full
-polar-angle Born rung closes in the `σₓ`/`σᵧ` span, with the transverse sign tied explicitly to the
-shared `Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
+reduction, finite-cutoff integration of the resulting one-dimensional Green-product kernels, the
+exact bridge from that integrated Green-product coefficient to the fully normalized longitudinal
+`σₓ` current-rung coefficient, its arctangent evaluation, and its fixed-cutoff metallic weak-disorder
+limit.  The resulting scalar ladder factor is identified with the already-derived microscopic
+`τ_tr / τ_sp` factor.  The scalar and `σ_z` damping channels remain separate through the Pauli
+algebra, while the common retarded-advanced denominator product is exposed as a real sum of squares.
 
-Closed evaluation of the finite-cutoff radial integral, its weak-disorder/on-shell limit, ladder
-resummation, identification with the Born transport lifetime, SCBA, simultaneous UV /
-zero-broadening limits, crossed diagrams, and a complete conductivity theorem remain separate.
+Kubo insertion, SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete
+conductivity theorem remain separate.
 -/
