@@ -77,43 +77,38 @@ theorem averagedAdvancedGreen_eq_free_add_exactRemainder
       (operatorAverage_firstOrderAdvancedTerm_eq_zero
         ensemble hcentered energy broadening)
 
-/-- Weak-scattering advanced Born self-energy: the exact finite second moment evaluated on the
-clean advanced Green operator. The definition itself does not require centered disorder. -/
+/-- Conventional advanced name for the canonical side-indexed first-Born self-energy. -/
 noncomputable def bornAdvancedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening)
+  ensemble.bornSelfEnergy .advanced energy broadening
 
 /-- The advanced Born self-energy is the exact finite second moment with a clean advanced internal
 propagator. -/
 theorem bornAdvancedSelfEnergy_eq_secondMoment
     (energy broadening : ℝ) :
     bornAdvancedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) :=
-  rfl
+      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) := by
+  rw [bornAdvancedSelfEnergy, bornSelfEnergy_eq_secondMoment, freeGreen_advanced]
 
 @[simp]
 theorem bornSelfEnergy_advanced
     (energy broadening : ℝ) :
     ensemble.bornSelfEnergy .advanced energy broadening =
-      ensemble.bornAdvancedSelfEnergy energy broadening := by
-  unfold bornSelfEnergy bornAdvancedSelfEnergy
-  rw [freeGreen_advanced]
+      ensemble.bornAdvancedSelfEnergy energy broadening :=
+  rfl
 
-/-- Canonical second-order Born approximation to the averaged advanced Green operator. This
-definition does not require centering. -/
+/-- Conventional advanced name for the canonical side-indexed second-order Born approximation.
+This definition does not require centering. -/
 noncomputable def bornAdvancedResolventApproximation
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornResolventApproximation
-    (ensemble.freeAdvancedGreen energy broadening)
-    (bornAdvancedSelfEnergy ensemble energy broadening)
+  ensemble.bornResolventApproximation .advanced energy broadening
 
 @[simp]
 theorem bornResolventApproximation_advanced
     (energy broadening : ℝ) :
     ensemble.bornResolventApproximation .advanced energy broadening =
-      ensemble.bornAdvancedResolventApproximation energy broadening := by
-  unfold bornResolventApproximation bornAdvancedResolventApproximation
-  rw [freeGreen_advanced, bornSelfEnergy_advanced]
+      ensemble.bornAdvancedResolventApproximation energy broadening :=
+  rfl
 
 /-- Advanced specialization of the canonical exact Born closure error. -/
 noncomputable def bornAdvancedClosureError
