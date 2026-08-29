@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.LorentzianKernel
+import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
