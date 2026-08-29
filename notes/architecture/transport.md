@@ -13,16 +13,23 @@ fermionic adapters   concrete neutral models
                      e.g. AnomalousHall/MassiveDirac
 ```
 
-General operator infrastructure sits further upstream. In particular, the bundled ordinary
-finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean` and is consumed by
-transport trace representations rather than owned by them.
+General analysis infrastructure sits further upstream. In particular, the bundled ordinary
+finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, while the
+model-independent Lorentzian kernel and regular-factor pole extraction are owned by
+`Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than owning
+them.
 
 ## Physical source hierarchy
 
-Canonical generic owners now live in physical subdirectories rather than in a flat
-`Transport/` namespace:
+Canonical generic transport owners now live in physical subdirectories rather than in a flat
+`Transport/` namespace. The upstream Lorentzian analysis is separate:
 
 ```text
+Analysis/
+└── Lorentzian/
+    ├── Kernel.lean
+    └── Pole.lean
+
 Transport/
 ├── Core/
 │   ├── FiniteVolume.lean
@@ -35,9 +42,9 @@ Transport/
 │   └── EnergyDerivative.lean
 ├── Analysis/
 │   ├── BandOccupation.lean
-│   ├── LorentzianKernel.lean
-│   ├── LorentzianPole.lean
-│   └── ZeroTemperatureOccupation.lean
+│   ├── ZeroTemperatureOccupation.lean
+│   ├── LorentzianKernel.lean   -- temporary routing import
+│   └── LorentzianPole.lean     -- temporary routing import
 ├── KuboBastin/
 │   ├── PurePoint.lean
 │   ├── Finite.lean
@@ -64,15 +71,17 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace
-infrastructure is exported instead by `LeanCondensedMatter.Analysis`. The retired
-`Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf modules,
-and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after
-repository-wide consumer audits showed no remaining imports.
+`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace and
+Lorentzian analysis infrastructure are exported instead by `LeanCondensedMatter.Analysis`. The
+retired `Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf
+modules, and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed
+after repository-wide consumer audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
-after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
-continues to enforce the canonical public umbrellas and core hierarchy constraints without carrying
+after repository-wide consumer audits showed no remaining imports. The two Lorentzian routing
+imports above are temporary migration aids for still-unmigrated direct consumers and should be
+removed after those imports are updated. `scripts/check_transport_hierarchy.py` continues to enforce
+the canonical public umbrellas and core hierarchy constraints without carrying general
 compatibility-forwarder machinery.
 
 ## Semantic Kubo–Bastin / Středa boundary
@@ -209,9 +218,10 @@ and `Streda/Integral.lean` owns the finite-energy surface/sea decomposition. The
 compatibility shims; repository consumers use the canonical `Model` owners directly.
 
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
-Fermi-surface notions, Lorentzian kernel/tail analysis, zero-temperature occupation/Fermi-edge
-weights, and regular-factor Lorentzian pole extraction live under `Transport/Analysis/` and are
-consumed by the massive-Dirac specialization.
+Fermi-surface notions and zero-temperature occupation/Fermi-edge weights remain under
+`Transport/Analysis/`; the model-independent Lorentzian kernel/tail analysis and regular-factor
+Lorentzian pole extraction live upstream under `Analysis/Lorentzian/`. The massive-Dirac
+specialization consumes both layers.
 
 ## Generic / concrete boundary
 
