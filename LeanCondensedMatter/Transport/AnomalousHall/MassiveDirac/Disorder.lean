@@ -8,6 +8,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Channel
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.UpperBandDamping
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -30,8 +31,10 @@ metallic positive-broadening limit of the shared imaginary part separately at fi
 propagates that limit through the existing scalar and `σ_z` Born channel factorization while proving
 the scalar `η Re J_s` cross term vanishes, lifts those channel limits through the existing continuum
 disorder/measure prefactor to the scalar and `σ_z` self-energy damping coefficients, projects the
-retarded damping onto the gauge-independent metallic upper-band Fermi-surface projector, and derives
-the corresponding microscopic single-particle scattering rate and reciprocal lifetime convention.
-Transport-lifetime identification, renormalization, SCBA, current-vertex resummation, simultaneous
-UV / zero-broadening limits, and crossed diagrams remain separate.
+retarded damping onto the gauge-independent metallic upper-band Fermi-surface projector, derives
+the corresponding microscopic single-particle scattering rate and reciprocal lifetime convention,
+and separates the scalar-disorder current-relaxation rate by deriving the Fermi-circle projector
+overlap and its additional `1 - cos θ` transport weight.
+Kubo ladder equivalence, renormalization, SCBA, simultaneous UV / zero-broadening limits, and crossed
+diagrams remain separate.
 -/
