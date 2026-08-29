@@ -65,10 +65,8 @@ private theorem upperBandProjectorOverlap_eq
   simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian,
     sigmaX, sigmaY, sigmaZ]
   field_simp [hp, hq]
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  rw [hI]
-  ring
+  ring_nf
+  simp [pow_two]
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
 positive `p_x` axis and a state at relative Fermi-circle angle `θ`.  This is the canonical real
