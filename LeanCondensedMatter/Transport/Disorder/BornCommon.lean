@@ -138,6 +138,15 @@ noncomputable def secondOrderBornClosureError
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   exactRemainder - freeGreen * selfEnergy * freeGreen
 
+/-- Adjointing the R/A-neutral closure error adjoints each of its three operator inputs. -/
+theorem star_secondOrderBornClosureError
+    (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
+    star (secondOrderBornClosureError freeGreen exactRemainder selfEnergy) =
+      secondOrderBornClosureError
+        (star freeGreen) (star exactRemainder) (star selfEnergy) := by
+  unfold secondOrderBornClosureError
+  simp only [star_sub, star_mul, mul_assoc]
+
 omit [CompleteSpace H] in
 /-- Adding an exact second-order remainder equals the Born-truncated expression plus the retained
 closure error. No smallness or vanishing of the error is assumed. -/
