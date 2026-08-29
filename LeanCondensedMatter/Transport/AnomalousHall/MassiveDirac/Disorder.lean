@@ -13,6 +13,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexIntegral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -34,10 +35,11 @@ rung, the weak-disorder Born-dressed Pauli propagator data, the Born-dressed ang
 reduction, and the exact finite-cutoff arctangent evaluation of its common radial denominator
 integral.  The scalar and `σ_z` damping channels remain separate through the Pauli algebra, while
 the common retarded-advanced denominator product is exposed as a real sum of squares.  The radial
-cutoff is removed by a separate convergent `pMax → +∞` theorem at positive Born width.  The full
-polar-angle Born rung keeps the transverse sign tied explicitly to the shared
-`Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
+cutoff is removed by a separate convergent `pMax → +∞` theorem at positive Born width.  After the
+cutoff limit, the scalar-disorder one-rung coefficients are exposed as real APIs and their metallic
+`γ → 0⁺` behavior is proved: the longitudinal coefficient has a finite nonzero limit while the
+repository-orientation transverse coefficient is linear in `γ` to leading order.
 
-The weak-disorder/on-shell coefficient limit, ladder resummation, identification with the Born
-transport lifetime, SCBA, crossed diagrams, and a complete conductivity theorem remain separate.
+Ladder resummation, identification with the Born transport lifetime, SCBA, crossed diagrams, and a
+complete conductivity theorem remain separate.
 -/
