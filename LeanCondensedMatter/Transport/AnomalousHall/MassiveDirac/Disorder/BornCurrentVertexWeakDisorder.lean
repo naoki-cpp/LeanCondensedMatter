@@ -100,8 +100,8 @@ private theorem hasDerivAt_continuumBornRADenominatorCenter
   unfold continuumBornRADenominatorCenter
   simpa [mul_assoc, mul_comm, mul_left_comm] using
     (hasDerivAt_const p
-      ((1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
-        (probeEnergy ^ 2 - m ^ 2))).sub
+      ((probeEnergy ^ 2 - m ^ 2) *
+        (1 - continuumBornDampingScale v disorderStrength hbar ^ 2))).sub
       (((hasDerivAt_id p).pow 2).const_mul (v ^ 2))
 
 private theorem hasDerivAt_continuumBornRetardedAdvancedCurrentRungArctanPhase
@@ -187,7 +187,6 @@ private theorem hasDerivAt_normalizedBornCurrentRungAntiderivative
     dsimp [C]
     unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
     field_simp [hv, hwidth, hproduct, Real.pi_ne_zero]
-    ring
   rw [hderiv] at hscaled
   simpa [C] using hscaled
 
