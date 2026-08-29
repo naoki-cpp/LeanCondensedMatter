@@ -45,9 +45,10 @@ theorem matrixOperator_pauliGreenMatrix
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
     matrixOperator (pauliGreenMatrix side v m px py probeEnergy broadening) =
       pauliGreenOperator side v m px py probeEnergy broadening := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (pauliGreenMatrix side v m px py probeEnergy broadening) = _
-  simp [pauliGreenMatrix, pauliGreenOperator, map_add, map_smul, matrixOperator]
+  change
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (pauliGreenMatrix side v m px py probeEnergy broadening) = _
+  simp [pauliGreenMatrix, pauliGreenOperator, matrixOperator, map_add, map_smul]
 
 private def raPauliXScalarCoefficient
     (v m p θ probeEnergy broadening : ℝ) : ℂ :=
@@ -105,6 +106,8 @@ theorem retardedAdvancedPauliX_polar_eq
         raPauliXXCoefficient v m p θ probeEnergy broadening • sigmaX +
         raPauliXYCoefficient v m p θ probeEnergy broadening • sigmaY +
         raPauliXZCoefficient v m p θ probeEnergy broadening • sigmaZ := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [pauliGreenMatrix, raPauliXScalarCoefficient, raPauliXXCoefficient,
@@ -112,7 +115,33 @@ theorem retardedAdvancedPauliX_polar_eq
       pauliGreenScalarCoefficient_polar, pauliGreenXCoefficient_polar,
       pauliGreenYCoefficient_polar, pauliGreenZCoefficient_polar,
       sigmaX, sigmaY, sigmaZ] <;>
-    ring
+    ring_nf <;>
+    simp [hI]
+
+/-- Operator form of the exact pointwise Pauli decomposition, obtained by transporting the matrix
+identity through the canonical matrix/operator equivalence. -/
+theorem retardedAdvancedPauliXOperator_polar_eq
+    (v m p θ probeEnergy broadening : ℝ) :
+    pauliGreenOperator .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening * matrixOperator sigmaX *
+      pauliGreenOperator .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening =
+      raPauliXScalarCoefficient v m p θ probeEnergy broadening •
+          (1 : DiracHilbert →L[ℂ] DiracHilbert) +
+        raPauliXXCoefficient v m p θ probeEnergy broadening • matrixOperator sigmaX +
+        raPauliXYCoefficient v m p θ probeEnergy broadening • matrixOperator sigmaY +
+        raPauliXZCoefficient v m p θ probeEnergy broadening • matrixOperator sigmaZ := by
+  rw [← matrixOperator_pauliGreenMatrix, ← matrixOperator_pauliGreenMatrix]
+  change
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (pauliGreenMatrix .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening) *
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) sigmaX *
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (pauliGreenMatrix .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening) = _
+  rw [← map_mul, ← map_mul, retardedAdvancedPauliX_polar_eq]
+  simp [matrixOperator, map_add, map_smul]
 
 /-- Radial `σₓ` coefficient after the full polar-angle average of `Gᴿ σₓ Gᴬ`. -/
 def retardedAdvancedPauliXAngularXCoefficient
@@ -133,13 +162,14 @@ def retardedAdvancedPauliXAngularYCoefficient
       pauliGreenScalarCoefficient .retarded v m p 0 probeEnergy broadening *
         pauliGreenZCoefficient .advanced v m p 0 probeEnergy broadening)
 
-/-- Full polar-angle matrix rung at fixed radial momentum. -/
-noncomputable def continuumAngularRetardedAdvancedPauliXMatrixIntegral
-    (v m p probeEnergy broadening : ℝ) : Matrix2 :=
+/-- Full polar-angle operator rung at fixed radial momentum. -/
+noncomputable def continuumAngularRetardedAdvancedPauliXIntegral
+    (v m p probeEnergy broadening : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    pauliGreenMatrix .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening * sigmaX *
-      pauliGreenMatrix .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+    pauliGreenOperator .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening * matrixOperator sigmaX *
+      pauliGreenOperator .advanced v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening
 
 end
