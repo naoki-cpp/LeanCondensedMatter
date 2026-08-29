@@ -152,7 +152,9 @@ theorem averagedAdvancedGreen_eq_bornApproximation
       bornAdvancedResolventApproximation ensemble energy broadening := by
   rw [averagedAdvancedGreen_eq_bornApproximation_add_error
     ensemble hcentered energy broadening hbroadening]
-  rw [closure.closureError_eq_zero, add_zero]
+  have hclosure : bornAdvancedClosureError ensemble energy broadening = 0 := by
+    simpa [bornAdvancedClosureError] using closure.closureError_eq_zero
+  rw [hclosure, add_zero]
 
 end FiniteDisorderEnsemble
 
