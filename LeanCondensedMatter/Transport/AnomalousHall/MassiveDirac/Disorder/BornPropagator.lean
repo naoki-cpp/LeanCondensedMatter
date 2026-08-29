@@ -190,9 +190,7 @@ coefficient. -/
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenScalarCoefficient
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  simp [continuumBornPauliGreenScalarCoefficient, mul_comm]
-  left
-  simp [sub_eq_add_neg]
+  simpa [continuumBornPauliGreenScalarCoefficient, mul_comm, sub_eq_add_neg]
 
 /-- The `σₓ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
 coefficient. -/
