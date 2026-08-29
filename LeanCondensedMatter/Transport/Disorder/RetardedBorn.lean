@@ -78,43 +78,38 @@ theorem averagedRetardedGreen_eq_free_add_exactRemainder
       (operatorAverage_firstOrderRetardedTerm_eq_zero
         ensemble hcentered energy broadening)
 
-/-- Weak-scattering Born self-energy: the exact finite second moment evaluated on the clean
-retarded Green operator. The definition itself does not require centered disorder. -/
+/-- Conventional retarded name for the canonical side-indexed first-Born self-energy. -/
 noncomputable def bornRetardedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening)
+  ensemble.bornSelfEnergy .retarded energy broadening
 
 /-- The Born self-energy is the exact finite second moment with a clean retarded internal
 propagator. -/
 theorem bornRetardedSelfEnergy_eq_secondMoment
     (energy broadening : ℝ) :
     bornRetardedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) :=
-  rfl
+      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) := by
+  rw [bornRetardedSelfEnergy, bornSelfEnergy_eq_secondMoment, freeGreen_retarded]
 
 @[simp]
 theorem bornSelfEnergy_retarded
     (energy broadening : ℝ) :
     ensemble.bornSelfEnergy .retarded energy broadening =
-      ensemble.bornRetardedSelfEnergy energy broadening := by
-  unfold bornSelfEnergy bornRetardedSelfEnergy
-  rw [freeGreen_retarded]
+      ensemble.bornRetardedSelfEnergy energy broadening :=
+  rfl
 
-/-- Canonical second-order Born approximation to the averaged retarded resolvent. This definition
-is deliberately not an equality theorem for the exact average and does not require centering. -/
+/-- Conventional retarded name for the canonical side-indexed second-order Born approximation.
+It is deliberately not an equality theorem for the exact average and does not require centering. -/
 noncomputable def bornRetardedResolventApproximation
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornResolventApproximation
-    (ensemble.freeRetardedGreen energy broadening)
-    (bornRetardedSelfEnergy ensemble energy broadening)
+  ensemble.bornResolventApproximation .retarded energy broadening
 
 @[simp]
 theorem bornResolventApproximation_retarded
     (energy broadening : ℝ) :
     ensemble.bornResolventApproximation .retarded energy broadening =
-      ensemble.bornRetardedResolventApproximation energy broadening := by
-  unfold bornResolventApproximation bornRetardedResolventApproximation
-  rw [freeGreen_retarded, bornSelfEnergy_retarded]
+      ensemble.bornRetardedResolventApproximation energy broadening :=
+  rfl
 
 /-- Retarded specialization of the canonical exact Born closure error. -/
 noncomputable def bornRetardedClosureError
