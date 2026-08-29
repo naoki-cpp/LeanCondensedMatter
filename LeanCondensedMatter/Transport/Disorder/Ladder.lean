@@ -73,12 +73,6 @@ theorem freeRetardedAdvancedLadderCLM_apply
           ensemble.freeGreen .advanced energy broadening) :=
   rfl
 
-@[simp]
-theorem freeRetardedAdvancedLadderCLM_zero
-    (energy broadening : ℝ) :
-    ensemble.freeRetardedAdvancedLadderCLM energy broadening 0 = 0 := by
-  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_zero
-
 /-- Additivity of the clean RA ladder specialization. -/
 theorem freeRetardedAdvancedLadderCLM_add
     (energy broadening : ℝ) (left right : H →L[ℂ] H) :
