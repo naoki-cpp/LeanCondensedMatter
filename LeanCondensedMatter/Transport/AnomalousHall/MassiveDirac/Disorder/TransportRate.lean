@@ -65,6 +65,9 @@ private theorem upperBandProjectorOverlap_eq
   simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian,
     sigmaX, sigmaY, sigmaZ]
   field_simp [hp, hq]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [hI]
   ring
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
@@ -72,7 +75,7 @@ positive `p_x` axis and a state at relative Fermi-circle angle `θ`.  This is th
 representative of `Tr(P_+(p) P_+(p'))`; the theorem below proves the lossless complex-valued bridge
 in the metallic regime rather than projecting with `Complex.re`. -/
 def upperBandFermiSurfaceScalarOverlapWeight
-    (v m fermiEnergy θ : ℝ) : ℝ :=
+    (_v m fermiEnergy θ : ℝ) : ℝ :=
   (1 + m ^ 2 / fermiEnergy ^ 2 +
     (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2
 
