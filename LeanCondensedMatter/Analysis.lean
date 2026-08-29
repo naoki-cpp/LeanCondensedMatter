@@ -31,6 +31,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerat
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection
 import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
@@ -71,8 +72,9 @@ set_option linter.style.header false
 # Analysis
 
 Public entry point for the analysis infrastructure exported by LeanCondensedMatter. It collects the
-project's operator theory, Dyson and ordered-simplex analysis, functional calculus, trace-class and
-Hilbert–Schmidt tools, and the analysis-level inequalities used by downstream physics layers.
+project's operator theory, Dyson and ordered-simplex analysis, functional calculus, finite-dimensional
+trace, trace-class and Hilbert–Schmidt tools, and the analysis-level inequalities used by downstream
+physics layers.
 
 `LeanCondensedMatter.lean` delegates the analysis export surface to this module. Implementation
 modules should continue to import the narrow analysis leaves they actually use.
