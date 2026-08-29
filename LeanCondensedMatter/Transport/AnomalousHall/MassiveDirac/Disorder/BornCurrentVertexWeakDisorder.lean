@@ -99,10 +99,9 @@ private theorem hasDerivAt_continuumBornRADenominatorCenter
       (-2 * v ^ 2 * p) p := by
   unfold continuumBornRADenominatorCenter
   simpa [mul_assoc, mul_comm, mul_left_comm] using
-    (hasDerivAt_const p
+    (((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).const_sub
       ((probeEnergy ^ 2 - m ^ 2) *
-        (1 - continuumBornDampingScale v disorderStrength hbar ^ 2))).sub
-      (((hasDerivAt_id p).pow 2).const_mul (v ^ 2))
+        (1 - continuumBornDampingScale v disorderStrength hbar ^ 2))
 
 private theorem hasDerivAt_continuumBornRetardedAdvancedCurrentRungArctanPhase
     (v m probeEnergy disorderStrength hbar p : ℝ)
