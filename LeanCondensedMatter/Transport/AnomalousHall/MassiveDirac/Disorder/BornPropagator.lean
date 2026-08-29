@@ -154,7 +154,7 @@ theorem continuumBornPauliGreenDenominator_eq_closedForm
     ring
 
 /-- Retarded and advanced effective energies are complex conjugates. -/
-@[simp] theorem star_continuumBornEffectiveEnergy_retarded_eq_advanced
+theorem star_continuumBornEffectiveEnergy_retarded_eq_advanced
     (v probeEnergy disorderStrength hbar : ℝ) :
     star (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar) =
       continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar := by
@@ -162,7 +162,7 @@ theorem continuumBornPauliGreenDenominator_eq_closedForm
     simp [continuumBornEffectiveEnergy]
 
 /-- Retarded and advanced effective masses are complex conjugates. -/
-@[simp] theorem star_continuumBornEffectiveMass_retarded_eq_advanced
+theorem star_continuumBornEffectiveMass_retarded_eq_advanced
     (v m disorderStrength hbar : ℝ) :
     star (continuumBornEffectiveMass .retarded v m disorderStrength hbar) =
       continuumBornEffectiveMass .advanced v m disorderStrength hbar := by
