@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
 
 set_option linter.style.header false
@@ -33,7 +34,7 @@ private theorem tendsto_arctan_div_nhdsGT_zero_of_pos
     hf.pos_mul_atTop ha hinv
   have harctanWithin := Real.tendsto_arctan_atTop.comp hscaled
   have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-  simpa only [div_eq_mul_inv] using harctan
+  simpa only [Function.comp_apply, div_eq_mul_inv] using harctan
 
 private theorem tendsto_arctan_div_nhdsGT_zero_of_neg
     {l : Filter ℝ} {f g : ℝ → ℝ} {a : ℝ}
@@ -46,7 +47,7 @@ private theorem tendsto_arctan_div_nhdsGT_zero_of_neg
     hf.neg_mul_atTop ha hinv
   have harctanWithin := Real.tendsto_arctan_atBot.comp hscaled
   have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-  simpa only [div_eq_mul_inv] using harctan
+  simpa only [Function.comp_apply, div_eq_mul_inv] using harctan
 
 private theorem tendsto_continuumBornRADenominatorCenter_disorder_zero
     (v m p probeEnergy hbar : ℝ) :
@@ -62,7 +63,7 @@ private theorem tendsto_continuumBornRADenominatorCenter_disorder_zero
           v m p probeEnergy disorderStrength hbar) 0 := by
     unfold continuumBornRADenominatorCenter continuumBornDampingScale
     fun_prop
-  simpa [continuumBornRADenominatorCenter, continuumBornDampingScale] using
+  simpa [nhdsWithin, continuumBornRADenominatorCenter, continuumBornDampingScale] using
     hcont.tendsto.mono_left inf_le_left
 
 private theorem tendsto_continuumBornRADenominatorWidth_disorder_zero
@@ -83,14 +84,17 @@ private theorem tendsto_continuumBornRADenominatorWidth_disorder_zero
             v m probeEnergy disorderStrength hbar) 0 := by
       unfold continuumBornRADenominatorWidth continuumBornDampingScale
       fun_prop
-    simpa [continuumBornRADenominatorWidth, continuumBornDampingScale] using
+    simpa [nhdsWithin, continuumBornRADenominatorWidth, continuumBornDampingScale] using
       hcont.tendsto.mono_left inf_le_left
   · filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
+    have hdisorderPos : 0 < disorderStrength := hdisorder
     have hgamma :
         0 < continuumBornDampingScale v disorderStrength hbar := by
       unfold continuumBornDampingScale
       have hden : 0 < 4 * hbar ^ 2 * v ^ 2 := by positivity
-      exact div_pos hdisorder hden
+      exact div_pos hdisorderPos hden
+    change 0 < continuumBornRADenominatorWidth
+      v m probeEnergy disorderStrength hbar
     unfold continuumBornRADenominatorWidth
     positivity
 
@@ -112,7 +116,8 @@ private theorem tendsto_continuumBornRetardedAdvancedCurrentRungPrefactorFactor_
           (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) 0 := by
     unfold continuumBornDampingScale
     fun_prop
-  simpa [continuumBornDampingScale] using hcont.tendsto.mono_left inf_le_left
+  simpa [nhdsWithin, continuumBornDampingScale] using
+    hcont.tendsto.mono_left inf_le_left
 
 /-- At fixed cutoff beyond the metallic on-shell circle, the fully normalized Born RA longitudinal
 `σₓ` current rung has a finite one-sided weak-disorder limit.
