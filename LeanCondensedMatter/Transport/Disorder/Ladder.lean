@@ -110,6 +110,7 @@ noncomputable def finiteLadderVertex
   | 0 => bareVertex
   | n + 1 => bareVertex + ladder (finiteLadderVertex ladder bareVertex n)
 
+omit [CompleteSpace H] in
 @[simp]
 theorem finiteLadderVertex_zero
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -117,6 +118,7 @@ theorem finiteLadderVertex_zero
     finiteLadderVertex ladder bareVertex 0 = bareVertex :=
   rfl
 
+omit [CompleteSpace H] in
 @[simp]
 theorem finiteLadderVertex_succ
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -125,6 +127,7 @@ theorem finiteLadderVertex_succ
       bareVertex + ladder (finiteLadderVertex ladder bareVertex n) :=
   rfl
 
+omit [CompleteSpace H] in
 /-- The first finite ladder update is the bare vertex plus its one-rung correction. -/
 theorem finiteLadderVertex_one
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -139,15 +142,18 @@ noncomputable def ladderResidual
     (bareVertex dressedVertex : H →L[ℂ] H) : H →L[ℂ] H :=
   dressedVertex - bareVertex - ladder dressedVertex
 
+omit [CompleteSpace H] in
 /-- Every exact fixed point has vanishing ladder residual. -/
 theorem ladderResidual_eq_zero_of_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
     (bareVertex dressedVertex : H →L[ℂ] H)
     (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
     ladderResidual ladder bareVertex dressedVertex = 0 := by
-  rw [hfixed]
-  simp [ladderResidual]
+  have h := congrArg (fun vertex =>
+    vertex - bareVertex - ladder dressedVertex) hfixed
+  simpa [ladderResidual] using h
 
+omit [CompleteSpace H] in
 /-- Vanishing ladder residual implies the exact algebraic fixed-point equation. -/
 theorem fixedPoint_of_ladderResidual_eq_zero
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
