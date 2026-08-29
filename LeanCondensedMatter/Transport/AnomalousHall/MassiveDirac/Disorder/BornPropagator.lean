@@ -132,28 +132,27 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
       (m : ℂ) +
         ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
   simp [continuumBornEffectiveMass]
-  ring
 
 /-- Retarded and advanced effective energies are complex conjugates. -/
 theorem conj_continuumBornEffectiveEnergy_retarded
     (v probeEnergy disorderStrength hbar : ℝ) :
-    Complex.conj
-        (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar) =
+    star (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar) =
       continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar := by
   simp [continuumBornEffectiveEnergy]
+  ring
 
 /-- Retarded and advanced effective masses are complex conjugates. -/
 theorem conj_continuumBornEffectiveMass_retarded
     (v m disorderStrength hbar : ℝ) :
-    Complex.conj
-        (continuumBornEffectiveMass .retarded v m disorderStrength hbar) =
+    star (continuumBornEffectiveMass .retarded v m disorderStrength hbar) =
       continuumBornEffectiveMass .advanced v m disorderStrength hbar := by
   simp [continuumBornEffectiveMass]
+  ring
 
 /-- The Born-dressed quadratic retarded and advanced denominators are conjugate. -/
 theorem conj_continuumBornPauliGreenDenominator_retarded
     (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    Complex.conj
+    star
         (continuumBornPauliGreenDenominator
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenDenominator
