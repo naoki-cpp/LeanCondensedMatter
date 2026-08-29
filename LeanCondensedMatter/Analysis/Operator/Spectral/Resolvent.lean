@@ -45,6 +45,7 @@ theorem resolvent_mul_spectralShift_of_not_mem
   rw [spectrum.resolvent_eq hres]
   exact hres.val_inv_mul
 
+omit [CompleteSpace H] in
 /-- A resolvent acts on an eigenvector by the scalar resolvent factor. No self-adjointness is needed;
 only exclusion of the spectral parameter from the spectrum and the corresponding nonzero scalar
 shift. -/
