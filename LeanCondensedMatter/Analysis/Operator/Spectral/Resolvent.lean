@@ -46,7 +46,7 @@ theorem resolvent_mul_spectralShift_of_not_mem
   exact hres.val_inv_mul
 
 omit [CompleteSpace H] in
-/-- Outside the spectrum, any left inverse of the spectral shift equals the canonical resolvent. -/
+/-- Outside the spectrum, any right inverse of the spectral shift equals the canonical resolvent. -/
 theorem resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
     (operator candidate : H →L[ℂ] H) (z : ℂ)
     (hz : z ∉ spectrum ℂ operator)
