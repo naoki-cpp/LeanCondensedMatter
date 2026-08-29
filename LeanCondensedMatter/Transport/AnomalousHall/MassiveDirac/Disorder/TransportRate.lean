@@ -54,44 +54,55 @@ private theorem energy_polar_eq_radial
     _ = v ^ 2 * (p ^ 2 * 1) + m ^ 2 := by rw [htrig]
     _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
-private theorem upperBandProjectorOverlap_re_eq
+private theorem upperBandProjectorOverlap_eq
     (v m px py qx qy : ℝ)
     (hp : energy v m px py ≠ 0) (hq : energy v m qx qy ≠ 0) :
-    (Matrix.trace
-      (bandProjector .upper v m px py * bandProjector .upper v m qx qy)).re =
-      (1 +
+    Matrix.trace
+        (bandProjector .upper v m px py * bandProjector .upper v m qx qy) =
+      (((1 +
         (v ^ 2 * (px * qx + py * qy) + m ^ 2) /
-          (energy v m px py * energy v m qx qy)) / 2 := by
+          (energy v m px py * energy v m qx qy)) / 2 : ℝ) : ℂ) := by
   simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian,
     sigmaX, sigmaY, sigmaZ]
   field_simp [hp, hq]
   ring
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
-positive `p_x` axis and a state at relative Fermi-circle angle `θ`.  For rank-one projectors this is
-`Tr(P_+(p) P_+(p')) = |<u_p'|u_p>|²`. -/
+positive `p_x` axis and a state at relative Fermi-circle angle `θ`.  This is the canonical real
+representative of `Tr(P_+(p) P_+(p'))`; the theorem below proves the lossless complex-valued bridge
+in the metallic regime rather than projecting with `Complex.re`. -/
 def upperBandFermiSurfaceScalarOverlapWeight
     (v m fermiEnergy θ : ℝ) : ℝ :=
-  let pF := metallicFermiRadius v m fermiEnergy
-  (Matrix.trace
-    (bandProjector .upper v m pF 0 *
-      bandProjector .upper v m (pF * Real.cos θ) (pF * Real.sin θ))).re
+  (1 + m ^ 2 / fermiEnergy ^ 2 +
+    (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2
 
 /-- Closed upper-band scalar-disorder overlap on the metallic Fermi circle. -/
 theorem upperBandFermiSurfaceScalarOverlapWeight_eq
-    (v m fermiEnergy θ : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy θ : ℝ) (_hv : v ≠ 0)
+    (_hm : 0 < m) (_hmF : m ≤ fermiEnergy) :
     upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ =
       (1 + m ^ 2 / fermiEnergy ^ 2 +
         (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2 := by
+  rfl
+
+/-- The real overlap weight embeds back into `ℂ` as exactly the projector trace on the metallic
+Fermi circle.  This is the reality certificate for the physical scalar API. -/
+theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
+    (v m fermiEnergy θ : ℝ) (hv : v ≠ 0)
+    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ : ℂ) =
+      Matrix.trace
+        (bandProjector .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
+          bandProjector .upper v m
+            (metallicFermiRadius v m fermiEnergy * Real.cos θ)
+            (metallicFermiRadius v m fermiEnergy * Real.sin θ)) := by
   have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   have hE := energy_metallicFermiRadius v m fermiEnergy hv hm hmF
   have hENe : energy v m (metallicFermiRadius v m fermiEnergy) 0 ≠ 0 := by
     rw [hE]
     exact hfermiNe
-  unfold upperBandFermiSurfaceScalarOverlapWeight
-  rw [upperBandProjectorOverlap_re_eq]
+  rw [upperBandProjectorOverlap_eq]
   · rw [energy_polar_eq_radial, hE]
     have hpFproduct :
         metallicFermiRadius v m fermiEnergy *
@@ -100,6 +111,8 @@ theorem upperBandFermiSurfaceScalarOverlapWeight_eq
           metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
       ring
     rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hm hmF]
+    unfold upperBandFermiSurfaceScalarOverlapWeight
+    push_cast
     (field_simp [hfermiNe, hv]; ring)
   · exact hENe
   · rw [energy_polar_eq_radial]
