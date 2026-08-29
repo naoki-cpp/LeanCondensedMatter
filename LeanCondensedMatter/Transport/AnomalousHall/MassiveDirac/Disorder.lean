@@ -14,6 +14,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Current
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexNormalizationBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexTransportBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
@@ -34,11 +35,11 @@ separately derives the Born transport rate from the Fermi-circle current-relaxat
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
 rung, the weak-disorder Born-dressed Pauli propagator data, the Born-dressed angular/radial rung
 reduction, finite-cutoff integration of the resulting one-dimensional Green-product kernels, the
-exact arctangent evaluation of the fully normalized finite-cutoff longitudinal `σₓ` current-rung
-coefficient, and its fixed-cutoff metallic weak-disorder limit.  The resulting scalar ladder factor
-is identified with the already-derived microscopic `τ_tr / τ_sp` factor.  The scalar and `σ_z`
-damping channels remain separate through the Pauli algebra, while the common retarded-advanced
-denominator product is exposed as a real sum of squares.
+exact bridge from that integrated Green-product coefficient to the fully normalized longitudinal
+`σₓ` current-rung coefficient, its arctangent evaluation, and its fixed-cutoff metallic weak-disorder
+limit.  The resulting scalar ladder factor is identified with the already-derived microscopic
+`τ_tr / τ_sp` factor.  The scalar and `σ_z` damping channels remain separate through the Pauli
+algebra, while the common retarded-advanced denominator product is exposed as a real sum of squares.
 
 Kubo insertion, SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete
 conductivity theorem remain separate.
