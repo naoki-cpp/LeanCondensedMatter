@@ -127,6 +127,7 @@ theorem star_freeRetardedGreen
     star (ensemble.freeRetardedGreen energy broadening) =
       ensemble.freeAdvancedGreen energy broadening := by
   unfold freeRetardedGreen freeAdvancedGreen freeGreen
+  rw [spectralResolvent_retarded, spectralResolvent_advanced]
   exact star_retardedResolvent
     ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy broadening
 
@@ -137,6 +138,7 @@ theorem star_configurationRetardedGreen
     star (ensemble.configurationRetardedGreen energy broadening ω) =
       ensemble.configurationAdvancedGreen energy broadening ω := by
   unfold configurationRetardedGreen configurationAdvancedGreen configurationGreen
+  rw [spectralResolvent_retarded, spectralResolvent_advanced]
   exact star_retardedResolvent
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy broadening
@@ -164,6 +166,7 @@ theorem configurationRetardedGreen_eq_free_add_dyson
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationRetardedGreen energy broadening ω := by
   unfold configurationRetardedGreen freeRetardedGreen configurationGreen freeGreen
+  rw [spectralResolvent_retarded]
   let shift₀ : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
       ensemble.baseHamiltonian.1
