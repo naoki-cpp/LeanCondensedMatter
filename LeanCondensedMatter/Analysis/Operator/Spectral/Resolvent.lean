@@ -27,6 +27,7 @@ theorem not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
   exact hz (IsSelfAdjoint.im_eq_zero_of_mem_spectrum
     (A := H →L[ℂ] H) hself hmem)
 
+omit [CompleteSpace H] in
 /-- Outside the spectrum, the shifted operator multiplied by the resolvent is the identity. -/
 theorem spectralShift_mul_resolvent_of_not_mem
     (operator : H →L[ℂ] H) (z : ℂ) (hz : z ∉ spectrum ℂ operator) :
@@ -35,6 +36,7 @@ theorem spectralShift_mul_resolvent_of_not_mem
   rw [spectrum.resolvent_eq hres]
   exact hres.mul_val_inv
 
+omit [CompleteSpace H] in
 /-- Outside the spectrum, the resolvent multiplied by the shifted operator is the identity. -/
 theorem resolvent_mul_spectralShift_of_not_mem
     (operator : H →L[ℂ] H) (z : ℂ) (hz : z ∉ spectrum ℂ operator) :
