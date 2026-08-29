@@ -263,7 +263,7 @@ theorem continuumBornDampingScale_weakDisorderStrength
     (v hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
     continuumBornDampingScale v (continuumBornWeakDisorderStrength v hbar gamma) hbar = gamma := by
   unfold continuumBornDampingScale continuumBornWeakDisorderStrength
-  field_simp [hvelocity, hhbar] <;> ring
+  field_simp [hvelocity, hhbar]
 
 /-- Under the weak-disorder parameterization, the RA denominator width is `2γ(ε²+m²)`. -/
 theorem continuumBornRADenominatorWidth_weakDisorderStrength
@@ -282,7 +282,7 @@ theorem continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       gamma * v ^ 2 / Real.pi ^ 2 := by
   unfold continuumBornRetardedAdvancedCurrentRungPrefactor
     continuumBornWeakDisorderStrength momentumMeasurePrefactor
-  field_simp [hhbar, Real.pi_ne_zero] <;> ring
+  (field_simp [hhbar, Real.pi_ne_zero]; ring)
 
 /-- Arctangent mass controlling the metallic weak-disorder limit after the radial cutoff has been
 removed. -/
@@ -312,7 +312,7 @@ theorem continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorde
     continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar,
     continuumBornRADenominatorWidth_weakDisorderStrength
       v m probeEnergy hbar gamma hvelocity hhbar]
-  field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero] <;> ring
+  field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero]
 
 /-- Exact infinite-cutoff transverse one-rung coefficient in repository orientation `Gᴿ σₓ Gᴬ`
 after parameterizing the disorder by `γ`. -/
@@ -333,7 +333,7 @@ theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_weakDisorde
     continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar,
     continuumBornRADenominatorWidth_weakDisorderStrength
       v m probeEnergy hbar gamma hvelocity hhbar]
-  field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero] <;> ring
+  (field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero]; ring)
 
 /-- In the metallic regime the weak-disorder arctangent mass tends to `π` as `γ → 0⁺`. -/
 theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
@@ -379,7 +379,7 @@ theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
     have hgamma_pos : 0 < gamma := by
       simpa only [Set.mem_Ioi] using hgamma
     dsimp [distance]
-    field_simp [ne_of_gt hgamma_pos, ne_of_gt hsum] <;> ring
+    (field_simp [ne_of_gt hgamma_pos, ne_of_gt hsum]; ring)
   have harctanWithin := Real.tendsto_arctan_atTop.comp harg
   have harctan : Tendsto
       (fun gamma : ℝ =>
@@ -445,7 +445,7 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_wea
           (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) * Real.pi =
         (probeEnergy ^ 2 - m ^ 2) /
           (2 * (probeEnergy ^ 2 + m ^ 2)) := by
-    field_simp [Real.pi_ne_zero, ne_of_gt hsum] <;> ring
+    field_simp [Real.pi_ne_zero, ne_of_gt hsum]
   rw [htarget] at hprod
   refine hprod.congr' ?_
   filter_upwards [self_mem_nhdsWithin] with gamma hgamma
@@ -467,7 +467,7 @@ theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div_gamma_w
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
   rw [continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar hgamma hmetal]
-  field_simp [hgamma] <;> ring
+  field_simp [hgamma]
 
 /-- Metallic weak-disorder limit of the leading transverse one-rung coefficient.  The unscaled
 `σᵧ` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. -/
@@ -497,7 +497,7 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div
       (2 * probeEnergy * m /
           (Real.pi * (probeEnergy ^ 2 + m ^ 2))) * Real.pi =
         2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2) := by
-    field_simp [Real.pi_ne_zero, ne_of_gt hsum] <;> ring
+    field_simp [Real.pi_ne_zero, ne_of_gt hsum]
   rw [htarget] at hprod
   refine hprod.congr' ?_
   filter_upwards [self_mem_nhdsWithin] with gamma hgamma
