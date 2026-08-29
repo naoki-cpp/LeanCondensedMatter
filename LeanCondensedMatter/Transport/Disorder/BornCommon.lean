@@ -197,7 +197,6 @@ noncomputable def secondOrderBornClosureError
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   exactRemainder - freeGreen * selfEnergy * freeGreen
 
-omit [CompleteSpace H] in
 /-- Adjointing the R/A-neutral closure error adjoints all three inputs. -/
 theorem star_secondOrderBornClosureError
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
@@ -241,7 +240,9 @@ theorem BornClosureHypothesis.toAdvanced
     (closure : ensemble.BornClosureHypothesis .retarded energy broadening) :
     ensemble.BornClosureHypothesis .advanced energy broadening := by
   constructor
-  have hstar := congrArg star closure.closureError_eq_zero
+  have hstar := congrArg
+    (fun operator : H →L[ℂ] H => star operator)
+    closure.closureError_eq_zero
   have hzero : star (ensemble.bornClosureError .retarded energy broadening) = 0 := by
     simpa using hstar
   rw [ensemble.star_bornClosureError_retarded] at hzero
