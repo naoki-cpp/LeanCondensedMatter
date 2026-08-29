@@ -13,6 +13,7 @@ set_option linter.style.header false
 # Finite disorder transport API
 
 Public umbrella for exact finite disorder ensembles, disorder resolvents/moments, the shared
-first-Born algebra, the finite retarded-advanced ladder algebra, and the retarded/advanced-Born/SCBA
-approximation layers. Canonical implementations live under `Transport/Disorder/`.
+first-Born algebra, the reusable retarded-advanced covariance ladder algebra, and the
+retarded/advanced-Born/SCBA approximation layers. Canonical implementations live under
+`Transport/Disorder/`.
 -/
