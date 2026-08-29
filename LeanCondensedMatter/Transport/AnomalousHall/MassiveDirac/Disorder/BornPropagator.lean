@@ -116,7 +116,7 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
       (probeEnergy : ℂ) -
         ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
           Complex.I := by
-  simp [continuumBornEffectiveEnergy]
+  simp [continuumBornEffectiveEnergy, sub_eq_add_neg]
 
 @[simp] theorem continuumBornEffectiveMass_retarded
     (v m disorderStrength hbar : ℝ) :
@@ -190,10 +190,7 @@ coefficient. -/
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenScalarCoefficient
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  unfold continuumBornPauliGreenScalarCoefficient
-  rw [star_mul, star_continuumBornEffectiveEnergy_retarded_eq_advanced,
-    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
-  ring
+  simp [continuumBornPauliGreenScalarCoefficient, mul_comm]
 
 /-- The `σₓ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
 coefficient. -/
@@ -204,9 +201,7 @@ coefficient. -/
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenXCoefficient
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  unfold continuumBornPauliGreenXCoefficient
-  rw [star_mul, star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
-  simp [mul_comm]
+  simp [continuumBornPauliGreenXCoefficient, mul_comm]
 
 /-- The `σᵧ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
 coefficient. -/
@@ -217,9 +212,7 @@ coefficient. -/
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenYCoefficient
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  unfold continuumBornPauliGreenYCoefficient
-  rw [star_mul, star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
-  simp [mul_comm]
+  simp [continuumBornPauliGreenYCoefficient, mul_comm]
 
 /-- The `σ_z` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
 coefficient. -/
@@ -230,10 +223,7 @@ coefficient. -/
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenZCoefficient
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  unfold continuumBornPauliGreenZCoefficient
-  rw [star_mul, star_continuumBornEffectiveMass_retarded_eq_advanced,
-    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
-  ring
+  simp [continuumBornPauliGreenZCoefficient, mul_comm]
 
 end
 
