@@ -114,7 +114,7 @@ private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
     hvelocity hm hmF hbroadening]
   simp
 
-/-- Positive-momentum-measure Born damping energy of the metallic upper band.  Its interpretation
+/-- Physical-momentum-measure Born damping energy of the metallic upper band.  Its interpretation
 below uses nonzero `ℏ`, nonzero velocity, positive disorder strength, and the strict metallic regime. -/
 def continuumBornUpperBandDampingEnergy
     (v m fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
