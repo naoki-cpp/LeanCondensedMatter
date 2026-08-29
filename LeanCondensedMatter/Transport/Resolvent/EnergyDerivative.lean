@@ -44,30 +44,15 @@ theorem hasDerivAt_spectralResolvent_energy
       (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
       (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
       energy := by
-  have houter : HasFDerivAt (resolvent hamiltonian)
-      ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
-        (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2) :
-          ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ)
-      (spectralParameter side energy broadening) :=
+  have hcomp :=
     (hasDerivAt_resolvent_spectralParameter
-      side hamiltonian hself energy broadening hbroadening).hasFDerivAt
-      |>.restrictScalars ℝ
-  have hinner :=
-    (hasDerivAt_spectralParameter_energy side energy broadening).hasFDerivAt
-  have hcomp := (houter.comp energy hinner).hasDerivAt
-  have hvalue :
-      (((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
-          (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2) :
-            ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
-        ContinuousLinearMap.toSpanSingleton ℝ (1 : ℂ)) 1) =
-        -(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2 := by
-    simp
-  rw [hvalue] at hcomp
+      side hamiltonian hself energy broadening hbroadening).scomp
+      energy (hasDerivAt_spectralParameter_energy side energy broadening)
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => spectralParameter side x broadening)
     (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
     energy
-  simpa only [spectralResolvent] using hcomp
+  simpa only [one_smul] using hcomp
 
 /-- Compatibility name for the side-indexed real-energy derivative written with the generic
 `resolvent` and `spectralParameter` expressions. -/
