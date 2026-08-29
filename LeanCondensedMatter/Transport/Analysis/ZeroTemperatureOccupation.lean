@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Analysis.LorentzianKernel
+import LeanCondensedMatter.Analysis.Lorentzian.Weighted
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
@@ -76,65 +76,6 @@ theorem zeroTemperatureOccupation_eq_zero_on_center_window
   rw [Set.uIcc_of_le hbounds] at henergy
   apply zeroTemperatureOccupation_eq_zero
   linarith [henergy.1]
-
-/-- If a weight is constant on the centered integration window, it factors out exactly and the
-remaining energy integral is the centered Lorentzian mass. -/
-theorem integral_weight_mul_lorentzian_of_eq_const_on
-    (weight : ℝ → ℝ) (center value radius broadening : ℝ)
-    (hweight : ∀ energy ∈ Set.uIcc (center - radius) (center + radius),
-      weight energy = value) :
-    (∫ energy in center - radius..center + radius,
-        weight energy * lorentzianSpectralKernel (energy - center) broadening) =
-      value * (∫ offset in -radius..radius,
-        lorentzianSpectralKernel offset broadening) := by
-  calc
-    (∫ energy in center - radius..center + radius,
-        weight energy * lorentzianSpectralKernel (energy - center) broadening) =
-        ∫ energy in center - radius..center + radius,
-          value * lorentzianSpectralKernel (energy - center) broadening := by
-      apply intervalIntegral.integral_congr
-      intro energy henergy
-      change weight energy * lorentzianSpectralKernel (energy - center) broadening =
-        value * lorentzianSpectralKernel (energy - center) broadening
-      rw [hweight energy henergy]
-    _ = ∫ offset in -radius..radius,
-        value * lorentzianSpectralKernel offset broadening := by
-      let f : ℝ → ℝ := fun offset => value * lorentzianSpectralKernel offset broadening
-      have hshift := intervalIntegral.integral_comp_sub_right
-        (a := center - radius) (b := center + radius) f center
-      rw [show center - radius - center = -radius by ring,
-        show center + radius - center = radius by ring] at hshift
-      exact hshift
-    _ = value * (∫ offset in -radius..radius,
-        lorentzianSpectralKernel offset broadening) := by
-      rw [intervalIntegral.integral_const_mul]
-
-/-- Local-constant weights inherit the `π` Lorentzian mass in the positive zero-broadening limit. -/
-theorem tendsto_integral_weight_mul_lorentzian_of_eq_const_on
-    (weight : ℝ → ℝ) (center value radius : ℝ) (hradius : 0 < radius)
-    (hweight : ∀ energy ∈ Set.uIcc (center - radius) (center + radius),
-      weight energy = value) :
-    Tendsto
-      (fun broadening : ℝ =>
-        ∫ energy in center - radius..center + radius,
-          weight energy * lorentzianSpectralKernel (energy - center) broadening)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (value * Real.pi)) := by
-  have hmass := tendsto_integral_lorentzianSpectralKernel_symmetric radius hradius
-  have hscaled := (tendsto_const_nhds : Tendsto (fun _ : ℝ => value)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds value)).mul hmass
-  have hfun :
-      (fun broadening : ℝ =>
-        ∫ energy in center - radius..center + radius,
-          weight energy * lorentzianSpectralKernel (energy - center) broadening) =
-      (fun broadening : ℝ =>
-        value * (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening)) := by
-    funext broadening
-    exact integral_weight_mul_lorentzian_of_eq_const_on
-      weight center value radius broadening hweight
-  rw [hfun]
-  exact hscaled
 
 /-- If the Fermi energy lies in a fixed symmetric window, zero-temperature occupation truncates the
 Lorentzian energy integral exactly at the Fermi energy. The strict-vs-nonstrict endpoint difference
