@@ -61,6 +61,10 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
         ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
         (operatorPath energy) :=
     ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
+  change HasDerivAt
+    ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
+    (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
+    energy
   simpa using htrace.comp_hasDerivAt energy hoperator
 
 end
