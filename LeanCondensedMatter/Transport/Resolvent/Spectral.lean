@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
 import LeanCondensedMatter.Transport.Resolvent.Basic
 
@@ -7,12 +8,9 @@ set_option linter.style.header false
 # Spectral action of retarded and advanced resolvents
 
 For a bounded self-adjoint Hamiltonian, the retarded and advanced resolvents act diagonally on every
-Hamiltonian eigenvector. This module owns that dimension-independent eigenvector theorem and derives
-the pure-point Hilbert-basis formulas used by finite Kubo–Bastin and Středa spectral expansions.
-
-The canonical core is stated for an arbitrary spectral side and eigenvector rather than for
-`PurePointLehmannData`. Retarded/advanced names remain public specializations. Pure-point basis and
-squared-resolvent formulas are corollaries.
+Hamiltonian eigenvector. The representation-independent resolvent/eigenvector theorem is owned by
+`Analysis.Operator.Spectral.Resolvent`; this module owns the retarded/advanced and pure-point
+transport specializations.
 
 No trace, occupation integral, contact cancellation, zero-broadening limit, or conductivity claim is
 made here.
@@ -38,39 +36,15 @@ theorem resolvent_spectralParameter_apply_eigenvector
     (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     resolvent hamiltonian (spectralParameter side energy broadening) v =
       (spectralParameter side energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
-  let z := spectralParameter side energy broadening
-  let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - hamiltonian
-  let G : H →L[ℂ] H := resolvent hamiltonian z
-  have hSG : S * G = 1 := by
-    simpa [S, G, z] using
-      spectralShift_mul_resolvent side hamiltonian hself energy broadening hbroadening
-  have hGS : G * S = 1 := by
-    simpa [S, G, z] using
-      resolvent_mul_spectralShift side hamiltonian hself energy broadening hbroadening
-  have hshift : z - (eigenvalue : ℂ) ≠ 0 := by
-    simpa [z] using
-      spectralParameter_sub_real_ne_zero side energy broadening eigenvalue hbroadening
-  have hS_v : S v = (z - (eigenvalue : ℂ)) • v := by
-    change z • v - hamiltonian v = _
-    rw [hv]
-    exact (sub_smul z (eigenvalue : ℂ) v).symm
-  have hS_injective : Function.Injective S := by
-    intro x y hxy
-    calc
-      x = (G * S) x := by rw [hGS]; simp
-      _ = G (S x) := rfl
-      _ = G (S y) := congrArg G hxy
-      _ = (G * S) y := rfl
-      _ = y := by rw [hGS]; simp
-  apply hS_injective
-  calc
-    S (G v) = v := by
-      change (S * G) v = v
-      rw [hSG]
-      simp
-    _ = S ((z - (eigenvalue : ℂ))⁻¹ • v) := by
-      rw [map_smul, hS_v, ← mul_smul]
-      simp [hshift]
+  apply QuantumTheory.resolvent_apply_eigenvector
+  · exact spectralParameter_not_mem_spectrum_of_im_ne_zero
+      hamiltonian hself (spectralParameter side energy broadening)
+        (by
+          rw [spectralParameter_im]
+          exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+  · exact spectralParameter_sub_real_ne_zero
+      side energy broadening eigenvalue hbroadening
+  · exact hv
 
 /-- The retarded resolvent acts on a Hamiltonian eigenvector by the corresponding scalar resolvent
 factor. -/
