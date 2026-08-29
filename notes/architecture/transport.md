@@ -59,6 +59,8 @@ Transport/
     ├── BornCommon.lean
     ├── RetardedBorn.lean
     ├── AdvancedBorn.lean
+    ├── BornAdjoint.lean
+    ├── Ladder.lean
     └── SCBA.lean
 ```
 
@@ -127,30 +129,51 @@ The exact/approximate split remains explicit:
 
 ```text
 Disorder/Finite
-   ├──→ Disorder/Resolvent ───────→ BornCommon ──┬──→ RetardedBorn
-   └──→ Disorder/Moments ─────────→ BornCommon   └──→ AdvancedBorn
-                       └────────────────────────────→ SCBA
+   ├──→ Disorder/Resolvent ───────→ BornCommon ──┬──→ RetardedBorn ──┐
+   └──→ Disorder/Moments ─────────→ BornCommon   └──→ AdvancedBorn ──┤
+                       ├────────────────────────────→ SCBA            ├──→ BornAdjoint
+                       └────────────────────────────→ Ladder          │
 
 Transport/Resolvent.Basic ──→ Disorder/Resolvent
                          └──→ SCBA
 Transport/Resolvent.SelfEnergy ───────────────────→ SCBA
 ```
 
-`Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages.
-`Disorder/Resolvent` owns the exact side-indexed clean/configuration Green operators together with
-conventional retarded/advanced specializations. Its exact Dyson identities remain explicitly
-retarded/advanced because adjunction reverses noncommutative product order. `Disorder/Moments` owns
-the canonical bounded complex-linear exact second-moment action `C₂(X) = E[Vω X Vω]`, proves its
-finite-average and adjoint-compatibility properties, and owns the separate `IsCentered` property
-used to cancel first-order disorder insertions.
+The exact Green-operator chain is
+
+```text
+clean G₀ˢ
+   ↓
+configuration Gωˢ
+   ↓ exact finite operator average
+averaged Ḡˢ = E[Gωˢ]
+```
+
+`Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages. Exact
+operator averaging commutes with adjunction because all probability weights are real.
+`Disorder/Resolvent` owns the exact side-indexed clean, configuration, and disorder-averaged Green
+operators together with conventional retarded/advanced specializations. In particular,
+`averagedGreen side` is the exact finite average `E[Gωˢ]`, and the exact averaged advanced Green
+operator is the adjoint of the exact averaged retarded Green operator. Its configuration-wise Dyson
+identities remain explicitly retarded/advanced because adjunction reverses noncommutative product
+order. `Disorder/Moments` owns the canonical bounded complex-linear exact second-moment action
+`C₂(X) = E[Vω X Vω]`, proves its finite-average and adjoint-compatibility properties, and owns the
+separate `IsCentered` property used to cancel first-order disorder insertions.
 
 `Disorder/BornCommon` owns genuinely R/A-neutral first-Born data and algebra shared by both physical
 specializations: the side-indexed `bornSelfEnergy` and `bornResolventApproximation`, centered
 first-order insertion cancellation, averaging of a configuration-wise second-order expansion, the
-common second-order expression `G₀ + G₀ Σ G₀`, and its exact closure error algebra. Conventional
-retarded/advanced self-energy and approximation names stay in `Disorder/RetardedBorn` and
-`Disorder/AdvancedBorn` as physical specializations. Orientation-sensitive exact Dyson remainders
-and closure hypotheses also stay in those sibling modules; the siblings must not import one another.
+common second-order expression `G₀ + G₀ Σ G₀`, its exact closure-error algebra, and the fact that the
+closure-error construction itself commutes with adjunction. Conventional retarded/advanced
+self-energy and approximation names stay in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn` as
+physical specializations. The exact Born decomposition theorems are stated against the named exact
+averaged Green operators rather than exposing the underlying finite sum.
+
+Orientation-sensitive exact Dyson remainders and physical closure-hypothesis structures stay in the
+retarded/advanced sibling modules; the siblings do not import one another. `Disorder/BornAdjoint`
+is the downstream bridge that proves the advanced exact remainder and closure error are adjoints of
+their retarded counterparts and, consequently, that retarded and advanced Born closure hypotheses
+are equivalent rather than independent physical assumptions.
 
 The Born self-energy and approximation objects use the canonical exact second moment and therefore
 do not themselves require centered disorder. Centering is required only when an exact averaged
@@ -161,6 +184,16 @@ second covariance function or separately supplied linearity/adjoint-compatibilit
 SCBA Green and self-energy solution itself remains approximation data and is not identified with the
 exact disorder average, while its supplied two-sided inverse equations do imply the abstract
 `IsSelfEnergy` relation on either spectral side.
+
+The exact averaged Green operator is not assumed invertible. Consequently the disorder layer does
+not define an unconditional exact averaged self-energy by `G₀⁻¹ - Ḡ⁻¹`: configuration-wise
+invertibility does not imply invertibility of the finite operator average. Any future exact averaged
+self-energy bridge must require an explicit compatible inverse, or an equivalent invertibility
+hypothesis, before applying the generic `IsSelfEnergy` API.
+
+`Disorder/Ladder` owns the retarded-advanced covariance ladder built from the same canonical second
+moment. Conditional infinite resummation remains explicit through supplied inverse data; the ladder
+is not identified with an exact disorder vertex or conductivity without a later bridge theorem.
 
 ## AHE benchmark hierarchy
 
