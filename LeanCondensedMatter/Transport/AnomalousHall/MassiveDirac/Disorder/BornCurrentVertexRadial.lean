@@ -68,14 +68,15 @@ def continuumBornPauliGreenOperator
   have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
     rw [add_comm]
     exact Real.sin_sq_add_cos_sq θ
+  have hradial :
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
+    calc
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
+          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
+      _ = p ^ 2 := by rw [htrig]; ring
+      _ = p ^ 2 + 0 ^ 2 := by ring
   unfold continuumBornPauliGreenDenominator
-  congr 1
-  norm_num
-  calc
-    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) =
-        v ^ 2 * p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
-    _ = v ^ 2 * p ^ 2 := by rw [htrig]; ring
-    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) := by ring
+  rw [hradial]
 
 /-- The Born scalar coefficient is independent of the polar angle. -/
 @[simp] theorem continuumBornPauliGreenScalarCoefficient_polar
@@ -447,6 +448,11 @@ private theorem integral_bornRaPauliXYCoefficient
       volume 0 (2 * Real.pi) := by
     apply Continuous.intervalIntegrable
     fun_prop
+  have hoscZero :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * c2) = 0 := by
+    rw [intervalIntegral.integral_mul_const, bornIntegralComplexCosMulSinZeroTwoPi]
+    simp
   rw [show (fun θ : ℝ => bornRaPauliXYCoefficient
       v m p θ probeEnergy disorderStrength hbar) =
       fun θ : ℝ => c0 +
@@ -454,8 +460,7 @@ private theorem integral_bornRaPauliXYCoefficient
     funext θ
     simp [bornRaPauliXYCoefficient, c0, c2]
     ring]
-  rw [intervalIntegral.integral_add hconst hosc,
-    intervalIntegral.integral_mul_const, bornIntegralComplexCosMulSinZeroTwoPi]
+  rw [intervalIntegral.integral_add hconst hosc, hoscZero]
   simp [continuumBornRetardedAdvancedPauliXAngularYCoefficient, c0]
   ring
 
@@ -611,7 +616,6 @@ theorem continuumBornPauliGreenDenominator_advanced_radial_eq
   rw [continuumBornPauliGreenDenominator_eq_closedForm]
   simp [continuumBornRADenominatorCenter, continuumBornRADenominatorWidth,
     SpectralSide.sign, sub_eq_add_neg]
-  ring
 
 /-- The radial retarded/advanced denominator product is the real sum of squares `A(p)² + B²`. -/
 theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
@@ -630,7 +634,6 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
   unfold continuumBornRADenominatorProduct
   ring_nf
   simp [hI]
-  ring
 
 /-- Closed Born `σₓ` angular coefficient before replacing the inverse denominator factors by their
 real product. -/
@@ -676,7 +679,6 @@ theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_inverseFactors
   push_cast
   ring_nf
   simp [hI]
-  ring
 
 /-- Closed radial `σₓ` coefficient with the common real denominator product. -/
 theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_closed
