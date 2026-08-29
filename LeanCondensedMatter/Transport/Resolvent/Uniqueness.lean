@@ -5,12 +5,13 @@ set_option linter.style.header false
 /-!
 # Resolvent candidate uniqueness
 
-Small algebraic helper for model-specific resolvent constructions.  At a nonzero side-indexed
-broadening, the canonical resolvent is already a right inverse of the spectral shift.  Therefore
-any candidate proved to be a left inverse of the same shift must equal that canonical resolvent.
+This module keeps the retarded/advanced specialization of the generic resolvent-candidate uniqueness
+argument owned by `Analysis.Operator.Spectral.Resolvent`. At a nonzero side-indexed broadening, the
+physical spectral parameter lies outside the spectrum, so any candidate left inverse of the same
+spectral shift equals the canonical resolvent.
 
-Keeping this argument here avoids repeating the same left-inverse/right-inverse calculation in
-spectral projector, Pauli-basis, and later model-specific resolvent consumers.
+The side-independent left-inverse/right-inverse algebra lives upstream in Analysis; model-specific
+spectral projector and Pauli-basis consumers use the physical wrapper below.
 -/
 
 namespace QuantumTheory
@@ -29,18 +30,11 @@ theorem resolvent_eq_of_spectralShift_mul_eq_one
       (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) *
         candidate = 1) :
     resolvent hamiltonian (spectralParameter side energy broadening) = candidate := by
-  have hright := resolvent_mul_spectralShift
-    side hamiltonian hself energy broadening hbroadening
-  calc
-    resolvent hamiltonian (spectralParameter side energy broadening) =
-        resolvent hamiltonian (spectralParameter side energy broadening) * 1 := by simp
-    _ = resolvent hamiltonian (spectralParameter side energy broadening) *
-        ((algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) *
-          candidate) := by rw [hleft]
-    _ = (resolvent hamiltonian (spectralParameter side energy broadening) *
-        (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian)) *
-          candidate := by rw [mul_assoc]
-    _ = candidate := by rw [hright, one_mul]
+  apply QuantumTheory.resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
+  · apply spectralParameter_not_mem_spectrum_of_im_ne_zero hamiltonian hself
+    rw [spectralParameter_im]
+    exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening
+  · exact hleft
 
 end
 end Transport
