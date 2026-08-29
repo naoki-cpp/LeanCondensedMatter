@@ -13,9 +13,11 @@ fermionic adapters   concrete neutral models
                      e.g. AnomalousHall/MassiveDirac
 ```
 
-General operator infrastructure sits further upstream. In particular, the bundled ordinary
-finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean` and is consumed by
-transport trace representations rather than owned by them.
+General analysis infrastructure sits further upstream. In particular, the bundled ordinary
+finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, while the
+model-independent Lorentzian approximate-identity kernel and regular-factor pole extraction are
+owned by `Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than
+owning them.
 
 ## Physical source hierarchy
 
@@ -35,8 +37,6 @@ Transport/
 │   └── EnergyDerivative.lean
 ├── Analysis/
 │   ├── BandOccupation.lean
-│   ├── LorentzianKernel.lean
-│   ├── LorentzianPole.lean
 │   └── ZeroTemperatureOccupation.lean
 ├── KuboBastin/
 │   ├── PurePoint.lean
@@ -64,11 +64,11 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace
-infrastructure is exported instead by `LeanCondensedMatter.Analysis`. The retired
-`Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf modules,
-and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after
-repository-wide consumer audits showed no remaining imports.
+`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace and
+Lorentzian kernel/pole infrastructure are exported instead by `LeanCondensedMatter.Analysis`. The
+retired `Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf
+modules, and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed
+after repository-wide consumer audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
 after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
@@ -209,9 +209,11 @@ and `Streda/Integral.lean` owns the finite-energy surface/sea decomposition. The
 compatibility shims; repository consumers use the canonical `Model` owners directly.
 
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
-Fermi-surface notions, Lorentzian kernel/tail analysis, zero-temperature occupation/Fermi-edge
-weights, and regular-factor Lorentzian pole extraction live under `Transport/Analysis/` and are
-consumed by the massive-Dirac specialization.
+Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
+`Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
+kernel/tail analysis and regular-factor pole extraction are representation-independent and live
+upstream under `Analysis/Lorentzian/`; both generic Transport and the massive-Dirac specialization
+consume those analysis primitives.
 
 ## Generic / concrete boundary
 
