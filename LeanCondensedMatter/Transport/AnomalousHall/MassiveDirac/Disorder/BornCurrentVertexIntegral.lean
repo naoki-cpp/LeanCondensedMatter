@@ -62,12 +62,11 @@ private theorem hasDerivAt_radialLorentzianPrimitive
   have hu :
       HasDerivAt (fun q : ℝ => (v ^ 2 * q ^ 2 - A) / B)
         ((2 * v ^ 2 * p) / B) p := by
-    convert
+    simpa [mul_assoc, mul_left_comm, mul_comm] using
       ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A).div_const B
-      using 1 <;> ring
   have hmain := hu.arctan.const_mul ((2 * v ^ 2 * B)⁻¹)
   unfold radialLorentzianPrimitive
-  convert hmain using 1
+  convert hmain using 1 <;> try rfl
   field_simp [hvelocity, hB]
   ring
 
@@ -155,9 +154,11 @@ private theorem tendsto_integral_radialLorentzian_atTop
   have harctan :
       Tendsto
         (fun pMax : ℝ => Real.arctan ((v ^ 2 * pMax ^ 2 - A) / B))
-        atTop (nhds (Real.pi / 2)) :=
-    Real.tendsto_arctan_atTop.comp
-      (tendsto_radialLorentzianArctanArgument_atTop v A B hvelocity hB)
+        atTop (nhds (Real.pi / 2)) := by
+    simpa [Function.comp_def] using
+      (Real.tendsto_arctan_atTop.comp
+        (tendsto_radialLorentzianArctanArgument_atTop v A B hvelocity hB)).mono_right
+          inf_le_left
   have hconst :
       Tendsto (fun _pMax : ℝ => Real.arctan (A / B))
         atTop (nhds (Real.arctan (A / B))) := tendsto_const_nhds
