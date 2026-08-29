@@ -13,9 +13,12 @@
     },
     {
       "id": "finiteDisorderClosures",
-      "sourceRoots": ["LeanCondensedMatter/Transport"],
+      "sourceRoots": [
+        "LeanCondensedMatter/Analysis/Operator",
+        "LeanCondensedMatter/Transport"
+      ],
       "layers": [
-        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Transport.Core.FiniteTrace"]},
+        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]},
         {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceKernel"]},
         {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite"]},
         {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
