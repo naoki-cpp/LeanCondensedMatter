@@ -167,9 +167,12 @@ both inverse identities visible lets Born and SCBA consumers reuse the same fixe
 silently assuming that a geometric series converges. -/
 structure LadderInverseData
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) where
+  /-- Supplied bounded inverse of the shifted ladder map `I - L`. -/
   inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)
+  /-- The supplied inverse is a left inverse of `Γ ↦ Γ - L(Γ)`. -/
   leftInverse : ∀ vertex : H →L[ℂ] H,
     inverse (vertex - ladder vertex) = vertex
+  /-- The supplied inverse is a right inverse of `Γ ↦ Γ - L(Γ)`. -/
   rightInverse : ∀ source : H →L[ℂ] H,
     inverse source - ladder (inverse source) = source
 
