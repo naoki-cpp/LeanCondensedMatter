@@ -116,8 +116,7 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
       (probeEnergy : ℂ) -
         ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
           Complex.I := by
-  simp [continuumBornEffectiveEnergy]
-  ring
+  simp [continuumBornEffectiveEnergy] <;> ring
 
 @[simp] theorem continuumBornEffectiveMass_retarded
     (v m disorderStrength hbar : ℝ) :
@@ -133,33 +132,109 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
         ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
   simp [continuumBornEffectiveMass]
 
+/-- Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced
+rung.  Its real part is even in the spectral side, while its imaginary part changes sign. -/
+theorem continuumBornPauliGreenDenominator_eq_closedForm
+    (side : SpectralSide)
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    continuumBornPauliGreenDenominator
+        side v m px py probeEnergy disorderStrength hbar =
+      (((1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
+            (probeEnergy ^ 2 - m ^ 2) -
+          v ^ 2 * (px ^ 2 + py ^ 2) : ℝ) : ℂ) +
+        ((2 * side.sign * continuumBornDampingScale v disorderStrength hbar *
+            (probeEnergy ^ 2 + m ^ 2) : ℝ) : ℂ) * Complex.I := by
+  cases side <;>
+    apply Complex.ext <;>
+    simp [continuumBornPauliGreenDenominator, continuumBornEffectiveEnergy,
+      continuumBornEffectiveMass, SpectralSide.sign] <;>
+    ring
+
 /-- Retarded and advanced effective energies are complex conjugates. -/
-theorem conj_continuumBornEffectiveEnergy_retarded
+@[simp] theorem star_continuumBornEffectiveEnergy_retarded_eq_advanced
     (v probeEnergy disorderStrength hbar : ℝ) :
     star (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar) =
       continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar := by
-  simp [continuumBornEffectiveEnergy]
-  ring
+  apply Complex.ext <;>
+    simp [continuumBornEffectiveEnergy]
 
 /-- Retarded and advanced effective masses are complex conjugates. -/
-theorem conj_continuumBornEffectiveMass_retarded
+@[simp] theorem star_continuumBornEffectiveMass_retarded_eq_advanced
     (v m disorderStrength hbar : ℝ) :
     star (continuumBornEffectiveMass .retarded v m disorderStrength hbar) =
       continuumBornEffectiveMass .advanced v m disorderStrength hbar := by
-  simp [continuumBornEffectiveMass]
-  ring
+  apply Complex.ext <;>
+    simp [continuumBornEffectiveMass]
 
-/-- The Born-dressed quadratic retarded and advanced denominators are conjugate. -/
-theorem conj_continuumBornPauliGreenDenominator_retarded
+/-- The Born-dressed quadratic retarded and advanced denominators are complex conjugates. -/
+@[simp] theorem star_continuumBornPauliGreenDenominator_retarded_eq_advanced
     (v m px py probeEnergy disorderStrength hbar : ℝ) :
     star
         (continuumBornPauliGreenDenominator
           .retarded v m px py probeEnergy disorderStrength hbar) =
       continuumBornPauliGreenDenominator
         .advanced v m px py probeEnergy disorderStrength hbar := by
-  simp [continuumBornPauliGreenDenominator,
-    conj_continuumBornEffectiveEnergy_retarded,
-    conj_continuumBornEffectiveMass_retarded]
+  rw [continuumBornPauliGreenDenominator_eq_closedForm,
+    continuumBornPauliGreenDenominator_eq_closedForm]
+  apply Complex.ext <;> simp [SpectralSide.sign] <;> ring
+
+/-- The scalar Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
+coefficient. -/
+@[simp] theorem star_continuumBornPauliGreenScalarCoefficient_retarded_eq_advanced
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    star
+        (continuumBornPauliGreenScalarCoefficient
+          .retarded v m px py probeEnergy disorderStrength hbar) =
+      continuumBornPauliGreenScalarCoefficient
+        .advanced v m px py probeEnergy disorderStrength hbar := by
+  unfold continuumBornPauliGreenScalarCoefficient
+  rw [star_mul, ← Ring.inverse_star,
+    star_continuumBornEffectiveEnergy_retarded_eq_advanced,
+    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
+  ring
+
+/-- The `σₓ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
+coefficient. -/
+@[simp] theorem star_continuumBornPauliGreenXCoefficient_retarded_eq_advanced
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    star
+        (continuumBornPauliGreenXCoefficient
+          .retarded v m px py probeEnergy disorderStrength hbar) =
+      continuumBornPauliGreenXCoefficient
+        .advanced v m px py probeEnergy disorderStrength hbar := by
+  unfold continuumBornPauliGreenXCoefficient
+  rw [star_mul, ← Ring.inverse_star,
+    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
+  simp <;> ring
+
+/-- The `σᵧ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
+coefficient. -/
+@[simp] theorem star_continuumBornPauliGreenYCoefficient_retarded_eq_advanced
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    star
+        (continuumBornPauliGreenYCoefficient
+          .retarded v m px py probeEnergy disorderStrength hbar) =
+      continuumBornPauliGreenYCoefficient
+        .advanced v m px py probeEnergy disorderStrength hbar := by
+  unfold continuumBornPauliGreenYCoefficient
+  rw [star_mul, ← Ring.inverse_star,
+    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
+  simp <;> ring
+
+/-- The `σ_z` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
+coefficient. -/
+@[simp] theorem star_continuumBornPauliGreenZCoefficient_retarded_eq_advanced
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    star
+        (continuumBornPauliGreenZCoefficient
+          .retarded v m px py probeEnergy disorderStrength hbar) =
+      continuumBornPauliGreenZCoefficient
+        .advanced v m px py probeEnergy disorderStrength hbar := by
+  unfold continuumBornPauliGreenZCoefficient
+  rw [star_mul, ← Ring.inverse_star,
+    star_continuumBornEffectiveMass_retarded_eq_advanced,
+    star_continuumBornPauliGreenDenominator_retarded_eq_advanced]
+  ring
 
 end
 
