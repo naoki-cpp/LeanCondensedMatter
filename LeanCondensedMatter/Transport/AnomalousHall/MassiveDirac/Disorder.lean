@@ -12,6 +12,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Transpo
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -29,13 +30,14 @@ the damping onto the upper band, derives the microscopic single-particle scatter
 separately derives the Born transport rate from the Fermi-circle current-relaxation weight.
 
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
-rung, the weak-disorder Born-dressed Pauli propagator data, and the Born-dressed angular/radial rung
-reduction.  The scalar and `σ_z` damping channels remain separate through the Pauli algebra, while
+rung, the weak-disorder Born-dressed Pauli propagator data, the Born-dressed angular/radial rung
+reduction, and the finite-cutoff integration of the resulting one-dimensional Green-product
+kernels.  The scalar and `σ_z` damping channels remain separate through the Pauli algebra, while
 the common retarded-advanced denominator product is exposed as a real sum of squares.  The full
 polar-angle Born rung closes in the `σₓ`/`σᵧ` span, with the transverse sign tied explicitly to the
 shared `Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
 
-Evaluation of the remaining one-dimensional radial integral, its weak-disorder/on-shell limit,
-ladder resummation, identification with the Born transport lifetime, SCBA, simultaneous UV /
+Closed evaluation of the finite-cutoff radial integral, its weak-disorder/on-shell limit, ladder
+resummation, identification with the Born transport lifetime, SCBA, simultaneous UV /
 zero-broadening limits, crossed diagrams, and a complete conductivity theorem remain separate.
 -/
