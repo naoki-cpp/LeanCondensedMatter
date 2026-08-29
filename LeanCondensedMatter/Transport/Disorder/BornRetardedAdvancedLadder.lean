@@ -130,12 +130,12 @@ theorem bornRetardedAdvancedLadderResidual_eq_zero_iff
       simpa only [bornRetardedAdvancedLadderResidual] using hresidual
     calc
       candidate = (candidate - bareVertex) + bareVertex := by
-        noncomm_ring
+        abel
       _ = ensemble.bornRetardedAdvancedLadderMap energy broadening candidate + bareVertex := by
         rw [hdiff]
       _ = bareVertex +
           ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
-        noncomm_ring
+        abel
   · intro hfixed
     have hdiff :
         candidate - bareVertex =
@@ -144,9 +144,9 @@ theorem bornRetardedAdvancedLadderResidual_eq_zero_iff
         candidate - bareVertex =
             (bareVertex +
               ensemble.bornRetardedAdvancedLadderMap energy broadening candidate) - bareVertex := by
-          rw [hfixed]
+          exact congrArg (fun vertex : H →L[ℂ] H => vertex - bareVertex) hfixed
         _ = ensemble.bornRetardedAdvancedLadderMap energy broadening candidate := by
-          noncomm_ring
+          abel
     unfold bornRetardedAdvancedLadderResidual
     rw [hdiff]
     exact sub_self _
