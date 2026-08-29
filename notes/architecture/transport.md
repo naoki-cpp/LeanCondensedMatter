@@ -14,10 +14,12 @@ fermionic adapters   concrete neutral models
 ```
 
 General analysis infrastructure sits further upstream. In particular, the bundled ordinary
-finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, while the
-model-independent Lorentzian approximate-identity kernel and regular-factor pole extraction are
-owned by `Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than
-owning them.
+finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, generic bounded
+resolvent spectrum exclusion, shifted inverse algebra, and eigenvector action are owned by
+`Analysis/Operator/Spectral/Resolvent.lean`, while the model-independent Lorentzian approximate-
+identity kernel and regular-factor pole extraction are owned by
+`Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than owning
+them.
 
 ## Physical source hierarchy
 
@@ -64,11 +66,12 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace and
-Lorentzian kernel/pole infrastructure are exported instead by `LeanCondensedMatter.Analysis`. The
-retired `Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf
-modules, and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed
-after repository-wide consumer audits showed no remaining imports.
+`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
+generic bounded-resolvent spectral algebra, and Lorentzian kernel/pole infrastructure are exported
+instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
+`Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
+`Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
+audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
 after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
@@ -108,10 +111,13 @@ the finite spectral-index layer. They do not define a Středa surface or sea ter
 ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
 residual sea kernel are introduced.
 
-`Resolvent/Spectral.lean` owns the model-independent side-indexed eigenvector action and squared
-pure-point action of resolvents. Retarded/advanced names are public physical specializations.
-Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than re-owning
-resolvent algebra.
+`Analysis/Operator/Spectral/Resolvent.lean` owns the representation-independent bounded-resolvent
+facts: nonreal exclusion from a self-adjoint spectrum, two-sided shifted-resolvent inverse identities,
+and resolvent action on an eigenvector under explicit spectral exclusion. `Resolvent/Basic.lean`
+keeps the retarded/advanced `SpectralSide`, the `E ± iη` parameter convention, Green-operator names,
+and physical specializations of those generic facts. `Resolvent/Spectral.lean` owns the side-indexed
+and pure-point specializations, including squared pure-point action. Pure-point Kubo–Bastin and
+Středa spectral expansions consume these results rather than re-owning resolvent algebra.
 
 `Resolvent/SelfEnergy.lean` owns the model-independent two-sided Dyson relation
 `IsSelfEnergy G₀ G Σ`, stated without requiring inverses as both
