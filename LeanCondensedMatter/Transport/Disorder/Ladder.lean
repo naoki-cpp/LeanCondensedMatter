@@ -18,9 +18,10 @@ self-energy.  The ladder itself is represented as a bounded complex-linear map. 
 specialization `freeRetardedAdvancedLadderCLM` inserts the clean finite-ensemble Green operators;
 SCBA and other consumers can reuse the same owner with their own supplied Green operators.
 
-The one-rung correction, finite fixed-point iterates, and residual below are exact algebraic
-objects.  No convergence, inverse of `1 - L_RA`, Ward identity, SCBA closure, crossed diagram, or
-thermodynamic limit is asserted here.
+The one-rung correction, finite fixed-point iterates, residual, and conditional resummation below
+are exact algebraic objects.  Resummation is available only when a two-sided inverse for `I - L_RA`
+is supplied explicitly.  No convergence, geometric-series expansion, Ward identity, SCBA closure,
+crossed diagram, or thermodynamic limit is asserted here.
 -/
 
 namespace QuantumTheory
@@ -158,6 +159,69 @@ theorem fixedPoint_of_ladderResidual_eq_zero
   have hsub : dressedVertex - bareVertex = ladder dressedVertex :=
     sub_eq_zero.mp hresidual
   simpa [add_comm] using (sub_eq_iff_eq_add).mp hsub
+
+/-- Explicit two-sided inverse data for the shifted ladder map `Γ ↦ Γ - L(Γ)`.
+
+This is an algebraic resummation hypothesis, not a convergence theorem.  Keeping the inverse and
+both inverse identities visible lets Born and SCBA consumers reuse the same fixed-point API without
+silently assuming that a geometric series converges. -/
+structure LadderInverseData
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) where
+  inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)
+  leftInverse : ∀ vertex : H →L[ℂ] H,
+    inverse (vertex - ladder vertex) = vertex
+  rightInverse : ∀ source : H →L[ℂ] H,
+    inverse source - ladder (inverse source) = source
+
+/-- Resummed ladder vertex under explicit invertibility of `I - L`. -/
+noncomputable def resummedLadderVertex
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (inverseData : LadderInverseData ladder)
+    (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
+  inverseData.inverse bareVertex
+
+/-- The resummed vertex solves the shifted linear equation `(I - L) Γ = J`. -/
+theorem resummedLadderVertex_sub_ladder_eq
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (inverseData : LadderInverseData ladder)
+    (bareVertex : H →L[ℂ] H) :
+    resummedLadderVertex ladder inverseData bareVertex -
+        ladder (resummedLadderVertex ladder inverseData bareVertex) = bareVertex := by
+  exact inverseData.rightInverse bareVertex
+
+/-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
+theorem resummedLadderVertex_fixedPoint
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (inverseData : LadderInverseData ladder)
+    (bareVertex : H →L[ℂ] H) :
+    resummedLadderVertex ladder inverseData bareVertex =
+      bareVertex + ladder (resummedLadderVertex ladder inverseData bareVertex) := by
+  exact (sub_eq_iff_eq_add).mp
+    (resummedLadderVertex_sub_ladder_eq ladder inverseData bareVertex)
+
+/-- The named ladder residual vanishes for the conditional resummed vertex. -/
+theorem ladderResidual_resummedLadderVertex_eq_zero
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (inverseData : LadderInverseData ladder)
+    (bareVertex : H →L[ℂ] H) :
+    ladderResidual ladder bareVertex (resummedLadderVertex ladder inverseData bareVertex) = 0 := by
+  exact ladderResidual_eq_zero_of_fixedPoint ladder bareVertex _
+    (resummedLadderVertex_fixedPoint ladder inverseData bareVertex)
+
+/-- Under the same two-sided inverse hypothesis, the ladder fixed point is unique. -/
+theorem eq_resummedLadderVertex_of_fixedPoint
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (inverseData : LadderInverseData ladder)
+    (bareVertex dressedVertex : H →L[ℂ] H)
+    (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
+    dressedVertex = resummedLadderVertex ladder inverseData bareVertex := by
+  have hshift : dressedVertex - ladder dressedVertex = bareVertex :=
+    (sub_eq_iff_eq_add).mpr hfixed
+  calc
+    dressedVertex = inverseData.inverse (dressedVertex - ladder dressedVertex) :=
+      (inverseData.leftInverse dressedVertex).symm
+    _ = inverseData.inverse bareVertex := by rw [hshift]
+    _ = resummedLadderVertex ladder inverseData bareVertex := rfl
 
 end
 end Transport
