@@ -630,7 +630,6 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
     continuumBornPauliGreenDenominator_advanced_radial_eq]
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     rw [pow_two, Complex.I_mul_I]
-  push_cast
   unfold continuumBornRADenominatorProduct
   ring_nf
   simp [hI]
