@@ -117,6 +117,7 @@ theorem continuous_advancedResolvent_energy
     Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
   simpa only [spectralResolvent_advanced] using
     continuous_spectralResolvent_energy .advanced hamiltonian hself broadening
+      (ne_of_gt hbroadening)
 
 end
 
