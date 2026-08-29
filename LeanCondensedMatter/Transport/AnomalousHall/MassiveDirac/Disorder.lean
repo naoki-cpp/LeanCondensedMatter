@@ -24,9 +24,11 @@ propagator and exact momentum-inversion symmetry.  It evaluates the common finit
 denominator, separates ultraviolet-sensitive real and metallic on-shell imaginary pieces, projects
 the damping onto the upper band, and derives the microscopic single-particle scattering rate.
 
-Phase 5 begins with the finite-broadening retarded-advanced current rung.  Its model-specific Pauli
-algebra is kept separate from radial integration and ladder resummation, while the operator order is
-aligned with the shared `Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
+Phase 5 now includes the exact finite-broadening angular reduction of the retarded-advanced
+`x`-current rung.  The model-specific Pauli algebra proves that the full polar-angle integral closes
+in the `σₓ`/`σᵧ` span, with identity and `σ_z` channels removed, while keeping radial integration and
+ladder resummation separate.  The operator order is aligned with the shared
+`Transport.Disorder.Ladder` convention `Gᴿ Γ Gᴬ`.
 
 Transport-lifetime identification, renormalization, SCBA, current-vertex resummation, simultaneous
 UV / zero-broadening limits, and crossed diagrams remain separate.
