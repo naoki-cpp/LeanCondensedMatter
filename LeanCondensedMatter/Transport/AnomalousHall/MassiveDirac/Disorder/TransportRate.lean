@@ -100,7 +100,7 @@ theorem upperBandFermiSurfaceScalarOverlapWeight_eq
           metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
       ring
     rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hm hmF]
-    field_simp [hfermiNe, hv] <;> ring
+    (field_simp [hfermiNe, hv]; ring)
   · exact hENe
   · rw [energy_polar_eq_radial]
     exact hENe
@@ -349,7 +349,7 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
   have hdisorderNe : disorderStrength ≠ 0 := ne_of_gt hdisorder
   have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by positivity
   have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
-  field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe, hsum1, hsum3] <;> ring
+  (field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe, hsum1, hsum3]; ring)
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark.  This bridge does not identify the derivation with a
