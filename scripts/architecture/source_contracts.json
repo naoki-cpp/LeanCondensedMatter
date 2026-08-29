@@ -14,6 +14,12 @@
       ]
     },
     {
+      "id": "finiteTraceAnalysisOwner",
+      "paths": [
+        "LeanCondensedMatter/Analysis/Operator/FiniteTrace.lean"
+      ]
+    },
+    {
       "id": "generalizedCurrentOwners",
       "paths": [
         "LeanCondensedMatter/Analysis/Operator/LinearCommutator.lean",
@@ -38,7 +44,6 @@
       "paths": [
         "LeanCondensedMatter/Transport/Core/ConductivityNormalization.lean",
         "LeanCondensedMatter/Transport/Core/FiniteConductivityTable.lean",
-        "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
         "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
         "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
         "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
@@ -204,6 +209,7 @@
         "LeanCondensedMatter/Transport/StredaResolventSpectral.lean",
         "LeanCondensedMatter/Transport/StredaOccupation.lean",
         "LeanCondensedMatter/Transport/StredaCommonKernel.lean",
+        "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
         "LeanCondensedMatter/Transport/KuboBastin/FiniteTrace.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaOccupation.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaCommonKernel.lean"
@@ -407,14 +413,14 @@
       "id": "transportStredaTraceKernel",
       "path": "LeanCondensedMatter/Transport/Streda/TraceKernel.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Core.FiniteTrace",
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Transport.Streda.OperatorKernel"
       ]
     },
     {
       "id": "transportFiniteDisorder",
       "path": "LeanCondensedMatter/Transport/Disorder/Finite.lean",
-      "modules": ["LeanCondensedMatter.Transport.Core.FiniteTrace"]
+      "modules": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]
     },
     {
       "id": "transportKuboBastinPurePoint",

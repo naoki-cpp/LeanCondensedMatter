@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
-import LeanCondensedMatter.Transport.Core.FiniteTrace
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 
 set_option linter.style.header false
 

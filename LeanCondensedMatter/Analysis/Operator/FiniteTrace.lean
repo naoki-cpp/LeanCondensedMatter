@@ -1,3 +1,4 @@
+import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 
@@ -6,13 +7,17 @@ set_option linter.style.header false
 /-!
 # Ordinary finite-dimensional operator trace
 
-This module owns statistics-neutral ordinary finite-dimensional trace infrastructure for bounded
-endomorphisms. The trace is bundled as a continuous complex-linear functional, with reusable
-cyclicity and differentiation facts.
+This module owns general ordinary finite-dimensional trace infrastructure for bounded endomorphisms.
+The trace is bundled as a continuous complex-linear functional, with reusable cyclicity and
+differentiation facts.
+
+Mathlib supplies the underlying `LinearMap.trace`, finite-dimensional cyclicity, and derivative
+composition machinery, but does not currently bundle this operator trace as a continuous linear
+functional. This file provides that thin analysis-level wrapper.
 
 No Kubo–Bastin, Středa, disorder, model-specific, trace-per-volume, or thermodynamic-limit semantics
-are introduced here. Downstream transport layers apply this primitive where an ordinary finite trace
-is genuinely required.
+are introduced here. Downstream physics layers apply this primitive where an ordinary finite trace is
+genuinely required.
 -/
 
 namespace QuantumTheory.Transport
@@ -51,22 +56,16 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
       (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
       (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
       energy := by
-  have houter : HasFDerivAt (finiteDimensionalOperatorTrace (H := H))
-      ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
-      (operatorPath energy) :=
+  have htrace :
+      HasFDerivAt (finiteDimensionalOperatorTrace (H := H))
+        ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
+        (operatorPath energy) :=
     ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
-  have hcomp := (houter.comp energy hoperator.hasFDerivAt).hasDerivAt
-  have hvalue :
-      ((((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ) ∘SL
-        ContinuousLinearMap.toSpanSingleton ℝ operatorDerivative) 1) =
-        finiteDimensionalOperatorTrace (H := H) operatorDerivative := by
-    simp
-  rw [hvalue] at hcomp
   change HasDerivAt
     ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
     (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
     energy
-  exact hcomp
+  simpa using htrace.comp_hasDerivAt energy hoperator
 
 end
 
