@@ -166,7 +166,7 @@ theorem configurationRetardedGreen_eq_free_add_dyson
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationRetardedGreen energy broadening ω := by
   unfold configurationRetardedGreen freeRetardedGreen configurationGreen freeGreen
-  rw [spectralResolvent_retarded]
+  simp only [spectralResolvent_retarded]
   let shift₀ : H →L[ℂ] H :=
     algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
       ensemble.baseHamiltonian.1
