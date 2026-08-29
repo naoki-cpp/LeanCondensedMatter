@@ -13,6 +13,10 @@ fermionic adapters   concrete neutral models
                      e.g. AnomalousHall/MassiveDirac
 ```
 
+General operator infrastructure sits further upstream. In particular, the bundled ordinary
+finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean` and is consumed by
+transport trace representations rather than owned by them.
+
 ## Physical source hierarchy
 
 Canonical generic owners now live in physical subdirectories rather than in a flat
@@ -23,8 +27,7 @@ Transport/
 ├── Core/
 │   ├── FiniteVolume.lean
 │   ├── ConductivityNormalization.lean
-│   ├── FiniteConductivityTable.lean
-│   └── FiniteTrace.lean
+│   └── FiniteConductivityTable.lean
 ├── Resolvent/
 │   ├── Basic.lean
 │   ├── SelfEnergy.lean
@@ -61,10 +64,11 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. The retired `Transport.Foundations`,
-`Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
-`Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
-audits showed no remaining imports.
+`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace
+infrastructure is exported instead by `LeanCondensedMatter.Analysis`. The retired
+`Transport.Foundations`, `Transport.ResolventAPI`, historical flat generic Transport leaf modules,
+and the declaration-free `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after
+repository-wide consumer audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
 after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
@@ -89,12 +93,14 @@ separates the two-vertex contribution from the explicit observable-variation exp
 the complete response. It does not manufacture an ordinary operator-trace representation from an
 already-computed scalar response.
 
-Ordinary finite-dimensional operator trace is a representation-independent primitive owned by
-`Core/FiniteTrace.lean`. The first genuine traced Bastin kernels are obtained in the static Středa
-layer, where `Streda/TraceKernel.lean` applies that trace to the canonical operator kernels from
-`Streda/OperatorKernel.lean`. Thus finite spectral index and finite Hilbert-space dimension remain
-explicit, distinct assumptions, while ordinary traces are introduced only where an operator-valued
-kernel actually exists to trace.
+Ordinary finite-dimensional operator trace is a representation-independent analysis primitive owned
+by `Analysis/Operator/FiniteTrace.lean`. Mathlib already supplies `LinearMap.trace`, trace cyclicity,
+and the derivative-composition machinery needed by this file; the project-level addition is only the
+continuous-linear functional bundling and its thin reusable consequences. The first genuine traced
+Bastin kernels are obtained in the static Středa layer, where `Streda/TraceKernel.lean` applies that
+analysis primitive to the canonical operator kernels from `Streda/OperatorKernel.lean`. Thus finite
+spectral index and finite Hilbert-space dimension remain explicit, distinct assumptions, while
+ordinary traces are introduced only where an operator-valued kernel actually exists to trace.
 
 `KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
 the boundary: their transition-level APIs are pure-point, while complete response/kernel sums use
