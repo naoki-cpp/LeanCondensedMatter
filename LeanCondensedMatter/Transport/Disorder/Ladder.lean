@@ -180,6 +180,7 @@ noncomputable def resummedLadderVertex
     (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
   inverseData.inverse bareVertex
 
+omit [CompleteSpace H] in
 /-- The resummed vertex solves the shifted linear equation `(I - L) Γ = J`. -/
 theorem resummedLadderVertex_sub_ladder_eq
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -208,6 +209,7 @@ theorem ladderResidual_resummedLadderVertex_eq_zero
   exact ladderResidual_eq_zero_of_fixedPoint ladder bareVertex _
     (resummedLadderVertex_fixedPoint ladder inverseData bareVertex)
 
+omit [CompleteSpace H] in
 /-- Under the same two-sided inverse hypothesis, the ladder fixed point is unique. -/
 theorem eq_resummedLadderVertex_of_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
