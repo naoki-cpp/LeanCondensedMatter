@@ -1,19 +1,19 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
-import LeanCondensedMatter.Transport.Streda.ConductivityMatrix
 import LeanCondensedMatter.Transport.Streda.GeneralizedStatic
 
 set_option linter.style.header false
 
 /-!
-# Static conductivity matrix from finite Kubo–Bastin response
+# Static conductivity components from finite Kubo–Bastin response
 
 The existing one-direction static response remains the canonical diagonal path. This module adds the
 minimal two-direction static response needed to form conductivity components `σ_ij`, without
 rewriting the historical diagonal API.
 
 The component response keeps measured-current and source-field directions independent. Peierls
-contact terms remain explicit before the finite-volume electric-field normalization. A later Ward/
-f-sum bridge identifies each normalized component with a Středa representation.
+contact terms remain explicit before the finite-volume electric-field normalization. Construction of
+a Středa conductivity matrix is intentionally left to the Středa layer, where common physical
+provenance can be kept explicit.
 -/
 
 namespace SecondQuantization
@@ -93,7 +93,7 @@ noncomputable def finiteStaticKuboBastinConductivityComponent
       system data geometry measuredDirection sourceDirection K q eta *
     finiteVolumeConductivityNormalization convention 0 eta
 
-/-- Coordinate-indexed finite static conductivity matrix before any longitudinal/Hall projection. -/
+/-- Coordinate-indexed finite static conductivity matrix before any Středa or Hall projection. -/
 noncomputable def finiteStaticKuboBastinConductivityMatrix
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -105,51 +105,6 @@ noncomputable def finiteStaticKuboBastinConductivityMatrix
   fun i j =>
     finiteStaticKuboBastinConductivityComponent
       convention system data geometry (axes i) (axes j) K q eta
-
-/-- Středa-decomposed static conductivity matrix assembled from proved component representations. -/
-noncomputable def finiteStaticStredaConductivityMatrix
-    {κ : Type*}
-    (axes : κ → E →ₗ[ℝ] ℝ)
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ)
-    (representation : ∀ i j : κ,
-      RegularizedStredaRepresentation
-        (finiteStaticKuboBastinConductivityComponent
-          convention system data geometry (axes i) (axes j) K q eta)) :
-    StaticStredaConductivityMatrix κ :=
-  StaticStredaConductivityMatrix.ofRepresentations
-    (fun i j =>
-      finiteStaticKuboBastinConductivityComponent
-        convention system data geometry (axes i) (axes j) K q eta)
-    representation
-
-/-- The assembled Středa matrix reproduces the finite static conductivity componentwise. -/
-theorem finiteStaticStredaConductivityMatrix_total_eq_kuboBastin
-    {κ : Type*}
-    (axes : κ → E →ₗ[ℝ] ℝ)
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ)
-    (representation : ∀ i j : κ,
-      RegularizedStredaRepresentation
-        (finiteStaticKuboBastinConductivityComponent
-          convention system data geometry (axes i) (axes j) K q eta))
-    (i j : κ) :
-    (finiteStaticStredaConductivityMatrix axes convention system data geometry K q eta
-        representation).total i j =
-      finiteStaticKuboBastinConductivityMatrix
-        axes convention system data geometry K q eta i j := by
-  unfold finiteStaticStredaConductivityMatrix finiteStaticKuboBastinConductivityMatrix
-  exact StaticStredaConductivityMatrix.ofRepresentations_total
-    (fun a b =>
-      finiteStaticKuboBastinConductivityComponent
-        convention system data geometry (axes a) (axes b) K q eta)
-    representation i j
 
 /-- Neutral response-channel packaging used by the static directional charge-current target. -/
 private noncomputable def staticDirectionalChargeResponseChannel
