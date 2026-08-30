@@ -300,55 +300,47 @@ private theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
     Tendsto
       (continuumBornRAWeakDisorderArctanMass m probeEnergy)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi) := by
-  have hdelta : 0 < probeEnergy ^ 2 - m ^ 2 := sub_pos.mpr hmetal
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_nonneg m]
   let distance : ℝ := (probeEnergy ^ 2 - m ^ 2) /
     (2 * (probeEnergy ^ 2 + m ^ 2))
   have hdistance : 0 < distance := by
     dsimp [distance]
-    positivity
-  have hinv : Tendsto (fun gamma : ℝ => gamma⁻¹)
-      (nhdsWithin 0 (Set.Ioi 0)) atTop := tendsto_inv_nhdsGT_zero
+    exact div_pos (sub_pos.mpr hmetal) (mul_pos (by norm_num) hsum)
   have hlarge : Tendsto (fun gamma : ℝ => distance * gamma⁻¹)
       (nhdsWithin 0 (Set.Ioi 0)) atTop := by
     exact (tendsto_const_nhds : Tendsto (fun _ : ℝ => distance)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).pos_mul_atTop hdistance hinv
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).pos_mul_atTop hdistance
+      tendsto_inv_nhdsGT_zero
   have hgamma0 : Tendsto (fun gamma : ℝ => gamma)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     exact tendsto_id.mono_left inf_le_left
   have hsmall : Tendsto (fun gamma : ℝ => -(distance * gamma))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-    have hscaled :=
-      (tendsto_const_nhds : Tendsto (fun _ : ℝ => distance)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).mul hgamma0
-    simpa using hscaled.neg
-  have hargRhs : Tendsto
-      (fun gamma : ℝ => distance * gamma⁻¹ + -(distance * gamma))
-      (nhdsWithin 0 (Set.Ioi 0)) atTop := Tendsto.atTop_add hlarge hsmall
+    simpa using
+      ((tendsto_const_nhds : Tendsto (fun _ : ℝ => distance)
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).mul hgamma0).neg
   have harg : Tendsto
       (fun gamma : ℝ =>
         ((1 - gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2)) /
           (2 * gamma * (probeEnergy ^ 2 + m ^ 2)))
       (nhdsWithin 0 (Set.Ioi 0)) atTop := by
-    refine hargRhs.congr' ?_
+    refine (Tendsto.atTop_add hlarge hsmall).congr' ?_
     filter_upwards [self_mem_nhdsWithin] with gamma hgamma
     have hgamma_pos : 0 < gamma := by
       simpa only [Set.mem_Ioi] using hgamma
     dsimp [distance]
     (field_simp [ne_of_gt hgamma_pos, ne_of_gt hsum]; ring)
-  have harctanWithin := Real.tendsto_arctan_atTop.comp harg
   have harctan : Tendsto
       (fun gamma : ℝ =>
         Real.arctan
           (((1 - gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2)) /
             (2 * gamma * (probeEnergy ^ 2 + m ^ 2))))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) := by
-    simpa [Function.comp_def] using tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
+    simpa [Function.comp_def] using
+      tendsto_nhds_of_tendsto_nhdsWithin (Real.tendsto_arctan_atTop.comp harg)
   have hhalf : Tendsto (fun _gamma : ℝ => Real.pi / 2)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) := tendsto_const_nhds
-  have hmass := hhalf.add harctan
-  have hpi : Real.pi / 2 + Real.pi / 2 = Real.pi := by ring
   change Tendsto
     (fun gamma : ℝ =>
       Real.pi / 2 +
@@ -356,7 +348,7 @@ private theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
           (((1 - gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2)) /
             (2 * gamma * (probeEnergy ^ 2 + m ^ 2))))
     (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)
-  simpa [hpi] using hmass
+  simpa only [show Real.pi / 2 + Real.pi / 2 = Real.pi by ring] using hhalf.add harctan
 
 private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorder_closed
     (v m probeEnergy hbar : ℝ)
