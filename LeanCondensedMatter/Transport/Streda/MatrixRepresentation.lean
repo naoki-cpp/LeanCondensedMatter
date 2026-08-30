@@ -87,6 +87,7 @@ theorem fermiSeaMatrix_swap
             hamiltonian (current j) (current i) energy broadening) := by
         apply intervalIntegral.integral_congr
         intro energy _
+        dsimp
         rw [regularizedStredaResidualSeaTraceKernel_swap]
         ring
     _ = -(∫ energy in lowerEnergy..upperEnergy,
