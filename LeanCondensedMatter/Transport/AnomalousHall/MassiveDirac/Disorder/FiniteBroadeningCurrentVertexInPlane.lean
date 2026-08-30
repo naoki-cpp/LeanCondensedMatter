@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexIntegral
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -134,7 +134,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
     ((Real.sin θ : ℝ) : ℂ) * (aA * bR + aR * bA) +
       Complex.I * ((Real.cos θ : ℝ) : ℂ) * (bR * dA - bA * dR)
   let xCoefficient : ℝ → ℂ := fun θ =>
-    -Complex.I * (aA * dR - aR * dA) +
+    (-Complex.I) * (aA * dR - aR * dA) +
       2 * bR * bA * ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)
   let yCoefficient : ℝ → ℂ := fun θ =>
     aR * aA - dR * dA -
@@ -159,17 +159,17 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
     funext θ
     unfold finiteCutoffContinuumBornDysonGreenOperator
     change
-      matrixOperator
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
           (finiteCutoffContinuumBornDysonGreenMatrix
-              .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax * sigmaY *
-            finiteCutoffContinuumBornDysonGreenMatrix
-              .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax) = _
-    rw [finiteCutoffContinuumBornDysonRetardedAdvancedPauliY_polar_eq]
-    dsimp
-    simp only [map_add, map_smul, map_one]
-    rfl
+            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) *
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) sigmaY *
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+          (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) = _
+    rw [← map_mul, ← map_mul, finiteCutoffContinuumBornDysonRetardedAdvancedPauliY_polar_eq]
+    simp [matrixOperator, map_add, map_smul]
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
     let cSin : ℂ := aA * bR + aR * bA
@@ -196,7 +196,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) =
         -finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
           v m p probeEnergy broadening disorderStrength hbar pMax := by
-    let c0 : ℂ := -Complex.I * (aA * dR - aR * dA)
+    let c0 : ℂ := (-Complex.I) * (aA * dR - aR * dA)
     let c2 : ℂ := 2 * bR * bA
     have hconst : IntervalIntegrable (fun _θ : ℝ => c0) volume 0 (2 * Real.pi) := by
       exact continuous_const.intervalIntegrable 0 (2 * Real.pi)
