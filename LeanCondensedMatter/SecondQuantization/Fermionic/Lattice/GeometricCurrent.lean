@@ -122,6 +122,21 @@ noncomputable def boundedDirectionalContact
       ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
         boundedBondContact K ℏ q x y
 
+/-- The mixed contact is symmetric under exchange of measured and source coordinates. -/
+theorem boundedMixedDirectionalContact_swap
+    (geometry : LatticeGeometry Site E)
+    (direction₁ direction₂ : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalContact geometry direction₁ direction₂ ℏ q K =
+      boundedMixedDirectionalContact geometry direction₂ direction₁ ℏ q K := by
+  unfold boundedMixedDirectionalContact
+  congr 1
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [mul_comm]
+
 /-- The mixed contact reduces to the historical directional contact when the measured and source
 directions coincide. -/
 @[simp]
