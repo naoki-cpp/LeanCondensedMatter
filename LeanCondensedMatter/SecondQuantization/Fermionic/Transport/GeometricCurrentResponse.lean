@@ -55,19 +55,6 @@ theorem peierlsCurrentComponentResponseChannel_hasObservableVariation
     hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
       geometry measuredDirection sourceDirection ℏ q K
 
-/-- For Hermitian hopping and real physical parameters, the source vertex of every Peierls current
-component channel is self-adjoint. -/
-theorem peierlsCurrentComponentResponseChannel_source_isSelfAdjoint
-    (geometry : LatticeGeometry Site E)
-    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes)
-    (ℏ q : ℝ) :
-    IsSelfAdjoint
-      (peierlsCurrentComponentResponseChannel geometry measuredDirection sourceDirection
-        (ℏ : ℂ) (q : ℂ) K).source := by
-  simpa [peierlsCurrentComponentResponseChannel] using
-    isSelfAdjoint_boundedDirectionalCurrent geometry sourceDirection K hK ℏ q
-
 /-- Retarded response of a geometric current component with the source-dependent geometric contact
 term retained. Current self-adjointness is derived from Hermitian hopping and the real physical
 charge rather than supplied externally. -/
