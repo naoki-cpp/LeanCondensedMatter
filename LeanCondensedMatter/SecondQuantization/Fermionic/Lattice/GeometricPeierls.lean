@@ -238,8 +238,28 @@ theorem hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
       HasAlgebraicDerivAt.sum (Finset.univ : Finset Site)
         (fun x _ => hy x)
   have hscaled := hsum.const_smul ((2 : ℂ)⁻¹)
-  simpa [boundedMixedDirectionalPeierlsCurrent,
-    boundedMixedDirectionalContact, smul_smul] using hscaled
+  have hderiv :
+      (2 : ℂ)⁻¹ •
+          ∑ x : Site, ∑ y : Site,
+            (geometry.bondCoordinate measuredDirection x y : ℂ) •
+              ((geometry.bondCoordinate sourceDirection x y : ℂ) •
+                boundedBondContact K ℏ q x y) =
+        (2 : ℂ)⁻¹ •
+          ∑ x : Site, ∑ y : Site,
+            ((geometry.bondCoordinate measuredDirection x y *
+              geometry.bondCoordinate sourceDirection x y : ℝ) : ℂ) •
+                boundedBondContact K ℏ q x y := by
+    congr 1
+    apply Finset.sum_congr rfl
+    intro x _
+    apply Finset.sum_congr rfl
+    intro y _
+    rw [smul_smul]
+    congr 1
+    norm_num
+  unfold boundedMixedDirectionalPeierlsCurrent boundedMixedDirectionalContact
+  rw [← hderiv]
+  exact hscaled
 
 /-- Differentiating the geometric Peierls current gives the squared-coordinate contact operator. -/
 theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
