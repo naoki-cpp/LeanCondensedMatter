@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexNormalizationBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.Tactic
@@ -127,32 +126,6 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXLongitudinalTrace_eq
   rw [map_add, map_smul, map_smul]
   rw [finiteDimensionalOperatorTrace_sigmaX_mul_sigmaX,
     finiteDimensionalOperatorTrace_sigmaX_mul_sigmaY]
-  ring
-
-/-- Exact finite-cutoff bridge between the longitudinal RA trace block and the normalized Born
-current-rung coefficient.  The factor `1/2` is the Pauli trace pairing `Tr(σₓσₓ)=2`; the external
-disorder-line / momentum-measure prefactor remains explicit. -/
-theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_prefactor_mul_half_longitudinalTrace
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hX : IntervalIntegrable
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXRadialXIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaX)
-      volume 0 pMax)
-    (hY : IntervalIntegrable
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXRadialYIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaY)
-      volume 0 pMax) :
-    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-        v m probeEnergy disorderStrength hbar pMax : ℂ) =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-        ((1 / 2 : ℂ) *
-          finiteCutoffContinuumBornRetardedAdvancedPauliXLongitudinalTrace
-            v m probeEnergy disorderStrength hbar pMax) := by
-  rw [coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_prefactor_mul_greenProduct]
-  rw [finiteCutoffContinuumBornRetardedAdvancedPauliXLongitudinalTrace_eq
-    v m probeEnergy disorderStrength hbar pMax hX hY]
   ring
 
 end
