@@ -1,0 +1,68 @@
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening
+
+set_option linter.style.header false
+
+/-!
+# Physical finite-broadening Born-Dyson dressed current
+
+This module connects the solved dimensionless finite-`η` Born-Dyson ladder vertex to the existing
+massive-Dirac physical dressed-current boundary.  The ladder algebra and physical current convention
+remain owned by their existing modules; this file only composes them.
+
+No Kubo/Středa trace insertion, conductivity theorem, broadening/disorder limit, or exact disorder-
+average claim is made here.
+-/
+
+namespace AnomalousHall.MassiveDirac
+
+noncomputable section
+
+/-- The solved finite-`η` Born-Dyson ladder vertex is exactly the existing in-plane Pauli vertex
+with the model-specific solved coefficients. -/
+theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_eq_inPlanePauliVertexOperator
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedVertex
+        v m probeEnergy broadening disorderStrength hbar pMax =
+      inPlanePauliVertexOperator
+        (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+          v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+          v m probeEnergy broadening disorderStrength hbar pMax) := by
+  rfl
+
+/-- Physical dressed longitudinal charge current obtained from the solved normalized finite-`η`
+Born-Dyson ladder coefficients. -/
+noncomputable def finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  dressedLongitudinalCurrentOperator e v
+    (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+
+/-- The physical solved current is electron charge times the Dirac velocity multiplying the solved
+dimensionless finite-`η` Born-Dyson Pauli vertex. -/
+theorem finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator_eq_chargeVelocity_smul
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
+        e v m probeEnergy broadening disorderStrength hbar pMax =
+      (((-e * v : ℝ) : ℂ)) •
+        finiteCutoffContinuumBornDysonLadderSolvedVertex
+          v m probeEnergy broadening disorderStrength hbar pMax := by
+  rw [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator,
+    dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator,
+    finiteCutoffContinuumBornDysonLadderSolvedVertex_eq_inPlanePauliVertexOperator]
+
+/-- With zero disorder strength, the solved physical finite-`η` current reduces exactly to the bare
+longitudinal charge-current operator. -/
+@[simp] theorem finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator_zero_disorder
+    (e v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
+      e v m probeEnergy broadening 0 hbar pMax = currentOperator .x e v := by
+  simp [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator]
+
+end
+
+end AnomalousHall.MassiveDirac
