@@ -268,7 +268,7 @@ theorem continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
   rw [continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar]
 
 /-- Arctangent mass controlling the infinite-cutoff metallic weak-disorder limit. -/
-def continuumBornRAWeakDisorderArctanMass
+private def continuumBornRAWeakDisorderArctanMass
     (m probeEnergy gamma : ℝ) : ℝ :=
   Real.pi / 2 +
     Real.arctan
@@ -319,7 +319,7 @@ theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_weakDisorde
   (field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero]; ring)
 
 /-- In the metallic regime the infinite-cutoff arctangent mass tends to `π` as `γ → 0⁺`. -/
-theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
+private theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
     (m probeEnergy : ℝ) (hmetal : m ^ 2 < probeEnergy ^ 2) :
     Tendsto
       (continuumBornRAWeakDisorderArctanMass m probeEnergy)
