@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.AngularReduction
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
@@ -275,68 +276,6 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
       finiteCutoffContinuumBornDysonZCoefficient
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
 
-private theorem integral_finiteBorn_complex_cos_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
-  simpa using
-    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
-
-private theorem integral_finiteBorn_complex_sin_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  simpa using
-    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
-
-private theorem integral_finiteBorn_cos_sq_sub_sin_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 - Real.sin θ ^ 2) = 0 := by
-  simpa using
-    (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-
-private theorem integral_finiteBorn_complex_cos_sq_sub_sin_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.cos θ ^ 2 - Real.sin θ ^ 2 : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            rfl
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.cos θ ^ 2 - Real.sin θ ^ 2) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)
-    _ = 0 := by
-      rw [integral_finiteBorn_cos_sq_sub_sin_sq_zero_two_pi]
-      simp
-
-private theorem integral_finiteBorn_sin_mul_cos_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
-  simpa using
-    (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
-
-private theorem integral_finiteBorn_complex_cos_mul_sin_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.sin θ * Real.cos θ : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            ring
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.sin θ * Real.cos θ) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.sin θ * Real.cos θ)
-    _ = 0 := by
-      rw [integral_finiteBorn_sin_mul_cos_zero_two_pi]
-      simp
-
 private theorem integral_finiteBorn_cos_sin_linear_zero (cCos cSin : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
@@ -350,8 +289,8 @@ private theorem integral_finiteBorn_cos_sin_linear_zero (cCos cSin : ℂ) :
     fun_prop
   rw [intervalIntegral.integral_add hcos hsin,
     intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    integral_finiteBorn_complex_cos_zero_two_pi,
-    integral_finiteBorn_complex_sin_zero_two_pi]
+    integral_complex_cos_zero_two_pi,
+    integral_complex_sin_zero_two_pi]
   simp
 
 private theorem integral_finiteBorn_inPlane_modes (c0 c2 cMix : ℂ) :
@@ -377,8 +316,8 @@ private theorem integral_finiteBorn_inPlane_modes (c0 c2 cMix : ℂ) :
   rw [intervalIntegral.integral_add (hconst.add hquad) hmix,
     intervalIntegral.integral_add hconst hquad,
     intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    integral_finiteBorn_complex_cos_sq_sub_sin_sq_zero_two_pi,
-    integral_finiteBorn_complex_cos_mul_sin_zero_two_pi]
+    integral_complex_cos_sq_sub_sin_sq_zero_two_pi,
+    integral_complex_cos_mul_sin_zero_two_pi]
   simp
 
 private theorem integral_finiteBorn_pauli_decomposition
