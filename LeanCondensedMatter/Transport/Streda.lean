@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.Streda.GeneralizedStatic
 import LeanCondensedMatter.Transport.Streda.ConductivityMatrix
 import LeanCondensedMatter.Transport.Streda.TraceSpectral
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
+import LeanCondensedMatter.Transport.Streda.MatrixRepresentation
 import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 
 set_option linter.style.header false

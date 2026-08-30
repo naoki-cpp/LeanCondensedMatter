@@ -74,75 +74,94 @@ theorem regularizedStredaResidualSeaTraceKernel_swap
         hamiltonian current₂ current₁ energy broadening := by
   let R : H →L[ℂ] H := retardedResolvent hamiltonian energy broadening
   let A : H →L[ℂ] H := advancedResolvent hamiltonian energy broadening
-  have hres : ∀ X Y : H →L[ℂ] H,
-      regularizedStredaResidualSeaOperatorKernel
+  have hbastin : ∀ X Y : H →L[ℂ] H,
+      regularizedBastinOperatorIntegrand
           hamiltonian X Y energy broadening =
-        (1 / 2 : ℂ) •
-          (-(X * R * Y * R ^ 2) + X * R * Y * A ^ 2 +
-            Y * A * X * R ^ 2 - Y * A * X * A ^ 2 +
-            X * R ^ 2 * Y * R - X * R ^ 2 * Y * A -
-            Y * A ^ 2 * X * R + Y * A ^ 2 * X * A) := by
+        X * R ^ 2 * Y * R - Y * A ^ 2 * X * R -
+          X * R ^ 2 * Y * A + Y * A ^ 2 * X * A := by
     intro X Y
     dsimp [R, A]
-    unfold regularizedStredaResidualSeaOperatorKernel
-      regularizedBastinOperatorIntegrand
-      regularizedStredaSurfacePrimitiveOperatorDerivative
+    unfold regularizedBastinOperatorIntegrand retardedAdvancedResolventDifference
+    noncomm_ring
+  have hsurfaceDerivative : ∀ X Y : H →L[ℂ] H,
       smrckaStredaSurfaceFactorDerivative
+          hamiltonian X Y energy broadening =
+        -(X * R ^ 2 * Y * R) + Y * A ^ 2 * X * R +
+          X * R ^ 2 * Y * A - Y * A ^ 2 * X * A -
+          X * R * Y * R ^ 2 + Y * A * X * R ^ 2 +
+          X * R * Y * A ^ 2 - Y * A * X * A ^ 2 := by
+    intro X Y
+    dsimp [R, A]
+    unfold smrckaStredaSurfaceFactorDerivative
       retardedAdvancedResolventDifference
       retardedAdvancedResolventDifferenceDerivative
     noncomm_ring
+  have hsea : ∀ X Y : H →L[ℂ] H,
+      regularizedStredaResidualSeaTraceKernel
+          hamiltonian X Y energy broadening =
+        (1 / 2 : ℂ) *
+          (finiteDimensionalOperatorTrace (H := H) (X * R ^ 2 * Y * R) -
+            finiteDimensionalOperatorTrace (H := H) (X * R * Y * R ^ 2) +
+            finiteDimensionalOperatorTrace (H := H) (X * A * Y * A ^ 2) -
+            finiteDimensionalOperatorTrace (H := H) (X * A ^ 2 * Y * A)) := by
+    intro X Y
+    have hRA₁ :
+        finiteDimensionalOperatorTrace (H := H) (Y * A ^ 2 * X * R) =
+          finiteDimensionalOperatorTrace (H := H) (X * R * Y * A ^ 2) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm
+          (H := H) (Y * A * A) (X * R))
+    have hRA₂ :
+        finiteDimensionalOperatorTrace (H := H) (Y * A * X * R ^ 2) =
+          finiteDimensionalOperatorTrace (H := H) (X * R ^ 2 * Y * A) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm
+          (H := H) (Y * A) (X * R * R))
+    have hAA₁ :
+        finiteDimensionalOperatorTrace (H := H) (Y * A ^ 2 * X * A) =
+          finiteDimensionalOperatorTrace (H := H) (X * A * Y * A ^ 2) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm
+          (H := H) (Y * A * A) (X * A))
+    have hAA₂ :
+        finiteDimensionalOperatorTrace (H := H) (Y * A * X * A ^ 2) =
+          finiteDimensionalOperatorTrace (H := H) (X * A ^ 2 * Y * A) := by
+      simpa [pow_two, mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm
+          (H := H) (Y * A) (X * A * A))
+    unfold regularizedStredaResidualSeaTraceKernel
+      regularizedStredaResidualSeaOperatorKernel
+      regularizedStredaSurfacePrimitiveOperatorDerivative
+    rw [hbastin X Y, hsurfaceDerivative X Y]
+    simp only [map_sub, map_add, map_neg, map_smul, smul_eq_mul]
+    rw [hRA₁, hRA₂, hAA₁, hAA₂]
+    ring
   have hRR₁ :
       finiteDimensionalOperatorTrace (H := H) (current₂ * R ^ 2 * current₁ * R) =
         finiteDimensionalOperatorTrace (H := H) (current₁ * R * current₂ * R ^ 2) := by
-    simpa [mul_assoc] using
+    simpa [pow_two, mul_assoc] using
       (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * R ^ 2) (current₁ * R))
+        (H := H) (current₂ * R * R) (current₁ * R))
   have hRR₂ :
       finiteDimensionalOperatorTrace (H := H) (current₂ * R * current₁ * R ^ 2) =
         finiteDimensionalOperatorTrace (H := H) (current₁ * R ^ 2 * current₂ * R) := by
-    simpa [mul_assoc] using
+    simpa [pow_two, mul_assoc] using
       (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * R) (current₁ * R ^ 2))
+        (H := H) (current₂ * R) (current₁ * R * R))
   have hAA₁ :
       finiteDimensionalOperatorTrace (H := H) (current₂ * A * current₁ * A ^ 2) =
         finiteDimensionalOperatorTrace (H := H) (current₁ * A ^ 2 * current₂ * A) := by
-    simpa [mul_assoc] using
+    simpa [pow_two, mul_assoc] using
       (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * A) (current₁ * A ^ 2))
+        (H := H) (current₂ * A) (current₁ * A * A))
   have hAA₂ :
       finiteDimensionalOperatorTrace (H := H) (current₂ * A ^ 2 * current₁ * A) =
         finiteDimensionalOperatorTrace (H := H) (current₁ * A * current₂ * A ^ 2) := by
-    simpa [mul_assoc] using
+    simpa [pow_two, mul_assoc] using
       (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * A ^ 2) (current₁ * A))
-  have hRA₁ :
-      finiteDimensionalOperatorTrace (H := H) (current₁ * R * current₂ * A ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₂ * A ^ 2 * current₁ * R) := by
-    simpa [mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₁ * R) (current₂ * A ^ 2))
-  have hRA₂ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * A * current₁ * R ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * R ^ 2 * current₂ * A) := by
-    simpa [mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * A) (current₁ * R ^ 2))
-  have hRA₃ :
-      finiteDimensionalOperatorTrace (H := H) (current₂ * R * current₁ * A ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₁ * A ^ 2 * current₂ * R) := by
-    simpa [mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₂ * R) (current₁ * A ^ 2))
-  have hRA₄ :
-      finiteDimensionalOperatorTrace (H := H) (current₁ * A * current₂ * R ^ 2) =
-        finiteDimensionalOperatorTrace (H := H) (current₂ * R ^ 2 * current₁ * A) := by
-    simpa [mul_assoc] using
-      (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current₁ * A) (current₂ * R ^ 2))
-  unfold regularizedStredaResidualSeaTraceKernel
-  rw [hres current₁ current₂, hres current₂ current₁]
-  simp only [map_smul, map_add, map_sub, map_neg]
-  rw [hRR₁, hRR₂, hAA₁, hAA₂, hRA₁, hRA₂, hRA₃, hRA₄]
+        (H := H) (current₂ * A * A) (current₁ * A))
+  rw [hsea current₁ current₂, hsea current₂ current₁]
+  rw [hRR₁, hRR₂, hAA₁, hAA₂]
   ring
 
 /-- The traced surface primitive has the traced operator derivative at every positive broadening. -/

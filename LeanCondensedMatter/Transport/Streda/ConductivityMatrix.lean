@@ -43,9 +43,8 @@ noncomputable def total (conductivity : StaticStredaConductivityMatrix ι) : ι 
 @[simp]
 theorem fermiSea_self
     (conductivity : StaticStredaConductivityMatrix ι) (i : ι) :
-    conductivity.fermiSea i i = 0 := by
-  have h := conductivity.fermiSea_swap i i
-  linear_combination h
+    conductivity.fermiSea i i = 0 :=
+  CharZero.eq_neg_self_iff.mp (conductivity.fermiSea_swap i i)
 
 /-- Longitudinal conductivity along one selected coordinate. -/
 noncomputable def longitudinal
