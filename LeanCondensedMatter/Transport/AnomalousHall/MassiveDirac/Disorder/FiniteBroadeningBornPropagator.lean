@@ -186,6 +186,8 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax *
       finiteCutoffContinuumBornDysonGreenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonShiftMatrix,
@@ -196,7 +198,7 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
       finiteCutoffContinuumBornDysonZCoefficient,
       Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hden] <;>
-    simp [finiteCutoffContinuumBornDysonDenominator, Complex.I_sq] <;>
+    simp [finiteCutoffContinuumBornDysonDenominator, hI] <;>
     ring
 
 /-- Operator-level Dyson shift corresponding exactly to the existing finite-cutoff Born self-energy. -/
