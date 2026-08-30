@@ -189,16 +189,22 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
   ext i j
-  fin_cases i <;> fin_cases j <;>
+  fin_cases i <;> fin_cases j
+  all_goals
     simp [finiteCutoffContinuumBornDysonShiftMatrix,
       finiteCutoffContinuumBornDysonGreenMatrix,
       finiteCutoffContinuumBornDysonScalarCoefficient,
       finiteCutoffContinuumBornDysonXCoefficient,
       finiteCutoffContinuumBornDysonYCoefficient,
       finiteCutoffContinuumBornDysonZCoefficient,
-      Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
-    field_simp [hden] <;>
-    simp [finiteCutoffContinuumBornDysonDenominator, hI] <;>
+      Matrix.mul_apply, sigmaX, sigmaY, sigmaZ]
+  all_goals
+    field_simp [hden]
+  all_goals
+    simp [finiteCutoffContinuumBornDysonDenominator]
+  all_goals
+    rw [hI]
+  all_goals
     ring
 
 /-- Operator-level Dyson shift corresponding exactly to the existing finite-cutoff Born self-energy. -/
