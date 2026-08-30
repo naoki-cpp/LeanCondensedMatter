@@ -64,7 +64,7 @@ theorem currentOperator_eq_charge_smul_velocityOperator
   exact map_smul φ _ _
 
 /-- Direction-indexed Pauli form of the physical massive-Dirac charge current. -/
-@[simp] theorem currentOperator_eq_chargeVelocity_smul_directionPauli
+theorem currentOperator_eq_chargeVelocity_smul_directionPauli
     (direction : Direction2) (e v : ℝ) :
     currentOperator direction e v =
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
