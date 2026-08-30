@@ -13,6 +13,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexAngular
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRegression
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.InPlaneLadder
@@ -46,20 +47,23 @@ and a separate finite-cutoff Born-Dyson propagator candidate that retains the ex
 broadening `η` through the existing finite-`η` continuum Born self-energy.  For that finite-`η`
 Born-Dyson path, a single arbitrary in-plane vertex theorem reduces the full-angle rung to the
 coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`; the `σₓ` and `σᵧ` basis
-channels are corollaries rather than separate derivations.  Its zero-disorder `σₓ` basis case is
-regressed exactly against the existing clean finite-broadening angular rung.  Radial integration
-and scalar-disorder normalization remain downstream of this fixed-radius layer.  The
-zero-external-broadening angular/radial rung, finite-cutoff integration, normalization bridge,
-fixed-cutoff metallic weak-disorder limit, and scalar `τ_tr / τ_sp` bridge remain separate.
-Separately, the common real radial denominator integral is evaluated in closed arctangent form and
-its convergent `pMax → +∞` limit is proved before taking `γ → 0⁺`; this also exposes the leading
-positive `σᵧ` coefficient in repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA
-Fermi-surface trace channel is shared by these paths.
+channels are corollaries rather than separate derivations.  The radial layer now integrates those
+coefficients with the polar Jacobian and attaches the scalar-disorder line together with
+`momentumMeasurePrefactor` exactly once, yielding the normalized finite-cutoff pair consumed by the
+canonical in-plane ladder algebra.  Its zero-disorder `σₓ` angular basis case is regressed exactly
+against the existing clean finite-broadening angular rung, while the normalized radial rung vanishes
+at zero disorder because the external scalar-disorder line is explicit.  The zero-external-
+broadening angular/radial rung, finite-cutoff integration, normalization bridge, fixed-cutoff
+metallic weak-disorder limit, and scalar `τ_tr / τ_sp` bridge remain separate.  Separately, the
+common real radial denominator integral is evaluated in closed arctangent form and its convergent
+`pMax → +∞` limit is proved before taking `γ → 0⁺`; this also exposes the leading positive `σᵧ`
+coefficient in repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace
+channel is shared by these paths.
 
 The exact coefficient-level fixed point for any supplied in-plane rung pair `(X,Y)` is also exposed,
 including its orientation-sensitive `σᵧ` component and the visible determinant condition for
-uniqueness.  Instantiating those coefficients with the normalized finite-`η` Born-Dyson radial
-integral, then connecting the solved dressed current to conductivity, remains downstream.  RTA
-recovery, SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete
-conductivity theorem remain separate.
+uniqueness.  Instantiating that fixed-point solution with the normalized finite-`η` Born-Dyson pair,
+then connecting the solved dressed current to conductivity, remains downstream.  RTA recovery,
+SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity
+theorem remain separate.
 -/
