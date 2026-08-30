@@ -53,6 +53,34 @@ noncomputable def currentOperator
     (direction : Direction2) (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (current direction e v)
 
+/-- Canonical bounded-operator form of the massive-Dirac `x` charge current. -/
+@[simp] theorem currentOperator_x_eq_pauli (e v : ℝ) :
+    currentOperator .x e v =
+      (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaX := by
+  have hcurrent :
+      current .x e v = (((-e * v : ℝ) : ℂ)) • sigmaX := by
+    simp [current, velocity, directionPauli, smul_smul]
+  change
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (current .x e v) =
+      (((-e * v : ℝ) : ℂ)) •
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) sigmaX
+  rw [hcurrent, map_smul]
+
+/-- Canonical bounded-operator form of the massive-Dirac `y` charge current. -/
+@[simp] theorem currentOperator_y_eq_pauli (e v : ℝ) :
+    currentOperator .y e v =
+      (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaY := by
+  have hcurrent :
+      current .y e v = (((-e * v : ℝ) : ℂ)) • sigmaY := by
+    simp [current, velocity, directionPauli, smul_smul]
+  change
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (current .y e v) =
+      (((-e * v : ℝ) : ℂ)) •
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) sigmaY
+  rw [hcurrent, map_smul]
+
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
 theorem hamiltonian_isHermitian (v m px py : ℝ) :
     (hamiltonian v m px py).IsHermitian := by
