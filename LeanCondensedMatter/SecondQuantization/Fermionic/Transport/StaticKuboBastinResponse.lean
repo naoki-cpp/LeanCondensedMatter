@@ -12,10 +12,11 @@ explicit Peierls contact term, and the finite-volume electric-field normalizatio
 Smrčka–Středa bridge therefore begins by fixing `ω = 0` and keeping measured-current and source-field
 coordinates independent.
 
-The primary static object in this module is the coordinate-indexed conductivity matrix. A supplied
-regularized Středa representation for each current-current vertex component splits that matrix into
-Fermi-surface, Fermi-sea, and explicit contact contributions. Longitudinal and Hall responses are
-then projections of the same matrix rather than separate foundational formulas.
+The primary static object in this module is the coordinate-indexed conductivity matrix. Peierls
+contact terms remain explicit in the upstream Kubo response; a componentwise Ward/f-sum bridge is
+responsible for identifying the normalized physical conductivity with a Středa representation. The
+final Středa matrix then contains only its Fermi-surface and Fermi-sea contributions. Longitudinal
+and Hall responses are projections of that same matrix rather than separate foundational formulas.
 
 The Středa surface/sea split is not identified with an intrinsic/extrinsic mechanism split. Genuine
 operator traces remain owned by `Transport.Streda.TraceKernel` and `TraceRepresentation`.
@@ -58,6 +59,20 @@ noncomputable def finiteStaticPeierlsContactComponentResponse
   purePointNormalizedExpectation system data
     (boundedMixedDirectionalContact geometry measuredDirection sourceDirection
       (system.hbar : ℂ) (q : ℂ) K)
+
+/-- The Peierls contact response is symmetric under exchange of measured and source coordinates. -/
+theorem finiteStaticPeierlsContactComponentResponse_swap
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E)
+    (direction₁ direction₂ : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q : ℝ) :
+    finiteStaticPeierlsContactComponentResponse
+        system data geometry direction₁ direction₂ K q =
+      finiteStaticPeierlsContactComponentResponse
+        system data geometry direction₂ direction₁ K q := by
+  unfold finiteStaticPeierlsContactComponentResponse
+  rw [boundedMixedDirectionalContact_swap]
 
 /-- Complete zero-frequency vector-potential response coefficient for conductivity component `ij`.
 This is the two-vertex response plus the Peierls contact response. -/
@@ -113,9 +128,9 @@ noncomputable def finiteStaticKuboBastinConductivityMatrix
     finiteStaticKuboBastinConductivityComponent
       convention system data geometry (axes i) (axes j) K q eta
 
-/-- Středa-decomposed static conductivity matrix for a chosen coordinate family. The required
-regularized Středa representation is supplied independently for every two-vertex component; the
-Peierls contact remains an explicit third contribution. -/
+/-- Středa-decomposed static conductivity matrix for a chosen coordinate family. Each normalized
+conductivity component must first be equipped with a proved `RegularizedStredaRepresentation`; this
+is where the upstream Peierls contact and Ward/f-sum bridge are discharged. -/
 noncomputable def finiteStaticStredaConductivityMatrix
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -126,21 +141,17 @@ noncomputable def finiteStaticStredaConductivityMatrix
     (K : LocallyFiniteHopping Site) (q eta : ℝ)
     (representation : ∀ i j : κ,
       RegularizedStredaRepresentation
-        (finiteStaticKuboBastinVectorPotentialVertexComponentResponse
-          system data geometry (axes i) (axes j) K q eta)) :
+        (finiteStaticKuboBastinConductivityComponent
+          convention system data geometry (axes i) (axes j) K q eta)) :
     StaticStredaConductivityMatrix κ :=
   StaticStredaConductivityMatrix.ofRepresentations
     (fun i j =>
-      finiteStaticKuboBastinVectorPotentialVertexComponentResponse
-        system data geometry (axes i) (axes j) K q eta)
-    (fun i j =>
-      finiteStaticPeierlsContactComponentResponse
-        system data geometry (axes i) (axes j) K q)
+      finiteStaticKuboBastinConductivityComponent
+        convention system data geometry (axes i) (axes j) K q eta)
     representation
-    (finiteVolumeConductivityNormalization convention 0 eta)
 
-/-- The total of the Středa-decomposed matrix is the finite static Kubo–Bastin conductivity matrix
-component by component. -/
+/-- The total Středa matrix is the finite static Kubo–Bastin conductivity matrix component by
+component. -/
 theorem finiteStaticStredaConductivityMatrix_total_eq_kuboBastin
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -151,17 +162,19 @@ theorem finiteStaticStredaConductivityMatrix_total_eq_kuboBastin
     (K : LocallyFiniteHopping Site) (q eta : ℝ)
     (representation : ∀ i j : κ,
       RegularizedStredaRepresentation
-        (finiteStaticKuboBastinVectorPotentialVertexComponentResponse
-          system data geometry (axes i) (axes j) K q eta))
+        (finiteStaticKuboBastinConductivityComponent
+          convention system data geometry (axes i) (axes j) K q eta))
     (i j : κ) :
     (finiteStaticStredaConductivityMatrix axes convention system data geometry K q eta
         representation).total i j =
       finiteStaticKuboBastinConductivityMatrix
         axes convention system data geometry K q eta i j := by
   unfold finiteStaticStredaConductivityMatrix finiteStaticKuboBastinConductivityMatrix
-    finiteStaticKuboBastinConductivityComponent
-  rw [StaticStredaConductivityMatrix.ofRepresentations_total]
-  rw [finiteStaticKuboBastinVectorPotentialComponentResponse_eq_vertex_add_contact]
+  exact StaticStredaConductivityMatrix.ofRepresentations_total
+    (fun a b =>
+      finiteStaticKuboBastinConductivityComponent
+        convention system data geometry (axes a) (axes b) K q eta)
+    representation i j
 
 /-- Neutral response-channel packaging used by the historical diagonal static target. -/
 private noncomputable def staticDirectionalChargeResponseChannel
