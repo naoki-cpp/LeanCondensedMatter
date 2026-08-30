@@ -593,22 +593,6 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
     finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq
       v m p probeEnergy broadening disorderStrength hbar pMax 0 1
 
-@[simp] theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_one_zero
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
-        v m p probeEnergy broadening disorderStrength hbar pMax 1 0 =
-      finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliXIntegral
-        v m p probeEnergy broadening disorderStrength hbar pMax := by
-  rfl
-
-@[simp] theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_zero_one
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
-        v m p probeEnergy broadening disorderStrength hbar pMax 0 1 =
-      finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral
-        v m p probeEnergy broadening disorderStrength hbar pMax := by
-  rfl
-
 end
 
 end AnomalousHall.MassiveDirac
