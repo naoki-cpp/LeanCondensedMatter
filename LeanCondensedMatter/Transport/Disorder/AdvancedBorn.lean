@@ -46,7 +46,8 @@ theorem averagedAdvancedGreen_eq_free_add_exactRemainder
     ensemble.averagedAdvancedGreen energy broadening =
       ensemble.freeAdvancedGreen energy broadening +
         ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-  simpa [averagedAdvancedGreen, exactSecondOrderAdvancedRemainder] using
+  simpa only [averagedGreen_advanced, freeGreen_advanced,
+    exactSecondOrderAdvancedRemainder] using
     averagedGreen_eq_free_add_exactSecondOrderRemainder
       ensemble hcentered .advanced energy broadening hbroadening
 
