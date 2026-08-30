@@ -194,9 +194,9 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
       finiteCutoffContinuumBornDysonXCoefficient,
       finiteCutoffContinuumBornDysonYCoefficient,
       finiteCutoffContinuumBornDysonZCoefficient,
-      finiteCutoffContinuumBornDysonDenominator,
       Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hden] <;>
+    simp [finiteCutoffContinuumBornDysonDenominator, Complex.I_sq] <;>
     ring
 
 /-- Operator-level Dyson shift corresponding exactly to the existing finite-cutoff Born self-energy. -/
@@ -224,12 +224,23 @@ theorem finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
     finiteCutoffContinuumBornSelfEnergy_eq_coefficients
       side v m probeEnergy broadening disorderStrength hbar pMax hbroadening,
     hamiltonianOperator_eq_pauli]
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change _ = φ (finiteCutoffContinuumBornDysonShiftMatrix
-    side v m px py probeEnergy broadening disorderStrength hbar pMax)
-  unfold finiteCutoffContinuumBornDysonShiftMatrix
-    finiteCutoffContinuumBornEffectiveEnergy finiteCutoffContinuumBornEffectiveMass
-  simp [Algebra.algebraMap_eq_smul_one, map_add, map_sub, map_smul]
+  have hmatrix :
+      matrixOperator
+          (finiteCutoffContinuumBornDysonShiftMatrix
+            side v m px py probeEnergy broadening disorderStrength hbar pMax) =
+        finiteCutoffContinuumBornEffectiveEnergy
+            side v m probeEnergy broadening disorderStrength hbar pMax •
+          (1 : DiracHilbert →L[ℂ] DiracHilbert) -
+        (((v * px : ℝ) : ℂ)) • matrixOperator sigmaX -
+        (((v * py : ℝ) : ℂ)) • matrixOperator sigmaY -
+        finiteCutoffContinuumBornEffectiveMass
+            side v m probeEnergy broadening disorderStrength hbar pMax •
+          matrixOperator sigmaZ := by
+    unfold finiteCutoffContinuumBornDysonShiftMatrix matrixOperator
+    simp only [map_sub, map_smul, map_one]
+  rw [hmatrix]
+  unfold finiteCutoffContinuumBornEffectiveEnergy finiteCutoffContinuumBornEffectiveMass
+  simp [Algebra.algebraMap_eq_smul_one]
   module
 
 /-- At nonzero external broadening and nonzero Born-Dyson denominator, the explicit propagator
@@ -287,7 +298,8 @@ massive-Dirac Pauli Green operator. -/
     finiteCutoffContinuumBornDysonZCoefficient
     pauliGreenOperator pauliGreenScalarCoefficient pauliGreenXCoefficient
     pauliGreenYCoefficient pauliGreenZCoefficient
-  simp
+  simp [finiteCutoffContinuumBornEffectiveEnergy,
+    finiteCutoffContinuumBornEffectiveMass, matrixOperator, map_add, map_smul]
 
 /-- Pointwise longitudinal RA trace channel with finite external broadening retained in both
 Born-Dyson Green operators and an arbitrary supplied source/dressed vertex. -/
