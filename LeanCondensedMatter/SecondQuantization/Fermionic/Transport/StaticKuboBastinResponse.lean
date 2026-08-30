@@ -99,21 +99,6 @@ noncomputable def finiteStaticKuboBastinConductivityComponent
       system data geometry measuredDirection sourceDirection K q eta *
     finiteVolumeConductivityNormalization convention 0 eta
 
-/-- The static component definition agrees exactly with the finite spectral Kubo–Bastin component
-specialized to zero driving frequency. -/
-theorem finiteStaticKuboBastinConductivityComponent_eq_spectral
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E)
-    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
-    finiteStaticKuboBastinConductivityComponent
-        convention system data geometry measuredDirection sourceDirection K q eta =
-      finiteKuboBastinSpectralConductivityComponent
-        system data geometry measuredDirection sourceDirection K q 0 eta convention := by
-  rfl
-
 /-- Coordinate-indexed finite static conductivity matrix before choosing longitudinal or Hall
 projections. -/
 noncomputable def finiteStaticKuboBastinConductivityMatrix
@@ -218,9 +203,14 @@ theorem finiteStaticKuboBastinConductivityComponent_self
         convention system data geometry direction direction K q eta =
       finiteStaticKuboBastinDirectionalConductivity
         convention system data geometry direction K q eta := by
-  rw [finiteStaticKuboBastinConductivityComponent_eq_spectral]
-  exact finiteKuboBastinSpectralConductivityComponent_self
-    system data geometry direction K q 0 eta convention
+  unfold finiteStaticKuboBastinConductivityComponent
+    finiteStaticKuboBastinVectorPotentialComponentResponse
+    finiteStaticKuboBastinChannelResponse
+    finiteKuboBastinSpectralChannelResponse
+    peierlsCurrentComponentResponseChannel
+    finiteStaticKuboBastinDirectionalConductivity
+    finiteKuboBastinSpectralDirectionalConductivity
+  rw [boundedMixedDirectionalContact_self]
 
 /-- The static diagonal conductivity is the retained vector-potential coefficient multiplied by the
 exact zero-frequency finite-volume electric-field normalization. -/
