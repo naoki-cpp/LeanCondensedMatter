@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Advanced finite-disorder Born self-energy and closure boundary
 
 This module provides conventional advanced physical names for the side-indexed Born data owned by
-`Disorder.BornCommon`, and proves the centered exact-average decomposition using the exact advanced
-configuration Dyson identity from `Disorder.Resolvent`.
+`Disorder.BornCommon`, and specializes the centered exact-average decomposition proved there from
+the exact side-indexed configuration Dyson identities.
 
 The exact second-order remainder, closure error, and closure hypothesis are canonical side-indexed
 objects in `BornCommon`; the declarations here are advanced specializations. Their retarded and
@@ -33,17 +33,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-private theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
-    (hcentered : ensemble.IsCentered)
-    (energy broadening : ℝ) :
-    ensemble.operatorAverage (fun ω =>
-      ensemble.freeAdvancedGreen energy broadening *
-        (ensemble.impurityPotential ω).1 *
-          ensemble.freeAdvancedGreen energy broadening) = 0 := by
-  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble hcentered
-    (ensemble.freeAdvancedGreen energy broadening)
-    (ensemble.freeAdvancedGreen energy broadening)
-
 /-- Advanced specialization of the canonical exact second-order Dyson remainder. -/
 noncomputable def exactSecondOrderAdvancedRemainder
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -57,25 +46,9 @@ theorem averagedAdvancedGreen_eq_free_add_exactRemainder
     ensemble.averagedAdvancedGreen energy broadening =
       ensemble.freeAdvancedGreen energy broadening +
         ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-  simpa [averagedAdvancedGreen, averagedGreen, exactSecondOrderAdvancedRemainder] using
-    operatorAverage_eq_free_add_remainder_of_secondOrder
-      ensemble
-      (ensemble.freeAdvancedGreen energy broadening)
-      (fun ω => ensemble.configurationAdvancedGreen energy broadening ω)
-      (fun ω =>
-        ensemble.freeAdvancedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening)
-      (fun ω =>
-        ensemble.configurationAdvancedGreen energy broadening ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening)
-      (configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
-        ensemble energy broadening hbroadening)
-      (operatorAverage_firstOrderAdvancedTerm_eq_zero
-        ensemble hcentered energy broadening)
+  simpa [averagedAdvancedGreen, exactSecondOrderAdvancedRemainder] using
+    averagedGreen_eq_free_add_exactSecondOrderRemainder
+      ensemble hcentered .advanced energy broadening hbroadening
 
 /-- Conventional advanced name for the canonical side-indexed first-Born self-energy. -/
 noncomputable def bornAdvancedSelfEnergy
