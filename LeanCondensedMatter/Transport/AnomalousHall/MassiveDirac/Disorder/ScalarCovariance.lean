@@ -97,8 +97,8 @@ theorem freeRetardedGreen_eq_massiveDirac
     (energy broadening : ℝ) :
     model.ensemble.freeRetardedGreen energy broadening =
       retardedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.freeRetardedGreen
-  rw [model.baseHamiltonian_eq]
+  unfold FiniteDisorderEnsemble.freeRetardedGreen FiniteDisorderEnsemble.freeGreen
+  rw [spectralResolvent_retarded, model.baseHamiltonian_eq]
 
 /-- The clean advanced Green operator of this finite ensemble is the advanced resolvent of the
 concrete massive-Dirac Hamiltonian. -/
@@ -106,8 +106,8 @@ theorem freeAdvancedGreen_eq_massiveDirac
     (energy broadening : ℝ) :
     model.ensemble.freeAdvancedGreen energy broadening =
       advancedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.freeAdvancedGreen
-  rw [model.baseHamiltonian_eq]
+  unfold FiniteDisorderEnsemble.freeAdvancedGreen FiniteDisorderEnsemble.freeGreen
+  rw [spectralResolvent_advanced, model.baseHamiltonian_eq]
 
 /-- Massive-Dirac scalar-disorder retarded Born self-energy. This is the exact finite second moment
 applied to the clean retarded propagator, not an exact disorder-averaged self-energy. -/

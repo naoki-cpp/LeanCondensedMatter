@@ -46,6 +46,22 @@ theorem resolvent_mul_spectralShift_of_not_mem
   exact hres.val_inv_mul
 
 omit [CompleteSpace H] in
+/-- Outside the spectrum, any right inverse of the spectral shift equals the canonical resolvent. -/
+theorem resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
+    (operator candidate : H →L[ℂ] H) (z : ℂ)
+    (hz : z ∉ spectrum ℂ operator)
+    (hleft : (algebraMap ℂ (H →L[ℂ] H) z - operator) * candidate = 1) :
+    resolvent operator z = candidate := by
+  have hright := resolvent_mul_spectralShift_of_not_mem operator z hz
+  calc
+    resolvent operator z = resolvent operator z * 1 := by simp
+    _ = resolvent operator z *
+        ((algebraMap ℂ (H →L[ℂ] H) z - operator) * candidate) := by rw [hleft]
+    _ = (resolvent operator z *
+        (algebraMap ℂ (H →L[ℂ] H) z - operator)) * candidate := by rw [mul_assoc]
+    _ = candidate := by rw [hright, one_mul]
+
+omit [CompleteSpace H] in
 /-- A resolvent acts on an eigenvector by the scalar resolvent factor. No self-adjointness is needed;
 only exclusion of the spectral parameter from the spectrum and the corresponding nonzero scalar
 shift. -/

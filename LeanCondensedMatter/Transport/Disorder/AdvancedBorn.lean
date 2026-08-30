@@ -7,17 +7,17 @@ set_option linter.style.header false
 /-!
 # Advanced finite-disorder Born self-energy and closure boundary
 
-Exact retarded/advanced Green operators and configuration-wise Dyson identities are owned by
-`Disorder.Resolvent`. This module consumes those exact identities together with the canonical exact
-second moment and explicit centering property from `Disorder.Moments` and the R/A-neutral proof
-algebra from `Disorder.BornCommon`.
+This module provides conventional advanced physical names for the side-indexed Born data owned by
+`Disorder.BornCommon`, and proves the centered exact-average decomposition using the exact advanced
+configuration Dyson identity from `Disorder.Resolvent`.
 
-The advanced specialization uses the same exact finite second-moment action as the retarded
-specialization, but keeps its orientation-sensitive Dyson remainder and physical names locally.
-The Born objects themselves do not require centered disorder; centering enters when the exact
-averaged Dyson expansion is reduced by cancellation of the first-order term. No self-consistency,
-vertex resummation, Ward identity, trace-per-volume construction, or thermodynamic limit is
-introduced.
+The exact second-order remainder, closure error, and closure hypothesis are canonical side-indexed
+objects in `BornCommon`; the declarations here are advanced specializations. Their retarded and
+advanced canonical forms are related by adjunction upstream, so no independent covariance or
+closure-error relation is supplied here.
+
+No self-consistency, vertex resummation, Ward identity, trace-per-volume construction, or
+thermodynamic limit is introduced.
 -/
 
 namespace QuantumTheory
@@ -44,15 +44,10 @@ private theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
     (ensemble.freeAdvancedGreen energy broadening)
     (ensemble.freeAdvancedGreen energy broadening)
 
-/-- Exact finite average of the full advanced second-order Dyson remainder. -/
+/-- Advanced specialization of the canonical exact second-order Dyson remainder. -/
 noncomputable def exactSecondOrderAdvancedRemainder
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.operatorAverage (fun ω =>
-    ensemble.configurationAdvancedGreen energy broadening ω *
-      (ensemble.impurityPotential ω).1 *
-        ensemble.freeAdvancedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening)
+  ensemble.exactSecondOrderRemainder .advanced energy broadening
 
 /-- For centered disorder, the exact averaged advanced Green operator is the clean advanced Green
 operator plus the full exact second-order remainder. -/
@@ -82,52 +77,43 @@ theorem averagedAdvancedGreen_eq_free_add_exactRemainder
       (operatorAverage_firstOrderAdvancedTerm_eq_zero
         ensemble hcentered energy broadening)
 
-/-- Weak-scattering advanced Born self-energy: the exact finite second moment evaluated on the
-clean advanced Green operator. The definition itself does not require centered disorder. -/
+/-- Conventional advanced name for the canonical side-indexed first-Born self-energy. -/
 noncomputable def bornAdvancedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening)
+  ensemble.bornSelfEnergy .advanced energy broadening
 
 /-- The advanced Born self-energy is the exact finite second moment with a clean advanced internal
 propagator. -/
 theorem bornAdvancedSelfEnergy_eq_secondMoment
     (energy broadening : ℝ) :
     bornAdvancedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) :=
-  rfl
+      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) := by
+  rw [bornAdvancedSelfEnergy, bornSelfEnergy_eq_secondMoment, freeGreen_advanced]
 
 @[simp]
 theorem bornSelfEnergy_advanced
     (energy broadening : ℝ) :
     ensemble.bornSelfEnergy .advanced energy broadening =
-      ensemble.bornAdvancedSelfEnergy energy broadening := by
-  unfold bornSelfEnergy bornAdvancedSelfEnergy
-  rw [freeGreen_advanced]
+      ensemble.bornAdvancedSelfEnergy energy broadening :=
+  rfl
 
-/-- Canonical second-order Born approximation to the averaged advanced Green operator. This
-definition does not require centering. -/
+/-- Conventional advanced name for the canonical side-indexed second-order Born approximation.
+This definition does not require centering. -/
 noncomputable def bornAdvancedResolventApproximation
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornResolventApproximation
-    (ensemble.freeAdvancedGreen energy broadening)
-    (bornAdvancedSelfEnergy ensemble energy broadening)
+  ensemble.bornResolventApproximation .advanced energy broadening
 
 @[simp]
 theorem bornResolventApproximation_advanced
     (energy broadening : ℝ) :
     ensemble.bornResolventApproximation .advanced energy broadening =
-      ensemble.bornAdvancedResolventApproximation energy broadening := by
-  unfold bornResolventApproximation bornAdvancedResolventApproximation
-  rw [freeGreen_advanced, bornSelfEnergy_advanced]
+      ensemble.bornAdvancedResolventApproximation energy broadening :=
+  rfl
 
-/-- Exact error between the full averaged advanced Dyson remainder and the advanced Born closure.
-Its definition does not assert that centered disorder holds or that the error is small. -/
+/-- Advanced specialization of the canonical exact Born closure error. -/
 noncomputable def bornAdvancedClosureError
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornClosureError
-    (ensemble.freeAdvancedGreen energy broadening)
-    (ensemble.exactSecondOrderAdvancedRemainder energy broadening)
-    (bornAdvancedSelfEnergy ensemble energy broadening)
+  ensemble.bornClosureError .advanced energy broadening
 
 /-- Exact decomposition of the averaged advanced Green operator into the Born approximation plus
 its retained closure error. Centering is used only through the exact averaged-Dyson reduction. -/
@@ -139,19 +125,17 @@ theorem averagedAdvancedGreen_eq_bornApproximation_add_error
         bornAdvancedClosureError ensemble energy broadening := by
   rw [averagedAdvancedGreen_eq_free_add_exactRemainder
     ensemble hcentered energy broadening hbroadening]
-  unfold bornAdvancedResolventApproximation bornAdvancedClosureError
+  unfold bornAdvancedResolventApproximation bornAdvancedClosureError bornClosureError
+  rw [ensemble.freeGreen_advanced, ensemble.bornSelfEnergy_advanced]
   exact free_add_remainder_eq_bornApproximation_add_error
     (ensemble.freeAdvancedGreen energy broadening)
     (ensemble.exactSecondOrderAdvancedRemainder energy broadening)
     (bornAdvancedSelfEnergy ensemble energy broadening)
 
-/-- Explicit closure hypothesis required before identifying the exact advanced average with its
-second-order Born approximation. Centering is a separate hypothesis on the exact averaging theorem. -/
-structure AdvancedBornClosureHypothesis
-    (energy broadening : ℝ) : Prop where
-  /-- The retained exact advanced closure error vanishes. -/
-  closureError_eq_zero :
-    bornAdvancedClosureError ensemble energy broadening = 0
+/-- Advanced physical specialization of the canonical side-indexed Born closure hypothesis. -/
+abbrev AdvancedBornClosureHypothesis
+    (energy broadening : ℝ) : Prop :=
+  ensemble.BornClosureHypothesis .advanced energy broadening
 
 /-- Equality with the advanced Born approximation follows only under both centered disorder and the
 explicit closure hypothesis. -/
@@ -163,7 +147,9 @@ theorem averagedAdvancedGreen_eq_bornApproximation
       bornAdvancedResolventApproximation ensemble energy broadening := by
   rw [averagedAdvancedGreen_eq_bornApproximation_add_error
     ensemble hcentered energy broadening hbroadening]
-  rw [AdvancedBornClosureHypothesis.closureError_eq_zero closure, add_zero]
+  have hclosure : bornAdvancedClosureError ensemble energy broadening = 0 := by
+    simpa [bornAdvancedClosureError] using closure.closureError_eq_zero
+  rw [hclosure, add_zero]
 
 end FiniteDisorderEnsemble
 

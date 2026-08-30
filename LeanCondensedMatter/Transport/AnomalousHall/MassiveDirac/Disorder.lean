@@ -13,8 +13,11 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexIntegral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexNormalizationBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexTransportBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexIntegral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 
@@ -33,15 +36,14 @@ separately derives the Born transport rate from the Fermi-circle current-relaxat
 
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
 rung, the weak-disorder Born-dressed Pauli propagator data, the Born-dressed angular/radial rung
-reduction, the finite-cutoff integration of the resulting one-dimensional Green-product kernels,
-and the exact arctangent evaluation of their common real radial denominator integral.  The scalar
-and `σ_z` damping channels remain separate through the Pauli algebra, while the common
-retarded-advanced denominator product is exposed as a real sum of squares.  The radial cutoff is
-removed by a separate convergent `pMax → +∞` theorem at positive Born width.  After that cutoff
-limit, the scalar-disorder one-rung coefficients are exposed as real APIs and their metallic
-`γ → 0⁺` behavior is proved: the longitudinal coefficient has a finite nonzero limit while the
-repository-orientation transverse coefficient is linear in `γ` to leading order.
+reduction, finite-cutoff integration of the resulting one-dimensional Green-product kernels, and
+the exact bridge from that integrated Green-product coefficient to the fully normalized
+longitudinal `σₓ` current-rung coefficient.  Its fixed-cutoff metallic weak-disorder limit gives the
+canonical scalar rung coefficient and the corresponding transport-over-single-particle lifetime
+factor.  Separately, the common real radial denominator integral is evaluated in closed arctangent
+form and its convergent `pMax → +∞` limit is proved before taking `γ → 0⁺`; this also exposes the
+leading positive `σᵧ` coefficient in repository orientation `Gᴿ σₓ Gᴬ`.
 
-Ladder resummation, identification with the Born transport lifetime, SCBA, simultaneous UV /
-zero-broadening limits, crossed diagrams, and a complete conductivity theorem remain separate.
+Kubo insertion, SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete
+conductivity theorem remain separate.
 -/
