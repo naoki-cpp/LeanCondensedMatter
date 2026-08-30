@@ -72,8 +72,23 @@ theorem massiveDiracStredaFiberTotalResponse_eq_tracedBastin
         (hamiltonianOperator v m px py)
         (currentOperator measured e v) (currentOperator source e v)
         broadening lowerEnergy upperEnergy occupation := by
-  change data.toStaticStredaConductivityMatrix.total measured source = _
-  exact data.toStaticStredaConductivityMatrix_total_eq_tracedBastin measured source
+  unfold massiveDiracStredaFiberTotalResponse
+    TracedStredaMatrixAnalyticData.fermiSurfaceMatrix
+    TracedStredaMatrixAnalyticData.fermiSeaMatrix
+  calc
+    regularizedStredaFermiSurface
+          (data.pairData measured source).toRegularizedStredaIntegralData +
+        regularizedStredaFermiSea
+          (data.pairData measured source).toRegularizedStredaIntegralData =
+      regularizedBastinEnergyIntegral
+        (data.pairData measured source).toRegularizedStredaIntegralData :=
+      (regularizedBastinEnergyIntegral_eq_surface_add_sea
+        (data.pairData measured source).toRegularizedStredaIntegralData).symm
+    _ = regularizedTracedBastinEnergyIntegral
+        (hamiltonianOperator v m px py)
+        (currentOperator measured e v) (currentOperator source e v)
+        broadening lowerEnergy upperEnergy occupation :=
+      (data.pairData measured source).regularizedBastinEnergyIntegral_eq_traced
 
 /-- The diagonal fiber response is the corresponding diagonal traced Bastin energy integral. -/
 theorem massiveDiracStredaFiberLongitudinalResponse_eq_tracedBastin
