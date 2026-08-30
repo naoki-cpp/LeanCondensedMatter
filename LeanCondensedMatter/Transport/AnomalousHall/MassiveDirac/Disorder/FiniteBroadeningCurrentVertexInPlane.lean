@@ -170,6 +170,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
             probeEnergy broadening disorderStrength hbar pMax) = _
     rw [← map_mul, ← map_mul, finiteCutoffContinuumBornDysonRetardedAdvancedPauliY_polar_eq]
     simp [matrixOperator, map_add, map_smul]
+    rfl
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
     let cSin : ℂ := aA * bR + aR * bA
