@@ -55,15 +55,8 @@ theorem dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVe
     (e v : ℝ) (alpha beta : ℂ) :
     dressedLongitudinalCurrentOperator e v alpha beta =
       (((-e * v : ℝ) : ℂ)) • inPlanePauliVertexOperator alpha beta := by
-  have hx :
-      currentOperator .x e v =
-        (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaX := by
-    simp [currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
-  have hy :
-      currentOperator .y e v =
-        (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaY := by
-    simp [currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
-  rw [dressedLongitudinalCurrentOperator, hx, hy]
+  rw [dressedLongitudinalCurrentOperator, currentOperator_x_eq_pauli,
+    currentOperator_y_eq_pauli]
   simp [inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
 
 /-- The undressed in-plane coefficient pair recovers the repository's canonical longitudinal
