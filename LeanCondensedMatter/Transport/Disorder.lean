@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.Finite
 import LeanCondensedMatter.Transport.Disorder.Resolvent
+import LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy
 import LeanCondensedMatter.Transport.Disorder.Moments
 import LeanCondensedMatter.Transport.Disorder.BornCommon
 import LeanCondensedMatter.Transport.Disorder.RetardedBorn
@@ -12,8 +13,8 @@ set_option linter.style.header false
 /-!
 # Finite disorder transport API
 
-Public umbrella for exact finite disorder ensembles, disorder resolvents/moments, the shared
-first-Born algebra, the reusable retarded-advanced covariance ladder algebra, and the
-retarded/advanced-Born/SCBA approximation layers. Canonical implementations live under
-`Transport/Disorder/`.
+Public umbrella for exact finite disorder ensembles, disorder resolvents/moments, the conditional
+exact averaged-Green/self-energy bridge, the shared first-Born algebra, the reusable
+retarded-advanced covariance ladder algebra, and the retarded/advanced-Born/SCBA approximation
+layers. Canonical implementations live under `Transport/Disorder/`.
 -/

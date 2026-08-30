@@ -97,6 +97,26 @@ def main() -> int:
         )
 
     disorder_umbrella = TRANSPORT / "Disorder.lean"
+    averaged_self_energy_module = "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy"
+    require_import(
+        errors,
+        disorder_umbrella,
+        averaged_self_energy_module,
+        root=ROOT,
+        description="disorder public umbrella",
+    )
+    averaged_self_energy_path = TRANSPORT / "Disorder" / "AveragedSelfEnergy.lean"
+    for module in (
+        "LeanCondensedMatter.Transport.Disorder.Resolvent",
+        "LeanCondensedMatter.Transport.Resolvent.SelfEnergy",
+    ):
+        require_import(
+            errors,
+            averaged_self_energy_path,
+            module,
+            root=ROOT,
+            description="exact averaged self-energy bridge",
+        )
     born_common_module = "LeanCondensedMatter.Transport.Disorder.BornCommon"
     require_import(
         errors,
