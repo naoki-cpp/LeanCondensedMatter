@@ -60,20 +60,6 @@ noncomputable def finiteStaticPeierlsContactComponentResponse
     (boundedMixedDirectionalContact geometry measuredDirection sourceDirection
       (system.hbar : ℂ) (q : ℂ) K)
 
-/-- The Peierls contact response is symmetric under exchange of measured and source coordinates. -/
-theorem finiteStaticPeierlsContactComponentResponse_swap
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E)
-    (direction₁ direction₂ : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q : ℝ) :
-    finiteStaticPeierlsContactComponentResponse
-        system data geometry direction₁ direction₂ K q =
-      finiteStaticPeierlsContactComponentResponse
-        system data geometry direction₂ direction₁ K q := by
-  unfold finiteStaticPeierlsContactComponentResponse
-  rw [boundedMixedDirectionalContact_swap]
-
 /-- Complete zero-frequency vector-potential response coefficient for conductivity component `ij`.
 This is the two-vertex response plus the Peierls contact response. -/
 noncomputable def finiteStaticKuboBastinVectorPotentialComponentResponse
