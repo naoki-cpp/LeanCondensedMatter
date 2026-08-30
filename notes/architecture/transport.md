@@ -158,23 +158,25 @@ adjoint-compatibility properties, and owns the separate `IsCentered` property us
 first-order disorder insertions.
 
 `Disorder/BornCommon` owns the canonical side-indexed first-Born data shared by both physical
-specializations: `bornSelfEnergy`, `bornResolventApproximation`, the orientation-aware
-`exactSecondOrderRemainder`, `bornClosureError`, and `BornClosureHypothesis`, together with centered
-first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. It also owns the centered exact-average
-decomposition `averagedGreen_eq_free_add_exactSecondOrderRemainder`, selecting the retarded-left and
-advanced-right exact remainder orientations from the canonical configuration Dyson API. The exact
-remainder's retarded/advanced values, the self-energy, the truncated Green, and the closure error are
-proved to be related by adjunction. Conventional retarded/advanced names and averaged-Green theorem
-names remain in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn` as thin physical specializations;
-the siblings do not import one another.
+specializations: `bornSelfEnergy`, the explicit second-order Green truncation `secondOrderBornGreen`,
+the orientation-aware `exactSecondOrderRemainder`, `bornClosureError`, and `BornClosureHypothesis`,
+together with centered first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. It also owns
+the centered exact-average decomposition `averagedGreen_eq_free_add_exactSecondOrderRemainder`,
+selecting the retarded-left and advanced-right exact remainder orientations from the canonical
+configuration Dyson API. The exact remainder's retarded/advanced values, the self-energy, the
+second-order Green truncation, and the closure error are proved to be related by adjunction.
+Conventional retarded/advanced names and averaged-Green theorem names remain in
+`Disorder/RetardedBorn` and `Disorder/AdvancedBorn` as thin physical specializations; the siblings do
+not import one another.
 
-The Born self-energy and approximation objects use the canonical exact second moment and therefore
-do not themselves require centered disorder. Centering is required only when an exact averaged
-Dyson identity is reduced by cancelling the first-order contribution. In particular, the truncated
-Born resolvent expression is not asserted to satisfy the exact `IsSelfEnergy` relation. SCBA uses
-the same canonical `exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no
-second covariance function or separately supplied linearity/adjoint-compatibility assumption. The
-SCBA Green and self-energy solution itself remains approximation data and is not identified with the
+The Born self-energy and second-order Green truncation use the canonical exact second moment and
+therefore do not themselves require centered disorder. Centering is required only when an exact
+averaged Dyson identity is reduced by cancelling the first-order contribution. In particular,
+`secondOrderBornGreen = G₀ + G₀ Σᴮ G₀` is an explicit Dyson-series truncation, not a Dyson-resummed
+Green operator, and is not asserted to satisfy the exact `IsSelfEnergy` relation. SCBA uses the same
+canonical `exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no second
+covariance function or separately supplied linearity/adjoint-compatibility assumption. The SCBA
+Green and self-energy solution itself remains approximation data and is not identified with the
 exact disorder average, while its supplied two-sided inverse equations do imply the abstract
 `IsSelfEnergy` relation on either spectral side.
 
