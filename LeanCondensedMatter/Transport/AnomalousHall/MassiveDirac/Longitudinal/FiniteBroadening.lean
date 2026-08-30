@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 
 set_option linter.style.header false
@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Finite-broadening massive-Dirac longitudinal response with a dressed current vertex
 
-This module is the operator/channel bridge between the massive-Dirac current-vertex work and the
-generic finite-broadening Kubo–Bastin/Středa stack.  The measured vertex is the physical bare
-longitudinal charge current `jₓ`; the source vertex is kept as an arbitrary in-plane linear
-combination of the physical `x` and `y` charge currents.
+This module is the longitudinal response bridge between an explicitly supplied in-plane current
+vertex and the generic finite-broadening Kubo–Bastin/Středa stack.  The measured vertex is the
+physical bare longitudinal charge current `jₓ`; the source vertex is the model-owned in-plane linear
+combination `α jₓ + β jᵧ`.
 
 Keeping the two coefficients independent preserves the finite-broadening `σₓ` / `σᵧ` structure of
 the Born retarded-advanced rung.  No ladder solution or weak-disorder scalar replacement is made
@@ -28,49 +28,6 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Dimensionless in-plane Pauli vertex `α σₓ + β σᵧ` as a bounded operator. -/
-noncomputable def inPlanePauliVertexOperator
-    (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY
-
-@[simp] theorem inPlanePauliVertexOperator_one_zero :
-    inPlanePauliVertexOperator 1 0 = matrixOperator sigmaX := by
-  simp [inPlanePauliVertexOperator]
-
-@[simp] theorem inPlanePauliVertexOperator_zero_one :
-    inPlanePauliVertexOperator 0 1 = matrixOperator sigmaY := by
-  simp [inPlanePauliVertexOperator]
-
-/-- Physical in-plane dressed charge-current vertex.  The coefficients multiply the canonical
-massive-Dirac physical current operators, so `alpha = 1`, `beta = 0` is exactly the bare
-longitudinal `x` current. -/
-noncomputable def dressedLongitudinalCurrentOperator
-    (e v : ℝ) (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  alpha • currentOperator .x e v + beta • currentOperator .y e v
-
-/-- The physical dressed current is electron charge times the Dirac velocity scale multiplying the
-dimensionless in-plane Pauli vertex.  This is the exact operator bridge from the `σₓ` / `σᵧ`
-vertex coefficients used by the Born rung to the physical current convention. -/
-theorem dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
-    (e v : ℝ) (alpha beta : ℂ) :
-    dressedLongitudinalCurrentOperator e v alpha beta =
-      (((-e * v : ℝ) : ℂ)) • inPlanePauliVertexOperator alpha beta := by
-  rw [dressedLongitudinalCurrentOperator, currentOperator_x_eq_pauli,
-    currentOperator_y_eq_pauli]
-  simp [inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
-
-/-- The undressed in-plane coefficient pair recovers the repository's canonical longitudinal
-charge-current operator exactly. -/
-@[simp] theorem dressedLongitudinalCurrentOperator_one_zero
-    (e v : ℝ) :
-    dressedLongitudinalCurrentOperator e v 1 0 = currentOperator .x e v := by
-  simp [dressedLongitudinalCurrentOperator]
-
-@[simp] theorem dressedLongitudinalCurrentOperator_zero_one
-    (e v : ℝ) :
-    dressedLongitudinalCurrentOperator e v 0 1 = currentOperator .y e v := by
-  simp [dressedLongitudinalCurrentOperator]
-
 /-- Pointwise finite-broadening traced Bastin kernel for a bare measured `jₓ` and a supplied dressed
 in-plane source current.  This is an exact specialization of the generic trace kernel. -/
 noncomputable def massiveDiracLongitudinalDressedBastinTraceIntegrand
@@ -78,7 +35,7 @@ noncomputable def massiveDiracLongitudinalDressedBastinTraceIntegrand
   regularizedBastinTraceIntegrand
     (hamiltonianOperator v m px py)
     (currentOperator .x e v)
-    (dressedLongitudinalCurrentOperator e v alpha beta)
+    (inPlaneCurrentOperator e v alpha beta)
     energy broadening
 
 /-- The bare source-vertex specialization is the ordinary longitudinal `jₓ-jₓ` Bastin trace
@@ -102,7 +59,7 @@ abbrev MassiveDiracLongitudinalDressedStredaAnalyticData
   TracedStredaAnalyticData
     (hamiltonianOperator v m px py)
     (currentOperator .x e v)
-    (dressedLongitudinalCurrentOperator e v alpha beta)
+    (inPlaneCurrentOperator e v alpha beta)
     broadening lowerEnergy upperEnergy occupation occupationDerivative
 
 /-- Finite-energy regularized traced Bastin response of one massive-Dirac momentum fiber with a
@@ -113,7 +70,7 @@ noncomputable def massiveDiracLongitudinalDressedBastinEnergyIntegral
   regularizedTracedBastinEnergyIntegral
     (hamiltonianOperator v m px py)
     (currentOperator .x e v)
-    (dressedLongitudinalCurrentOperator e v alpha beta)
+    (inPlaneCurrentOperator e v alpha beta)
     broadening lowerEnergy upperEnergy occupation
 
 /-- Named finite-broadening Fermi-surface contribution for the longitudinal dressed-current
@@ -150,7 +107,7 @@ theorem massiveDiracLongitudinalDressedStredaFermiSurface_eq
           regularizedStredaSurfacePrimitiveTrace
             (hamiltonianOperator v m px py)
             (currentOperator .x e v)
-            (dressedLongitudinalCurrentOperator e v alpha beta)
+            (inPlaneCurrentOperator e v alpha beta)
             energy broadening) := by
   rfl
 
@@ -168,7 +125,7 @@ theorem massiveDiracLongitudinalDressedStredaFermiSea_eq
           regularizedStredaResidualSeaTraceKernel
             (hamiltonianOperator v m px py)
             (currentOperator .x e v)
-            (dressedLongitudinalCurrentOperator e v alpha beta)
+            (inPlaneCurrentOperator e v alpha beta)
             energy broadening := by
   rfl
 
