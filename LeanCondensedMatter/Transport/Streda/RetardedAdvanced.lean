@@ -17,8 +17,7 @@ Green operators and source vertex are kept independent, so downstream disorder a
 reuse this algebra without being identified with the exact clean resolvent.
 
 For arbitrary measured/source vertices, the clean regularized Smrčka–Středa surface primitive trace
-is exactly the RA block minus an explicit same-side RR/AA half-sum.  The previous longitudinal API is
-the identical-current specialization of this general trace identity.  No same-side term is dropped,
+is exactly the RA block minus an explicit same-side RR/AA half-sum.  No same-side term is dropped,
 and no disorder, zero-broadening, DC, or thermodynamic-limit claim is made here.
 -/
 
@@ -96,32 +95,6 @@ theorem regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
   simp only [map_smul, map_add, map_sub]
   rw [hcyclic]
   ring
-
-/-- Explicit same-side half-sum accompanying the RA block in the longitudinal Středa surface
-primitive. -/
-noncomputable def longitudinalSameSideTraceRemainder
-    (current retardedGreen advancedGreen : H →L[ℂ] H) : ℂ :=
-  sameSideVertexTraceRemainder current current retardedGreen advancedGreen
-
-/-- For identical longitudinal current vertices, the clean regularized Středa surface primitive is
-exactly the RA trace block minus the explicit RR/AA half-sum.  No same-side term is dropped. -/
-theorem regularizedStredaSurfacePrimitiveTrace_longitudinal_eq_ra_sub_sameSide
-    (hamiltonian current : H →L[ℂ] H) (energy broadening : ℝ) :
-    regularizedStredaSurfacePrimitiveTrace
-        hamiltonian current current energy broadening =
-      retardedAdvancedVertexTraceKernel
-          current
-          (retardedResolvent hamiltonian energy broadening)
-          current
-          (advancedResolvent hamiltonian energy broadening) -
-        longitudinalSameSideTraceRemainder
-          current
-          (retardedResolvent hamiltonian energy broadening)
-          (advancedResolvent hamiltonian energy broadening) := by
-  simpa [suppliedGreenStredaSurfacePrimitiveTraceKernel,
-    longitudinalSameSideTraceRemainder] using
-    (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
-      hamiltonian current current energy broadening)
 
 end
 end Transport
