@@ -17,9 +17,9 @@ General analysis infrastructure sits further upstream. In particular, the bundle
 finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, generic bounded
 resolvent spectrum exclusion, shifted inverse algebra, and eigenvector action are owned by
 `Analysis/Operator/Spectral/Resolvent.lean`, while the model-independent Lorentzian approximate-
-identity kernel and regular-factor pole extraction are owned by
-`Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than owning
-them.
+identity kernel, weighted-window analysis, and regular-factor pole extraction are owned by
+`Analysis/Lorentzian/{Kernel,Weighted,Pole}.lean`. Transport consumes these primitives rather than
+owning them.
 
 ## Physical source hierarchy
 
@@ -67,8 +67,8 @@ Transport/
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
-generic bounded-resolvent spectral algebra, and Lorentzian kernel/pole infrastructure are exported
-instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
+generic bounded-resolvent spectral algebra, and Lorentzian kernel/weighted-window/pole infrastructure
+are exported instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
 `Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
 `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
 audits showed no remaining imports.
@@ -220,9 +220,9 @@ compatibility shims; repository consumers use the canonical `Model` owners direc
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
 Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
 `Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
-kernel/tail analysis and regular-factor pole extraction are representation-independent and live
-upstream under `Analysis/Lorentzian/`; both generic Transport and the massive-Dirac specialization
-consume those analysis primitives.
+kernel/tail analysis, local-constant weighted-window extraction, and regular-factor pole extraction
+are representation-independent and live upstream under `Analysis/Lorentzian/`; both generic
+Transport and the massive-Dirac specialization consume those analysis primitives.
 
 ## Generic / concrete boundary
 
