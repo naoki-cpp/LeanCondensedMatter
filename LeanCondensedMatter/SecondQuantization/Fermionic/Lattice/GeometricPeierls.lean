@@ -12,16 +12,17 @@ single uniform source parameter to every oriented bond through its geometric coo
 A_xy = w_xy A.
 ```
 
-The chain rule then gives
+For a current measured by coordinate functional `i` and a source applied through coordinate
+functional `j`, the chain rule gives
 
 ```text
--∂_A H_direction(0) = J_direction,
- ∂_A J_direction(0) = C_direction.
+J_i(0) = J_i,
+∂_{A_j} J_i(0) = C_ij.
 ```
 
-This module proves those identities for the bounded finite-lattice Hilbert realization. The
-parameter is complexified for the algebraic derivative, while the geometric bond coordinates are
-real and embedded into `ℂ`.
+The historical one-direction identities are the diagonal specialization `i = j`. This module proves
+these identities for the bounded finite-lattice Hilbert realization. The parameter is complexified
+for the algebraic derivative, while the geometric bond coordinates are real and embedded into `ℂ`.
 -/
 
 namespace SecondQuantization
@@ -101,6 +102,28 @@ noncomputable def boundedDirectionalPeierlsCurrent
         boundedPeierlsBondCurrent K ℏ q x y
           ((geometry.bondCoordinate direction x y : ℂ) * A)
 
+/-- Current measured along `measuredDirection` while the Peierls source is applied along
+`sourceDirection`. The measured-current weight and source-phase weight are kept independent. -/
+noncomputable def boundedMixedDirectionalPeierlsCurrent
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (A : ℂ) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  (2 : ℂ)⁻¹ •
+    ∑ x : Site, ∑ y : Site,
+      (geometry.bondCoordinate measuredDirection x y : ℂ) •
+        boundedPeierlsBondCurrent K ℏ q x y
+          ((geometry.bondCoordinate sourceDirection x y : ℂ) * A)
+
+/-- The mixed current family reduces to the historical directional family on the diagonal. -/
+@[simp]
+theorem boundedMixedDirectionalPeierlsCurrent_self
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalPeierlsCurrent geometry direction direction ℏ q K =
+      boundedDirectionalPeierlsCurrent geometry direction ℏ q K := by
+  rfl
+
 /-- At zero source, the geometric Peierls current is the continuity-derived directional current. -/
 @[simp]
 theorem boundedDirectionalPeierlsCurrent_zero
@@ -109,6 +132,17 @@ theorem boundedDirectionalPeierlsCurrent_zero
     boundedDirectionalPeierlsCurrent geometry direction ℏ q K 0 =
       boundedDirectionalCurrent geometry direction ℏ q K := by
   simp [boundedDirectionalPeierlsCurrent, boundedDirectionalCurrent]
+
+/-- At zero source, the mixed family is the measured current independently of the source direction. -/
+@[simp]
+theorem boundedMixedDirectionalPeierlsCurrent_zero
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalPeierlsCurrent
+        geometry measuredDirection sourceDirection ℏ q K 0 =
+      boundedDirectionalCurrent geometry measuredDirection ℏ q K := by
+  simp [boundedMixedDirectionalPeierlsCurrent, boundedDirectionalCurrent]
 
 /-- The global geometric Peierls Hamiltonian differentiates to minus the directional current. -/
 theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
@@ -153,35 +187,38 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
   unfold boundedDirectionalPeierlsHamiltonian boundedDirectionalCurrent
   simpa [smul_neg, Finset.sum_neg_distrib] using hscaled
 
-/-- Differentiating the geometric Peierls current gives the squared-coordinate contact operator. -/
-theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+/-- Differentiating `J_i(A_j)` at zero source gives the mixed Peierls contact `C_ij`. -/
+theorem hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
     HasAlgebraicDerivAt
-      (boundedDirectionalPeierlsCurrent geometry direction ℏ q K)
-      (boundedDirectionalContact geometry direction ℏ q K) 0 := by
+      (boundedMixedDirectionalPeierlsCurrent
+        geometry measuredDirection sourceDirection ℏ q K)
+      (boundedMixedDirectionalContact
+        geometry measuredDirection sourceDirection ℏ q K) 0 := by
   have hxy : ∀ x y : Site,
       HasAlgebraicDerivAt
-        (fun A => (geometry.bondCoordinate direction x y : ℂ) •
+        (fun A => (geometry.bondCoordinate measuredDirection x y : ℂ) •
           boundedPeierlsBondCurrent K ℏ q x y
-            ((geometry.bondCoordinate direction x y : ℂ) * A))
-        ((geometry.bondCoordinate direction x y : ℂ) •
-          ((geometry.bondCoordinate direction x y : ℂ) •
+            ((geometry.bondCoordinate sourceDirection x y : ℂ) * A))
+        ((geometry.bondCoordinate measuredDirection x y : ℂ) •
+          ((geometry.bondCoordinate sourceDirection x y : ℂ) •
             boundedBondContact K ℏ q x y)) 0 := by
     intro x y
     exact
       ((hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero K ℏ q x y).comp_const_mul_zero
-        (geometry.bondCoordinate direction x y : ℂ)).const_smul
-          (geometry.bondCoordinate direction x y : ℂ)
+        (geometry.bondCoordinate sourceDirection x y : ℂ)).const_smul
+          (geometry.bondCoordinate measuredDirection x y : ℂ)
   have hy : ∀ x : Site,
       HasAlgebraicDerivAt
         (fun A => ∑ y : Site,
-          (geometry.bondCoordinate direction x y : ℂ) •
+          (geometry.bondCoordinate measuredDirection x y : ℂ) •
             boundedPeierlsBondCurrent K ℏ q x y
-              ((geometry.bondCoordinate direction x y : ℂ) * A))
+              ((geometry.bondCoordinate sourceDirection x y : ℂ) * A))
         (∑ y : Site,
-          (geometry.bondCoordinate direction x y : ℂ) •
-            ((geometry.bondCoordinate direction x y : ℂ) •
+          (geometry.bondCoordinate measuredDirection x y : ℂ) •
+            ((geometry.bondCoordinate sourceDirection x y : ℂ) •
               boundedBondContact K ℏ q x y)) 0 := by
     intro x
     simpa only [Finset.sum_filter, Finset.mem_univ, ↓reduceIte] using
@@ -190,38 +227,31 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
   have hsum :
       HasAlgebraicDerivAt
         (fun A => ∑ x : Site, ∑ y : Site,
-          (geometry.bondCoordinate direction x y : ℂ) •
+          (geometry.bondCoordinate measuredDirection x y : ℂ) •
             boundedPeierlsBondCurrent K ℏ q x y
-              ((geometry.bondCoordinate direction x y : ℂ) * A))
+              ((geometry.bondCoordinate sourceDirection x y : ℂ) * A))
         (∑ x : Site, ∑ y : Site,
-          (geometry.bondCoordinate direction x y : ℂ) •
-            ((geometry.bondCoordinate direction x y : ℂ) •
+          (geometry.bondCoordinate measuredDirection x y : ℂ) •
+            ((geometry.bondCoordinate sourceDirection x y : ℂ) •
               boundedBondContact K ℏ q x y)) 0 := by
     simpa only [Finset.sum_filter, Finset.mem_univ, ↓reduceIte] using
       HasAlgebraicDerivAt.sum (Finset.univ : Finset Site)
         (fun x _ => hy x)
   have hscaled := hsum.const_smul ((2 : ℂ)⁻¹)
-  have hderiv :
-      (2 : ℂ)⁻¹ •
-          ∑ x : Site, ∑ y : Site,
-            (geometry.bondCoordinate direction x y : ℂ) •
-              ((geometry.bondCoordinate direction x y : ℂ) •
-                boundedBondContact K ℏ q x y) =
-        (2 : ℂ)⁻¹ •
-          ∑ x : Site, ∑ y : Site,
-            ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
-              boundedBondContact K ℏ q x y := by
-    congr 1
-    apply Finset.sum_congr rfl
-    intro x _
-    apply Finset.sum_congr rfl
-    intro y _
-    rw [smul_smul]
-    congr 1
-    norm_num [pow_two]
-  unfold boundedDirectionalPeierlsCurrent boundedDirectionalContact
-  rw [← hderiv]
-  exact hscaled
+  simpa [boundedMixedDirectionalPeierlsCurrent,
+    boundedMixedDirectionalContact, smul_smul] using hscaled
+
+/-- Differentiating the geometric Peierls current gives the squared-coordinate contact operator. -/
+theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    HasAlgebraicDerivAt
+      (boundedDirectionalPeierlsCurrent geometry direction ℏ q K)
+      (boundedDirectionalContact geometry direction ℏ q K) 0 := by
+  simpa only [boundedMixedDirectionalPeierlsCurrent_self,
+    boundedMixedDirectionalContact_self] using
+    hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
+      geometry direction direction ℏ q K
 
 end
 end Lattice
