@@ -74,8 +74,10 @@ theorem inPlaneLadderSolvedXCoefficient_fixedPoint
       1 + inPlaneLadderXCoefficient x y
         (inPlaneLadderSolvedXCoefficient x y)
         (inPlaneLadderSolvedYCoefficient x y) := by
-  field_simp [inPlaneLadderSolvedXCoefficient, inPlaneLadderSolvedYCoefficient,
-    inPlaneLadderXCoefficient, inPlaneLadderDeterminant, hdet]
+  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderSolvedYCoefficient
+    inPlaneLadderXCoefficient
+  unfold inPlaneLadderDeterminant at hdet ⊢
+  field_simp [hdet]
   ring
 
 /-- The solved transverse coefficient satisfies the second scalar fixed-point equation. -/
@@ -85,8 +87,10 @@ theorem inPlaneLadderSolvedYCoefficient_fixedPoint
       inPlaneLadderYCoefficient x y
         (inPlaneLadderSolvedXCoefficient x y)
         (inPlaneLadderSolvedYCoefficient x y) := by
-  field_simp [inPlaneLadderSolvedXCoefficient, inPlaneLadderSolvedYCoefficient,
-    inPlaneLadderYCoefficient, inPlaneLadderDeterminant, hdet]
+  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderSolvedYCoefficient
+    inPlaneLadderYCoefficient
+  unfold inPlaneLadderDeterminant at hdet ⊢
+  field_simp [hdet]
   ring
 
 /-- Bounded in-plane Pauli vertex corresponding to the exact solved coefficient pair. -/
@@ -104,11 +108,31 @@ theorem inPlaneLadderSolvedVertex_fixedPoint
         inPlaneLadderOperatorAction x y
           (inPlaneLadderSolvedXCoefficient x y)
           (inPlaneLadderSolvedYCoefficient x y) := by
-  rw [inPlaneLadderSolvedVertex,
-    inPlaneLadderSolvedXCoefficient_fixedPoint x y hdet,
-    inPlaneLadderSolvedYCoefficient_fixedPoint x y hdet]
-  unfold inPlaneLadderOperatorAction
-  module
+  have hX := inPlaneLadderSolvedXCoefficient_fixedPoint x y hdet
+  have hY := inPlaneLadderSolvedYCoefficient_fixedPoint x y hdet
+  have hXsmul := congrArg
+    (fun coefficient : ℂ => coefficient • matrixOperator sigmaX) hX
+  have hYsmul := congrArg
+    (fun coefficient : ℂ => coefficient • matrixOperator sigmaY) hY
+  unfold inPlaneLadderSolvedVertex inPlaneLadderOperatorAction
+  calc
+    inPlaneLadderSolvedXCoefficient x y • matrixOperator sigmaX +
+        inPlaneLadderSolvedYCoefficient x y • matrixOperator sigmaY =
+      (1 + inPlaneLadderXCoefficient x y
+          (inPlaneLadderSolvedXCoefficient x y)
+          (inPlaneLadderSolvedYCoefficient x y)) • matrixOperator sigmaX +
+        inPlaneLadderYCoefficient x y
+          (inPlaneLadderSolvedXCoefficient x y)
+          (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaY := by
+      rw [hXsmul, hYsmul]
+    _ = matrixOperator sigmaX +
+        (inPlaneLadderXCoefficient x y
+            (inPlaneLadderSolvedXCoefficient x y)
+            (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaX +
+          inPlaneLadderYCoefficient x y
+            (inPlaneLadderSolvedXCoefficient x y)
+            (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaY) := by
+      module
 
 /-- Any scalar coefficient pair satisfying the same two fixed-point equations has the solved
 longitudinal coefficient. -/
@@ -118,12 +142,17 @@ theorem eq_inPlaneLadderSolvedXCoefficient_of_fixedPoint
     (hX : alpha = 1 + inPlaneLadderXCoefficient x y alpha beta)
     (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
     alpha = inPlaneLadderSolvedXCoefficient x y := by
+  unfold inPlaneLadderXCoefficient at hX
+  unfold inPlaneLadderYCoefficient at hY
   have hxlin : (1 - x) * alpha + y * beta = 1 := by
     linear_combination hX
   have hylin : -y * alpha + (1 - x) * beta = 0 := by
     linear_combination hY
-  have halpha : inPlaneLadderDeterminant x y * alpha = 1 - x := by
+  have halphaRaw : ((1 - x) ^ 2 + y ^ 2) * alpha = 1 - x := by
     linear_combination (1 - x) * hxlin - y * hylin
+  have halpha : inPlaneLadderDeterminant x y * alpha = 1 - x := by
+    simpa [inPlaneLadderDeterminant] using halphaRaw
+  unfold inPlaneLadderSolvedXCoefficient
   apply (eq_div_iff hdet).2
   simpa [mul_comm] using halpha
 
@@ -135,12 +164,17 @@ theorem eq_inPlaneLadderSolvedYCoefficient_of_fixedPoint
     (hX : alpha = 1 + inPlaneLadderXCoefficient x y alpha beta)
     (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
     beta = inPlaneLadderSolvedYCoefficient x y := by
+  unfold inPlaneLadderXCoefficient at hX
+  unfold inPlaneLadderYCoefficient at hY
   have hxlin : (1 - x) * alpha + y * beta = 1 := by
     linear_combination hX
   have hylin : -y * alpha + (1 - x) * beta = 0 := by
     linear_combination hY
-  have hbeta : inPlaneLadderDeterminant x y * beta = y := by
+  have hbetaRaw : ((1 - x) ^ 2 + y ^ 2) * beta = y := by
     linear_combination y * hxlin + (1 - x) * hylin
+  have hbeta : inPlaneLadderDeterminant x y * beta = y := by
+    simpa [inPlaneLadderDeterminant] using hbetaRaw
+  unfold inPlaneLadderSolvedYCoefficient
   apply (eq_div_iff hdet).2
   simpa [mul_comm] using hbeta
 
@@ -166,7 +200,8 @@ ladder factor `(1 - X)⁻¹`. -/
 theorem inPlaneLadderSolvedXCoefficient_zero
     (x : ℂ) (hx : 1 - x ≠ 0) :
     inPlaneLadderSolvedXCoefficient x 0 = (1 - x)⁻¹ := by
-  field_simp [inPlaneLadderSolvedXCoefficient, inPlaneLadderDeterminant, hx]
+  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderDeterminant
+  field_simp [hx]
   ring
 
 end
