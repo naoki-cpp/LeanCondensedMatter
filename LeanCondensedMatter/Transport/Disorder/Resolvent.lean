@@ -12,9 +12,9 @@ weak-disorder closure is imposed.
 For the clean Hamiltonian `H₀` and each exact configuration Hamiltonian `Hω = H₀ + Vω`, it defines
 side-indexed clean and configuration Green operators together with their exact finite disorder
 average. Conventional retarded/advanced specializations remain public, and the averaged advanced
-Green operator is derived by adjunction from the averaged retarded one. The module also proves the
-first and second-order configuration-wise Dyson identities with the complete configuration Green
-operator retained in the remainder.
+Green operator is derived by adjunction from the averaged retarded one. The module also proves
+side-indexed left- and right-oriented first- and second-order configuration-wise Dyson identities
+with the complete configuration Green operator retained in the remainder.
 
 No centering, covariance, Born approximation, closure hypothesis, self-consistency, effective
 self-energy identification, trace-per-volume construction, or thermodynamic limit is introduced here.
@@ -156,6 +156,190 @@ theorem star_averagedRetardedGreen
   rw [ensemble.configurationGreen_retarded, ensemble.configurationGreen_advanced,
     ensemble.star_configurationRetardedGreen]
 
+/-- Exact left-oriented configuration Dyson identity on either spectral side,
+`Gωˢ = G₀ˢ + G₀ˢ Vω Gωˢ`, for nonzero broadening. -/
+theorem configurationGreen_eq_free_add_dyson_left
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
+    ensemble.configurationGreen side energy broadening ω =
+      ensemble.freeGreen side energy broadening +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.configurationGreen side energy broadening ω := by
+  let shift₀ : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      ensemble.baseHamiltonian.1
+  let shiftω : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      (ensemble.configurationHamiltonian ω).1
+  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
+    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
+    noncomm_ring
+  have hfree : ensemble.freeGreen side energy broadening * shift₀ = 1 := by
+    simpa [freeGreen, shift₀] using
+      spectralResolvent_mul_spectralShift side
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
+        energy broadening hbroadening
+  have hconfiguration :
+      shiftω * ensemble.configurationGreen side energy broadening ω = 1 := by
+    simpa [configurationGreen, shiftω] using
+      spectralShift_mul_spectralResolvent side
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2
+        energy broadening hbroadening
+  calc
+    ensemble.configurationGreen side energy broadening ω =
+        ensemble.freeGreen side energy broadening * shift₀ *
+          ensemble.configurationGreen side energy broadening ω := by
+      rw [hfree]
+      simp
+    _ = ensemble.freeGreen side energy broadening *
+          (shiftω + (ensemble.impurityPotential ω).1) *
+            ensemble.configurationGreen side energy broadening ω := by
+      rw [hshift]
+    _ = ensemble.freeGreen side energy broadening *
+          (shiftω * ensemble.configurationGreen side energy broadening ω) +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.configurationGreen side energy broadening ω := by
+      noncomm_ring
+    _ = ensemble.freeGreen side energy broadening +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.configurationGreen side energy broadening ω := by
+      rw [hconfiguration]
+      simp
+
+/-- Exact right-oriented configuration Dyson identity on either spectral side,
+`Gωˢ = G₀ˢ + Gωˢ Vω G₀ˢ`, for nonzero broadening. -/
+theorem configurationGreen_eq_free_add_dyson_right
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
+    ensemble.configurationGreen side energy broadening ω =
+      ensemble.freeGreen side energy broadening +
+        ensemble.configurationGreen side energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening := by
+  let shift₀ : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      ensemble.baseHamiltonian.1
+  let shiftω : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      (ensemble.configurationHamiltonian ω).1
+  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
+    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
+    noncomm_ring
+  have hfree : shift₀ * ensemble.freeGreen side energy broadening = 1 := by
+    simpa [freeGreen, shift₀] using
+      spectralShift_mul_spectralResolvent side
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
+        energy broadening hbroadening
+  have hconfiguration :
+      ensemble.configurationGreen side energy broadening ω * shiftω = 1 := by
+    simpa [configurationGreen, shiftω] using
+      spectralResolvent_mul_spectralShift side
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2
+        energy broadening hbroadening
+  calc
+    ensemble.configurationGreen side energy broadening ω =
+        ensemble.configurationGreen side energy broadening ω * shift₀ *
+          ensemble.freeGreen side energy broadening := by
+      calc
+        ensemble.configurationGreen side energy broadening ω =
+            ensemble.configurationGreen side energy broadening ω * 1 := by simp
+        _ = ensemble.configurationGreen side energy broadening ω *
+            (shift₀ * ensemble.freeGreen side energy broadening) := by rw [hfree]
+        _ = _ := by rw [mul_assoc]
+    _ = ensemble.configurationGreen side energy broadening ω *
+          (shiftω + (ensemble.impurityPotential ω).1) *
+            ensemble.freeGreen side energy broadening := by
+      rw [hshift]
+    _ = (ensemble.configurationGreen side energy broadening ω * shiftω) *
+          ensemble.freeGreen side energy broadening +
+        ensemble.configurationGreen side energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening := by
+      noncomm_ring
+    _ = ensemble.freeGreen side energy broadening +
+        ensemble.configurationGreen side energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening := by
+      rw [hconfiguration]
+      simp
+
+/-- Exact left-oriented second-order Dyson expansion on either spectral side. -/
+theorem configurationGreen_eq_secondOrder_add_exactRemainder_left
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
+    ensemble.configurationGreen side energy broadening ω =
+      ensemble.freeGreen side energy broadening +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.configurationGreen side energy broadening ω := by
+  have hdyson := configurationGreen_eq_free_add_dyson_left
+    ensemble side energy broadening hbroadening ω
+  calc
+    ensemble.configurationGreen side energy broadening ω =
+        ensemble.freeGreen side energy broadening +
+          ensemble.freeGreen side energy broadening *
+            (ensemble.impurityPotential ω).1 *
+              ensemble.configurationGreen side energy broadening ω := hdyson
+    _ = ensemble.freeGreen side energy broadening +
+          ensemble.freeGreen side energy broadening *
+            (ensemble.impurityPotential ω).1 *
+              (ensemble.freeGreen side energy broadening +
+                ensemble.freeGreen side energy broadening *
+                  (ensemble.impurityPotential ω).1 *
+                    ensemble.configurationGreen side energy broadening ω) := by
+      exact congrArg
+        (fun green : H →L[ℂ] H =>
+          ensemble.freeGreen side energy broadening +
+            ensemble.freeGreen side energy broadening *
+              (ensemble.impurityPotential ω).1 * green)
+        hdyson
+    _ = _ := by
+      noncomm_ring
+
+/-- Exact right-oriented second-order Dyson expansion on either spectral side. -/
+theorem configurationGreen_eq_secondOrder_add_exactRemainder_right
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
+    ensemble.configurationGreen side energy broadening ω =
+      ensemble.freeGreen side energy broadening +
+        ensemble.freeGreen side energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening +
+        ensemble.configurationGreen side energy broadening ω *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeGreen side energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen side energy broadening := by
+  have hdyson := configurationGreen_eq_free_add_dyson_right
+    ensemble side energy broadening hbroadening ω
+  calc
+    ensemble.configurationGreen side energy broadening ω =
+        ensemble.freeGreen side energy broadening +
+          ensemble.configurationGreen side energy broadening ω *
+            (ensemble.impurityPotential ω).1 *
+              ensemble.freeGreen side energy broadening := hdyson
+    _ = ensemble.freeGreen side energy broadening +
+          (ensemble.freeGreen side energy broadening +
+            ensemble.configurationGreen side energy broadening ω *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen side energy broadening) *
+            (ensemble.impurityPotential ω).1 *
+              ensemble.freeGreen side energy broadening := by
+      exact congrArg
+        (fun green : H →L[ℂ] H =>
+          ensemble.freeGreen side energy broadening + green *
+            (ensemble.impurityPotential ω).1 *
+              ensemble.freeGreen side energy broadening)
+        hdyson
+    _ = _ := by
+      noncomm_ring
+
 /-- Exact first retarded resolvent identity
 `Gωᴿ = G₀ᴿ + G₀ᴿ Vω Gωᴿ` at positive broadening. -/
 theorem configurationRetardedGreen_eq_free_add_dyson
@@ -165,48 +349,9 @@ theorem configurationRetardedGreen_eq_free_add_dyson
         ensemble.freeRetardedGreen energy broadening *
           (ensemble.impurityPotential ω).1 *
             ensemble.configurationRetardedGreen energy broadening ω := by
-  unfold configurationRetardedGreen freeRetardedGreen configurationGreen freeGreen
-  simp only [spectralResolvent_retarded]
-  let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
-      ensemble.baseHamiltonian.1
-  let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
-      (ensemble.configurationHamiltonian ω).1
-  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
-    noncomm_ring
-  have hfree := resolvent_mul_retardedShift
-    ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-    energy broadening hbroadening
-  have hconfiguration := retardedShift_mul_resolvent
-    (ensemble.configurationHamiltonian ω).1
-    (ensemble.configurationHamiltonian ω).2
-    energy broadening hbroadening
-  change retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening = _
-  calc
-    retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening =
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening * shift₀ *
-          retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hfree]
-      simp
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (shiftω + (ensemble.impurityPotential ω).1) *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hshift]
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (shiftω * retardedResolvent
-            (ensemble.configurationHamiltonian ω).1 energy broadening) +
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      noncomm_ring
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening +
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hconfiguration]
-      simp
+  simpa only [configurationGreen_retarded, freeGreen_retarded] using
+    configurationGreen_eq_free_add_dyson_left
+      ensemble .retarded energy broadening (ne_of_gt hbroadening) ω
 
 /-- Exact second-order retarded Dyson expansion with the complete configuration Green operator
 retained in the remainder. This is an identity, not a weak-scattering approximation. -/
@@ -222,29 +367,9 @@ theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
             ensemble.freeRetardedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
                 ensemble.configurationRetardedGreen energy broadening ω := by
-  have hdyson := configurationRetardedGreen_eq_free_add_dyson
-    ensemble energy broadening hbroadening ω
-  calc
-    ensemble.configurationRetardedGreen energy broadening ω =
-        ensemble.freeRetardedGreen energy broadening +
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.configurationRetardedGreen energy broadening ω := hdyson
-    _ = ensemble.freeRetardedGreen energy broadening +
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              (ensemble.freeRetardedGreen energy broadening +
-                ensemble.freeRetardedGreen energy broadening *
-                  (ensemble.impurityPotential ω).1 *
-                    ensemble.configurationRetardedGreen energy broadening ω) := by
-      exact congrArg
-        (fun green : H →L[ℂ] H =>
-          ensemble.freeRetardedGreen energy broadening +
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 * green)
-        hdyson
-    _ = _ := by
-      noncomm_ring
+  simpa only [configurationGreen_retarded, freeGreen_retarded] using
+    configurationGreen_eq_secondOrder_add_exactRemainder_left
+      ensemble .retarded energy broadening (ne_of_gt hbroadening) ω
 
 /-- Exact right-oriented advanced resolvent identity
 `Gωᴬ = G₀ᴬ + Gωᴬ Vω G₀ᴬ` at positive broadening. -/
@@ -255,14 +380,12 @@ theorem configurationAdvancedGreen_eq_free_add_dyson
         ensemble.configurationAdvancedGreen energy broadening ω *
           (ensemble.impurityPotential ω).1 *
             ensemble.freeAdvancedGreen energy broadening := by
-  have hretarded := congrArg star
-    (configurationRetardedGreen_eq_free_add_dyson
-      ensemble energy broadening hbroadening ω)
-  simpa [star_add, star_mul, star_configurationRetardedGreen,
-    star_freeRetardedGreen, (ensemble.impurityPotential ω).2.star_eq, mul_assoc] using hretarded
+  simpa only [configurationGreen_advanced, freeGreen_advanced] using
+    configurationGreen_eq_free_add_dyson_right
+      ensemble .advanced energy broadening (ne_of_gt hbroadening) ω
 
-/-- Exact second-order advanced Dyson expansion. It is the adjoint of the exact retarded expansion,
-so no independent advanced weak-scattering assumption is introduced. -/
+/-- Exact second-order advanced Dyson expansion. It is the right-oriented advanced specialization
+of the canonical side-indexed expansion, with the complete configuration Green operator retained. -/
 theorem configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
     (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
     ensemble.configurationAdvancedGreen energy broadening ω =
@@ -275,11 +398,9 @@ theorem configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
             ensemble.freeAdvancedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
                 ensemble.freeAdvancedGreen energy broadening := by
-  have hretarded := congrArg star
-    (configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-      ensemble energy broadening hbroadening ω)
-  simpa [star_add, star_mul, star_configurationRetardedGreen,
-    star_freeRetardedGreen, (ensemble.impurityPotential ω).2.star_eq, mul_assoc] using hretarded
+  simpa only [configurationGreen_advanced, freeGreen_advanced] using
+    configurationGreen_eq_secondOrder_add_exactRemainder_right
+      ensemble .advanced energy broadening (ne_of_gt hbroadening) ω
 
 end FiniteDisorderEnsemble
 
