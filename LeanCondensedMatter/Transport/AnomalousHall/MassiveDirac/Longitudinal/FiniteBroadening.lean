@@ -58,13 +58,11 @@ theorem dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVe
   have hx :
       currentOperator .x e v =
         (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaX := by
-    simp [currentOperator, current, velocity, directionPauli, matrixOperator, map_smul,
-      smul_smul]
+    simp [currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
   have hy :
       currentOperator .y e v =
         (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaY := by
-    simp [currentOperator, current, velocity, directionPauli, matrixOperator, map_smul,
-      smul_smul]
+    simp [currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
   rw [dressedLongitudinalCurrentOperator, hx, hy]
   simp [inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
 
