@@ -20,16 +20,15 @@ half-sum over directed site pairs
 J_direction = 1/2 ∑ₓ ∑ᵧ w_xy J_xy.
 ```
 
-For a uniform source in that direction, the chain rule gives one additional factor of `w_xy` in
-the explicit current derivative, so the geometric contact operator is
+For a measured current direction `i` and a uniform source direction `j`, the chain rule gives the
+mixed geometric contact operator
 
 ```text
-C_direction = 1/2 ∑ₓ ∑ᵧ w_xy² C_xy.
+C_ij = 1/2 ∑ₓ ∑ᵧ w_i,xy w_j,xy C_xy.
 ```
 
-The final theorem combines the retarded response of the aggregated current with this geometric
-contact term. The construction remains at finite volume and does not take frequency, adiabatic,
-thermodynamic, or DC limits.
+The historical one-direction contact is the diagonal specialization `C_ii`. The construction
+remains at finite volume and does not take frequency, adiabatic, thermodynamic, or DC limits.
 -/
 
 namespace SecondQuantization
@@ -98,9 +97,22 @@ noncomputable def boundedDirectionalCurrent
       (geometry.bondCoordinate direction x y : ℂ) •
         boundedBondCurrent ℏ q K x y
 
-/-- Geometric contact operator for a uniform source in the selected direction. The squared bond
-coordinate is the chain-rule factor from differentiating the measured current after the Peierls
-phase has already been differentiated once. -/
+/-- Mixed geometric contact operator for a current measured along `measuredDirection` under a
+uniform Peierls source along `sourceDirection`. Each bond carries one coordinate factor from the
+measured current and one from differentiating the Peierls phase with respect to the source. -/
+noncomputable def boundedMixedDirectionalContact
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
+  (2 : ℂ)⁻¹ •
+    ∑ x : Site, ∑ y : Site,
+      ((geometry.bondCoordinate measuredDirection x y *
+        geometry.bondCoordinate sourceDirection x y : ℝ) : ℂ) •
+        boundedBondContact K ℏ q x y
+
+/-- Geometric contact operator for a uniform source in the selected direction. This is the
+diagonal specialization of `boundedMixedDirectionalContact`. -/
 noncomputable def boundedDirectionalContact
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
@@ -109,6 +121,16 @@ noncomputable def boundedDirectionalContact
     ∑ x : Site, ∑ y : Site,
       ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
         boundedBondContact K ℏ q x y
+
+/-- The mixed contact reduces to the historical directional contact when the measured and source
+directions coincide. -/
+@[simp]
+theorem boundedMixedDirectionalContact_self
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
+    boundedMixedDirectionalContact geometry direction direction ℏ q K =
+      boundedDirectionalContact geometry direction ℏ q K := by
+  simp [boundedMixedDirectionalContact, boundedDirectionalContact, pow_two]
 
 /-- Hermitian hopping and real physical parameters make every geometric current component
 self-adjoint. -/
