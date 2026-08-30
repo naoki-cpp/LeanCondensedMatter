@@ -1,13 +1,13 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation
 
 set_option linter.style.header false
 
 /-!
 # Geometric-current response adapter
 
-Geometric current/contact construction and its Peierls-source derivative are owned by
-`Fermionic.Lattice`; this file packages those data as generic response channels used by transport.
+Geometric current/contact construction is owned by `Fermionic.Lattice`; this file contains only
+the generic retarded-response specialization.
 -/
 
 namespace SecondQuantization
@@ -15,45 +15,12 @@ namespace Fermionic
 namespace Transport
 
 open _root_.SecondQuantization.Fermionic.Lattice
-open QuantumTheory.LinearResponse
 
 noncomputable section
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
-
-/-- Response channel for a current measured along `measuredDirection` under a uniform Peierls
-vector-potential source along `sourceDirection`.
-
-The channel is the coefficient of the current response to the vector potential `A_j`. The later
-conductivity layer converts this coefficient to the electric-field response `σ_ij` using the
-repository's explicit frequency/volume normalization. The observable variation is the mixed contact
-operator derived from `∂_{A_j} J_i(0)`. -/
-noncomputable def peierlsCurrentComponentResponseChannel
-    (geometry : LatticeGeometry Site E)
-    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
-    ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry measuredDirection ℏ q K
-  source := boundedDirectionalCurrent geometry sourceDirection ℏ q K
-  observableVariation :=
-    boundedMixedDirectionalContact geometry measuredDirection sourceDirection ℏ q K
-
-/-- The observable variation stored in the Peierls component channel is exactly the algebraic
-source derivative of the measured-current family. -/
-theorem peierlsCurrentComponentResponseChannel_hasObservableVariation
-    (geometry : LatticeGeometry Site E)
-    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) :
-    HasAlgebraicDerivAt
-      (boundedMixedDirectionalPeierlsCurrent
-        geometry measuredDirection sourceDirection ℏ q K)
-      (peierlsCurrentComponentResponseChannel geometry measuredDirection sourceDirection
-        ℏ q K).observableVariation 0 := by
-  simpa [peierlsCurrentComponentResponseChannel] using
-    hasAlgebraicDerivAt_boundedMixedDirectionalPeierlsCurrent_zero
-      geometry measuredDirection sourceDirection ℏ q K
 
 /-- Retarded response of a geometric current component with the source-dependent geometric contact
 term retained. Current self-adjointness is derived from Hermitian hopping and the real physical
