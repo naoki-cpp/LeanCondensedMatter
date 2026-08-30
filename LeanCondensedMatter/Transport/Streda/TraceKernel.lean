@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Transport.Streda.OperatorKernel
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -13,6 +14,7 @@ operator kernels and proves that:
 
 * differentiation of the real-energy Středa operator path descends through the trace;
 * the traced surface primitive has the traced operator derivative;
+* the residual sea trace is antisymmetric under exchanging the two current vertices;
 * the canonical traced derivative and residual sea kernels are continuous at positive broadening;
   and
 * the operator pointwise Bastin decomposition descends to scalar trace kernels.
@@ -60,6 +62,88 @@ noncomputable def regularizedStredaResidualSeaTraceKernel
   finiteDimensionalOperatorTrace (H := H)
     (regularizedStredaResidualSeaOperatorKernel
       hamiltonian current₁ current₂ energy broadening)
+
+/-- The finite-broadening residual sea trace is antisymmetric under exchange of the two current
+vertices. This is an exact finite-dimensional trace-cyclicity identity. -/
+theorem regularizedStredaResidualSeaTraceKernel_swap
+    (hamiltonian current₁ current₂ : H →L[ℂ] H)
+    (energy broadening : ℝ) :
+    regularizedStredaResidualSeaTraceKernel
+        hamiltonian current₁ current₂ energy broadening =
+      -regularizedStredaResidualSeaTraceKernel
+        hamiltonian current₂ current₁ energy broadening := by
+  let R : H →L[ℂ] H := retardedResolvent hamiltonian energy broadening
+  let A : H →L[ℂ] H := advancedResolvent hamiltonian energy broadening
+  have hres : ∀ X Y : H →L[ℂ] H,
+      regularizedStredaResidualSeaOperatorKernel
+          hamiltonian X Y energy broadening =
+        (1 / 2 : ℂ) •
+          (-(X * R * Y * R ^ 2) + X * R * Y * A ^ 2 +
+            Y * A * X * R ^ 2 - Y * A * X * A ^ 2 +
+            X * R ^ 2 * Y * R - X * R ^ 2 * Y * A -
+            Y * A ^ 2 * X * R + Y * A ^ 2 * X * A) := by
+    intro X Y
+    dsimp [R, A]
+    unfold regularizedStredaResidualSeaOperatorKernel
+      regularizedBastinOperatorIntegrand
+      regularizedStredaSurfacePrimitiveOperatorDerivative
+      smrckaStredaSurfaceFactorDerivative
+      retardedAdvancedResolventDifference
+      retardedAdvancedResolventDifferenceDerivative
+    noncomm_ring
+  have hRR₁ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * R ^ 2 * current₁ * R) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * R * current₂ * R ^ 2) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * R ^ 2) (current₁ * R))
+  have hRR₂ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * R * current₁ * R ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * R ^ 2 * current₂ * R) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * R) (current₁ * R ^ 2))
+  have hAA₁ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * A * current₁ * A ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * A ^ 2 * current₂ * A) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * A) (current₁ * A ^ 2))
+  have hAA₂ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * A ^ 2 * current₁ * A) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * A * current₂ * A ^ 2) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * A ^ 2) (current₁ * A))
+  have hRA₁ :
+      finiteDimensionalOperatorTrace (H := H) (current₁ * R * current₂ * A ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₂ * A ^ 2 * current₁ * R) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₁ * R) (current₂ * A ^ 2))
+  have hRA₂ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * A * current₁ * R ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * R ^ 2 * current₂ * A) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * A) (current₁ * R ^ 2))
+  have hRA₃ :
+      finiteDimensionalOperatorTrace (H := H) (current₂ * R * current₁ * A ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₁ * A ^ 2 * current₂ * R) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₂ * R) (current₁ * A ^ 2))
+  have hRA₄ :
+      finiteDimensionalOperatorTrace (H := H) (current₁ * A * current₂ * R ^ 2) =
+        finiteDimensionalOperatorTrace (H := H) (current₂ * R ^ 2 * current₁ * A) := by
+    simpa [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (H := H) (current₁ * A) (current₂ * R ^ 2))
+  unfold regularizedStredaResidualSeaTraceKernel
+  rw [hres current₁ current₂, hres current₂ current₁]
+  simp only [map_smul, map_add, map_sub, map_neg]
+  rw [hRR₁, hRR₂, hAA₁, hAA₂, hRA₁, hRA₂, hRA₃, hRA₄]
+  ring
 
 /-- The traced surface primitive has the traced operator derivative at every positive broadening. -/
 theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
