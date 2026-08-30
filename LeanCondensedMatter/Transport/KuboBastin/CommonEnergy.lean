@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
 import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
 set_option linter.style.header false
@@ -6,8 +7,10 @@ set_option linter.style.header false
 # Common energy kernel for finite Kubo–Bastin response
 
 Finite transition intervals are localized on the full energy axis and summed into one integrable
-piecewise kernel. The transition-level construction is pure-point and does not require a finite
-spectral index; finite sums first enter at the common-energy kernel.
+piecewise kernel. The representation-independent full-line interval localization is owned upstream
+by `Analysis.Calculus.IntervalLocalization`; this module owns its Kubo–Bastin specialization. The
+transition-level construction is pure-point and does not require a finite spectral index; finite
+sums first enter at the common-energy kernel.
 
 The common kernel is generally discontinuous at spectral energies. It is therefore not itself the
 smooth Středa primitive required by `RegularizedStredaRepresentation`, and equality with the
@@ -23,30 +26,6 @@ namespace Transport
 open MeasureTheory LinearResponse Set
 
 noncomputable section
-
-/-- A full-line function encoding the oriented interval integral from `a` to `b`. -/
-noncomputable def orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b energy : ℝ) : ℂ :=
-  (Ioc a b).indicator f energy - (Ioc b a).indicator f energy
-
-theorem integrable_orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
-    Integrable (orientedIntervalIntegrand f a b) := by
-  unfold orientedIntervalIntegrand
-  exact (hf.1.integrable_indicator measurableSet_Ioc).sub
-    (hf.2.integrable_indicator measurableSet_Ioc)
-
-theorem integral_orientedIntervalIntegrand
-    (f : ℝ → ℂ) (a b : ℝ) (hf : IntervalIntegrable f volume a b) :
-    (∫ energy : ℝ, orientedIntervalIntegrand f a b energy) =
-      ∫ energy in a..b, f energy := by
-  unfold orientedIntervalIntegrand
-  rw [MeasureTheory.integral_sub
-    (hf.1.integrable_indicator measurableSet_Ioc)
-    (hf.2.integrable_indicator measurableSet_Ioc)]
-  rw [MeasureTheory.integral_indicator measurableSet_Ioc,
-    MeasureTheory.integral_indicator measurableSet_Ioc]
-  rfl
 
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
