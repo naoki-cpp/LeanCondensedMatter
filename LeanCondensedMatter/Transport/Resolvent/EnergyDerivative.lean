@@ -27,7 +27,8 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private theorem hasDerivAt_spectralParameter_energy
+/-- Along the real-energy axis, the side-indexed spectral parameter has derivative one. -/
+theorem hasDerivAt_spectralParameter_energy
     (side : SpectralSide) (energy broadening : ℝ) :
     HasDerivAt (fun x : ℝ => spectralParameter side x broadening)
       (1 : ℂ) energy := by

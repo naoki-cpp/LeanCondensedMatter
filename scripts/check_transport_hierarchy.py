@@ -28,13 +28,17 @@ def main() -> int:
         require_import(errors, transport_umbrella, module, root=ROOT, description="transport public umbrella")
 
     resolvent_umbrella = TRANSPORT / "Resolvent.lean"
-    require_import(
-        errors,
-        resolvent_umbrella,
+    for module in (
+        "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative",
         "LeanCondensedMatter.Transport.Resolvent.Uniqueness",
-        root=ROOT,
-        description="resolvent public umbrella",
-    )
+    ):
+        require_import(
+            errors,
+            resolvent_umbrella,
+            module,
+            root=ROOT,
+            description="resolvent public umbrella",
+        )
     for path in (
         TRANSPORT / "Resolvent" / "Spectral.lean",
         TRANSPORT / "Resolvent" / "EnergyDerivative.lean",
@@ -47,6 +51,13 @@ def main() -> int:
             root=ROOT,
             description="resolvent hierarchy",
         )
+    require_import(
+        errors,
+        TRANSPORT / "Resolvent" / "DressedEnergyDerivative.lean",
+        "LeanCondensedMatter.Transport.Resolvent.EnergyDerivative",
+        root=ROOT,
+        description="dressed resolvent energy calculus",
+    )
 
     kubo_bastin_umbrella = TRANSPORT / "KuboBastin.lean"
     pure_point_module = "LeanCondensedMatter.Transport.KuboBastin.PurePoint"

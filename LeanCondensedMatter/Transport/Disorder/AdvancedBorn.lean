@@ -16,8 +16,8 @@ objects in `BornCommon`; the declarations here are advanced specializations. The
 advanced canonical forms are related by adjunction upstream, so no independent covariance or
 closure-error relation is supplied here.
 
-No self-consistency, vertex resummation, Ward identity, trace-per-volume construction, or
-thermodynamic limit is introduced.
+No self-consistency, Dyson-resummed Born Green operator, vertex resummation, Ward identity,
+trace-per-volume construction, or thermodynamic limit is introduced.
 -/
 
 namespace QuantumTheory
@@ -71,17 +71,17 @@ theorem bornSelfEnergy_advanced
       ensemble.bornAdvancedSelfEnergy energy broadening :=
   rfl
 
-/-- Conventional advanced name for the canonical side-indexed second-order Born approximation.
-This definition does not require centering. -/
-noncomputable def bornAdvancedResolventApproximation
+/-- Conventional advanced name for the canonical side-indexed second-order Born Green truncation.
+This definition does not require centering and is not a Dyson-resummed Green operator. -/
+noncomputable def secondOrderBornAdvancedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.bornResolventApproximation .advanced energy broadening
+  ensemble.secondOrderBornGreen .advanced energy broadening
 
 @[simp]
-theorem bornResolventApproximation_advanced
+theorem secondOrderBornGreen_advanced
     (energy broadening : ℝ) :
-    ensemble.bornResolventApproximation .advanced energy broadening =
-      ensemble.bornAdvancedResolventApproximation energy broadening :=
+    ensemble.secondOrderBornGreen .advanced energy broadening =
+      ensemble.secondOrderBornAdvancedGreen energy broadening :=
   rfl
 
 /-- Advanced specialization of the canonical exact Born closure error. -/
@@ -89,19 +89,20 @@ noncomputable def bornAdvancedClosureError
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.bornClosureError .advanced energy broadening
 
-/-- Exact decomposition of the averaged advanced Green operator into the Born approximation plus
-its retained closure error. Centering is used only through the exact averaged-Dyson reduction. -/
-theorem averagedAdvancedGreen_eq_bornApproximation_add_error
+/-- Exact decomposition of the averaged advanced Green operator into the second-order Born Green
+truncation plus its retained closure error. Centering is used only through the exact averaged-Dyson
+reduction. -/
+theorem averagedAdvancedGreen_eq_secondOrderBornGreen_add_error
     (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.averagedAdvancedGreen energy broadening =
-      bornAdvancedResolventApproximation ensemble energy broadening +
+      secondOrderBornAdvancedGreen ensemble energy broadening +
         bornAdvancedClosureError ensemble energy broadening := by
   rw [averagedAdvancedGreen_eq_free_add_exactRemainder
     ensemble hcentered energy broadening hbroadening]
-  unfold bornAdvancedResolventApproximation bornAdvancedClosureError bornClosureError
+  unfold secondOrderBornAdvancedGreen bornAdvancedClosureError bornClosureError secondOrderBornGreen
   rw [ensemble.freeGreen_advanced, ensemble.bornSelfEnergy_advanced]
-  exact free_add_remainder_eq_bornApproximation_add_error
+  exact free_add_remainder_eq_secondOrderBornGreen_add_error
     (ensemble.freeAdvancedGreen energy broadening)
     (ensemble.exactSecondOrderAdvancedRemainder energy broadening)
     (bornAdvancedSelfEnergy ensemble energy broadening)
@@ -111,15 +112,15 @@ abbrev AdvancedBornClosureHypothesis
     (energy broadening : ℝ) : Prop :=
   ensemble.BornClosureHypothesis .advanced energy broadening
 
-/-- Equality with the advanced Born approximation follows only under both centered disorder and the
-explicit closure hypothesis. -/
-theorem averagedAdvancedGreen_eq_bornApproximation
+/-- Equality with the advanced second-order Born Green truncation follows only under both centered
+disorder and the explicit closure hypothesis. -/
+theorem averagedAdvancedGreen_eq_secondOrderBornGreen
     (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening)
     (closure : AdvancedBornClosureHypothesis ensemble energy broadening) :
     ensemble.averagedAdvancedGreen energy broadening =
-      bornAdvancedResolventApproximation ensemble energy broadening := by
-  rw [averagedAdvancedGreen_eq_bornApproximation_add_error
+      secondOrderBornAdvancedGreen ensemble energy broadening := by
+  rw [averagedAdvancedGreen_eq_secondOrderBornGreen_add_error
     ensemble hcentered energy broadening hbroadening]
   have hclosure : bornAdvancedClosureError ensemble energy broadening = 0 := by
     simpa [bornAdvancedClosureError] using closure.closureError_eq_zero
