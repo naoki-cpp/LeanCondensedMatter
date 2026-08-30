@@ -243,8 +243,12 @@ theorem configurationGreen_eq_free_add_dyson_right
     ensemble.configurationGreen side energy broadening ω =
         ensemble.configurationGreen side energy broadening ω * shift₀ *
           ensemble.freeGreen side energy broadening := by
-      rw [hfree]
-      simp
+      calc
+        ensemble.configurationGreen side energy broadening ω =
+            ensemble.configurationGreen side energy broadening ω * 1 := by simp
+        _ = ensemble.configurationGreen side energy broadening ω *
+            (shift₀ * ensemble.freeGreen side energy broadening) := by rw [hfree]
+        _ = _ := by rw [mul_assoc]
     _ = ensemble.configurationGreen side energy broadening ω *
           (shiftω + (ensemble.impurityPotential ω).1) *
             ensemble.freeGreen side energy broadening := by
