@@ -377,14 +377,6 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficie
   have hshape : Tendsto (fun gamma : ℝ => 1 + gamma ^ 2)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 1) := by
     simpa using (tendsto_const_nhds.add (hgamma0.pow 2))
-  have hfactorConst : Tendsto
-      (fun _gamma : ℝ =>
-        (probeEnergy ^ 2 - m ^ 2) /
-          (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)))
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds ((probeEnergy ^ 2 - m ^ 2) /
-        (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)))) := tendsto_const_nhds
-  have hfactor0 := hshape.mul hfactorConst
   have hfactor : Tendsto
       (fun gamma : ℝ =>
         (1 + gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2) /
@@ -392,10 +384,16 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficie
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds ((probeEnergy ^ 2 - m ^ 2) /
         (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)))) := by
-    simpa [div_eq_mul_inv, mul_assoc] using hfactor0
-  have hmass := tendsto_continuumBornRAWeakDisorderArctanMass_zero
-    m probeEnergy hmetal
-  have hprod := hfactor.mul hmass
+    simpa [div_eq_mul_inv, mul_assoc] using
+      hshape.mul (tendsto_const_nhds : Tendsto
+        (fun _gamma : ℝ =>
+          (probeEnergy ^ 2 - m ^ 2) /
+            (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)))
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds ((probeEnergy ^ 2 - m ^ 2) /
+          (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)))))
+  have hprod := hfactor.mul
+    (tendsto_continuumBornRAWeakDisorderArctanMass_zero m probeEnergy hmetal)
   have htarget :
       ((probeEnergy ^ 2 - m ^ 2) /
           (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) * Real.pi =
@@ -455,16 +453,15 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div
       (nhds (2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2))) := by
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_nonneg m]
-  have hconst : Tendsto
+  have hprod :=
+    (tendsto_const_nhds : Tendsto
       (fun _gamma : ℝ =>
         2 * probeEnergy * m /
           (Real.pi * (probeEnergy ^ 2 + m ^ 2)))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (2 * probeEnergy * m /
-        (Real.pi * (probeEnergy ^ 2 + m ^ 2)))) := tendsto_const_nhds
-  have hmass := tendsto_continuumBornRAWeakDisorderArctanMass_zero
-    m probeEnergy hmetal
-  have hprod := hconst.mul hmass
+        (Real.pi * (probeEnergy ^ 2 + m ^ 2))))).mul
+      (tendsto_continuumBornRAWeakDisorderArctanMass_zero m probeEnergy hmetal)
   have htarget :
       (2 * probeEnergy * m /
           (Real.pi * (probeEnergy ^ 2 + m ^ 2))) * Real.pi =
