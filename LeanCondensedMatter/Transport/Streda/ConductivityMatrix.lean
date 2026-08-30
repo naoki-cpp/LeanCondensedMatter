@@ -6,18 +6,21 @@ set_option linter.style.header false
 # Static Středa conductivity matrices
 
 A static conductivity tensor should be represented before selecting a longitudinal or Hall channel.
-This file packages a coordinate-indexed regularized Středa conductivity into three contributions:
+This file packages a coordinate-indexed regularized Středa conductivity into the two contributions
+of the Středa decomposition:
 
 ```text
-Fermi-surface + Fermi-sea + explicit contact.
+Fermi-surface + Fermi-sea.
 ```
 
-The surface/sea split is the analytic Středa split. It is deliberately not identified here with an
-intrinsic/extrinsic mechanism split. The contact term remains separate because the generic static
-Kubo–Bastin/Středa boundary keeps observable variation outside the surface/sea integration by parts.
+Peierls observable-variation/contact terms belong to the upstream Kubo response and to the explicit
+Ward/f-sum bridge that identifies that response with a Středa representation. They are not stored as
+a third contribution in the final Středa conductivity matrix.
 
-Longitudinal response is obtained from a diagonal matrix entry. Hall response is the antisymmetric
-part of the complete conductivity matrix, not merely an arbitrary off-diagonal entry.
+The surface/sea split is an analytic Středa split. It is deliberately not identified here with an
+intrinsic/extrinsic mechanism split. Longitudinal response is obtained from a diagonal matrix entry;
+Hall response is the antisymmetric part of the complete conductivity matrix, not merely an arbitrary
+off-diagonal entry.
 -/
 
 namespace QuantumTheory
@@ -27,15 +30,14 @@ noncomputable section
 
 /-- Coordinate-indexed static conductivity data after a regularized Středa decomposition.
 
-Each field already carries the same physical conductivity normalization. No claim is made that the
-Fermi-surface part is purely extrinsic or that the Fermi-sea part is purely intrinsic. -/
+No claim is made that the Fermi-surface part is purely extrinsic or that the Fermi-sea part is purely
+intrinsic. Any contact-term cancellation or absorption required to reach this final conductivity is
+proved upstream when constructing the componentwise `RegularizedStredaRepresentation`. -/
 structure StaticStredaConductivityMatrix (ι : Type*) where
   /-- Regularized Fermi-surface conductivity contribution. -/
   fermiSurface : ι → ι → ℂ
   /-- Regularized Fermi-sea conductivity contribution. -/
   fermiSea : ι → ι → ℂ
-  /-- Explicit observable-variation/contact conductivity contribution. -/
-  contact : ι → ι → ℂ
 
 namespace StaticStredaConductivityMatrix
 
@@ -43,8 +45,7 @@ variable {ι : Type*}
 
 /-- Complete static conductivity matrix. -/
 noncomputable def total (conductivity : StaticStredaConductivityMatrix ι) : ι → ι → ℂ :=
-  fun i j =>
-    conductivity.fermiSurface i j + conductivity.fermiSea i j + conductivity.contact i j
+  fun i j => conductivity.fermiSurface i j + conductivity.fermiSea i j
 
 /-- Longitudinal conductivity along one selected coordinate. -/
 noncomputable def longitudinal
@@ -91,42 +92,28 @@ theorem hallComponent_eq_total_of_antisymmetric
     conductivity.hallComponent i j = conductivity.total i j := by
   simp [hallComponent, antisymmetricComponent, hantisym]
 
-/-- A symmetric contact contribution drops out of the Hall projection. -/
-theorem hallComponent_eq_surface_sea_of_contact_symmetric
-    (conductivity : StaticStredaConductivityMatrix ι) (i j : ι)
-    (hcontact : conductivity.contact i j = conductivity.contact j i) :
-    conductivity.hallComponent i j =
-      ((conductivity.fermiSurface i j + conductivity.fermiSea i j) -
-        (conductivity.fermiSurface j i + conductivity.fermiSea j i)) / 2 := by
-  unfold hallComponent antisymmetricComponent total
-  rw [hcontact]
-  ring
-
-/-- Build normalized Středa conductivity data from a family of regularized vertex-response
-representations plus the explicit contact response. -/
+/-- Build a Středa conductivity matrix from a componentwise family of proved Středa
+representations of the already-normalized physical conductivity. -/
 noncomputable def ofRepresentations
-    (response contactResponse : ι → ι → ℂ)
-    (representation : ∀ i j, RegularizedStredaRepresentation (response i j))
-    (normalization : ℂ) : StaticStredaConductivityMatrix ι where
+    (conductivity : ι → ι → ℂ)
+    (representation : ∀ i j, RegularizedStredaRepresentation (conductivity i j)) :
+    StaticStredaConductivityMatrix ι where
   fermiSurface := fun i j =>
     regularizedStredaFermiSurface
-        (representation i j).toRegularizedStredaIntegralData * normalization
+      (representation i j).toRegularizedStredaIntegralData
   fermiSea := fun i j =>
     regularizedStredaFermiSea
-        (representation i j).toRegularizedStredaIntegralData * normalization
-  contact := fun i j => contactResponse i j * normalization
+      (representation i j).toRegularizedStredaIntegralData
 
-/-- The complete matrix constructed from Středa representations reproduces the normalized full
-response, including the explicit contact contribution. -/
+/-- The complete matrix constructed from Středa representations reproduces the represented
+conductivity component by component. -/
 theorem ofRepresentations_total
-    (response contactResponse : ι → ι → ℂ)
-    (representation : ∀ i j, RegularizedStredaRepresentation (response i j))
-    (normalization : ℂ) (i j : ι) :
-    (ofRepresentations response contactResponse representation normalization).total i j =
-      (response i j + contactResponse i j) * normalization := by
+    (conductivity : ι → ι → ℂ)
+    (representation : ∀ i j, RegularizedStredaRepresentation (conductivity i j))
+    (i j : ι) :
+    (ofRepresentations conductivity representation).total i j = conductivity i j := by
   unfold total ofRepresentations
-  rw [(representation i j).response_eq_surface_add_sea]
-  ring
+  exact (representation i j).response_eq_surface_add_sea.symm
 
 end StaticStredaConductivityMatrix
 
