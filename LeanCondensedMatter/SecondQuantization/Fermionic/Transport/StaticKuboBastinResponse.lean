@@ -7,19 +7,13 @@ set_option linter.style.header false
 /-!
 # Static conductivity matrix from finite Kubo–Bastin response
 
-The response derived before the Středa layer retains finite frequency, positive switching rate, an
-explicit Peierls contact term, and the finite-volume electric-field normalization. A static
-Smrčka–Středa bridge therefore begins by fixing `ω = 0` and keeping measured-current and source-field
-coordinates independent.
+The existing one-direction static response remains the canonical diagonal path. This module adds the
+minimal two-direction static response needed to form conductivity components `σ_ij`, without
+rewriting the historical diagonal API.
 
-The primary static object in this module is the coordinate-indexed conductivity matrix. Peierls
-contact terms remain explicit in the upstream Kubo response; a componentwise Ward/f-sum bridge is
-responsible for identifying the normalized physical conductivity with a Středa representation. The
-final Středa matrix then contains only its Fermi-surface and Fermi-sea contributions. Longitudinal
-and Hall responses are projections of that same matrix rather than separate foundational formulas.
-
-The Středa surface/sea split is not identified with an intrinsic/extrinsic mechanism split. Genuine
-operator traces remain owned by `Transport.Streda.TraceKernel` and `TraceRepresentation`.
+The component response keeps measured-current and source-field directions independent. Peierls
+contact terms remain explicit before the finite-volume electric-field normalization. A later Ward/
+f-sum bridge identifies each normalized component with a Středa representation.
 -/
 
 namespace SecondQuantization
@@ -60,8 +54,7 @@ noncomputable def finiteStaticPeierlsContactComponentResponse
     (boundedMixedDirectionalContact geometry measuredDirection sourceDirection
       (system.hbar : ℂ) (q : ℂ) K)
 
-/-- Complete zero-frequency vector-potential response coefficient for conductivity component `ij`.
-This is the two-vertex response plus the Peierls contact response. -/
+/-- Complete zero-frequency vector-potential response coefficient for conductivity component `ij`. -/
 noncomputable def finiteStaticKuboBastinVectorPotentialComponentResponse
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -72,7 +65,7 @@ noncomputable def finiteStaticKuboBastinVectorPotentialComponentResponse
     (peierlsCurrentComponentResponseChannel geometry measuredDirection sourceDirection
       (system.hbar : ℂ) (q : ℂ) K) eta
 
-/-- The complete static vector-potential response is vertex plus explicit contact. -/
+/-- The complete component response is the two-vertex contribution plus the mixed contact. -/
 theorem finiteStaticKuboBastinVectorPotentialComponentResponse_eq_vertex_add_contact
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -87,8 +80,8 @@ theorem finiteStaticKuboBastinVectorPotentialComponentResponse_eq_vertex_add_con
           system data geometry measuredDirection sourceDirection K q := by
   rfl
 
-/-- Finite-rate static conductivity component `σ_ij`. Only the external driving frequency has been
-set to zero; the positive switching/broadening scale remains explicit. -/
+/-- Finite-rate static conductivity component `σ_ij`. Only the external driving frequency is set to
+zero; positive switching/broadening remains explicit. -/
 noncomputable def finiteStaticKuboBastinConductivityComponent
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -100,8 +93,7 @@ noncomputable def finiteStaticKuboBastinConductivityComponent
       system data geometry measuredDirection sourceDirection K q eta *
     finiteVolumeConductivityNormalization convention 0 eta
 
-/-- Coordinate-indexed finite static conductivity matrix before choosing longitudinal or Hall
-projections. -/
+/-- Coordinate-indexed finite static conductivity matrix before any longitudinal/Hall projection. -/
 noncomputable def finiteStaticKuboBastinConductivityMatrix
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -114,9 +106,7 @@ noncomputable def finiteStaticKuboBastinConductivityMatrix
     finiteStaticKuboBastinConductivityComponent
       convention system data geometry (axes i) (axes j) K q eta
 
-/-- Středa-decomposed static conductivity matrix for a chosen coordinate family. Each normalized
-conductivity component must first be equipped with a proved `RegularizedStredaRepresentation`; this
-is where the upstream Peierls contact and Ward/f-sum bridge are discharged. -/
+/-- Středa-decomposed static conductivity matrix assembled from proved component representations. -/
 noncomputable def finiteStaticStredaConductivityMatrix
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -136,8 +126,7 @@ noncomputable def finiteStaticStredaConductivityMatrix
         convention system data geometry (axes i) (axes j) K q eta)
     representation
 
-/-- The total Středa matrix is the finite static Kubo–Bastin conductivity matrix component by
-component. -/
+/-- The assembled Středa matrix reproduces the finite static conductivity componentwise. -/
 theorem finiteStaticStredaConductivityMatrix_total_eq_kuboBastin
     {κ : Type*}
     (axes : κ → E →ₗ[ℝ] ℝ)
@@ -162,16 +151,21 @@ theorem finiteStaticStredaConductivityMatrix_total_eq_kuboBastin
         convention system data geometry (axes a) (axes b) K q eta)
     representation i j
 
-/-- Neutral response-channel packaging used by the historical diagonal static target. -/
+/-- Neutral response-channel packaging used by the static directional charge-current target. -/
 private noncomputable def staticDirectionalChargeResponseChannel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
-    ResponseChannel (FiniteLatticeHilbertFock Site) :=
-  peierlsCurrentComponentResponseChannel geometry direction direction
+    ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  observableVariation := boundedDirectionalContact geometry direction
     (system.hbar : ℂ) (q : ℂ) K
 
-/-- Historical diagonal zero-frequency vector-potential response coefficient. -/
+/-- Zero-frequency vector-potential response coefficient, retaining the finite spectral
+current-current response and explicit Peierls contact expectation. -/
 noncomputable def finiteStaticKuboBastinVectorPotentialResponse
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -180,7 +174,8 @@ noncomputable def finiteStaticKuboBastinVectorPotentialResponse
   finiteStaticKuboBastinChannelResponse system data
     (staticDirectionalChargeResponseChannel system geometry direction K q) eta
 
-/-- Named finite static diagonal Kubo–Bastin conductivity target. -/
+/-- Named finite static Kubo–Bastin conductivity target. The switching rate remains positive and
+finite; only the driving frequency is specialized to zero. -/
 noncomputable def finiteStaticKuboBastinDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -190,7 +185,7 @@ noncomputable def finiteStaticKuboBastinDirectionalConductivity
   finiteKuboBastinSpectralDirectionalConductivity
     system data geometry direction K q 0 eta convention
 
-/-- The component API reproduces the historical directional conductivity on the diagonal. -/
+/-- The component conductivity reduces to the historical directional conductivity on the diagonal. -/
 @[simp]
 theorem finiteStaticKuboBastinConductivityComponent_self
     (convention : QuantumTheory.Transport.PositiveVolume)
@@ -211,8 +206,8 @@ theorem finiteStaticKuboBastinConductivityComponent_self
     finiteKuboBastinSpectralDirectionalConductivity
   rw [boundedMixedDirectionalContact_self]
 
-/-- The static diagonal conductivity is the retained vector-potential coefficient multiplied by the
-exact zero-frequency finite-volume electric-field normalization. -/
+/-- The static conductivity is the retained vector-potential coefficient multiplied by the exact
+zero-frequency finite-volume electric-field normalization. -/
 theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotential
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -224,17 +219,10 @@ theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotential
       finiteStaticKuboBastinVectorPotentialResponse
           system data geometry direction K q eta *
         finiteVolumeConductivityNormalization convention 0 eta := by
-  unfold finiteStaticKuboBastinDirectionalConductivity
-    finiteKuboBastinSpectralDirectionalConductivity
-    finiteStaticKuboBastinVectorPotentialResponse
-    staticDirectionalChargeResponseChannel
-    finiteStaticKuboBastinChannelResponse
-    finiteKuboBastinSpectralChannelResponse
-    peierlsCurrentComponentResponseChannel
-  rw [boundedMixedDirectionalContact_self]
+  rfl
 
-/-- Expanding the static diagonal spectral response gives the finite zero-frequency transition sum
-plus the unchanged contact expectation. -/
+/-- Expanding the static spectral response gives the finite zero-frequency transition sum plus the
+unchanged contact expectation. -/
 theorem finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -248,17 +236,9 @@ theorem finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  unfold finiteStaticKuboBastinVectorPotentialResponse
-    staticDirectionalChargeResponseChannel
-    finiteStaticKuboBastinChannelResponse
-    finiteKuboBastinSpectralChannelResponse
-    finiteKuboBastinSpectralVertexResponse
-    finiteKuboBastinSpectralVertexSum
-    peierlsCurrentComponentResponseChannel
-    finiteKuboBastinSpectralDirectionalCurrentTerm
-  rw [boundedMixedDirectionalContact_self]
+  rfl
 
-/-- Exact finite spectral form of the named diagonal static conductivity target. -/
+/-- Exact finite spectral form of the named static conductivity target. -/
 theorem finiteStaticKuboBastinDirectionalConductivity_eq_finite_sum
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -276,7 +256,7 @@ theorem finiteStaticKuboBastinDirectionalConductivity_eq_finite_sum
         finiteVolumeConductivityNormalization convention 0 eta := by
   rfl
 
-/-- The static named diagonal target remains connected to the causal Kubo response at every positive
+/-- The static named target remains connected to the causal Kubo response at every positive
 switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKuboBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
