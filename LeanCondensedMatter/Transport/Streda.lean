@@ -3,8 +3,10 @@ import LeanCondensedMatter.Transport.Streda.TraceKernel
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import LeanCondensedMatter.Transport.Streda.Integration
 import LeanCondensedMatter.Transport.Streda.GeneralizedStatic
+import LeanCondensedMatter.Transport.Streda.ConductivityMatrix
 import LeanCondensedMatter.Transport.Streda.TraceSpectral
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
+import LeanCondensedMatter.Transport.Streda.MatrixRepresentation
 import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 
 set_option linter.style.header false

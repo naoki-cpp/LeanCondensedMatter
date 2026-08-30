@@ -451,76 +451,68 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
       matrixOperator, map_add, map_smul]
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
-    rw [show scalarCoefficient = fun θ : ℝ =>
-        ((Real.cos θ : ℝ) : ℂ) *
-            (alpha * (aA * bR + aR * bA) -
-              beta * Complex.I * (bA * dR - bR * dA)) +
-          ((Real.sin θ : ℝ) : ℂ) *
-            (alpha * Complex.I * (bA * dR - bR * dA) +
-              beta * (aA * bR + aR * bA)) by
-      funext θ
-      simp [scalarCoefficient, bornDysonRaInPlaneScalarCoefficient,
-        aR, aA, bR, bA, dR, dA]
-      ring]
-    exact integral_finiteBorn_cos_sin_linear_zero _ _
+    convert integral_finiteBorn_cos_sin_linear_zero
+      (alpha * (aA * bR + aR * bA) -
+        beta * Complex.I * (bA * dR - bR * dA))
+      (alpha * Complex.I * (bA * dR - bR * dA) +
+        beta * (aA * bR + aR * bA)) using 1
+    apply intervalIntegral.integral_congr
+    intro θ _
+    simp [scalarCoefficient, bornDysonRaInPlaneScalarCoefficient,
+      aR, aA, bR, bA, dR, dA]
+    ring
   have hXIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) =
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
             v m p probeEnergy broadening disorderStrength hbar pMax * alpha -
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
             v m p probeEnergy broadening disorderStrength hbar pMax * beta := by
-    rw [show xCoefficient = fun θ : ℝ =>
-        ((aR * aA - dR * dA) * alpha -
-          Complex.I * (aA * dR - aR * dA) * beta) +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-          (bR * bA * alpha) +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-          (2 * bR * bA * beta) by
-      funext θ
+    convert integral_finiteBorn_inPlane_modes
+      ((aR * aA - dR * dA) * alpha -
+        Complex.I * (aA * dR - aR * dA) * beta)
+      (bR * bA * alpha)
+      (2 * bR * bA * beta) using 1
+    · apply intervalIntegral.integral_congr
+      intro θ _
       simp [xCoefficient, bornDysonRaInPlaneXCoefficient,
         aR, aA, bR, bA, dR, dA]
-      ring]
-    rw [integral_finiteBorn_inPlane_modes]
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
-      aR, aA, dR, dA]
-    ring
+      ring
+    · simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
+        finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
+        aR, aA, dR, dA]
+      ring
   have hYIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), yCoefficient θ) =
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
             v m p probeEnergy broadening disorderStrength hbar pMax * alpha +
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
             v m p probeEnergy broadening disorderStrength hbar pMax * beta := by
-    rw [show yCoefficient = fun θ : ℝ =>
-        (Complex.I * (aA * dR - aR * dA) * alpha +
-          (aR * aA - dR * dA) * beta) +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-          (-(bR * bA * beta)) +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-          (2 * bR * bA * alpha) by
-      funext θ
+    convert integral_finiteBorn_inPlane_modes
+      (Complex.I * (aA * dR - aR * dA) * alpha +
+        (aR * aA - dR * dA) * beta)
+      (-(bR * bA * beta))
+      (2 * bR * bA * alpha) using 1
+    · apply intervalIntegral.integral_congr
+      intro θ _
       simp [yCoefficient, bornDysonRaInPlaneYCoefficient,
         aR, aA, bR, bA, dR, dA]
-      ring]
-    rw [integral_finiteBorn_inPlane_modes]
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
-      aR, aA, dR, dA]
-    ring
+      ring
+    · simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
+        finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
+        aR, aA, dR, dA]
+      ring
   have hZIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), zCoefficient θ) = 0 := by
-    rw [show zCoefficient = fun θ : ℝ =>
-        ((Real.cos θ : ℝ) : ℂ) *
-            (alpha * (bA * dR + bR * dA) -
-              beta * Complex.I * (aR * bA - aA * bR)) +
-          ((Real.sin θ : ℝ) : ℂ) *
-            (alpha * Complex.I * (aR * bA - aA * bR) +
-              beta * (bA * dR + bR * dA)) by
-      funext θ
-      simp [zCoefficient, bornDysonRaInPlaneZCoefficient,
-        aR, aA, bR, bA, dR, dA]
-      ring]
-    exact integral_finiteBorn_cos_sin_linear_zero _ _
+    convert integral_finiteBorn_cos_sin_linear_zero
+      (alpha * (bA * dR + bR * dA) -
+        beta * Complex.I * (aR * bA - aA * bR))
+      (alpha * Complex.I * (aR * bA - aA * bR) +
+        beta * (bA * dR + bR * dA)) using 1
+    apply intervalIntegral.integral_congr
+    intro θ _
+    simp [zCoefficient, bornDysonRaInPlaneZCoefficient,
+      aR, aA, bR, bA, dR, dA]
+    ring
   have hscalarContinuous : Continuous scalarCoefficient := by
     dsimp [scalarCoefficient, bornDysonRaInPlaneScalarCoefficient]
     fun_prop
