@@ -38,7 +38,7 @@
         {"upstream": "modelKinematics", "downstream": "modelOccupation"},
         {"upstream": "modelOccupation", "downstream": "modelFermiSurfaceKinematics"},
         {"upstream": "modelFermiSurfaceKinematics", "downstream": "longitudinalRelaxationTime"},
-        {"upstream": "modelOperator", "downstream": "longitudinalFiniteBroadening"},
+        {"upstream": "modelCurrentBridge", "downstream": "longitudinalFiniteBroadening"},
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelOperatorSpectral"},
