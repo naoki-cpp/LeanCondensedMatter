@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleP
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
@@ -37,18 +38,16 @@ the damping onto the upper band, derives the microscopic single-particle scatter
 separately derives the Born transport rate from the Fermi-circle current-relaxation weight.
 
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
-rung, the weak-disorder Born-dressed Pauli propagator data and bounded-operator realization, the
-Born-dressed angular/radial rung reduction, finite-cutoff integration of the resulting
-one-dimensional Green-product kernels, and the exact bridge from that integrated Green-product
-coefficient to the fully normalized longitudinal `σₓ` current-rung coefficient.  Its fixed-cutoff
-metallic weak-disorder limit gives the canonical scalar rung coefficient and the corresponding
-transport-over-single-particle lifetime factor.  Separately, the common real radial denominator
-integral is evaluated in closed arctangent form and its convergent `pMax → +∞` limit is proved before
-taking `γ → 0⁺`; this also exposes the leading positive `σᵧ` coefficient in repository orientation
-`Gᴿ σₓ Gᴬ`.  The finite-dimensional RA Fermi-surface trace channel is explicit as a separate layer,
-and the Born propagator plus an arbitrary supplied dressed longitudinal vertex can be inserted there
-without identifying the Born object with the exact clean resolvent.
+rung, the zero-external-broadening weak-disorder Born propagator used by the current-rung benchmark,
+and a separate finite-cutoff Born-Dyson propagator candidate that retains the external Středa/Kubo
+broadening `η` through the existing finite-`η` continuum Born self-energy.  The angular/radial rung,
+finite-cutoff integration, normalization bridge, fixed-cutoff metallic weak-disorder limit, and the
+scalar `τ_tr / τ_sp` bridge remain distinct from this finite-`η` propagator path.  Separately, the
+common real radial denominator integral is evaluated in closed arctangent form and its convergent
+`pMax → +∞` limit is proved before taking `γ → 0⁺`; this also exposes the leading positive `σᵧ`
+coefficient in repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace
+channel is shared by these paths.
 
-RTA recovery, SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete
-conductivity theorem remain separate.
+An explicit finite-`η` dressed-current solution and RTA recovery remain downstream, as do SCBA,
+simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity theorem.
 -/
