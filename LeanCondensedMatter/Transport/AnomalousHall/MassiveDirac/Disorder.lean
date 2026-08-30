@@ -13,8 +13,6 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexAngular
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexIntegral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexInPlane
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.InPlaneLadder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
@@ -45,15 +43,16 @@ Phase 5 includes the exact finite-broadening angular reduction of the retarded-a
 rung, the zero-external-broadening weak-disorder Born propagator used by the current-rung benchmark,
 and a separate finite-cutoff Born-Dyson propagator candidate that retains the external Středa/Kubo
 broadening `η` through the existing finite-`η` continuum Born self-energy.  For that finite-`η`
-Born-Dyson path, the full-angle `σₓ` and `σᵧ` basis rungs are reduced to the common in-plane
-coefficient pair `(X,Y)`, and the induced arbitrary in-plane action is proved to have repository
-orientation `[[X,-Y],[Y,X]]`.  Radial integration and scalar-disorder normalization remain
-downstream of this angular layer.  The zero-external-broadening angular/radial rung, finite-cutoff
-integration, normalization bridge, fixed-cutoff metallic weak-disorder limit, and scalar
-`τ_tr / τ_sp` bridge remain separate.  Separately, the common real radial denominator integral is
-evaluated in closed arctangent form and its convergent `pMax → +∞` limit is proved before taking
-`γ → 0⁺`; this also exposes the leading positive `σᵧ` coefficient in repository orientation
-`Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace channel is shared by these paths.
+Born-Dyson path, a single arbitrary in-plane vertex theorem reduces the full-angle rung to the
+coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`; the `σₓ` and `σᵧ` basis
+channels are corollaries rather than separate derivations.  Radial integration and scalar-disorder
+normalization remain downstream of this fixed-radius layer.  The zero-external-broadening
+angular/radial rung, finite-cutoff integration, normalization bridge, fixed-cutoff metallic
+weak-disorder limit, and scalar `τ_tr / τ_sp` bridge remain separate.  Separately, the common real
+radial denominator integral is evaluated in closed arctangent form and its convergent `pMax → +∞`
+limit is proved before taking `γ → 0⁺`; this also exposes the leading positive `σᵧ` coefficient in
+repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace channel is
+shared by these paths.
 
 The exact coefficient-level fixed point for any supplied in-plane rung pair `(X,Y)` is also exposed,
 including its orientation-sensitive `σᵧ` component and the visible determinant condition for
