@@ -225,7 +225,14 @@ theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotential
       finiteStaticKuboBastinVectorPotentialResponse
           system data geometry direction K q eta *
         finiteVolumeConductivityNormalization convention 0 eta := by
-  rfl
+  unfold finiteStaticKuboBastinDirectionalConductivity
+    finiteKuboBastinSpectralDirectionalConductivity
+    finiteStaticKuboBastinVectorPotentialResponse
+    staticDirectionalChargeResponseChannel
+    finiteStaticKuboBastinChannelResponse
+    finiteKuboBastinSpectralChannelResponse
+    peierlsCurrentComponentResponseChannel
+  rw [boundedMixedDirectionalContact_self]
 
 /-- Expanding the static diagonal spectral response gives the finite zero-frequency transition sum
 plus the unchanged contact expectation. -/
@@ -242,7 +249,15 @@ theorem finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  rfl
+  unfold finiteStaticKuboBastinVectorPotentialResponse
+    staticDirectionalChargeResponseChannel
+    finiteStaticKuboBastinChannelResponse
+    finiteKuboBastinSpectralChannelResponse
+    finiteKuboBastinSpectralVertexResponse
+    finiteKuboBastinSpectralVertexSum
+    peierlsCurrentComponentResponseChannel
+    finiteKuboBastinSpectralDirectionalCurrentTerm
+  rw [boundedMixedDirectionalContact_self]
 
 /-- Exact finite spectral form of the named diagonal static conductivity target. -/
 theorem finiteStaticKuboBastinDirectionalConductivity_eq_finite_sum
