@@ -456,7 +456,8 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         beta * Complex.I * (bA * dR - bR * dA))
       (alpha * Complex.I * (bA * dR - bR * dA) +
         beta * (aA * bR + aR * bA)) using 1
-    funext θ
+    apply intervalIntegral.integral_congr
+    intro θ _
     simp [scalarCoefficient, bornDysonRaInPlaneScalarCoefficient,
       aR, aA, bR, bA, dR, dA]
     ring
@@ -471,7 +472,8 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         Complex.I * (aA * dR - aR * dA) * beta)
       (bR * bA * alpha)
       (2 * bR * bA * beta) using 1
-    · funext θ
+    · apply intervalIntegral.integral_congr
+      intro θ _
       simp [xCoefficient, bornDysonRaInPlaneXCoefficient,
         aR, aA, bR, bA, dR, dA]
       ring
@@ -490,7 +492,8 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         (aR * aA - dR * dA) * beta)
       (-(bR * bA * beta))
       (2 * bR * bA * alpha) using 1
-    · funext θ
+    · apply intervalIntegral.integral_congr
+      intro θ _
       simp [yCoefficient, bornDysonRaInPlaneYCoefficient,
         aR, aA, bR, bA, dR, dA]
       ring
@@ -505,7 +508,8 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         beta * Complex.I * (aR * bA - aA * bR))
       (alpha * Complex.I * (aR * bA - aA * bR) +
         beta * (bA * dR + bR * dA)) using 1
-    funext θ
+    apply intervalIntegral.integral_congr
+    intro θ _
     simp [zCoefficient, bornDysonRaInPlaneZCoefficient,
       aR, aA, bR, bA, dR, dA]
     ring
