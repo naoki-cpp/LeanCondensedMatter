@@ -1,17 +1,19 @@
 import Mathlib.Data.Complex.Basic
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
 /-!
-# Regularized surface/sea conductivity matrices
+# Static Středa conductivity matrices
 
-This file contains only coordinate-indexed conductivity data split into the regularized surface and
-residual-sea contributions supplied by the current Středa integration layer. It deliberately does
-not identify the residual sea term with the conventional Smrčka–Středa II contribution.
+A static Středa conductivity matrix consists of its Fermi-surface and Fermi-sea contributions,
+with the sea contribution antisymmetric under exchange of measured-current and source-field
+coordinates. The antisymmetry makes the sea contribution vanish on the diagonal, so longitudinal
+conductivity is the diagonal Fermi-surface contribution.
 
-Consequently no sea antisymmetry or vanishing diagonal is assumed here. A physical Středa I/II
-matrix should be introduced only after those properties are proved under the necessary hypotheses.
-The surface/sea split is also not identified with an intrinsic/extrinsic mechanism split.
+This analytic surface/sea split is not identified here with an intrinsic/extrinsic mechanism split.
+Construction from concrete Kubo/Středa data is intentionally kept separate so that its physical
+provenance remains explicit.
 -/
 
 namespace QuantumTheory
@@ -19,42 +21,57 @@ namespace Transport
 
 noncomputable section
 
-/-- Coordinate-indexed conductivity data with regularized surface and residual-sea contributions. -/
-structure RegularizedSurfaceSeaConductivityMatrix (ι : Type*) where
-  /-- Regularized Fermi-surface conductivity contribution. -/
+/-- Coordinate-indexed static Středa conductivity data. The sea contribution carries its defining
+antisymmetry as an invariant rather than as a convention on off-diagonal entries. -/
+structure StaticStredaConductivityMatrix (ι : Type*) where
+  /-- Fermi-surface conductivity contribution. -/
   fermiSurface : ι → ι → ℂ
-  /-- Regularized residual Fermi-sea conductivity contribution. -/
+  /-- Fermi-sea conductivity contribution. -/
   fermiSea : ι → ι → ℂ
+  /-- The Středa sea contribution is antisymmetric in its current/source indices. -/
+  fermiSea_swap : ∀ i j, fermiSea i j = -fermiSea j i
 
-namespace RegularizedSurfaceSeaConductivityMatrix
+namespace StaticStredaConductivityMatrix
 
 variable {ι : Type*}
 
-/-- Complete conductivity matrix represented by the surface/sea split. -/
-noncomputable def total
-    (conductivity : RegularizedSurfaceSeaConductivityMatrix ι) : ι → ι → ℂ :=
+/-- Complete static conductivity matrix. -/
+noncomputable def total (conductivity : StaticStredaConductivityMatrix ι) : ι → ι → ℂ :=
   fun i j => conductivity.fermiSurface i j + conductivity.fermiSea i j
 
-/-- Diagonal conductivity along one selected coordinate. No claim that the residual sea part
-vanishes is made here. -/
+/-- The Fermi-sea contribution vanishes on the diagonal. -/
+@[simp]
+theorem fermiSea_self
+    (conductivity : StaticStredaConductivityMatrix ι) (i : ι) :
+    conductivity.fermiSea i i = 0 := by
+  have h := conductivity.fermiSea_swap i i
+  linear_combination h
+
+/-- Longitudinal conductivity along one selected coordinate. -/
 noncomputable def longitudinal
-    (conductivity : RegularizedSurfaceSeaConductivityMatrix ι) (i : ι) : ℂ :=
+    (conductivity : StaticStredaConductivityMatrix ι) (i : ι) : ℂ :=
   conductivity.total i i
 
-/-- Antisymmetric part of the complete conductivity matrix. This becomes the Hall conductivity when
-the corresponding physical identification has been established. -/
-noncomputable def antisymmetricComponent
-    (conductivity : RegularizedSurfaceSeaConductivityMatrix ι) (i j : ι) : ℂ :=
+/-- The longitudinal conductivity is entirely the diagonal Fermi-surface contribution. -/
+theorem longitudinal_eq_fermiSurface
+    (conductivity : StaticStredaConductivityMatrix ι) (i : ι) :
+    conductivity.longitudinal i = conductivity.fermiSurface i i := by
+  simp [longitudinal, total]
+
+/-- Hall conductivity component, defined as the antisymmetric part of the complete conductivity
+matrix rather than as an arbitrary off-diagonal entry. -/
+noncomputable def hallComponent
+    (conductivity : StaticStredaConductivityMatrix ι) (i j : ι) : ℂ :=
   (conductivity.total i j - conductivity.total j i) / 2
 
-/-- The antisymmetric component vanishes on the diagonal. -/
+/-- The Hall component vanishes on the diagonal. -/
 @[simp]
-theorem antisymmetricComponent_self
-    (conductivity : RegularizedSurfaceSeaConductivityMatrix ι) (i : ι) :
-    conductivity.antisymmetricComponent i i = 0 := by
-  simp [antisymmetricComponent]
+theorem hallComponent_self
+    (conductivity : StaticStredaConductivityMatrix ι) (i : ι) :
+    conductivity.hallComponent i i = 0 := by
+  simp [hallComponent]
 
-end RegularizedSurfaceSeaConductivityMatrix
+end StaticStredaConductivityMatrix
 
 end
 end Transport
