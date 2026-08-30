@@ -12,6 +12,9 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.Transpo
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexAngular
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexIntegral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexInPlane
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
@@ -40,13 +43,17 @@ separately derives the Born transport rate from the Fermi-circle current-relaxat
 Phase 5 includes the exact finite-broadening angular reduction of the retarded-advanced `x`-current
 rung, the zero-external-broadening weak-disorder Born propagator used by the current-rung benchmark,
 and a separate finite-cutoff Born-Dyson propagator candidate that retains the external Středa/Kubo
-broadening `η` through the existing finite-`η` continuum Born self-energy.  The angular/radial rung,
-finite-cutoff integration, normalization bridge, fixed-cutoff metallic weak-disorder limit, and the
-scalar `τ_tr / τ_sp` bridge remain distinct from this finite-`η` propagator path.  Separately, the
-common real radial denominator integral is evaluated in closed arctangent form and its convergent
-`pMax → +∞` limit is proved before taking `γ → 0⁺`; this also exposes the leading positive `σᵧ`
-coefficient in repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace
-channel is shared by these paths.
+broadening `η` through the existing finite-`η` continuum Born self-energy.  For that finite-`η`
+Born-Dyson path, the full-angle `σₓ` and `σᵧ` basis rungs are reduced to the common in-plane
+coefficient pair `(X,Y)`, and the induced arbitrary in-plane action is proved to have repository
+orientation `[[X,-Y],[Y,X]]`.  Radial integration, scalar-disorder normalization, and the ladder
+fixed-point solve remain downstream of this angular layer.  The zero-external-broadening angular/
+radial rung, finite-cutoff integration, normalization bridge, fixed-cutoff metallic weak-disorder
+limit, and scalar `τ_tr / τ_sp` bridge remain separate.  Separately, the common real radial
+denominator integral is evaluated in closed arctangent form and its convergent `pMax → +∞` limit is
+proved before taking `γ → 0⁺`; this also exposes the leading positive `σᵧ` coefficient in repository
+orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace channel is shared by
+these paths.
 
 An explicit finite-`η` dressed-current solution and RTA recovery remain downstream, as do SCBA,
 simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity theorem.
