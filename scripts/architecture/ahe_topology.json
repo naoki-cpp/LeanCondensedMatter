@@ -26,7 +26,10 @@
         {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"]},
         {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.RelaxationTime"]},
-        {"id": "longitudinalFiniteBroadening", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening"]}
+        {"id": "longitudinalFiniteBroadening", "modulePrefixes": [
+          "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening",
+          "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadeningBornLadder"
+        ]}
       ],
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelOperator"},
