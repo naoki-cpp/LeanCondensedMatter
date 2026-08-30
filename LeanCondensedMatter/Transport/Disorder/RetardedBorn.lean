@@ -47,7 +47,8 @@ theorem averagedRetardedGreen_eq_free_add_exactRemainder
     ensemble.averagedRetardedGreen energy broadening =
       ensemble.freeRetardedGreen energy broadening +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-  simpa [averagedRetardedGreen, exactSecondOrderRetardedRemainder] using
+  simpa only [averagedGreen_retarded, freeGreen_retarded,
+    exactSecondOrderRetardedRemainder] using
     averagedGreen_eq_free_add_exactSecondOrderRemainder
       ensemble hcentered .retarded energy broadening hbroadening
 
