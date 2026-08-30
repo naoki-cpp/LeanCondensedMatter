@@ -48,6 +48,26 @@ noncomputable def dressedLongitudinalCurrentOperator
     (e v : ℝ) (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   alpha • currentOperator .x e v + beta • currentOperator .y e v
 
+/-- The physical dressed current is electron charge times the Dirac velocity scale multiplying the
+dimensionless in-plane Pauli vertex.  This is the exact operator bridge from the `σₓ` / `σᵧ`
+vertex coefficients used by the Born rung to the physical current convention. -/
+theorem dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
+    (e v : ℝ) (alpha beta : ℂ) :
+    dressedLongitudinalCurrentOperator e v alpha beta =
+      (((-e * v : ℝ) : ℂ)) • inPlanePauliVertexOperator alpha beta := by
+  have hx :
+      currentOperator .x e v =
+        (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaX := by
+    simp [currentOperator, current, velocity, directionPauli, matrixOperator, map_smul,
+      smul_smul]
+  have hy :
+      currentOperator .y e v =
+        (((-e * v : ℝ) : ℂ)) • matrixOperator sigmaY := by
+    simp [currentOperator, current, velocity, directionPauli, matrixOperator, map_smul,
+      smul_smul]
+  rw [dressedLongitudinalCurrentOperator, hx, hy]
+  simp [inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
+
 /-- The undressed in-plane coefficient pair recovers the repository's canonical longitudinal
 charge-current operator exactly. -/
 @[simp] theorem dressedLongitudinalCurrentOperator_one_zero
