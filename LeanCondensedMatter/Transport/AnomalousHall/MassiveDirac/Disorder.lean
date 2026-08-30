@@ -13,6 +13,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPro
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.InPlaneLadder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
@@ -48,6 +49,10 @@ common real radial denominator integral is evaluated in closed arctangent form a
 coefficient in repository orientation `Gᴿ σₓ Gᴬ`.  The generic supplied-Green RA Fermi-surface trace
 channel is shared by these paths.
 
-An explicit finite-`η` dressed-current solution and RTA recovery remain downstream, as do SCBA,
-simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity theorem.
+The exact coefficient-level fixed point for any supplied in-plane rung pair `(X,Y)` is also exposed,
+including its orientation-sensitive `σᵧ` component and the visible determinant condition for
+uniqueness.  Instantiating those coefficients with the finite-`η` Born-Dyson momentum integral,
+then inserting the resulting dressed current into conductivity, remains downstream.  RTA recovery,
+SCBA, simultaneous UV / zero-broadening limits, crossed diagrams, and a complete conductivity
+theorem remain separate.
 -/
