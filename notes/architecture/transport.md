@@ -17,9 +17,9 @@ General analysis infrastructure sits further upstream. In particular, the bundle
 finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, generic bounded
 resolvent spectrum exclusion, shifted inverse algebra, and eigenvector action are owned by
 `Analysis/Operator/Spectral/Resolvent.lean`, while the model-independent Lorentzian approximate-
-identity kernel and regular-factor pole extraction are owned by
-`Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than owning
-them.
+identity kernel, weighted-window analysis, and regular-factor pole extraction are owned by
+`Analysis/Lorentzian/{Kernel,Weighted,Pole}.lean`. Transport consumes these primitives rather than
+owning them.
 
 ## Physical source hierarchy
 
@@ -67,8 +67,8 @@ Transport/
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
-generic bounded-resolvent spectral algebra, and Lorentzian kernel/pole infrastructure are exported
-instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
+generic bounded-resolvent spectral algebra, and Lorentzian kernel/weighted-window/pole infrastructure
+are exported instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
 `Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
 `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
 audits showed no remaining imports.
@@ -150,13 +150,16 @@ the canonical bounded complex-linear exact second-moment action `C₂(X) = E[Vω
 finite-average and adjoint-compatibility properties, and owns the separate `IsCentered` property
 used to cancel first-order disorder insertions.
 
-`Disorder/BornCommon` owns genuinely R/A-neutral first-Born data and algebra shared by both physical
-specializations: the side-indexed `bornSelfEnergy` and `bornResolventApproximation`, centered
-first-order insertion cancellation, averaging of a configuration-wise second-order expansion, the
-common second-order expression `G₀ + G₀ Σ G₀`, and its exact closure error algebra. Conventional
-retarded/advanced self-energy and approximation names stay in `Disorder/RetardedBorn` and
-`Disorder/AdvancedBorn` as physical specializations. Orientation-sensitive exact Dyson remainders
-and closure hypotheses also stay in those sibling modules; the siblings must not import one another.
+`Disorder/BornCommon` owns the canonical side-indexed first-Born data shared by both physical
+specializations: `bornSelfEnergy`, `bornResolventApproximation`, the orientation-aware
+`exactSecondOrderRemainder`, `bornClosureError`, and `BornClosureHypothesis`, together with centered
+first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. The exact remainder keeps the
+side-dependent multiplication order inherited from the configuration Dyson identities, while its
+retarded/advanced values, the self-energy, the truncated Green, and the closure error are proved to
+be related by adjunction. Conventional retarded/advanced names remain in `Disorder/RetardedBorn`
+and `Disorder/AdvancedBorn` as physical specializations. The centered exact-average decomposition
+proofs remain in those sibling modules because they consume orientation-specific configuration
+Dyson identities; the siblings must not import one another.
 
 The Born self-energy and approximation objects use the canonical exact second moment and therefore
 do not themselves require centered disorder. Centering is required only when an exact averaged
@@ -217,9 +220,9 @@ compatibility shims; repository consumers use the canonical `Model` owners direc
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
 Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
 `Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
-kernel/tail analysis and regular-factor pole extraction are representation-independent and live
-upstream under `Analysis/Lorentzian/`; both generic Transport and the massive-Dirac specialization
-consume those analysis primitives.
+kernel/tail analysis, local-constant weighted-window extraction, and regular-factor pole extraction
+are representation-independent and live upstream under `Analysis/Lorentzian/`; both generic
+Transport and the massive-Dirac specialization consume those analysis primitives.
 
 ## Generic / concrete boundary
 
