@@ -89,7 +89,11 @@ theorem integral_complex_cos_mul_sin_zero_two_pi :
               (0 : ℝ) (2 * Real.pi) volume
               (fun θ : ℝ => Real.sin θ * Real.cos θ)
     _ = 0 := by
-      rw [integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0]
+      have hreal :
+          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
+        simpa using
+          (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
+      rw [hreal]
       simp
 
 /-- The massive-Dirac dispersion is radial in polar momentum coordinates. -/
