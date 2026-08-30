@@ -9,6 +9,7 @@ set_option linter.style.header false
 # Massive-Dirac Středa specialization
 
 Public umbrella for the model-specific Bastin/Středa trace identity, finite-energy surface/sea
-decomposition, and shared-provenance static conductivity matrix. Bounded-operator and
+decomposition, and shared-provenance fixed-momentum response matrix. Physical conductivity still
+requires the downstream Bastin prefactor and continuum momentum normalization. Bounded-operator and
 spectral/resolvent infrastructure is owned by `MassiveDirac.Model`.
 -/
