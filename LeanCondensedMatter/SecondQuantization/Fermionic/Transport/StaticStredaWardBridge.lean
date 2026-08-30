@@ -69,14 +69,10 @@ theorem finiteStaticKuboBastinVectorPotentialResponse_eq_currentCurrent_add_cont
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  unfold finiteStaticKuboBastinVectorPotentialResponse
-    staticDirectionalChargeResponseChannel
-    finiteStaticKuboBastinChannelResponse
-    finiteKuboBastinSpectralChannelResponse
-    finiteKuboBastinSpectralVertexResponse
-    finiteStaticKuboBastinCurrentCurrentResponse
-    peierlsCurrentComponentResponseChannel
-  rw [boundedMixedDirectionalContact_self]
+  rw [finiteStaticKuboBastinVectorPotentialResponse_eq_finite_sum]
+  unfold finiteStaticKuboBastinCurrentCurrentResponse
+    finiteKuboBastinSpectralVertexSum
+    finiteKuboBastinSpectralDirectionalCurrentTerm
 
 /-- Minimal finite-rate Peierls Ward/f-sum identity needed to identify the named static response
 with the canonical traced Bastin energy integral.
