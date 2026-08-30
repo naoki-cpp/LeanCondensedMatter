@@ -39,6 +39,12 @@ def main() -> int:
             root=ROOT,
             description="resolvent public umbrella",
         )
+    lorentzian_kernel_module = "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
+    if lorentzian_kernel_module in lean_imports(resolvent_umbrella):
+        errors.append(
+            "Transport/Resolvent.lean must not re-export Analysis.Lorentzian.Kernel; "
+            "Lorentzian analysis is owned by LeanCondensedMatter.Analysis"
+        )
     for path in (
         TRANSPORT / "Resolvent" / "Spectral.lean",
         TRANSPORT / "Resolvent" / "EnergyDerivative.lean",
