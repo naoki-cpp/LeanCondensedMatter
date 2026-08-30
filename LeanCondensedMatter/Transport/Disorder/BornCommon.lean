@@ -112,6 +112,63 @@ theorem exactSecondOrderRemainder_advanced
                 ensemble.freeAdvancedGreen energy broadening) :=
   rfl
 
+/-- For centered disorder, the exact averaged Green operator is the clean Green operator plus the
+full exact second-order remainder on either spectral side. The selected side retains the physical
+retarded-left / advanced-right remainder orientation. -/
+theorem averagedGreen_eq_free_add_exactSecondOrderRemainder
+    (hcentered : ensemble.IsCentered)
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : 0 < broadening) :
+    ensemble.averagedGreen side energy broadening =
+      ensemble.freeGreen side energy broadening +
+        ensemble.exactSecondOrderRemainder side energy broadening := by
+  cases side with
+  | retarded =>
+      simpa [averagedGreen, exactSecondOrderRemainder] using
+        operatorAverage_eq_free_add_remainder_of_secondOrder
+          ensemble
+          (ensemble.freeGreen .retarded energy broadening)
+          (fun ω => ensemble.configurationGreen .retarded energy broadening ω)
+          (fun ω =>
+            ensemble.freeGreen .retarded energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen .retarded energy broadening)
+          (fun ω =>
+            ensemble.freeGreen .retarded energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen .retarded energy broadening *
+                  (ensemble.impurityPotential ω).1 *
+                    ensemble.configurationGreen .retarded energy broadening ω)
+          (configurationGreen_eq_secondOrder_add_exactRemainder_left
+            ensemble .retarded energy broadening (ne_of_gt hbroadening))
+          (by
+            simpa using operatorAverage_mul_impurity_mul_eq_zero
+              ensemble hcentered
+              (ensemble.freeGreen .retarded energy broadening)
+              (ensemble.freeGreen .retarded energy broadening))
+  | advanced =>
+      simpa [averagedGreen, exactSecondOrderRemainder] using
+        operatorAverage_eq_free_add_remainder_of_secondOrder
+          ensemble
+          (ensemble.freeGreen .advanced energy broadening)
+          (fun ω => ensemble.configurationGreen .advanced energy broadening ω)
+          (fun ω =>
+            ensemble.freeGreen .advanced energy broadening *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen .advanced energy broadening)
+          (fun ω =>
+            ensemble.configurationGreen .advanced energy broadening ω *
+              (ensemble.impurityPotential ω).1 *
+                ensemble.freeGreen .advanced energy broadening *
+                  (ensemble.impurityPotential ω).1 *
+                    ensemble.freeGreen .advanced energy broadening)
+          (configurationGreen_eq_secondOrder_add_exactRemainder_right
+            ensemble .advanced energy broadening (ne_of_gt hbroadening))
+          (by
+            simpa using operatorAverage_mul_impurity_mul_eq_zero
+              ensemble hcentered
+              (ensemble.freeGreen .advanced energy broadening)
+              (ensemble.freeGreen .advanced energy broadening))
+
 /-- The exact advanced second-order remainder is the adjoint of the retarded remainder. -/
 theorem star_exactSecondOrderRemainder_retarded
     (energy broadening : ℝ) :
