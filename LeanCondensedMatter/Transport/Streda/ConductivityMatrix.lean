@@ -90,7 +90,6 @@ theorem hallComponent_eq_total_of_antisymmetric
     (hantisym : conductivity.total j i = -conductivity.total i j) :
     conductivity.hallComponent i j = conductivity.total i j := by
   simp [hallComponent, antisymmetricComponent, hantisym]
-  ring
 
 /-- A symmetric contact contribution drops out of the Hall projection. -/
 theorem hallComponent_eq_surface_sea_of_contact_symmetric
