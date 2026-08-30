@@ -1,14 +1,14 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 
 set_option linter.style.header false
 
 /-!
 # Physical finite-broadening Born-Dyson dressed current
 
-This module connects the solved dimensionless finite-`η` Born-Dyson ladder vertex to the existing
-massive-Dirac physical dressed-current boundary.  The ladder algebra and physical current convention
-remain owned by their existing modules; this file only composes them.
+This module connects the solved dimensionless finite-`η` Born-Dyson ladder vertex to the model-owned
+in-plane physical-current boundary.  The ladder algebra and physical current convention remain
+owned by their existing modules; this file only composes them.
 
 No Kubo/Středa trace insertion, conductivity theorem, broadening/disorder limit, or exact disorder-
 average claim is made here.
@@ -36,7 +36,7 @@ Born-Dyson ladder coefficients. -/
 noncomputable def finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  dressedLongitudinalCurrentOperator e v
+  inPlaneCurrentOperator e v
     (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax)
     (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
@@ -48,11 +48,11 @@ theorem finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator_eq_char
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
         e v m probeEnergy broadening disorderStrength hbar pMax =
-      (((-e * v : ℝ) : ℂ)) •
+      ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
         finiteCutoffContinuumBornDysonLadderSolvedVertex
           v m probeEnergy broadening disorderStrength hbar pMax := by
   rw [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator,
-    dressedLongitudinalCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator,
+    inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator,
     finiteCutoffContinuumBornDysonLadderSolvedVertex_eq_inPlanePauliVertexOperator]
 
 /-- With zero disorder strength, the solved physical finite-`η` current reduces exactly to the bare
