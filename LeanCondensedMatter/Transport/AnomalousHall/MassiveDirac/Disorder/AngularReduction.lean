@@ -36,6 +36,62 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- Full-angle integral of the complexified first cosine harmonic. -/
+theorem integral_complex_cos_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
+  simpa using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
+
+/-- Full-angle integral of the complexified first sine harmonic. -/
+theorem integral_complex_sin_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+  simpa using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
+
+/-- The complexified second cosine harmonic integrates to zero over a full polar angle. -/
+theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
+  calc
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+        ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) =
+        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+          (((Real.cos θ ^ 2 - Real.sin θ ^ 2 : ℝ) : ℂ))) := by
+            apply intervalIntegral.integral_congr
+            intro θ _
+            push_cast
+            rfl
+    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+          Real.cos θ ^ 2 - Real.sin θ ^ 2) : ℝ) : ℂ) := by
+            exact @intervalIntegral.integral_ofReal
+              (0 : ℝ) (2 * Real.pi) volume
+              (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)
+    _ = 0 := by
+      rw [integral_cos_sq_sub_sin_sq]
+      simp
+
+/-- The complexified mixed second harmonic integrates to zero over a full polar angle. -/
+theorem integral_complex_cos_mul_sin_zero_two_pi :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+  calc
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+        ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) =
+        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+          (((Real.sin θ * Real.cos θ : ℝ) : ℂ))) := by
+            apply intervalIntegral.integral_congr
+            intro θ _
+            push_cast
+            ring
+    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+          Real.sin θ * Real.cos θ) : ℝ) : ℂ) := by
+            exact @intervalIntegral.integral_ofReal
+              (0 : ℝ) (2 * Real.pi) volume
+              (fun θ : ℝ => Real.sin θ * Real.cos θ)
+    _ = 0 := by
+      rw [integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0]
+      simp
+
 /-- The massive-Dirac dispersion is radial in polar momentum coordinates. -/
 @[simp] theorem energySq_polar (v m p θ : ℝ) :
     energySq v m (p * Real.cos θ) (p * Real.sin θ) = energySq v m p 0 := by
@@ -145,14 +201,6 @@ theorem continuumAngularGreenIntegral_eq
       (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • yPart) volume 0 (2 * Real.pi) :=
     (hsin.smul (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable
       0 (2 * Real.pi)
-  have hcosIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
-    simpa using
-      (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
-  have hsinIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-    simpa using
-      (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
   unfold continuumAngularGreenIntegral
   have hfun :
       (fun θ : ℝ =>
@@ -166,7 +214,7 @@ theorem continuumAngularGreenIntegral_eq
   rw [intervalIntegral.integral_add (heven.add hx) hy]
   rw [intervalIntegral.integral_add heven hx]
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rw [hcosIntegral, hsinIntegral]
+  rw [integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
   simp [even]
 
 end
