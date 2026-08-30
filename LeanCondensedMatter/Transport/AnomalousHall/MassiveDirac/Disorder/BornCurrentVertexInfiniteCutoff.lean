@@ -186,23 +186,10 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoeff
         v m probeEnergy disorderStrength hbar)) := by
   have hradial := tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
     v m probeEnergy disorderStrength hbar hvelocity hwidth
-  have hconst : Tendsto
-      (fun _pMax : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (2 * Real.pi *
-            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-            (probeEnergy ^ 2 - m ^ 2)))
-      atTop
-      (nhds
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (2 * Real.pi *
-            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-            (probeEnergy ^ 2 - m ^ 2)))) := tendsto_const_nhds
-  have hclosed := hconst.mul hradial
-  have hresult := hclosed.congr' (Eventually.of_forall fun pMax =>
-    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_radialIntegral
-      v m probeEnergy disorderStrength hbar pMax).symm)
-  simpa [continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV] using hresult
+  simpa [continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV] using
+    (tendsto_const_nhds.mul hradial).congr' (Eventually.of_forall fun pMax =>
+      (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_radialIntegral
+        v m probeEnergy disorderStrength hbar pMax).symm)
 
 /-- At fixed positive Born width, the finite-cutoff transverse coefficient converges to its
 infinite-cutoff value. -/
@@ -220,21 +207,10 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoeff
         v m probeEnergy disorderStrength hbar)) := by
   have hradial := tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
     v m probeEnergy disorderStrength hbar hvelocity hwidth
-  have hconst : Tendsto
-      (fun _pMax : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (8 * Real.pi * continuumBornDampingScale v disorderStrength hbar *
-            probeEnergy * m))
-      atTop
-      (nhds
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (8 * Real.pi * continuumBornDampingScale v disorderStrength hbar *
-            probeEnergy * m))) := tendsto_const_nhds
-  have hclosed := hconst.mul hradial
-  have hresult := hclosed.congr' (Eventually.of_forall fun pMax =>
-    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_radialIntegral
-      v m probeEnergy disorderStrength hbar pMax).symm)
-  simpa [continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV] using hresult
+  simpa [continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV] using
+    (tendsto_const_nhds.mul hradial).congr' (Eventually.of_forall fun pMax =>
+      (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_radialIntegral
+        v m probeEnergy disorderStrength hbar pMax).symm)
 
 /-- Continuum disorder strength corresponding exactly to a chosen Born damping scale `γ`. -/
 def continuumBornWeakDisorderStrength (v hbar gamma : ℝ) : ℝ :=
