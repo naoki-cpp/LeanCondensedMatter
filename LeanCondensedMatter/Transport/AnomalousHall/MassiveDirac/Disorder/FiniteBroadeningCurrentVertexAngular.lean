@@ -25,6 +25,8 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- The finite-`η` Born-Dyson denominator is rotationally invariant in the momentum plane. -/
 theorem finiteCutoffContinuumBornDysonDenominator_polar
     (side : SpectralSide)
@@ -275,7 +277,7 @@ private def bornDysonRaPauliYXCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let dA := finiteCutoffContinuumBornDysonZCoefficient
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  -Complex.I * (aA * dR - aR * dA) +
+  (-Complex.I) * (aA * dR - aR * dA) +
     2 * bR * bA * ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)
 
 private def bornDysonRaPauliYYCoefficient
