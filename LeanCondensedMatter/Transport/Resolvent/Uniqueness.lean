@@ -5,13 +5,14 @@ set_option linter.style.header false
 /-!
 # Resolvent candidate uniqueness
 
-This module keeps the retarded/advanced specialization of the generic resolvent-candidate uniqueness
+This public transport-resolvent module specializes the generic resolvent-candidate uniqueness
 argument owned by `Analysis.Operator.Spectral.Resolvent`. At a nonzero side-indexed broadening, the
 physical spectral parameter lies outside the spectrum, so any candidate right inverse of the same
 spectral shift equals the canonical resolvent.
 
-The side-independent left-inverse/right-inverse algebra lives upstream in Analysis; model-specific
-spectral projector and Pauli-basis consumers use the physical wrapper below.
+The side-independent left-inverse/right-inverse algebra lives upstream in Analysis. This module owns
+the reusable `SpectralSide` specialization consumed by concrete spectral-projector and Pauli-basis
+models.
 -/
 
 namespace QuantumTheory
