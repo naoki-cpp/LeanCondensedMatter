@@ -196,6 +196,7 @@ theorem finiteStaticKuboBastinVectorPotentialResponse_eq_currentCurrent_add_cont
   unfold finiteStaticKuboBastinCurrentCurrentResponse
     finiteKuboBastinSpectralVertexSum
     finiteKuboBastinSpectralDirectionalCurrentTerm
+  rfl
 
 /-- Historical diagonal finite-rate Peierls Ward/f-sum identity. -/
 structure FiniteStaticPeierlsWardIdentity
