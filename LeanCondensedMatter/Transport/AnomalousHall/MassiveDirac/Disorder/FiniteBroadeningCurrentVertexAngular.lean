@@ -380,7 +380,6 @@ private theorem integral_finiteBorn_inPlane_modes (c0 c2 cMix : ℂ) :
     integral_finiteBorn_complex_cos_sq_sub_sin_sq_zero_two_pi,
     integral_finiteBorn_complex_cos_mul_sin_zero_two_pi]
   simp
-  ring
 
 private theorem integral_finiteBorn_pauli_decomposition
     (scalarCoefficient xCoefficient yCoefficient zCoefficient : ℝ → ℂ)
