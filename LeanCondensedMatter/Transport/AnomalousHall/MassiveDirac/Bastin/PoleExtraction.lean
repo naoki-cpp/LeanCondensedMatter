@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound
-import LeanCondensedMatter.Transport.Analysis.LorentzianPole
+import LeanCondensedMatter.Analysis.Lorentzian.Pole
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Massive-Dirac specialization of Lorentzian pole extraction
 
 The analytic error decomposition and zero-broadening extraction are owned generically by
-`Transport.Analysis.LorentzianPole`. This module owns the massive-Dirac fixed-window specialization:
+`Analysis.Lorentzian.Pole`. This module owns the massive-Dirac fixed-window specialization:
 the regular spectator/current pole integral together with its zero-broadening limit.
 
 The limit is pointwise in momentum and uses a fixed positive target-centered energy window strictly
