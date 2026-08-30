@@ -6,25 +6,20 @@ set_option linter.style.header false
 /-!
 # Static Kubo–Bastin to Středa bridge under a visible Peierls Ward identity
 
-The named static finite spectral conductivity retains three pieces which the canonical traced
-Bastin energy integral does not contain by definition:
+The finite static Kubo response keeps measured-current and source-field coordinates independent. Its
+vertex response, explicit Peierls contact, and electric-field normalization are not by themselves a
+Středa representation. At finite positive switching rate, identifying a conductivity component with
+the canonical traced Bastin energy integral requires a model-specific Ward/f-sum identity.
 
-* the current-current spectral response;
-* the explicit Peierls contact expectation; and
-* the finite-volume electric-field normalization `1 / (V (-η))`.
+This module exposes that identity first for a general component `ij`. Under it, the Peierls contact
+cancels against the corresponding term in the Ward relation and the normalization cancels the
+explicit `V (-η)` factor. The resulting normalized conductivity component is then equipped with a
+`RegularizedStredaRepresentation`, so a complete coordinate family can be assembled into the static
+Středa conductivity matrix.
 
-At finite positive switching rate, identifying these objects requires a model-specific Ward/f-sum
-identity. This module exposes the minimal identity at the current-current level: the finite spectral
-current-current response is the volume/electric-field factor times the canonical traced Bastin
-integral, minus the contact expectation. The contact term is therefore not silently dropped, and
-every scalar factor remains visible.
-
-Under that identity, the normalization cancels exactly and the named static conductivity equals
-the canonical traced Bastin integral. The theorem also constructs the concrete
-`RegularizedStredaRepresentation` without an additional ad hoc response-equality argument.
-
-No proof of the model-specific Ward identity is claimed here, and no zero-switching,
-zero-broadening, disorder, trace-per-volume, or thermodynamic limit is taken.
+The historical one-direction Ward API is retained below as the diagonal specialization used by
+existing finite-disorder consumers. No proof of a model-specific Ward identity is claimed here, and
+no zero-switching, zero-broadening, disorder, trace-per-volume, or thermodynamic limit is taken.
 -/
 
 namespace SecondQuantization
@@ -41,8 +36,136 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- The zero-frequency current-current part of the finite spectral vector-potential response,
-before adding the Peierls contact expectation. -/
+/-- Componentwise finite-rate Peierls Ward/f-sum identity. The two-vertex response for current
+measured along `measuredDirection` and source applied along `sourceDirection` equals `V (-η)` times
+the canonical traced Bastin integral, minus the mixed Peierls contact response. -/
+structure FiniteStaticPeierlsWardComponentIdentity
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
+    (occupation : ℝ → ℂ) : Prop where
+  vertex_eq_scaledTracedBastin_sub_contact :
+    finiteStaticKuboBastinVectorPotentialVertexComponentResponse
+        system data geometry measuredDirection sourceDirection K q eta =
+      ((convention.volume : ℂ) * (-(eta : ℂ))) *
+          regularizedTracedBastinEnergyIntegral
+            system.hamiltonian.1
+            (boundedDirectionalCurrent geometry measuredDirection
+              (system.hbar : ℂ) (q : ℂ) K)
+            (boundedDirectionalCurrent geometry sourceDirection
+              (system.hbar : ℂ) (q : ℂ) K)
+            (kuboBastinEnergyBroadening system.hbar eta)
+            lowerEnergy upperEnergy occupation -
+        finiteStaticPeierlsContactComponentResponse
+          system data geometry measuredDirection sourceDirection K q
+
+/-- The component Ward identity converts the full vector-potential response, including the mixed
+contact term, into the explicit `V (-η)` factor times the traced Bastin integral. -/
+theorem FiniteStaticPeierlsWardComponentIdentity.vectorPotentialResponse_eq_scaledTracedBastin
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
+    (occupation : ℝ → ℂ)
+    (ward : FiniteStaticPeierlsWardComponentIdentity convention system data geometry
+      measuredDirection sourceDirection K q eta lowerEnergy upperEnergy occupation) :
+    finiteStaticKuboBastinVectorPotentialComponentResponse
+        system data geometry measuredDirection sourceDirection K q eta =
+      ((convention.volume : ℂ) * (-(eta : ℂ))) *
+        regularizedTracedBastinEnergyIntegral
+          system.hamiltonian.1
+          (boundedDirectionalCurrent geometry measuredDirection
+            (system.hbar : ℂ) (q : ℂ) K)
+          (boundedDirectionalCurrent geometry sourceDirection
+            (system.hbar : ℂ) (q : ℂ) K)
+          (kuboBastinEnergyBroadening system.hbar eta)
+          lowerEnergy upperEnergy occupation := by
+  rw [finiteStaticKuboBastinVectorPotentialComponentResponse_eq_vertex_add_contact]
+  rw [ward.vertex_eq_scaledTracedBastin_sub_contact]
+  ring
+
+/-- At positive switching rate, the component Ward identity cancels the exact finite-volume
+zero-frequency normalization and identifies `σ_ij` with the canonical traced Bastin integral. -/
+theorem FiniteStaticPeierlsWardComponentIdentity.staticConductivityComponent_eq_tracedBastin
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
+    (occupation : ℝ → ℂ)
+    (ward : FiniteStaticPeierlsWardComponentIdentity convention system data geometry
+      measuredDirection sourceDirection K q eta lowerEnergy upperEnergy occupation)
+    (heta : 0 < eta) :
+    finiteStaticKuboBastinConductivityComponent
+        convention system data geometry measuredDirection sourceDirection K q eta =
+      regularizedTracedBastinEnergyIntegral
+        system.hamiltonian.1
+        (boundedDirectionalCurrent geometry measuredDirection
+          (system.hbar : ℂ) (q : ℂ) K)
+        (boundedDirectionalCurrent geometry sourceDirection
+          (system.hbar : ℂ) (q : ℂ) K)
+        (kuboBastinEnergyBroadening system.hbar eta)
+        lowerEnergy upperEnergy occupation := by
+  unfold finiteStaticKuboBastinConductivityComponent
+  rw [ward.vectorPotentialResponse_eq_scaledTracedBastin]
+  rw [finiteVolumeConductivityNormalization_zero_frequency]
+  let denominator : ℂ := (convention.volume : ℂ) * (-(eta : ℂ))
+  let integral : ℂ := regularizedTracedBastinEnergyIntegral
+    system.hamiltonian.1
+    (boundedDirectionalCurrent geometry measuredDirection
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry sourceDirection
+      (system.hbar : ℂ) (q : ℂ) K)
+    (kuboBastinEnergyBroadening system.hbar eta)
+    lowerEnergy upperEnergy occupation
+  have hdenominator : denominator ≠ 0 := by
+    dsimp [denominator]
+    simpa using finiteVolumeConductivityDenominator_ne_zero convention 0 eta heta
+  change (denominator * integral) * denominator⁻¹ = integral
+  calc
+    (denominator * integral) * denominator⁻¹ =
+        integral * (denominator * denominator⁻¹) := by ring
+    _ = integral := by simp [hdenominator]
+
+/-- Traced Středa analytic data plus a component Ward identity construct the Středa representation
+of the normalized physical conductivity component. -/
+noncomputable def TracedStredaAnalyticData.toStaticKuboBastinComponentStredaRepresentation
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (spectralData : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E)
+    (measuredDirection sourceDirection : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
+    (occupation occupationDerivative : ℝ → ℂ)
+    (analyticData : TracedStredaAnalyticData
+      system.hamiltonian.1
+      (boundedDirectionalCurrent geometry measuredDirection
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry sourceDirection
+        (system.hbar : ℂ) (q : ℂ) K)
+      (kuboBastinEnergyBroadening system.hbar eta)
+      lowerEnergy upperEnergy occupation occupationDerivative)
+    (ward : FiniteStaticPeierlsWardComponentIdentity convention system spectralData geometry
+      measuredDirection sourceDirection K q eta lowerEnergy upperEnergy occupation)
+    (heta : 0 < eta) :
+    RegularizedStredaRepresentation
+      (finiteStaticKuboBastinConductivityComponent
+        convention system spectralData geometry measuredDirection sourceDirection K q eta) :=
+  analyticData.toRegularizedStredaRepresentation
+    (finiteStaticKuboBastinConductivityComponent
+      convention system spectralData geometry measuredDirection sourceDirection K q eta)
+    (ward.staticConductivityComponent_eq_tracedBastin
+      convention system spectralData geometry measuredDirection sourceDirection K q eta
+        lowerEnergy upperEnergy occupation heta)
+
+/-- The zero-frequency current-current part of the historical diagonal finite spectral
+vector-potential response, before adding the Peierls contact expectation. -/
 noncomputable def finiteStaticKuboBastinCurrentCurrentResponse
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -55,8 +178,8 @@ noncomputable def finiteStaticKuboBastinCurrentCurrentResponse
       (system.hbar : ℂ) (q : ℂ) K)
     0 eta
 
-/-- The static vector-potential response is exactly the current-current spectral sum plus the
-explicit Peierls contact expectation. -/
+/-- The historical diagonal static vector-potential response is exactly the current-current spectral
+sum plus the explicit Peierls contact expectation. -/
 theorem finiteStaticKuboBastinVectorPotentialResponse_eq_currentCurrent_add_contact
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -74,13 +197,7 @@ theorem finiteStaticKuboBastinVectorPotentialResponse_eq_currentCurrent_add_cont
     finiteKuboBastinSpectralVertexSum
     finiteKuboBastinSpectralDirectionalCurrentTerm
 
-/-- Minimal finite-rate Peierls Ward/f-sum identity needed to identify the named static response
-with the canonical traced Bastin energy integral.
-
-The finite spectral current-current response equals `V (-η)` times the traced Bastin integral at
-energy broadening `ℏη`, minus the contact expectation. Proving this field from a concrete Peierls
-model is the remaining model-specific sum-rule problem; using the bridge below requires the field
-explicitly. -/
+/-- Historical diagonal finite-rate Peierls Ward/f-sum identity. -/
 structure FiniteStaticPeierlsWardIdentity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -104,8 +221,8 @@ structure FiniteStaticPeierlsWardIdentity
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
 
-/-- The Ward identity converts the complete vector-potential response, including contact, into the
-explicit volume/electric-field factor times the traced Bastin integral. -/
+/-- The diagonal Ward identity converts the complete vector-potential response, including contact,
+into the explicit volume/electric-field factor times the traced Bastin integral. -/
 theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -130,9 +247,8 @@ theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedB
   rw [ward.currentCurrent_eq_scaledTracedBastin_sub_contact]
   ring
 
-/-- At positive switching rate, the visible Ward identity cancels the exact finite-volume
-zero-frequency normalization and identifies the named static conductivity with the canonical
-traced Bastin energy integral. -/
+/-- At positive switching rate, the diagonal Ward identity identifies the named static conductivity
+with the canonical traced Bastin energy integral. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -174,7 +290,8 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
         integral * (denominator * denominator⁻¹) := by ring
     _ = integral := by simp [hdenominator]
 
-/-- The same bridge written directly in the finite pure-point spectral energy-integral form. -/
+/-- The same diagonal bridge written directly in the finite pure-point spectral energy-integral
+form. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyIntegral
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -217,8 +334,8 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyInte
       lowerEnergy upperEnergy occupation
       (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)
 
-/-- The analytic traced-kernel data and the visible Ward identity construct the concrete Středa
-representation of the named static finite spectral conductivity. -/
+/-- The analytic traced-kernel data and the historical diagonal Ward identity construct the concrete
+Středa representation of the named static finite spectral conductivity. -/
 noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentation
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -247,7 +364,8 @@ noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentatio
       convention system spectralData geometry direction K q eta
         lowerEnergy upperEnergy occupation heta)
 
-/-- The resulting named static conductivity has the regularized Středa surface-plus-sea split. -/
+/-- The resulting diagonal named static conductivity has the regularized Středa surface-plus-sea
+split. -/
 theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
