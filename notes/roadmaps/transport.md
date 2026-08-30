@@ -103,21 +103,24 @@ weight is assumed. The ensemble average remains outside each exact configuration
 The first-Born boundary then separates exact and approximate statements:
 
 - the explicit centered-disorder property `E[Vω] = 0`;
-- side-indexed `bornSelfEnergy` and `bornResolventApproximation` plus shared averaging/closure algebra in `Disorder.BornCommon`;
-- exact first and once-iterated retarded/advanced Dyson identities;
+- side-indexed `bornSelfEnergy` and `secondOrderBornGreen` plus shared averaging/closure algebra in `Disorder.BornCommon`;
+- exact first and once-iterated side-indexed Dyson identities in both left and right orientations;
 - exact vanishing of the averaged first-order term under centering;
-- exact second-order remainders retaining the full configuration resolvent;
-- conventional retarded and advanced Born self-energy/approximation names as physical specializations;
-- named exact closure errors;
-- equality with a Born approximation only under an explicit closure hypothesis.
+- side-indexed exact second-order remainders retaining the full configuration resolvent;
+- conventional retarded and advanced Born self-energy and second-order Green-truncation names as physical specializations;
+- named exact closure errors and side-indexed closure hypotheses;
+- equality with the second-order Born Green truncation only under an explicit closure hypothesis.
 
-The retarded and advanced physical specializations remain siblings. Shared side-indexed Born data and
-R/A-neutral algebra belong in `BornCommon`; orientation-sensitive Dyson products, exact remainders,
-closure hypotheses, and conventional physical R/A names stay in the respective specializations.
+The retarded and advanced physical specializations remain siblings. Shared side-indexed Born data,
+the orientation-aware `exactSecondOrderRemainder`, `BornClosureHypothesis`, the centered exact-average
+decomposition, and R/A-neutral algebra belong in `BornCommon`; conventional physical R/A names stay
+in the respective specialization modules. The sibling modules do not import one another.
 
-The first-Born layer itself does not identify Born expressions with the exact disorder average
-without the stated closure hypothesis and does not introduce a dressed internal propagator or a
-vertex correction.
+`secondOrderBornGreen` is specifically the explicit Dyson-series truncation
+`G₀ + G₀ Σᴮ G₀`. It is not a Dyson-resummed Green operator and is not asserted to satisfy the exact
+`IsSelfEnergy` relation. The first-Born layer does not identify this truncation with the exact
+disorder average without the stated closure hypothesis, and it does not introduce a dressed
+internal propagator or a vertex correction.
 
 ## Selected conserving vertex continuation
 
