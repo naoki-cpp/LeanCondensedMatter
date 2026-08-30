@@ -203,7 +203,9 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
   all_goals
     simp [finiteCutoffContinuumBornDysonDenominator]
   all_goals
-    rw [hI]
+    ring_nf
+  all_goals
+    try rw [hI]
   all_goals
     ring
 
