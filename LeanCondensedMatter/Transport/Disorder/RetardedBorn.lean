@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Retarded finite-disorder Born self-energy and closure boundary
 
 This module provides conventional retarded physical names for the side-indexed Born data owned by
-`Disorder.BornCommon`, and proves the centered exact-average decomposition using the exact retarded
-configuration Dyson identity from `Disorder.Resolvent`.
+`Disorder.BornCommon`, and specializes the centered exact-average decomposition proved there from
+the exact side-indexed configuration Dyson identities.
 
 The exact second-order remainder, closure error, and closure hypothesis are canonical side-indexed
 objects in `BornCommon`; the declarations here are retarded specializations. The exact averaged
@@ -34,17 +34,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-private theorem operatorAverage_firstOrderRetardedTerm_eq_zero
-    (hcentered : ensemble.IsCentered)
-    (energy broadening : ℝ) :
-    ensemble.operatorAverage (fun ω =>
-      ensemble.freeRetardedGreen energy broadening *
-        (ensemble.impurityPotential ω).1 *
-          ensemble.freeRetardedGreen energy broadening) = 0 := by
-  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble hcentered
-    (ensemble.freeRetardedGreen energy broadening)
-    (ensemble.freeRetardedGreen energy broadening)
-
 /-- Retarded specialization of the canonical exact second-order Dyson remainder. -/
 noncomputable def exactSecondOrderRetardedRemainder
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -58,25 +47,10 @@ theorem averagedRetardedGreen_eq_free_add_exactRemainder
     ensemble.averagedRetardedGreen energy broadening =
       ensemble.freeRetardedGreen energy broadening +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-  simpa [averagedRetardedGreen, averagedGreen, exactSecondOrderRetardedRemainder] using
-    operatorAverage_eq_free_add_remainder_of_secondOrder
-      ensemble
-      (ensemble.freeRetardedGreen energy broadening)
-      (fun ω => ensemble.configurationRetardedGreen energy broadening ω)
-      (fun ω =>
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening)
-      (fun ω =>
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.configurationRetardedGreen energy broadening ω)
-      (configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-        ensemble energy broadening hbroadening)
-      (operatorAverage_firstOrderRetardedTerm_eq_zero
-        ensemble hcentered energy broadening)
+  simpa only [averagedGreen_retarded, freeGreen_retarded,
+    exactSecondOrderRetardedRemainder] using
+    averagedGreen_eq_free_add_exactSecondOrderRemainder
+      ensemble hcentered .retarded energy broadening hbroadening
 
 /-- Conventional retarded name for the canonical side-indexed first-Born self-energy. -/
 noncomputable def bornRetardedSelfEnergy

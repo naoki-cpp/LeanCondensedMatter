@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Streda.OperatorKernel
 import LeanCondensedMatter.Transport.Streda.TraceKernel
+import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import LeanCondensedMatter.Transport.Streda.Integration
 import LeanCondensedMatter.Transport.Streda.GeneralizedStatic
 import LeanCondensedMatter.Transport.Streda.TraceSpectral

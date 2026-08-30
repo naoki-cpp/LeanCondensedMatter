@@ -27,9 +27,18 @@ def main() -> int:
     ):
         require_import(errors, transport_umbrella, module, root=ROOT, description="transport public umbrella")
 
+    resolvent_umbrella = TRANSPORT / "Resolvent.lean"
+    require_import(
+        errors,
+        resolvent_umbrella,
+        "LeanCondensedMatter.Transport.Resolvent.Uniqueness",
+        root=ROOT,
+        description="resolvent public umbrella",
+    )
     for path in (
         TRANSPORT / "Resolvent" / "Spectral.lean",
         TRANSPORT / "Resolvent" / "EnergyDerivative.lean",
+        TRANSPORT / "Resolvent" / "Uniqueness.lean",
     ):
         require_import(
             errors,

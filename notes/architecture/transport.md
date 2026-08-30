@@ -17,9 +17,9 @@ General analysis infrastructure sits further upstream. In particular, the bundle
 finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, generic bounded
 resolvent spectrum exclusion, shifted inverse algebra, and eigenvector action are owned by
 `Analysis/Operator/Spectral/Resolvent.lean`, while the model-independent Lorentzian approximate-
-identity kernel and regular-factor pole extraction are owned by
-`Analysis/Lorentzian/{Kernel,Pole}.lean`. Transport consumes these primitives rather than owning
-them.
+identity kernel, weighted-window analysis, and regular-factor pole extraction are owned by
+`Analysis/Lorentzian/{Kernel,Weighted,Pole}.lean`. Transport consumes these primitives rather than
+owning them.
 
 ## Physical source hierarchy
 
@@ -36,7 +36,8 @@ Transport/
 │   ├── Basic.lean
 │   ├── SelfEnergy.lean
 │   ├── Spectral.lean
-│   └── EnergyDerivative.lean
+│   ├── EnergyDerivative.lean
+│   └── Uniqueness.lean
 ├── Analysis/
 │   ├── BandOccupation.lean
 │   └── ZeroTemperatureOccupation.lean
@@ -67,8 +68,8 @@ Transport/
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
-generic bounded-resolvent spectral algebra, and Lorentzian kernel/pole infrastructure are exported
-instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
+generic bounded-resolvent spectral algebra, and Lorentzian kernel/weighted-window/pole infrastructure
+are exported instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
 `Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
 `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
 audits showed no remaining imports.
@@ -116,8 +117,12 @@ facts: nonreal exclusion from a self-adjoint spectrum, two-sided shifted-resolve
 and resolvent action on an eigenvector under explicit spectral exclusion. `Resolvent/Basic.lean`
 keeps the retarded/advanced `SpectralSide`, the `E ± iη` parameter convention, Green-operator names,
 and physical specializations of those generic facts. `Resolvent/Spectral.lean` owns the side-indexed
-and pure-point specializations, including squared pure-point action. Pure-point Kubo–Bastin and
-Středa spectral expansions consume these results rather than re-owning resolvent algebra.
+and pure-point specializations, including squared pure-point action. `Resolvent/Uniqueness.lean` owns
+the reusable side-indexed uniqueness theorem identifying any right-inverse candidate of the physical
+spectral shift with the canonical resolvent. It is part of the public `Transport.Resolvent` grouping,
+while concrete consumers may still import the narrow leaf module directly. Pure-point Kubo–Bastin,
+Středa spectral expansions, and concrete model propagators consume these results rather than
+re-owning resolvent algebra.
 
 `Resolvent/SelfEnergy.lean` owns the model-independent two-sided Dyson relation
 `IsSelfEnergy G₀ G Σ`, stated without requiring inverses as both
@@ -143,23 +148,25 @@ Transport/Resolvent.SelfEnergy ────────────────�
 ```
 
 `Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages.
-`Disorder/Resolvent` owns the exact side-indexed clean/configuration Green operators together with
-conventional retarded/advanced specializations. Its exact Dyson identities remain explicitly
-retarded/advanced because adjunction reverses noncommutative product order. `Disorder/Moments` owns
-the canonical bounded complex-linear exact second-moment action `C₂(X) = E[Vω X Vω]`, proves its
-finite-average and adjoint-compatibility properties, and owns the separate `IsCentered` property
-used to cancel first-order disorder insertions.
+`Disorder/Resolvent` owns the exact side-indexed clean, configuration, and disorder-averaged Green
+operators together with conventional retarded/advanced specializations. Its first- and second-order
+configuration Dyson identities are canonical over `SpectralSide` in both left and right
+noncommutative orientations; the conventional retarded theorem specializes the left orientation and
+the advanced theorem the right orientation. `Disorder/Moments` owns the canonical bounded
+complex-linear exact second-moment action `C₂(X) = E[Vω X Vω]`, proves its finite-average and
+adjoint-compatibility properties, and owns the separate `IsCentered` property used to cancel
+first-order disorder insertions.
 
 `Disorder/BornCommon` owns the canonical side-indexed first-Born data shared by both physical
 specializations: `bornSelfEnergy`, `bornResolventApproximation`, the orientation-aware
 `exactSecondOrderRemainder`, `bornClosureError`, and `BornClosureHypothesis`, together with centered
-first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. The exact remainder keeps the
-side-dependent multiplication order inherited from the configuration Dyson identities, while its
-retarded/advanced values, the self-energy, the truncated Green, and the closure error are proved to
-be related by adjunction. Conventional retarded/advanced names remain in `Disorder/RetardedBorn`
-and `Disorder/AdvancedBorn` as physical specializations. The centered exact-average decomposition
-proofs remain in those sibling modules because they consume orientation-specific configuration
-Dyson identities; the siblings must not import one another.
+first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. It also owns the centered exact-average
+decomposition `averagedGreen_eq_free_add_exactSecondOrderRemainder`, selecting the retarded-left and
+advanced-right exact remainder orientations from the canonical configuration Dyson API. The exact
+remainder's retarded/advanced values, the self-energy, the truncated Green, and the closure error are
+proved to be related by adjunction. Conventional retarded/advanced names and averaged-Green theorem
+names remain in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn` as thin physical specializations;
+the siblings do not import one another.
 
 The Born self-energy and approximation objects use the canonical exact second moment and therefore
 do not themselves require centered disorder. Centering is required only when an exact averaged
@@ -220,9 +227,9 @@ compatibility shims; repository consumers use the canonical `Model` owners direc
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
 Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
 `Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
-kernel/tail analysis and regular-factor pole extraction are representation-independent and live
-upstream under `Analysis/Lorentzian/`; both generic Transport and the massive-Dirac specialization
-consume those analysis primitives.
+kernel/tail analysis, local-constant weighted-window extraction, and regular-factor pole extraction
+are representation-independent and live upstream under `Analysis/Lorentzian/`; both generic
+Transport and the massive-Dirac specialization consume those analysis primitives.
 
 ## Generic / concrete boundary
 
