@@ -68,7 +68,7 @@ theorem finiteKuboGreenwoodCurrentComponentTerm_diag
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (i : ι) :
     finiteKuboGreenwoodCurrentComponentTerm
       system data geometry measuredDirection sourceDirection K q ω η (i, i) = 0 := by
-  simp [finiteKuboGreenwoodCurrentComponentTerm, lehmannTerm]
+  simp [finiteKuboGreenwoodCurrentComponentTerm, purePointTransitionWeight, lehmannTerm]
 
 /-- Equal-energy off-diagonal transitions keep the finite-rate denominator `η - iω` for arbitrary
 measured/source directions. -/
