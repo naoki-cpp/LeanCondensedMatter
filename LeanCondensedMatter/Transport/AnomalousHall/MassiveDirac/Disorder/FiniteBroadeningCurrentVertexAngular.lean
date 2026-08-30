@@ -6,17 +6,19 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Born-Dyson current-vertex angular reduction
 
-This module begins the finite-external-broadening current-rung reduction using the actual Born-Dyson
-propagator from `FiniteBroadeningBornPropagator.lean`.  The first layer proves that rotational
-invariance of the Born self-energy leaves the propagator in the polar Pauli form
+This module performs the finite-external-broadening current-rung reduction using the actual
+Born-Dyson propagator from `FiniteBroadeningBornPropagator.lean`.  Rotational invariance of the Born
+self-energy leaves the propagator in the polar Pauli form
 
 ```text
 G_B,s(p,θ) = a_s(p) I + b_s(p) cosθ σₓ + b_s(p) sinθ σᵧ + d_s(p) σ_z.
 ```
 
-The radial coefficients remain the existing finite-cutoff finite-`η` Born-Dyson coefficients; no
-parallel propagator or self-energy API is introduced.  Radial integration, disorder normalization,
-ladder resummation, and broadening/disorder limits remain downstream.
+The pointwise retarded-advanced products with `σₓ` and `σᵧ` are then kept explicitly oriented for
+the later full-angle reduction.  The radial coefficients remain the existing finite-cutoff
+finite-`η` Born-Dyson coefficients; no parallel propagator or self-energy API is introduced.
+Radial integration, disorder normalization, ladder resummation, and broadening/disorder limits
+remain downstream.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -143,6 +145,229 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
   unfold finiteCutoffContinuumBornDysonGreenOperator
   rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_eq]
   simp [matrixOperator, map_add, map_smul]
+
+private def bornDysonRaPauliXScalarCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  ((Real.cos θ : ℝ) : ℂ) * (aA * bR + aR * bA) +
+    Complex.I * ((Real.sin θ : ℝ) : ℂ) * (bA * dR - bR * dA)
+
+private def bornDysonRaPauliXXCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  aR * aA - dR * dA +
+    bR * bA * ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
+
+private def bornDysonRaPauliXYCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  Complex.I * (aA * dR - aR * dA) +
+    2 * bR * bA * ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)
+
+private def bornDysonRaPauliXZCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  ((Real.cos θ : ℝ) : ℂ) * (bA * dR + bR * dA) +
+    Complex.I * ((Real.sin θ : ℝ) : ℂ) * (aR * bA - aA * bR)
+
+/-- Exact pointwise Pauli decomposition of the finite-`η` Born-Dyson `Gᴿ σₓ Gᴬ` product. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedPauliX_polar_eq
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenMatrix
+        .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax * sigmaX *
+      finiteCutoffContinuumBornDysonGreenMatrix
+        .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      bornDysonRaPauliXScalarCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • (1 : Matrix2) +
+        bornDysonRaPauliXXCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaX +
+        bornDysonRaPauliXYCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaY +
+        bornDysonRaPauliXZCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaZ := by
+  rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_eq,
+    finiteCutoffContinuumBornDysonGreenMatrix_polar_eq]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [bornDysonRaPauliXScalarCoefficient, bornDysonRaPauliXXCoefficient,
+      bornDysonRaPauliXYCoefficient, bornDysonRaPauliXZCoefficient,
+      Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
+    ring_nf <;>
+    simp [hI] <;>
+    ring
+
+private def bornDysonRaPauliYScalarCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  ((Real.sin θ : ℝ) : ℂ) * (aA * bR + aR * bA) +
+    Complex.I * ((Real.cos θ : ℝ) : ℂ) * (bR * dA - bA * dR)
+
+private def bornDysonRaPauliYXCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  -Complex.I * (aA * dR - aR * dA) +
+    2 * bR * bA * ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)
+
+private def bornDysonRaPauliYYCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  aR * aA - dR * dA -
+    bR * bA * ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
+
+private def bornDysonRaPauliYZCoefficient
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonXCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonXCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonZCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonZCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  ((Real.sin θ : ℝ) : ℂ) * (bA * dR + bR * dA) +
+    Complex.I * ((Real.cos θ : ℝ) : ℂ) * (aA * bR - aR * bA)
+
+/-- Exact pointwise Pauli decomposition of the finite-`η` Born-Dyson `Gᴿ σᵧ Gᴬ` product. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedPauliY_polar_eq
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenMatrix
+        .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax * sigmaY *
+      finiteCutoffContinuumBornDysonGreenMatrix
+        .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      bornDysonRaPauliYScalarCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • (1 : Matrix2) +
+        bornDysonRaPauliYXCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaX +
+        bornDysonRaPauliYYCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaY +
+        bornDysonRaPauliYZCoefficient
+          v m p θ probeEnergy broadening disorderStrength hbar pMax • sigmaZ := by
+  rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_eq,
+    finiteCutoffContinuumBornDysonGreenMatrix_polar_eq]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [bornDysonRaPauliYScalarCoefficient, bornDysonRaPauliYXCoefficient,
+      bornDysonRaPauliYYCoefficient, bornDysonRaPauliYZCoefficient,
+      Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
+    ring_nf <;>
+    simp [hI] <;>
+    ring
+
+/-- Full-angle `σₓ` coefficient expected from the finite-`η` Born-Dyson retarded-advanced rung. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  (((2 * Real.pi : ℝ) : ℂ)) *
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax -
+      finiteCutoffContinuumBornDysonZCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonZCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+
+/-- Full-angle orientation-sensitive `σᵧ` coefficient expected from the finite-`η` Born-Dyson
+retarded-advanced rung. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  (((2 * Real.pi : ℝ) : ℂ)) * Complex.I *
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonZCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax -
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonZCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
 
 end
 
