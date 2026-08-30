@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexAngular
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -16,6 +16,9 @@ not part of this layer.
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
+
+open MeasureTheory
+open scoped Interval
 
 private theorem integral_finiteBorn_complex_cos_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
@@ -139,17 +142,17 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliXIntegral_eq
     funext θ
     unfold finiteCutoffContinuumBornDysonGreenOperator
     change
-      matrixOperator
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
           (finiteCutoffContinuumBornDysonGreenMatrix
-              .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax * sigmaX *
-            finiteCutoffContinuumBornDysonGreenMatrix
-              .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax) = _
-    rw [finiteCutoffContinuumBornDysonRetardedAdvancedPauliX_polar_eq]
-    dsimp
-    simp only [map_add, map_smul, map_one]
-    rfl
+            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) *
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) sigmaX *
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+          (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) = _
+    rw [← map_mul, ← map_mul, finiteCutoffContinuumBornDysonRetardedAdvancedPauliX_polar_eq]
+    simp [matrixOperator, map_add, map_smul]
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
     let cCos : ℂ := aA * bR + aR * bA
