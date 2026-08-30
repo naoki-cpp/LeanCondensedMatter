@@ -92,6 +92,17 @@ theorem hallComponent_eq_total_of_antisymmetric
   simp [hallComponent, antisymmetricComponent, hantisym]
   ring
 
+/-- A symmetric contact contribution drops out of the Hall projection. -/
+theorem hallComponent_eq_surface_sea_of_contact_symmetric
+    (conductivity : StaticStredaConductivityMatrix ι) (i j : ι)
+    (hcontact : conductivity.contact i j = conductivity.contact j i) :
+    conductivity.hallComponent i j =
+      ((conductivity.fermiSurface i j + conductivity.fermiSea i j) -
+        (conductivity.fermiSurface j i + conductivity.fermiSea j i)) / 2 := by
+  unfold hallComponent antisymmetricComponent total
+  rw [hcontact]
+  ring
+
 /-- Build normalized Středa conductivity data from a family of regularized vertex-response
 representations plus the explicit contact response. -/
 noncomputable def ofRepresentations
