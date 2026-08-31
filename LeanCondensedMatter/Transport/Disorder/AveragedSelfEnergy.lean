@@ -51,8 +51,7 @@ private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability �
   linarith [ensemble.probability_sum]
 
 /-- The imaginary part of the configuration-resolvent quadratic form has the spectral-side sign.
-This is the pointwise Herglotz identity used below to rule out a kernel of the positive-weight
-finite disorder average. -/
+This is the pointwise Herglotz identity used below to derive the averaged resolvent lower bound. -/
 private theorem im_inner_configurationGreen_apply_self
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
     (ω : Ω) (v : H) :
@@ -153,74 +152,6 @@ private theorem im_inner_averagedGreen_apply_self
       apply Finset.sum_congr rfl
       intro ω _
       ring
-
-/-- If the exact averaged Green operator annihilates a vector at nonzero broadening, that vector is
-zero. -/
-private theorem eq_zero_of_averagedGreen_apply_eq_zero
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
-    {v : H} (hv : ensemble.averagedGreen side energy broadening v = 0) :
-    v = 0 := by
-  classical
-  have himZero :
-      (inner ℂ (ensemble.averagedGreen side energy broadening v) v).im = 0 := by
-    rw [hv]
-    simp
-  rw [ensemble.im_inner_averagedGreen_apply_self side energy broadening hbroadening v] at himZero
-  have hfactor : side.sign * broadening ≠ 0 :=
-    mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening
-  have hsum :
-      ∑ ω, ensemble.probability ω *
-          ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-    exact (mul_eq_zero.mp himZero).resolve_left hfactor
-  obtain ⟨ω, hprobability⟩ := ensemble.exists_probability_pos
-  have hterm_nonneg : ∀ ξ : Ω,
-      0 ≤ ensemble.probability ξ *
-        ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
-    intro ξ
-    exact mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
-  have hterm_le :
-      ensemble.probability ω *
-          ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 ≤
-        ∑ ξ, ensemble.probability ξ *
-          ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
-    exact Finset.single_le_sum (fun ξ _ => hterm_nonneg ξ) (by simp)
-  rw [hsum] at hterm_le
-  have hnormSq : ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-    have hproduct :
-        ensemble.probability ω *
-            ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-      exact le_antisymm hterm_le (hterm_nonneg ω)
-    exact (mul_eq_zero.mp hproduct).resolve_left (ne_of_gt hprobability)
-  have hgreenZero : ensemble.configurationGreen side energy broadening ω v = 0 := by
-    rw [← norm_eq_zero]
-    nlinarith [sq_nonneg ‖ensemble.configurationGreen side energy broadening ω v‖]
-  have hleft :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          (ensemble.configurationHamiltonian ω).1) *
-        ensemble.configurationGreen side energy broadening ω = 1 := by
-    simpa [FiniteDisorderEnsemble.configurationGreen] using
-      spectralShift_mul_spectralResolvent side
-        (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2
-        energy broadening hbroadening
-  have happly := congrArg (fun operator : H →L[ℂ] H => operator v) hleft
-  have hshiftApply :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          (ensemble.configurationHamiltonian ω).1)
-        (ensemble.configurationGreen side energy broadening ω v) = v := by
-    simpa using happly
-  rw [hgreenZero] at hshiftApply
-  simpa using hshiftApply.symm
-
-/-- At nonzero broadening the exact positive-weight finite disorder average of side-indexed
-configuration Green operators has trivial kernel, in any Hilbert-space dimension. -/
-theorem averagedGreen_injective
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    Function.Injective (ensemble.averagedGreen side energy broadening) := by
-  intro v w hvw
-  apply sub_eq_zero.mp
-  apply ensemble.eq_zero_of_averagedGreen_apply_eq_zero side energy broadening hbroadening
-  rw [map_sub, hvw, sub_self]
 
 /-- The Herglotz sign and one positive-probability resolvent give a uniform inverse-norm bound for
 the exact averaged Green operator. -/
@@ -353,6 +284,15 @@ private theorem averagedGreen_antilipschitz
         dsimp [Kreal]
         ring
   exact hbound
+
+/-- At nonzero broadening the exact positive-weight finite disorder average of side-indexed
+configuration Green operators has trivial kernel, in any Hilbert-space dimension. -/
+theorem averagedGreen_injective
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Function.Injective (ensemble.averagedGreen side energy broadening) := by
+  obtain ⟨_, hantilipschitz⟩ :=
+    ensemble.averagedGreen_antilipschitz side energy broadening hbroadening
+  exact hantilipschitz.injective
 
 /-- The adjoint averaged Green operator is injective because adjunction exchanges the two spectral
 sides and the opposite-side exact average is injective. -/
