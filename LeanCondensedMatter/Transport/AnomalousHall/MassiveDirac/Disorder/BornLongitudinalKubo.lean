@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 
 set_option linter.style.header false

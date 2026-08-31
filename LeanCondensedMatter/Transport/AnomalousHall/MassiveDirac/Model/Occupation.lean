@@ -7,11 +7,12 @@ set_option linter.style.header false
 # Spectral occupation of the massive-Dirac bands
 
 This file connects the concrete two-band massive-Dirac spectrum to the generic transport
-band-occupation layer.  The spectral labels remain `lower` and `upper`; semiconductor-specific
+band-occupation layer. The spectral labels remain `lower` and `upper`; semiconductor-specific
 `valence` / `conduction` terminology is downstream interpretation rather than primitive data.
 
-The radial specialization also owns the metallic Fermi radius because it is a property of the
-spectrum and its occupation, not of a particular Bastin or intrinsic-response representation.
+The radial specialization owns the metallic Fermi radius and the Fermi-surface specialization of
+the radial group-velocity average because both are consequences of the spectrum and its occupation,
+not of a particular response representation or relaxation model.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -259,6 +260,36 @@ theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
     subst p
     change bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy
     exact bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hm hmF
+
+/-- Isotropic full-angle mean square of the `x` group-velocity component evaluated at the explicit
+upper-band Fermi radius. -/
+def isotropicFermiSurfaceMeanSquareVelocityX (v m fermiEnergy : ℝ) : ℝ :=
+  isotropicMeanSquareRadialGroupVelocityX v m (metallicFermiRadius v m fermiEnergy)
+
+/-- In the positive-mass metallic-or-band-edge regime, the isotropic Fermi-surface factor is
+
+`<v_x²>_FS = (v² / 2) * (1 - m² / ε_F²)`.
+-/
+theorem isotropicFermiSurfaceMeanSquareVelocityX_eq
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
+    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    isotropicFermiSurfaceMeanSquareVelocityX v m fermiEnergy =
+      v ^ 2 * (1 - m ^ 2 / fermiEnergy ^ 2) / 2 := by
+  unfold isotropicFermiSurfaceMeanSquareVelocityX
+  rw [isotropicMeanSquareRadialGroupVelocityX_eq,
+    radialEnergyDerivative_sq_metallicFermiRadius v m fermiEnergy hv hm hmF]
+
+/-- In the strictly metallic regime `0 < m < ε_F`, the isotropic Fermi-surface `v_x²` factor is
+strictly positive when `v ≠ 0`. -/
+theorem isotropicFermiSurfaceMeanSquareVelocityX_pos
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
+    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    0 < isotropicFermiSurfaceMeanSquareVelocityX v m fermiEnergy := by
+  unfold isotropicFermiSurfaceMeanSquareVelocityX
+  rw [isotropicMeanSquareRadialGroupVelocityX_eq]
+  exact div_pos
+    (radialEnergyDerivative_sq_metallicFermiRadius_pos v m fermiEnergy hv hm hmF)
+    (by norm_num)
 
 end
 

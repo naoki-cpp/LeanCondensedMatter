@@ -115,11 +115,14 @@ foundation is checked separately from the coarser Bastin stage DAG, so exact the
 edges do not have to become architecture layers:
 
 ```text
-Model.Basic ─┬→ Model.CurrentBridge
-             └→ Model.Spectral → Intrinsic.BerryBridge
-                                → Intrinsic.BerrySymmetry
-                                → Intrinsic.Response
-                                → Intrinsic.Conductivity
+Model.Basic ─┬→ Model.Operator ──────────────┐
+             ├→ Model.Kinematics → Model.Occupation
+             └→ Model.Spectral ─→ Intrinsic.BerryBridge
+                              ├→ Intrinsic.BerrySymmetry
+                              ├→ Intrinsic.Response
+                              └→ Intrinsic.Conductivity
+
+{Model.Operator, Model.Spectral} → Model.OperatorSpectral
 
 Intrinsic geometry → Bastin foundation → Pole → Pair → Radial → Zero-T
                                       ↖──── Intrinsic conductivity ────┘

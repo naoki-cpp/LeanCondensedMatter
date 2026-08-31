@@ -16,15 +16,13 @@ v_μ = ∂H₀/∂p_μ,
 j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
-The in-plane direction is represented explicitly by `Direction2`. The direction-indexed
-`velocity`, `current`, and `dMomentum` definitions are the model-level owners used throughout the
-transport stack.
+The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
+and `current` definitions are the public model-level owners used throughout the transport stack.
+The elementary `d`-vector and scalar-triple-product helpers used to derive the closed Berry
+curvature are private implementation details.
 
-The theorem-level authority for the charge-current interpretation is supplied downstream by
-`MassiveDiracCurrentBridge`: the generic charge-like corrected representative for `q I` has zero
-localization correction, reduces to `q v`, and at electron charge `q = -e` agrees exactly with these
-matrices. Thus this model file records the realization rather than introducing a separate
-foundational current convention.
+The generic charge-like current theory is the authority for the canonical `q v` interpretation;
+this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
 
 With this convention the continuum measure is `d²p / (2πℏ)²`. The generic pointwise spectral
 Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
@@ -83,7 +81,7 @@ def velocity (direction : Direction2) (v : ℝ) : Matrix2 :=
 
 /-- Concrete massive-Dirac realization `j_μ = -e v_μ` of the canonical charge-like current
 representative. The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
-charge is `-e`; `MassiveDiracCurrentBridge` identifies this with the generic `q v` representative. -/
+charge is `-e`. -/
 def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
   (((-e : ℝ) : ℂ)) • velocity direction v
 
@@ -115,36 +113,24 @@ def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
 def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   1 / (2 * Real.pi * hbar) ^ 2
 
-/-- A small component representation for the two-band `d` vector. -/
-structure Vec3 where
-  /-- First Cartesian component. -/
+private structure Vec3 where
   x : ℝ
-  /-- Second Cartesian component. -/
   y : ℝ
-  /-- Third Cartesian component. -/
   z : ℝ
 
-/-- Scalar triple product `a · (b × c)`. -/
-def scalarTriple (a b c : Vec3) : ℝ :=
+private def scalarTriple (a b c : Vec3) : ℝ :=
   a.x * (b.y * c.z - b.z * c.y) -
     a.y * (b.x * c.z - b.z * c.x) +
       a.z * (b.x * c.y - b.y * c.x)
 
-/-- Massive-Dirac `d` vector, `d(p) = (v pₓ, v pᵧ, m)`. -/
-def dVector (v m px py : ℝ) : Vec3 :=
+private def dVector (v m px py : ℝ) : Vec3 :=
   ⟨v * px, v * py, m⟩
 
-/-- Momentum derivative of the `d` vector in direction `μ`. -/
-def dMomentum : Direction2 → ℝ → Vec3
+private def dMomentum : Direction2 → ℝ → Vec3
   | .x, v => ⟨v, 0, 0⟩
   | .y, v => ⟨0, v, 0⟩
 
-/-- Gauge-independent two-band curvature expression
-`-s d·(∂ₓd×∂ᵧd)/(2 E³)` for band sign `s = ±1`.
-
-A later theorem in this consumer will identify this concrete expression with the upstream spectral
-force-matrix Berry curvature. -/
-def twoBandCurvatureFromTriple (sign triple radius : ℝ) : ℝ :=
+private def twoBandCurvatureFromTriple (sign triple radius : ℝ) : ℝ :=
   -sign * triple / (2 * radius ^ 3)
 
 /-- Closed clean massive-Dirac Berry-curvature benchmark before occupation/integration. -/
@@ -206,8 +192,7 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
     bandEnergy .upper v m px py = energy v m px py := by
   simp [bandEnergy]
 
-/-- The massive-Dirac `d`-vector Jacobian contributes `m v²`. -/
-theorem scalarTriple_dirac (v m px py : ℝ) :
+private theorem scalarTriple_dirac (v m px py : ℝ) :
     scalarTriple (dVector v m px py) (dMomentum .x v) (dMomentum .y v) = m * v ^ 2 := by
   simp [scalarTriple, dVector, dMomentum, pow_two]
 
