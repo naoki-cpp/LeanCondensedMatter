@@ -12,14 +12,13 @@ This module isolates the finite-dimensional two-Green trace block
 Tr[J_meas G_left Γ G_right]
 ```
 
-that carries the retarded-advanced (RA) part of the longitudinal Fermi-surface response.  The
-supplied Green operators and source vertex are kept independent, so downstream disorder
-approximations can reuse this algebra without being identified with the exact clean resolvent.
+that carries the retarded-advanced (RA) part of the Středa Fermi-surface response.  The supplied
+Green operators and source vertex are kept independent, so downstream disorder approximations can
+reuse this algebra without being identified with the exact clean resolvent.
 
-For the clean longitudinal specialization, the existing regularized Smrčka–Středa surface
-primitive trace is proved to be the RA block minus the explicit half-sum of the same-side RR and AA
-blocks.  This is an exact finite-broadening trace identity.  It does not discard the same-side
-remainder and makes no disorder, zero-broadening, DC, or thermodynamic-limit claim.
+For arbitrary measured/source vertices, the clean regularized Smrčka–Středa surface primitive trace
+is exactly the RA block minus an explicit same-side RR/AA half-sum.  No same-side term is dropped,
+and no disorder, zero-broadening, DC, or thermodynamic-limit claim is made here.
 -/
 
 namespace QuantumTheory
@@ -42,48 +41,56 @@ noncomputable def retardedAdvancedVertexTraceKernel
     (measuredVertex retardedGreen sourceVertex advancedGreen : H →L[ℂ] H) : ℂ :=
   twoGreenVertexTraceKernel measuredVertex retardedGreen sourceVertex advancedGreen
 
-/-- Explicit same-side half-sum accompanying the RA block in the longitudinal Středa surface
-primitive. -/
-noncomputable def longitudinalSameSideTraceRemainder
-    (current retardedGreen advancedGreen : H →L[ℂ] H) : ℂ :=
+/-- Explicit same-side half-sum accompanying the RA block for arbitrary measured/source vertices.
+The advanced term retains the current order produced directly by the Smrčka–Středa surface factor. -/
+noncomputable def sameSideVertexTraceRemainder
+    (measuredVertex sourceVertex retardedGreen advancedGreen : H →L[ℂ] H) : ℂ :=
   (1 / 2 : ℂ) *
-    (twoGreenVertexTraceKernel current retardedGreen current retardedGreen +
-      twoGreenVertexTraceKernel current advancedGreen current advancedGreen)
+    (twoGreenVertexTraceKernel measuredVertex retardedGreen sourceVertex retardedGreen +
+      twoGreenVertexTraceKernel sourceVertex advancedGreen measuredVertex advancedGreen)
 
-/-- For identical longitudinal current vertices, the clean regularized Středa surface primitive is
-exactly the RA trace block minus the explicit RR/AA half-sum.  No same-side term is dropped. -/
-theorem regularizedStredaSurfacePrimitiveTrace_longitudinal_eq_ra_sub_sameSide
-    (hamiltonian current : H →L[ℂ] H) (energy broadening : ℝ) :
+/-- Supplied-Green Středa surface trace kernel.  This is only the finite-dimensional trace algebra
+`RA - same-side`; downstream approximations decide which Green operators and source vertex to
+supply. -/
+noncomputable def suppliedGreenStredaSurfacePrimitiveTraceKernel
+    (measuredVertex retardedGreen sourceVertex advancedGreen : H →L[ℂ] H) : ℂ :=
+  retardedAdvancedVertexTraceKernel
+      measuredVertex retardedGreen sourceVertex advancedGreen -
+    sameSideVertexTraceRemainder
+      measuredVertex sourceVertex retardedGreen advancedGreen
+
+/-- For arbitrary current vertices, the clean regularized Středa surface primitive is exactly the
+supplied-Green `RA - RR/AA` trace kernel evaluated on the canonical resolvents. -/
+theorem regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
+    (hamiltonian measuredVertex sourceVertex : H →L[ℂ] H)
+    (energy broadening : ℝ) :
     regularizedStredaSurfacePrimitiveTrace
-        hamiltonian current current energy broadening =
-      retardedAdvancedVertexTraceKernel
-          current
-          (retardedResolvent hamiltonian energy broadening)
-          current
-          (advancedResolvent hamiltonian energy broadening) -
-        longitudinalSameSideTraceRemainder
-          current
-          (retardedResolvent hamiltonian energy broadening)
-          (advancedResolvent hamiltonian energy broadening) := by
+        hamiltonian measuredVertex sourceVertex energy broadening =
+      suppliedGreenStredaSurfacePrimitiveTraceKernel
+        measuredVertex
+        (retardedResolvent hamiltonian energy broadening)
+        sourceVertex
+        (advancedResolvent hamiltonian energy broadening) := by
   let R : H →L[ℂ] H := retardedResolvent hamiltonian energy broadening
   let A : H →L[ℂ] H := advancedResolvent hamiltonian energy broadening
   have hcyclic :
-      finiteDimensionalOperatorTrace (current * A * current * R) =
-        finiteDimensionalOperatorTrace (current * R * current * A) := by
+      finiteDimensionalOperatorTrace (sourceVertex * A * measuredVertex * R) =
+        finiteDimensionalOperatorTrace (measuredVertex * R * sourceVertex * A) := by
     simpa [mul_assoc] using
       (finiteDimensionalOperatorTrace_mul_comm
-        (H := H) (current * A) (current * R))
+        (H := H) (sourceVertex * A) (measuredVertex * R))
   have hexpand :
-      (current * R * current - current * A * current) * (R - A) =
-        current * R * current * R - current * R * current * A -
-          current * A * current * R + current * A * current * A := by
+      (measuredVertex * R * sourceVertex - sourceVertex * A * measuredVertex) * (R - A) =
+        measuredVertex * R * sourceVertex * R - measuredVertex * R * sourceVertex * A -
+          sourceVertex * A * measuredVertex * R + sourceVertex * A * measuredVertex * A := by
     noncomm_ring
   unfold regularizedStredaSurfacePrimitiveTrace
     regularizedStredaSurfacePrimitiveOperator smrckaStredaSurfaceFactor
-    retardedAdvancedResolventDifference retardedAdvancedVertexTraceKernel
-    longitudinalSameSideTraceRemainder twoGreenVertexTraceKernel
+    retardedAdvancedResolventDifference suppliedGreenStredaSurfacePrimitiveTraceKernel
+    retardedAdvancedVertexTraceKernel sameSideVertexTraceRemainder twoGreenVertexTraceKernel
   change finiteDimensionalOperatorTrace
-      ((-(1 / 2 : ℂ)) • ((current * R * current - current * A * current) * (R - A))) = _
+      ((-(1 / 2 : ℂ)) •
+        ((measuredVertex * R * sourceVertex - sourceVertex * A * measuredVertex) * (R - A))) = _
   rw [hexpand]
   simp only [map_smul, map_add, map_sub]
   rw [hcyclic]
