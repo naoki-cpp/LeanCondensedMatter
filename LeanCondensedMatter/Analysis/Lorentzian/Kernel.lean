@@ -168,17 +168,8 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
   have harctan := tendsto_arctan_pos_div_broadening radius hradius
   have hmass := (tendsto_const_nhds : Tendsto (fun _ : ℝ => (2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 2)).mul harctan
-  have hfun :
-      (fun broadening : ℝ =>
-        ∫ offset in -radius..radius, lorentzianSpectralKernel offset broadening) =
-      (fun broadening : ℝ => 2 * Real.arctan (radius / broadening)) := by
-    funext broadening
-    exact integral_lorentzianSpectralKernel_symmetric radius broadening
-  have hpi : (2 : ℝ) * (Real.pi / 2) = Real.pi := by
-    ring
-  rw [hfun]
-  rw [hpi] at hmass
-  exact hmass
+  rw [show (2 : ℝ) * (Real.pi / 2) = Real.pi by ring] at hmass
+  simpa only [integral_lorentzianSpectralKernel_symmetric] using hmass
 
 /-- Lorentzian spectral mass between an inner and outer symmetric window, represented as the
 outer-window mass minus the inner-window mass. -/
