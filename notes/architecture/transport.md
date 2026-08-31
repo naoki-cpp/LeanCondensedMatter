@@ -219,7 +219,7 @@ Transport/AnomalousHall/MassiveDirac/
 ├── Model/
 │   ├── Basic.lean
 │   ├── Operator.lean
-│   ├── CurrentBridge.lean
+│   ├── Kinematics.lean
 │   ├── Occupation.lean
 │   ├── Spectral.lean
 │   └── OperatorSpectral.lean
@@ -245,12 +245,11 @@ Transport/AnomalousHall/MassiveDirac/
 to that model route until the leaf migration is completed under #1840.
 
 Within the concrete benchmark, `Model/Operator.lean` owns the exact matrix-to-bounded-operator
-realization (`DiracHilbert`, Hamiltonian/current operators, self-adjointness, the bounded free-system
-adapter, and the matrix/operator trace bridge). `Model/CurrentBridge.lean` owns both the matrix and
-bounded canonical charge-current identifications. `Model/OperatorSpectral.lean` owns the transported
-band-projector algebra and gauge-free projector resolvent. These are response-independent model
-facts and are consumed directly by `Propagator`, disorder, and Bastin code without importing the
-model-specific Středa layer.
+realization (`DiracHilbert`, Hamiltonian/current/velocity operators, in-plane current combinations,
+self-adjointness, the bounded free-system adapter, and the matrix/operator trace bridge).
+`Model/OperatorSpectral.lean` owns the transported band-projector algebra and gauge-free projector
+resolvent. These are response-independent model facts and are consumed directly by `Propagator`,
+disorder, and Bastin code without importing the model-specific Středa layer.
 
 `MassiveDirac/Streda/Response.lean` owns the pointwise Bastin/Středa trace specialization,
 `Streda/Integral.lean` owns the finite-energy surface/sea decomposition, and
