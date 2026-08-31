@@ -181,7 +181,9 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
     e v m px py probeEnergy hlower hupper
   have hinter := tendsto_interbandBastinTraceContribution_zero
     e v m px py probeEnergy hlower hupper
-  refine (hdiag.add hinter).congr' ?_
+  have hsum := hdiag.add hinter
+  simpa only [add_zero] at hsum
+  refine hsum.congr' ?_
   filter_upwards with broadening
   exact (projectorBastinTraceIntegrand_eq_diagonal_add_interband
     e v m px py probeEnergy broadening hE).symm
