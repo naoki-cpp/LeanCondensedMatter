@@ -3,7 +3,6 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.FermiSurfaceKinematics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
 
