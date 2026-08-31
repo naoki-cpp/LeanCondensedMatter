@@ -9,7 +9,8 @@
         "LeanCondensedMatter/QuantumTheory.lean",
         "LeanCondensedMatter/QuantumMechanics.lean",
         "LeanCondensedMatter/Transport.lean",
-        "LeanCondensedMatter/Transport/AnomalousHall.lean",
+        "LeanCondensedMatter/Transport/Models.lean",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
         "LeanCondensedMatter/SecondQuantization.lean"
       ]
     },
@@ -211,6 +212,7 @@
         "LeanCondensedMatter/Transport/StredaCommonKernel.lean",
         "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
         "LeanCondensedMatter/Transport/KuboBastin/FiniteTrace.lean",
+        "LeanCondensedMatter/Transport/AnomalousHall.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaOccupation.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaCommonKernel.lean"
       ]
@@ -519,7 +521,7 @@
         "LeanCondensedMatter.QuantumTheory",
         "LeanCondensedMatter.QuantumMechanics",
         "LeanCondensedMatter.Transport",
-        "LeanCondensedMatter.Transport.AnomalousHall",
+        "LeanCondensedMatter.Transport.Models",
         "LeanCondensedMatter.SecondQuantization"
       ]
     },
@@ -533,7 +535,10 @@
     {
       "id": "genericTransportUmbrella",
       "path": "LeanCondensedMatter/Transport.lean",
-      "modules": ["LeanCondensedMatter.Transport.AnomalousHall"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Models",
+        "LeanCondensedMatter.Transport.AnomalousHall"
+      ]
     }
   ],
   "forbiddenImportPrefixes": [
