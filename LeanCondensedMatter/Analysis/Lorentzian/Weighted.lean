@@ -68,18 +68,10 @@ theorem tendsto_integral_weight_mul_lorentzian_of_eq_const_on
   have hmass := tendsto_integral_lorentzianSpectralKernel_symmetric radius hradius
   have hscaled := (tendsto_const_nhds : Tendsto (fun _ : ℝ => value)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds value)).mul hmass
-  have hfun :
-      (fun broadening : ℝ =>
-        ∫ energy in center - radius..center + radius,
-          weight energy * lorentzianSpectralKernel (energy - center) broadening) =
-      (fun broadening : ℝ =>
-        value * (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening)) := by
-    funext broadening
-    exact integral_weight_mul_lorentzian_of_eq_const_on
-      weight center value radius broadening hweight
-  rw [hfun]
-  exact hscaled
+  refine hscaled.congr' ?_
+  filter_upwards with broadening
+  exact (integral_weight_mul_lorentzian_of_eq_const_on
+    weight center value radius broadening hweight).symm
 
 end
 
