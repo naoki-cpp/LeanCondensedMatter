@@ -64,13 +64,7 @@ theorem finiteCutoffContinuumBornPolarGreenIntegral_eq
       (2 * Real.pi) •
         finiteCutoffContinuumBornGreenIntegral side v m probeEnergy broadening pMax := by
   unfold finiteCutoffContinuumBornPolarGreenIntegral finiteCutoffContinuumBornGreenIntegral
-  have hfun :
-      (fun p : ℝ => continuumBornPolarRadialKernel side v m probeEnergy broadening p) =
-        fun p : ℝ =>
-          (2 * Real.pi) • continuumBornRadialGreenKernel side v m probeEnergy broadening p := by
-    funext p
-    exact continuumBornPolarRadialKernel_eq side v m probeEnergy broadening p
-  rw [hfun]
+  simp_rw [continuumBornPolarRadialKernel_eq]
   rw [intervalIntegral.integral_smul]
 
 /-- Continuum Born self-energy written directly from the explicit polar-angle Green integral and the
@@ -98,22 +92,7 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
   simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
   congr 1
   push_cast
-  calc
-    (disorderStrength : ℂ) *
-        (((2 : ℂ) * (Real.pi : ℂ)) * (momentumMeasurePrefactor hbar : ℂ)) =
-      (disorderStrength : ℂ) *
-        ((momentumMeasurePrefactor hbar : ℂ) * ((2 : ℂ) * (Real.pi : ℂ))) := by
-          exact congrArg
-            (fun z : ℂ => (disorderStrength : ℂ) * z)
-            (mul_comm
-              ((2 : ℂ) * (Real.pi : ℂ))
-              (momentumMeasurePrefactor hbar : ℂ))
-    _ = (disorderStrength : ℂ) * (momentumMeasurePrefactor hbar : ℂ) *
-        ((2 : ℂ) * (Real.pi : ℂ)) := by
-          exact (mul_assoc
-            (disorderStrength : ℂ)
-            (momentumMeasurePrefactor hbar : ℂ)
-            ((2 : ℂ) * (Real.pi : ℂ))).symm
+  simp [mul_assoc, mul_comm, mul_left_comm]
 
 end
 

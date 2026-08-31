@@ -72,15 +72,7 @@ theorem finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denomin
         finiteCutoffContinuumBornDenominatorIntegral
           side v m probeEnergy broadening pMax := by
   unfold finiteCutoffContinuumBornScalarIntegral finiteCutoffContinuumBornDenominatorIntegral
-  have hfun :
-      (fun p : ℝ => continuumBornRadialScalarIntegrand side v m probeEnergy broadening p) =
-        fun p : ℝ =>
-          spectralParameter side probeEnergy broadening *
-            continuumBornRadialDenominatorIntegrand side v m probeEnergy broadening p := by
-    funext p
-    exact continuumBornRadialScalarIntegrand_eq_spectralParameter_mul_denominatorIntegrand
-      side v m probeEnergy broadening p
-  rw [hfun]
+  simp_rw [continuumBornRadialScalarIntegrand_eq_spectralParameter_mul_denominatorIntegrand]
   rw [intervalIntegral.integral_const_mul]
 
 /-- The finite-cutoff `σ_z` Born channel is `m` times the common denominator integral. -/
@@ -90,15 +82,7 @@ theorem finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral
       (m : ℂ) * finiteCutoffContinuumBornDenominatorIntegral
         side v m probeEnergy broadening pMax := by
   unfold finiteCutoffContinuumBornZIntegral finiteCutoffContinuumBornDenominatorIntegral
-  have hfun :
-      (fun p : ℝ => continuumBornRadialZIntegrand side v m probeEnergy broadening p) =
-        fun p : ℝ =>
-          (m : ℂ) * continuumBornRadialDenominatorIntegrand
-            side v m probeEnergy broadening p := by
-    funext p
-    exact continuumBornRadialZIntegrand_eq_mass_mul_denominatorIntegrand
-      side v m probeEnergy broadening p
-  rw [hfun]
+  simp_rw [continuumBornRadialZIntegrand_eq_mass_mul_denominatorIntegrand]
   rw [intervalIntegral.integral_const_mul]
 
 end

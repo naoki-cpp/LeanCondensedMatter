@@ -1,7 +1,7 @@
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic
 
@@ -36,6 +36,7 @@ namespace AnomalousHall.MassiveDirac
 noncomputable section
 
 open MeasureTheory
+open QuantumTheory.Transport
 open scoped Interval
 
 /-- The positive Dirac energy is nonnegative for every momentum. -/
@@ -60,6 +61,25 @@ theorem mass_le_energy (v m px py : ℝ) (_hm : 0 ≤ m) :
 theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
     0 < energy v m px py := by
   exact lt_of_lt_of_le hm (mass_le_energy v m px py hm.le)
+
+/-- The massive-Dirac dispersion polynomial is radial in polar momentum coordinates. -/
+@[simp] theorem energySq_polar (v m p θ : ℝ) :
+    energySq v m (p * Real.cos θ) (p * Real.sin θ) = energySq v m p 0 := by
+  unfold energySq
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    rw [add_comm]
+    exact Real.sin_sq_add_cos_sq θ
+  calc
+    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
+        v ^ 2 * p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) + m ^ 2 := by ring
+    _ = v ^ 2 * p ^ 2 + m ^ 2 := by rw [htrig]; ring
+    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
+
+/-- The positive massive-Dirac energy is radial in polar momentum coordinates. -/
+@[simp] theorem energy_polar_eq_radial (v m p θ : ℝ) :
+    energy v m (p * Real.cos θ) (p * Real.sin θ) = energy v m p 0 := by
+  unfold energy
+  rw [energySq_polar]
 
 /-- Radial derivative of the positive massive-Dirac energy. -/
 def radialEnergyDerivative (v m p : ℝ) : ℝ :=
@@ -99,33 +119,6 @@ theorem continuous_radialEnergyDerivative
 /-- `x` component obtained by projecting the radial group velocity onto polar angle `θ`. -/
 def radialGroupVelocityX (v m p θ : ℝ) : ℝ :=
   radialEnergyDerivative v m p * Real.cos θ
-
-private theorem integral_cos_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
-  have hcos :
-      IntervalIntegrable (fun θ : ℝ => Real.cos θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_cos.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hsin :
-      IntervalIntegrable (fun θ : ℝ => Real.sin θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_sin.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hdiff :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) -
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 0 := by
-    rw [← intervalIntegral.integral_sub hcos hsin]
-    simpa using
-      (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-  have hsum :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) +
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 2 * Real.pi := by
-    rw [← intervalIntegral.integral_add hcos hsin]
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 + Real.sin θ ^ 2) =
-          ∫ _θ : ℝ in (0 : ℝ)..(2 * Real.pi), (1 : ℝ) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            nlinarith [Real.sin_sq_add_cos_sq θ]
-      _ = 2 * Real.pi := by simp
-  linarith
 
 /-- Full-angle mean square of the `x` component of the radial group velocity. -/
 def isotropicMeanSquareRadialGroupVelocityX (v m p : ℝ) : ℝ :=
