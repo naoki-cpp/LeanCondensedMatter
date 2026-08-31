@@ -87,8 +87,14 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     (continuous_radialEnergyDerivative v m hm).continuousOn
     (continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
       band e v m pMax hm)
-  simpa only [Function.comp_apply] at hsub
-  rw [hsub]
+  have hsub' :
+      (∫ p in (0 : ℝ)..pMax,
+        cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
+          radialEnergyDerivative v m p) =
+        ∫ ε in energy v m 0 0..energy v m pMax 0,
+          cleanInterbandBastinPairRadialEnergyDensity band e m ε := by
+    simpa only [Function.comp_apply] using hsub
+  rw [hsub']
   unfold cleanInterbandBastinPairEnergyShellIntegral
   rw [show energy v m 0 0 = m by
     unfold energy energySq
