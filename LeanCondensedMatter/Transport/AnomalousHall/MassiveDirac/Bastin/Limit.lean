@@ -181,8 +181,12 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
     e v m px py probeEnergy hlower hupper
   have hinter := tendsto_interbandBastinTraceContribution_zero
     e v m px py probeEnergy hlower hupper
-  have hsum := hdiag.add hinter
-  simpa only [add_zero] at hsum
+  have hsum : Tendsto
+      (fun broadening : ℝ =>
+        diagonalBastinTraceContribution e v m px py probeEnergy broadening +
+          interbandBastinTraceContribution e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+    simpa using hdiag.add hinter
   refine hsum.congr' ?_
   filter_upwards with broadening
   exact (projectorBastinTraceIntegrand_eq_diagonal_add_interband
