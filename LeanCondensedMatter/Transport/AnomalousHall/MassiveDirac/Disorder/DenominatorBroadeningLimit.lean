@@ -137,13 +137,10 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
             (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds (side.sign * Real.pi)) := by
     simpa using hargCutoff.sub hargZero
-  have hcoeff :
-      Tendsto
-        (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (-(((2 : ℝ) * v ^ 2)⁻¹))) := tendsto_const_nhds
-  have hscaled := hcoeff.mul hdiff
-  refine hscaled.congr' ?_
+  refine ((tendsto_const_nhds : Tendsto
+    (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
   have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
   exact (finiteCutoffContinuumBornDenominatorIntegral_im_eq

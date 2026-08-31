@@ -41,9 +41,8 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
         (fun p : ℝ => v ^ 2 * p ^ 2 -
           (probeEnergy ^ 2 - broadening ^ 2 - m ^ 2))
         atTop atTop := by
-    have hshift0 := tendsto_atTop_add_const_right atTop
-      (-(probeEnergy ^ 2 - broadening ^ 2 - m ^ 2)) hlead
-    convert hshift0 using 1
+    convert tendsto_atTop_add_const_right atTop
+      (-(probeEnergy ^ 2 - broadening ^ 2 - m ^ 2)) hlead using 1
     funext p
     ring
   have hsq :
@@ -53,9 +52,8 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
             (probeEnergy ^ 2 - broadening ^ 2 - m ^ 2)) ^ 2)
         atTop atTop := by
     simpa [pow_two] using hshift.atTop_mul_atTop₀ hshift
-  have hadd := tendsto_atTop_add_const_right atTop
-    ((2 * probeEnergy * broadening) ^ 2) hsq
-  convert hadd using 1
+  convert tendsto_atTop_add_const_right atTop
+    ((2 * probeEnergy * broadening) ^ 2) hsq using 1
   funext p
   ring
 
@@ -108,15 +106,8 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_atTop
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
   have hcoeff : -(((2 : ℝ) * v ^ 2)⁻¹) < 0 := by
     exact neg_lt_zero.mpr (inv_pos.mpr (mul_pos (by norm_num) hv2))
-  have hscaled :
-      Tendsto
-        (fun pMax : ℝ =>
-          -(((2 : ℝ) * v ^ 2)⁻¹) *
-            (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy broadening‖ -
-              Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy broadening‖))
-        atTop atBot :=
-    (tendsto_const_mul_atBot_of_neg hcoeff).2 hdiff
-  refine hscaled.congr' (Eventually.of_forall fun pMax => ?_)
+  refine ((tendsto_const_mul_atBot_of_neg hcoeff).2 hdiff).congr'
+    (Eventually.of_forall fun pMax => ?_)
   exact (finiteCutoffContinuumBornDenominatorIntegral_re_eq
     side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening).symm
 
