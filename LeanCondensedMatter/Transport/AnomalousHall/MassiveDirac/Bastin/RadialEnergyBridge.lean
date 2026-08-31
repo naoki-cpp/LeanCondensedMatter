@@ -96,9 +96,10 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     simpa only [Function.comp_apply] using hsub
   rw [hsub']
   unfold cleanInterbandBastinPairEnergyShellIntegral
-  rw [show energy v m 0 0 = m by
+  have hzero : energy v m 0 0 = m := by
     unfold energy energySq
-    simp [Real.sqrt_sq_eq_abs, abs_of_pos hm]]
+    simp [Real.sqrt_sq_eq_abs, abs_of_pos hm]
+  rw [hzero]
 
 end
 
