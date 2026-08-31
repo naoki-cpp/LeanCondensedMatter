@@ -208,14 +208,10 @@ theorem tendsto_bastinCleanHallConductivityCutoff_atTop
     (e hbar m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (intrinsicHallConductivity e hbar m εF)) := by
-  have hfun :
-      bastinCleanHallConductivityCutoff e hbar m εF =
-        intrinsicHallConductivityCutoff e hbar m εF := by
-    funext Λ
-    exact bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
-      e hbar m εF Λ
-  rw [hfun]
-  exact tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hm hmF
+  refine (tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hm hmF).congr' ?_
+  filter_upwards with Λ
+  exact (bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
+    e hbar m εF Λ).symm
 
 /-- Closed metallic benchmark reached by the integrated clean Bastin-pair profile,
 `σxy = -(e²/2h) (m/εF)`. -/
