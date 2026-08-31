@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.FermiSurfaceKinematics
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import Mathlib.Tactic
