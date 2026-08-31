@@ -139,12 +139,8 @@ theorem isotropicMeanSquareRadialGroupVelocityX_eq
     isotropicMeanSquareRadialGroupVelocityX v m p =
       radialEnergyDerivative v m p ^ 2 / 2 := by
   unfold isotropicMeanSquareRadialGroupVelocityX radialGroupVelocityX
-  have hfun :
-      (fun θ : ℝ => (radialEnergyDerivative v m p * Real.cos θ) ^ 2) =
-        fun θ : ℝ => radialEnergyDerivative v m p ^ 2 * Real.cos θ ^ 2 := by
-    funext θ
-    ring
-  rw [hfun, intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
+  simp_rw [mul_pow]
+  rw [intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hpi]
 
