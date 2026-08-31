@@ -44,8 +44,8 @@ theorem operatorAverage_mul_impurity_mul_eq_zero
   simp
 
 /-- Average a configuration-wise second-order expansion after its first-order contribution has
-vanished. This is the R/A-neutral algebra used by both first-Born specializations. -/
-theorem operatorAverage_eq_free_add_remainder_of_secondOrder
+vanished. This is the R/A-neutral algebra used internally by both spectral sides. -/
+private theorem operatorAverage_eq_free_add_remainder_of_secondOrder
     (free : H →L[ℂ] H)
     (response firstOrder remainder : Ω → H →L[ℂ] H)
     (hexpansion : ∀ ω, response ω = (free + firstOrder ω) + remainder ω)
@@ -215,30 +215,16 @@ theorem star_bornSelfEnergy_retarded
         ensemble.star_freeRetardedGreen]
     _ = ensemble.bornSelfEnergy .advanced energy broadening := rfl
 
-omit [CompleteSpace H] in
-/-- R/A-neutral second-order Born Green expression `G₀ + G₀ Σ G₀` for supplied inputs. -/
-noncomputable def secondOrderBornGreenExpression
-    (freeGreen selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
-  freeGreen + freeGreen * selfEnergy * freeGreen
-
-/-- Adjointing the R/A-neutral second-order Born Green expression adjoints its free Green operator
-and self-energy. The symmetric `G₀ Σ G₀` placement restores the original multiplication order. -/
-theorem star_secondOrderBornGreenExpression
-    (freeGreen selfEnergy : H →L[ℂ] H) :
-    star (secondOrderBornGreenExpression freeGreen selfEnergy) =
-      secondOrderBornGreenExpression (star freeGreen) (star selfEnergy) := by
-  unfold secondOrderBornGreenExpression
-  simp only [star_add, star_mul, mul_assoc]
-
 /-- Side-indexed second-order Born Green truncation `G₀ˢ + G₀ˢ Σᴮˢ G₀ˢ`.
 
 This is the explicit second-order truncation of the Dyson series using `bornSelfEnergy`; it is not a
 Dyson-resummed Green operator and is not asserted to satisfy `IsSelfEnergy`. -/
 noncomputable def secondOrderBornGreen
     (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornGreenExpression
-    (ensemble.freeGreen side energy broadening)
-    (ensemble.bornSelfEnergy side energy broadening)
+  ensemble.freeGreen side energy broadening +
+    ensemble.freeGreen side energy broadening *
+      ensemble.bornSelfEnergy side energy broadening *
+        ensemble.freeGreen side energy broadening
 
 /-- The advanced second-order Born Green truncation is the adjoint of the retarded one. -/
 theorem star_secondOrderBornGreen_retarded
@@ -246,33 +232,19 @@ theorem star_secondOrderBornGreen_retarded
     star (ensemble.secondOrderBornGreen .retarded energy broadening) =
       ensemble.secondOrderBornGreen .advanced energy broadening := by
   unfold secondOrderBornGreen
-  rw [star_secondOrderBornGreenExpression]
+  simp only [star_add, star_mul, mul_assoc]
   rw [ensemble.star_bornSelfEnergy_retarded]
   rw [ensemble.freeGreen_retarded, ensemble.freeGreen_advanced,
     ensemble.star_freeRetardedGreen]
-
-omit [CompleteSpace H] in
-/-- R/A-neutral closure error between an exact second-order remainder and `G₀ Σ G₀`. -/
-noncomputable def secondOrderBornClosureError
-    (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
-  exactRemainder - freeGreen * selfEnergy * freeGreen
-
-/-- Adjointing the R/A-neutral closure error adjoints all three inputs. -/
-theorem star_secondOrderBornClosureError
-    (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
-    star (secondOrderBornClosureError freeGreen exactRemainder selfEnergy) =
-      secondOrderBornClosureError (star freeGreen) (star exactRemainder) (star selfEnergy) := by
-  unfold secondOrderBornClosureError
-  simp only [star_sub, star_mul, mul_assoc]
 
 /-- Side-indexed exact closure error between the full second-order Dyson remainder and the
 Born-truncated insertion. No smallness or vanishing is assumed. -/
 noncomputable def bornClosureError
     (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  secondOrderBornClosureError
-    (ensemble.freeGreen side energy broadening)
-    (ensemble.exactSecondOrderRemainder side energy broadening)
-    (ensemble.bornSelfEnergy side energy broadening)
+  ensemble.exactSecondOrderRemainder side energy broadening -
+    ensemble.freeGreen side energy broadening *
+      ensemble.bornSelfEnergy side energy broadening *
+        ensemble.freeGreen side energy broadening
 
 /-- The advanced exact Born closure error is the adjoint of the retarded closure error. -/
 theorem star_bornClosureError_retarded
@@ -280,7 +252,7 @@ theorem star_bornClosureError_retarded
     star (ensemble.bornClosureError .retarded energy broadening) =
       ensemble.bornClosureError .advanced energy broadening := by
   unfold bornClosureError
-  rw [star_secondOrderBornClosureError]
+  simp only [star_sub, star_mul, mul_assoc]
   rw [ensemble.star_exactSecondOrderRemainder_retarded,
     ensemble.star_bornSelfEnergy_retarded]
   rw [ensemble.freeGreen_retarded, ensemble.freeGreen_advanced,
@@ -309,14 +281,13 @@ theorem BornClosureHypothesis.toAdvanced
   exact hzero
 
 omit [CompleteSpace H] in
-/-- Adding an exact second-order remainder equals the named second-order Born Green truncation plus
-the retained closure error. No smallness or vanishing of the error is assumed. -/
+/-- Algebraic decomposition underlying the named second-order Born truncation and retained closure
+error. No smallness or vanishing of the error is assumed. -/
 theorem free_add_remainder_eq_secondOrderBornGreen_add_error
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
     freeGreen + exactRemainder =
-      secondOrderBornGreenExpression freeGreen selfEnergy +
-        secondOrderBornClosureError freeGreen exactRemainder selfEnergy := by
-  unfold secondOrderBornGreenExpression secondOrderBornClosureError
+      (freeGreen + freeGreen * selfEnergy * freeGreen) +
+        (exactRemainder - freeGreen * selfEnergy * freeGreen) := by
   noncomm_ring
 
 end FiniteDisorderEnsemble
