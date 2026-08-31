@@ -7,10 +7,11 @@ import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 set_option linter.style.header false
 
 /-!
-# Finite-broadening Born-Dyson Hall Středa surface channel
+# Finite-broadening Born-Dyson RA-dressed Hall Středa surface bridge
 
 This module inserts the solved finite-cutoff finite-external-broadening Born-Dyson current vertex
-into the retarded-advanced block of the massive-Dirac Hall Středa surface channel.
+into only the retarded-advanced block associated with the massive-Dirac Hall Středa surface
+algebra.
 
 The repository Hall convention keeps the measured current bare along `x` and dresses the source
 current that is bare along `y`.  Since the canonical ladder solution is stored for a bare `σₓ`
@@ -22,8 +23,10 @@ source as `(α, β)`, rotational closure fixes the retarded-advanced dressed Hal
 
 Only the `Gᴿ Γᵧᴿᴬ Gᴬ` ladder has been solved.  Therefore the explicit same-side RR/AA remainder
 retains the bare `jᵧ` source rather than reusing the RA-dressed vertex without a corresponding RR/AA
-Bethe–Salpeter derivation.  No momentum integral, conductivity prefactor, disorder/broadening limit,
-or exact disorder-average claim is introduced here.
+Bethe–Salpeter derivation.  The resulting object is an RA-dressed/bare-same-side bridge, not a claim
+that the full finite-disorder Středa surface primitive has been dressed.  No momentum integral,
+conductivity prefactor, disorder/broadening limit, or exact disorder-average claim is introduced
+here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -32,9 +35,9 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Physical Hall source current obtained by inserting the rotated solved coefficient pair
-`(-β, α)` into the model-owned in-plane current boundary. -/
-noncomputable def finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+/-- Physical retarded-advanced Hall source current obtained by inserting the rotated solved
+coefficient pair `(-β, α)` into the model-owned in-plane current boundary. -/
+noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   inPlaneCurrentOperator e v
@@ -43,35 +46,36 @@ noncomputable def finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
     (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax)
 
-/-- The physical Hall source is electron charge times the Dirac velocity multiplying the rotated
-solved dimensionless transverse vertex. -/
-theorem finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator_eq_chargeVelocity_smul
+/-- The physical retarded-advanced Hall source is electron charge times the Dirac velocity
+multiplying the rotated solved dimensionless transverse vertex. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator_eq_chargeVelocity_smul
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
         e v m probeEnergy broadening disorderStrength hbar pMax =
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
         finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
           v m probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
   rfl
 
-@[simp] theorem finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator_zero_disorder
+@[simp]
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator_zero_disorder
     (e v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
       e v m probeEnergy broadening 0 hbar pMax = currentOperator .y e v := by
-  simp [finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator]
+  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator]
 
-/-- Pointwise finite-cutoff finite-`η` Born-Dyson Hall Středa surface bridge.  The RA block uses the
-solved `Γᵧᴿᴬ`; the same-side RR/AA remainder keeps the bare `jᵧ` source because no same-side ladder
-has been derived. -/
-noncomputable def finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel
+/-- Pointwise finite-cutoff finite-`η` Hall bridge with the solved `Γᵧᴿᴬ` only in the RA block and
+bare `jᵧ` in the RR/AA same-side remainder.  This deliberately does not identify the result with a
+fully dressed finite-disorder Středa surface primitive. -/
+noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
     (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   retardedAdvancedVertexTraceKernel
       (currentOperator .x e v)
       (finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+      (finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
         e v m probeEnergy broadening disorderStrength hbar pMax)
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
@@ -83,17 +87,17 @@ noncomputable def finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceK
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax)
 
-/-- The finite-`η` Hall surface bridge separates the RA-dressed block from the bare-source same-side
-RR/AA remainder. -/
-theorem finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel_eq_ra_sub_sameSide
+/-- The finite-`η` Hall bridge is exactly its RA-dressed block minus the bare-source same-side RR/AA
+remainder. -/
+theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge_eq_ra_sub_sameSide
     (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel
+    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
         e v m px py probeEnergy broadening disorderStrength hbar pMax =
       retardedAdvancedVertexTraceKernel
           (currentOperator .x e v)
           (finiteCutoffContinuumBornDysonGreenOperator
             .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
             e v m probeEnergy broadening disorderStrength hbar pMax)
           (finiteCutoffContinuumBornDysonGreenOperator
             .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
@@ -108,18 +112,20 @@ theorem finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel_eq_r
 
 /-- At zero disorder and positive external broadening, the RA-dressed/bare-same-side bridge reduces
 exactly to the clean massive-Dirac `jₓ-jᵧ` Středa surface primitive. -/
-@[simp] theorem finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel_zero_disorder
+@[simp]
+theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder
     (e v m px py probeEnergy broadening hbar pMax : ℝ)
     (hbroadening : 0 < broadening) :
-    finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel
+    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
         e v m px py probeEnergy broadening 0 hbar pMax =
       regularizedStredaSurfacePrimitiveTrace
         (hamiltonianOperator v m px py)
         (currentOperator .x e v)
         (currentOperator .y e v)
         probeEnergy broadening := by
-  unfold finiteCutoffContinuumBornDysonHallStredaSurfacePrimitiveTraceKernel
-  simp only [finiteCutoffContinuumBornDysonDressedHallSourceCurrentOperator_zero_disorder,
+  unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
+  simp only [
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator_zero_disorder,
     finiteCutoffContinuumBornDysonGreenOperator_zero_disorder]
   rw [← retardedResolvent_eq_pauliGreenOperator
       v m px py probeEnergy broadening hbroadening]
