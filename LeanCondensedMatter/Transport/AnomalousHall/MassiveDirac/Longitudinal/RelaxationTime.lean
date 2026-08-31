@@ -96,7 +96,6 @@ theorem upperBandFermiSurfaceDensityOfStates_eq
   unfold radialEnergyDerivative
   rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
   field_simp [hhbar, hv, hpFne, hfermiNe, hpi]
-  ring
 
 /-- Zero-temperature Fermi-surface relaxation-time-approximation benchmark for the longitudinal
 electrical conductivity.
