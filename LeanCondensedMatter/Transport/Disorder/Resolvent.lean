@@ -340,68 +340,6 @@ theorem configurationGreen_eq_secondOrder_add_exactRemainder_right
     _ = _ := by
       noncomm_ring
 
-/-- Exact first retarded resolvent identity
-`Gωᴿ = G₀ᴿ + G₀ᴿ Vω Gωᴿ` at positive broadening. -/
-theorem configurationRetardedGreen_eq_free_add_dyson
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationRetardedGreen energy broadening ω =
-      ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.configurationRetardedGreen energy broadening ω := by
-  simpa only [configurationGreen_retarded, freeGreen_retarded] using
-    configurationGreen_eq_free_add_dyson_left
-      ensemble .retarded energy broadening (ne_of_gt hbroadening) ω
-
-/-- Exact second-order retarded Dyson expansion with the complete configuration Green operator
-retained in the remainder. This is an identity, not a weak-scattering approximation. -/
-theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationRetardedGreen energy broadening ω =
-      ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.configurationRetardedGreen energy broadening ω := by
-  simpa only [configurationGreen_retarded, freeGreen_retarded] using
-    configurationGreen_eq_secondOrder_add_exactRemainder_left
-      ensemble .retarded energy broadening (ne_of_gt hbroadening) ω
-
-/-- Exact right-oriented advanced resolvent identity
-`Gωᴬ = G₀ᴬ + Gωᴬ Vω G₀ᴬ` at positive broadening. -/
-theorem configurationAdvancedGreen_eq_free_add_dyson
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationAdvancedGreen energy broadening ω =
-      ensemble.freeAdvancedGreen energy broadening +
-        ensemble.configurationAdvancedGreen energy broadening ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening := by
-  simpa only [configurationGreen_advanced, freeGreen_advanced] using
-    configurationGreen_eq_free_add_dyson_right
-      ensemble .advanced energy broadening (ne_of_gt hbroadening) ω
-
-/-- Exact second-order advanced Dyson expansion. It is the right-oriented advanced specialization
-of the canonical side-indexed expansion, with the complete configuration Green operator retained. -/
-theorem configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationAdvancedGreen energy broadening ω =
-      ensemble.freeAdvancedGreen energy broadening +
-        ensemble.freeAdvancedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening +
-        ensemble.configurationAdvancedGreen energy broadening ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening := by
-  simpa only [configurationGreen_advanced, freeGreen_advanced] using
-    configurationGreen_eq_secondOrder_add_exactRemainder_right
-      ensemble .advanced energy broadening (ne_of_gt hbroadening) ω
-
 end FiniteDisorderEnsemble
 
 end
