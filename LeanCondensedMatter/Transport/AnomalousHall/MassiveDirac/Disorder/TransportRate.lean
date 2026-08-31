@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.FermiSurfaceKinematics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
@@ -40,19 +41,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-private theorem energy_polar_eq_radial
-    (v m p θ : ℝ) :
-    energy v m (p * Real.cos θ) (p * Real.sin θ) = energy v m p 0 := by
-  unfold energy energySq
-  congr 1
-  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
-  calc
-    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
-        v ^ 2 * (p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2)) + m ^ 2 := by ring
-    _ = v ^ 2 * (p ^ 2 * 1) + m ^ 2 := by rw [htrig]
-    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
 private theorem upperBandProjectorOverlap_eq
     (v m px py qx qy : ℝ)
@@ -118,33 +106,6 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
   · exact hENe
   · rw [energy_polar_eq_radial]
     exact hENe
-
-private theorem integral_cos_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
-  have hcos :
-      IntervalIntegrable (fun θ : ℝ => Real.cos θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_cos.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hsin :
-      IntervalIntegrable (fun θ : ℝ => Real.sin θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_sin.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hdiff :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) -
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 0 := by
-    rw [← intervalIntegral.integral_sub hcos hsin]
-    simpa using
-      (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-  have hsum :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) +
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 2 * Real.pi := by
-    rw [← intervalIntegral.integral_add hcos hsin]
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 + Real.sin θ ^ 2) =
-          ∫ _θ : ℝ in (0 : ℝ)..(2 * Real.pi), (1 : ℝ) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            nlinarith [Real.sin_sq_add_cos_sq θ]
-      _ = 2 * Real.pi := by simp
-  linarith
 
 /-- Full-circle mean of the upper-band scalar-disorder overlap.  This is the angular factor carried
 by the single-particle Born rate. -/
