@@ -89,14 +89,10 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
   have hchannel :=
     tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
       side v m probeEnergy pMax hvelocity hm hmE hcutoff
-  have hprefactor :
-      Tendsto
-        (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar)) :=
-    tendsto_const_nhds
-  have hscaled := hprefactor.mul hchannel
-  refine hscaled.congr' ?_
+  refine ((tendsto_const_nhds : Tendsto
+    (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar))).mul hchannel).congr' ?_
   filter_upwards with broadening
   exact (continuumBornScalarSelfEnergyCoefficient_im_eq
     side v m probeEnergy broadening disorderStrength hbar pMax).symm
@@ -121,14 +117,10 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
   have hchannel :=
     tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
       side v m probeEnergy pMax hvelocity hm hmE hcutoff
-  have hprefactor :
-      Tendsto
-        (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar)) :=
-    tendsto_const_nhds
-  have hscaled := hprefactor.mul hchannel
-  refine hscaled.congr' ?_
+  refine ((tendsto_const_nhds : Tendsto
+    (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar))).mul hchannel).congr' ?_
   filter_upwards with broadening
   exact (continuumBornZSelfEnergyCoefficient_im_eq
     side v m probeEnergy broadening disorderStrength hbar pMax).symm

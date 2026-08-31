@@ -94,42 +94,16 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
     band v m px py hE
   have hadv := tendsto_advanced_oppositeBandCoefficient_sq_at_bandPole
     band v m px py hE
-  have hxy :
-      Tendsto
-        (fun broadening : ℝ =>
-          projectorResolventCoefficient
-              (retardedSpectralParameter (bandEnergy band v m px py) broadening)
-              (oppositeBand band) v m px py ^ 2 *
-            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
-        (nhds 0)
-        (nhds
-          (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)) := by
-    exact hret.mul
-      (tendsto_const_nhds :
-        Tendsto
-          (fun _ : ℝ =>
-            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
-          (nhds 0)
-          (nhds (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)))
-  have hyx :
-      Tendsto
-        (fun broadening : ℝ =>
-          projectorResolventCoefficient
-              (advancedSpectralParameter (bandEnergy band v m px py) broadening)
-              (oppositeBand band) v m px py ^ 2 *
-            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
-        (nhds 0)
-        (nhds
-          (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
-    exact hadv.mul
-      (tendsto_const_nhds :
-        Tendsto
-          (fun _ : ℝ =>
-            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
-          (nhds 0)
-          (nhds (bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)))
+  have hxy := hret.mul
+    (tendsto_const_nhds : Tendsto
+      (fun _ : ℝ => bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
+      (nhds 0)
+      (nhds (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)))
+  have hyx := hadv.mul
+    (tendsto_const_nhds : Tendsto
+      (fun _ : ℝ => bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
+      (nhds 0)
+      (nhds (bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)))
   simpa [interbandSpectatorCurrentFactor] using hxy.sub hyx
 
 end

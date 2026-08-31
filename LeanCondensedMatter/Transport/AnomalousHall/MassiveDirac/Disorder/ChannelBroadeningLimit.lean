@@ -144,11 +144,8 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
   have hJ :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
       side v m probeEnergy pMax hvelocity hm hmE hcutoff
-  have hmconst :
-      Tendsto (fun _ : ℝ => m)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds m) := tendsto_const_nhds
-  have hscaled := hmconst.mul hJ
-  refine hscaled.congr' ?_
+  refine ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m)
+    (nhdsWithin 0 (Set.Ioi 0)) (nhds m)).mul hJ).congr' ?_
   filter_upwards with broadening
   exact (finiteCutoffContinuumBornZIntegral_im_eq
     side v m probeEnergy broadening pMax).symm
@@ -174,18 +171,14 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
   have hJre :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
       side v m probeEnergy pMax hvelocity hm hmE hcutoff
-  have henergy :
-      Tendsto (fun _ : ℝ => probeEnergy)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds probeEnergy) := tendsto_const_nhds
-  have hmain := henergy.mul hJim
+  have hmain := (tendsto_const_nhds : Tendsto (fun _ : ℝ => probeEnergy)
+    (nhdsWithin 0 (Set.Ioi 0)) (nhds probeEnergy)).mul hJim
   have heta :
       Tendsto (fun broadening : ℝ => broadening)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     exact continuousAt_id.tendsto.mono_left inf_le_left
-  have hsign :
-      Tendsto (fun _ : ℝ => side.sign)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign) := tendsto_const_nhds
-  have hcross := (hsign.mul heta).mul hJre
+  have hcross := ((tendsto_const_nhds : Tendsto (fun _ : ℝ => side.sign)
+    (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign)).mul heta).mul hJre
   have hcrossZero :
       Tendsto
         (fun broadening : ℝ =>
