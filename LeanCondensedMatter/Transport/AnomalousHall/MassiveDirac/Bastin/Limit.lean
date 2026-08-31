@@ -124,16 +124,14 @@ theorem tendsto_bastinBandPairContribution_zero
     source v m px py probeEnergy hsource
   have hdiff := tendsto_spectralDifferenceCoefficient_zero
     target v m px py probeEnergy htarget
-  have hxy : Tendsto
+  have hretTerm := (((hret.mul hret).mul hdiff).mul
+    (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => bastinBandBlockTrace .x .y source target e v m px py)
-      (nhds 0) (nhds (bastinBandBlockTrace .x .y source target e v m px py)) :=
-    tendsto_const_nhds
-  have hyx : Tendsto
+      (nhds 0) (nhds (bastinBandBlockTrace .x .y source target e v m px py))))
+  have hadvTerm := (((hadv.mul hadv).mul hdiff).mul
+    (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => bastinBandBlockTrace .y .x source target e v m px py)
-      (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py)) :=
-    tendsto_const_nhds
-  have hretTerm := (((hret.mul hret).mul hdiff).mul hxy)
-  have hadvTerm := (((hadv.mul hadv).mul hdiff).mul hyx)
+      (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py))))
   simpa [bastinBandPairContribution, pow_two] using hretTerm.sub hadvTerm
 
 /-- The diagonal sector tends pointwise to zero away from both band energies. -/
@@ -183,18 +181,16 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
     e v m px py probeEnergy hlower hupper
   have hinter := tendsto_interbandBastinTraceContribution_zero
     e v m px py probeEnergy hlower hupper
-  have hsum := hdiag.add hinter
-  have hfun :
-      (fun broadening : ℝ =>
-        projectorBastinTraceIntegrand e v m px py probeEnergy broadening) =
+  have hsum : Tendsto
       (fun broadening : ℝ =>
         diagonalBastinTraceContribution e v m px py probeEnergy broadening +
-          interbandBastinTraceContribution e v m px py probeEnergy broadening) := by
-    funext broadening
-    exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
-      e v m px py probeEnergy broadening hE
-  rw [hfun]
-  simpa using hsum
+          interbandBastinTraceContribution e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+    simpa using hdiag.add hinter
+  refine hsum.congr' ?_
+  filter_upwards with broadening
+  exact (projectorBastinTraceIntegrand_eq_diagonal_add_interband
+    e v m px py probeEnergy broadening hE).symm
 
 end
 

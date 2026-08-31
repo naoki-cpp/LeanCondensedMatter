@@ -116,13 +116,10 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
   have hlogCutoff := (hnorm pMax).log hcutoffNormNe
   have hlogZero := (hnorm 0).log hzeroNormNe
   have hdiff := hlogCutoff.sub hlogZero
-  have hcoeff :
-      Tendsto
-        (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (-(((2 : ℝ) * v ^ 2)⁻¹))) := tendsto_const_nhds
-  have hscaled := hcoeff.mul hdiff
-  refine hscaled.congr' ?_
+  refine ((tendsto_const_nhds : Tendsto
+    (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
   have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
   exact (finiteCutoffContinuumBornDenominatorIntegral_re_eq
@@ -177,8 +174,6 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
       Tendsto (fun broadening : ℝ => broadening)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     exact continuousAt_id.tendsto.mono_left inf_le_left
-  have hcross := ((tendsto_const_nhds : Tendsto (fun _ : ℝ => side.sign)
-    (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign)).mul heta).mul hJre
   have hcrossZero :
       Tendsto
         (fun broadening : ℝ =>
@@ -186,7 +181,9 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
             (finiteCutoffContinuumBornDenominatorIntegral
               side v m probeEnergy broadening pMax).re)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-    simpa using hcross
+    simpa using
+      (((tendsto_const_nhds : Tendsto (fun _ : ℝ => side.sign)
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign)).mul heta).mul hJre)
   have hsum :
       Tendsto
         (fun broadening : ℝ =>
