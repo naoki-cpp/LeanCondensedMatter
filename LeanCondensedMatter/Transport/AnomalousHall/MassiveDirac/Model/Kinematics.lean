@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Sqrt
@@ -11,7 +11,7 @@ set_option linter.style.header false
 # Radial kinematics of the two-dimensional massive Dirac model
 
 This file owns radial dispersion facts shared by longitudinal response and the Bastin radial-energy
-bridge. These facts depend only on the clean massive-Dirac spectrum; occupation and transport
+bridge.  These facts depend only on the clean massive-Dirac spectrum; occupation and transport
 relaxation enter downstream.
 
 For
@@ -27,15 +27,16 @@ dE/dp = v^2 p / E(p).
 ```
 
 For an isotropic Fermi circle, projecting the radial group velocity onto the `x` axis gives a
-`cos θ` factor. Its full-angle mean square uses the model-independent harmonic integral owned by
-`Transport.Analysis.AngularHarmonics`.
+`cos θ` factor.  Its full-angle mean square is derived below rather than inserted as an unexplained
+factor of `1/2`.
 -/
 
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open MeasureTheory QuantumTheory.Transport
+open MeasureTheory
+open QuantumTheory.Transport
 open scoped Interval
 
 /-- The positive Dirac energy is nonnegative for every momentum. -/
@@ -60,6 +61,25 @@ theorem mass_le_energy (v m px py : ℝ) (_hm : 0 ≤ m) :
 theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
     0 < energy v m px py := by
   exact lt_of_lt_of_le hm (mass_le_energy v m px py hm.le)
+
+/-- The massive-Dirac dispersion polynomial is radial in polar momentum coordinates. -/
+@[simp] theorem energySq_polar (v m p θ : ℝ) :
+    energySq v m (p * Real.cos θ) (p * Real.sin θ) = energySq v m p 0 := by
+  unfold energySq
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    rw [add_comm]
+    exact Real.sin_sq_add_cos_sq θ
+  calc
+    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
+        v ^ 2 * p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) + m ^ 2 := by ring
+    _ = v ^ 2 * p ^ 2 + m ^ 2 := by rw [htrig]; ring
+    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
+
+/-- The positive massive-Dirac energy is radial in polar momentum coordinates. -/
+@[simp] theorem energy_polar_eq_radial (v m p θ : ℝ) :
+    energy v m (p * Real.cos θ) (p * Real.sin θ) = energy v m p 0 := by
+  unfold energy
+  rw [energySq_polar]
 
 /-- Radial derivative of the positive massive-Dirac energy. -/
 def radialEnergyDerivative (v m p : ℝ) : ℝ :=
@@ -106,18 +126,14 @@ def isotropicMeanSquareRadialGroupVelocityX (v m p : ℝ) : ℝ :=
     (2 * Real.pi)
 
 /-- In two dimensions, the isotropic angular mean of `v_x²` is one half of the squared radial
-velocity. The factor `1/2` is the generic full-circle `cos² θ` average. -/
+velocity.  The factor `1/2` is the explicit full-circle `cos² θ` average. -/
 theorem isotropicMeanSquareRadialGroupVelocityX_eq
     (v m p : ℝ) :
     isotropicMeanSquareRadialGroupVelocityX v m p =
       radialEnergyDerivative v m p ^ 2 / 2 := by
   unfold isotropicMeanSquareRadialGroupVelocityX radialGroupVelocityX
-  have hfun :
-      (fun θ : ℝ => (radialEnergyDerivative v m p * Real.cos θ) ^ 2) =
-        fun θ : ℝ => radialEnergyDerivative v m p ^ 2 * Real.cos θ ^ 2 := by
-    funext θ
-    ring
-  rw [hfun, intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
+  simp_rw [mul_pow]
+  rw [intervalIntegral.integral_const_mul, integral_cos_sq_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hpi]
 

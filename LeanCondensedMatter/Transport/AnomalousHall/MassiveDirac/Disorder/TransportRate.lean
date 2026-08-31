@@ -1,7 +1,8 @@
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -40,19 +41,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-private theorem energy_polar_eq_radial
-    (v m p θ : ℝ) :
-    energy v m (p * Real.cos θ) (p * Real.sin θ) = energy v m p 0 := by
-  unfold energy energySq
-  congr 1
-  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
-  calc
-    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
-        v ^ 2 * (p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2)) + m ^ 2 := by ring
-    _ = v ^ 2 * (p ^ 2 * 1) + m ^ 2 := by rw [htrig]
-    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
 private theorem upperBandProjectorOverlap_eq
     (v m px py qx qy : ℝ)

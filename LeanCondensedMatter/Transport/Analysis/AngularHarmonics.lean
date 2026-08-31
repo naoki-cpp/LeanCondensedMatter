@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Full-angle harmonic integrals
 
-Model-independent trigonometric integrals used by angular reductions in transport calculations.
-Only the first and second harmonics currently needed by downstream consumers are exposed here; no
-general Fourier API is introduced.
+Model-independent real- and complex-valued trigonometric integrals used by angular reductions in
+transport calculations.  Only the first and second harmonics currently needed by downstream
+consumers are exposed here; no general Fourier API is introduced.
 -/
 
 namespace QuantumTheory

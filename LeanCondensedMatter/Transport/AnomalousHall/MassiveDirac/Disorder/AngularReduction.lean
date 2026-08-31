@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
@@ -36,19 +37,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-/-- The massive-Dirac dispersion is radial in polar momentum coordinates. -/
-@[simp] theorem energySq_polar (v m p θ : ℝ) :
-    energySq v m (p * Real.cos θ) (p * Real.sin θ) = energySq v m p 0 := by
-  unfold energySq
-  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-    rw [add_comm]
-    exact Real.sin_sq_add_cos_sq θ
-  calc
-    v ^ 2 * ((p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2) + m ^ 2 =
-        v ^ 2 * p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) + m ^ 2 := by ring
-    _ = v ^ 2 * p ^ 2 + m ^ 2 := by rw [htrig]; ring
-    _ = v ^ 2 * (p ^ 2 + 0 ^ 2) + m ^ 2 := by ring
 
 /-- The Green denominator is independent of the polar angle. -/
 @[simp] theorem pauliGreenDenominator_polar
