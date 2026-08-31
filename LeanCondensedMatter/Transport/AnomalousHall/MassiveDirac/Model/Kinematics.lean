@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic
 
@@ -11,7 +11,7 @@ set_option linter.style.header false
 # Radial kinematics of the two-dimensional massive Dirac model
 
 This file owns radial dispersion facts shared by longitudinal response and the Bastin radial-energy
-bridge.  These facts depend only on the clean massive-Dirac spectrum; occupation and transport
+bridge. These facts depend only on the clean massive-Dirac spectrum; occupation and transport
 relaxation enter downstream.
 
 For
@@ -27,15 +27,15 @@ dE/dp = v^2 p / E(p).
 ```
 
 For an isotropic Fermi circle, projecting the radial group velocity onto the `x` axis gives a
-`cos θ` factor.  Its full-angle mean square is derived below rather than inserted as an unexplained
-factor of `1/2`.
+`cos θ` factor. Its full-angle mean square uses the model-independent harmonic integral owned by
+`Transport.Analysis.AngularHarmonics`.
 -/
 
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open MeasureTheory
+open MeasureTheory QuantumTheory.Transport
 open scoped Interval
 
 /-- The positive Dirac energy is nonnegative for every momentum. -/
@@ -100,40 +100,13 @@ theorem continuous_radialEnergyDerivative
 def radialGroupVelocityX (v m p θ : ℝ) : ℝ :=
   radialEnergyDerivative v m p * Real.cos θ
 
-private theorem integral_cos_sq_zero_two_pi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
-  have hcos :
-      IntervalIntegrable (fun θ : ℝ => Real.cos θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_cos.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hsin :
-      IntervalIntegrable (fun θ : ℝ => Real.sin θ ^ 2) volume 0 (2 * Real.pi) :=
-    (Real.continuous_sin.pow 2).intervalIntegrable 0 (2 * Real.pi)
-  have hdiff :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) -
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 0 := by
-    rw [← intervalIntegral.integral_sub hcos hsin]
-    simpa using
-      (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))
-  have hsum :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) +
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ ^ 2) = 2 * Real.pi := by
-    rw [← intervalIntegral.integral_add hcos hsin]
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 + Real.sin θ ^ 2) =
-          ∫ _θ : ℝ in (0 : ℝ)..(2 * Real.pi), (1 : ℝ) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            nlinarith [Real.sin_sq_add_cos_sq θ]
-      _ = 2 * Real.pi := by simp
-  linarith
-
 /-- Full-angle mean square of the `x` component of the radial group velocity. -/
 def isotropicMeanSquareRadialGroupVelocityX (v m p : ℝ) : ℝ :=
   (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), radialGroupVelocityX v m p θ ^ 2) /
     (2 * Real.pi)
 
 /-- In two dimensions, the isotropic angular mean of `v_x²` is one half of the squared radial
-velocity.  The factor `1/2` is the explicit full-circle `cos² θ` average. -/
+velocity. The factor `1/2` is the generic full-circle `cos² θ` average. -/
 theorem isotropicMeanSquareRadialGroupVelocityX_eq
     (v m p : ℝ) :
     isotropicMeanSquareRadialGroupVelocityX v m p =
