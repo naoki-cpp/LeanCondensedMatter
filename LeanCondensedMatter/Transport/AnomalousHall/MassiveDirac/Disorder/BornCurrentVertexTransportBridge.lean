@@ -29,7 +29,7 @@ private theorem tendsto_arctan_div_nhdsGT_zero_of_pos
     (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
     Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (Real.pi / 2)) := by
   change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (Real.pi / 2))
-  simpa only [div_eq_mul_inv] using
+  simpa only [div_eq_mul_inv, Function.comp_apply] using
     tendsto_nhds_of_tendsto_nhdsWithin
       (Real.tendsto_arctan_atTop.comp
         (hf.pos_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
@@ -40,7 +40,7 @@ private theorem tendsto_arctan_div_nhdsGT_zero_of_neg
     (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
     Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (-(Real.pi / 2))) := by
   change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (-(Real.pi / 2)))
-  simpa only [div_eq_mul_inv] using
+  simpa only [div_eq_mul_inv, Function.comp_apply] using
     tendsto_nhds_of_tendsto_nhdsWithin
       (Real.tendsto_arctan_atBot.comp
         (hf.neg_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
