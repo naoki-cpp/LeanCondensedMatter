@@ -104,7 +104,7 @@ theorem of_shift
 /-- With a left inverse of the free Green operator and a right inverse of the dressed Green
 operator, the Dyson relation implies the conventional inverse-difference formula
 `Σ = G₀⁻¹ - G⁻¹`. -/
-theorem eq_inverse_sub_inverse
+private theorem eq_inverse_sub_inverse
     {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A}
     (hself : IsSelfEnergy freeGreen dressedGreen selfEnergy)
     (hfree : freeInverse * freeGreen = 1)
@@ -129,42 +129,6 @@ theorem eq_inverse_sub_inverse
     _ = freeInverse - dressedInverse := by
       rw [← hinverse]
 
-/-- Conversely, an inverse-difference self-energy satisfies both Dyson orientations when the free
-and dressed Green operators have the supplied two-sided inverses. -/
-theorem of_inverse_sub_inverse
-    {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A}
-    (hself : selfEnergy = freeInverse - dressedInverse)
-    (hfreeLeft : freeInverse * freeGreen = 1)
-    (hfreeRight : freeGreen * freeInverse = 1)
-    (hdressedLeft : dressedInverse * dressedGreen = 1)
-    (hdressedRight : dressedGreen * dressedInverse = 1) :
-    IsSelfEnergy freeGreen dressedGreen selfEnergy := by
-  constructor
-  · rw [hself]
-    symm
-    calc
-      freeGreen + freeGreen * (freeInverse - dressedInverse) * dressedGreen =
-          freeGreen + (freeGreen * freeInverse) * dressedGreen -
-            freeGreen * (dressedInverse * dressedGreen) := by
-        noncomm_ring
-      _ = freeGreen + dressedGreen - freeGreen := by
-        rw [hfreeRight, hdressedLeft]
-        simp
-      _ = dressedGreen := by
-        noncomm_ring
-  · rw [hself]
-    symm
-    calc
-      freeGreen + dressedGreen * (freeInverse - dressedInverse) * freeGreen =
-          freeGreen + dressedGreen * (freeInverse * freeGreen) -
-            (dressedGreen * dressedInverse) * freeGreen := by
-        noncomm_ring
-      _ = freeGreen + dressedGreen - freeGreen := by
-        rw [hfreeLeft, hdressedRight]
-        simp
-      _ = dressedGreen := by
-        noncomm_ring
-
 /-- For two-sided inverses, the two-sided Dyson relation is equivalent to the inverse-difference
 definition of self-energy. -/
 theorem iff_eq_inverse_sub_inverse
@@ -177,9 +141,11 @@ theorem iff_eq_inverse_sub_inverse
       selfEnergy = freeInverse - dressedInverse := by
   constructor
   · intro hself
-    exact hself.eq_inverse_sub_inverse hfreeLeft hdressedRight
+    exact eq_inverse_sub_inverse hself hfreeLeft hdressedRight
   · intro hself
-    exact of_inverse_sub_inverse hself hfreeLeft hfreeRight hdressedLeft hdressedRight
+    apply of_shift hfreeRight hfreeLeft hdressedLeft hdressedRight
+    rw [hself]
+    noncomm_ring
 
 end IsSelfEnergy
 
