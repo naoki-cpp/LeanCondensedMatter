@@ -28,28 +28,22 @@ private theorem tendsto_arctan_div_nhdsGT_zero_of_pos
     (hf : Tendsto f l (nhds a)) (ha : 0 < a)
     (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
     Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (Real.pi / 2)) := by
-  have hinv : Tendsto (fun x => (g x)⁻¹) l atTop :=
-    tendsto_inv_nhdsGT_zero.comp hg
-  have hscaled : Tendsto (fun x => f x * (g x)⁻¹) l atTop :=
-    hf.pos_mul_atTop ha hinv
-  have harctanWithin := Real.tendsto_arctan_atTop.comp hscaled
-  have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
   change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (Real.pi / 2))
-  simpa only [div_eq_mul_inv] using harctan
+  simpa only [div_eq_mul_inv] using
+    tendsto_nhds_of_tendsto_nhdsWithin
+      (Real.tendsto_arctan_atTop.comp
+        (hf.pos_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
 
 private theorem tendsto_arctan_div_nhdsGT_zero_of_neg
     {l : Filter ℝ} {f g : ℝ → ℝ} {a : ℝ}
     (hf : Tendsto f l (nhds a)) (ha : a < 0)
     (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
     Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (-(Real.pi / 2))) := by
-  have hinv : Tendsto (fun x => (g x)⁻¹) l atTop :=
-    tendsto_inv_nhdsGT_zero.comp hg
-  have hscaled : Tendsto (fun x => f x * (g x)⁻¹) l atBot :=
-    hf.neg_mul_atTop ha hinv
-  have harctanWithin := Real.tendsto_arctan_atBot.comp hscaled
-  have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
   change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (-(Real.pi / 2)))
-  simpa only [div_eq_mul_inv] using harctan
+  simpa only [div_eq_mul_inv] using
+    tendsto_nhds_of_tendsto_nhdsWithin
+      (Real.tendsto_arctan_atBot.comp
+        (hf.neg_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
 
 private theorem tendsto_continuumBornRADenominatorCenter_disorder_zero
     (v m p probeEnergy hbar : ℝ) :
