@@ -31,6 +31,7 @@ Transport/
 ├── Core/
 │   ├── FiniteVolume.lean
 │   ├── ConductivityNormalization.lean
+│   ├── ConductivityTensor.lean
 │   └── FiniteConductivityTable.lean
 ├── Resolvent/
 │   ├── Basic.lean
@@ -52,8 +53,10 @@ Transport/
 │   ├── TraceKernel.lean
 │   ├── Integration.lean
 │   ├── GeneralizedStatic.lean
+│   ├── ResponseMatrix.lean
 │   ├── TraceSpectral.lean
 │   ├── TraceRepresentation.lean
+│   ├── ResponseMatrixRepresentation.lean
 │   └── SpectralEnergyIntegral.lean
 └── Disorder/
     ├── Finite.lean
@@ -77,7 +80,9 @@ audits showed no remaining imports.
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
 after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
 continues to enforce the canonical public umbrellas and core hierarchy constraints without carrying
-compatibility-forwarder machinery.
+compatibility-forwarder machinery. It also enforces the representation-independent conductivity
+boundary: `Transport.Core.ConductivityTensor` must not depend on Středa, while generic Středa matrix
+APIs remain response-level and must not import the physical conductivity tensor.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
@@ -111,6 +116,21 @@ the boundary: their transition-level APIs are pure-point, while complete respons
 the finite spectral-index layer. They do not define a Středa surface or sea term. Genuine Středa
 ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
 residual sea kernel are introduced.
+
+`Core/ConductivityTensor.lean` owns only the completed, representation-independent physical
+conductivity tensor and its generic diagonal/antisymmetric projections. In particular,
+`ConductivityTensor.longitudinal` and `ConductivityTensor.hallComponent` do not depend on Středa or
+on a particular microscopic representation.
+
+`Streda/ResponseMatrix.lean` instead owns the static surface/sea response decomposition. Its entries
+are regularized response contributions rather than physical conductivity components, and the
+antisymmetry of the sea contribution is stored as an invariant. `Streda/ResponseMatrixRepresentation.lean`
+packages one shared traced analytic setup into that response matrix and proves that each total entry
+is the corresponding traced Bastin energy integral. It intentionally does not construct a
+`ConductivityTensor`: physical prefactors, volume or continuum momentum normalization, and any
+required limiting procedure remain explicit downstream bridges. The retired names
+`Streda/ConductivityMatrix.lean` and `Streda/MatrixRepresentation.lean` must not be recreated as
+compatibility shims.
 
 `Analysis/Operator/Spectral/Resolvent.lean` owns the representation-independent bounded-resolvent
 facts: nonreal exclusion from a self-adjoint spectrum, two-sided shifted-resolvent inverse identities,
@@ -172,7 +192,7 @@ not import one another.
 The Born self-energy and second-order Green truncation use the canonical exact second moment and
 therefore do not themselves require centered disorder. Centering is required only when an exact
 averaged Dyson identity is reduced by cancelling the first-order contribution. In particular,
-`secondOrderBornGreen = G₀ + G₀ Σᴮ G₀` is an explicit Dyson-series truncation, not a Dyson-resummed
+`secondOrderBornGreen = G₀ + G₀ Σ G₀` is an explicit Dyson-series truncation, not a Dyson-resummed
 Green operator, and is not asserted to satisfy the exact `IsSelfEnergy` relation. SCBA uses the same
 canonical `exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no second
 covariance function or separately supplied linearity/adjoint-compatibility assumption. The SCBA
@@ -200,7 +220,8 @@ Transport/AnomalousHall/MassiveDirac/
 │   └── Conductivity.lean
 ├── Streda/
 │   ├── Response.lean
-│   └── Integral.lean
+│   ├── Integral.lean
+│   └── FiberResponse.lean
 └── Bastin/
     ├── Berry / Bands / Limit / Lorentzian / Occupation / ...
     ├── Pole*       -- model-specific pole factor/window/specialization bridge
@@ -221,10 +242,15 @@ band-projector algebra and gauge-free projector resolvent. These are response-in
 facts and are consumed directly by `Propagator`, disorder, and Bastin code without importing the
 model-specific Středa layer.
 
-`MassiveDirac/Streda/Response.lean` now owns only the pointwise Bastin/Středa trace specialization,
-and `Streda/Integral.lean` owns the finite-energy surface/sea decomposition. The retired
-`Streda/CurrentOperatorBridge.lean` and `Streda/Spectral.lean` paths must not be recreated as
-compatibility shims; repository consumers use the canonical `Model` owners directly.
+`MassiveDirac/Streda/Response.lean` owns the pointwise Bastin/Středa trace specialization,
+`Streda/Integral.lean` owns the finite-energy surface/sea decomposition, and
+`Streda/FiberResponse.lean` packages the two in-plane current directions into one shared-provenance
+fixed-momentum response matrix. That fiber object is not a conductivity: the Bastin prefactor,
+continuum momentum measure/integration, and physical normalization remain downstream. The full
+ordered fiber response is kept until that boundary rather than defining longitudinal or Hall
+conductivity at fixed momentum. The retired `Streda/CurrentOperatorBridge.lean`,
+`Streda/Spectral.lean`, and `Streda/Matrix.lean` paths must not be recreated as compatibility shims;
+repository consumers use the canonical `Model` owners and `Streda/FiberResponse.lean` directly.
 
 This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
 Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
