@@ -153,7 +153,10 @@ LinearResponse
   DensityExpectation → ConservationLaws
 
 Massive-Dirac AHE foundation
-  Model.Basic → {Model.CurrentBridge, Model.Spectral}
+  Model.Basic → Model.Operator
+  Model.Basic → Model.Kinematics → Model.Occupation
+  Model.Basic → Model.Spectral
+  {Model.Operator, Model.Spectral} → Model.OperatorSpectral
   Model.Spectral → Intrinsic.BerryBridge → Intrinsic.BerrySymmetry
                  → Intrinsic.Response → Intrinsic.Conductivity
 
