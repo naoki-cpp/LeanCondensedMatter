@@ -9,8 +9,8 @@ QuantumTheory.LinearResponse
           ↓
 QuantumTheory.Transport
       ↙            ↘
-fermionic adapters   concrete neutral models
-                     e.g. AnomalousHall/MassiveDirac
+fermionic adapters   concrete model track
+                     Transport/Models/MassiveDirac
 ```
 
 General analysis infrastructure sits further upstream. In particular, the bundled ordinary
@@ -72,17 +72,21 @@ The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
 generic bounded-resolvent spectral algebra, and Lorentzian kernel/weighted-window/pole infrastructure
-are exported instead by `LeanCondensedMatter.Analysis`. The retired `Transport.Foundations`,
+are exported instead by `LeanCondensedMatter.Analysis`. Concrete model benchmarks are exposed on the
+separate downstream `LeanCondensedMatter.Transport.Models` track, which is imported explicitly by the
+project root rather than by the generic `Transport` umbrella. The retired `Transport.Foundations`,
 `Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
 `Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
 audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
-after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
-continues to enforce the canonical public umbrellas and core hierarchy constraints without carrying
-compatibility-forwarder machinery. It also enforces the representation-independent conductivity
-boundary: `Transport.Core.ConductivityTensor` must not depend on Středa, while generic Středa matrix
-APIs remain response-level and must not import the physical conductivity tensor.
+after repository-wide consumer audits showed no remaining imports. The former public
+`Transport.AnomalousHall` umbrella is also retired in favor of the model-owned `Transport.Models`
+track. `scripts/check_transport_hierarchy.py` continues to enforce the canonical public umbrellas
+and core hierarchy constraints without carrying compatibility-forwarder machinery. It also enforces
+the representation-independent conductivity boundary: `Transport.Core.ConductivityTensor` must not
+depend on Středa, while generic Středa matrix APIs remain response-level and must not import the
+physical conductivity tensor.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
@@ -200,9 +204,15 @@ Green and self-energy solution itself remains approximation data and is not iden
 exact disorder average, while its supplied two-sided inverse equations do imply the abstract
 `IsSelfEnergy` relation on either spectral side.
 
-## AHE benchmark hierarchy
+## Massive-Dirac concrete-model hierarchy
 
-The massive-Dirac benchmark is physically structured as
+The model-owned public entry point is `Transport/Models/MassiveDirac.lean`. During the staged #1840
+migration, the implementation leaf modules still physically reside under the historical
+`Transport/AnomalousHall/MassiveDirac/` directory. That directory is a temporary implementation
+location, not the final ownership boundary; the next migration slice moves the leaf subtree and its
+declaration namespace without changing physical formulas or proof statements.
+
+The current implementation subtree is structured as
 
 ```text
 Transport/AnomalousHall/MassiveDirac/
@@ -229,10 +239,10 @@ Transport/AnomalousHall/MassiveDirac/
     └── CleanConductivity.lean
 ```
 
-`MassiveDirac.Model`, `.Intrinsic`, `.Streda`, and `.Bastin` are the public benchmark layers.
-The historical flat Model, Intrinsic, Středa, and Bastin forwarding modules were removed after
-repository-wide consumer audits showed no remaining imports. Concrete implementations now live only
-under the canonical `MassiveDirac/{Model,Intrinsic,Streda,Bastin}/` hierarchy.
+`Transport.Models.MassiveDirac` is the public benchmark route. The historical top-level
+`Transport.AnomalousHall` public umbrella is retired. The implementation-level `MassiveDirac.Model`,
+`.Intrinsic`, `.Streda`, `.Bastin`, `.Disorder`, and `.Longitudinal` umbrellas remain only as inputs
+to that model route until the leaf migration is completed under #1840.
 
 Within the concrete benchmark, `Model/Operator.lean` owns the exact matrix-to-bounded-operator
 realization (`DiracHilbert`, Hamiltonian/current operators, self-adjointness, the bounded free-system
@@ -252,8 +262,8 @@ conductivity at fixed momentum. The retired `Streda/CurrentOperatorBridge.lean`,
 `Streda/Spectral.lean`, and `Streda/Matrix.lean` paths must not be recreated as compatibility shims;
 repository consumers use the canonical `Model` owners and `Streda/FiberResponse.lean` directly.
 
-This hierarchy is not permission for AHE to own reusable analysis. Generic band-state occupation and
-Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
+This hierarchy is not permission for a concrete model to own reusable analysis. Generic band-state
+occupation and Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
 `Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
 kernel/tail analysis, local-constant weighted-window extraction, and regular-factor pole extraction
 are representation-independent and live upstream under `Analysis/Lorentzian/`; both generic
@@ -265,9 +275,9 @@ Files under generic Transport must not import `LeanCondensedMatter.SecondQuantiz
 finite-Fock, lattice, directional-current, Fermi-state, and Peierls-contact realizations remain in
 `SecondQuantization/Fermionic/Transport` and specialize the neutral owners.
 
-`LeanCondensedMatter.Transport` must not import the concrete AHE umbrella. The project root imports
-`LeanCondensedMatter.Transport` and `LeanCondensedMatter.Transport.AnomalousHall` as separate public
-tracks.
+`LeanCondensedMatter.Transport` must not import the concrete `Transport.Models` track. The project
+root imports `LeanCondensedMatter.Transport` and `LeanCondensedMatter.Transport.Models` as separate
+public tracks.
 
 Physical formula, sign, normalization, limiting-order, and approximation semantics must not change
 as part of path/ownership migration.

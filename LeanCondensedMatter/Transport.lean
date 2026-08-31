@@ -14,6 +14,7 @@ grouped under `Transport/Core/`, `Transport/Resolvent/`, `Transport/KuboBastin/`
 `Transport/Streda/`, `Transport/Disorder/`, and `Transport/Analysis/`.
 
 The stable public groupings are `Transport.Core`, `Transport.Resolvent`, `Transport.KuboBastin`,
-`Transport.Streda`, and `Transport.Disorder`. Concrete model umbrellas such as
-`LeanCondensedMatter.Transport.AnomalousHall` remain explicit downstream imports.
+`Transport.Streda`, and `Transport.Disorder`. Concrete model benchmarks are exposed separately through
+`LeanCondensedMatter.Transport.Models`; the generic transport umbrella intentionally does not import
+them.
 -/
