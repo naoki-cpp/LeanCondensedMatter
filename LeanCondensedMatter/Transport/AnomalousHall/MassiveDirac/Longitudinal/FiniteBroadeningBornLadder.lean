@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
 
 set_option linter.style.header false
 
