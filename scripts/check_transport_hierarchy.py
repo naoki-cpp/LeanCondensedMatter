@@ -11,7 +11,8 @@ ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 
-MD = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
+MD_IMPL = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
+MD_PUBLIC = "LeanCondensedMatter.Transport.Models.MassiveDirac"
 
 
 def main() -> int:
@@ -26,6 +27,50 @@ def main() -> int:
         "LeanCondensedMatter.Transport.Disorder",
     ):
         require_import(errors, transport_umbrella, module, root=ROOT, description="transport public umbrella")
+    if "LeanCondensedMatter.Transport.Models" in lean_imports(transport_umbrella):
+        errors.append(
+            "LeanCondensedMatter.Transport must remain generic and must not import Transport.Models"
+        )
+
+    project_umbrella = ROOT / "LeanCondensedMatter.lean"
+    require_import(
+        errors,
+        project_umbrella,
+        "LeanCondensedMatter.Transport.Models",
+        root=ROOT,
+        description="project concrete-model track",
+    )
+
+    models_umbrella = TRANSPORT / "Models.lean"
+    require_import(
+        errors,
+        models_umbrella,
+        MD_PUBLIC,
+        root=ROOT,
+        description="transport models public umbrella",
+    )
+    massive_dirac_public_umbrella = TRANSPORT / "Models" / "MassiveDirac.lean"
+    for module in (
+        f"{MD_IMPL}.Model",
+        f"{MD_IMPL}.Intrinsic",
+        f"{MD_IMPL}.Streda",
+        f"{MD_IMPL}.Bastin",
+        f"{MD_IMPL}.Disorder",
+        f"{MD_IMPL}.Longitudinal",
+    ):
+        require_import(
+            errors,
+            massive_dirac_public_umbrella,
+            module,
+            root=ROOT,
+            description="massive-Dirac model-owned public entrypoint",
+        )
+
+    retired_ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
+    if retired_ahe_umbrella.exists():
+        errors.append(
+            "Transport/AnomalousHall.lean is retired; concrete benchmarks are exposed by Transport.Models"
+        )
 
     core_umbrella = TRANSPORT / "Core.lean"
     conductivity_tensor_module = "LeanCondensedMatter.Transport.Core.ConductivityTensor"
@@ -213,26 +258,17 @@ def main() -> int:
     if retarded_born_module in lean_imports(advanced_born_path):
         errors.append("Transport/Disorder/AdvancedBorn.lean must not import RetardedBorn")
 
-    ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
-    for module in (
-        f"{MD}.Model",
-        f"{MD}.Intrinsic",
-        f"{MD}.Streda",
-        f"{MD}.Bastin",
-    ):
-        require_import(errors, ahe_umbrella, module, root=ROOT, description="AHE public umbrella")
-
     massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
     massive_dirac_model_umbrella = massive_dirac_root / "Model.lean"
-    operator_module = f"{MD}.Model.Operator"
-    operator_spectral_module = f"{MD}.Model.OperatorSpectral"
+    operator_module = f"{MD_IMPL}.Model.Operator"
+    operator_spectral_module = f"{MD_IMPL}.Model.OperatorSpectral"
     for module in (operator_module, operator_spectral_module):
         require_import(
             errors,
             massive_dirac_model_umbrella,
             module,
             root=ROOT,
-            description="massive-Dirac model public umbrella",
+            description="massive-Dirac model implementation umbrella",
         )
 
     propagator_path = massive_dirac_root / "Propagator.lean"
@@ -251,7 +287,7 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac disorder model ownership",
     )
-    streda_prefix = f"{MD}.Streda."
+    streda_prefix = f"{MD_IMPL}.Streda."
     for path in (propagator_path, scalar_disorder_path):
         if any(module.startswith(streda_prefix) for module in lean_imports(path)):
             errors.append(
@@ -259,14 +295,18 @@ def main() -> int:
             )
 
     massive_dirac_streda_umbrella = massive_dirac_root / "Streda.lean"
-    fiber_response_module = f"{MD}.Streda.FiberResponse"
-    for module in (f"{MD}.Streda.Response", f"{MD}.Streda.Integral", fiber_response_module):
+    fiber_response_module = f"{MD_IMPL}.Streda.FiberResponse"
+    for module in (
+        f"{MD_IMPL}.Streda.Response",
+        f"{MD_IMPL}.Streda.Integral",
+        fiber_response_module,
+    ):
         require_import(
             errors,
             massive_dirac_streda_umbrella,
             module,
             root=ROOT,
-            description="massive-Dirac Streda public umbrella",
+            description="massive-Dirac Streda implementation umbrella",
         )
     fiber_response_path = massive_dirac_root / "Streda" / "FiberResponse.lean"
     require_import(
@@ -287,18 +327,16 @@ def main() -> int:
                 "use the canonical model owners or Streda/FiberResponse.lean"
             )
 
-    massive_dirac_bastin_umbrella = TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin.lean"
-    pole_extraction_module = f"{MD}.Bastin.PoleExtraction"
+    massive_dirac_bastin_umbrella = massive_dirac_root / "Bastin.lean"
+    pole_extraction_module = f"{MD_IMPL}.Bastin.PoleExtraction"
     require_import(
         errors,
         massive_dirac_bastin_umbrella,
         pole_extraction_module,
         root=ROOT,
-        description="massive-Dirac Bastin public umbrella",
+        description="massive-Dirac Bastin implementation umbrella",
     )
-    pair_integral_path = (
-        TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin" / "PairIntegral.lean"
-    )
+    pair_integral_path = massive_dirac_root / "Bastin" / "PairIntegral.lean"
     require_import(
         errors,
         pair_integral_path,
@@ -306,9 +344,7 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac pole extraction consumer",
     )
-    retired_pole_extraction_limit_path = (
-        TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin" / "PoleExtractionLimit.lean"
-    )
+    retired_pole_extraction_limit_path = massive_dirac_root / "Bastin" / "PoleExtractionLimit.lean"
     if retired_pole_extraction_limit_path.exists():
         errors.append(
             "MassiveDirac/Bastin/PoleExtractionLimit.lean is retired; "
