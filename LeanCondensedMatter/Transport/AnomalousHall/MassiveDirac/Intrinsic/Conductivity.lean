@@ -67,25 +67,25 @@ theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow (m εF Λ : ℝ)
   simp [metallicBerryWeightUV, div_eq_mul_inv]
   ring
 
+private theorem tendsto_metallicBerryWeightUV_sub_correction_atTop (m εF : ℝ) :
+    Tendsto
+      (fun Λ : ℝ => metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ))
+      atTop (nhds (metallicBerryWeightUV m εF)) := by
+  have hInv : Tendsto (fun Λ : ℝ => Λ ^ (-1 : ℤ)) atTop (nhds 0) :=
+    tendsto_zpow_atTop_zero (by norm_num)
+  have hCorrection :
+      Tendsto (fun Λ : ℝ => (m / 2) * Λ ^ (-1 : ℤ)) atTop (nhds 0) := by
+    simpa using
+      (tendsto_const_nhds : Tendsto (fun _ : ℝ => m / 2) atTop (nhds (m / 2))).mul hInv
+  simpa using tendsto_const_nhds.sub hCorrection
+
 /-- The historical shell-based finite-cutoff Berry weight converges to the metallic continuum
 weight. The equality to the closed finite-cutoff formula is needed only eventually at `+∞`. -/
 theorem tendsto_metallicBerryWeightCutoff_atTop (m εF : ℝ)
     (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (metallicBerryWeightCutoff m εF) atTop
       (nhds (metallicBerryWeightUV m εF)) := by
-  have hInv : Tendsto (fun Λ : ℝ => Λ ^ (-1 : ℤ)) atTop (nhds 0) :=
-    tendsto_zpow_atTop_zero (by norm_num)
-  have hConst : Tendsto (fun _ : ℝ => m / 2) atTop (nhds (m / 2)) :=
-    tendsto_const_nhds
-  have hCorrection :
-      Tendsto (fun Λ : ℝ => (m / 2) * Λ ^ (-1 : ℤ)) atTop (nhds 0) := by
-    simpa using hConst.mul hInv
-  have hClosed :
-      Tendsto
-        (fun Λ : ℝ => metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ))
-        atTop (nhds (metallicBerryWeightUV m εF)) := by
-    simpa using (tendsto_const_nhds.sub hCorrection)
-  apply Tendsto.congr' ?_ hClosed
+  apply Tendsto.congr' ?_ (tendsto_metallicBerryWeightUV_sub_correction_atTop m εF)
   filter_upwards [eventually_ge_atTop εF] with Λ hFΛ
   exact (metallicBerryWeightCutoff_eq_zpow m εF Λ hm hmF hFΛ).symm
 
@@ -95,19 +95,7 @@ theorem tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop (m εF : ℝ)
     (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (zeroTemperatureOccupiedBerryWeightCutoff m εF) atTop
       (nhds (metallicBerryWeightUV m εF)) := by
-  have hInv : Tendsto (fun Λ : ℝ => Λ ^ (-1 : ℤ)) atTop (nhds 0) :=
-    tendsto_zpow_atTop_zero (by norm_num)
-  have hConst : Tendsto (fun _ : ℝ => m / 2) atTop (nhds (m / 2)) :=
-    tendsto_const_nhds
-  have hCorrection :
-      Tendsto (fun Λ : ℝ => (m / 2) * Λ ^ (-1 : ℤ)) atTop (nhds 0) := by
-    simpa using hConst.mul hInv
-  have hClosed :
-      Tendsto
-        (fun Λ : ℝ => metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ))
-        atTop (nhds (metallicBerryWeightUV m εF)) := by
-    simpa using (tendsto_const_nhds.sub hCorrection)
-  apply Tendsto.congr' ?_ hClosed
+  apply Tendsto.congr' ?_ (tendsto_metallicBerryWeightUV_sub_correction_atTop m εF)
   filter_upwards [eventually_ge_atTop εF] with Λ hFΛ
   exact (zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow m εF Λ hm hmF hFΛ).symm
 
