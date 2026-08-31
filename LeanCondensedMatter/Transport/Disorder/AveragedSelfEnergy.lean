@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 import LeanCondensedMatter.Transport.Resolvent.SelfEnergy
-import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Analysis.Normed.Operator.Banach
 import Mathlib.Tactic
 
@@ -11,17 +10,18 @@ set_option linter.style.header false
 
 This module connects the exact finite-disorder averaged Green operator to the abstract two-sided
 Dyson self-energy relation. At nonzero broadening, positivity of the ensemble weights and the common
-half-plane sign of the configuration resolvents imply that the exact averaged Green operator is
-injective on an arbitrary Hilbert space. In finite Hilbert-space dimension, injectivity upgrades to
-invertibility and therefore defines the canonical exact self-energy
+half-plane sign of the configuration resolvents imply a uniform lower bound for the exact averaged
+Green operator. Its adjoint is the opposite-side averaged Green operator and therefore has trivial
+kernel, so the averaged Green range is dense. The lower bound makes this enough for invertibility in
+an arbitrary Hilbert space and hence defines the canonical exact self-energy
 
 ```text
 Σ_exact = G₀⁻¹ - Ḡ⁻¹.
 ```
 
-The dimension-independent conditional bridge remains available when a two-sided inverse of the
-averaged Green operator is supplied explicitly. No exact object in this module is identified with
-Born or SCBA approximation data.
+The conditional bridge remains available when a two-sided inverse of the averaged Green operator is
+supplied explicitly. No exact object in this module is identified with Born or SCBA approximation
+data.
 -/
 
 namespace QuantumTheory
@@ -37,9 +37,21 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
+/-- A normalized finite nonnegative probability weight has at least one strictly positive entry. -/
+private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability ω := by
+  by_contra h
+  have hle : ∀ ω : Ω, ensemble.probability ω ≤ 0 := by
+    intro ω
+    exact le_of_not_gt (fun hpos => h ⟨ω, hpos⟩)
+  have hzero : ∀ ω : Ω, ensemble.probability ω = 0 := by
+    intro ω
+    exact le_antisymm (hle ω) (ensemble.probability_nonneg ω)
+  have hsumProbability : ∑ ω, ensemble.probability ω = 0 := by
+    simp [hzero]
+  linarith [ensemble.probability_sum]
+
 /-- The imaginary part of the configuration-resolvent quadratic form has the spectral-side sign.
-This is the pointwise Herglotz identity used below to rule out a kernel of the positive-weight
-finite disorder average. -/
+This is the pointwise Herglotz identity used below to derive the averaged resolvent lower bound. -/
 private theorem im_inner_configurationGreen_apply_self
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
     (ω : Ω) (v : H) :
@@ -141,96 +153,206 @@ private theorem im_inner_averagedGreen_apply_self
       intro ω _
       ring
 
-/-- If the exact averaged Green operator annihilates a vector at nonzero broadening, that vector is
-zero. -/
-private theorem eq_zero_of_averagedGreen_apply_eq_zero
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
-    {v : H} (hv : ensemble.averagedGreen side energy broadening v = 0) :
-    v = 0 := by
+/-- The Herglotz sign and one positive-probability resolvent give a uniform inverse-norm bound for
+the exact averaged Green operator. -/
+private theorem averagedGreen_antilipschitz
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    ∃ c : NNReal, AntilipschitzWith c (ensemble.averagedGreen side energy broadening) := by
   classical
-  have himZero :
-      (inner ℂ (ensemble.averagedGreen side energy broadening v) v).im = 0 := by
-    rw [hv]
-    simp
-  rw [ensemble.im_inner_averagedGreen_apply_self side energy broadening hbroadening v] at himZero
-  have hfactor : side.sign * broadening ≠ 0 :=
-    mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening
-  have hsum :
-      ∑ ω, ensemble.probability ω *
-          ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-    exact (mul_eq_zero.mp himZero).resolve_left hfactor
-  have hexists : ∃ ω : Ω, 0 < ensemble.probability ω := by
-    by_contra h
-    have hle : ∀ ω : Ω, ensemble.probability ω ≤ 0 := by
-      intro ω
-      exact le_of_not_gt (fun hpos => h ⟨ω, hpos⟩)
-    have hzero : ∀ ω : Ω, ensemble.probability ω = 0 := by
-      intro ω
-      exact le_antisymm (hle ω) (ensemble.probability_nonneg ω)
-    have hsumProbability : ∑ ω, ensemble.probability ω = 0 := by
-      simp [hzero]
-    linarith [ensemble.probability_sum]
-  obtain ⟨ω, hprobability⟩ := hexists
+  obtain ⟨ω, hprobability⟩ := ensemble.exists_probability_pos
+  let shift : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      (ensemble.configurationHamiltonian ω).1
+  let green : H →L[ℂ] H := ensemble.configurationGreen side energy broadening ω
+  let averaged : H →L[ℂ] H := ensemble.averagedGreen side energy broadening
+  have hdenomPos : 0 < |broadening| * ensemble.probability ω :=
+    mul_pos (abs_pos.mpr hbroadening) hprobability
+  let Kreal : ℝ := ‖shift‖ ^ 2 / (|broadening| * ensemble.probability ω)
+  have hKnonneg : 0 ≤ Kreal := by
+    dsimp [Kreal]
+    exact div_nonneg (sq_nonneg _) hdenomPos.le
+  let K : NNReal := ⟨Kreal, hKnonneg⟩
+  refine ⟨K, ContinuousLinearMap.antilipschitz_of_bound averaged ?_⟩
+  intro v
+  change ‖v‖ ≤ (K : ℝ) * ‖averaged v‖
+  change ‖v‖ ≤ Kreal * ‖averaged v‖
+  by_cases hv : v = 0
+  · simp [hv]
+  have hvnormPos : 0 < ‖v‖ := norm_pos_iff.mpr hv
+  have hleft : shift * green = 1 := by
+    simpa [shift, green, FiniteDisorderEnsemble.configurationGreen] using
+      spectralShift_mul_spectralResolvent side
+        (ensemble.configurationHamiltonian ω).1
+        (ensemble.configurationHamiltonian ω).2
+        energy broadening hbroadening
+  have hshiftApply : shift (green v) = v := by
+    have h := congrArg (fun operator : H →L[ℂ] H => operator v) hleft
+    simpa using h
+  have hvLe : ‖v‖ ≤ ‖shift‖ * ‖green v‖ := by
+    calc
+      ‖v‖ = ‖shift (green v)‖ := by rw [hshiftApply]
+      _ ≤ ‖shift‖ * ‖green v‖ := ContinuousLinearMap.le_opNorm shift (green v)
+  have hvSqLe : ‖v‖ ^ 2 ≤ ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by
+    have hsq : ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 :=
+      (sq_le_sq₀ (norm_nonneg v)
+        (mul_nonneg (norm_nonneg shift) (norm_nonneg (green v)))).2 hvLe
+    calc
+      ‖v‖ ^ 2 ≤ (‖shift‖ * ‖green v‖) ^ 2 := hsq
+      _ = ‖shift‖ ^ 2 * ‖green v‖ ^ 2 := by ring
   have hterm_nonneg : ∀ ξ : Ω,
       0 ≤ ensemble.probability ξ *
         ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
     intro ξ
     exact mul_nonneg (ensemble.probability_nonneg ξ) (sq_nonneg _)
-  have hterm_le :
-      ensemble.probability ω *
-          ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 ≤
+  have hsumNonneg :
+      0 ≤ ∑ ξ, ensemble.probability ξ *
+        ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
+    exact Finset.sum_nonneg fun ξ _ => hterm_nonneg ξ
+  have htermLe :
+      ensemble.probability ω * ‖green v‖ ^ 2 ≤
         ∑ ξ, ensemble.probability ξ *
           ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
-    exact Finset.single_le_sum (fun ξ _ => hterm_nonneg ξ) (by simp)
-  rw [hsum] at hterm_le
-  have hnormSq : ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-    have hproduct :
+    simpa [green] using
+      (Finset.single_le_sum (fun ξ _ => hterm_nonneg ξ) (by simp) :
         ensemble.probability ω *
-            ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 = 0 := by
-      exact le_antisymm hterm_le (hterm_nonneg ω)
-    exact (mul_eq_zero.mp hproduct).resolve_left (ne_of_gt hprobability)
-  have hgreenZero : ensemble.configurationGreen side energy broadening ω v = 0 := by
-    rw [← norm_eq_zero]
-    nlinarith [sq_nonneg ‖ensemble.configurationGreen side energy broadening ω v‖]
-  have hleft :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          (ensemble.configurationHamiltonian ω).1) *
-        ensemble.configurationGreen side energy broadening ω = 1 := by
-    simpa [FiniteDisorderEnsemble.configurationGreen] using
-      spectralShift_mul_spectralResolvent side
-        (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2
-        energy broadening hbroadening
-  have happly := congrArg (fun operator : H →L[ℂ] H => operator v) hleft
-  have hshiftApply :
-      (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          (ensemble.configurationHamiltonian ω).1)
-        (ensemble.configurationGreen side energy broadening ω v) = v := by
-    simpa using happly
-  rw [hgreenZero] at hshiftApply
-  simpa using hshiftApply.symm
+            ‖ensemble.configurationGreen side energy broadening ω v‖ ^ 2 ≤ _)
+  have himAbs :
+      |(inner ℂ (averaged v) v).im| =
+        |broadening| *
+          ∑ ξ, ensemble.probability ξ *
+            ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 := by
+    rw [show (inner ℂ (averaged v) v).im =
+        side.sign * broadening *
+          ∑ ξ, ensemble.probability ξ *
+            ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 by
+      simpa [averaged] using
+        ensemble.im_inner_averagedGreen_apply_self side energy broadening hbroadening v]
+    rw [abs_mul, abs_mul, abs_of_nonneg hsumNonneg]
+    have hsignAbs : |side.sign| = 1 := by
+      cases side <;> norm_num [SpectralSide.sign]
+    rw [hsignAbs, one_mul]
+  have himLe :
+      |(inner ℂ (averaged v) v).im| ≤ ‖averaged v‖ * ‖v‖ :=
+    (Complex.abs_im_le_norm _).trans (norm_inner_le_norm _ _)
+  have hsumLe :
+      |broadening| *
+          ∑ ξ, ensemble.probability ξ *
+            ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2 ≤
+        ‖averaged v‖ * ‖v‖ := by
+    rw [← himAbs]
+    exact himLe
+  have hscaledVSq :
+      |broadening| * ensemble.probability ω * ‖v‖ ^ 2 ≤
+        ‖shift‖ ^ 2 *
+          (|broadening| *
+            ∑ ξ, ensemble.probability ξ *
+              ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2) := by
+    calc
+      |broadening| * ensemble.probability ω * ‖v‖ ^ 2 ≤
+          |broadening| * ensemble.probability ω *
+            (‖shift‖ ^ 2 * ‖green v‖ ^ 2) :=
+        mul_le_mul_of_nonneg_left hvSqLe
+          (mul_nonneg (abs_nonneg broadening) hprobability.le)
+      _ = ‖shift‖ ^ 2 *
+          (|broadening| *
+            (ensemble.probability ω * ‖green v‖ ^ 2)) := by ring
+      _ ≤ ‖shift‖ ^ 2 *
+          (|broadening| *
+            ∑ ξ, ensemble.probability ξ *
+              ‖ensemble.configurationGreen side energy broadening ξ v‖ ^ 2) := by
+        apply mul_le_mul_of_nonneg_left _ (sq_nonneg _)
+        exact mul_le_mul_of_nonneg_left htermLe (abs_nonneg broadening)
+  have hcore :
+      |broadening| * ensemble.probability ω * ‖v‖ ^ 2 ≤
+        ‖shift‖ ^ 2 * (‖averaged v‖ * ‖v‖) :=
+    hscaledVSq.trans (mul_le_mul_of_nonneg_left hsumLe (sq_nonneg _))
+  have hcancel :
+      (|broadening| * ensemble.probability ω) * ‖v‖ ≤
+        ‖shift‖ ^ 2 * ‖averaged v‖ := by
+    apply (mul_le_mul_iff_right₀ hvnormPos).mp
+    simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using hcore
+  have hbound : ‖v‖ ≤ Kreal * ‖averaged v‖ := by
+    have hdiv :
+        ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
+            (|broadening| * ensemble.probability ω) := by
+      apply (le_div_iff₀ hdenomPos).2
+      simpa [mul_comm] using hcancel
+    calc
+      ‖v‖ ≤ (‖shift‖ ^ 2 * ‖averaged v‖) /
+          (|broadening| * ensemble.probability ω) := hdiv
+      _ = Kreal * ‖averaged v‖ := by
+        dsimp [Kreal]
+        ring
+  exact hbound
 
 /-- At nonzero broadening the exact positive-weight finite disorder average of side-indexed
 configuration Green operators has trivial kernel, in any Hilbert-space dimension. -/
 theorem averagedGreen_injective
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     Function.Injective (ensemble.averagedGreen side energy broadening) := by
-  intro v w hvw
-  apply sub_eq_zero.mp
-  apply ensemble.eq_zero_of_averagedGreen_apply_eq_zero side energy broadening hbroadening
-  rw [map_sub, hvw, sub_self]
+  obtain ⟨_, hantilipschitz⟩ :=
+    ensemble.averagedGreen_antilipschitz side energy broadening hbroadening
+  exact hantilipschitz.injective
 
-/-- In finite Hilbert-space dimension, the exact averaged Green operator is a unit at every nonzero
-broadening. This upgrades the dimension-independent injectivity theorem using finite-dimensional
-injective-surjective equivalence. -/
+/-- The adjoint averaged Green operator is injective because adjunction exchanges the two spectral
+sides and the opposite-side exact average is injective. -/
+private theorem star_averagedGreen_injective
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Function.Injective
+      ((star (ensemble.averagedGreen side energy broadening) : H →L[ℂ] H)) := by
+  cases side with
+  | retarded =>
+      change Function.Injective
+        ((star (ensemble.averagedRetardedGreen energy broadening) : H →L[ℂ] H))
+      rw [ensemble.star_averagedRetardedGreen]
+      change Function.Injective (ensemble.averagedGreen .advanced energy broadening)
+      exact ensemble.averagedGreen_injective .advanced energy broadening hbroadening
+  | advanced =>
+      change Function.Injective
+        ((star (ensemble.averagedAdvancedGreen energy broadening) : H →L[ℂ] H))
+      have hstar :
+          (star (ensemble.averagedAdvancedGreen energy broadening) : H →L[ℂ] H) =
+            ensemble.averagedRetardedGreen energy broadening := by
+        rw [← ensemble.star_averagedRetardedGreen energy broadening]
+        simp
+      rw [hstar]
+      change Function.Injective (ensemble.averagedGreen .retarded energy broadening)
+      exact ensemble.averagedGreen_injective .retarded energy broadening hbroadening
+
+/-- At nonzero broadening the exact averaged Green operator has dense range in any Hilbert-space
+dimension. -/
+private theorem averagedGreen_denseRange
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    (ensemble.averagedGreen side energy broadening).range.topologicalClosure = ⊤ := by
+  let averaged : H →L[ℂ] H := ensemble.averagedGreen side energy broadening
+  let averagedStar : H →L[ℂ] H := star averaged
+  have hstarInjective : Function.Injective averagedStar := by
+    simpa [averagedStar, averaged] using
+      ensemble.star_averagedGreen_injective side energy broadening hbroadening
+  have hker : averagedStar.ker = ⊥ := by
+    rw [LinearMap.ker_eq_bot]
+    exact hstarInjective
+  have hadjoint : ContinuousLinearMap.adjoint averagedStar = averaged := by
+    change star (star averaged) = averaged
+    exact star_star averaged
+  change averaged.range.topologicalClosure = ⊤
+  calc
+    averaged.range.topologicalClosure = averagedStar.kerᗮ := by
+      rw [← hadjoint]
+      exact (ContinuousLinearMap.orthogonal_ker averagedStar).symm
+    _ = ⊤ := by rw [hker]; simp
+
+/-- At nonzero broadening, the exact averaged Green operator is a unit in arbitrary Hilbert-space
+dimension. The Herglotz identity gives an antilipschitz lower bound, while opposite-side adjunction
+gives dense range. -/
 theorem averagedGreen_isUnit
-    [FiniteDimensional ℂ H]
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     IsUnit (ensemble.averagedGreen side energy broadening) := by
   rw [ContinuousLinearMap.isUnit_iff_bijective]
-  have hinjective := ensemble.averagedGreen_injective side energy broadening hbroadening
-  exact ⟨hinjective,
-    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hinjective⟩
+  apply (ContinuousLinearMap.bijective_iff_dense_range_and_antilipschitz
+    (ensemble.averagedGreen side energy broadening)).2
+  exact ⟨ensemble.averagedGreen_denseRange side energy broadening hbroadening,
+    ensemble.averagedGreen_antilipschitz side energy broadening hbroadening⟩
 
 /-- If `averagedInverse` is a two-sided inverse of the exact averaged Green operator, then a
 candidate self-energy satisfies the exact two-sided Dyson relation exactly when it is the difference
@@ -296,12 +418,9 @@ theorem averagedGreen_inverseDifference_isSelfEnergy
     haveragedLeft haveragedRight).2
   rfl
 
-/-- Canonical exact finite-disorder self-energy in finite Hilbert-space dimension at nonzero
-broadening. Its inverse is extracted from the proved unit structure of the exact averaged Green
-operator, so the finite-dimensional and nonzero-broadening hypotheses are genuine construction
-data rather than unused domain markers. -/
+/-- Canonical exact finite-disorder self-energy at nonzero broadening in an arbitrary Hilbert space.
+Its inverse is extracted from the proved unit structure of the exact averaged Green operator. -/
 noncomputable def exactSelfEnergy
-    [FiniteDimensional ℂ H]
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     H →L[ℂ] H := by
   let hunit : IsUnit (ensemble.averagedGreen side energy broadening) :=
@@ -314,7 +433,6 @@ noncomputable def exactSelfEnergy
 
 /-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation. -/
 theorem exactSelfEnergy_isSelfEnergy
-    [FiniteDimensional ℂ H]
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     IsSelfEnergy
       (ensemble.freeGreen side energy broadening)
@@ -335,11 +453,9 @@ theorem exactSelfEnergy_isSelfEnergy
   · simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
   · simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
 
-/-- In finite dimension and at nonzero broadening, the canonical exact self-energy is the unique
-self-energy satisfying the exact two-sided Dyson relation for the clean and disorder-averaged Green
-operators. -/
+/-- At nonzero broadening, the canonical exact self-energy is the unique self-energy satisfying the
+exact two-sided Dyson relation for the clean and disorder-averaged Green operators. -/
 theorem isSelfEnergy_iff_eq_exactSelfEnergy
-    [FiniteDimensional ℂ H]
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
     (selfEnergy : H →L[ℂ] H) :
     IsSelfEnergy
