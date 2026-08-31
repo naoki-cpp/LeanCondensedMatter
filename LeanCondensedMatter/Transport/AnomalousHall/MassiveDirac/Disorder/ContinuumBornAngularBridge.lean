@@ -92,7 +92,7 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
   simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
   congr 1
   push_cast
-  ring_nf
+  ac_rfl
 
 end
 
