@@ -27,6 +27,25 @@ def main() -> int:
     ):
         require_import(errors, transport_umbrella, module, root=ROOT, description="transport public umbrella")
 
+    core_umbrella = TRANSPORT / "Core.lean"
+    conductivity_tensor_module = "LeanCondensedMatter.Transport.Core.ConductivityTensor"
+    require_import(
+        errors,
+        core_umbrella,
+        conductivity_tensor_module,
+        root=ROOT,
+        description="transport core public umbrella",
+    )
+    conductivity_tensor_path = TRANSPORT / "Core" / "ConductivityTensor.lean"
+    if any(
+        module.startswith("LeanCondensedMatter.Transport.Streda")
+        for module in lean_imports(conductivity_tensor_path)
+    ):
+        errors.append(
+            "Transport/Core/ConductivityTensor.lean must remain representation-independent and "
+            "must not import Transport.Streda"
+        )
+
     resolvent_umbrella = TRANSPORT / "Resolvent.lean"
     for module in (
         "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative",
@@ -95,6 +114,53 @@ def main() -> int:
             "Transport/KuboBastin/FiniteTrace.lean is retired; "
             "ordinary operator traces belong under Transport/Streda"
         )
+
+    streda_umbrella = TRANSPORT / "Streda.lean"
+    response_matrix_module = "LeanCondensedMatter.Transport.Streda.ResponseMatrix"
+    response_matrix_representation_module = (
+        "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation"
+    )
+    for module in (response_matrix_module, response_matrix_representation_module):
+        require_import(
+            errors,
+            streda_umbrella,
+            module,
+            root=ROOT,
+            description="Streda public umbrella",
+        )
+
+    response_matrix_representation_path = TRANSPORT / "Streda" / "ResponseMatrixRepresentation.lean"
+    for module in (
+        response_matrix_module,
+        "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    ):
+        require_import(
+            errors,
+            response_matrix_representation_path,
+            module,
+            root=ROOT,
+            description="traced Streda response-matrix ownership",
+        )
+
+    for path in (
+        TRANSPORT / "Streda" / "ResponseMatrix.lean",
+        response_matrix_representation_path,
+    ):
+        if conductivity_tensor_module in lean_imports(path):
+            errors.append(
+                f"{path.relative_to(ROOT)} must remain at response level and must not import "
+                "Transport.Core.ConductivityTensor"
+            )
+
+    for retired_path in (
+        TRANSPORT / "Streda" / "ConductivityMatrix.lean",
+        TRANSPORT / "Streda" / "MatrixRepresentation.lean",
+    ):
+        if retired_path.exists():
+            errors.append(
+                f"{retired_path.relative_to(ROOT)} is retired; "
+                "Streda owns response matrices, while physical conductivity tensors live in Core"
+            )
 
     disorder_umbrella = TRANSPORT / "Disorder.lean"
     averaged_self_energy_module = "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy"
@@ -193,7 +259,8 @@ def main() -> int:
             )
 
     massive_dirac_streda_umbrella = massive_dirac_root / "Streda.lean"
-    for module in (f"{MD}.Streda.Response", f"{MD}.Streda.Integral"):
+    fiber_response_module = f"{MD}.Streda.FiberResponse"
+    for module in (f"{MD}.Streda.Response", f"{MD}.Streda.Integral", fiber_response_module):
         require_import(
             errors,
             massive_dirac_streda_umbrella,
@@ -201,14 +268,23 @@ def main() -> int:
             root=ROOT,
             description="massive-Dirac Streda public umbrella",
         )
+    fiber_response_path = massive_dirac_root / "Streda" / "FiberResponse.lean"
+    require_import(
+        errors,
+        fiber_response_path,
+        response_matrix_representation_module,
+        root=ROOT,
+        description="massive-Dirac shared Streda fiber response",
+    )
     for retired_path in (
         massive_dirac_root / "Streda" / "CurrentOperatorBridge.lean",
         massive_dirac_root / "Streda" / "Spectral.lean",
+        massive_dirac_root / "Streda" / "Matrix.lean",
     ):
         if retired_path.exists():
             errors.append(
                 f"{retired_path.relative_to(ROOT)} is retired; "
-                "bounded current/spectral infrastructure belongs under MassiveDirac/Model"
+                "use the canonical model owners or Streda/FiberResponse.lean"
             )
 
     massive_dirac_bastin_umbrella = TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin.lean"
