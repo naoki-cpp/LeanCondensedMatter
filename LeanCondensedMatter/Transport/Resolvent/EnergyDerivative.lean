@@ -55,20 +55,6 @@ theorem hasDerivAt_spectralResolvent_energy
     energy
   simpa only [one_smul] using hcomp
 
-/-- Compatibility name for the side-indexed real-energy derivative written with the generic
-`resolvent` and `spectralParameter` expressions. -/
-theorem hasDerivAt_resolvent_spectralParameter_energy
-    (side : SpectralSide)
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    HasDerivAt
-      (fun x : ℝ => resolvent hamiltonian (spectralParameter side x broadening))
-      (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
-      energy := by
-  simpa only [spectralResolvent] using
-    hasDerivAt_spectralResolvent_energy
-      side hamiltonian hself energy broadening hbroadening
-
 /-- The retarded resolvent differentiated along the real-energy axis is `-(Gᴿ)^2`. -/
 theorem hasDerivAt_retardedResolvent_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
