@@ -16,15 +16,13 @@ v_μ = ∂H₀/∂p_μ,
 j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
-The in-plane direction is represented explicitly by `Direction2`. The direction-indexed
-`velocity`, `current`, and `dMomentum` definitions are the model-level owners used throughout the
-transport stack.
+The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
+and `current` definitions are the public model-level owners used throughout the transport stack.
+The elementary `d`-vector and scalar-triple-product helpers used to derive the closed Berry
+curvature are private implementation details.
 
-The theorem-level authority for the charge-current interpretation is supplied downstream by
-`MassiveDiracCurrentBridge`: the generic charge-like corrected representative for `q I` has zero
-localization correction, reduces to `q v`, and at electron charge `q = -e` agrees exactly with these
-matrices. Thus this model file records the realization rather than introducing a separate
-foundational current convention.
+The generic charge-like current theory is the authority for the canonical `q v` interpretation;
+this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
 
 With this convention the continuum measure is `d²p / (2πℏ)²`. The generic pointwise spectral
 Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
