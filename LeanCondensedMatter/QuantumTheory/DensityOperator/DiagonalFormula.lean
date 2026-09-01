@@ -32,8 +32,8 @@ theorem DensityOperator.diagonal_weight_nonneg (ρ : DensityOperator H)
 theorem DensityOperator.sqrtOp_apply_diagonal_basis (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) (i : ι) :
-    ρ.sqrtOp (b i) = (Real.sqrt (w i) : ℂ) • b i := by
-  exact ρ.sqrtOp_apply_eigenvector (by simpa using hρ i)
+    ρ.sqrtOp (b i) = (Real.sqrt (w i) : ℂ) • b i :=
+  ρ.sqrtOp_apply_eigenvector (by simpa using hρ i)
 
 /-- On a basis diagonalizing the density operator, the Hilbert–Schmidt integrand is exactly the
 usual weighted diagonal matrix element. -/
@@ -70,14 +70,9 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
         (innerHS b ρ.sqrtOp (A * ρ.sqrtOp)) :=
     (summable_inner_apply_of_isHilbertSchmidtWrt b
       (hsqrt.isHilbertSchmidtWrt b) (hAsqrt.isHilbertSchmidtWrt b)).hasSum
-  have hfunctions :
-      (fun i => inner ℂ (ρ.sqrtOp (b i)) ((A * ρ.sqrtOp) (b i))) =
-        fun i => (w i : ℂ) * inner ℂ (b i) (A (b i)) := by
-    funext i
-    exact ρ.inner_sqrtOp_comp_apply_eq_diagonal_term A b w hρ i
-  rw [hfunctions] at hsum
   rw [ρ.expectation_eq_innerHS A b]
-  exact hsum
+  exact HasSum.congr_fun hsum fun i =>
+    ρ.inner_sqrtOp_comp_apply_eq_diagonal_term A b w hρ i
 
 /-- Absolute convergence of the diagonal expectation series follows from trace-class density
 weights and boundedness of the observed operator, encoded through the Hilbert–Schmidt bridge. -/
@@ -100,14 +95,10 @@ theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOpera
     (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
     HasSum (fun i => w i * diagonalExpectationValue A.1 A.2 (b i))
       (ρ.observableExpectation A) := by
-  have hcomplex := ρ.hasSum_expectation_diagonal A.1 b w hρ
-  have hfunctions :
-      (fun i => (w i : ℂ) * inner ℂ (b i) (A.1 (b i))) =
-        fun i => ((w i * diagonalExpectationValue A.1 A.2 (b i) : ℝ) : ℂ) := by
-    funext i
+  have hcomplex := HasSum.congr_fun (ρ.hasSum_expectation_diagonal A.1 b w hρ) fun i => by
     rw [← coe_diagonalExpectationValue_right A.1 A.2 (b i)]
     norm_cast
-  rw [hfunctions, ρ.expectation_observable A] at hcomplex
+  rw [ρ.expectation_observable A] at hcomplex
   rw [HasSum] at hcomplex ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
     simpa only [Complex.ofReal_sum] using hcomplex)
@@ -124,16 +115,12 @@ theorem DensityOperator.observableExpectation_eq_tsum_diagonal (ρ : DensityOper
 theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
-    HasSum w 1 := by
-  have hsum := ρ.hasSum_diagonalExpectationValue_eq_one b
-  have hpoint :
-      (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (b i)) = w := by
-    funext i
+    HasSum w 1 :=
+  HasSum.congr_fun (ρ.hasSum_diagonalExpectationValue_eq_one b) fun i => by
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, happly i, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
-  rwa [hpoint] at hsum
 
 /-- The diagonal weights of a density operator are summable. -/
 theorem DensityOperator.summable_diagonal_weights (ρ : DensityOperator H)
