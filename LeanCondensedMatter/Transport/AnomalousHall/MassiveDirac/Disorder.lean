@@ -16,12 +16,10 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteB
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRegression
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.InPlaneLadder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexNormalizationBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexTransportBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexIntegral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -56,7 +54,7 @@ solver, exposing the determinant, solved coefficients, and bounded dimensionless
 without introducing a second fixed-point algebra.  The zero-disorder angular basis case regresses to
 the clean finite-broadening rung, while the normalized radial rung vanishes and the solved vertex
 returns to bare `σₓ` at zero disorder.  The zero-external-broadening angular/radial rung,
-finite-cutoff integration, normalization bridge, fixed-cutoff metallic weak-disorder limit, and
+finite-cutoff integration, normalization identity, fixed-cutoff metallic weak-disorder limit, and
 scalar `τ_tr / τ_sp` bridge remain separate.  Separately, the common real radial denominator integral
 is evaluated in closed arctangent form and its convergent `pMax → +∞` limit is proved before taking
 `γ → 0⁺`; this also exposes the leading positive `σᵧ` coefficient in repository orientation

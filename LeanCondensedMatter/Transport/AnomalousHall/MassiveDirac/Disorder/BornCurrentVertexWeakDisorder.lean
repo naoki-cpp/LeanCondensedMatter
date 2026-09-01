@@ -60,6 +60,43 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoe
     continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
       v m p probeEnergy disorderStrength hbar
 
+/-- The real normalized finite-cutoff `σₓ` current-rung coefficient is exactly the finite-cutoff
+Green-product coefficient multiplied by the physical current-rung prefactor. -/
+theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_prefactor_mul_greenProduct
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
+        v m probeEnergy disorderStrength hbar pMax : ℂ) =
+      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
+        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient
+          v m probeEnergy disorderStrength hbar pMax := by
+  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
+  rw [← Complex.ofRealLI_apply
+    (∫ p in (0 : ℝ)..pMax,
+      continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
+        v m p probeEnergy disorderStrength hbar)]
+  rw [← Complex.ofRealLI.intervalIntegral_comp_comm]
+  rw [show
+      (fun p : ℝ => Complex.ofRealLI
+        (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
+          v m p probeEnergy disorderStrength hbar)) =
+      (fun p : ℝ =>
+        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
+          continuumBornRetardedAdvancedPauliXRadialXIntegrand
+            v m p probeEnergy disorderStrength hbar) by
+    funext p
+    rw [Complex.ofRealLI_apply,
+      coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal]
+    rfl]
+  rw [intervalIntegral.integral_const_mul]
+  rfl
+
+/-- A zero radial cutoff gives a vanishing normalized longitudinal Born current-rung coefficient. -/
+@[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_zero
+    (v m probeEnergy disorderStrength hbar : ℝ) :
+    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
+      v m probeEnergy disorderStrength hbar 0 = 0 := by
+  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient]
+
 /-- The external disorder-line / physical-measure prefactor is one power of the Born damping scale:
 `W /(2πℏ)² = γ v² / π²`. -/
 theorem continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale

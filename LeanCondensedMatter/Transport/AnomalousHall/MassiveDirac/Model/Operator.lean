@@ -85,14 +85,6 @@ noncomputable def inPlanePauliVertexOperator
     (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY
 
-@[simp] theorem inPlanePauliVertexOperator_one_zero :
-    inPlanePauliVertexOperator 1 0 = matrixOperator sigmaX := by
-  simp [inPlanePauliVertexOperator]
-
-@[simp] theorem inPlanePauliVertexOperator_zero_one :
-    inPlanePauliVertexOperator 0 1 = matrixOperator sigmaY := by
-  simp [inPlanePauliVertexOperator]
-
 /-- Physical in-plane current vertex `α jₓ + β jᵧ`. -/
 noncomputable def inPlaneCurrentOperator
     (e v : ℝ) (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
@@ -109,16 +101,6 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
     currentOperator_eq_chargeVelocity_smul_directionPauli,
     currentOperator_eq_chargeVelocity_smul_directionPauli]
   simp [directionPauli, inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
-
-@[simp] theorem inPlaneCurrentOperator_one_zero
-    (e v : ℝ) :
-    inPlaneCurrentOperator e v 1 0 = currentOperator .x e v := by
-  simp [inPlaneCurrentOperator]
-
-@[simp] theorem inPlaneCurrentOperator_zero_one
-    (e v : ℝ) :
-    inPlaneCurrentOperator e v 0 1 = currentOperator .y e v := by
-  simp [inPlaneCurrentOperator]
 
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
 theorem hamiltonian_isHermitian (v m px py : ℝ) :

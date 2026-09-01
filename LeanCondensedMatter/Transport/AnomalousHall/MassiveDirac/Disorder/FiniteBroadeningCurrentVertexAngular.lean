@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.AngularReduction
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
@@ -584,6 +585,18 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral_eq
   simpa [finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliYIntegral] using
     finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq
       v m p probeEnergy broadening disorderStrength hbar pMax 0 1
+
+/-- At zero disorder strength, the finite-`η` Born-Dyson `σₓ` rung reduces exactly to the existing
+clean finite-broadening angular rung. -/
+@[simp] theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliXIntegral_zero_disorder
+    (v m p probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliXIntegral
+        v m p probeEnergy broadening 0 hbar pMax =
+      continuumAngularRetardedAdvancedPauliXIntegral
+        v m p probeEnergy broadening := by
+  simp [finiteCutoffContinuumBornDysonAngularRetardedAdvancedPauliXIntegral,
+    finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction,
+    continuumAngularRetardedAdvancedPauliXIntegral]
 
 end
 

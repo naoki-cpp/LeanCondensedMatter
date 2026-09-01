@@ -38,18 +38,6 @@ noncomputable def massiveDiracLongitudinalDressedBastinTraceIntegrand
     (inPlaneCurrentOperator e v alpha beta)
     energy broadening
 
-/-- The bare source-vertex specialization is the ordinary longitudinal `jₓ-jₓ` Bastin trace
-kernel. -/
-@[simp] theorem massiveDiracLongitudinalDressedBastinTraceIntegrand_one_zero
-    (e v m px py energy broadening : ℝ) :
-    massiveDiracLongitudinalDressedBastinTraceIntegrand
-        e v m px py energy broadening 1 0 =
-      regularizedBastinTraceIntegrand
-        (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .x e v)
-        energy broadening := by
-  simp [massiveDiracLongitudinalDressedBastinTraceIntegrand]
-
 /-- Canonical traced Středa analytic data for the longitudinal channel with a supplied in-plane
 dressed source vertex. -/
 abbrev MassiveDiracLongitudinalDressedStredaAnalyticData
@@ -146,19 +134,6 @@ theorem massiveDiracLongitudinalDressedBastinEnergyIntegral_eq_surface_add_sea
   rw [← data.regularizedBastinEnergyIntegral_eq_traced]
   exact regularizedBastinEnergyIntegral_eq_surface_add_sea
     data.toRegularizedStredaIntegralData
-
-/-- Bare-vertex regression: the new dressed-current energy response reduces exactly to the generic
-ordinary longitudinal `jₓ-jₓ` traced Bastin energy integral. -/
-@[simp] theorem massiveDiracLongitudinalDressedBastinEnergyIntegral_one_zero
-    (e v m px py broadening lowerEnergy upperEnergy : ℝ)
-    (occupation : ℝ → ℂ) :
-    massiveDiracLongitudinalDressedBastinEnergyIntegral
-        e v m px py broadening lowerEnergy upperEnergy 1 0 occupation =
-      regularizedTracedBastinEnergyIntegral
-        (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .x e v)
-        broadening lowerEnergy upperEnergy occupation := by
-  simp [massiveDiracLongitudinalDressedBastinEnergyIntegral]
 
 end
 
