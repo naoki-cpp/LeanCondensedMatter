@@ -43,23 +43,6 @@ theorem twoPointLegEquiv_mixedTimeAmbientPositionEquiv {n : ℕ}
   apply Fin.ext
   rfl
 
-/-- The position selected by an atomic leg identity is inverse to reading the identity at a mixed
-position. -/
-@[simp]
-theorem mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
-    mixedTimeOrderedAtomicLegPosition τ τ' σ
-        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) = p := by
-  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm_apply_apply p
-
-/-- Reading the atomic identity at the position selected by that identity is identity. -/
-@[simp]
-theorem mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
-    mixedTimeOrderedAtomicLegEquiv τ τ' σ
-        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) = leg := by
-  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply leg
-
 /-- The full diagram component containing one mixed-time atomic position. -/
 noncomputable def TwoPointDiagram.mixedPositionComponent {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))

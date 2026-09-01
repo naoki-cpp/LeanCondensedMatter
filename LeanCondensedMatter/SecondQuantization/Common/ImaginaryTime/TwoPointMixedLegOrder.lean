@@ -173,6 +173,23 @@ noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
   rw [← mixedTimeOrderedAtomicLegs_length τ τ' σ]
   exact List.idxOf_lt_length_iff.mpr (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ leg)
 
+/-- The position selected by an atomic leg identity is inverse to reading the identity at a mixed
+position. -/
+@[simp]
+theorem mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) = p := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm_apply_apply p
+
+/-- Reading the atomic identity at the position selected by that identity is identity. -/
+@[simp]
+theorem mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ
+        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) = leg := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply leg
+
 /-- Legs in one mixed-time event block have identical comparison with every leg outside that block. -/
 theorem mixedTimeOrderedAtomicLegPosition_lt_uniform {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ)
