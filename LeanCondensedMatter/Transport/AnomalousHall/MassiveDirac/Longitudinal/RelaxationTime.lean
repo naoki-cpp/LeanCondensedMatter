@@ -40,29 +40,6 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-private theorem metallicFermiRadius_pos_of_lt
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
-    0 < metallicFermiRadius v m fermiEnergy := by
-  unfold metallicFermiRadius
-  have hsum : 0 < fermiEnergy + m := by linarith
-  have hrad : 0 < fermiEnergy ^ 2 - m ^ 2 := by
-    have hprod : 0 < (fermiEnergy - m) * (fermiEnergy + m) :=
-      mul_pos (sub_pos.mpr hmF) hsum
-    nlinarith
-  exact div_pos (Real.sqrt_pos.2 hrad) (abs_pos.mpr hv)
-
-private theorem radialEnergyDerivative_metallicFermiRadius_pos
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
-    0 < radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) := by
-  unfold radialEnergyDerivative
-  rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
-  exact div_pos
-    (mul_pos (sq_pos_of_ne_zero hv)
-      (metallicFermiRadius_pos_of_lt v m fermiEnergy hv hm hmF))
-    (lt_trans hm hmF)
-
 /-- Upper-band Fermi-surface density-of-states factor from the isotropic radial Jacobian in the
 physical-momentum measure `d²p/(2πℏ)²`.
 
@@ -84,11 +61,26 @@ theorem upperBandFermiSurfaceDensityOfStates_eq
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     upperBandFermiSurfaceDensityOfStates hbar v m fermiEnergy =
       fermiEnergy / (2 * Real.pi * hbar ^ 2 * v ^ 2) := by
-  have hpFpos := metallicFermiRadius_pos_of_lt v m fermiEnergy hv hm hmF
-  have hpFne : metallicFermiRadius v m fermiEnergy ≠ 0 := ne_of_gt hpFpos
-  have hderivpos :=
-    radialEnergyDerivative_metallicFermiRadius_pos v m fermiEnergy hv hm hmF
   have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
+  have hgap : 0 < fermiEnergy ^ 2 - m ^ 2 := by
+    have hsum : 0 < fermiEnergy + m := by linarith
+    have hprod : 0 < (fermiEnergy - m) * (fermiEnergy + m) :=
+      mul_pos (sub_pos.mpr hmF) hsum
+    nlinarith
+  have hpFSq : 0 < metallicFermiRadius v m fermiEnergy ^ 2 := by
+    rw [metallicFermiRadius_sq v m fermiEnergy hm hmF.le]
+    exact div_pos hgap (sq_pos_of_ne_zero hv)
+  have hpFne : metallicFermiRadius v m fermiEnergy ≠ 0 := by
+    intro hzero
+    rw [hzero] at hpFSq
+    norm_num at hpFSq
+  have hpFpos : 0 < metallicFermiRadius v m fermiEnergy :=
+    lt_of_le_of_ne (metallicFermiRadius_nonneg v m fermiEnergy) (Ne.symm hpFne)
+  have hderivpos :
+      0 < radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) := by
+    unfold radialEnergyDerivative
+    rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
+    exact div_pos (mul_pos (sq_pos_of_ne_zero hv) hpFpos) hfermiPos
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   unfold upperBandFermiSurfaceDensityOfStates momentumMeasurePrefactor

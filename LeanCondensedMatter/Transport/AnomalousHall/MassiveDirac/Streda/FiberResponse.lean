@@ -57,18 +57,6 @@ theorem massiveDiracStredaFiberTotalResponse_eq_tracedBastin
   unfold massiveDiracStredaFiberTotalResponse
   exact data.toStaticStredaResponseMatrix_total_eq_tracedBastin measured source
 
-/-- The historical `x-y` scalar Bastin response is the `x-y` entry of the shared fiber response. -/
-theorem massiveDiracStredaFiberTotalResponse_xy_eq_regularizedBastin
-    {e v m px py broadening lowerEnergy upperEnergy : ℝ}
-    {occupation occupationDerivative : ℝ → ℂ}
-    (data : MassiveDiracStredaFiberAnalyticData
-      e v m px py broadening lowerEnergy upperEnergy occupation occupationDerivative) :
-    massiveDiracStredaFiberTotalResponse data .x .y =
-      massiveDiracRegularizedBastinEnergyIntegral
-        e v m px py broadening lowerEnergy upperEnergy occupation := by
-  rw [massiveDiracStredaFiberTotalResponse_eq_tracedBastin data .x .y]
-  rfl
-
 end
 
 end AnomalousHall.MassiveDirac

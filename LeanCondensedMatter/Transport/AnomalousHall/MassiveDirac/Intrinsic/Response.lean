@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Intrinsic Berry weight for the metallic massive Dirac cone
 
-For a single continuum Dirac cone, the occupied-state response must keep the ultraviolet regulator
+For a single continuum Dirac cone, the occupied-state response keeps the ultraviolet regulator
 explicit. After angular reduction and the change from radial momentum to the positive Dirac energy
 `ε`, the dimensionless Berry-weight density of band sign `s = ±1` is
 
@@ -15,23 +15,16 @@ explicit. After angular reduction and the change from radial momentum to the pos
 -s m / (2 ε²).
 ```
 
-The canonical zero-temperature finite-cutoff response in this file multiplies that density by the
-generic strict Fermi occupation evaluated on the actual signed band energy `s ε`, and integrates
-both bands over the common positive-energy interval `[m, Λ]`. Under the benchmark convention
-`0 < m ≤ εF ≤ Λ`, this occupation-derived response reduces to
-
-* the filled lower-band shell from `m` to `Λ`, and
-* the occupied upper-band shell from `m` to `εF`.
-
-The resulting finite-cutoff weight is
+The canonical zero-temperature finite-cutoff response multiplies that density by the generic strict
+Fermi occupation evaluated on the actual signed band energy `s ε` and integrates both bands over the
+common positive-energy interval `[m, Λ]`. Under `0 < m ≤ εF ≤ Λ`, occupation leaves the lower band
+filled and truncates the upper-band integral at `εF`, giving
 
 ```text
 m / (2 εF) - m / (2 Λ).
 ```
 
-The historical `valence` / `conduction` names are retained only as downstream names for these two
-shell integrals. No infinite-cutoff limit and no `e²/h` transport prefactor are claimed in this
-file.
+No infinite-cutoff limit and no `e²/h` transport prefactor are claimed in this file.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -145,80 +138,23 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq
     _ = ∫ ε in m..εF, radialBerryEnergyDensity .upper m ε := by
       exact intervalIntegral.integral_indicator ⟨hmF, hFΛ⟩
 
-/-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`, under
-the benchmark convention `m > 0`. This is a downstream shell name, not the source of occupation. -/
-def valenceBerryWeightCutoff (m Λ : ℝ) : ℝ :=
-  energyShellBerryWeight .lower m m Λ
-
-/-- Occupied upper-band Berry weight from the gap edge `m` to the Fermi energy `εF`. This is a
-downstream shell name for the region selected by zero-temperature occupation. -/
-def conductionBerryWeight (m εF : ℝ) : ℝ :=
-  energyShellBerryWeight .upper m m εF
-
-/-- The occupation-derived finite-cutoff response reduces to the familiar filled-lower plus
-occupied-upper shell decomposition. -/
-theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_valence_add_conduction
-    (m εF Λ : ℝ) (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
-    zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
-      valenceBerryWeightCutoff m Λ + conductionBerryWeight m εF := by
-  unfold zeroTemperatureOccupiedBerryWeightCutoff
-  rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hm hmF hFΛ,
-    zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ]
-  rfl
-
-/-- Finite-cutoff lower-band contribution: `1/2 - m/(2Λ)`. -/
-theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) :
-    valenceBerryWeightCutoff m Λ = 1 / 2 - m / (2 * Λ) := by
-  rw [valenceBerryWeightCutoff, energyShellBerryWeight_eq .lower m m Λ hm hmΛ]
-  have hm0 : m ≠ 0 := ne_of_gt hm
-  have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmΛ)
-  simp
-  field_simp [hm0, hΛ0]
-  ring
-
-/-- Occupied upper-band contribution: `m/(2εF) - 1/2`. -/
-theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
-    conductionBerryWeight m εF = m / (2 * εF) - 1 / 2 := by
-  rw [conductionBerryWeight, energyShellBerryWeight_eq .upper m m εF hm hmF]
-  have hm0 : m ≠ 0 := ne_of_gt hm
-  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmF)
-  simp
-  field_simp [hm0, hF0]
-
-/-- Total occupied-state Berry weight with a finite lower-band ultraviolet cutoff. This historical
-wrapper keeps the established API while the occupation-derived response is the canonical source of
-the lower/upper decomposition. -/
-def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
-  valenceBerryWeightCutoff m Λ + conductionBerryWeight m εF
-
-/-- The historical finite-cutoff wrapper agrees with the occupation-derived response in the
-positive-mass metallic-or-band-edge regime. -/
-theorem metallicBerryWeightCutoff_eq_zeroTemperatureOccupied
-    (m εF Λ : ℝ) (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
-    metallicBerryWeightCutoff m εF Λ =
-      zeroTemperatureOccupiedBerryWeightCutoff m εF Λ := by
-  rw [zeroTemperatureOccupiedBerryWeightCutoff_eq_valence_add_conduction
-    m εF Λ hm hmF hFΛ]
-  rfl
-
-/-- The finite-cutoff occupied Berry weight keeps the single-cone regulator term explicit. -/
-theorem metallicBerryWeightCutoff_eq (m εF Λ : ℝ)
-    (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
-    metallicBerryWeightCutoff m εF Λ =
-      m / (2 * εF) - m / (2 * Λ) := by
-  rw [metallicBerryWeightCutoff,
-    valenceBerryWeightCutoff_eq m Λ hm (hmF.trans hFΛ),
-    conductionBerryWeight_eq m εF hm hmF]
-  ring
-
-/-- The occupation-derived finite-cutoff response has the same closed form as the established
-massive-Dirac benchmark. -/
+/-- The canonical occupation-derived finite-cutoff response keeps the single-cone regulator term
+explicit. -/
 theorem zeroTemperatureOccupiedBerryWeightCutoff_eq
     (m εF Λ : ℝ) (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
       m / (2 * εF) - m / (2 * Λ) := by
-  rw [← metallicBerryWeightCutoff_eq_zeroTemperatureOccupied m εF Λ hm hmF hFΛ]
-  exact metallicBerryWeightCutoff_eq m εF Λ hm hmF hFΛ
+  unfold zeroTemperatureOccupiedBerryWeightCutoff
+  rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hm hmF hFΛ,
+    zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ,
+    energyShellBerryWeight_eq .lower m m Λ hm (hmF.trans hFΛ),
+    energyShellBerryWeight_eq .upper m m εF hm hmF]
+  have hm0 : m ≠ 0 := ne_of_gt hm
+  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmF)
+  have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hm (hmF.trans hFΛ))
+  simp
+  field_simp [hm0, hF0, hΛ0]
+  ring
 
 end
 

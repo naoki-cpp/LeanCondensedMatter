@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Physical finite-broadening Born-Dyson dressed current
 
 This module connects the solved dimensionless finite-`η` Born-Dyson ladder vertex to the model-owned
-in-plane physical-current boundary.  The ladder algebra and physical current convention remain
+in-plane physical-current boundary. The ladder algebra and physical current convention remain
 owned by their existing modules; this file only composes them.
 
 No Kubo/Středa trace insertion, conductivity theorem, broadening/disorder limit, or exact disorder-
@@ -17,19 +17,6 @@ average claim is made here.
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
-
-/-- The solved finite-`η` Born-Dyson ladder vertex is exactly the existing in-plane Pauli vertex
-with the model-specific solved coefficients. -/
-theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_eq_inPlanePauliVertexOperator
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedVertex
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      inPlanePauliVertexOperator
-        (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax) := by
-  rfl
 
 /-- Physical dressed longitudinal charge current obtained from the solved normalized finite-`η`
 Born-Dyson ladder coefficients. -/
@@ -52,8 +39,8 @@ theorem finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator_eq_char
         finiteCutoffContinuumBornDysonLadderSolvedVertex
           v m probeEnergy broadening disorderStrength hbar pMax := by
   rw [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator,
-    inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator,
-    finiteCutoffContinuumBornDysonLadderSolvedVertex_eq_inPlanePauliVertexOperator]
+    inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
+  rfl
 
 /-- With zero disorder strength, the solved physical finite-`η` current reduces exactly to the bare
 longitudinal charge-current operator. -/
