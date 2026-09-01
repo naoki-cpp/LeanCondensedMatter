@@ -92,16 +92,20 @@ def main() -> int:
         )
 
     resolvent_umbrella = TRANSPORT / "Resolvent.lean"
-    for module in (
-        "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative",
+    require_import(
+        errors,
+        resolvent_umbrella,
         "LeanCondensedMatter.Transport.Resolvent.Uniqueness",
-    ):
-        require_import(
-            errors,
-            resolvent_umbrella,
-            module,
-            root=ROOT,
-            description="resolvent public umbrella",
+        root=ROOT,
+        description="resolvent public umbrella",
+    )
+    dressed_energy_derivative_module = (
+        "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative"
+    )
+    if dressed_energy_derivative_module in lean_imports(resolvent_umbrella):
+        errors.append(
+            "Transport/Resolvent.lean must keep DressedEnergyDerivative opt-in; "
+            "supplied dressed-family calculus is not part of the core resolvent umbrella"
         )
     lorentzian_kernel_module = "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
     if lorentzian_kernel_module in lean_imports(resolvent_umbrella):
