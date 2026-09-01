@@ -13,8 +13,6 @@ Public umbrella for dimension-independent retarded/advanced resolvents, the abst
 self-energy relation, their pure-point spectral action, clean real-energy derivatives, and uniqueness
 of side-indexed resolvent candidates.
 
-Energy derivatives of supplied dressed Green families are an opt-in calculus module under
-`Transport.Resolvent.DressedEnergyDerivative`; they are not part of the core resolvent umbrella.
 Canonical resolvent implementations live under `Transport/Resolvent/`; representation-independent
 analysis primitives such as Lorentzian kernels remain under `Analysis/`.
 -/
