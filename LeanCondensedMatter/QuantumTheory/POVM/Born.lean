@@ -86,7 +86,7 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
       ((1 : ℝ) : ℂ) := by
     simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using
       HasSum.congr_fun hinner fun m =>
-        (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e).symm
+        coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e
   have hreal :
       HasSum (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
     rw [HasSum] at hcomplex ⊢
