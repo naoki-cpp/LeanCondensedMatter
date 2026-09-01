@@ -1,63 +1,15 @@
-# Roadmap — Second Quantization
+# Second Quantization roadmap
 
-Second quantization is developed under `LeanCondensedMatter/SecondQuantization/` as the many-body,
-thermal, perturbative, and diagrammatic layer of LeanCondensedMatter.
+Second quantization is the many-body, thermal, perturbative, and diagrammatic layer under
+`LeanCondensedMatter/SecondQuantization/`.
 
 See also:
 
-- [`second-quantization-status.md`](second-quantization-status.md) for the current public API and ownership boundaries;
-- [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for the vacuum and two-point connected-diagram endpoints;
-- [`completed-space-and-infinite-mode.md`](completed-space-and-infinite-mode.md) for completed-space and infinite-mode boundaries;
-- [`../roadmap.md`](../roadmap.md) for repository-wide targets.
-
-## Current boundary
-
-The algebraic foundations allow arbitrary mode types and finite-support states. Finite thermal traces,
-finite-basis operator integration, and the current fermionic Dyson/diagrammatic theorems introduce
-finite-mode assumptions explicitly.
-
-The fermionic line now proves three connected perturbative endpoints:
-
-1. a coefficientwise formal vacuum Linked Cluster Theorem;
-2. a finite-dimensional analytic vacuum Linked Cluster Theorem for the interacting partition function;
-3. a finite-mode two-point Linked Cluster Theorem stating that vacuum normalization leaves exactly
-   externally connected two-point diagrams.
-
-These results do not imply trace-class infinite-dimensional Gibbs states, general unbounded-operator
-theory, arbitrary multi-leg/source-insertion expansions, infinite-mode thermal limits, or a
-thermodynamic limit.
-
-The bosonic occupation basis remains infinite even for finitely many modes, so bosonic perturbation
-theory requires explicit summability and domain control rather than reuse of finite-configuration
-fermionic trace arguments.
+- [`second-quantization-status.md`](second-quantization-status.md) for current ownership and proved endpoints;
+- [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for connected-diagram results;
+- [`completed-space-and-infinite-mode.md`](completed-space-and-infinite-mode.md) for completed-space boundaries.
 
 ## Architecture
-
-```text
-Mode
-  ↓
-occupation representation
-  ↓
-algebraic Fock space
-  ↓
-creation / annihilation operators
-  ↓
-CAR or CCR
-  ↓
-free and interacting operators
-  ↓
-imaginary-time evolution and thermal functionals
-  ↓
-Dyson coefficients
-  ↓
-Wick / two-point diagram expansions
-  ↓
-component factorization and connectedness
-  ↓
-formal, analytic, and two-point linked-cluster theorems
-```
-
-Dependency direction:
 
 ```text
 Analysis, Combinatorics
@@ -67,139 +19,63 @@ SecondQuantization.Common
 SecondQuantization.Fermionic, SecondQuantization.Bosonic
 ```
 
-The full public import is:
-
-```lean
-import LeanCondensedMatter.SecondQuantization
-```
-
-Responsibility-specific developments should import the narrowest applicable stable umbrella.
+The algebraic foundations support arbitrary mode types with finite-support states. Finiteness enters
+only where a theorem explicitly enumerates modes/configurations or uses finite-dimensional trace,
+operator integration, or diagram sums.
 
 ## Fermionic line
 
-The algebraic API provides occupation-space creation and annihilation operators, CAR, number
-operators, grading, free Hamiltonians, quartic interactions, and imaginary-time evolution. For finite
-`Mode`, the occupation basis is finite, which supports finite weighted traces and finite-dimensional
-operator methods.
+The fermionic algebraic and thermal layers provide CAR/Fock structure, free and interacting
+operators, imaginary-time evolution, free Gibbs theory, KMS identities, and Bloch--de Dominicis
+pairing.
 
-The thermal layer includes free partition functions, two-point functions, contractions, KMS rotation,
-and the finite-temperature Bloch–de Dominicis pairing theorem.
+The connected perturbative line proves:
 
-### Vacuum linked-cluster theorem
+1. the coefficientwise formal vacuum linked-cluster theorem;
+2. the finite-dimensional analytic vacuum linked-cluster theorem for
+   `Tr(exp(-β(H₀ + λV)))`;
+3. the finite-mode two-point theorem
+   `vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`.
 
-The formal endpoint is
+The two-point result already covers one external-leg correlation-function setting. The remaining
+connected-diagram target is arbitrary higher-point/source-insertion structure.
 
-```lean
-factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
-```
+## Diagrammatics ownership
 
-and schematically states
+- `Combinatorics/` owns statistics-independent partitions, pairings, cumulants, shuffles, and finite
+  product identities;
+- `SecondQuantization.Common.Diagrammatics` owns reusable constructions that still carry
+  second-quantized/diagrammatic semantics;
+- `SecondQuantization.Fermionic.Diagrammatics` owns fermionic signs, amplitudes, and physics-facing
+  connected endpoints.
 
-```text
-n! [λⁿ] log(normalized Dyson partition series)
-  = ∑ connected n-vertex quartic Wick diagrams, amplitude(diagram).
-```
+One-use routing theorems, reindexings, and intermediate proof stages should remain private/local or be
+inlined rather than exposed as parallel public APIs.
 
-The finite-dimensional analytic endpoint is
+## Completed fermionic line
 
-```lean
-iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
-```
+`Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)` has bounded completed ladder
+operators and CAR, explicit domains for unbounded diagonal operators, free-Hamiltonian domain/ladder
+results, finite-dimensional compatibility, and finite-mode truncations.
 
-for the genuine interacting partition function
-
-```text
-Z(λ) = Tr(exp(-β(H₀ + λV))).
-```
-
-### Two-point linked-cluster theorem
-
-The two-point diagram expansion introduces two external legs together with quartic interaction
-vertices. The proof separates the unique externally connected component from vacuum components,
-reindexes fixed external-slot fibers, proves the coefficientwise Cauchy factorization, and cancels the
-normalized vacuum series.
-
-The endpoint is
-
-```lean
-vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-```
-
-from
-`Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean`.
-
-Schematically,
-
-```text
-(two-point Dyson series) / (vacuum Dyson series)
-  = ∑ externally connected two-point diagrams.
-```
-
-This is already an external-leg connected expansion; the remaining external-operator research target
-is the general multi-leg/source-insertion theory, not the two-point case.
-
-## Diagrammatics ownership and API policy
-
-The diagrammatics tree has been consolidated so that proof-routing structure is not automatically a
-public API. The intended ownership is:
-
-- `Combinatorics/`: statistics-independent partitions, pairings, slot shuffles, finite products, and
-  related reusable finite combinatorics;
-- `SecondQuantization.Common.Diagrammatics`: statistics-independent constructions that still carry
-  diagram/Fock/thermal semantics;
-- `SecondQuantization.Fermionic.Diagrammatics`: fermionic amplitudes, signs, physical specializations,
-  and linked-cluster endpoints.
-
-One-use routing theorems and modules should be inlined or made private/local when doing so reduces code
-without obscuring a reusable concept. Compatibility aliases are not kept solely to preserve internal
-proof history.
-
-## Completed fermionic representation
-
-The completed space
-
-```lean
-Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)
-```
-
-has canonical basis vectors, an injective dense algebraic inclusion, and a bounded single-mode number
-projection. Completed ladder operators, unbounded Hamiltonian domains, completed Gibbs states, and
-infinite-mode perturbation theory remain separate analytic work.
+`Fermionic.Thermal.Completed` adds the summability-controlled free Gibbs/KMS/pairing route and
+finite-mode Gibbs convergence against bounded observables. Interacting completed-space Dyson theory
+and thermodynamic limits remain open.
 
 ## Bosonic line
 
-The bosonic occupation basis is
+The bosonic occupation basis is infinite even for finite mode types. Existing results therefore keep
+summability and admissible domains explicit. Algebraic CCR structure, free thermal sums, a
+convergence-aware Gibbs functional, and reusable diagrammatic infrastructure are available.
 
-```lean
-Bosonic.Occupation Mode := Mode →₀ ℕ.
-```
-
-Implemented layers include algebraic Fock/CCR infrastructure, free imaginary-time evolution,
-convergent free thermal sums under explicit positivity assumptions, a convergence-aware Gibbs
-functional, and statistics-independent diagrammatic infrastructure reusable from Common.
-
-The next bosonic analytic requirements are product-domain closure, summability-aware KMS/cyclicity,
-a compatible operator-valued integration interface, Dyson convergence, and full connected-diagram
-specialization.
+A full bosonic perturbative line still needs product-domain closure, summability-aware KMS/cyclicity,
+operator integration, Dyson convergence, and connected-diagram specialization.
 
 ## Research directions
 
-### Higher correlation functions and sources
-
-Generalize the proved two-point external-leg theorem to arbitrary time-ordered insertions, source
-derivatives, higher Green functions, and multi-leg connected diagrams.
-
-### Low-order explicit examples
-
-Use low-order expansions as readable regression examples where they expose the general theorem, but do
-not add wrapper theorems that merely specialize a generic result without semantic value.
-
-### Bosonic thermal closure and Dyson theory
-
-Build the summability/domain infrastructure required for a convergence-aware bosonic linked-cluster
-line.
-
-### Completed and infinite-mode theory
-
-Construct bounded completed CAR operators, weighted domains for unbounded operators, trace-class Gibbs
-states under explicit hypotheses, and eventually well-specified infinite-mode or thermodynamic limits.
+- arbitrary time-ordered insertions, higher Green functions, and source derivatives;
+- convergence-aware bosonic Dyson and linked-cluster theory;
+- completed bosonic Fock/operator-domain theory;
+- interacting completed-space fermionic perturbation theory;
+- infinite-mode and thermodynamic limits under explicit topological and uniform-estimate hypotheses;
+- low-order examples only where they clarify the general theorem rather than create wrapper APIs.
