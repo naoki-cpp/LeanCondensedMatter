@@ -60,7 +60,7 @@ theorem continuumBornLongitudinalRetardedAdvancedTraceKernel_matrixVertex
         φ (continuumBornGreenMatrix
           .advanced v m px py probeEnergy disorderStrength hbar)) = _
   rw [← map_mul, ← map_mul, ← map_mul]
-  exact finiteDimensionalOperatorTrace_matrixOperator _
+  exact finiteDimensionalOperatorTrace_toEuclideanCLM _
 
 end
 
