@@ -14,9 +14,10 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The Helmholtz lower bound is attained exactly by the canonical Gibbs state. -/
+/-- For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the
+canonical Gibbs state. -/
 theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
-    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
+    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
@@ -55,7 +56,7 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
         (Hop.1 : H →ₗ[ℂ] H) (d a) = (h a : ℂ) • d a := by
       intro a
       apply (gibbs_peierls_bogoliubov_eq_iff_eigenvector
-        Hop.1 Hop.2 β hβ.ne' (d a) (hd_unit a)).mp
+        Hop.1 Hop.2 β hβ (d a) (hd_unit a)).mp
       have heqComplex :
           (Real.exp (-β * h a) : ℂ) =
             inner ℂ (gibbsOp Hop β (d a)) (d a) := by
