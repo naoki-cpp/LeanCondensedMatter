@@ -30,6 +30,7 @@ namespace AnomalousHall.MassiveDirac
 noncomputable section
 
 open MeasureTheory
+open QuantumTheory.Transport
 open scoped Interval
 
 /-- Finite-`η` radial `X` integrand after the full-angle Born-Dyson reduction, including only the

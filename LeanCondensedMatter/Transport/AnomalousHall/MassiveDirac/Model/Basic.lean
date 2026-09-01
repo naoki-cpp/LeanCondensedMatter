@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
+import LeanCondensedMatter.Transport.Core.ContinuumMeasure
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
@@ -24,9 +25,10 @@ curvature are private implementation details.
 The generic charge-like current theory is the authority for the canonical `q v` interpretation;
 this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
 
-With this convention the continuum measure is `d²p / (2πℏ)²`. The generic pointwise spectral
-Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
-supplies the concrete massive-Dirac algebra that will be connected to that force-matrix API.
+With this convention the continuum measure is `d²p / (2πℏ)²`; its scalar normalization is owned by
+`Transport.Core.ContinuumMeasure`. The generic pointwise spectral Berry-curvature identities live
+upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file supplies the concrete
+massive-Dirac algebra that will be connected to that force-matrix API.
 
 Disorder, Fermi occupation, Kubo–Středa integration, and ultraviolet regularization remain
 separate downstream phases.
@@ -35,6 +37,8 @@ separate downstream phases.
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
+
+open QuantumTheory.Transport
 
 /-- Complex two-band matrices. -/
 abbrev Matrix2 := Matrix (Fin 2) (Fin 2) ℂ
@@ -107,11 +111,6 @@ def bandSign : Band → ℝ
 /-- Band energy `E_± = ±E`. -/
 def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
   bandSign band * energy v m px py
-
-/-- The `ℏ`-dependent prefactor in the physical-momentum continuum measure
-`d²p / (2πℏ)²`. -/
-def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
-  1 / (2 * Real.pi * hbar) ^ 2
 
 private structure Vec3 where
   x : ℝ

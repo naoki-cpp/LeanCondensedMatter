@@ -39,7 +39,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open Filter
+open Filter QuantumTheory.Transport
 
 /-- Planck's constant expressed through the reduced Planck constant, `h = 2πℏ`. -/
 def planckFromReduced (hbar : ℝ) : ℝ :=
