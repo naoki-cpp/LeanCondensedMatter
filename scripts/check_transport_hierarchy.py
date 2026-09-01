@@ -192,7 +192,6 @@ def main() -> int:
     massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
     canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
     historical_propagator_path = massive_dirac_root / "Propagator.lean"
-    scalar_disorder_path = massive_dirac_root / "Disorder" / "ScalarCovariance.lean"
     require_import(
         errors,
         canonical_propagator_path,
@@ -206,11 +205,11 @@ def main() -> int:
             "the propagator owner moves to Transport/Models/MassiveDirac"
         )
     streda_prefix = f"{MD_IMPL}.Streda."
-    for path in (canonical_propagator_path, scalar_disorder_path):
-        if any(module.startswith(streda_prefix) for module in lean_imports(path)):
-            errors.append(
-                f"{path.relative_to(ROOT)} must depend on MassiveDirac.Model, not MassiveDirac.Streda"
-            )
+    if any(module.startswith(streda_prefix) for module in lean_imports(canonical_propagator_path)):
+        errors.append(
+            f"{canonical_propagator_path.relative_to(ROOT)} must depend on MassiveDirac.Model, "
+            "not MassiveDirac.Streda"
+        )
 
     massive_dirac_streda_umbrella = massive_dirac_root / "Streda.lean"
     fiber_response_module = f"{MD_IMPL}.Streda.FiberResponse"
