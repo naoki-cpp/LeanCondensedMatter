@@ -85,30 +85,8 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
       (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
     simp
   have hzero (x : w) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hspan :
-        Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
-      rw [Submodule.span_le]
-      rintro y ⟨a, rfl⟩
-      refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
-      have hne : j a ≠ x := by
-        intro h
-        exact hx ⟨a, h⟩
-      have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
-      rw [hb_j] at horth
-      exact horth
-    have hxorth :
-        (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
-      rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
-      intro y hy
-      have hy' := hspan hy
-      exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 hy'
-    have hxker_mem :
-        (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
-      rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
-      simpa [e] using hxorth
-    have hxker : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
-      have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
-      simpa using hxev
+    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
+      hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
     have hentropy : entropyOp ρ (b x) = 0 := by
       simpa using
         (entropyOp_apply_eigenvector ρ (v := b x) (c := 0) (by simpa using hxker))
@@ -120,11 +98,7 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
   have hrestricted :
       HasSum (g ∘ j) (entropyOpSpectralTraceClass ρ hsummable).trace :=
     (hj.hasSum_iff hzero).mpr hfull
-  have hfunctions :
-      (g ∘ j) = fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1 := by
-    funext a
-    exact hpoint a
-  rwa [hfunctions] at hrestricted
+  simpa only [Function.comp_apply] using HasSum.congr_fun hrestricted hpoint
 
 /-- The entropy-operator trace is the sum of `-λ log λ`. -/
 theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
