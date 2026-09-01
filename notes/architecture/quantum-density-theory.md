@@ -16,37 +16,13 @@ actually require an ordinary finite matrix trace or another genuinely finite con
 
 Canonical ownership is feature-based:
 
-```text
-QuantumTheory/
-├── Postulates.lean
-├── DensityOperator.lean
-├── DensityOperator/
-│   ├── Basic.lean
-│   ├── Pure.lean
-│   ├── Purity.lean
-│   ├── Expectation.lean
-│   ├── ExpectationOrder.lean
-│   ├── ObservableExpectation.lean
-│   ├── Diagonal.lean
-│   ├── DiagonalExpectation.lean
-│   ├── DiagonalFormula.lean
-│   └── Finite.lean
-├── POVM/
-│   ├── Basic.lean
-│   └── Born.lean
-├── Entropy.lean
-├── Entropy/
-│   ├── Basic.lean
-│   ├── Diagonal.lean
-│   └── Finite.lean
-└── Gibbs/
-    ├── State.lean
-    ├── EnergyExpectation.lean
-    ├── FreeEnergy.lean
-    ├── Entropy.lean
-    ├── DiagonalEnergy.lean
-    └── Variational.lean
-```
+- `QuantumTheory/Postulates.lean` owns pure states, bounded observables, and vector-state expectations;
+- `QuantumTheory/DensityOperator/` owns mixed-state construction, expectation, purity, diagonal
+  formulas, and finite-dimensional specializations;
+- `QuantumTheory/POVM/` owns countable discrete measurements and Born probabilities;
+- `QuantumTheory/Entropy/` owns von Neumann entropy and its diagonal/finite specializations;
+- `QuantumTheory/Gibbs/` owns bounded Gibbs states, energy and free-energy results, entropy,
+  equality/minimizer uniqueness, diagonal formulas, and pure-point Gibbs constructions.
 
 `QuantumTheory/DensityOperator.lean` and `QuantumTheory/Entropy.lean` are public umbrella modules.
 Finite-dimensional specializations remain with the feature they specialize rather than forming a
@@ -140,9 +116,13 @@ For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by con
 calculus as `exp (-β Hop)`. `gibbsState` normalizes this operator when compactness, spectral
 summability, and nonzero spectral trace are supplied.
 
+For `β > 0`, the Helmholtz lower bound is attained exactly by the canonical Gibbs state under those
+hypotheses. Pure-point spectral data provide a separate state-level Gibbs construction when the
+Boltzmann weights are summable.
+
 The bounded model has the known limitation that compactness of this invertible exponential forces
 finite dimensionality. Genuine infinite-dimensional Gibbs states therefore require the separate
-unbounded/domain-aware line.
+unbounded/domain-aware line or explicit pure-point spectral data.
 
 `energyExpValue` is the Hamiltonian-facing observable expectation API. The Lean library proves its
 relation to the generic expectation and its diagonal formulas. Architecture CI protects ownership and

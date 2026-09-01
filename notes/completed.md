@@ -18,12 +18,15 @@ architectural context and later infinite-dimensional or convergence-aware extens
 | Analytic finite-dimensional fermionic Linked Cluster Theorem | Combined | `SecondQuantization.Fermionic.iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterIdentification.lean` |
 | Finite-mode fermionic two-point linked-cluster theorem | D | `SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean` |
 
-The finite-mode fermionic line is complete through both the vacuum/free-energy linked-cluster theorem
-and the vacuum-normalized two-point series: the latter equals the formal series formed from externally
-connected two-point diagrams. The vacuum analytic theorem additionally identifies logarithmic
-derivatives of the genuine finite-dimensional interacting partition function with connected quartic
-diagram amplitudes.
+The finite-mode fermionic line is complete through both the zero-external-leg/partition-function
+linked-cluster theorem and the vacuum-normalized two-point series: the latter equals the formal series
+formed from externally connected two-point diagrams. The analytic log-partition theorem additionally
+identifies logarithmic derivatives of the genuine finite-dimensional interacting partition function
+with connected quartic diagram amplitudes.
 
-Higher multi-leg/source-insertion expansions, thermodynamic limits, completed-space unbounded-operator
-theory, infinite-mode extensions, a general non-self-adjoint trace-class ideal, and the
-convergence-aware bosonic Dyson line remain separate targets.
+The completed fermionic free line also contains bounded completed CAR operators, explicit domains and
+self-adjointness results for supported unbounded diagonal operators, summability-controlled free Gibbs
+specializations, and finite-mode Gibbs convergence against bounded observables. Completed bosonic
+operator-domain theory, interacting completed-space perturbation theory, thermodynamic limits, a
+general non-self-adjoint trace-class ideal, and the convergence-aware bosonic Dyson line remain
+separate targets.

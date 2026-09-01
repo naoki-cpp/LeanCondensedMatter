@@ -1,9 +1,10 @@
 # Fermionic linked-cluster theorems
 
-The current proved line covers finite-mode fermionic vacuum/free-energy and two-point connected
-diagram expansions. It does not claim a thermodynamic limit or a general higher-point expansion.
+The current proved line covers finite-mode fermionic zero-external-leg/partition-function and
+two-point connected-diagram expansions. It does not claim a thermodynamic limit or a general
+higher-point expansion.
 
-## Formal vacuum theorem
+## Formal log-partition theorem
 
 For nonzero perturbation order `n`,
 
@@ -26,7 +27,7 @@ component factorization
   → formal linked-cluster theorem.
 ```
 
-## Analytic vacuum theorem
+## Analytic log-partition theorem
 
 For finite fermionic mode sets,
 
@@ -41,13 +42,13 @@ proves
 iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-for the local normalized logarithm of the interacting partition function.
+for the local normalized logarithm of the interacting finite-temperature partition function.
 
 ## Two-point theorem
 
-The two-point expansion separates the component containing the two external legs from vacuum
-components, yielding a Cauchy factorization of the Dyson coefficients. Power-series cancellation then
-gives
+The two-point expansion separates the component containing the two external legs from
+zero-external-leg components, yielding a Cauchy factorization of the Dyson coefficients. Power-series
+cancellation then gives
 
 ```lean
 vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
@@ -55,10 +56,11 @@ vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 
 from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean`.
 
-Schematically,
+Here `vacuumNormalized` is the Lean identifier for division by the zero-external-leg Dyson partition
+series; it does not mean that the thermal state is a vacuum state. Schematically,
 
 ```text
-(two-point Dyson series) / (vacuum Dyson series)
+(two-point Dyson series) / (zero-external-leg Dyson series)
   = externally connected two-point diagrams.
 ```
 

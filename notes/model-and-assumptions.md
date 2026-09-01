@@ -69,8 +69,9 @@ with `PurePointGibbsSummable` as the explicit state-existence hypothesis. On a f
 Gibbs-state implementation.
 
 The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
-bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. Uniqueness of the
-minimizer is not yet proved.
+bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. For `β > 0`, equality
+in the Helmholtz bound holds exactly for the canonical Gibbs state under the same compactness,
+summability, and nonzero-trace hypotheses.
 
 A bounded Hamiltonian cannot model a genuinely infinite-dimensional compact Gibbs operator: the
 operator exponential is invertible, so compactness forces finite dimensionality. Infinite-volume or
@@ -122,10 +123,12 @@ must state all summability, integrability, product-domain, and KMS assumptions e
   Hilbert-space inner products.
 - Bosonic creation, annihilation, and number operators are generally unbounded on completed Fock
   space. They must not be exposed as bounded continuous operators without a boundedness proof.
-- Infinite-mode free Hamiltonians and total number operators may also be unbounded in the fermionic
-  completed representation; completion alone does not supply their domains or self-adjointness.
+- Infinite-mode free Hamiltonians and total number operators may be unbounded in the fermionic
+  completed representation. The current free diagonal line supplies explicit `LinearPMap` domains
+  and analytic results for its supported operators; completion alone does not supply such domains
+  automatically.
 
-The staged boundary for completed operators, trace-class Gibbs states, finite-mode compatibility,
+The current boundary for completed operators, trace-class Gibbs states, finite-mode compatibility,
 and later thermodynamic limits is documented in
 [`roadmaps/completed-space-and-infinite-mode.md`](roadmaps/completed-space-and-infinite-mode.md).
 
