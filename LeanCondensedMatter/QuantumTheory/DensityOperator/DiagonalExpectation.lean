@@ -70,7 +70,7 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     rwa [htrace] at h
   have hrestricted : HasSum (g ∘ j) 1 := by
     simpa only [Function.comp_apply] using
-      HasSum.congr_fun hweights fun a => (hpoint a).symm
+      HasSum.congr_fun hweights hpoint
   have hfull : HasSum g 1 := (hj.hasSum_iff hzero).mp hrestricted
   exact IsHilbertSchmidt.of_isHilbertSchmidtWrt hfull.summable
 
@@ -130,7 +130,7 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
       (innerHS b ρ.sqrtOp (A * ρ.sqrtOp)) := by
     simpa only [Function.comp_apply] using
-      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) hpoint
+      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
   have hexpect : HasSum
       (fun a : EigenvectorIndex ρ.op =>
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
