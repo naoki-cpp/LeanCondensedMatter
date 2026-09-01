@@ -188,7 +188,8 @@ theorem star_retardedResolvent
   rw [← Ring.inverse_star]
   congr 1
   rw [star_sub, hself]
-  simp [Algebra.algebraMap_eq_smul_one]
+  simp [Algebra.algebraMap_eq_smul_one, retardedSpectralParameter,
+    advancedSpectralParameter]
 
 end
 end Transport
