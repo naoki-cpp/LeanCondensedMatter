@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
@@ -356,19 +356,6 @@ noncomputable def orderedTwoPointPairingValue {n : ℕ}
     (pairing : Pairing (2 * n + 1)) : ℂ :=
   pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
-
-omit [LinearOrder Mode] in
-private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
-    (ε : Mode → ℝ) (β : ℝ) :
-    Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
-  rw [Common.traceFock_diagonalEvolution_eq_weightSum]
-  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β := by
-    funext m
-    rw [Common.boltzmannWeight, freeBoltzmannWeight, fermionEnergy]
-    push_cast
-    ring_nf
-  rw [hw]
-  exact freePartitionFunction_ne_zero ε β
 
 private theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)

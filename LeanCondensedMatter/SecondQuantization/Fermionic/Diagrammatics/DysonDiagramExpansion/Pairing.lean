@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
@@ -25,18 +25,6 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Applying the general theorem to the flattened `4n`-leg family -/
-
-omit [LinearOrder Mode] in
-private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
-    Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
-  rw [Common.traceFock_diagonalEvolution_eq_weightSum]
-  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β := by
-    funext m
-    rw [Common.boltzmannWeight, freeBoltzmannWeight, fermionEnergy]
-    push_cast
-    ring_nf
-  rw [hw]
-  exact freePartitionFunction_ne_zero ε β
 
 private theorem finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing
     (ε : Mode → ℝ) (β : ℝ)
