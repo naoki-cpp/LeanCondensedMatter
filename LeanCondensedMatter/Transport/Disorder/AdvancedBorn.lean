@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
-import LeanCondensedMatter.Transport.Disorder.BornCommon
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 
 set_option linter.style.header false
@@ -7,12 +6,9 @@ set_option linter.style.header false
 /-!
 # Advanced finite-disorder Born self-energy
 
-This module provides the conventional advanced physical name for the canonical side-indexed
-first-Born self-energy owned by `Disorder.BornCommon`.
-
-Second-order Born truncations, exact remainders, closure errors, and closure hypotheses remain
-canonical `SpectralSide` objects in `BornCommon`; use their `.advanced` specialization directly
-instead of introducing parallel advanced wrapper APIs here.
+This module owns the conventional advanced first-Born self-energy for a finite disorder ensemble.
+It is the exact finite second-moment action evaluated on the clean advanced Green operator; no
+equality with the exact disorder-averaged self-energy or self-consistency is asserted here.
 -/
 
 namespace QuantumTheory
@@ -28,18 +24,19 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Conventional advanced name for the canonical side-indexed first-Born self-energy. -/
+/-- Advanced first-Born self-energy: the exact finite second moment evaluated on the clean advanced
+Green operator. -/
 noncomputable def bornAdvancedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.bornSelfEnergy .advanced energy broadening
+  ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening)
 
 /-- The advanced Born self-energy is the exact finite second moment with a clean advanced internal
 propagator. -/
 theorem bornAdvancedSelfEnergy_eq_secondMoment
     (energy broadening : ℝ) :
     bornAdvancedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) := by
-  rw [bornAdvancedSelfEnergy, bornSelfEnergy_eq_secondMoment, freeGreen_advanced]
+      ensemble.exactSecondMoment (ensemble.freeAdvancedGreen energy broadening) :=
+  rfl
 
 end FiniteDisorderEnsemble
 

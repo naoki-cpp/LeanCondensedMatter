@@ -217,24 +217,8 @@ def main() -> int:
             root=ROOT,
             description="exact averaged self-energy bridge",
         )
-    born_common_module = "LeanCondensedMatter.Transport.Disorder.BornCommon"
-    require_import(
-        errors,
-        disorder_umbrella,
-        born_common_module,
-        root=ROOT,
-        description="disorder public umbrella",
-    )
     retarded_born_path = TRANSPORT / "Disorder" / "RetardedBorn.lean"
     advanced_born_path = TRANSPORT / "Disorder" / "AdvancedBorn.lean"
-    for path in (retarded_born_path, advanced_born_path):
-        require_import(
-            errors,
-            path,
-            born_common_module,
-            root=ROOT,
-            description="Born specialization",
-        )
 
     retired_born_path = TRANSPORT / "Disorder" / "Born.lean"
     if retired_born_path.exists():

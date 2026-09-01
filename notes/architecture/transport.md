@@ -64,7 +64,7 @@ either representation.
 ```text
 Finite ──→ Resolvent ──→ AveragedSelfEnergy
   │            │
-  └──→ Moments ├──→ BornCommon ──→ RetardedBorn / AdvancedBorn
+  └──→ Moments ├──→ RetardedBorn / AdvancedBorn
                ├──→ Ladder
                └──→ SCBA
 ```
@@ -77,9 +77,9 @@ configuration, and averaged Green operators. `Disorder.Moments` owns the exact s
 Green operator on an arbitrary complete complex Hilbert space and defines the canonical
 `Σ_exact = G₀⁻¹ - Ḡ⁻¹` satisfying `IsSelfEnergy`.
 
-`Disorder.BornCommon` owns the canonical side-indexed Born objects. Retarded/advanced modules keep
-only physics-facing self-energy names; truncations, remainders, closure errors, and closure
-hypotheses are specialized directly from the side-indexed API rather than duplicated.
+`Disorder.RetardedBorn` and `Disorder.AdvancedBorn` directly own the conventional first-Born
+self-energies, defined by applying the exact second-moment action to the corresponding clean Green
+operator. No separate side-indexed Born routing layer is maintained.
 
 `Disorder.SCBA` records supplied self-consistent approximation data and derives its side-indexed
 consequences. It is not identified with the exact disorder average. `Disorder.Ladder` owns reusable

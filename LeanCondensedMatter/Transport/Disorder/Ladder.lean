@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Transport.Disorder.BornCommon
+import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Disorder.Resolvent
 import Mathlib.Tactic
 
 set_option linter.style.header false
