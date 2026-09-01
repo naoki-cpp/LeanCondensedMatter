@@ -119,7 +119,7 @@ theorem hasSum_tail_of_bound {V : ℝ → A} (hVcont : Continuous V)
   simpa only [neg_neg] using
     (HasSum.congr_fun
       (hasSum_intervalIntegral_integrand_of_bound hVcont hOne hM hV hτ lam)
-      (intervalIntegral_integrand V τ lam)).neg
+      (fun n => (intervalIntegral_integrand V τ lam n).symm)).neg
 
 /-- The generic Dyson evolution solves the interaction-picture Volterra equation. -/
 theorem evolution_eq_one_sub_integral_of_bound {V : ℝ → A} (hVcont : Continuous V)
