@@ -24,7 +24,7 @@ namespace Transport
 
 /-- The `ℏ`-dependent prefactor in the two-dimensional physical-momentum continuum measure
 `d²p / (2πℏ)²`. -/
-def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
+noncomputable def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   1 / (2 * Real.pi * hbar) ^ 2
 
 end Transport
