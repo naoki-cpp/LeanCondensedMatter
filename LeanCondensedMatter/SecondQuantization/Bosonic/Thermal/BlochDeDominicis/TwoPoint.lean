@@ -34,21 +34,11 @@ private theorem matrixCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) : Common.matrixCoeff A m n = A (basisState n) m := rfl
 
 omit [Fintype Mode] in
-private theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
-    (c • basisState n : FockSpace Mode) n = c :=
-  Common.smul_basisState_apply_self c n
-
-omit [Fintype Mode] in
-private theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
-    (c • basisState m : FockSpace Mode) n = 0 :=
-  Common.smul_basisState_apply_of_ne c h
-
-omit [Fintype Mode] in
 /-- The diagonal matrix coefficient of `e^{τH₀}` is its basis eigenvalue. -/
 theorem matrixCoeff_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
     Common.matrixCoeff (imaginaryTimeEvolveFree ε τ) n n =
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) := by
-  rw [matrixCoeff_eq, imaginaryTimeEvolveFree_basisState, smul_basisState_apply_self]
+  rw [matrixCoeff_eq, imaginaryTimeEvolveFree_basisState, Common.smul_basisState_apply_self]
 
 omit [Fintype Mode] in
 /-- The annihilation matrix coefficient against the corresponding lowered state. -/
@@ -58,7 +48,7 @@ theorem matrixCoeff_annihilate_removeOccupation (i : Mode) (n : Occupation Mode)
   by_cases h : n i = 0
   · rw [annihilate_basisState_of_zero h, h]
     simp
-  · rw [annihilate_basisState_of_pos h, smul_basisState_apply_self]
+  · rw [annihilate_basisState_of_pos h, Common.smul_basisState_apply_self]
 
 omit [Fintype Mode] in
 /-- The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. -/
@@ -80,12 +70,12 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
       have hc := createOccupation_apply_same i n
       rw [heq] at hc
       omega
-    rw [smul_basisState_apply_of_ne _ hne, h]
+    rw [Common.smul_basisState_apply_of_ne _ hne, h]
     simp
   · have hcoordN : (removeOccupation i n) i + 1 = n i := by
       rw [removeOccupation_apply_same]; omega
     have hcoord : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by exact_mod_cast hcoordN
-    rw [createOccupation_removeOccupation_of_pos h, hcoord, smul_basisState_apply_self]
+    rw [createOccupation_removeOccupation_of_pos h, hcoord, Common.smul_basisState_apply_self]
 
 omit [Fintype Mode] in
 /-- Mixed matrix coefficients vanish when the annihilation and creation modes differ. -/
@@ -109,11 +99,11 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihila
           have hc := createOccupation_apply_same j (removeOccupation i n)
           rw [heq, removeOccupation_apply_ne (Ne.symm h)] at hc
           omega
-        rw [smul_basisState_apply_of_ne _ hne]
+        rw [Common.smul_basisState_apply_of_ne _ hne]
       rw [hval, zero_mul]
     · have hval : Common.matrixCoeff (annihilate i) k n = 0 := by
         rw [matrixCoeff_eq, annihilate_basisState_of_pos hi,
-          smul_basisState_apply_of_ne _ (Ne.symm hk)]
+          Common.smul_basisState_apply_of_ne _ (Ne.symm hk)]
       rw [hval, mul_zero]
 
 /-- The rotated equal-mode two-point double series is summable. -/
@@ -136,7 +126,7 @@ theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
         by_cases hi : x.1 i = 0
         · rw [matrixCoeff_eq, annihilate_basisState_of_zero hi]; simp
         · rw [matrixCoeff_eq, annihilate_basisState_of_pos hi,
-            smul_basisState_apply_of_ne _ (Ne.symm hk)]
+            Common.smul_basisState_apply_of_ne _ (Ne.symm hk)]
       rw [hFdef]
       simp only [Function.uncurry, hval, mul_zero]
   have hcomp : F ∘ g = fun n => (n i : ℂ) *

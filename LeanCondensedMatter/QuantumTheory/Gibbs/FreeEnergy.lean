@@ -141,10 +141,10 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
       β * (p a * h a) + p a * Real.log Z - p a + q a / Z := by
     intro a
     have hb := negMulLog_le_of_neg_log_le (p := p a) (q := q a) (Z := Z) (u := β * h a)
-      (eigenvalue_nonneg ρ a) (hqpos a) hZpos (hstep2 a)
+      (ρ.eigenvalue_nonneg a) (hqpos a) hZpos (hstep2 a)
     nlinarith [hb]
   have hp_summable : Summable p :=
-    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
+    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
     have hbound := hGibbs.sum_diagonalExpectationValue_le_trace
@@ -157,7 +157,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
       (fun a => β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     ((hph_summable.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
   have hnegMulLog_nonneg : ∀ a, 0 ≤ Real.negMulLog (p a) :=
-    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a)
+    fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a)
   obtain ⟨hnML_summable, hsum_le⟩ :=
     summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
   obtain ⟨hEntropyNeTop, hToReal⟩ :=

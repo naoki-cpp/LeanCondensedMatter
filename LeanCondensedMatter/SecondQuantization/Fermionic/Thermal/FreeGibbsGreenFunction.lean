@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
@@ -239,58 +240,6 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
       Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
--- Annihilating twice lowers the particle number by two, so no occupation state returns to itself.
-omit [Fintype Mode] in
-private theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 := by
-  change ((annihilate i).comp (annihilate j)) (basisState n) n = 0
-  by_cases hj : j ∈ n
-  · rw [LinearMap.comp_apply, annihilate_basisState_of_mem hj, map_smul]
-    by_cases hi : i ∈ removeOccupation j n
-    · rw [annihilate_basisState_of_mem hi, smul_smul]
-      have hjnot : j ∉ removeOccupation i (removeOccupation j n) := by
-        simp [removeOccupation]
-      refine Common.smul_basisState_apply_of_ne _ ?_
-      intro heq
-      rw [heq] at hjnot
-      exact hjnot hj
-    · rw [annihilate_basisState_of_not_mem hi, smul_zero]
-      simp
-  · rw [LinearMap.comp_apply, annihilate_basisState_of_not_mem hj, map_zero]
-    simp
-
--- Creating twice raises the particle number by two, so no occupation state returns to itself.
-omit [Fintype Mode] in
-private theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff ((create i).comp (create j)) n n = 0 := by
-  change ((create i).comp (create j)) (basisState n) n = 0
-  by_cases hj : j ∈ n
-  · rw [LinearMap.comp_apply, create_basisState_of_mem hj, map_zero]
-    simp
-  · rw [LinearMap.comp_apply, create_basisState_of_not_mem hj, map_smul]
-    by_cases hi : i ∈ insertOccupation j n
-    · rw [create_basisState_of_mem hi, smul_zero]
-      simp
-    · rw [create_basisState_of_not_mem hi, smul_smul]
-      have hjmem : j ∈ insertOccupation i (insertOccupation j n) := by
-        simp [insertOccupation]
-      refine Common.smul_basisState_apply_of_ne _ ?_
-      intro heq
-      rw [heq] at hjmem
-      exact hj hjmem
-
-private theorem normalizedWeightedDiagonal_annihilate_comp_annihilate
-    (w : Occupation Mode → ℂ) (i j : Mode) :
-    Common.normalizedWeightedDiagonal w ((annihilate i).comp (annihilate j)) = 0 := by
-  rw [Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_annihilate_comp_annihilate]
-
-private theorem normalizedWeightedDiagonal_create_comp_create
-    (w : Occupation Mode → ℂ) (i j : Mode) :
-    Common.normalizedWeightedDiagonal w ((create i).comp (create j)) = 0 := by
-  rw [Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_create_comp_create]
-
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
 operator with an annihilation operator. -/
@@ -298,8 +247,9 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator ((annihilate i).comp (annihilate j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
-  exact normalizedWeightedDiagonal_annihilate_comp_annihilate (freeBoltzmannWeight ε β) i j
+  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
+    Common.normalizedWeightedDiagonal]
+  simp [Common.weightedTrace, matrixCoeff_annihilate_comp_annihilate]
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -307,8 +257,9 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator ((create i).comp (create j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
-  exact normalizedWeightedDiagonal_create_comp_create (freeBoltzmannWeight ε β) i j
+  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
+    Common.normalizedWeightedDiagonal]
+  simp [Common.weightedTrace, matrixCoeff_create_comp_create]
 
 end Fermionic
 end SecondQuantization

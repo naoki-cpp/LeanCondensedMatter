@@ -20,22 +20,6 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The eigenvalues of a density operator are nonnegative. -/
-theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
-  eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
-
-/-- Every eigenvalue of a density operator is at most one. -/
-theorem density_eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
-    a.1.1 ≤ 1 := by
-  have hs : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
-    summable_eigenvectorIndex ρ.spectralTraceClass.summable
-  calc
-    a.1.1 = ∑ b ∈ ({a} : Finset (EigenvectorIndex ρ.op)), b.1.1 := by simp
-    _ ≤ ∑' b : EigenvectorIndex ρ.op, b.1.1 :=
-      Summable.sum_le_tsum {a} (fun b _ => eigenvalue_nonneg ρ b) hs
-    _ = spectralTrace ρ.op := rfl
-    _ = 1 := ρ.spectralTrace_op_eq_one
-
 /-- The bounded entropy operator obtained by applying `x ↦ -x log x` to a density operator. -/
 noncomputable def entropyOp (ρ : DensityOperator H) : H →L[ℂ] H :=
   cfc Real.negMulLog ρ.op
@@ -159,7 +143,7 @@ theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
     vonNeumannEntropy ρ ≠ ⊤ ∧
       (vonNeumannEntropy ρ).toReal = ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
   have hnonneg : ∀ a : EigenvectorIndex ρ.op, 0 ≤ Real.negMulLog a.1.1 :=
-    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a)
+    fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a)
   have hEntropyEq : vonNeumannEntropy ρ =
       ENNReal.ofReal (∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1) :=
     (ENNReal.ofReal_tsum_of_nonneg hnonneg hsum).symm
@@ -175,7 +159,7 @@ theorem vonNeumannEntropy_eq_ofReal_entropyOp_trace (ρ : DensityOperator H)
   symm
   rw [entropyOp_trace_eq_tsum ρ hsummable]
   exact ENNReal.ofReal_tsum_of_nonneg
-    (fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a))
+    (fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a))
     (hasSum_negMulLog_eigenvalues ρ hsummable).summable
 
 end QuantumTheory

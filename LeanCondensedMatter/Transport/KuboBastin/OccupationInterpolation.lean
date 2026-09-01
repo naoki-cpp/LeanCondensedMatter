@@ -61,16 +61,6 @@ theorem PurePointOccupationInterpolation.probability_sub_eq_integral
     (fun energy _ => interpolation.occupation_hasDerivAt energy)
     (interpolation.occupationDerivative_intervalIntegrable m n)
 
-/-- The same transition identity in the casted real-difference form used by the Lehmann weight. -/
-theorem PurePointOccupationInterpolation.probabilityDifference_eq_integral
-    {data : PurePointLehmannData system ι}
-    (interpolation : PurePointOccupationInterpolation system data)
-    (m n : ι) :
-    (((data.probability m - data.probability n : ℝ) : ℂ)) =
-      ∫ energy in data.energy n..data.energy m,
-        interpolation.occupationDerivative energy := by
-  simpa using interpolation.probability_sub_eq_integral system m n
-
 end
 end Transport
 end QuantumTheory

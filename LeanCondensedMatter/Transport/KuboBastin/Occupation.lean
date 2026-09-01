@@ -75,7 +75,10 @@ theorem purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
   unfold purePointKuboBastinSpectralVertexTerm
     purePointKuboBastinOccupationResolvedVertexTerm
     purePointKuboBastinVertexTransitionFactor
-  rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
+  rw [show (((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) =
+      ∫ energy in data.energy mn.2..data.energy mn.1,
+        interpolation.occupationDerivative energy by
+    simpa using interpolation.probability_sub_eq_integral system mn.1 mn.2]
   ring
 
 variable [Fintype ι]
