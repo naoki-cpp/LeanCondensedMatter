@@ -122,7 +122,7 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
       (∑ i, g i) := by
     simpa only [Function.comp_apply] using
-      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) hpoint
+      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
   have hsum :
       (∑' a : EigenvectorIndex ρ.op,
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a))) = ∑ i, g i :=
