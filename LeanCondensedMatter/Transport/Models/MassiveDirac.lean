@@ -17,6 +17,6 @@ disorder specialization, and longitudinal response as sibling/downstream layers 
 
 The implementation leaf modules are being relocated from their historical `AnomalousHall` path under
 #1840. The clean model kernel and clean propagator are now canonically owned under
-`Transport/Models/MassiveDirac`; remaining response and disorder leaves still use compatibility
-routing until their migration slices land.
+`Transport/Models/MassiveDirac`; the historical propagator route has been removed. Remaining response
+and disorder leaves are migrated independently rather than extending compatibility routing.
 -/
