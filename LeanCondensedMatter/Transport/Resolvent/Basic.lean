@@ -189,7 +189,7 @@ theorem star_retardedResolvent
   congr 1
   rw [star_sub, hself]
   simp [Algebra.algebraMap_eq_smul_one, retardedSpectralParameter,
-    advancedSpectralParameter]
+    advancedSpectralParameter, sub_eq_add_neg]
 
 end
 end Transport
