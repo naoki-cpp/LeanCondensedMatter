@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Transport.Analysis.BandOccupation
 
 set_option linter.style.header false
