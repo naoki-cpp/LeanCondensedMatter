@@ -110,6 +110,13 @@ theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
   simp [advancedSpectralParameter]
 
+private @[simp] theorem star_retardedSpectralParameter
+    (energy broadening : ℝ) :
+    star (retardedSpectralParameter energy broadening) =
+      advancedSpectralParameter energy broadening := by
+  apply Complex.ext <;>
+    simp [retardedSpectralParameter, advancedSpectralParameter]
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- Green operator on either spectral side, `((E + s iη) I - H)⁻¹`. -/
@@ -188,8 +195,7 @@ theorem star_retardedResolvent
   rw [← Ring.inverse_star]
   congr 1
   rw [star_sub, hself]
-  simp [Algebra.algebraMap_eq_smul_one, retardedSpectralParameter,
-    advancedSpectralParameter, sub_eq_add_neg]
+  simp [Algebra.algebraMap_eq_smul_one]
 
 end
 end Transport
