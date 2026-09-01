@@ -292,6 +292,37 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
   rw [hFGbot, Submodule.mem_bot] at this
   rwa [this, add_zero]
 
+/-- A Hilbert-basis vector outside the embedded canonical nonzero-eigenvector family lies in the
+kernel of a compact symmetric operator. -/
+theorem hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
+    (hT : IsCompactOperator T) (hT' : T.IsSymmetric)
+    {ι : Type*} (b : HilbertBasis ι ℂ H) (j : EigenvectorIndex T → ι)
+    (hbj : ∀ a, b (j a) = eigenvectorFamily hT a)
+    (x : ι) (hx : x ∉ Set.range j) :
+    T (b x) = 0 := by
+  have hspan :
+      Submodule.span ℂ (Set.range (eigenvectorFamily hT)) ≤ (ℂ ∙ (b x : H))ᗮ := by
+    rw [Submodule.span_le]
+    rintro y ⟨a, rfl⟩
+    refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
+    have hne : j a ≠ x := by
+      intro h
+      exact hx ⟨a, h⟩
+    have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
+    rwa [hbj a] at horth
+  have hxorth :
+      (b x : H) ∈
+        (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosureᗮ := by
+    rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
+    intro y hy
+    exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 (hspan hy)
+  have hxker :
+      (b x : H) ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) := by
+    rw [← orthogonal_closure_span_eigenvectorFamily hT hT']
+    exact hxorth
+  have hxev := Module.End.mem_eigenspace_iff.mp hxker
+  simpa using hxev
+
 private noncomputable def eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
     EigenvectorIndex T →
       (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure :=
