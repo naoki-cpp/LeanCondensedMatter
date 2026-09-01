@@ -26,6 +26,7 @@ noncomputable section
 
 open MeasureTheory
 open Filter
+open QuantumTheory.Transport
 open scoped Interval
 
 /-- Real-valued closed form of the normalized radial `σₓ` current-rung integrand.  This is the
