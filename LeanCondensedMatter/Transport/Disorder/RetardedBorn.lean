@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
-import LeanCondensedMatter.Transport.Disorder.BornCommon
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 
 set_option linter.style.header false
@@ -7,12 +6,9 @@ set_option linter.style.header false
 /-!
 # Retarded finite-disorder Born self-energy
 
-This module provides the conventional retarded physical name for the canonical side-indexed
-first-Born self-energy owned by `Disorder.BornCommon`.
-
-Second-order Born truncations, exact remainders, closure errors, and closure hypotheses remain
-canonical `SpectralSide` objects in `BornCommon`; use their `.retarded` specialization directly
-instead of introducing parallel retarded wrapper APIs here.
+This module owns the conventional retarded first-Born self-energy for a finite disorder ensemble.
+It is the exact finite second-moment action evaluated on the clean retarded Green operator; no
+equality with the exact disorder-averaged self-energy or self-consistency is asserted here.
 -/
 
 namespace QuantumTheory
@@ -28,24 +24,18 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Conventional retarded name for the canonical side-indexed first-Born self-energy. -/
+/-- Retarded first-Born self-energy: the exact finite second moment evaluated on the clean retarded
+Green operator. -/
 noncomputable def bornRetardedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.bornSelfEnergy .retarded energy broadening
+  ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening)
 
-/-- The Born self-energy is the exact finite second moment with a clean retarded internal
+/-- The retarded Born self-energy is the exact finite second moment with a clean retarded internal
 propagator. -/
 theorem bornRetardedSelfEnergy_eq_secondMoment
     (energy broadening : ℝ) :
     bornRetardedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) := by
-  rw [bornRetardedSelfEnergy, bornSelfEnergy_eq_secondMoment, freeGreen_retarded]
-
-@[simp]
-theorem bornSelfEnergy_retarded
-    (energy broadening : ℝ) :
-    ensemble.bornSelfEnergy .retarded energy broadening =
-      ensemble.bornRetardedSelfEnergy energy broadening :=
+      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) :=
   rfl
 
 end FiniteDisorderEnsemble
