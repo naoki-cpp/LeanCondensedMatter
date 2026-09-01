@@ -27,7 +27,7 @@ algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 
 ```text
 Transport/
-├── Core/          physical volume, normalization, conductivity tensor
+├── Core/          physical volume, continuum measure, normalization, conductivity tensor
 ├── Resolvent/     spectral sides, Green operators, self-energy algebra
 ├── Analysis/      transport-specific occupation analysis
 ├── KuboBastin/    Lehmann-to-resolvent and finite spectral sums
@@ -43,6 +43,10 @@ The main semantic boundaries are:
 - physical prefactors, volume or continuum normalization, and limiting procedures remain explicit
   before constructing a `Core.ConductivityTensor`;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
+
+`Core.ContinuumMeasure` owns the two-dimensional physical-momentum convention
+`d²p/(2πℏ)²`. Model-specific angular or radial reductions remain downstream until a reduced measure
+normalization has genuine reuse beyond one concrete derivation.
 
 ## Resolvent and response boundary
 
