@@ -40,6 +40,7 @@ def main() -> int:
     massive_dirac_public_umbrella = TRANSPORT / "Models" / "MassiveDirac.lean"
     for module in (
         MD_MODEL,
+        f"{MD_PUBLIC}.Propagator",
         f"{MD_IMPL}.Intrinsic",
         f"{MD_IMPL}.Streda",
         f"{MD_IMPL}.Bastin",
@@ -190,16 +191,21 @@ def main() -> int:
 
     massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
     operator_module = f"{MD_IMPL}.Model.Operator"
-    operator_spectral_module = f"{MD_IMPL}.Model.OperatorSpectral"
-    propagator_path = massive_dirac_root / "Propagator.lean"
+    canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
+    historical_propagator_path = massive_dirac_root / "Propagator.lean"
     scalar_disorder_path = massive_dirac_root / "Disorder" / "ScalarCovariance.lean"
     require_import(
         errors,
-        propagator_path,
-        operator_spectral_module,
+        canonical_propagator_path,
+        canonical_operator_spectral_module,
         root=ROOT,
         description="massive-Dirac propagator model ownership",
     )
+    if historical_propagator_path.exists():
+        errors.append(
+            "Transport/AnomalousHall/MassiveDirac/Propagator.lean must not remain after "
+            "the propagator owner moves to Transport/Models/MassiveDirac"
+        )
     require_import(
         errors,
         scalar_disorder_path,
@@ -208,7 +214,7 @@ def main() -> int:
         description="massive-Dirac disorder model ownership",
     )
     streda_prefix = f"{MD_IMPL}.Streda."
-    for path in (propagator_path, scalar_disorder_path):
+    for path in (canonical_propagator_path, scalar_disorder_path):
         if any(module.startswith(streda_prefix) for module in lean_imports(path)):
             errors.append(
                 f"{path.relative_to(ROOT)} must depend on MassiveDirac.Model, not MassiveDirac.Streda"

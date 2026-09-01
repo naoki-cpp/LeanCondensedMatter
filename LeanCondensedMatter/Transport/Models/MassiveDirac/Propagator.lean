@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 
 set_option linter.style.header false
 

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import Mathlib.Tactic
 
 set_option linter.style.header false
