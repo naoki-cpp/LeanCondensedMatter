@@ -20,27 +20,26 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 
 | Target | Track | Status | Details |
 |---|---|---|---|
-| Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-axiomatic-quantum-theory) |
+| Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-bounded-theory) |
 | Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
 | Canonical purity, bounds, pure-state value, and finite-dimensional trace formula | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |
-| Maximal-purity rank-one characterization | A/C | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
-| Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-the-born-rule) |
+| Maximal-purity rank-one characterization | A/C | `idea` | [quantum-theory open work](roadmaps/quantum-theory-foundations.md#open-work) |
+| Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-born-probabilities) |
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
-| Bounded Gibbs state, free-energy bound, and Gibbs entropy identity | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
-| Uniqueness of the Gibbs free-energy minimizer | A | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
-| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
+| Bounded Gibbs state, free-energy bound, Gibbs entropy identity, and minimizer uniqueness | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
+| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Combinatorics/PowerSeriesCumulant.lean` |
-| Compact self-adjoint spectral decomposition | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#compact-self-adjoint-spectral-tools) |
-| Spectral trace-class theory and trace identities | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#spectral-trace-class-operators) |
-| Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
-| Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) · #659 |
-| General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
-| General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#dependency-graph-for-a-general-fredholm-determinant) |
+| Compact self-adjoint spectral decomposition | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
+| Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
+| Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
+| Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) |
+| General non-self-adjoint trace-class ideal | C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
+| General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#requirements-for-a-general-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` |
 | Finite-volume Kubo–Bastin and regularized Středa response chain | A/C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-clean-response-chain) |
 | Exact finite-disorder averaged Green invertibility and canonical exact self-energy at nonzero broadening | C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-disorder-chain) |
