@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBoundary
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 
 set_option linter.style.header false
 
@@ -23,45 +24,6 @@ noncomputable section
 variable {Mode : Type*} [Fintype Mode]
 
 omit [Fintype Mode] in
-/-- Coordinate formula for the free diagonal evolution on an arbitrary algebraic-Fock vector. -/
-private theorem imaginaryTimeEvolveFree_apply_coord
-    (ε : Mode → ℝ) (τ : ℝ) (x : FockSpace Mode) (n : Occupation Mode) :
-    imaginaryTimeEvolveFree ε τ x n =
-      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) * x n := by
-  let eval : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
-  have hmap : eval.comp (imaginaryTimeEvolveFree ε τ) =
-      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) • eval := by
-    apply Finsupp.lhom_ext
-    intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
-      (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState]
-    simp only [map_smul, LinearMap.smul_apply, eval, Finsupp.lapply_apply, smul_eq_mul]
-    by_cases h : a = n
-    · subst a
-      have hself : (basisState n : FockSpace Mode) n = 1 := by
-        simp [basisState, Common.basisState]
-      rw [hself]
-    · have hne : (basisState a : FockSpace Mode) n = 0 := by
-        simp [basisState, Common.basisState, h]
-      rw [hne]
-      simp
-  have hx := congrArg (fun L => L x) hmap
-  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
-    smul_eq_mul] using hx
-
-omit [Fintype Mode] in
-/-- Left composition by the free diagonal evolution rescales a matrix coefficient by the output
-occupation's Boltzmann phase. -/
-theorem matrixCoeff_imaginaryTimeEvolveFree_comp
-    (ε : Mode → ℝ) (τ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (m n : Occupation Mode) :
-    Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp A) m n =
-      Complex.exp ((τ * freeEigenvalue ε m : ℝ) : ℂ) * Common.matrixCoeff A m n := by
-  rw [Common.matrixCoeff, LinearMap.comp_apply, imaginaryTimeEvolveFree_apply_coord]
-  rfl
-
-omit [Fintype Mode] in
 /-- The diagonal free-Gibbs numerator is invariant under interaction-picture conjugation. -/
 theorem matrixCoeff_freeGibbs_interactionPicture_self
     (ε : Mode → ℝ) (β σ : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
@@ -69,8 +31,9 @@ theorem matrixCoeff_freeGibbs_interactionPicture_self
     Common.matrixCoeff
         ((imaginaryTimeEvolveFree ε (-β)).comp (interactionPicture ε V σ)) n n =
       Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp V) n n := by
-  rw [matrixCoeff_imaginaryTimeEvolveFree_comp,
-    matrixCoeff_imaginaryTimeEvolveFree_comp, interactionPicture,
+  simp only [imaginaryTimeEvolveFree]
+  rw [Common.matrixCoeff_diagonalEvolution_comp,
+    Common.matrixCoeff_diagonalEvolution_comp, interactionPicture,
     Common.matrixCoeff_interactionPicture]
   simp
 
