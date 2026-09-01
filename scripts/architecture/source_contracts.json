@@ -419,11 +419,6 @@
       ]
     },
     {
-      "id": "transportFiniteDisorder",
-      "path": "LeanCondensedMatter/Transport/Disorder/Finite.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]
-    },
-    {
       "id": "transportKuboBastinPurePoint",
       "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
       "modules": [
