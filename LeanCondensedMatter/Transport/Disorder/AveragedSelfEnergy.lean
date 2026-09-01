@@ -19,9 +19,7 @@ an arbitrary Hilbert space and hence defines the canonical exact self-energy
 Σ_exact = G₀⁻¹ - Ḡ⁻¹.
 ```
 
-The conditional bridge remains available when a two-sided inverse of the averaged Green operator is
-supplied explicitly. No exact object in this module is identified with Born or SCBA approximation
-data.
+No exact object in this module is identified with Born or SCBA approximation data.
 -/
 
 namespace QuantumTheory
@@ -354,70 +352,6 @@ theorem averagedGreen_isUnit
   exact ⟨ensemble.averagedGreen_denseRange side energy broadening hbroadening,
     ensemble.averagedGreen_antilipschitz side energy broadening hbroadening⟩
 
-/-- If `averagedInverse` is a two-sided inverse of the exact averaged Green operator, then a
-candidate self-energy satisfies the exact two-sided Dyson relation exactly when it is the difference
-between the clean spectral shift and `averagedInverse`.
-
-The nonzero-broadening hypothesis supplies the two-sided inverse of the clean Green operator. -/
-theorem averagedGreen_isSelfEnergy_iff_eq_inverse_sub_inverse
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
-    (averagedInverse selfEnergy : H →L[ℂ] H)
-    (haveragedLeft :
-      averagedInverse * ensemble.averagedGreen side energy broadening = 1)
-    (haveragedRight :
-      ensemble.averagedGreen side energy broadening * averagedInverse = 1) :
-    IsSelfEnergy
-        (ensemble.freeGreen side energy broadening)
-        (ensemble.averagedGreen side energy broadening)
-        selfEnergy ↔
-      selfEnergy =
-        (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-            ensemble.baseHamiltonian.1) - averagedInverse := by
-  let freeInverse : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-      ensemble.baseHamiltonian.1
-  have hfreeLeft :
-      freeInverse * ensemble.freeGreen side energy broadening = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreen] using
-      spectralShift_mul_spectralResolvent side
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-        energy broadening hbroadening
-  have hfreeRight :
-      ensemble.freeGreen side energy broadening * freeInverse = 1 := by
-    simpa [freeInverse, FiniteDisorderEnsemble.freeGreen] using
-      spectralResolvent_mul_spectralShift side
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-        energy broadening hbroadening
-  have hiff := IsSelfEnergy.iff_eq_inverse_sub_inverse
-    (freeGreen := ensemble.freeGreen side energy broadening)
-    (dressedGreen := ensemble.averagedGreen side energy broadening)
-    (selfEnergy := selfEnergy)
-    (freeInverse := freeInverse)
-    (dressedInverse := averagedInverse)
-    hfreeLeft hfreeRight haveragedLeft haveragedRight
-  simpa [freeInverse] using hiff
-
-/-- A supplied two-sided inverse of the exact averaged Green operator produces an exact Dyson
-self-energy through the inverse-difference formula. -/
-theorem averagedGreen_inverseDifference_isSelfEnergy
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0)
-    (averagedInverse : H →L[ℂ] H)
-    (haveragedLeft :
-      averagedInverse * ensemble.averagedGreen side energy broadening = 1)
-    (haveragedRight :
-      ensemble.averagedGreen side energy broadening * averagedInverse = 1) :
-    IsSelfEnergy
-      (ensemble.freeGreen side energy broadening)
-      (ensemble.averagedGreen side energy broadening)
-      ((algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          ensemble.baseHamiltonian.1) - averagedInverse) := by
-  apply (ensemble.averagedGreen_isSelfEnergy_iff_eq_inverse_sub_inverse
-    side energy broadening hbroadening averagedInverse
-    ((algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-        ensemble.baseHamiltonian.1) - averagedInverse)
-    haveragedLeft haveragedRight).2
-  rfl
-
 /-- Canonical exact finite-disorder self-energy at nonzero broadening in an arbitrary Hilbert space.
 Its inverse is extracted from the proved unit structure of the exact averaged Green operator. -/
 noncomputable def exactSelfEnergy
@@ -430,28 +364,6 @@ noncomputable def exactSelfEnergy
   exact
     (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
         ensemble.baseHamiltonian.1) - averagedInverse
-
-/-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation. -/
-theorem exactSelfEnergy_isSelfEnergy
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    IsSelfEnergy
-      (ensemble.freeGreen side energy broadening)
-      (ensemble.averagedGreen side energy broadening)
-      (ensemble.exactSelfEnergy side energy broadening hbroadening) := by
-  let hunit : IsUnit (ensemble.averagedGreen side energy broadening) :=
-    ensemble.averagedGreen_isUnit side energy broadening hbroadening
-  let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
-  let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
-  change
-    IsSelfEnergy
-      (ensemble.freeGreen side energy broadening)
-      (ensemble.averagedGreen side energy broadening)
-      ((algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-          ensemble.baseHamiltonian.1) - averagedInverse)
-  apply ensemble.averagedGreen_inverseDifference_isSelfEnergy
-    side energy broadening hbroadening averagedInverse
-  · simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
-  · simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
 
 /-- At nonzero broadening, the canonical exact self-energy is the unique self-energy satisfying the
 exact two-sided Dyson relation for the clean and disorder-averaged Green operators. -/
@@ -467,20 +379,52 @@ theorem isSelfEnergy_iff_eq_exactSelfEnergy
     ensemble.averagedGreen_isUnit side energy broadening hbroadening
   let averagedUnit : (H →L[ℂ] H)ˣ := hunit.unit
   let averagedInverse : H →L[ℂ] H := ↑(averagedUnit⁻¹)
+  let freeInverse : H →L[ℂ] H :=
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+      ensemble.baseHamiltonian.1
   change
     IsSelfEnergy
         (ensemble.freeGreen side energy broadening)
         (ensemble.averagedGreen side energy broadening)
         selfEnergy ↔
-      selfEnergy =
-        (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
-            ensemble.baseHamiltonian.1) - averagedInverse
-  have hleft : averagedInverse * ensemble.averagedGreen side energy broadening = 1 := by
+      selfEnergy = freeInverse - averagedInverse
+  have hfreeLeft :
+      freeInverse * ensemble.freeGreen side energy broadening = 1 := by
+    simpa [freeInverse, FiniteDisorderEnsemble.freeGreen] using
+      spectralShift_mul_spectralResolvent side
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
+        energy broadening hbroadening
+  have hfreeRight :
+      ensemble.freeGreen side energy broadening * freeInverse = 1 := by
+    simpa [freeInverse, FiniteDisorderEnsemble.freeGreen] using
+      spectralResolvent_mul_spectralShift side
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
+        energy broadening hbroadening
+  have haveragedLeft :
+      averagedInverse * ensemble.averagedGreen side energy broadening = 1 := by
     simpa [averagedInverse, averagedUnit] using hunit.val_inv_mul
-  have hright : ensemble.averagedGreen side energy broadening * averagedInverse = 1 := by
+  have haveragedRight :
+      ensemble.averagedGreen side energy broadening * averagedInverse = 1 := by
     simpa [averagedInverse, averagedUnit] using hunit.mul_val_inv
-  exact ensemble.averagedGreen_isSelfEnergy_iff_eq_inverse_sub_inverse
-    side energy broadening hbroadening averagedInverse selfEnergy hleft hright
+  exact IsSelfEnergy.iff_eq_inverse_sub_inverse
+    (freeGreen := ensemble.freeGreen side energy broadening)
+    (dressedGreen := ensemble.averagedGreen side energy broadening)
+    (selfEnergy := selfEnergy)
+    (freeInverse := freeInverse)
+    (dressedInverse := averagedInverse)
+    hfreeLeft hfreeRight haveragedLeft haveragedRight
+
+/-- The canonical exact finite-disorder self-energy satisfies the exact two-sided Dyson relation. -/
+theorem exactSelfEnergy_isSelfEnergy
+    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    IsSelfEnergy
+      (ensemble.freeGreen side energy broadening)
+      (ensemble.averagedGreen side energy broadening)
+      (ensemble.exactSelfEnergy side energy broadening hbroadening) := by
+  apply (ensemble.isSelfEnergy_iff_eq_exactSelfEnergy
+    side energy broadening hbroadening
+    (ensemble.exactSelfEnergy side energy broadening hbroadening)).2
+  rfl
 
 end FiniteDisorderEnsemble
 
