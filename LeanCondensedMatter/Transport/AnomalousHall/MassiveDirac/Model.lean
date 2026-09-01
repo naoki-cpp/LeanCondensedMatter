@@ -1,16 +1,10 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model
 
 set_option linter.style.header false
 
 /-!
-# Massive-Dirac model
+# Massive-Dirac model compatibility import
 
-Public umbrella for the matrix model, bounded-operator realization and in-plane current API, radial
-kinematics, spectral occupation and Fermi-surface kinematics, and matrix/operator spectral-projector
-algebra. Canonical implementations live under `MassiveDirac/Model/`.
+The canonical model implementation is owned by `Transport.Models.MassiveDirac.Model`.
+This historical import path is retained temporarily while downstream modules migrate under #1840.
 -/

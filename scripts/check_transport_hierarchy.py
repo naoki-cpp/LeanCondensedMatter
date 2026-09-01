@@ -13,6 +13,7 @@ TRANSPORT = LEAN / "Transport"
 
 MD_IMPL = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
 MD_PUBLIC = "LeanCondensedMatter.Transport.Models.MassiveDirac"
+MD_MODEL = f"{MD_PUBLIC}.Model"
 
 
 def main() -> int:
@@ -38,7 +39,7 @@ def main() -> int:
     )
     massive_dirac_public_umbrella = TRANSPORT / "Models" / "MassiveDirac.lean"
     for module in (
-        f"{MD_IMPL}.Model",
+        MD_MODEL,
         f"{MD_IMPL}.Intrinsic",
         f"{MD_IMPL}.Streda",
         f"{MD_IMPL}.Bastin",
@@ -174,11 +175,11 @@ def main() -> int:
             description="exact averaged self-energy bridge",
         )
 
-    massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
-    massive_dirac_model_umbrella = massive_dirac_root / "Model.lean"
-    operator_module = f"{MD_IMPL}.Model.Operator"
-    operator_spectral_module = f"{MD_IMPL}.Model.OperatorSpectral"
-    for module in (operator_module, operator_spectral_module):
+    massive_dirac_model_root = TRANSPORT / "Models" / "MassiveDirac"
+    massive_dirac_model_umbrella = massive_dirac_model_root / "Model.lean"
+    canonical_operator_module = f"{MD_MODEL}.Operator"
+    canonical_operator_spectral_module = f"{MD_MODEL}.OperatorSpectral"
+    for module in (canonical_operator_module, canonical_operator_spectral_module):
         require_import(
             errors,
             massive_dirac_model_umbrella,
@@ -187,6 +188,9 @@ def main() -> int:
             description="massive-Dirac model implementation umbrella",
         )
 
+    massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
+    operator_module = f"{MD_IMPL}.Model.Operator"
+    operator_spectral_module = f"{MD_IMPL}.Model.OperatorSpectral"
     propagator_path = massive_dirac_root / "Propagator.lean"
     scalar_disorder_path = massive_dirac_root / "Disorder" / "ScalarCovariance.lean"
     require_import(

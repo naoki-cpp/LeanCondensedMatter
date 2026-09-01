@@ -3,22 +3,22 @@
     {
       "id": "massiveDiracFoundation",
       "sourceRoots": [
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Model",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Longitudinal"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
         "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic",
         "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal"
       ],
       "layers": [
-        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
-        {"id": "modelOperator", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator"]},
-        {"id": "modelKinematics", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics"]},
-        {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation"]},
-        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral"]},
-        {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral"]},
+        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic"]},
+        {"id": "modelOperator", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator"]},
+        {"id": "modelKinematics", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics"]},
+        {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation"]},
+        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral"]},
+        {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
         {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge"]},
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
         {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
