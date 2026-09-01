@@ -16,6 +16,7 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+omit [CompleteSpace H] in
 private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
     (A : H →L[ℂ] H) {x : H} (hx : ‖x‖ = 1) :
     ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖A‖ := by
@@ -47,7 +48,7 @@ theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
       simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
     rwa [htrace] at h
   exact HasSum.congr_fun hsum fun a =>
-    (abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)).symm
+    abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
 
 /-- The unbundled complex expectation value used to construct `DensityOperator.expectation`. -/
 private noncomputable def densityExpectation (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
