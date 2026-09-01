@@ -37,7 +37,7 @@ theorem resolvent_spectralParameter_apply_eigenvector
     resolvent hamiltonian (spectralParameter side energy broadening) v =
       (spectralParameter side energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
   apply QuantumTheory.resolvent_apply_eigenvector
-  · exact spectralParameter_not_mem_spectrum_of_im_ne_zero
+  · exact QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
       hamiltonian hself (spectralParameter side energy broadening)
         (by
           rw [spectralParameter_im]
