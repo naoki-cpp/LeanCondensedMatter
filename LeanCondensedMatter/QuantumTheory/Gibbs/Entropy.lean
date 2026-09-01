@@ -36,6 +36,7 @@ theorem vonNeumannEntropy_gibbs_diagonal
   have hEnergySum : HasSum (fun i => w i * E i) (energyExpValue ρ Hop) := by
     change HasSum (fun i => w i * E i) (ρ.observableExpectation Hop)
     exact HasSum.congr_fun (ρ.hasSum_observableExpectation_diagonal Hop b w hρw) fun i => by
+      symm
       congr 1
       apply Complex.ofReal_injective
       rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
@@ -54,8 +55,7 @@ theorem vonNeumannEntropy_gibbs_diagonal
       HasSum (fun i => Real.negMulLog (w i))
         (β * energyExpValue ρ Hop + Real.log Z) := by
     simpa using HasSum.congr_fun
-      ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z)))
-      (fun i => (hterm i).symm)
+      ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))) hterm
   have htrace :
       (entropyOpSpectralTraceClass ρ hentropy).trace =
         β * energyExpValue ρ Hop + Real.log Z :=
