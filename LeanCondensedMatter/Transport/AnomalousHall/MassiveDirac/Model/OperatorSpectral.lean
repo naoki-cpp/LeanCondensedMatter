@@ -52,13 +52,7 @@ theorem bandProjectorOperator_mul_self
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (bandProjector band v m px py) * φ (bandProjector band v m px py) =
     φ (bandProjector band v m px py)
-  calc
-    φ (bandProjector band v m px py) * φ (bandProjector band v m px py) =
-        φ (bandProjector band v m px py * bandProjector band v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = φ (bandProjector band v m px py) := by
-      rw [bandProjector_mul_self band v m px py hE]
+  simpa using congrArg φ (bandProjector_mul_self band v m px py hE)
 
 /-- Lower then upper operator projectors are orthogonal away from the Dirac degeneracy. -/
 theorem bandProjectorOperator_lower_mul_upper
@@ -66,12 +60,7 @@ theorem bandProjectorOperator_lower_mul_upper
     bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (bandProjector .lower v m px py) * φ (bandProjector .upper v m px py) = 0
-  calc
-    φ (bandProjector .lower v m px py) * φ (bandProjector .upper v m px py) =
-        φ (bandProjector .lower v m px py * bandProjector .upper v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = 0 := by rw [bandProjector_lower_mul_upper v m px py hE, map_zero]
+  simpa using congrArg φ (bandProjector_lower_mul_upper v m px py hE)
 
 /-- Upper then lower operator projectors are orthogonal away from the Dirac degeneracy. -/
 theorem bandProjectorOperator_upper_mul_lower
@@ -79,12 +68,7 @@ theorem bandProjectorOperator_upper_mul_lower
     bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (bandProjector .upper v m px py) * φ (bandProjector .lower v m px py) = 0
-  calc
-    φ (bandProjector .upper v m px py) * φ (bandProjector .lower v m px py) =
-        φ (bandProjector .upper v m px py * bandProjector .lower v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = 0 := by rw [bandProjector_upper_mul_lower v m px py hE, map_zero]
+  simpa using congrArg φ (bandProjector_upper_mul_lower v m px py hE)
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
@@ -95,17 +79,7 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
       (((bandEnergy band v m px py : ℝ) : ℂ)) • φ (bandProjector band v m px py)
-  calc
-    φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
-        φ (hamiltonian v m px py * bandProjector band v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = φ ((((bandEnergy band v m px py : ℝ) : ℂ)) •
-        bandProjector band v m px py) := by
-      rw [hamiltonian_mul_bandProjector band v m px py hE]
-    _ = (((bandEnergy band v m px py : ℝ) : ℂ)) •
-        φ (bandProjector band v m px py) := by
-      exact map_smul φ _ _
+  simpa using congrArg φ (hamiltonian_mul_bandProjector band v m px py hE)
 
 private theorem shiftedHamiltonian_mul_bandProjectorOperator
     (z : ℂ) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
