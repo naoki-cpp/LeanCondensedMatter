@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 
@@ -8,16 +9,16 @@ set_option linter.style.header false
 # Ordinary finite-dimensional operator trace
 
 This module owns general ordinary finite-dimensional trace infrastructure for bounded endomorphisms.
-The trace is bundled as a continuous complex-linear functional, with reusable cyclicity and
-differentiation facts.
+The trace is bundled as a continuous complex-linear functional, with reusable cyclicity,
+matrix/operator transport, and differentiation facts.
 
-Mathlib supplies the underlying `LinearMap.trace`, finite-dimensional cyclicity, and derivative
-composition machinery, but does not currently bundle this operator trace as a continuous linear
-functional. This file provides that thin analysis-level wrapper.
+Mathlib supplies the underlying `LinearMap.trace`, finite-dimensional cyclicity, the canonical
+Euclidean matrix/operator equivalence, and derivative composition machinery. This file provides the
+thin analysis-level wrappers needed by downstream physics code.
 
 No Kubo–Bastin, Středa, disorder, model-specific, trace-per-volume, or thermodynamic-limit semantics
-are introduced here. Downstream physics layers apply this primitive where an ordinary finite trace is
-genuinely required.
+are introduced here. Downstream physics layers apply these primitives where an ordinary finite trace
+is genuinely required.
 -/
 
 namespace QuantumTheory.Transport
@@ -38,6 +39,31 @@ theorem finiteDimensionalOperatorTrace_apply (operator : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (H := H) operator =
       LinearMap.trace ℂ H (operator : H →ₗ[ℂ] H) :=
   rfl
+
+/-- The finite-dimensional operator trace of a matrix transported through the canonical Euclidean
+matrix/operator equivalence is its ordinary matrix trace. -/
+theorem finiteDimensionalOperatorTrace_toEuclideanCLM
+    {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
+    finiteDimensionalOperatorTrace
+        ((Matrix.toEuclideanCLM :
+          Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
+            (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) M) =
+      Matrix.trace M := by
+  rw [finiteDimensionalOperatorTrace_apply]
+  let φ :
+      Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
+        (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
+    Matrix.toEuclideanCLM
+  have hcoe :
+      ((φ M : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :
+        EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) =
+          Matrix.toEuclideanLin M := by
+    simpa [φ] using Matrix.coe_toEuclideanCLM_eq_toEuclideanLin M
+  change LinearMap.trace ℂ (EuclideanSpace ℂ (Fin n))
+      ((φ M : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :
+        EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) = Matrix.trace M
+  rw [hcoe, Matrix.toEuclideanLin_eq_toLin_orthonormal]
+  exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
 
 /-- Cyclicity of the bundled ordinary trace for two bounded endomorphisms. -/
 theorem finiteDimensionalOperatorTrace_mul_comm
