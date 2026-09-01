@@ -42,19 +42,20 @@ Three finite-mode endpoints are proved:
 factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-for the coefficientwise formal vacuum linked-cluster theorem,
+for the coefficientwise formal log-partition linked-cluster theorem,
 
 ```lean
 iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-for the finite-dimensional analytic vacuum theorem, and
+for the finite-dimensional analytic log-partition theorem, and
 
 ```lean
 vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-for the two-external-leg linked-cluster theorem.
+for the two-external-leg linked-cluster theorem. In the last identifier, `vacuumNormalized` denotes
+normalization by the zero-external-leg Dyson partition series; the state itself is finite-temperature.
 
 The general higher-point/source-insertion connected expansion remains open.
 

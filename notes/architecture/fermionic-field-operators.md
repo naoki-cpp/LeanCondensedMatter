@@ -48,12 +48,17 @@ such as preservation under `dGamma`.
 ```text
 Fermionic.Algebra
       ↓
-Fermionic.Lattice
-      ↓
+┌───────────────────────────────┐
+│ Fermionic.Field               │
+│ Fermionic.Lattice             │
+└───────────────────────────────┘
+        ↓
 Fermionic.Transport
-      ↓
+        ↓
 Fermionic.Validation
 ```
+
+`Fermionic.Field` and `Fermionic.Lattice` are sibling realization layers.
 
 `Fermionic.Lattice` owns discrete one-particle lattice data, hopping, charge/bond currents, Peierls
 families, finite-lattice bounded realizations, and model-level current identities. It does not own
