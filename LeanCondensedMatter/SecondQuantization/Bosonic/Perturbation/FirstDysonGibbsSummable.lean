@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -57,8 +58,9 @@ theorem matrixCoeff_freeGibbs_dysonCoeff_one_self
           (Common.dysonCoeff (freeEigenvalue ε) V 1 t)) n n =
       -(t : ℂ) *
         Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp V) n n := by
-  rw [matrixCoeff_imaginaryTimeEvolveFree_comp, matrixCoeff_dysonCoeff_one_self,
-    matrixCoeff_imaginaryTimeEvolveFree_comp]
+  simp only [imaginaryTimeEvolveFree]
+  rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_dysonCoeff_one_self,
+    Common.matrixCoeff_diagonalEvolution_comp]
   ring
 
 omit [Fintype Mode] in
