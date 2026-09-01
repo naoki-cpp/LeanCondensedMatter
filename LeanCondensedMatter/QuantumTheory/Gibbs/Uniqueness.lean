@@ -57,11 +57,12 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Equality in the Helmholtz lower bound forces the three equality components needed for
-uniqueness: the Gibbs diagonal sum saturates the trace, every density eigenvalue equals the
-normalized Gibbs diagonal weight, and every Peierls–Bogoliubov bound is saturated. -/
+/-- For nonzero inverse temperature, equality in the Helmholtz bound forces the three equality
+components needed for uniqueness: the Gibbs diagonal sum saturates the trace, every density
+eigenvalue equals the normalized Gibbs diagonal weight, and every Peierls–Bogoliubov bound is
+saturated. -/
 theorem helmholtzFreeEnergy_eq_components
-    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
+    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0)
@@ -152,8 +153,7 @@ theorem helmholtzFreeEnergy_eq_components
     have hfree' := hfree
     change energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal =
       -(1 / β) * Real.log Z at hfree'
-    have hβne : β ≠ 0 := hβ.ne'
-    field_simp [hβne] at hfree'
+    field_simp [hβ] at hfree'
     linarith
   have hnMLTarget :
       ∑' a, Real.negMulLog (p a) = β * energyExpValue ρ Hop + Real.log Z := by
