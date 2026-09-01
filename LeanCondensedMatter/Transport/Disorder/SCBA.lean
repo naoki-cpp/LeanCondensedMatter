@@ -87,7 +87,8 @@ theorem star_scbaRetardedShift
   unfold scbaRetardedShift scbaAdvancedShift scbaShift
   rw [spectralParameter_retarded, spectralParameter_advanced]
   rw [star_sub, star_sub, ensemble.baseHamiltonian.2.star_eq]
-  simp [Algebra.algebraMap_eq_smul_one]
+  simp [Algebra.algebraMap_eq_smul_one, retardedSpectralParameter,
+    advancedSpectralParameter, sub_eq_add_neg]
 
 /-- Supplied bounded retarded SCBA solution at fixed real energy and positive broadening.
 The structure records approximation equations rather than identifying these operators with the
