@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -37,7 +38,8 @@ theorem freeGibbsSummable_quarticVertexOperator
     (hN2.mul_left (2 : ℝ)).add (hW.mul_left (8 : ℝ))
   apply hmajorant.of_norm_bounded
   intro n
-  rw [matrixCoeff_imaginaryTimeEvolveFree_comp, norm_mul, Complex.norm_exp]
+  simp only [imaginaryTimeEvolveFree]
+  rw [Common.matrixCoeff_diagonalEvolution_comp, norm_mul, Complex.norm_exp]
   have hq := norm_matrixCoeff_quarticVertexOperator_le q n
   have hw : 0 ≤ boltzmannWeight ε β n := Real.exp_nonneg _
   have hpoly :
