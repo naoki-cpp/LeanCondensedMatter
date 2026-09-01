@@ -16,7 +16,7 @@ applies.
   Hilbert–Schmidt pairing. It has not yet bundled arbitrary products of two Hilbert–Schmidt
   operators as non-self-adjoint trace-class operators carrying a general trace.
 
-- **The first Fredholm determinant slice is diagonal, not general.**
+- **Fredholm determinant support is diagonal, not general.**
   `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
   for explicit absolutely summable diagonal coefficients `coeff i`, using the convergent product
   `∏' i, (1 + coeff i)`. This does not define a determinant for arbitrary compact, normal, or
