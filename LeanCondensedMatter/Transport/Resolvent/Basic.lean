@@ -110,7 +110,7 @@ theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
   simp [advancedSpectralParameter]
 
-private @[simp] theorem star_retardedSpectralParameter
+@[simp] private theorem star_retardedSpectralParameter
     (energy broadening : ℝ) :
     star (retardedSpectralParameter energy broadening) =
       advancedSpectralParameter energy broadening := by
