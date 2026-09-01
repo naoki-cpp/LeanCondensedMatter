@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
 
 set_option linter.style.header false

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Sqrt
