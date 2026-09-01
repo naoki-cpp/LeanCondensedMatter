@@ -116,14 +116,10 @@ theorem hasSum_tail_of_bound {V : ℝ → A} (hVcont : Continuous V)
     (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum (fun n => term V lam τ (n + 1))
       (- ∫ σ in (0 : ℝ)..τ, lam • (V σ * evolution V lam σ)) := by
-  have hneg := hasSum_intervalIntegral_integrand_of_bound hVcont hOne hM hV hτ lam
-  have hfun :
-      (fun n => ∫ σ in (0 : ℝ)..τ, integrand V lam n σ) =
-        fun n => - term V lam τ (n + 1) := by
-    funext n
-    exact intervalIntegral_integrand V τ lam n
-  rw [hfun] at hneg
-  simpa only [neg_neg] using hneg.neg
+  simpa only [neg_neg] using
+    (HasSum.congr_fun
+      (hasSum_intervalIntegral_integrand_of_bound hVcont hOne hM hV hτ lam)
+      (intervalIntegral_integrand V τ lam)).neg
 
 /-- The generic Dyson evolution solves the interaction-picture Volterra equation. -/
 theorem evolution_eq_one_sub_integral_of_bound {V : ℝ → A} (hVcont : Continuous V)
