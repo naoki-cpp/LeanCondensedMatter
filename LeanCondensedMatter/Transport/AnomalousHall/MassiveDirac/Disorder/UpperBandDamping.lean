@@ -49,7 +49,7 @@ private theorem finiteDimensionalOperatorTrace_upperBandProjector_eq_one
     (v m px py : ℝ) :
     finiteDimensionalOperatorTrace
         (bandProjectorOperator .upper v m px py) = (1 : ℂ) := by
-  rw [bandProjectorOperator, finiteDimensionalOperatorTrace_matrixOperator]
+  rw [bandProjectorOperator, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
   simp [bandProjector, Matrix.trace, hamiltonian, sigmaX, sigmaY, sigmaZ]
   ring
 
@@ -64,7 +64,7 @@ private theorem finiteDimensionalOperatorTrace_upperBandProjector_mul_sigmaZ
   rw [← map_mul]
   change finiteDimensionalOperatorTrace
       (matrixOperator (bandProjector .upper v m px py * sigmaZ)) = _
-  rw [finiteDimensionalOperatorTrace_matrixOperator]
+  rw [matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
   simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ]
   ring
 
