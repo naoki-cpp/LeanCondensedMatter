@@ -32,7 +32,7 @@ theorem resolvent_eq_of_spectralShift_mul_eq_one
         candidate = 1) :
     resolvent hamiltonian (spectralParameter side energy broadening) = candidate := by
   apply QuantumTheory.resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
-  · apply spectralParameter_not_mem_spectrum_of_im_ne_zero hamiltonian hself
+  · apply QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero hamiltonian hself
     rw [spectralParameter_im]
     exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening
   · exact hleft
