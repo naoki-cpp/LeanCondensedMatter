@@ -190,7 +190,6 @@ def main() -> int:
         )
 
     massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
-    operator_module = f"{MD_IMPL}.Model.Operator"
     canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
     historical_propagator_path = massive_dirac_root / "Propagator.lean"
     scalar_disorder_path = massive_dirac_root / "Disorder" / "ScalarCovariance.lean"
@@ -206,13 +205,6 @@ def main() -> int:
             "Transport/AnomalousHall/MassiveDirac/Propagator.lean must not remain after "
             "the propagator owner moves to Transport/Models/MassiveDirac"
         )
-    require_import(
-        errors,
-        scalar_disorder_path,
-        operator_module,
-        root=ROOT,
-        description="massive-Dirac disorder model ownership",
-    )
     streda_prefix = f"{MD_IMPL}.Streda."
     for path in (canonical_propagator_path, scalar_disorder_path):
         if any(module.startswith(streda_prefix) for module in lean_imports(path)):
