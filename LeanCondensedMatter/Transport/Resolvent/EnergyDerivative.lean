@@ -6,16 +6,16 @@ set_option linter.style.header false
 /-!
 # Real-energy derivatives of retarded and advanced resolvents
 
-`Resolvent.Basic` proves the holomorphic spectral-parameter identity
+The representation-independent holomorphic identity
 
 ```text
-dG(z) / dz = -G(z)^2.
+dG(z) / dz = -G(z)^2
 ```
 
-The Středa energy integral instead differentiates the real-energy paths
-`E ↦ Gˢ(E, η)` at fixed nonzero broadening. This module derives the common side-indexed real
-derivative and continuity theorem for `spectralResolvent`, then retains the conventional
-retarded/advanced names as specializations.
+is owned by `Analysis.Operator.Spectral.Resolvent`. The Středa energy integral instead
+differentiates the real-energy paths `E ↦ Gˢ(E, η)` at fixed nonzero broadening. This module
+specializes the generic resolvent derivative at the side-indexed spectral parameter, composes it
+with the real-energy path, and retains the conventional retarded/advanced names as specializations.
 
 The result remains dimension-independent and contains no trace, conductivity, zero-broadening,
 or thermodynamic-limit statement.
@@ -45,10 +45,19 @@ theorem hasDerivAt_spectralResolvent_energy
       (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
       (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
       energy := by
-  have hcomp :=
-    (hasDerivAt_resolvent_spectralParameter
-      side hamiltonian hself energy broadening hbroadening).scomp
-      energy (hasDerivAt_spectralParameter_energy side energy broadening)
+  have hresolvent :
+      HasDerivAt (resolvent hamiltonian)
+        (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
+        (spectralParameter side energy broadening) := by
+    exact spectrum.hasDerivAt_resolvent_const_left
+      (spectrum.notMem_iff.mp
+        (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
+          hamiltonian hself (spectralParameter side energy broadening)
+          (by
+            rw [spectralParameter_im]
+            exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)))
+  have hcomp := hresolvent.scomp
+    energy (hasDerivAt_spectralParameter_energy side energy broadening)
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => spectralParameter side x broadening)
     (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
