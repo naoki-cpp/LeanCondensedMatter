@@ -27,11 +27,6 @@ theorem diagonalCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (n : Occupation Mode) : diagonalCoeff A n = A (basisState n) n :=
   rfl
 
-@[simp]
-theorem diagonalCoeff_smul_basisState (c : ℂ) (n : Occupation Mode) :
-    (c • basisState n : FockSpace Mode) n = c := by
-  simp [basisState]
-
 /-- The equal-mode coefficient is `e^{-τεᵢ}(n_i + 1)`. -/
 theorem diagonalCoeff_evolve_annihilate_comp_create_same (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
     (n : Occupation Mode) :

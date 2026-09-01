@@ -93,35 +93,6 @@ theorem fixed_causalResponse_eq
 
 end ResponseChannel
 
-/-- The affine source-dependent Kubo theorem packaged by a neutral `ResponseChannel`.
-
-This is a restatement of the existing `ObservableVariation` theorem: it introduces no new response
-axiom.  In particular, the contact term remains explicit through `channel.observableVariation`. -/
-theorem hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_responseChannel
-    (system : BoundedFreeSystem H)
-    (expectation : NormalizedExpectation H)
-    (channel : ResponseChannel H)
-    (f : ℝ → ℝ) (hsource : IsSelfAdjoint channel.source)
-    {β M t : ℝ} (hM : 0 ≤ M)
-    (hV : ∀ s ∈ Set.Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f channel.source) s‖ ≤ M)
-    (ht : t ∈ Set.Icc (0 : ℝ) β)
-    (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f channel.source)) MeasureTheory.volume 0 t) :
-    HasDerivAt
-      (fun lam : ℝ => affinePerturbedExpectation system expectation
-        (sourceCoupledPerturbation f channel.source)
-        channel.measured channel.observableVariation lam t)
-      (channel.causalResponse system expectation f t)
-      0 := by
-  simpa [ResponseChannel.causalResponse, ResponseChannel.retardedKernel,
-    ResponseChannel.contactExpectation] using
-    hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
-      system expectation f hsource channel.measured channel.observableVariation
-      hM hV ht hInt
-
 end
 end LinearResponse
 end QuantumTheory

@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -52,47 +53,6 @@ private theorem orderedProductMajorant_nonneg (n : Occupation Mode) (K : ℕ) :
     0 ≤ orderedProductMajorant n K := by
   rw [orderedProductMajorant]
   exact Finset.prod_nonneg fun i _ => by positivity
-
-omit [Fintype Mode] in
-/-- Coordinate formula for the free diagonal evolution, kept in the thermal layer to avoid a
-Thermal-to-Perturbation dependency. -/
-private theorem imaginaryTimeEvolveFree_apply_coord_orderedProduct
-    (ε : Mode → ℝ) (τ : ℝ) (x : FockSpace Mode) (n : Occupation Mode) :
-    imaginaryTimeEvolveFree ε τ x n =
-      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) * x n := by
-  let eval : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
-  have hmap : eval.comp (imaginaryTimeEvolveFree ε τ) =
-      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) • eval := by
-    apply Finsupp.lhom_ext
-    intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
-      (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState]
-    simp only [map_smul, LinearMap.smul_apply, eval, Finsupp.lapply_apply, smul_eq_mul]
-    by_cases h : a = n
-    · subst a
-      have hself : (basisState n : FockSpace Mode) n = 1 := by
-        simp [basisState, Common.basisState]
-      rw [hself]
-    · have hne : (basisState a : FockSpace Mode) n = 0 := by
-        simp [basisState, Common.basisState, h]
-      rw [hne]
-      simp
-  have hx := congrArg (fun L => L x) hmap
-  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
-    smul_eq_mul] using hx
-
-omit [Fintype Mode] in
-/-- Left composition by the free diagonal evolution rescales a matrix coefficient by the output
-occupation's exponential weight. -/
-private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_orderedProduct
-    (ε : Mode → ℝ) (τ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (m n : Occupation Mode) :
-    Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp A) m n =
-      Complex.exp ((τ * freeEigenvalue ε m : ℝ) : ℂ) * Common.matrixCoeff A m n := by
-  rw [Common.matrixCoeff, LinearMap.comp_apply,
-    imaginaryTimeEvolveFree_apply_coord_orderedProduct]
-  rfl
 
 /-- Basis-state action of an arbitrary free-thermal-field list, with a uniform coefficient bound.
 
@@ -245,7 +205,9 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
     ε β hpos (fields.length + 1) fields.length
   apply hmajorant.of_norm_bounded
   intro n
-  rw [matrixCoeff_imaginaryTimeEvolveFree_comp_orderedProduct, norm_mul, Complex.norm_exp]
+  rw [show imaginaryTimeEvolveFree ε (-β) =
+      Common.diagonalEvolution (freeEigenvalue ε) (-β) by rfl,
+    Common.matrixCoeff_diagonalEvolution_comp, norm_mul, Complex.norm_exp]
   change boltzmannWeight ε β n *
       ‖Common.matrixCoeff (FreeThermalField.orderedProduct fields) n n‖ ≤ _
   have hcoeff := FreeThermalField.norm_matrixCoeff_orderedProduct_le fields n

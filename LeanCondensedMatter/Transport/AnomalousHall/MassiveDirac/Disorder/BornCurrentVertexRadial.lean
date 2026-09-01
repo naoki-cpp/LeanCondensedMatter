@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -291,63 +292,6 @@ noncomputable def continuumBornAngularRetardedAdvancedPauliXIntegral
       continuumBornPauliGreenOperator .advanced v m
         (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar
 
-private theorem bornIntegralComplexCosZeroTwoPi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
-  simpa using
-    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
-
-private theorem bornIntegralComplexSinZeroTwoPi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  simpa using
-    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
-
-private theorem bornIntegralComplexCosSqSubSinSqZeroTwoPi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.cos θ ^ 2 - Real.sin θ ^ 2 : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            rfl
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.cos θ ^ 2 - Real.sin θ ^ 2) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)
-    _ = 0 := by
-      rw [show (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.cos θ ^ 2 - Real.sin θ ^ 2) = 0 by
-        simpa using (integral_cos_sq_sub_sin_sq (a := (0 : ℝ)) (b := 2 * Real.pi))]
-      simp
-
-private theorem bornIntegralComplexCosMulSinZeroTwoPi :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.sin θ * Real.cos θ : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            ring
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.sin θ * Real.cos θ) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.sin θ * Real.cos θ)
-    _ = 0 := by
-      rw [show (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.sin θ * Real.cos θ) = 0 by
-        simpa using (integral_sin_pow_mul_cos_pow_odd
-          (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)]
-      simp
-
 private theorem integral_bornRaPauliXScalarCoefficient_zero
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
@@ -387,7 +331,7 @@ private theorem integral_bornRaPauliXScalarCoefficient_zero
     ring]
   rw [intervalIntegral.integral_add hcos hsin,
     intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    bornIntegralComplexCosZeroTwoPi, bornIntegralComplexSinZeroTwoPi]
+    integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
   simp
 
 private theorem integral_bornRaPauliXXCoefficient
@@ -426,7 +370,7 @@ private theorem integral_bornRaPauliXXCoefficient
     simp [bornRaPauliXXCoefficient, c0, c2]
     ring]
   rw [intervalIntegral.integral_add hconst hosc,
-    intervalIntegral.integral_mul_const, bornIntegralComplexCosSqSubSinSqZeroTwoPi]
+    intervalIntegral.integral_mul_const, integral_complex_cos_sq_sub_sin_sq_zero_two_pi]
   simp [continuumBornRetardedAdvancedPauliXAngularXCoefficient, c0]
   ring
 
@@ -461,7 +405,7 @@ private theorem integral_bornRaPauliXYCoefficient
   have hoscZero :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
         (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * c2) = 0 := by
-    rw [intervalIntegral.integral_mul_const, bornIntegralComplexCosMulSinZeroTwoPi]
+    rw [intervalIntegral.integral_mul_const, integral_complex_cos_mul_sin_zero_two_pi]
     simp
   rw [show (fun θ : ℝ => bornRaPauliXYCoefficient
       v m p θ probeEnergy disorderStrength hbar) =
@@ -513,7 +457,7 @@ private theorem integral_bornRaPauliXZCoefficient_zero
     ring]
   rw [intervalIntegral.integral_add hcos hsin,
     intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    bornIntegralComplexCosZeroTwoPi, bornIntegralComplexSinZeroTwoPi]
+    integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
   simp
 
 /-- The full Born-dressed Green-product `x`-current rung closes exactly in the in-plane Pauli span. -/
