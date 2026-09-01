@@ -222,10 +222,10 @@ noncomputable def finiteCutoffContinuumBornDysonShiftOperator
     finiteCutoffContinuumBornSelfEnergy
       side v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- Adjointing the finite-`η` retarded Born-Dyson shift gives the advanced shift. -/
+/-- At nonzero broadening, adjointing the retarded Born-Dyson shift gives the advanced shift. -/
 theorem star_finiteCutoffContinuumBornDysonShiftOperator_retarded
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : 0 < broadening) :
+    (hbroadening : broadening ≠ 0) :
     star (finiteCutoffContinuumBornDysonShiftOperator
       .retarded v m px py probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornDysonShiftOperator
@@ -295,11 +295,11 @@ theorem finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
       side v m px py probeEnergy broadening disorderStrength hbar pMax hden,
     map_one]
 
-/-- Under the explicit nonzero-denominator hypotheses on both spectral sides, the finite-`η`
-Born-Dyson propagator retains the canonical retarded/advanced adjoint relation. -/
+/-- Under the explicit nonzero-broadening and nonzero-denominator hypotheses on both spectral sides,
+the finite-`η` Born-Dyson propagator retains the canonical retarded/advanced adjoint relation. -/
 theorem star_finiteCutoffContinuumBornDysonGreenOperator_retarded_eq_advanced
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : 0 < broadening)
+    (hbroadening : broadening ≠ 0)
     (hdenR : finiteCutoffContinuumBornDysonDenominator
       .retarded v m px py probeEnergy broadening disorderStrength hbar pMax ≠ 0)
     (hdenA : finiteCutoffContinuumBornDysonDenominator
@@ -310,10 +310,10 @@ theorem star_finiteCutoffContinuumBornDysonGreenOperator_retarded_eq_advanced
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax := by
   have hret := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
     .retarded v m px py probeEnergy broadening disorderStrength hbar pMax
-      (ne_of_gt hbroadening) hdenR
+      hbroadening hdenR
   have hadv := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
     .advanced v m px py probeEnergy broadening disorderStrength hbar pMax
-      (ne_of_gt hbroadening) hdenA
+      hbroadening hdenA
   have hleft :
       star (finiteCutoffContinuumBornDysonGreenOperator
           .retarded v m px py probeEnergy broadening disorderStrength hbar pMax) *
