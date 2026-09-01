@@ -1,158 +1,82 @@
-# Roadmap — Combinatorics (Track B)
+# Combinatorics (Track B)
 
-See [notes/roadmap.md](../roadmap.md) for the status table and how this track fits into the overall plan. Independent of Track A — pure combinatorics, no physics content.
+Track B contains physics-independent finite combinatorics used by the thermal and diagrammatic layers.
 
-## Partition-lattice Möbius / moment-cumulant formula
+## Partition-lattice Möbius theory
 
-Status: split into three sub-targets, tracked separately in `notes/roadmap.md`'s table:
-- **Partition-lattice refinement/Möbius factorization — `proved`.**
-- **Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) — `proved`.**
-- **Moment–cumulant inversion formula — `proved`**, in
-  `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`. See that section below.
+Status: `proved`.
 
-Goal: formalize the general combinatorial moment-cumulant theorem on the lattice of set partitions (Möbius function of the partition lattice), in a form specializable to thermal expectation values.
+`Combinatorics/PartitionLattice.lean` and the set-partition modules provide the refinement structure
+needed for incidence-algebra arguments. The key results include:
 
-`LocallyFiniteOrder (Finpartition s)` instance done (`LeanCondensedMatter/Combinatorics/PartitionLattice.lean`), letting Mathlib's `IncidenceAlgebra` Möbius machinery apply to the partition lattice.
+- refinement intervals represented as products of partition lattices on the blocks;
+- the corresponding order isomorphism;
+- factorization of the Möbius function over blocks;
+- the explicit partition-lattice formula
 
-**The refinement fiber decomposition is now done**, in the same file: `Finpartition.refinementsEquivFiberPartitions` — for `σ : Finpartition a`, an `Equiv` between `{π // π ≤ σ}` (partitions refining `σ`) and `∀ B : σ.parts, Finpartition (B : Finset α)` (an independent partition of each of `σ`'s parts). Built from:
-- `bind_restrict_eq_of_le` — `σ.bind (fun B hB => π.restrict (σ.le hB)) = π` for `π ≤ σ`.
-- `restrict_bind_eq` — the converse, `(σ.bind Q).restrict (σ.le hB) = Q B hB`.
-- `bind_le` — `σ.bind Q ≤ σ` (needed for the `Equiv`'s inverse to land in the subtype).
-- `mem_restrict_iff`/`eq_of_inf_ne_bot` — supporting lemmas, factored out for reuse (unfolding `Finpartition.restrict`'s membership condition, and the "two parts of a partition sharing a nonempty overlap must coincide" fact both directions need).
+```text
+μ(⊥, ⊤) = (-1)^(n-1) (n-1)!
+```
 
-This exhibits the interval `[⊥, σ]` in the partition lattice as (in bijection with) the product `Π B ∈ σ.parts, Finpartition B` — the structural fact underlying the moment-cumulant / Möbius-inversion formula.
+for a nonempty `n`-element set, together with interval/blockwise versions.
 
-**The `Equiv` is now upgraded to an order isomorphism**: `Finpartition.refinementsOrderIsoFiberPartitions`, relating `≤` on `{π // π ≤ σ}` (refinement, inherited from `Finpartition a`) to the pointwise product order on `∀ B, Finpartition B`. Built from `restrict_mono` (`P ≤ P' → P.restrict hb ≤ P'.restrict hb`) for the easy direction, and, for the other, testing membership of a part `A` of `π` at the `σ`-part `B` containing it and transporting the pointwise hypothesis there via `mem_restrict_iff`.
+General incidence-algebra support such as invariance under order isomorphism, down-set compatibility,
+and finite dependent-product factorization lives in `Combinatorics/IncidenceAlgebraMu.lean`.
 
-**The Möbius function now factors as a product over `σ`'s parts**: `Finpartition.mu_eq_prod_restrict` — for `π ≤ σ`, `mu ℤ π σ = ∏ B ∈ σ.parts, mu ℤ (π.restrict (σ.le hB)) ⊤` (where `⊤ : Finpartition B` is the indiscrete partition of `B`). This is the moment-cumulant formula's structural core. Built from `refinementsOrderIsoFiberPartitions` plus three general (partition-independent) facts about `IncidenceAlgebra.mu`, new in `LeanCondensedMatter/Combinatorics/IncidenceAlgebraMu.lean` (coefficients fixed to `ℤ`, since that's all this application needs):
-- `mu_orderIso_apply` — `mu` is invariant under order isomorphism (strong induction on `Icc` cardinality, mirroring `mu`'s own recursive definition).
-- `mu_subtype_le_apply` — `mu` computed inside a down-set `{t // t ≤ z}` agrees with the ambient `mu`. Needs `[Fintype α]` for a `LocallyFiniteOrder` instance on the down-set (`instLocallyFiniteOrderSubtypeLe`) — satisfied by `Finpartition a`, already `Fintype`.
-- `mu_pi_finset_apply` — `mu` on a finite dependent product `∀ i : t, β i` is the product of the factors' `mu`'s. Proved by induction on `t : Finset ι`, splitting off one index at a time via `piInsertOrderIso` (an order isomorphism `∀ i : insert j s, β i ≃o β j × ∀ i : s, β i`) combined with Mathlib's `IncidenceAlgebra.mu_prod_mu`.
-- `mu_intCast_eq_complex` — `mu ℤ x y` cast to `ℂ` agrees with `mu ℂ x y` computed directly (same strong-induction technique). Added when `Combinatorics/MomentCumulant.lean` needed to reuse `mu_eq_prod_restrict`'s `ℤ`-coefficient content in a `ℂ`-coefficient setting without redoing the other three lemmas above for `ℂ`.
+## Moment--cumulant inversion
 
-In `PartitionLattice.lean` itself, `restrict_self_part_eq_top` (`σ.restrict (σ.le hB) = ⊤` for `B ∈ σ.parts`) identifies `σ`'s own image under the fiber correspondence with the all-`⊤` element, closing the argument.
+Status: `proved` in `Combinatorics/MomentCumulant.lean`.
 
-**The explicit Möbius formula is now proved.**
-`LeanCondensedMatter/Combinatorics/SetPartition/Coarsening.lean` identifies the upper interval
-`{σ // π ≤ σ}` with `Finpartition π.parts` through
-`Finpartition.coarseningsOrderIsoBlockPartitions`. Consequently
-`Finpartition.mu_to_top_eq_mu_bot_top_parts` reduces `mu R π ⊤` to the bottom-to-top coefficient
-of the partition lattice on the block set `π.parts`.
+For a finite set `S`,
 
-`LeanCondensedMatter/Combinatorics/SetPartition/MobiusFormula.lean` then evaluates that coefficient.
-The proof chooses the moment function that is `1` on sets of cardinality at most one and `0`
-otherwise. Its partition product is supported only at the discrete partition, so its cumulant is
-exactly `mu ℂ ⊥ ⊤`. The existing formal-log/cumulant coefficient bridge evaluates the same
-cumulant from `log (1 + X)`, giving the alternating factorial coefficient; a recursive cast lemma
-returns the result to `ℤ`.
+```text
+momentFromCumulant κ S
+  = ∑ π : Finpartition S, ∏ B ∈ π.parts, κ B,
+```
 
-The public conclusions are:
-- `Finpartition.mu_bot_top_eq_factorial` — for `S ≠ ∅`,
-  `mu ℤ (⊥ : Finpartition S) ⊤ = (-1)^(S.card - 1) * (S.card - 1)!`;
-- `Finpartition.mu_bot_top_eq_factorial_ite` — the total formula, with value `1` for the empty
-  partition lattice;
-- `Finpartition.mu_to_top_eq_factorial` — the same formula for an arbitrary partition `π`, in
-  terms of `π.parts.card`;
-- `Finpartition.mu_eq_prod_factorial` — the explicit formula for every interval `π ≤ σ`, obtained
-  by substituting the single-block result into `mu_eq_prod_restrict`.
+and
 
-## Moment–cumulant inversion
+```text
+cumulantFromMoment m S
+  = ∑ π : Finpartition S, μ(π, ⊤) ∏ B ∈ π.parts, m B.
+```
 
-Status: `proved`, in `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`.
+The two constructions are mutual inverses on nonempty sets. The nonempty hypothesis is genuine:
+`momentFromCumulant κ ∅ = 1` independently of `κ ∅`.
 
-Goal: the moment/cumulant relation for a finite set `S`, defined as sums over `Finpartition S`,
-and its inversion via Möbius inversion on the partition lattice — proved as a genuine **mutual**
-inversion (both directions), not just one-sided. Coefficients fixed to `ℂ` throughout (matching
-Track D's Fock-space side).
+The proof uses the refinement-product decomposition to factor partition products and applies Möbius
+inversion on the partition lattice.
 
-- `Finpartition.partitionProduct f π := ∏ B ∈ π.parts, f B` — the product of `f` over a
-  partition's blocks.
-- `Finpartition.momentFromCumulant κ S := ∑ π : Finpartition S, partitionProduct κ π` — the
-  moment associated to a cumulant `κ`.
-- `Finpartition.cumulantFromMoment m S := ∑ π : Finpartition S, mu ℂ π ⊤ * partitionProduct m π`
-  — the cumulant recovered from a moment `m` via the partition lattice's Möbius function.
-- `Finpartition.partitionProduct_bind` — the product over a `bind`-glued partition factors as a
-  product over the coarser partition's blocks of the product over each block's own
-  sub-partition. Proved via `Finset.prod_biUnion` (disjointness of `Q B`'s parts across distinct
-  `B`, mirroring `Finpartition.card_bind`'s own disjointness argument).
-- `Finpartition.sum_Iic_partitionProduct_eq` — the sum, over all refinements `ρ ≤ π`, of the full
-  product equals the product over `π`'s blocks of `momentFromCumulant κ` applied to that block.
-  Combines `refinementsEquivFiberPartitions` (reindexing the sum via the refinement-fiber
-  bijection), `partitionProduct_bind`, and the "sum of a product of independent choices is a
-  product of sums" identity (`Finset.prod_univ_sum`).
-- **`Finpartition.cumulantFromMoment_momentFromCumulant`** —
-  `cumulantFromMoment (momentFromCumulant κ) S = κ S`, for `S ≠ ⊥`. Proved by Möbius inversion on
-  the partition lattice (`IncidenceAlgebra.moebius_inversion_bot`) evaluated at `⊤ : Finpartition
-  S`, using `sum_Iic_partitionProduct_eq` to identify the "sum function" with `momentFromCumulant
-  κ` applied blockwise.
-- **`Finpartition.momentFromCumulant_cumulantFromMoment`** — the other direction:
-  `momentFromCumulant (cumulantFromMoment m) S = m S`, for `S ≠ ⊥`. Needs two more pieces:
-  - `IncidenceAlgebra.mu_intCast_eq_complex` (`IncidenceAlgebraMu.lean`) — `mu ℤ x y` cast to `ℂ`
-    agrees with `mu ℂ x y` computed directly, by the same strong-induction argument as
-    `mu_orderIso_apply` (the recursive definition of `mu` only uses `+`, `-`, `1`, so it commutes
-    with the ring homomorphism `ℤ → ℂ`).
-  - `Finpartition.mu_eq_prod_restrict_complex` (`PartitionLattice.lean`) — the `ℂ`-coefficient
-    version of `mu_eq_prod_restrict`, obtained by casting the existing `ℤ` theorem rather than
-    redoing the whole `mu_orderIso_apply`/`mu_subtype_le_apply`/`mu_pi_finset_apply` development
-    for `ℂ`.
-  - `Finpartition.sum_Iic_mu_partitionProduct_eq` — the reverse-direction analogue of
-    `sum_Iic_partitionProduct_eq`: the `μ`-weighted sum over refinements of `π` equals the
-    product, over `π`'s blocks, of `cumulantFromMoment m` applied to that block. Additionally uses
-    `mu_eq_prod_restrict_complex` to identify `∏ B, mu ℂ (Q B) ⊤` with `mu ℂ ρ π` (`ρ := π.bind
-    Q`), and `restrict_bind_eq` to identify `ρ.restrict (π.le B.2)` with `Q B`.
-  - The main proof swaps the order of summation in `∑ π, ∑ ρ ≤ π, μ(ρ,π) · m-product(ρ)` to
-    `∑ ρ, ∑ π ≥ ρ, μ(ρ,π) · m-product(ρ)`, then uses `IncidenceAlgebra.sum_Icc_mu_right` to
-    telescope the inner sum to the indicator of `ρ = ⊤`.
+## Cumulants and independence
 
-**`S ≠ ⊥` is a genuine hypothesis, not a proof convenience, for both directions.** `Finpartition
-⊥` is a one-element type (the only partition of the empty set is the empty one, with zero parts),
-so `momentFromCumulant κ ⊥ = 1` regardless of `κ`, forcing `cumulantFromMoment (momentFromCumulant
-κ) ⊥ = 1` too — the unrestricted equality would force `κ ⊥ = 1` for every `κ`, which is false. The
-moment-cumulant relationship is simply not meaningful at the empty set.
+Status: `proved` in `Combinatorics/CumulantFactorization.lean`.
 
-**Not yet done (moment-cumulant):** connecting this finite-set combinatorial identity to actual
-thermal expectation values / cumulants of physical observables (Track D), and the log-generating-
-function / connected-contribution translation needed for the Linked Cluster Theorem itself.
+`Finpartition.IsIndependentAcross` expresses factorization of a moment function across two disjoint
+regions. Under that hypothesis, cumulants vanish on finite sets that straddle both regions; in
+particular the cumulant of their nontrivial union is zero.
 
-## Cumulants vanish across independence
+This is the reusable finite combinatorial independence theorem. Physics-specific notions of state or
+operator independence belong downstream.
 
-Status: `proved`, in `LeanCondensedMatter/Combinatorics/CumulantFactorization.lean`.
+## Formal-log bridge
 
-Goal: the classical "cumulants vanish across independence" theorem — one ingredient (not the full
-statement) of the Linked Cluster Theorem's "only connected contributions survive in `log Z`"
-result; `log` and diagram connectedness are not yet formalized.
+Status: `proved`.
 
-- `Finpartition.IsIndependentAcross m A B` — `m` factors independently across the disjoint pair
-  `(A, B)`: `Disjoint A B ∧ m ⊥ = 1 ∧ ∀ T ≤ A ⊔ B, m T = m (T ⊓ A) * m (T ⊓ B)`. `m ⊥ = 1` is
-  required explicitly, not derivable — the factorization alone only forces `m ⊥ ∈ {0, 1}`, and the
-  `0` branch degenerates to `m ≡ 0`.
-- `Finpartition.partitionProduct_restrict_eq_prod_inf` — a general fact about
-  `Finpartition.restrict` (no independence needed): `partitionProduct m (π.restrict hb) = ∏ C ∈
-  π.parts, m (C ⊓ b)`. Blocks with `C ⊓ b = ⊥` are absent from `(π.restrict hb).parts` but
-  contribute a no-op `m ⊥ = 1` factor on the other side; among the rest, `C ↦ C ⊓ b` is injective
-  (`eq_of_inf_ne_bot`, reused from `PartitionLattice.lean`) with image exactly
-  `(π.restrict hb).parts`.
-- `Finpartition.partitionProduct_eq_mul_of_isIndependentAcross` — the partition-level
-  factorization: under `IsIndependentAcross m A B`, for any `π : Finpartition (A ⊔ B)`,
-  `partitionProduct m π = partitionProduct m (π.restrict le_sup_left) *
-  partitionProduct m (π.restrict le_sup_right)`.
-- `Finpartition.splitCumulant m A B T := if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0` — a
-  *candidate* cumulant that is forced to vanish on sets straddling both `A` and `B`, sidestepping
-  the "partial matching between blocks" combinatorics a direct fiber-sum argument would need.
-  `Finpartition.momentFromCumulant_splitCumulant_eq` shows it reproduces `m` on every `T ≤ A ⊔ B`
-  (three cases: `T ≤ A` via `momentFromCumulant_splitCumulant_of_le_left`, `T ≤ B` via
-  `momentFromCumulant_splitCumulant_of_le_right`, or straddling — the straddling case builds the
-  2-block partition `{T ⊓ A, T ⊓ B}` of `T` and sums over its refinements via
-  `refinementsEquivFiberPartitions`, using that any non-refining partition has a block contributing
-  a zero `splitCumulant` factor).
-- **`Finpartition.cumulantFromMoment_eq_splitCumulant_of_le`** — the key intermediate step:
-  `cumulantFromMoment m T = splitCumulant m A B T` for every nonempty `T ≤ A ⊔ B`, obtained by
-  rewriting `cumulantFromMoment m T` as `cumulantFromMoment (momentFromCumulant (splitCumulant m A
-  B)) T` (via `momentFromCumulant_splitCumulant_eq`) and collapsing it via uniqueness of the
-  moment-cumulant inverse (`cumulantFromMoment_momentFromCumulant`).
-- **`Finpartition.cumulantFromMoment_eq_zero_of_straddles`** — the sharper form: `cumulantFromMoment
-  m T = 0` for any `T ≤ A ⊔ B` lying entirely in neither `A` nor `B`, not just `T = A ⊔ B`. Follows
-  immediately from `cumulantFromMoment_eq_splitCumulant_of_le` plus `splitCumulant`'s definition.
-- **`Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross`** — the headline corollary:
-  `cumulantFromMoment m (A ⊔ B) = 0` under `IsIndependentAcross m A B`, for `A`, `B` both nonempty
-  (so `A ⊔ B` itself straddles, since `A`, `B` are disjoint and both nonempty).
+`Combinatorics/PowerSeriesCumulant.lean` connects finite-set cumulants to coefficients of a formal
+logarithm, including the factorial normalization used by the linked-cluster theorem. The fermionic
+Dyson/diagrammatic layer consumes this result rather than reimplementing moment--cumulant algebra.
+
+## Ownership boundary
+
+- set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, and generic finite
+  product identities belong in `Combinatorics`;
+- statistics-independent constructions that require Fock/thermal/diagram semantics belong in
+  `SecondQuantization.Common`;
+- fermionic or bosonic sign/amplitude specializations stay downstream.
+
+## Open work
+
+Add new combinatorial infrastructure only when a downstream theorem exposes a reusable
+statistics-independent statement. Higher-point/source-insertion linked-cluster developments should
+reuse the existing partition, cumulant, pairing, and shuffle APIs rather than create parallel
+specialized copies.
