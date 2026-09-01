@@ -79,7 +79,8 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
       (((bandEnergy band v m px py : ℝ) : ℂ)) • φ (bandProjector band v m px py)
-  simpa using congrArg φ (hamiltonian_mul_bandProjector band v m px py hE)
+  simpa only [map_mul, map_smul] using
+    congrArg φ (hamiltonian_mul_bandProjector band v m px py hE)
 
 private theorem shiftedHamiltonian_mul_bandProjectorOperator
     (z : ℂ) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
