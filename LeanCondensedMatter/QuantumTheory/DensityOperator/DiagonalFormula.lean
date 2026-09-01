@@ -72,7 +72,7 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
       (hsqrt.isHilbertSchmidtWrt b) (hAsqrt.isHilbertSchmidtWrt b)).hasSum
   rw [ρ.expectation_eq_innerHS A b]
   exact HasSum.congr_fun hsum fun i =>
-    ρ.inner_sqrtOp_comp_apply_eq_diagonal_term A b w hρ i
+    (ρ.inner_sqrtOp_comp_apply_eq_diagonal_term A b w hρ i).symm
 
 /-- Absolute convergence of the diagonal expectation series follows from trace-class density
 weights and boundedness of the observed operator, encoded through the Hilbert–Schmidt bridge. -/
@@ -96,6 +96,7 @@ theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOpera
     HasSum (fun i => w i * diagonalExpectationValue A.1 A.2 (b i))
       (ρ.observableExpectation A) := by
   have hcomplex := HasSum.congr_fun (ρ.hasSum_expectation_diagonal A.1 b w hρ) fun i => by
+    symm
     rw [← coe_diagonalExpectationValue_right A.1 A.2 (b i)]
     norm_cast
   rw [ρ.expectation_observable A] at hcomplex
@@ -117,6 +118,7 @@ theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
     HasSum w 1 :=
   HasSum.congr_fun (ρ.hasSum_diagonalExpectationValue_eq_one b) fun i => by
+    symm
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right, happly i, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
