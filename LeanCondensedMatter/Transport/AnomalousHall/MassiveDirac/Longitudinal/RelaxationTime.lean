@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import Mathlib.Tactic
 
