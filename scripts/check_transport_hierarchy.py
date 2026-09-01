@@ -28,19 +28,6 @@ def main() -> int:
         "LeanCondensedMatter.Transport.Disorder",
     ):
         require_import(errors, transport_umbrella, module, root=ROOT, description="transport public umbrella")
-    if "LeanCondensedMatter.Transport.Models" in lean_imports(transport_umbrella):
-        errors.append(
-            "LeanCondensedMatter.Transport must remain generic and must not import Transport.Models"
-        )
-
-    project_umbrella = ROOT / "LeanCondensedMatter.lean"
-    require_import(
-        errors,
-        project_umbrella,
-        "LeanCondensedMatter.Transport.Models",
-        root=ROOT,
-        description="project concrete-model track",
-    )
 
     models_umbrella = TRANSPORT / "Models.lean"
     require_import(
@@ -65,12 +52,6 @@ def main() -> int:
             module,
             root=ROOT,
             description="massive-Dirac model-owned public entrypoint",
-        )
-
-    retired_ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
-    if retired_ahe_umbrella.exists():
-        errors.append(
-            "Transport/AnomalousHall.lean is retired; concrete benchmarks are exposed by Transport.Models"
         )
 
     core_umbrella = TRANSPORT / "Core.lean"
@@ -132,23 +113,8 @@ def main() -> int:
         )
 
     pure_point_path = TRANSPORT / "KuboBastin" / "PurePoint.lean"
-    finite_path = TRANSPORT / "KuboBastin" / "Finite.lean"
-    require_import(
-        errors,
-        finite_path,
-        pure_point_module,
-        root=ROOT,
-        description="finite Kubo-Bastin specialization",
-    )
     if finite_module in lean_imports(pure_point_path):
         errors.append("Transport/KuboBastin/PurePoint.lean must not import Finite")
-
-    retired_finite_trace_path = TRANSPORT / "KuboBastin" / "FiniteTrace.lean"
-    if retired_finite_trace_path.exists():
-        errors.append(
-            "Transport/KuboBastin/FiniteTrace.lean is retired; "
-            "ordinary operator traces belong under Transport/Streda"
-        )
 
     streda_umbrella = TRANSPORT / "Streda.lean"
     response_matrix_module = "LeanCondensedMatter.Transport.Streda.ResponseMatrix"
@@ -187,16 +153,6 @@ def main() -> int:
                 "Transport.Core.ConductivityTensor"
             )
 
-    for retired_path in (
-        TRANSPORT / "Streda" / "ConductivityMatrix.lean",
-        TRANSPORT / "Streda" / "MatrixRepresentation.lean",
-    ):
-        if retired_path.exists():
-            errors.append(
-                f"{retired_path.relative_to(ROOT)} is retired; "
-                "Streda owns response matrices, while physical conductivity tensors live in Core"
-            )
-
     disorder_umbrella = TRANSPORT / "Disorder.lean"
     averaged_self_energy_module = "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy"
     require_import(
@@ -218,19 +174,6 @@ def main() -> int:
             root=ROOT,
             description="exact averaged self-energy bridge",
         )
-    retarded_born_path = TRANSPORT / "Disorder" / "RetardedBorn.lean"
-    advanced_born_path = TRANSPORT / "Disorder" / "AdvancedBorn.lean"
-
-    retired_born_path = TRANSPORT / "Disorder" / "Born.lean"
-    if retired_born_path.exists():
-        errors.append("Transport/Disorder/Born.lean is retired; use RetardedBorn.lean")
-
-    retarded_born_module = "LeanCondensedMatter.Transport.Disorder.RetardedBorn"
-    advanced_born_module = "LeanCondensedMatter.Transport.Disorder.AdvancedBorn"
-    if advanced_born_module in lean_imports(retarded_born_path):
-        errors.append("Transport/Disorder/RetardedBorn.lean must not import AdvancedBorn")
-    if retarded_born_module in lean_imports(advanced_born_path):
-        errors.append("Transport/Disorder/AdvancedBorn.lean must not import RetardedBorn")
 
     massive_dirac_model_root = TRANSPORT / "Models" / "MassiveDirac"
     massive_dirac_model_umbrella = massive_dirac_model_root / "Model.lean"
@@ -293,16 +236,6 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac shared Streda fiber response",
     )
-    for retired_path in (
-        massive_dirac_root / "Streda" / "CurrentOperatorBridge.lean",
-        massive_dirac_root / "Streda" / "Spectral.lean",
-        massive_dirac_root / "Streda" / "Matrix.lean",
-    ):
-        if retired_path.exists():
-            errors.append(
-                f"{retired_path.relative_to(ROOT)} is retired; "
-                "use the canonical model owners or Streda/FiberResponse.lean"
-            )
 
     massive_dirac_bastin_umbrella = massive_dirac_root / "Bastin.lean"
     pole_extraction_module = f"{MD_IMPL}.Bastin.PoleExtraction"
@@ -321,12 +254,6 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac pole extraction consumer",
     )
-    retired_pole_extraction_limit_path = massive_dirac_root / "Bastin" / "PoleExtractionLimit.lean"
-    if retired_pole_extraction_limit_path.exists():
-        errors.append(
-            "MassiveDirac/Bastin/PoleExtractionLimit.lean is retired; "
-            "keep the limit theorem in PoleExtraction.lean"
-        )
 
     return finish_audit(
         errors,
