@@ -61,7 +61,7 @@ longitudinal charge-current operator. -/
     (e v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator
       e v m probeEnergy broadening 0 hbar pMax = currentOperator .x e v := by
-  simp [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator]
+  simp [finiteCutoffContinuumBornDysonDressedLongitudinalCurrentOperator, inPlaneCurrentOperator]
 
 end
 
