@@ -14,7 +14,4 @@ set_option linter.style.header false
 Model-owned public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes
 the clean model and clean propagator, intrinsic Hall benchmark, Středa and Bastin representations,
 disorder specialization, and longitudinal response as sibling/downstream layers of one concrete model.
-
-The clean model kernel and propagator are canonically owned under `Transport/Models/MassiveDirac`.
-Remaining response and disorder leaves are migrated independently under #1840.
 -/
