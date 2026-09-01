@@ -1,25 +1,20 @@
 # Roadmap
 
-Formalization targets and their current status. Detailed ownership and open problems live in the
-per-track roadmaps; completed milestones are summarized in [`completed.md`](completed.md).
+Formalization targets and current status. Detailed ownership and open problems live in the per-track
+roadmaps; major proved milestones are summarized in [`completed.md`](completed.md).
 
-Status values:
-
-- `idea`: no stable formal statement yet;
-- `stated`: a target or interface is fixed, but the intended theorem set is incomplete;
-- `proved`: the stated target compiles without `sorry`.
+Status: `idea` = no stable statement, `stated` = interface fixed but incomplete, `proved` = compiles
+without `sorry`.
 
 ## Tracks
 
 ```text
-Track A: quantum theory     Track B: combinatorics       Track C: operator analysis      Track D: second quantization
-states, measurements,        partitions, cumulants,       compact, spectral trace,         Fock algebra, thermal states,
-entropy, Gibbs theory        connected structures         Hilbert–Schmidt tools            Dyson and diagrams
+A  quantum theory          states, measurements, entropy, Gibbs theory
+B  combinatorics           partitions, cumulants, connected structures
+C  operator analysis       compact/spectral/trace/Hilbert–Schmidt tools
+D  second quantization     Fock algebra, thermal states, Dyson and diagrams
+E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCBA, models
 ```
-
-The tracks meet in finite-temperature many-body theorems. The current public density-state and
-thermal expectation architecture is dimension-independent; finite-dimensional results are
-specializations, not parallel APIs.
 
 ## Targets
 
@@ -47,6 +42,10 @@ specializations, not parallel APIs.
 | General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
 | General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#dependency-graph-for-a-general-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` |
+| Finite-volume Kubo–Bastin and regularized Středa response chain | A/C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-clean-response-chain) |
+| Exact finite-disorder averaged Green invertibility and canonical exact self-energy at nonzero broadening | C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-disorder-chain) |
+| Physical conductivity bridge from response-level Středa data with explicit normalization and limits | E | `stated` | [transport architecture](architecture/transport.md#resolvent-and-response-boundary) |
+| Trace-per-unit-volume / thermodynamic-limit transport | C/E | `idea` | [transport roadmap](roadmaps/transport.md#open-targets) |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Finite-mode fermionic thermal, Dyson, and vacuum linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
 | Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean` |
@@ -55,5 +54,3 @@ specializations, not parallel APIs.
 | Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
 | Completed-space and infinite-mode second quantization | C/D | `stated` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
 | Higher time-ordered correlation functions, general source insertions, and multi-leg connected expansions | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
-
-See [`completed.md`](completed.md) for the compact list of major proved milestones.

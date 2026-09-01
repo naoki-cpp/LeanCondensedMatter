@@ -1,284 +1,95 @@
 # Transport ownership
 
-The transport stack is organized by mathematical ownership rather than by the first concrete
-consumer. Generic transport theory remains upstream of fermionic realizations and concrete model
-benchmarks.
+Generic transport theory is upstream of concrete models. This note records stable ownership
+boundaries; implementation history belongs in Git history, not here.
+
+## Public routes
 
 ```text
-QuantumTheory.LinearResponse
-          ↓
-QuantumTheory.Transport
-      ↙            ↘
-fermionic adapters   concrete model track
-                     Transport/Models/MassiveDirac
+LeanCondensedMatter.Analysis
+        ↓
+LeanCondensedMatter.Transport
+        ├── Core
+        ├── Resolvent
+        ├── KuboBastin
+        ├── Streda
+        └── Disorder
+
+LeanCondensedMatter.Transport.Models
+        └── MassiveDirac
 ```
 
-General analysis infrastructure sits further upstream. In particular, the bundled ordinary
-finite-dimensional operator trace is owned by `Analysis/Operator/FiniteTrace.lean`, generic bounded
-resolvent spectrum exclusion, shifted inverse algebra, and eigenvector action are owned by
-`Analysis/Operator/Spectral/Resolvent.lean`, while the model-independent Lorentzian approximate-
-identity kernel, weighted-window analysis, and regular-factor pole extraction are owned by
-`Analysis/Lorentzian/{Kernel,Weighted,Pole}.lean`. Transport consumes these primitives rather than
-owning them.
+`LeanCondensedMatter.Transport` does not import the concrete `Transport.Models` track.
+Representation-independent analysis such as finite-dimensional trace, generic spectral resolvent
+algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 
-## Physical source hierarchy
-
-Canonical generic owners now live in physical subdirectories rather than in a flat
-`Transport/` namespace:
+## Generic owners
 
 ```text
 Transport/
-├── Core/
-│   ├── FiniteVolume.lean
-│   ├── ConductivityNormalization.lean
-│   ├── ConductivityTensor.lean
-│   └── FiniteConductivityTable.lean
-├── Resolvent/
-│   ├── Basic.lean
-│   ├── SelfEnergy.lean
-│   ├── Spectral.lean
-│   ├── EnergyDerivative.lean
-│   └── Uniqueness.lean
-├── Analysis/
-│   ├── BandOccupation.lean
-│   └── ZeroTemperatureOccupation.lean
-├── KuboBastin/
-│   ├── PurePoint.lean
-│   ├── Finite.lean
-│   ├── OccupationInterpolation.lean
-│   ├── Occupation.lean
-│   └── CommonEnergy.lean
-├── Streda/
-│   ├── OperatorKernel.lean
-│   ├── TraceKernel.lean
-│   ├── Integration.lean
-│   ├── GeneralizedStatic.lean
-│   ├── ResponseMatrix.lean
-│   ├── TraceSpectral.lean
-│   ├── TraceRepresentation.lean
-│   ├── ResponseMatrixRepresentation.lean
-│   └── SpectralEnergyIntegral.lean
-└── Disorder/
-    ├── Finite.lean
-    ├── Resolvent.lean
-    ├── Moments.lean
-    ├── BornCommon.lean
-    ├── RetardedBorn.lean
-    ├── AdvancedBorn.lean
-    └── SCBA.lean
+├── Core/          physical volume, normalization, conductivity tensor
+├── Resolvent/     spectral sides, Green operators, self-energy algebra
+├── Analysis/      transport-specific occupation analysis
+├── KuboBastin/    Lehmann-to-resolvent and finite spectral sums
+├── Streda/        static response kernels, traces, integration, response matrices
+└── Disorder/      exact finite disorder, Born, SCBA, ladder algebra
 ```
 
-The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
-`Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. General finite-dimensional trace,
-generic bounded-resolvent spectral algebra, and Lorentzian kernel/weighted-window/pole infrastructure
-are exported instead by `LeanCondensedMatter.Analysis`. Concrete model benchmarks are exposed on the
-separate downstream `LeanCondensedMatter.Transport.Models` track, which is imported explicitly by the
-project root rather than by the generic `Transport` umbrella. The retired `Transport.Foundations`,
-`Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
-`Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
-audits showed no remaining imports.
+The main semantic boundaries are:
 
-All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
-after repository-wide consumer audits showed no remaining imports. The former public
-`Transport.AnomalousHall` umbrella is also retired in favor of the model-owned `Transport.Models`
-track. `scripts/check_transport_hierarchy.py` continues to enforce the canonical public umbrellas
-and core hierarchy constraints without carrying compatibility-forwarder machinery. It also enforces
-the representation-independent conductivity boundary: `Transport.Core.ConductivityTensor` must not
-depend on Středa, while generic Středa matrix APIs remain response-level and must not import the
-physical conductivity tensor.
+- finite spectral index and finite Hilbert-space dimension are separate assumptions;
+- ordinary operator trace is introduced only where an operator-valued kernel is traced;
+- Středa response matrices are response-level objects, not physical conductivity tensors;
+- physical prefactors, volume or continuum normalization, and limiting procedures remain explicit
+  before constructing a `Core.ConductivityTensor`;
+- generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
-## Semantic Kubo–Bastin / Středa boundary
+## Resolvent and response boundary
 
-The pure-point and finite spectral-index restrictions are separate ownership boundaries:
+`Resolvent.Basic` owns `SpectralSide`, the `E ± iη` convention, and physical Green-operator names.
+Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
+`Resolvent.SelfEnergy` owns the two-sided Dyson relation `IsSelfEnergy G₀ G Σ` and its
+inverse-difference characterization when compatible inverses are available.
 
-```text
-KuboBastin/PurePoint
-        ↓  [Fintype ι]
-KuboBastin/Finite
-```
-
-`KuboBastin/PurePoint.lean` owns the complete-Hilbert-space Lehmann-to-retarded-resolvent algebra for
-one pure-point transition and does not assume a finite spectral index. `KuboBastin/Finite.lean`
-introduces `Fintype ι` only when those transitions are assembled into ordinary finite sums and
-packaged as finite `ResponseChannel` responses. Its named `finiteKuboBastinSpectralVertexSum`
-separates the two-vertex contribution from the explicit observable-variation expectation used by
-the complete response. It does not manufacture an ordinary operator-trace representation from an
-already-computed scalar response.
-
-Ordinary finite-dimensional operator trace is a representation-independent analysis primitive owned
-by `Analysis/Operator/FiniteTrace.lean`. Mathlib already supplies `LinearMap.trace`, trace cyclicity,
-the canonical Euclidean matrix/operator equivalence, and the derivative-composition machinery needed
-by this file; the project-level additions are the continuous-linear functional bundling and the thin
-reusable matrix/operator transport, cyclicity, and differentiation consequences. The first genuine
-traced Bastin kernels are obtained in the static Středa layer, where `Streda/TraceKernel.lean` applies
-that analysis primitive to the canonical operator kernels from `Streda/OperatorKernel.lean`. Thus
-finite spectral index and finite Hilbert-space dimension remain explicit, distinct assumptions, while
-ordinary traces are introduced only where an operator-valued kernel actually exists to trace.
-
-`KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
-the boundary: their transition-level APIs are pure-point, while complete response/kernel sums use
-the finite spectral-index layer. They do not define a Středa surface or sea term. Genuine Středa
-ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
-residual sea kernel are introduced.
-
-`Core/ConductivityTensor.lean` owns only the completed, representation-independent physical
-conductivity tensor and its generic diagonal/antisymmetric projections. In particular,
-`ConductivityTensor.longitudinal` and `ConductivityTensor.hallComponent` do not depend on Středa or
-on a particular microscopic representation.
-
-`Streda/ResponseMatrix.lean` instead owns the static surface/sea response decomposition. Its entries
-are regularized response contributions rather than physical conductivity components, and the
-antisymmetry of the sea contribution is stored as an invariant. `Streda/ResponseMatrixRepresentation.lean`
-packages one shared traced analytic setup into that response matrix and proves that each total entry
-is the corresponding traced Bastin energy integral. It intentionally does not construct a
-`ConductivityTensor`: physical prefactors, volume or continuum momentum normalization, and any
-required limiting procedure remain explicit downstream bridges. The retired names
-`Streda/ConductivityMatrix.lean` and `Streda/MatrixRepresentation.lean` must not be recreated as
-compatibility shims.
-
-`Analysis/Operator/Spectral/Resolvent.lean` owns the representation-independent bounded-resolvent
-facts: nonreal exclusion from a self-adjoint spectrum, two-sided shifted-resolvent inverse identities,
-and resolvent action on an eigenvector under explicit spectral exclusion. `Resolvent/Basic.lean`
-keeps the retarded/advanced `SpectralSide`, the `E ± iη` parameter convention, Green-operator names,
-and physical specializations of those generic facts. `Resolvent/Spectral.lean` owns the side-indexed
-and pure-point specializations, including squared pure-point action. `Resolvent/Uniqueness.lean` owns
-the reusable side-indexed uniqueness theorem identifying any right-inverse candidate of the physical
-spectral shift with the canonical resolvent. It is part of the public `Transport.Resolvent` grouping,
-while concrete consumers may still import the narrow leaf module directly. Pure-point Kubo–Bastin,
-Středa spectral expansions, and concrete model propagators consume these results rather than
-re-owning resolvent algebra.
-
-`Resolvent/SelfEnergy.lean` owns the model-independent two-sided Dyson relation
-`IsSelfEnergy G₀ G Σ`, stated without requiring inverses as both
-`G = G₀ + G₀ Σ G` and `G = G₀ + G Σ G₀`. Keeping both noncommutative orientations makes the
-abstraction stable under adjunction. The module proves the inverse-difference characterization
-`Σ = G₀⁻¹ - G⁻¹` when compatible two-sided inverses are supplied. Approximation layers may construct
-candidate self-energies without thereby proving this exact relation for a separately truncated Green
-approximation.
+`KuboBastin` owns the finite/pure-point spectral response bridge. `Streda` owns the static
+surface/sea operator and traced response representation. `Core.ConductivityTensor` is independent of
+either representation.
 
 ## Disorder boundary
 
-The exact/approximate split remains explicit:
-
 ```text
-Disorder/Finite
-   ├──→ Disorder/Resolvent ───────→ BornCommon ──┬──→ RetardedBorn
-   └──→ Disorder/Moments ─────────→ BornCommon   └──→ AdvancedBorn
-                       └────────────────────────────→ SCBA
-
-Transport/Resolvent.Basic ──→ Disorder/Resolvent
-                         └──→ SCBA
-Transport/Resolvent.SelfEnergy ───────────────────→ SCBA
+Finite ──→ Resolvent ──→ AveragedSelfEnergy
+  │            │
+  └──→ Moments ├──→ BornCommon ──→ RetardedBorn / AdvancedBorn
+               ├──→ Ladder
+               └──→ SCBA
 ```
 
-`Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages.
-`Disorder/Resolvent` owns the exact side-indexed clean, configuration, and disorder-averaged Green
-operators together with conventional retarded/advanced specializations. Its first- and second-order
-configuration Dyson identities are canonical over `SpectralSide` in both left and right
-noncommutative orientations; the conventional retarded theorem specializes the left orientation and
-the advanced theorem the right orientation. `Disorder/Moments` owns the canonical bounded
-complex-linear exact second-moment action `C₂(X) = E[Vω X Vω]`, proves its finite-average and
-adjoint-compatibility properties, and owns the separate `IsCentered` property used to cancel
-first-order disorder insertions.
+`Disorder.Finite` owns the normalized finite ensemble. `Disorder.Resolvent` owns exact clean,
+configuration, and averaged Green operators. `Disorder.Moments` owns the exact second-moment action
+`C₂(X) = E[Vω X Vω]` and centered-disorder data.
 
-`Disorder/BornCommon` owns the canonical side-indexed first-Born data shared by both physical
-specializations: `bornSelfEnergy`, the explicit second-order Green truncation `secondOrderBornGreen`,
-the orientation-aware `exactSecondOrderRemainder`, `bornClosureError`, and `BornClosureHypothesis`,
-together with centered first-order cancellation and the common algebra `G₀ + G₀ Σ G₀`. It also owns
-the centered exact-average decomposition `averagedGreen_eq_free_add_exactSecondOrderRemainder`,
-selecting the retarded-left and advanced-right exact remainder orientations from the canonical
-configuration Dyson API. The exact remainder's retarded/advanced values, the self-energy, the
-second-order Green truncation, and the closure error are proved to be related by adjunction.
-Conventional retarded/advanced names and averaged-Green theorem names remain in
-`Disorder/RetardedBorn` and `Disorder/AdvancedBorn` as thin physical specializations; the siblings do
-not import one another.
+`Disorder.AveragedSelfEnergy` is exact: at nonzero broadening it proves invertibility of the averaged
+Green operator on an arbitrary complete complex Hilbert space and defines the canonical
+`Σ_exact = G₀⁻¹ - Ḡ⁻¹` satisfying `IsSelfEnergy`.
 
-The Born self-energy and second-order Green truncation use the canonical exact second moment and
-therefore do not themselves require centered disorder. Centering is required only when an exact
-averaged Dyson identity is reduced by cancelling the first-order contribution. In particular,
-`secondOrderBornGreen = G₀ + G₀ Σ G₀` is an explicit Dyson-series truncation, not a Dyson-resummed
-Green operator, and is not asserted to satisfy the exact `IsSelfEnergy` relation. SCBA uses the same
-canonical `exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no second
-covariance function or separately supplied linearity/adjoint-compatibility assumption. The SCBA
-Green and self-energy solution itself remains approximation data and is not identified with the
-exact disorder average, while its supplied two-sided inverse equations do imply the abstract
-`IsSelfEnergy` relation on either spectral side.
+`Disorder.BornCommon` owns the canonical side-indexed Born objects. Retarded/advanced modules keep
+only physics-facing self-energy names; truncations, remainders, closure errors, and closure
+hypotheses are specialized directly from the side-indexed API rather than duplicated.
 
-## Massive-Dirac concrete-model hierarchy
+`Disorder.SCBA` records supplied self-consistent approximation data and derives its side-indexed
+consequences. It is not identified with the exact disorder average. `Disorder.Ladder` owns reusable
+retarded-advanced ladder algebra for supplied Green operators and does not assume convergence or a
+Ward identity.
 
-The model-owned public entry point is `Transport/Models/MassiveDirac.lean`. During the staged #1840
-migration, the implementation leaf modules still physically reside under the historical
-`Transport/AnomalousHall/MassiveDirac/` directory. That directory is a temporary implementation
-location, not the final ownership boundary; the next migration slice moves the leaf subtree and its
-declaration namespace without changing physical formulas or proof statements.
+## Concrete models
 
-The current implementation subtree is structured as
+`Transport.Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
+Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
+transport infrastructure should be moved upstream rather than duplicated in the model subtree.
 
-```text
-Transport/AnomalousHall/MassiveDirac/
-├── Model/
-│   ├── Basic.lean
-│   ├── Operator.lean
-│   ├── Kinematics.lean
-│   ├── Occupation.lean
-│   ├── Spectral.lean
-│   └── OperatorSpectral.lean
-├── Intrinsic/
-│   ├── BerryBridge.lean
-│   ├── BerrySymmetry.lean
-│   ├── Response.lean
-│   └── Conductivity.lean
-├── Streda/
-│   ├── Response.lean
-│   ├── Integral.lean
-│   └── FiberResponse.lean
-└── Bastin/
-    ├── Berry / Bands / Limit / Lorentzian / Occupation / ...
-    ├── Pole*       -- model-specific pole factor/window/specialization bridge
-    ├── Radial*     -- finite-cutoff radial domination/DCT chain
-    └── CleanConductivity.lean
-```
+## Import boundaries
 
-`Transport.Models.MassiveDirac` is the public benchmark route. The historical top-level
-`Transport.AnomalousHall` public umbrella is retired. The implementation-level `MassiveDirac.Model`,
-`.Intrinsic`, `.Streda`, `.Bastin`, `.Disorder`, and `.Longitudinal` umbrellas remain only as inputs
-to that model route until the leaf migration is completed under #1840.
-
-Within the concrete benchmark, `Model/Operator.lean` owns the exact matrix-to-bounded-operator
-realization (`DiracHilbert`, Hamiltonian/current/velocity operators, in-plane current combinations,
-self-adjointness, and the bounded free-system adapter). Generic finite-dimensional matrix/operator
-trace transport is owned upstream by `Analysis/Operator/FiniteTrace.lean`.
-`Model/OperatorSpectral.lean` owns the transported band-projector algebra and gauge-free projector
-resolvent. These are response-independent model facts and are consumed directly by `Propagator`,
-disorder, and Bastin code without importing the model-specific Středa layer.
-
-`MassiveDirac/Streda/Response.lean` owns the pointwise Bastin/Středa trace specialization,
-`Streda/Integral.lean` owns the finite-energy surface/sea decomposition, and
-`Streda/FiberResponse.lean` packages the two in-plane current directions into one shared-provenance
-fixed-momentum response matrix. That fiber object is not a conductivity: the Bastin prefactor,
-continuum momentum measure/integration, and physical normalization remain downstream. The full
-ordered fiber response is kept until that boundary rather than defining longitudinal or Hall
-conductivity at fixed momentum. The retired `Streda/CurrentOperatorBridge.lean`,
-`Streda/Spectral.lean`, and `Streda/Matrix.lean` paths must not be recreated as compatibility shims;
-repository consumers use the canonical `Model` owners and `Streda/FiberResponse.lean` directly.
-
-This hierarchy is not permission for a concrete model to own reusable analysis. Generic band-state
-occupation and Fermi-surface notions plus zero-temperature occupation/Fermi-edge weights remain under
-`Transport/Analysis/`, where their transport/occupation semantics live. The scalar Lorentzian
-kernel/tail analysis, local-constant weighted-window extraction, and regular-factor pole extraction
-are representation-independent and live upstream under `Analysis/Lorentzian/`; both generic
-Transport and the massive-Dirac specialization consume those analysis primitives.
-
-## Generic / concrete boundary
-
-Files under generic Transport must not import `LeanCondensedMatter.SecondQuantization`. Fermionic
-finite-Fock, lattice, directional-current, Fermi-state, and Peierls-contact realizations remain in
-`SecondQuantization/Fermionic/Transport` and specialize the neutral owners.
-
-`LeanCondensedMatter.Transport` must not import the concrete `Transport.Models` track. The project
-root imports `LeanCondensedMatter.Transport` and `LeanCondensedMatter.Transport.Models` as separate
-public tracks.
-
-Physical formula, sign, normalization, limiting-order, and approximation semantics must not change
-as part of path/ownership migration.
+- generic Transport must not import `LeanCondensedMatter.SecondQuantization`;
+- `LeanCondensedMatter.Transport` must not import `LeanCondensedMatter.Transport.Models`;
+- model-specific code must not define generic Transport APIs solely for one concrete consumer.
