@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 
 set_option linter.style.header false
 
