@@ -12,8 +12,9 @@ set_option linter.style.header false
 The clean massive-Dirac model is defined first by explicit `2 × 2` matrices. This module owns the
 model-level passage from those matrices to bounded operators on the canonical two-level Hilbert
 space. It supplies the bounded Hamiltonian, velocity and current vertices, their self-adjointness,
-the in-plane current-combination API, the `BoundedFreeSystem` adapter used by generic response
-theory, and the exact matrix/operator trace bridge.
+the in-plane current-combination API, and the `BoundedFreeSystem` adapter used by generic response
+theory. Generic finite-dimensional matrix/operator trace transport lives upstream in
+`Analysis.Operator.FiniteTrace`.
 
 No Kubo–Bastin or Středa kernel is defined here. Response-specific trace identities and energy
 representations remain downstream of this model realization.
@@ -31,18 +32,6 @@ abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
   (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) M
-
-/-- The ordinary matrix trace agrees with the finite-dimensional operator trace after transporting
-through the canonical Euclidean-space matrix/operator equivalence. -/
-theorem finiteDimensionalOperatorTrace_matrixOperator (M : Matrix2) :
-    finiteDimensionalOperatorTrace (matrixOperator M) = Matrix.trace M := by
-  rw [finiteDimensionalOperatorTrace_apply]
-  have hcoe :
-      ((matrixOperator M : DiracHilbert →L[ℂ] DiracHilbert) :
-        DiracHilbert →ₗ[ℂ] DiracHilbert) = Matrix.toEuclideanLin M := by
-    simpa [matrixOperator] using Matrix.coe_toEuclideanCLM_eq_toEuclideanLin M
-  rw [hcoe, Matrix.toEuclideanLin_eq_toLin_orthonormal]
-  exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin 2) ℂ).toBasis
 
 /-- The clean massive-Dirac Hamiltonian as a bounded operator. -/
 noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
