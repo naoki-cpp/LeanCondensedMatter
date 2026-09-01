@@ -17,7 +17,6 @@ limit with
 This file integrates that already-extracted clean profile with the same generic zero-temperature
 spectral occupation used by the intrinsic benchmark. Both bands share the finite positive-energy
 interval `[m, Λ]`; occupation selects the filled lower band and the occupied part of the upper band.
-Only afterwards do shell-based names appear as a theorem in the benchmark regime.
 
 The canonical finite-cutoff response restores the Bastin trace prefactor `ℏ/(2π)`, the angular
 factor `2π`, and the physical-momentum measure `d²p/(2πℏ)²`. It is exactly the occupation-derived
@@ -40,8 +39,7 @@ def cleanInterbandBastinPairLimitDensity
     (band : Band) (e v m px py : ℝ) : ℝ :=
   -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py)
 
-/-- The pointwise fixed-window theorem from the preceding slice, expressed through the named clean
-Bastin-pair limit density. -/
+/-- The pointwise fixed-window theorem expressed through the named clean Bastin-pair limit density. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity
     (band : Band) (e v m px py radius : ℝ)
     (hE : energy v m px py ≠ 0)
@@ -143,36 +141,6 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq
   rw [zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq,
     zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq]
   ring
-
-/-- Historical shell-based occupied clean Bastin-pair radial weight: filled lower band from `m` to
-`Λ`, plus occupied upper band from `m` to `εF`. It remains a regression target rather than the
-canonical source of occupation. -/
-def occupiedCleanInterbandBastinPairCutoff
-    (e m εF Λ : ℝ) : ℝ :=
-  cleanInterbandBastinPairEnergyShellIntegral .lower e m m Λ +
-    cleanInterbandBastinPairEnergyShellIntegral .upper e m m εF
-
-/-- The historical shell-based clean Bastin-pair radial weight is `-2π e²` times the historical
-finite-cutoff Berry wrapper. -/
-theorem occupiedCleanInterbandBastinPairCutoff_eq
-    (e m εF Λ : ℝ) :
-    occupiedCleanInterbandBastinPairCutoff e m εF Λ =
-      (-2 * Real.pi * e ^ 2) * metallicBerryWeightCutoff m εF Λ := by
-  unfold occupiedCleanInterbandBastinPairCutoff metallicBerryWeightCutoff
-    valenceBerryWeightCutoff conductionBerryWeight
-  rw [cleanInterbandBastinPairEnergyShellIntegral_eq,
-    cleanInterbandBastinPairEnergyShellIntegral_eq]
-  ring
-
-/-- In the benchmark regime, the historical shell-based clean Bastin-pair cutoff agrees with the
-canonical occupation-derived cutoff. -/
-theorem occupiedCleanInterbandBastinPairCutoff_eq_zeroTemperatureOccupied
-    (e m εF Λ : ℝ) (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
-    occupiedCleanInterbandBastinPairCutoff e m εF Λ =
-      zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ := by
-  rw [occupiedCleanInterbandBastinPairCutoff_eq,
-    zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq,
-    metallicBerryWeightCutoff_eq_zeroTemperatureOccupied m εF Λ hm hmF hFΛ]
 
 /-- Scalar prefactor that converts the canonical traced Bastin energy kernel to the static Hall
 response before the momentum measure is applied. Because the current vertices already contain the
