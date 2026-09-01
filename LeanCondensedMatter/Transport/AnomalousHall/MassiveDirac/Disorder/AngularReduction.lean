@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Kinematics
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
+import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
