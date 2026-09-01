@@ -28,6 +28,6 @@ theorem innerHS_one_eq_spectralTrace {A : H →L[ℂ] H} (hAcpt : IsCompactOpera
   unfold innerHS
   simpa only [one_apply_eq_self] using
     (HasSum.congr_fun hcast fun i =>
-      coe_diagonalExpectationValue_right A hAself (d i)).tsum_eq
+      (coe_diagonalExpectationValue_right A hAself (d i)).symm).tsum_eq
 
 end ContinuousLinearMap
