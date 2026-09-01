@@ -62,22 +62,6 @@ noncomputable def scbaAdvancedShift
     (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
   ensemble.scbaShift .advanced energy broadening selfEnergy
 
-@[simp]
-theorem scbaShift_retarded
-    (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-    (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) :
-    ensemble.scbaShift .retarded energy broadening selfEnergy =
-      ensemble.scbaRetardedShift energy broadening selfEnergy :=
-  rfl
-
-@[simp]
-theorem scbaShift_advanced
-    (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-    (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) :
-    ensemble.scbaShift .advanced energy broadening selfEnergy =
-      ensemble.scbaAdvancedShift energy broadening selfEnergy :=
-  rfl
-
 /-- Adjointing a retarded SCBA shift gives the advanced shift with adjointed self-energy. -/
 theorem star_scbaRetardedShift
     (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
@@ -141,26 +125,6 @@ noncomputable def advancedGreen : H →L[ℂ] H :=
 /-- Conventional advanced self-energy, retained as the advanced specialization of `selfEnergy`. -/
 noncomputable def advancedSelfEnergy : H →L[ℂ] H :=
   solution.selfEnergy .advanced
-
-@[simp]
-theorem green_retarded :
-    solution.green .retarded = solution.retardedGreen :=
-  rfl
-
-@[simp]
-theorem green_advanced :
-    solution.green .advanced = star solution.retardedGreen :=
-  rfl
-
-@[simp]
-theorem selfEnergy_retarded :
-    solution.selfEnergy .retarded = solution.retardedSelfEnergy :=
-  rfl
-
-@[simp]
-theorem selfEnergy_advanced :
-    solution.selfEnergy .advanced = star solution.retardedSelfEnergy :=
-  rfl
 
 /-- The conventional advanced Green operator is the adjoint of the supplied retarded operator. -/
 @[simp]
@@ -228,8 +192,7 @@ theorem shift_mul_green (side : SpectralSide) :
         solution.green side = 1 := by
   cases side with
   | retarded =>
-      simpa only [scbaRetardedShift, solution.selfEnergy_retarded,
-        solution.green_retarded] using
+      simpa only [scbaRetardedShift, selfEnergy, green] using
         solution.retardedShift_mul_green
   | advanced =>
       simpa only [scbaAdvancedShift, advancedSelfEnergy,
@@ -242,8 +205,7 @@ theorem green_mul_shift (side : SpectralSide) :
         ensemble.scbaShift side energy broadening (solution.selfEnergy side) = 1 := by
   cases side with
   | retarded =>
-      simpa only [scbaRetardedShift, solution.selfEnergy_retarded,
-        solution.green_retarded] using
+      simpa only [scbaRetardedShift, selfEnergy, green] using
         solution.green_mul_retardedShift
   | advanced =>
       simpa only [scbaAdvancedShift, advancedSelfEnergy,
@@ -301,7 +263,7 @@ theorem green_isUnit (side : SpectralSide) :
 /-- The supplied retarded Green operator is a unit whose inverse is its SCBA shift. -/
 theorem retardedGreen_isUnit :
     IsUnit solution.retardedGreen := by
-  simpa only [solution.green_retarded] using
+  simpa only [green] using
     solution.green_isUnit .retarded
 
 /-- The derived advanced Green operator is a unit whose inverse is its SCBA shift. -/
