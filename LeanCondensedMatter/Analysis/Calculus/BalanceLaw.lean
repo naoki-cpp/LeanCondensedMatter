@@ -61,15 +61,6 @@ structure BalanceLaw
 
 namespace BalanceLaw
 
-/-- Evaluate a balance law on one test object. -/
-theorem apply
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : BalanceLaw δ Q d) (f : Test) :
-    δ (Q f) = B.current (d f) + B.source f :=
-  B.balance f
-
 /-- If the differential test vanishes, only the source term can change the localized quantity. -/
 theorem evolution_eq_source_of_differential_eq_zero
     {δ : Obs →ₗ[𝕜] Obs}

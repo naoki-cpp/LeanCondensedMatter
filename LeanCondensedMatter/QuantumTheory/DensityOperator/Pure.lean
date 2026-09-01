@@ -15,14 +15,6 @@ open ContinuousLinearMap
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 omit [CompleteSpace H] in
-/-- A rank-one operator `|x⟩⟨y|` is compact. -/
-theorem isCompactOperator_rankOne (x y : H) :
-    IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
-  rw [InnerProductSpace.rankOne_def']
-  exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
-    (ContinuousLinearMap.toSpanSingleton ℂ x)
-
-omit [CompleteSpace H] in
 /-- A unit rank-one projector has no nonzero eigenvalue other than one. -/
 theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ}
     (hμ0 : μ ≠ 0) (hμ1 : μ ≠ 1) :
@@ -118,7 +110,7 @@ noncomputable def pure (ψ : State H) : DensityOperator H := by
   let htraceClass : SpectralTraceClass
       (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) :=
     SpectralTraceClass.ofPositive
-      (isCompactOperator_rankOne ψ.1 ψ.1)
+      (ContinuousLinearMap.isCompactOperator_rankOne ψ.1 ψ.1)
       (InnerProductSpace.isPositive_rankOne_self ψ.1)
       (rankOne_hasSummableRealEigenvalues ψ.2)
   exact {

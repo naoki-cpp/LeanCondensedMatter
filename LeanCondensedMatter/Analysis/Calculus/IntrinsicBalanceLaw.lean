@@ -110,15 +110,6 @@ structure IntrinsicBalanceLaw
 
 namespace IntrinsicBalanceLaw
 
-/-- Evaluate an intrinsic balance law on one test object. -/
-theorem apply
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) (f : Test) :
-    δ (Q f) = B.transport f + B.source f :=
-  B.balance f
-
 /-- Intrinsic transport vanishes on test objects annihilated by the differential. -/
 theorem transport_eq_zero_of_differential_eq_zero
     {δ : Obs →ₗ[𝕜] Obs}
