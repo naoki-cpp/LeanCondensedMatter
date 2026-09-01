@@ -1,6 +1,6 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.Normed.Operator.Compact.Basic
 
 /-!
 # Diagonal operators from summable Hilbert-basis weights
@@ -59,20 +59,12 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     _ = a j • b j := htsum
 
 omit [CompleteSpace H] in
-/-- Rank-one operators on a Hilbert space are compact. -/
-theorem isCompactOperator_rankOne (x y : H) :
-    IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
-  rw [InnerProductSpace.rankOne_def']
-  exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
-    (ContinuousLinearMap.toSpanSingleton ℂ x)
-
-omit [CompleteSpace H] in
 /-- Every term of the diagonal operator series is compact. -/
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
     IsCompactOperator (diagonalTerm b a i) := by
   change IsCompactOperator
     (fun x : H => a i • InnerProductSpace.rankOne ℂ (b i) (b i) x)
-  exact (isCompactOperator_rankOne (b i) (b i)).smul (a i)
+  exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)

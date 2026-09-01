@@ -96,11 +96,12 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
             (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) :=
         Finset.sum_congr rfl fun q _ => (Finset.mul_sum _ _ _).symm
 
-/-- The quartic Dyson vertex moment is the sum of Wick-diagram amplitudes. -/
-theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
-    ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
-      dysonVertexMoment ε β (quarticInteraction g) S := by
+/-- Canonical direction of the Dyson-to-Wick-diagram expansion. -/
+theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude (ε : Mode → ℝ)
+    (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
+    dysonVertexMoment ε β (quarticInteraction g) S =
+      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d := by
+  symm
   rw [dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation]
   have hstep : ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
       (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
@@ -138,13 +139,6 @@ theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ)
   rw [hstep, Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
   ring
 
-/-- Canonical direction of the Dyson-to-Wick-diagram expansion. -/
-theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude (ε : Mode → ℝ)
-    (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
-    dysonVertexMoment ε β (quarticInteraction g) S =
-      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d :=
-  (sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment ε β g S).symm
-
 /-- **The total vacuum amplitude depends only on how many vertices there are.** Two vertex sets of
 equal size, in possibly different ambient index types, carry the same total Wick-diagram amplitude.
 
@@ -157,8 +151,9 @@ theorem sum_quarticWickDiagramAmplitude_eq_of_card_eq (ε : Mode → ℝ) (β : 
     (h : S.card = T.card) :
     ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
       ∑ d : QuarticWickDiagram Mode M T, quarticWickDiagramAmplitude ε β g d := by
-  rw [sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment,
-    sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment, dysonVertexMoment, dysonVertexMoment, h]
+  rw [← dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude,
+    ← dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude,
+    dysonVertexMoment, dysonVertexMoment, h]
 
 end Fermionic
 end SecondQuantization
