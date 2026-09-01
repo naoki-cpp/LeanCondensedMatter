@@ -1,212 +1,91 @@
-# Declarative architecture data
+# Architecture CI
 
-Files in this directory are architecture **specifications**, not checker implementations.
+Architecture checks protect the repository's current dependency and ownership boundaries. They are
+not a history of previous module layouts.
 
-The goal is to describe durable repository topology as data, then let the architecture audits
-interpret it at the appropriate level. Architecture specifications are validated strictly: unknown
-or misspelled fields are CI errors rather than silently ignored configuration.
+## Execution
 
-## Primary layer graph
-
-Each primary layer declares:
-
-- `id`: stable graph vertex name;
-- `modulePrefixes`: Lean modules classified into that vertex;
-- `namespacePrefixes`: compiled declaration namespaces allowed for modules in that vertex;
-- `forbiddenNameFragments`: semantic declaration-name fragments forbidden in that layer.
-
-Edges are oriented **upstream -> downstream**. A direct source import from layer `A` to layer `B` is
-valid exactly when `A = B` or `B` is an ancestor of `A` in the graph. The checker computes graph
-reachability, so transitive dependencies do not need to be repeated as extra edges.
-
-For `second_quantization.json`, the primary graph is:
+CI uses three levels:
 
 ```text
-math ───────→ quantumTheory
-  └─────────→ common ←──── quantumTheory
-                 ├────→ fermionic
-                 └────→ bosonic
+Python source audit
+  files / direct imports / DAGs / reachability / narrow layout rules
+        ↓
+lake build --wfail
+        ↓
+Lean compiled audit
+  declaration owners / namespaces / signatures / semantic boundaries
+        ↓
+compiled sorryAx audit and lake lint
 ```
 
-Consequences follow from the graph rather than separate blacklists:
+Run the pre-build audit with:
 
-- `Common` cannot import `Fermionic` or `Bosonic`;
-- `Analysis` / `Combinatorics` / `QuantumTheory` cannot import SecondQuantization layers downstream;
-- `Fermionic` and `Bosonic` cannot import each other;
-- both statistics-specific layers may consume `Common` and its upstream ancestors.
-
-Python classifies graph modules by longest matching prefix. The compiled Lean namespace audit reads
-the same primary graph with first-match lookup, so the pre-build audit additionally requires primary
-module prefixes owned by different layers to be non-overlapping. That partition invariant makes the
-two classification rules equivalent. Scoped source-only DAGs may still use nested prefixes because
-they are interpreted only by Python's longest-prefix classifier.
-
-## Scoped import DAGs
-
-Some architectures are meaningful only inside a focused source region. Encoding them in the primary
-graph would turn unrelated modules into one artificial global ordering, so specifications also
-support `scopedImportGraphs`.
-
-Each scoped DAG declares:
-
-- `id`: diagnostic name;
-- `sourceRoots`: repository directories whose direct imports are checked;
-- `layers`: local graph vertices with `modulePrefixes`;
-- `edges`: local upstream -> downstream dependency edges;
-- optional `coveragePrefixes`: module prefixes for which every source module under the declared
-  roots must be assigned to one of the DAG layers.
-
-Targets outside the scoped graph are intentionally ignored. This lets a focused graph describe only
-the dependency relation it owns without duplicating unrelated repository policy. When a scoped DAG
-is intended to be authoritative for a subtree, use `coveragePrefixes` so adding a new source file
-without updating the DAG fails CI instead of silently leaving that module unclassified.
-
-`second_quantization.json` contains the SecondQuantization-centered DAGs:
-
-```text
-Fermionic
-  Algebra → {Field, Lattice} → Transport → Validation
-
-TwoPointDiagramExpansion
-  Semantics → Factorization → Analysis → Integration → Series
-
-Fermionic
-  CompletedSpace → Thermal
-
-Bosonic Quartic
-  Semantics → Thermal
-
-QuantumTheory → {SingleParticle, SecondQuantization}
-
-Combinatorics → Permutation
+```bash
+python3 scripts/check_architecture.py
 ```
 
-It also keeps Fermionic lattice construction upstream of response theory and AlgebraicFock upstream
-of transport-specific quantum theory.
+Focused local scopes are available as `--scope core` and `--scope second-quantization`. After a
+successful build, the compiled checks are:
 
-`source_topology.json` contains repository source-layer DAGs that do not belong to the compiled
-SecondQuantization namespace contract. The finite-disorder graph is expressed in terms of the
-**canonical** Transport modules rather than compatibility forwarders:
-
-```text
-Transport.Core.FiniteTrace
-  ├→ Transport.Streda.TraceKernel
-  └→ Transport.Disorder.Finite
-
-Transport.Disorder.Finite
-  ├→ Transport.Disorder.Moments
-  ├→ Transport.Disorder.Resolvent
-  └→ Transport.Disorder.SCBA
-
-Transport.Resolvent.Basic
-  ├→ Transport.Disorder.Resolvent
-  └→ Transport.Disorder.SCBA
-
-{Transport.Disorder.Moments, Transport.Disorder.Resolvent}
-  ├→ Transport.Disorder.RetardedBorn
-  └→ Transport.Disorder.AdvancedBorn
+```bash
+lake env lean scripts/CheckArchitecture.lean
+lake env lean scripts/CheckNoSorry.lean
+lake lint
 ```
 
-It also contains the LinearResponse, generalized-current, density/Gibbs/entropy, and other focused
-source DAGs.
+## Declarative source topology
 
-`ahe_topology.json` owns the canonical Massive-Dirac AHE source ordering. The stable Model/Intrinsic
-foundation is checked separately from the coarser Bastin stage DAG, so exact theorem-level module
-edges do not have to become architecture layers:
+`check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
 
-```text
-Model.Basic ─┬→ Model.Operator ──────────────┐
-             ├→ Model.Kinematics → Model.Occupation
-             └→ Model.Spectral ─→ Intrinsic.BerryBridge
-                              ├→ Intrinsic.BerrySymmetry
-                              ├→ Intrinsic.Response
-                              └→ Intrinsic.Conductivity
+- `second_quantization.json` — the shared primary layer graph and SecondQuantization-focused DAGs;
+- `source_topology.json` — Transport, current, LinearResponse, Gibbs/entropy, and other source DAGs;
+- `ahe_topology.json` — Massive-Dirac Model/Intrinsic and Bastin stage DAGs.
 
-{Model.Operator, Model.Spectral} → Model.OperatorSpectral
+Edges are written **upstream -> downstream**. A source layer may import itself or an ancestor. Scoped
+DAGs may use `coveragePrefixes` when every source module in a subtree must be classified.
 
-Intrinsic geometry → Bastin foundation → Pole → Pair → Radial → Zero-T
-                                      ↖──── Intrinsic conductivity ────┘
-```
+The primary graph is also consumed by `CheckArchitecture.lean`, so its module prefixes must form a
+non-overlapping partition. Python checks this before the build.
 
-The Model/Intrinsic and Bastin source regions use `coveragePrefixes`, so a newly added canonical AHE
-module must be classified into the corresponding DAG before CI accepts it. The Bastin stage graph
-became authoritative after the #1606–#1612 canonical-import migration completed. Exact direct imports
-remain separate regression/source contracts; the DAG only states the durable allowed dependency
-direction between stages.
+## Fixed source contracts
 
-## Positive source contracts
+`source_contracts.json` contains concrete source topology that is not implied by an allowed DAG
+edge, such as:
 
-A dependency-direction DAG answers **which layers may depend on which upstream layers**. It does not
-assert that a particular direct edge must exist.
+- required canonical files or directories;
+- required or exact direct imports;
+- forbidden direct imports or import prefixes.
 
-Fixed positive topology therefore lives separately in `source_contracts.json`. The shared source
-contract runner currently supports:
+An allowed dependency direction and a required direct edge are different contracts. Do not encode a
+required edge merely by adding a DAG edge.
 
-- required canonical files;
-- required canonical directories;
-- required direct imports.
+## Source versus compiled semantics
 
-This replaces checker-local Python files whose only remaining content was a static list of paths and
-required edges. A required direct import is deliberately not encoded as an ordinary DAG edge: an
-allowed direction and a required edge are different contracts.
+Python owns properties of repository source topology. It parses Lean imports, but it is not a Lean
+semantic parser. Source syntax should be inspected only when syntax or layout is itself the invariant.
+Focused Python checkers are reserved for rules that do not fit the uniform graph or source-contract
+data shapes.
 
-Special topology that is not yet a uniform data shape may remain in a focused checker. Examples are
-exact umbrella boundaries, layered directory-layout rules, and compatibility-forwarding syntax
-contracts.
+Lean owns properties of the elaborated environment. `CheckArchitecture.lean` checks canonical
+owners, module/namespace relationships, declaration-type dependencies, dimension-independent
+signatures, and typed semantic bridges. Private declarations are normalized to their user-facing
+names before namespace checks.
 
-## Source syntax contracts
+`CheckNoSorry.lean` independently rejects any project declaration whose axioms contain `sorryAx`.
+Mathematical identities belong in ordinary Lean theorems rather than architecture scripts.
 
-Declaration ownership, namespace ownership, dimension independence, and other semantic signature
-constraints belong to the compiled Lean audit, not source-text parsing.
+## Adding or changing a rule
 
-Python inspects syntax only when syntax itself is the invariant. Direct-import extraction recognizes
-the Lean 4.31 module forms `import`, `public import`, `meta import`, `public meta import`, and
-`import all`. If an import-looking top-level command does not match the supported grammar, the audit
-fails closed instead of ignoring a dependency that could bypass the source graph.
+Choose one authoritative mechanism:
 
-The other narrow source-syntax invariant is a compatibility forwarding module. Such a file may be
-absent from the compiled public environment, so its forwarding property is checked directly: after
-comments are removed, only one canonical import, blank lines, and the standard
-`set_option linter.style.header false` command are accepted. The compatibility maps also derive the
-set of historical flat module names forbidden throughout canonical Transport/AHE implementation
-trees, so new canonical files cannot regress to old forwarding paths without being individually
-registered in another migration table.
+1. dependency direction or reachability -> an architecture DAG;
+2. a required concrete file, directory, or direct import -> `source_contracts.json`;
+3. a declaration-level semantic invariant -> `CheckArchitecture.lean`;
+4. a genuinely distinct source layout or syntax invariant -> a focused Python checker.
 
-## Independent diagnostics
+Reuse `architecture_audit_common.py` and `architecture_graph_scopes.py` for shared source mechanics.
+Register each focused checker once in `check_architecture.py`.
 
-Every primary/scoped DAG is validated and checked with its own fresh diagnostic buffer. A malformed
-or violated graph must not prevent later graphs from being validated in the same CI run. Diagnostics
-are then accumulated by the top-level architecture audit.
-
-## One graph runner, two semantic levels
-
-`check_architecture_graphs.py` is the single Python owner for the primary graph and all scoped import
-DAGs. Individual Python checkers must not restate those dependency-direction edges.
-
-Python owns direct source topology: it classifies source and imported modules through
-`modulePrefixes` and checks imports against graph ancestry before the Lean build.
-
-Lean owns compiled semantics. `CheckArchitecture.lean` reads the primary graph from
-`second_quantization.json` after the build, resolves each source-declared constant to its compiled
-owner module, converts private names back with `privateToUserName`, and checks the layer's
-`namespacePrefixes` and `forbiddenNameFragments`. Additional compiled checks protect canonical
-owners and declaration-type dependencies that are not naturally represented by the layer DAG.
-
-Scoped DAGs and `source_contracts.json` are source-topology data only; declaration-level rules should
-be represented as compiled Lean contracts rather than reintroducing source parsers.
-
-This deliberately avoids teaching Python how to parse Lean `namespace`, `section`, `end`, declaration
-modifiers, private-name syntax, proof bodies, or helper-name usage.
-
-## Exceptions
-
-`namespaceExceptions` are for small, intentional semantic crossings that cannot be represented by a
-layer namespace alone. They are matched by compiled owner-module prefix plus user-facing declaration
-prefix.
-
-Keep this list small. An exception should describe a real architectural choice, not preserve an old
-source location after a refactor.
-
-The current SecondQuantization graph has one such exception: the combinatorial
-`Combinatorics.Pairing.weight` declaration is implemented in the Common thermal tree while remaining
-owned by the `Combinatorics` namespace.
+Prefer structural invariants over path-by-path regression guards. Do not duplicate the same invariant
+across checkers or freeze proof-helper choices as CI policy.
