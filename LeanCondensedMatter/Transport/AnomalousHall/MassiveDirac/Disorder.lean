@@ -24,7 +24,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCur
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexIntegral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
+import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
 
 set_option linter.style.header false
 
