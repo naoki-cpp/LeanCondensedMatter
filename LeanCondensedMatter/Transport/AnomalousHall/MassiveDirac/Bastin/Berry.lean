@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
