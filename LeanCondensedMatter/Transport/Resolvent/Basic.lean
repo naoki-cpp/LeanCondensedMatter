@@ -178,22 +178,6 @@ theorem spectralResolvent_mul_spectralShift
           rw [spectralParameter_im]
           exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening))
 
-/-- Complex conjugation exchanges the retarded and advanced spectral parameters. -/
-@[simp]
-theorem star_retardedSpectralParameter (energy broadening : ℝ) :
-    star (retardedSpectralParameter energy broadening) =
-      advancedSpectralParameter energy broadening := by
-  apply Complex.ext <;>
-    simp [retardedSpectralParameter, advancedSpectralParameter]
-
-/-- Complex conjugation exchanges the advanced and retarded spectral parameters. -/
-@[simp]
-theorem star_advancedSpectralParameter (energy broadening : ℝ) :
-    star (advancedSpectralParameter energy broadening) =
-      retardedSpectralParameter energy broadening := by
-  apply Complex.ext <;>
-    simp [retardedSpectralParameter, advancedSpectralParameter]
-
 /-- The advanced resolvent is the adjoint of the retarded resolvent. -/
 theorem star_retardedResolvent
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
@@ -205,30 +189,6 @@ theorem star_retardedResolvent
   congr 1
   rw [star_sub, hself]
   simp [Algebra.algebraMap_eq_smul_one]
-
-/-- The advanced resolvent adjoints back to the retarded resolvent. -/
-theorem star_advancedResolvent
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) :
-    star (advancedResolvent hamiltonian energy broadening) =
-      retardedResolvent hamiltonian energy broadening := by
-  rw [← star_retardedResolvent hamiltonian hself energy broadening]
-  simp
-
-/-- Complex spectral-parameter derivative of the resolvent at either side-indexed point. -/
-theorem hasDerivAt_resolvent_spectralParameter
-    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    HasDerivAt (resolvent hamiltonian)
-      (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
-      (spectralParameter side energy broadening) := by
-  exact spectrum.hasDerivAt_resolvent_const_left
-    (spectrum.notMem_iff.mp
-      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-        hamiltonian hself (spectralParameter side energy broadening)
-        (by
-          rw [spectralParameter_im]
-          exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)))
 
 end
 end Transport
