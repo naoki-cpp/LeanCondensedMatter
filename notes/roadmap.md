@@ -46,10 +46,11 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Physical conductivity bridge from response-level Středa data with explicit normalization and limits | E | `stated` | [transport architecture](architecture/transport.md#resolvent-and-response-boundary) |
 | Trace-per-unit-volume / thermodynamic-limit transport | C/E | `idea` | [transport roadmap](roadmaps/transport.md#open-targets) |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
-| Finite-mode fermionic thermal, Dyson, and vacuum linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
+| Finite-mode fermionic thermal, Dyson, and partition-function linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
 | Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean` |
 | Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |
 | Bosonic algebraic and two-point thermal layer | D | `proved` for current stated results; general Gibbs/Dyson layer remains `idea` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
-| Completed-space and infinite-mode second quantization | C/D | `stated` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
+| Completed fermionic free Fock/domain and thermal theory | C/D | `proved` under explicit boundedness, domain, and summability hypotheses | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
+| Completed bosonic, interacting completed-space, and thermodynamic-limit second quantization | C/D | `idea` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md#open-work) |
 | Higher time-ordered correlation functions, general source insertions, and multi-leg connected expansions | D | `idea` | [second quantization](roadmaps/second-quantization.md) |

@@ -31,11 +31,12 @@ pairing.
 
 The connected perturbative line proves:
 
-1. the coefficientwise formal vacuum linked-cluster theorem;
-2. the finite-dimensional analytic vacuum linked-cluster theorem for
+1. the coefficientwise formal finite-temperature log-partition linked-cluster theorem;
+2. the finite-dimensional analytic log-partition linked-cluster theorem for
    `Tr(exp(-β(H₀ + λV)))`;
 3. the finite-mode two-point theorem
-   `vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`.
+   `vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`, where the identifier's
+   `vacuumNormalized` means normalization by the zero-external-leg Dyson partition series.
 
 The two-point result already covers one external-leg correlation-function setting. The remaining
 connected-diagram target is arbitrary higher-point/source-insertion structure.

@@ -1,8 +1,8 @@
 # Conserving impurity vertex-correction boundary
 
-A conserving impurity treatment must use the same disorder second moment in the one-particle
-self-energy approximation and the two-particle ladder vertex. This note records the current bounded
-boundary and the missing conservation bridge.
+In the current SCBA/non-crossing ladder scheme, a conserving impurity construction uses the same
+disorder second moment in the one-particle self-energy approximation and the two-particle ladder
+vertex. This note records the current bounded boundary and the missing conservation bridge.
 
 ## Shared disorder data
 
