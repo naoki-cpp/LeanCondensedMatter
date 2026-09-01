@@ -98,7 +98,8 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
   have hrestricted :
       HasSum (g ∘ j) (entropyOpSpectralTraceClass ρ hsummable).trace :=
     (hj.hasSum_iff hzero).mpr hfull
-  simpa only [Function.comp_apply] using HasSum.congr_fun hrestricted hpoint
+  simpa only [Function.comp_apply] using
+    HasSum.congr_fun hrestricted fun a => (hpoint a).symm
 
 /-- The entropy-operator trace is the sum of `-λ log λ`. -/
 theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
