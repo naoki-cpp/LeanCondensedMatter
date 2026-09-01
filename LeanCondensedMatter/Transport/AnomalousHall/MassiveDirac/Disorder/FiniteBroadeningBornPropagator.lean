@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ContinuumBorn
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBorn
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.Tactic

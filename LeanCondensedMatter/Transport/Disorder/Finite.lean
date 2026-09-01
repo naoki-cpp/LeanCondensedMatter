@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
-import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Algebra.Star.BigOperators
 
 set_option linter.style.header false
@@ -12,9 +11,7 @@ thermodynamic-limit approximation. A finite ensemble consists of a clean bounded
 a self-adjoint impurity potential for each configuration, and a normalized nonnegative weight.
 
 For every configuration the exact Hamiltonian is `Hω = H₀ + Vω`. Scalar and operator-valued
-ensemble averages are finite weighted sums kept outside the configuration-wise response. In finite
-dimension, the scalar average of an ordinary operator trace is proved equal to the trace of the
-exact operator average.
+ensemble averages are finite weighted sums kept outside the configuration-wise response.
 
 No Gaussian law, independence assumption, Born approximation, disorder expansion, trace per unit
 volume, or infinite-volume limit is introduced here.
@@ -86,20 +83,6 @@ theorem operatorAverage_star
   apply Finset.sum_congr rfl
   intro ω _
   simp
-
-/-- Finite disorder averaging commutes with the ordinary finite-dimensional operator trace. -/
-theorem average_finiteDimensionalOperatorTrace
-    [FiniteDimensional ℂ H]
-    (operator : Ω → H →L[ℂ] H) :
-    ensemble.average
-        (fun ω => finiteDimensionalOperatorTrace (H := H) (operator ω)) =
-      finiteDimensionalOperatorTrace (H := H) (ensemble.operatorAverage operator) := by
-  unfold average operatorAverage
-  rw [map_sum]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [map_smul]
-  rfl
 
 end FiniteDisorderEnsemble
 

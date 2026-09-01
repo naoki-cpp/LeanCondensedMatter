@@ -285,7 +285,7 @@ private theorem averagedGreen_antilipschitz
 
 /-- At nonzero broadening the exact positive-weight finite disorder average of side-indexed
 configuration Green operators has trivial kernel, in any Hilbert-space dimension. -/
-theorem averagedGreen_injective
+private theorem averagedGreen_injective
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     Function.Injective (ensemble.averagedGreen side energy broadening) := by
   obtain ⟨_, hantilipschitz⟩ :=
