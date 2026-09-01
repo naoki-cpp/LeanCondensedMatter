@@ -32,8 +32,8 @@ variable {M : Type*} [Countable M]
 
 /-- Strong normalization implies diagonal weak-operator normalization. -/
 theorem POVM.hasSum_inner_apply (P : POVM H M) (x : H) :
-    HasSum (fun m => (inner ℂ x (P.E m x) : ℂ)) (inner ℂ x x) := by
-  exact (innerSL ℂ x).hasSum (P.hasSum_apply x)
+    HasSum (fun m => (inner ℂ x (P.E m x) : ℂ)) (inner ℂ x x) :=
+  (innerSL ℂ x).hasSum (P.hasSum_apply x)
 
 /-- The self-adjoint complex scalar `Tr(ρ Eₘ)` representing a Born probability. -/
 noncomputable def probSelfAdjoint
@@ -69,8 +69,8 @@ private noncomputable def probabilityKernel (P : POVM H M)
 
 private theorem probabilityKernel_nonneg (P : POVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) :
-    0 ≤ probabilityKernel P ρ a m := by
-  exact mul_nonneg
+    0 ≤ probabilityKernel P ρ a m :=
+  mul_nonneg
     (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
     (diagonalExpectationValue_nonneg (P.E m) (P.pos m)
       (eigenvectorFamily ρ.spectralTraceClass.compact a))
@@ -84,13 +84,9 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
   have hcomplex : HasSum
       (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ))
       ((1 : ℝ) : ℂ) := by
-    have hfun :
-        (fun m => (inner ℂ e (P.E m e) : ℂ)) =
-          (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ)) := by
-      funext m
-      exact (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e).symm
-    rw [hfun] at hinner
-    simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using hinner
+    simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using
+      HasSum.congr_fun hinner fun m =>
+        (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e).symm
   have hreal :
       HasSum (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
     rw [HasSum] at hcomplex ⊢
@@ -103,18 +99,14 @@ private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     HasSum (fun a => probabilityKernel P ρ a m) (probNNReal P ρ m : ℝ) := by
   have hcomplex := (ρ.summable_expectation_term (P.E m)).hasSum
   rw [← ρ.expectation_apply (P.E m), ρ.expectation_effect_eq_probNNReal P m] at hcomplex
-  have hpoint :
-      (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) *
-          inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-            (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a))) =
-      (fun a => ((probabilityKernel P ρ a m : ℝ) : ℂ)) := by
-    funext a
-    rw [probabilityKernel, Complex.ofReal_mul, coe_diagonalExpectationValue_right]
-  rw [hpoint] at hcomplex
-  rw [HasSum] at hcomplex ⊢
+  have hcomplex' :
+      HasSum (fun a : EigenvectorIndex ρ.op => ((probabilityKernel P ρ a m : ℝ) : ℂ))
+        (((probNNReal P ρ m : ℝ) : ℂ)) :=
+    HasSum.congr_fun hcomplex fun a => by
+      rw [probabilityKernel, Complex.ofReal_mul, coe_diagonalExpectationValue_right]
+  rw [HasSum] at hcomplex' ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
-    simpa only [Complex.ofReal_sum] using hcomplex)
+    simpa only [Complex.ofReal_sum] using hcomplex')
 
 /-- The canonical nonnegative Born probabilities have sum one. -/
 theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
