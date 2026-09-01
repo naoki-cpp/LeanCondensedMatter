@@ -163,11 +163,9 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
   have hz :=
     tendsto_finiteCutoffContinuumBornRetardedZSelfEnergyCoefficient_im_broadening_zero
       v m fermiEnergy disorderStrength hbar pMax hvelocity hm hmF hcutoff
-  have hweight :
-      Tendsto (fun _ : ℝ => m / fermiEnergy)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds (m / fermiEnergy)) :=
-    tendsto_const_nhds
-  have hsum := hscalar.add (hweight.mul hz)
+  have hsum := hscalar.add
+    ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m / fermiEnergy)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds (m / fermiEnergy))).mul hz)
   have hprojected :
       Tendsto
         (fun broadening : ℝ =>

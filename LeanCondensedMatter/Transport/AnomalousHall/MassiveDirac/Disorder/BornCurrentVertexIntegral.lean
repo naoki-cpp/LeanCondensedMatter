@@ -159,17 +159,14 @@ private theorem tendsto_integral_radialLorentzian_atTop
       (Real.tendsto_arctan_atTop.comp
         (tendsto_radialLorentzianArctanArgument_atTop v A B hvelocity hB)).mono_right
           inf_le_left
-  have hconst :
-      Tendsto (fun _pMax : ℝ => Real.arctan (A / B))
-        atTop (nhds (Real.arctan (A / B))) := tendsto_const_nhds
-  have hsum := harctan.add hconst
-  have hscale :
-      Tendsto (fun _pMax : ℝ => (2 * v ^ 2 * B)⁻¹)
-        atTop (nhds ((2 * v ^ 2 * B)⁻¹)) := tendsto_const_nhds
-  have hclosed := hscale.mul hsum
-  refine hclosed.congr' (Eventually.of_forall fun pMax => ?_)
-  exact (integral_radialLorentzian_eq_arctan
-    v A B pMax hvelocity (ne_of_gt hB)).symm
+  have hsum := harctan.add
+    (tendsto_const_nhds : Tendsto (fun _pMax : ℝ => Real.arctan (A / B))
+      atTop (nhds (Real.arctan (A / B))))
+  refine ((tendsto_const_nhds : Tendsto (fun _pMax : ℝ => (2 * v ^ 2 * B)⁻¹)
+    atTop (nhds ((2 * v ^ 2 * B)⁻¹))).mul hsum).congr' ?_
+  exact Eventually.of_forall fun pMax =>
+    (integral_radialLorentzian_eq_arctan
+      v A B pMax hvelocity (ne_of_gt hB)).symm
 
 /-- Infinite-cutoff value of the convergent Born RA radial denominator integral at positive width.
 This is an analytic target for the separate `pMax → +∞` theorem, not a definition of the finite

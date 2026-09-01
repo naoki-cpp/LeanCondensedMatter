@@ -64,7 +64,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOp
     (e v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
       e v m probeEnergy broadening 0 hbar pMax = currentOperator .y e v := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator]
+  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator,
+    inPlaneCurrentOperator]
 
 /-- Pointwise finite-cutoff finite-`η` Hall bridge with the solved `Γᵧᴿᴬ` only in the RA block and
 bare `jᵧ` in the RR/AA same-side remainder.  This deliberately does not identify the result with a
