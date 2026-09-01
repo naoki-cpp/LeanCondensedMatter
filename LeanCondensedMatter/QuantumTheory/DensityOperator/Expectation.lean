@@ -16,6 +16,16 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+private theorem norm_inner_apply_le_opNorm_of_norm_eq_one
+    (A : H →L[ℂ] H) {x : H} (hx : ‖x‖ = 1) :
+    ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖A‖ := by
+  calc
+    ‖(inner ℂ x (A x) : ℂ)‖ ≤ ‖x‖ * ‖A x‖ := norm_inner_le_norm _ _
+    _ ≤ ‖x‖ * (‖A‖ * ‖x‖) := by
+      gcongr
+      exact A.le_opNorm _
+    _ = ‖A‖ := by rw [hx]; ring
+
 /-- The spectral series defining the expectation of a bounded operator is summable. -/
 theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
@@ -24,19 +34,7 @@ theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : 
   have hnorm := eigenvectorFamily_norm_eq_one ρ
   refine Summable.of_norm_bounded
     (ρ.spectralTraceClass.summable.mul_right ‖A‖) fun a => ?_
-  have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-      (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖A‖ :=
-    calc
-      ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
-          ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-              ‖A (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
-        norm_inner_le_norm _ _
-      _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-          (‖A‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
-        gcongr
-        exact A.le_opNorm _
-      _ = ‖A‖ := by rw [hnorm a]; ring
+  have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (hnorm a)
   rw [norm_mul, Complex.norm_real]
   exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
 
@@ -48,11 +46,8 @@ theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
     have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
       simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
     rwa [htrace] at h
-  have hfun : (fun a : EigenvectorIndex ρ.op => |a.1.1|) =
-      (fun a : EigenvectorIndex ρ.op => a.1.1) := by
-    funext a
-    rw [abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)]
-  rwa [hfun]
+  exact HasSum.congr_fun hsum fun a =>
+    (abs_of_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)).symm
 
 /-- The unbundled complex expectation value used to construct `DensityOperator.expectation`. -/
 private noncomputable def densityExpectation (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
@@ -89,20 +84,7 @@ private theorem densityExpectation_norm_le (ρ : DensityOperator H) (A : H →L[
           (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ 1 * ‖A‖ := by
     apply tsum_of_norm_bounded hsum
     intro a
-    have hnorm := eigenvectorFamily_norm_eq_one ρ a
-    have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖A‖ :=
-      calc
-        ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-            (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
-            ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-                ‖A (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
-          norm_inner_le_norm _ _
-        _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-            (‖A‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
-          gcongr
-          exact A.le_opNorm _
-        _ = ‖A‖ := by rw [hnorm]; ring
+    have hle := norm_inner_apply_le_opNorm_of_norm_eq_one A (eigenvectorFamily_norm_eq_one ρ a)
     rw [norm_mul, Complex.norm_real]
     exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
   simpa using hbound
