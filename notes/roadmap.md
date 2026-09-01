@@ -28,17 +28,17 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
 | Bounded Gibbs state, free-energy bound, Gibbs entropy identity, and minimizer uniqueness | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
-| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
+| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Combinatorics/PowerSeriesCumulant.lean` |
-| Compact self-adjoint spectral decomposition | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#compact-self-adjoint-spectral-tools) |
-| Spectral trace-class theory and trace identities | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#spectral-trace-class-operators) |
-| Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
+| Compact self-adjoint spectral decomposition | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
+| Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
+| Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) |
-| General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
+| General non-self-adjoint trace-class ideal | C | `idea` | [operator analysis](roadmaps/operator-algebra.md) |
 | General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#requirements-for-a-general-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` |
 | Finite-volume Kubo–Bastin and regularized Středa response chain | A/C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-clean-response-chain) |
