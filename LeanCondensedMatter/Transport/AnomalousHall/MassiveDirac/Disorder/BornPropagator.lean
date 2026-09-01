@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Propagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -130,7 +130,7 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
     continuumBornEffectiveMass .advanced v m disorderStrength hbar =
       (m : ℂ) +
         ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
-  simp [continuumBornEffectiveMass]
+  simp [continuumBornEffectiveMass, sub_eq_add_neg]
 
 /-- Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced
 rung.  Its real part is even in the spectral side, while its imaginary part changes sign. -/
