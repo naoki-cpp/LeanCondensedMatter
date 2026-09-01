@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response
