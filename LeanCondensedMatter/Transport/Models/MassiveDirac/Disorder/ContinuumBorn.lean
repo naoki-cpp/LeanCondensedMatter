@@ -8,19 +8,19 @@ set_option linter.style.header false
 /-!
 # Finite-cutoff continuum Born self-energy for the massive-Dirac model
 
-This Phase 4 consumer introduces the first model-specific continuum momentum-scattering Born
-closure for the massive-Dirac AHE program.  It is deliberately separate from the exact finite
-scalar ensemble in `Disorder/ScalarCovariance.lean`.
+This module introduces a model-specific continuum momentum-scattering Born closure for the
+massive-Dirac model. It is deliberately separate from the exact finite scalar ensemble in
+`Disorder/ScalarCovariance.lean`.
 
 The clean Green operator is first paired under momentum inversion using the exact symmetry API from
-`PropagatorSymmetry.lean`.  After radial reduction, the finite-cutoff Born kernel therefore has the
+`PropagatorSymmetry.lean`. After radial reduction, the finite-cutoff Born kernel therefore has the
 form
 
 ```text
 Σ_s(ε; pMax) = Σ₀,s(ε; pMax) I + Σ_z,s(ε; pMax) σ_z.
 ```
 
-The radial integral keeps the `p dp` Jacobian explicit.  The continuum prefactor uses the existing
+The radial integral keeps the `p dp` Jacobian explicit. The continuum prefactor uses the existing
 physical-momentum measure `d²p/(2πℏ)²`, so angular reduction contributes the factor `2π`.
 
 No ultraviolet limit, zero-broadening limit, exact disorder average, SCBA closure, scattering-rate
@@ -241,7 +241,7 @@ def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
 
 /-- Finite-cutoff continuum scalar-disorder Born self-energy.
 
-`disorderStrength` is a new continuum coupling parameter.  It is intentionally not identified with
+`disorderStrength` is a new continuum coupling parameter. It is intentionally not identified with
 the finite-ensemble `secondMomentStrength` from `ScalarCovariance.lean`. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergy
     (side : SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.AngularReduction
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ContinuumBorn
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBorn
 
 set_option linter.style.header false
 
