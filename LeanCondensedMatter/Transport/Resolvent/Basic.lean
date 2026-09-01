@@ -146,14 +146,6 @@ theorem spectralResolvent_advanced
   unfold spectralResolvent advancedResolvent
   rw [spectralParameter_advanced]
 
-/-- A nonreal scalar cannot belong to the spectrum of a self-adjoint bounded operator. -/
-theorem spectralParameter_not_mem_spectrum_of_im_ne_zero
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (z : ℂ) (hz : z.im ≠ 0) :
-    z ∉ spectrum ℂ hamiltonian := by
-  exact QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-    hamiltonian hself z hz
-
 /-- The side-indexed shifted operator multiplied by the canonical spectral resolvent is the
 identity. -/
 theorem spectralShift_mul_spectralResolvent
@@ -164,7 +156,7 @@ theorem spectralShift_mul_spectralResolvent
   simpa only [spectralResolvent] using
     QuantumTheory.spectralShift_mul_resolvent_of_not_mem
       hamiltonian (spectralParameter side energy broadening)
-      (spectralParameter_not_mem_spectrum_of_im_ne_zero
+      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
         hamiltonian hself (spectralParameter side energy broadening)
         (by
           rw [spectralParameter_im]
@@ -180,7 +172,7 @@ theorem spectralResolvent_mul_spectralShift
   simpa only [spectralResolvent] using
     QuantumTheory.resolvent_mul_spectralShift_of_not_mem
       hamiltonian (spectralParameter side energy broadening)
-      (spectralParameter_not_mem_spectrum_of_im_ne_zero
+      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
         hamiltonian hself (spectralParameter side energy broadening)
         (by
           rw [spectralParameter_im]
@@ -232,7 +224,7 @@ theorem hasDerivAt_resolvent_spectralParameter
       (spectralParameter side energy broadening) := by
   exact spectrum.hasDerivAt_resolvent_const_left
     (spectrum.notMem_iff.mp
-      (spectralParameter_not_mem_spectrum_of_im_ne_zero
+      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
         hamiltonian hself (spectralParameter side energy broadening)
         (by
           rw [spectralParameter_im]
