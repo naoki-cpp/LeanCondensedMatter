@@ -5,15 +5,13 @@ set_option linter.style.header false
 /-!
 # Momentum-inversion symmetry of the massive-Dirac Green operator
 
-This Phase 4 bridge isolates the exact algebraic symmetry used before introducing a continuum
-momentum integral.  Under simultaneous momentum inversion `(pₓ,pᵧ) ↦ (-pₓ,-pᵧ)`, the quadratic
-Green denominator, scalar coefficient, and `σ_z` coefficient are even, while the `σₓ` and `σᵧ`
-coefficients are odd.  Consequently the inversion-symmetrized clean propagator contains only the
-`I` and `σ_z` Pauli channels.
+Under simultaneous momentum inversion `(pₓ,pᵧ) ↦ (-pₓ,-pᵧ)`, the quadratic Green denominator,
+scalar coefficient, and `σ_z` coefficient are even, while the `σₓ` and `σᵧ` coefficients are odd.
+Consequently the inversion-symmetrized clean propagator contains only the `I` and `σ_z` Pauli
+channels.
 
 No integration measure, ultraviolet cutoff, disorder normalization, Born closure, or scattering-rate
-limit is introduced here.  A later disorder consumer may combine these exact parity identities with
-an inversion-symmetric momentum average.
+limit is introduced here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -63,8 +61,7 @@ open QuantumTheory.Transport
   simp [pauliGreenZCoefficient]
 
 /-- The inversion symmetrization of the clean Green operator retains only its scalar and `σ_z`
-channels.  This is the exact algebraic reduction consumed by a later inversion-symmetric momentum
-average. -/
+channels. -/
 theorem pauliGreenOperator_add_neg_momentum
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
     pauliGreenOperator side v m px py probeEnergy broadening +
@@ -75,8 +72,7 @@ theorem pauliGreenOperator_add_neg_momentum
   simp [pauliGreenOperator, two_smul]
   module
 
-/-- Clean Green operator averaged with its momentum-inverted partner.  This belongs to the exact
-propagator-symmetry layer rather than to any disorder closure. -/
+/-- Clean Green operator averaged with its momentum-inverted partner. -/
 noncomputable def inversionSymmetrizedPauliGreenOperator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=

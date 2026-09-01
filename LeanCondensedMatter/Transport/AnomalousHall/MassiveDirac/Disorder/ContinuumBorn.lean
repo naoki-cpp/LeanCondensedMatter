@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.PropagatorSymmetry
+import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
 import Mathlib.Tactic
