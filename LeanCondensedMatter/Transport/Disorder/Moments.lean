@@ -47,12 +47,6 @@ noncomputable def exactSecondMoment
     (kernel : H →L[ℂ] H) : H →L[ℂ] H :=
   ensemble.exactSecondMomentCLM kernel
 
-@[simp]
-theorem exactSecondMomentCLM_apply
-    (kernel : H →L[ℂ] H) :
-    ensemble.exactSecondMomentCLM kernel = ensemble.exactSecondMoment kernel :=
-  rfl
-
 /-- The canonical exact second moment is the normalized finite operator average `E[Vω X Vω]`. -/
 theorem exactSecondMoment_eq_operatorAverage
     (kernel : H →L[ℂ] H) :
