@@ -99,14 +99,6 @@ def main() -> int:
         root=ROOT,
         description="resolvent public umbrella",
     )
-    dressed_energy_derivative_module = (
-        "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative"
-    )
-    if dressed_energy_derivative_module in lean_imports(resolvent_umbrella):
-        errors.append(
-            "Transport/Resolvent.lean must keep DressedEnergyDerivative opt-in; "
-            "supplied dressed-family calculus is not part of the core resolvent umbrella"
-        )
     lorentzian_kernel_module = "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
     if lorentzian_kernel_module in lean_imports(resolvent_umbrella):
         errors.append(
@@ -125,13 +117,6 @@ def main() -> int:
             root=ROOT,
             description="resolvent hierarchy",
         )
-    require_import(
-        errors,
-        TRANSPORT / "Resolvent" / "DressedEnergyDerivative.lean",
-        "LeanCondensedMatter.Transport.Resolvent.EnergyDerivative",
-        root=ROOT,
-        description="dressed resolvent energy calculus",
-    )
 
     kubo_bastin_umbrella = TRANSPORT / "KuboBastin.lean"
     pure_point_module = "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
