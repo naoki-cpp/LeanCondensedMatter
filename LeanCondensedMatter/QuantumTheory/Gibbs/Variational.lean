@@ -48,8 +48,9 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     (fun i => by simpa using hρbE i) (fun i => by simpa using hEbE i)
     ρ.entropyOp_hasSummableRealEigenvalues
 
-/-- The normalized Gibbs state attains the Helmholtz lower bound exactly. -/
-theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
+/-- For nonzero inverse temperature, the normalized Gibbs state satisfies the exact Helmholtz
+free-energy identity. -/
+theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
@@ -60,12 +61,11 @@ theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ :
   have hEntropy :=
     (vonNeumannEntropy_gibbsState Hop β hcompact hsummable hZ).2
   rw [hEntropy, mul_add]
-  have hβne : β ≠ 0 := hβ.ne'
   have hscale :
       (1 / β) *
           (β * energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop) =
         energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop := by
-    rw [← mul_assoc, one_div, inv_mul_cancel₀ hβne, one_mul]
+    rw [← mul_assoc, one_div, inv_mul_cancel₀ hβ, one_mul]
   rw [hscale]
   ring
 
@@ -78,7 +78,7 @@ theorem gibbsState_minimizes_helmholtzFreeEnergy (ρ : DensityOperator H) (Hop :
         (1 / β) * (vonNeumannEntropy
           (gibbsState Hop β hcompact hsummable hZ)).toReal ≤
       energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
-  rw [gibbsState_helmholtzFreeEnergy_eq Hop β hβ hcompact hsummable hZ]
+  rw [gibbsState_helmholtzFreeEnergy_eq Hop β hβ.ne' hcompact hsummable hZ]
   exact (helmholtzFreeEnergy_ge_and_entropy_ne_top
     ρ Hop β hβ hcompact hsummable hZ).2
 
