@@ -30,14 +30,6 @@ noncomputable def bornRetardedSelfEnergy
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening)
 
-/-- The retarded Born self-energy is the exact finite second moment with a clean retarded internal
-propagator. -/
-theorem bornRetardedSelfEnergy_eq_secondMoment
-    (energy broadening : ℝ) :
-    bornRetardedSelfEnergy ensemble energy broadening =
-      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) :=
-  rfl
-
 end FiniteDisorderEnsemble
 
 end
