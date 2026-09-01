@@ -91,24 +91,6 @@ theorem exactSecondMoment_eq_strength_smul
     _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
       rw [← Finset.sum_smul]
 
-/-- The clean retarded Green operator of this finite ensemble is the retarded resolvent of the
-concrete massive-Dirac Hamiltonian. -/
-theorem freeRetardedGreen_eq_massiveDirac
-    (energy broadening : ℝ) :
-    model.ensemble.freeRetardedGreen energy broadening =
-      retardedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.freeRetardedGreen FiniteDisorderEnsemble.freeGreen
-  rw [spectralResolvent_retarded, model.baseHamiltonian_eq]
-
-/-- The clean advanced Green operator of this finite ensemble is the advanced resolvent of the
-concrete massive-Dirac Hamiltonian. -/
-theorem freeAdvancedGreen_eq_massiveDirac
-    (energy broadening : ℝ) :
-    model.ensemble.freeAdvancedGreen energy broadening =
-      advancedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.freeAdvancedGreen FiniteDisorderEnsemble.freeGreen
-  rw [spectralResolvent_advanced, model.baseHamiltonian_eq]
-
 /-- Massive-Dirac scalar-disorder retarded Born self-energy. This is the exact finite second moment
 applied to the clean retarded propagator, not an exact disorder-averaged self-energy. -/
 theorem bornRetardedSelfEnergy_eq_strength_smul
@@ -116,9 +98,10 @@ theorem bornRetardedSelfEnergy_eq_strength_smul
     model.ensemble.bornRetardedSelfEnergy energy broadening =
       model.secondMomentStrength •
         retardedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  rw [model.ensemble.bornRetardedSelfEnergy_eq_secondMoment]
+  unfold FiniteDisorderEnsemble.bornRetardedSelfEnergy
   rw [model.exactSecondMoment_eq_strength_smul]
-  rw [model.freeRetardedGreen_eq_massiveDirac]
+  unfold FiniteDisorderEnsemble.freeRetardedGreen FiniteDisorderEnsemble.freeGreen
+  rw [spectralResolvent_retarded, model.baseHamiltonian_eq]
 
 /-- Massive-Dirac scalar-disorder advanced Born self-energy. As on the retarded side, no equality
 with the exact disorder average is claimed. -/
@@ -127,9 +110,10 @@ theorem bornAdvancedSelfEnergy_eq_strength_smul
     model.ensemble.bornAdvancedSelfEnergy energy broadening =
       model.secondMomentStrength •
         advancedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  rw [model.ensemble.bornAdvancedSelfEnergy_eq_secondMoment]
+  unfold FiniteDisorderEnsemble.bornAdvancedSelfEnergy
   rw [model.exactSecondMoment_eq_strength_smul]
-  rw [model.freeAdvancedGreen_eq_massiveDirac]
+  unfold FiniteDisorderEnsemble.freeAdvancedGreen FiniteDisorderEnsemble.freeGreen
+  rw [spectralResolvent_advanced, model.baseHamiltonian_eq]
 
 end FiniteScalarDisorderModel
 
