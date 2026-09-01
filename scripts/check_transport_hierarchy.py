@@ -92,17 +92,13 @@ def main() -> int:
         )
 
     resolvent_umbrella = TRANSPORT / "Resolvent.lean"
-    for module in (
-        "LeanCondensedMatter.Transport.Resolvent.DressedEnergyDerivative",
+    require_import(
+        errors,
+        resolvent_umbrella,
         "LeanCondensedMatter.Transport.Resolvent.Uniqueness",
-    ):
-        require_import(
-            errors,
-            resolvent_umbrella,
-            module,
-            root=ROOT,
-            description="resolvent public umbrella",
-        )
+        root=ROOT,
+        description="resolvent public umbrella",
+    )
     lorentzian_kernel_module = "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
     if lorentzian_kernel_module in lean_imports(resolvent_umbrella):
         errors.append(
@@ -121,13 +117,6 @@ def main() -> int:
             root=ROOT,
             description="resolvent hierarchy",
         )
-    require_import(
-        errors,
-        TRANSPORT / "Resolvent" / "DressedEnergyDerivative.lean",
-        "LeanCondensedMatter.Transport.Resolvent.EnergyDerivative",
-        root=ROOT,
-        description="dressed resolvent energy calculus",
-    )
 
     kubo_bastin_umbrella = TRANSPORT / "KuboBastin.lean"
     pure_point_module = "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
