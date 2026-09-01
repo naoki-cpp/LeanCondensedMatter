@@ -108,11 +108,12 @@ already-computed scalar response.
 
 Ordinary finite-dimensional operator trace is a representation-independent analysis primitive owned
 by `Analysis/Operator/FiniteTrace.lean`. Mathlib already supplies `LinearMap.trace`, trace cyclicity,
-and the derivative-composition machinery needed by this file; the project-level addition is only the
-continuous-linear functional bundling and its thin reusable consequences. The first genuine traced
-Bastin kernels are obtained in the static Středa layer, where `Streda/TraceKernel.lean` applies that
-analysis primitive to the canonical operator kernels from `Streda/OperatorKernel.lean`. Thus finite
-spectral index and finite Hilbert-space dimension remain explicit, distinct assumptions, while
+the canonical Euclidean matrix/operator equivalence, and the derivative-composition machinery needed
+by this file; the project-level additions are the continuous-linear functional bundling and the thin
+reusable matrix/operator transport, cyclicity, and differentiation consequences. The first genuine
+traced Bastin kernels are obtained in the static Středa layer, where `Streda/TraceKernel.lean` applies
+that analysis primitive to the canonical operator kernels from `Streda/OperatorKernel.lean`. Thus
+finite spectral index and finite Hilbert-space dimension remain explicit, distinct assumptions, while
 ordinary traces are introduced only where an operator-valued kernel actually exists to trace.
 
 `KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
@@ -246,7 +247,8 @@ to that model route until the leaf migration is completed under #1840.
 
 Within the concrete benchmark, `Model/Operator.lean` owns the exact matrix-to-bounded-operator
 realization (`DiracHilbert`, Hamiltonian/current/velocity operators, in-plane current combinations,
-self-adjointness, the bounded free-system adapter, and the matrix/operator trace bridge).
+self-adjointness, and the bounded free-system adapter). Generic finite-dimensional matrix/operator
+trace transport is owned upstream by `Analysis/Operator/FiniteTrace.lean`.
 `Model/OperatorSpectral.lean` owns the transported band-projector algebra and gauge-free projector
 resolvent. These are response-independent model facts and are consumed directly by `Propagator`,
 disorder, and Bastin code without importing the model-specific Středa layer.

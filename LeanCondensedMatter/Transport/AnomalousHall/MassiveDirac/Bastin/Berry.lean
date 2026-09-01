@@ -68,7 +68,7 @@ theorem interbandCurrentTrace_eq_matrixTrace
           bandProjector band v m px py * current ν e v) := by
   unfold interbandCurrentTrace
   simpa [bandProjectorOperator, currentOperator, matrixOperator] using
-    finiteDimensionalOperatorTrace_matrixOperator
+    finiteDimensionalOperatorTrace_toEuclideanCLM
       (bandProjector (oppositeBand band) v m px py * current μ e v *
         bandProjector band v m px py * current ν e v)
 
