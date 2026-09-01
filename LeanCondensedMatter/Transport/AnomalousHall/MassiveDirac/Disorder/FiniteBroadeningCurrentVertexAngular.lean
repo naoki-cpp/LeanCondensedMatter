@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.AngularReduction
+import LeanCondensedMatter.Transport.Models.MassiveDirac.AngularReduction
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.CurrentVertexAngular
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
