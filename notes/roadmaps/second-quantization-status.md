@@ -1,60 +1,9 @@
-# Second Quantization — Current Status
+# Second Quantization — current status
 
-This page summarizes the current architecture and proved endpoints under
-`LeanCondensedMatter/SecondQuantization/`. Lean declarations and CI-enforced dependency checks are
-the source of truth.
+Lean declarations and CI-enforced dependency checks are the source of truth. This page summarizes
+stable public ownership and proved endpoints.
 
-## Scope and current boundary
-
-The algebraic foundations are not intrinsically finite-mode: fermionic occupations are finite
-subsets, bosonic occupations are finitely supported functions, and algebraic Fock vectors are finite
-linear combinations. Finiteness enters when a theorem enumerates all modes/configurations or uses a
-finite-dimensional trace, operator integral, or diagram sum.
-
-The fermionic line is currently proved through:
-
-- algebraic CAR/Fock infrastructure and finite-temperature free Gibbs theory;
-- the finite-temperature Bloch–de Dominicis pairing theorem;
-- Dyson coefficients and finite-dimensional analytic Dyson evolution;
-- quartic Wick/Dyson diagrams and connected component factorization;
-- the formal vacuum Linked Cluster Theorem;
-- the finite-dimensional analytic vacuum Linked Cluster Theorem;
-- the finite-mode two-point linked-cluster theorem with two external legs.
-
-The two-point endpoint is
-
-```lean
-SecondQuantization.Fermionic.
-  vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
-```
-
-from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean`. It states that the
-vacuum-normalized two-point Dyson series is exactly the series of externally connected two-point
-Wick diagrams.
-
-This does not yet provide arbitrary multi-leg/source-insertion connected expansions,
-thermodynamic limits, or completed-space interacting Gibbs theory.
-
-## Canonical public imports
-
-The full public entry point is:
-
-```lean
-import LeanCondensedMatter.SecondQuantization
-```
-
-Responsibility-specific code should prefer the narrowest stable umbrella:
-
-| Area | Common import | Fermionic import | Bosonic import |
-|---|---|---|---|
-| Algebra | `LeanCondensedMatter.SecondQuantization.Common.Algebra` | `LeanCondensedMatter.SecondQuantization.Fermionic.Algebra` | `LeanCondensedMatter.SecondQuantization.Bosonic.Algebra` |
-| Imaginary time | `LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime` | `LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime` | `LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime` |
-| Thermal theory | `LeanCondensedMatter.SecondQuantization.Common.Thermal` | `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal` | `LeanCondensedMatter.SecondQuantization.Bosonic.Thermal` |
-| Perturbation | `LeanCondensedMatter.SecondQuantization.Common.Perturbation` | `LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation` | not exposed as a full Dyson layer yet |
-| Diagrammatics | `LeanCondensedMatter.SecondQuantization.Common.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics` |
-| Completed fermionic space | — | `LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace` | — |
-
-## Ownership and dependency direction
+## Public structure
 
 ```text
 Analysis, Combinatorics
@@ -64,83 +13,87 @@ SecondQuantization.Common
 SecondQuantization.Fermionic, SecondQuantization.Bosonic
 ```
 
-`Analysis/` owns reusable analytic and linear-algebraic infrastructure. `Combinatorics/` owns
-statistics-independent finite combinatorics such as partitions, pairings, cumulants, slot shuffles,
-and product identities when they do not require second-quantized semantics.
+The full public import is
 
-`SecondQuantization.Common` owns statistics-independent structures that still depend on Fock,
-thermal, or diagrammatic semantics. `Fermionic` and `Bosonic` should expose declarations only when
-they add statistics-specific or physics-facing content.
+```lean
+import LeanCondensedMatter.SecondQuantization
+```
 
-Recent diagrammatics cleanup deliberately removed one-use routing modules and public wrappers. The
-current policy is:
+Responsibility-specific developments should use the narrowest stable umbrella. Reusable finite
+combinatorics belongs in `Combinatorics`; statistics-independent Fock/thermal/diagrammatic structure
+belongs in `SecondQuantization.Common`; statistics-specific or physics-facing endpoints belong in the
+Fermionic or Bosonic layers. Proof-only routing and one-use reindexing helpers should not become
+public API.
 
-- reusable combinatorics belongs in `Combinatorics`;
-- reusable statistics-independent diagrammatics belongs in `SecondQuantization.Common`;
-- physics-facing fermionic endpoints remain public in `SecondQuantization.Fermionic`;
-- proof-only transports, reindexings, uniqueness facts, and one-use wrappers should be private/local
-  or inlined when that reduces code without hiding a reusable domain concept;
-- file boundaries should correspond to reusable concepts, not merely intermediate proof stages.
+## Fermionic algebraic and thermal line
 
-The architecture is checked by the SecondQuantization audit and repository architecture scripts.
+The algebraic foundations allow arbitrary mode types with finite-support states. The fermionic line
+contains CAR/Fock infrastructure, free Hamiltonians and interactions, imaginary-time evolution, free
+Gibbs theory, KMS identities, and the finite-temperature Bloch--de Dominicis pairing theorem.
 
-## Fermionic proved endpoints
+Finite mode assumptions enter where the theory enumerates all occupations, uses finite-dimensional
+trace/operator integration, or forms finite diagram sums.
 
-### Vacuum/free-energy sector
+## Fermionic connected-diagram endpoints
 
-The coefficientwise formal endpoint is
+Three finite-mode endpoints are proved:
 
 ```lean
 factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-which identifies `n! [λⁿ] log Ẑ_D` with connected quartic Wick-diagram amplitudes.
-
-The finite-dimensional analytic endpoint is
+for the coefficientwise formal vacuum linked-cluster theorem,
 
 ```lean
 iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-which identifies derivatives at zero coupling of the local normalized logarithm of the genuine
-interacting partition function with connected diagram sums.
-
-### Two-point sector
-
-The two-point diagram line defines fixed-external two-point diagrams, their connected external
-component, vacuum components, component-local amplitudes, external-slot fibers, and the associated
-Cauchy-product factorization. The final power-series cancellation theorem is
+for the finite-dimensional analytic vacuum theorem, and
 
 ```lean
 vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-under the finite-mode hypotheses and `0 ≤ β` used by the coefficientwise theorem.
+for the two-external-leg linked-cluster theorem.
 
-Intermediate routing layers are intentionally not part of the stable API. Public declarations should
-be the physical/combinatorial endpoints needed by downstream developments.
+The general higher-point/source-insertion connected expansion remains open.
 
 ## Completed fermionic representation
 
-`Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)` is implemented with canonical
-basis vectors, an injective dense algebraic core, and a bounded single-mode number projection.
-Completed creation/annihilation operators, general unbounded Hamiltonian domains, trace-class Gibbs
-states, and infinite-mode thermal limits remain separate work.
+```lean
+Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)
+```
+
+is implemented with a dense algebraic core, bounded number/creation/annihilation operators, completed
+CAR, maximal diagonal unbounded operators with explicit `LinearPMap` domains, analytic properties of
+real diagonal operators, product-domain/free-Hamiltonian ladder results, finite-dimensional
+compatibility, and finite-mode truncations.
+
+Completed free-fermion thermal specializations live under `Fermionic.Thermal.Completed`. They reuse
+the generic pure-point Gibbs state, provide summability-controlled expectations, KMS and pairing
+recursion data, and prove finite-mode Gibbs convergence against bounded observables.
+
+This does not provide interacting completed-space Dyson theory or a thermodynamic limit.
 
 ## Bosonic boundary
 
-Even for finite `Mode`, the bosonic occupation basis is infinite. The bosonic line therefore uses
-explicit summability domains and currently proves algebraic/thermal results only where those domains
-are controlled. A general bosonic Dyson/linked-cluster line still requires product-domain closure,
-summability-aware KMS/cyclicity, operator-valued integration, and convergence control.
+Even for finite `Mode`,
 
-## Current next steps
+```lean
+Bosonic.Occupation Mode := Mode →₀ ℕ
+```
 
-The finite-mode fermionic vacuum and two-point connected expansions are now base infrastructure.
-Separate follow-up tracks include:
+is infinite. The bosonic line therefore uses explicit summability domains. Algebraic CCR,
+imaginary-time evolution, convergent free thermal sums, a convergence-aware Gibbs functional, and
+reusable Common diagrammatics are available, but a full bosonic Dyson/linked-cluster theory still
+requires product-domain closure, summability-aware KMS/cyclicity, operator-valued integration, and
+convergence control.
 
-1. higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
-2. convergence-aware bosonic Dyson and connected-diagram theory;
-3. completed bounded CAR operators and unbounded Hamiltonian domains;
-4. trace-class/infinite-mode Gibbs states and thermodynamic limits;
-5. continued API consolidation where public declarations are only proof-routing artifacts.
+## Open work
+
+- higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
+- convergence-aware bosonic Dyson and connected-diagram theory;
+- completed bosonic operator/domain theory;
+- interacting completed-space fermionic perturbation theory;
+- infinite-volume and thermodynamic limits with explicit analytic hypotheses;
+- continued removal of public declarations that serve only proof routing.
