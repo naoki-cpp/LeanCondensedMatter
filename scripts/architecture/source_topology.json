@@ -30,7 +30,6 @@
       ],
       "edges": [
         {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
-        {"upstream": "finiteTrace", "downstream": "finiteDisorder"},
         {"upstream": "finiteDisorder", "downstream": "moments"},
         {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
         {"upstream": "resolvent", "downstream": "disorderResolvent"},
