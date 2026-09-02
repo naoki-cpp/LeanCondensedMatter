@@ -108,12 +108,14 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
       hρcompact hρsym b.toHilbertBasis j (fun a => by simpa [e] using hb_j a) x hx
+    have hxker' : ρ.op (b x) = 0 := by
+      simpa using hxker
     change inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) = 0
     calc
       inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) =
           inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x)) ((A : H →ₗ[ℂ] H) (b x)) :=
         (hρsym (b x) ((A : H →ₗ[ℂ] H) (b x))).symm
-      _ = 0 := by rw [hxker, inner_zero_left]
+      _ = 0 := by rw [hxker', inner_zero_left]
   have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
   have hrestricted : HasSum
       (fun a : EigenvectorIndex ρ.op =>
