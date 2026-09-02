@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
