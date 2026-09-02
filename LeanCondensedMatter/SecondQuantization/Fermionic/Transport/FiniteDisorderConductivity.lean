@@ -102,7 +102,7 @@ theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
     (ward : FiniteStaticPeierlsWardIdentity convention
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
       geometry direction K q eta lowerEnergy upperEnergy occupation)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     finiteDisorderConfigurationStaticConductivity
         ensemble hbar hbar_pos spectralData convention
           geometry direction K q eta ω =
@@ -136,7 +136,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
     (ward : ∀ ω, FiniteStaticPeierlsWardIdentity convention
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
       geometry direction K q eta lowerEnergy upperEnergy occupation)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     finiteDisorderAveragedStaticConductivity
         ensemble hbar hbar_pos spectralData convention
           geometry direction K q eta =
