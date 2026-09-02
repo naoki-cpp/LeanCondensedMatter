@@ -16,7 +16,8 @@ limit with
 
 This file integrates that already-extracted clean profile with the same generic zero-temperature
 spectral occupation used by the intrinsic benchmark. Both bands share the finite positive-energy
-interval `[m, Λ]`; occupation selects the filled lower band and the occupied part of the upper band.
+interval `[|m|, Λ]`; occupation selects the filled lower band and the occupied part of the upper
+band.
 
 The canonical finite-cutoff response restores the Bastin trace prefactor `ℏ/(2π)`, the angular
 factor `2π`, and the physical-momentum measure `d²p/(2πℏ)²`. It is exactly the occupation-derived
@@ -100,10 +101,10 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity_eq
   ring
 
 /-- Occupied clean Bastin-pair weight of one band inside the common positive-energy cutoff interval
-`[m, Λ]`. -/
+`[|m|, Λ]`. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff
     (band : Band) (e m fermiEnergy Λ : ℝ) : ℝ :=
-  ∫ energy in m..Λ,
+  ∫ energy in |m|..Λ,
     zeroTemperatureOccupiedCleanInterbandBastinPairRadialEnergyDensity
       band e m fermiEnergy energy
 
@@ -173,7 +174,7 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
 profile reproduces the clean metallic intrinsic Hall conductivity. This uses the already-proved
 cutoff limit; it is not a finite-broadening/momentum limit interchange. -/
 theorem tendsto_bastinCleanHallConductivityCutoff_atTop
-    (e hbar m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
+    (e hbar m εF : ℝ) (hm : m ≠ 0) (hmF : |m| ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (intrinsicHallConductivity e hbar m εF)) := by
   refine (tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hm hmF).congr' ?_
@@ -184,11 +185,11 @@ theorem tendsto_bastinCleanHallConductivityCutoff_atTop
 /-- Closed metallic benchmark reached by the integrated clean Bastin-pair profile,
 `σxy = -(e²/2h) (m/εF)`. -/
 theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
-    (e hbar m εF : ℝ) (hhbar : 0 < hbar) (hm : 0 < m) (hmF : m ≤ εF) :
+    (e hbar m εF : ℝ) (hhbar : hbar ≠ 0) (hm : m ≠ 0) (hmF : |m| ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (-(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF))) := by
-  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF hhbar.ne'
-    (lt_of_lt_of_le hm hmF).ne']
+  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le (abs_pos.mpr hm) hmF)
+  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF hhbar hF0]
   exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hm hmF
 
 end
