@@ -19,6 +19,8 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- Common purely-imaginary current amplitude in the radial interband Bastin blocks. -/
 def radialInterbandCurrentAmplitude
     (band : Band) (e v m p : ℝ) : ℂ :=
@@ -37,11 +39,28 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
         ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
           (broadening : ℂ) * Complex.I)⁻¹) ^ 2) *
         radialInterbandCurrentAmplitude band e v m p := by
+  have hret :
+      projectorResolventCoefficient
+          (retardedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
+          (oppositeBand band) v m p 0 =
+        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
+            (broadening : ℂ) * Complex.I))⁻¹ := by
+    simpa only [spectralParameter_retarded, SpectralSide.sign_retarded, one_mul] using
+      projectorResolventCoefficient_targetOffset_oppositeBand
+        .retarded band v m p 0 offset broadening
+  have hadv :
+      projectorResolventCoefficient
+          (advancedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
+          (oppositeBand band) v m p 0 =
+        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
+            (broadening : ℂ) * Complex.I))⁻¹ := by
+    simpa [spectralParameter_advanced, SpectralSide.sign_advanced, sub_eq_add_neg] using
+      projectorResolventCoefficient_targetOffset_oppositeBand
+        .advanced band v m p 0 offset broadening
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
     radialInterbandCurrentAmplitude
   dsimp
-  rw [projectorResolventCoefficient_retarded_targetOffset_oppositeBand,
-    projectorResolventCoefficient_advanced_targetOffset_oppositeBand,
+  rw [hret, hadv,
     bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
     bastinYXBandBlockTrace_opposite_source_radial band e v m p hE]
   ring

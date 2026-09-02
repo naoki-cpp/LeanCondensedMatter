@@ -15,9 +15,8 @@ L_RA(Γ) = C₂(Gᴿ Γ Gᴬ),
 ```
 
 where `C₂ = E[V (·) V]` is the same canonical exact second-moment action used by the Born
-self-energy.  The ladder itself is represented as a bounded complex-linear map.  The convenience
-specialization `freeRetardedAdvancedLadderCLM` inserts the clean finite-ensemble Green operators;
-SCBA and other consumers can reuse the same owner with their own supplied Green operators.
+self-energy. The ladder itself is represented as a bounded complex-linear map, so downstream clean,
+SCBA, and other consumers can supply whichever Green operators their approximation requires.
 
 The one-rung correction, finite fixed-point iterates, residual, and conditional resummation below
 are exact algebraic objects.  Resummation is available only when `I - L_RA` is supplied as a
@@ -54,41 +53,6 @@ theorem retardedAdvancedLadderCLM_apply
     ensemble.retardedAdvancedLadderCLM retardedGreen advancedGreen vertex =
       ensemble.exactSecondMoment (retardedGreen * vertex * advancedGreen) :=
   rfl
-
-/-- Non-self-consistent Born RA ladder obtained by inserting the clean finite-ensemble Green
-operators.  This specialization is an approximation choice for later physical consumers; the
-underlying covariance action remains exact finite-ensemble data. -/
-noncomputable def freeRetardedAdvancedLadderCLM
-    (energy broadening : ℝ) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
-  ensemble.retardedAdvancedLadderCLM
-    (ensemble.freeGreen .retarded energy broadening)
-    (ensemble.freeGreen .advanced energy broadening)
-
-/-- The clean RA specialization evaluates to
-`C₂(G₀ᴿ Γ G₀ᴬ)`. -/
-@[simp]
-theorem freeRetardedAdvancedLadderCLM_apply
-    (energy broadening : ℝ) (vertex : H →L[ℂ] H) :
-    ensemble.freeRetardedAdvancedLadderCLM energy broadening vertex =
-      ensemble.exactSecondMoment
-        (ensemble.freeGreen .retarded energy broadening * vertex *
-          ensemble.freeGreen .advanced energy broadening) :=
-  rfl
-
-/-- Additivity of the clean RA ladder specialization. -/
-theorem freeRetardedAdvancedLadderCLM_add
-    (energy broadening : ℝ) (left right : H →L[ℂ] H) :
-    ensemble.freeRetardedAdvancedLadderCLM energy broadening (left + right) =
-      ensemble.freeRetardedAdvancedLadderCLM energy broadening left +
-        ensemble.freeRetardedAdvancedLadderCLM energy broadening right := by
-  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_add left right
-
-/-- Complex scalar linearity of the clean RA ladder specialization. -/
-theorem freeRetardedAdvancedLadderCLM_smul
-    (energy broadening : ℝ) (scalar : ℂ) (vertex : H →L[ℂ] H) :
-    ensemble.freeRetardedAdvancedLadderCLM energy broadening (scalar • vertex) =
-      scalar • ensemble.freeRetardedAdvancedLadderCLM energy broadening vertex := by
-  exact (ensemble.freeRetardedAdvancedLadderCLM energy broadening).map_smul scalar vertex
 
 end FiniteDisorderEnsemble
 

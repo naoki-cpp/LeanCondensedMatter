@@ -90,10 +90,24 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
             bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
           ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
             bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
-  have hret := tendsto_retarded_oppositeBandCoefficient_sq_at_bandPole
-    band v m px py hE
-  have hadv := tendsto_advanced_oppositeBandCoefficient_sq_at_bandPole
-    band v m px py hE
+  have hret : Tendsto
+      (fun broadening : ℝ =>
+        projectorResolventCoefficient
+          (retardedSpectralParameter (bandEnergy band v m px py) broadening)
+          (oppositeBand band) v m px py ^ 2)
+      (nhds 0)
+      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
+    simpa only [spectralParameter_retarded] using
+      tendsto_oppositeBandCoefficient_sq_at_bandPole .retarded band v m px py hE
+  have hadv : Tendsto
+      (fun broadening : ℝ =>
+        projectorResolventCoefficient
+          (advancedSpectralParameter (bandEnergy band v m px py) broadening)
+          (oppositeBand band) v m px py ^ 2)
+      (nhds 0)
+      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
+    simpa only [spectralParameter_advanced] using
+      tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
   have hxy := hret.mul
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)

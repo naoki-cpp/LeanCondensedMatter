@@ -63,36 +63,6 @@ theorem tendsto_projectorResolventCoefficient_zero
     (hcontinuous.inv₀ hden).tendsto
   simpa [projectorResolventCoefficient, spectralParameter, spectralParameterOfRegulator] using hinv
 
-/-- At a probe energy away from the selected band, the retarded scalar projector-resolvent
-coefficient tends to the ordinary real-energy resolvent coefficient as `η → 0`. -/
-theorem tendsto_retarded_projectorResolventCoefficient_zero
-    (band : Band) (v m px py probeEnergy : ℝ)
-    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (retardedSpectralParameter probeEnergy broadening) band v m px py)
-      (nhds 0)
-      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
-  simpa only [spectralParameter_retarded] using
-    tendsto_projectorResolventCoefficient_zero
-      .retarded band v m px py probeEnergy hprobe
-
-/-- Advanced scalar projector-resolvent coefficient has the same zero-broadening limit away from
-the selected band energy. -/
-theorem tendsto_advanced_projectorResolventCoefficient_zero
-    (band : Band) (v m px py probeEnergy : ℝ)
-    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (advancedSpectralParameter probeEnergy broadening) band v m px py)
-      (nhds 0)
-      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
-  simpa only [spectralParameter_advanced] using
-    tendsto_projectorResolventCoefficient_zero
-      .advanced band v m px py probeEnergy hprobe
-
 /-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
 zero pointwise. -/
 theorem tendsto_spectralDifferenceCoefficient_zero
@@ -102,11 +72,12 @@ theorem tendsto_spectralDifferenceCoefficient_zero
       (fun broadening : ℝ =>
         spectralDifferenceCoefficient band v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hret := tendsto_retarded_projectorResolventCoefficient_zero
-    band v m px py probeEnergy hprobe
-  have hadv := tendsto_advanced_projectorResolventCoefficient_zero
-    band v m px py probeEnergy hprobe
-  simpa [spectralDifferenceCoefficient] using hret.sub hadv
+  have hret := tendsto_projectorResolventCoefficient_zero
+    .retarded band v m px py probeEnergy hprobe
+  have hadv := tendsto_projectorResolventCoefficient_zero
+    .advanced band v m px py probeEnergy hprobe
+  simpa [spectralDifferenceCoefficient, spectralParameter_retarded, spectralParameter_advanced] using
+    hret.sub hadv
 
 /-- A fixed ordered Bastin band-pair contribution tends to zero when the probe energy avoids both
 its source and target band energies. -/
@@ -118,10 +89,10 @@ theorem tendsto_bastinBandPairContribution_zero
       (fun broadening : ℝ =>
         bastinBandPairContribution source target e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hret := tendsto_retarded_projectorResolventCoefficient_zero
-    source v m px py probeEnergy hsource
-  have hadv := tendsto_advanced_projectorResolventCoefficient_zero
-    source v m px py probeEnergy hsource
+  have hret := tendsto_projectorResolventCoefficient_zero
+    .retarded source v m px py probeEnergy hsource
+  have hadv := tendsto_projectorResolventCoefficient_zero
+    .advanced source v m px py probeEnergy hsource
   have hdiff := tendsto_spectralDifferenceCoefficient_zero
     target v m px py probeEnergy htarget
   have hretTerm := (((hret.mul hret).mul hdiff).mul
@@ -132,7 +103,8 @@ theorem tendsto_bastinBandPairContribution_zero
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => bastinBandBlockTrace .y .x source target e v m px py)
       (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py))))
-  simpa [bastinBandPairContribution, pow_two] using hretTerm.sub hadvTerm
+  simpa [bastinBandPairContribution, pow_two, spectralParameter_retarded,
+    spectralParameter_advanced] using hretTerm.sub hadvTerm
 
 /-- The diagonal sector tends pointwise to zero away from both band energies. -/
 theorem tendsto_diagonalBastinTraceContribution_zero

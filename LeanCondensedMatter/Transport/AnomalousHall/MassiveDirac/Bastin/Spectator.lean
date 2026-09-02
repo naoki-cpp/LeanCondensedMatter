@@ -12,8 +12,7 @@ This file isolates that regular factor before the occupation-weighted energy int
 
 At the target pole the opposite-band scalar resolvent is the inverse interband gap.  The canonical
 side-indexed finite-broadening coefficient converges to that value on either spectral side, and its
-square therefore converges to the inverse squared gap.  Conventional retarded/advanced theorem
-names remain as specializations.  No energy-limit interchange is performed here.
+square therefore converges to the inverse squared gap. No energy-limit interchange is performed here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -57,33 +56,6 @@ theorem tendsto_oppositeBandCoefficient_at_bandPole
     (bandEnergy_ne_oppositeBandEnergy band v m px py hE)
   simpa [projectorResolventCoefficient, interbandEnergyGap] using h
 
-/-- The retarded opposite-band coefficient is a regular spectator at the selected band pole and
-converges to the inverse interband gap. -/
-theorem tendsto_retarded_oppositeBandCoefficient_at_bandPole
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (retardedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py)
-      (nhds 0)
-      (nhds ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹)) := by
-  simpa only [spectralParameter_retarded] using
-    tendsto_oppositeBandCoefficient_at_bandPole .retarded band v m px py hE
-
-/-- The advanced opposite-band coefficient has the same regular pole value. -/
-theorem tendsto_advanced_oppositeBandCoefficient_at_bandPole
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (advancedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py)
-      (nhds 0)
-      (nhds ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹)) := by
-  simpa only [spectralParameter_advanced] using
-    tendsto_oppositeBandCoefficient_at_bandPole .advanced band v m px py hE
-
 /-- Squaring the spectator on either spectral side produces the inverse squared interband gap in the
 zero-broadening limit. -/
 theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
@@ -97,33 +69,6 @@ theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
   have h := tendsto_oppositeBandCoefficient_at_bandPole side band v m px py hE
   simpa [pow_two] using h.mul h
-
-/-- Squaring the retarded spectator produces the inverse squared interband gap in the
-zero-broadening limit. -/
-theorem tendsto_retarded_oppositeBandCoefficient_sq_at_bandPole
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (retardedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py ^ 2)
-      (nhds 0)
-      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-  simpa only [spectralParameter_retarded] using
-    tendsto_oppositeBandCoefficient_sq_at_bandPole .retarded band v m px py hE
-
-/-- Squaring the advanced spectator gives the same inverse squared interband gap. -/
-theorem tendsto_advanced_oppositeBandCoefficient_sq_at_bandPole
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (advancedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py ^ 2)
-      (nhds 0)
-      (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-  simpa only [spectralParameter_advanced] using
-    tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
 
 end
 
