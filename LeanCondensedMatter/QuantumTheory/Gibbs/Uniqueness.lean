@@ -64,7 +64,6 @@ saturated. -/
 theorem helmholtzFreeEnergy_eq_components
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0)
     (hfree : energyExpValue ρ Hop -
         (1 / β) * (vonNeumannEntropy ρ).toReal =
@@ -86,6 +85,8 @@ theorem helmholtzFreeEnergy_eq_components
           diagonalExpectationValue (gibbsOp Hop β)
             (gibbsOp_isPositive Hop β).isSelfAdjoint
             (eigenvectorFamily ρ.spectralTraceClass.compact a)) := by
+  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
+    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
   set p : EigenvectorIndex ρ.op → ℝ := fun a => a.1.1 with hp_def
   set h : EigenvectorIndex ρ.op → ℝ :=
@@ -147,7 +148,7 @@ theorem helmholtzFreeEnergy_eq_components
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
   rw [hphsum, hpsum] at hsum_eq
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
-    tsum_div_le_one hq_summable_and_le.1 hq_summable_and_le.2 hZpos
+    tsum_div_le_one hq_summable_and_le.2 hZpos
   have hEntropyTarget :
       (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z := by
     have hfree' := hfree

@@ -13,7 +13,7 @@ Bastin energy integral does not contain by definition:
 * the explicit Peierls contact expectation; and
 * the finite-volume electric-field normalization `1 / (V (-η))`.
 
-At finite positive switching rate, identifying these objects requires a model-specific Ward/f-sum
+At finite nonzero switching rate, identifying these objects requires a model-specific Ward/f-sum
 identity. This module exposes the minimal identity at the current-current level: the finite spectral
 current-current response is the volume/electric-field factor times the canonical traced Bastin
 integral, minus the contact expectation. The contact term is therefore not silently dropped, and
@@ -127,7 +127,7 @@ theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedB
   rw [ward.currentCurrent_eq_scaledTracedBastin_sub_contact]
   ring
 
-/-- At positive switching rate, the visible Ward identity cancels the exact finite-volume
+/-- At nonzero switching rate, the visible Ward identity cancels the exact finite-volume
 zero-frequency normalization and identifies the named static conductivity with the canonical
 traced Bastin energy integral. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
@@ -139,7 +139,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
     (occupation : ℝ → ℂ)
     (ward : FiniteStaticPeierlsWardIdentity convention system data
       geometry direction K q eta lowerEnergy upperEnergy occupation)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     finiteStaticKuboBastinDirectionalConductivity
         convention system data geometry direction K q eta =
       regularizedTracedBastinEnergyIntegral
@@ -165,7 +165,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
   have hdenominator : denominator ≠ 0 := by
     dsimp [denominator]
     simpa using finiteVolumeConductivityDenominator_ne_zero convention 0 eta
-      (Or.inr (ne_of_gt heta))
+      (Or.inr heta)
   change (denominator * integral) * denominator⁻¹ = integral
   calc
     (denominator * integral) * denominator⁻¹ =
@@ -204,7 +204,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyInte
         lowerEnergy upperEnergy occupation :=
       ward.staticConductivity_eq_tracedBastin
         convention system data geometry direction K q eta
-          lowerEnergy upperEnergy occupation heta
+          lowerEnergy upperEnergy occupation heta.ne'
     _ = _ := regularizedTracedBastinEnergyIntegral_eq_spectral
       system data
       (boundedDirectionalCurrent geometry direction
@@ -234,7 +234,7 @@ noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentatio
       lowerEnergy upperEnergy occupation occupationDerivative)
     (ward : FiniteStaticPeierlsWardIdentity convention system spectralData
       geometry direction K q eta lowerEnergy upperEnergy occupation)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     RegularizedStredaRepresentation
       (finiteStaticKuboBastinDirectionalConductivity
         convention system spectralData geometry direction K q eta) :=
@@ -263,7 +263,7 @@ theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
       lowerEnergy upperEnergy occupation occupationDerivative)
     (ward : FiniteStaticPeierlsWardIdentity convention system spectralData
       geometry direction K q eta lowerEnergy upperEnergy occupation)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     finiteStaticKuboBastinDirectionalConductivity
         convention system spectralData geometry direction K q eta =
       regularizedStredaFermiSurface analyticData.toRegularizedStredaIntegralData +

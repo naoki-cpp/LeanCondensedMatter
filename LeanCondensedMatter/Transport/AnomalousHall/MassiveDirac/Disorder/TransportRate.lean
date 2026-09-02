@@ -84,9 +84,11 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
           bandProjector .upper v m
             (metallicFermiRadius v m fermiEnergy * Real.cos θ)
             (metallicFermiRadius v m fermiEnergy * Real.sin θ)) := by
+  have hmAbsF : |m| ≤ fermiEnergy := by
+    simpa [abs_of_pos hm] using hmF
   have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
-  have hE := energy_metallicFermiRadius v m fermiEnergy hv hm hmF
+  have hE := energy_metallicFermiRadius v m fermiEnergy hv hmAbsF
   have hENe : energy v m (metallicFermiRadius v m fermiEnergy) 0 ≠ 0 := by
     rw [hE]
     exact hfermiNe
@@ -98,7 +100,7 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
             0 * (metallicFermiRadius v m fermiEnergy * Real.sin θ) =
           metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
       ring
-    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hm hmF]
+    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hmAbsF]
     unfold upperBandFermiSurfaceScalarOverlapWeight
     push_cast
     (field_simp [hfermiNe, hv]; ring)
@@ -295,11 +297,11 @@ theorem continuumBornUpperBandTransportLifetime_pos
     (continuumBornUpperBandTransportScatteringRate_pos
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
 
-/-- The transport lifetime is longer than the single-particle lifetime by the reciprocal angular
-factor. -/
+/-- The transport lifetime differs from the single-particle lifetime by the reciprocal angular
+factor whenever the common Born prefactors are nonzero. -/
 theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandTransportLifetime
         v m fermiEnergy disorderStrength hbar =
@@ -310,15 +312,14 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
   rw [continuumBornUpperBandTransportLifetime,
     continuumBornUpperBandSingleParticleLifetime]
   rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hm hmF,
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF,
     continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hm hmF]
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
   have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
-  have hdisorderNe : disorderStrength ≠ 0 := ne_of_gt hdisorder
   have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by positivity
   have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
-  (field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe, hsum1, hsum3]; ring)
+  (field_simp [hvelocity, hhbar, hfermiNe, hdisorder, hsum1, hsum3]; ring)
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark.  This bridge does not identify the derivation with a

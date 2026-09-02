@@ -45,7 +45,7 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     have heq : insertOccupation i (removeOccupation i n) = n := by
       rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
     rw [annihilate_basisState_of_mem hi, map_smul, create_basisState_of_not_mem hnotmem,
-      fermionSign_removeOccupation_of_not_lt hi (lt_irrefl i), heq, smul_smul,
+      fermionSign_removeOccupation_of_not_lt (lt_irrefl i), heq, smul_smul,
       fermionSign_sq_complex, one_smul]
   · rw [if_neg hi, annihilate_basisState_of_not_mem hi, map_zero]
 

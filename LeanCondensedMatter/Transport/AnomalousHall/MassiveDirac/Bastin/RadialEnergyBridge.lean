@@ -83,8 +83,8 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     (f := fun p : ℝ => energy v m p 0)
     (f' := radialEnergyDerivative v m)
     (g := cleanInterbandBastinPairRadialEnergyDensity band e m)
-    (fun p _ => hasDerivAt_energy_radial v m p hm)
-    (continuous_radialEnergyDerivative v m hm).continuousOn
+    (fun p _ => hasDerivAt_energy_radial v m p hm.ne')
+    (continuous_radialEnergyDerivative v m hm.ne').continuousOn
     (continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
       band e v m pMax hm)
   have hsub' :

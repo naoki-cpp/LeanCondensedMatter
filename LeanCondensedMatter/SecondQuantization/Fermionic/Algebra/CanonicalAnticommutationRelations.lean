@@ -55,7 +55,7 @@ theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : Occupation Mode}
   ring
 
 theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
-    (_hk : k ∉ n) (h : ¬k < i) :
+    (h : ¬k < i) :
     fermionSign i (insertOccupation k n) = fermionSign i n := by
   have hfilter : (insertOccupation k n).filter (· < i) = n.filter (· < i) := by
     rw [insertOccupation, Finset.filter_insert, if_neg h]
@@ -73,7 +73,7 @@ theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : Occupation Mode}
   ring
 
 theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
-    (_hk : k ∈ n) (h : ¬k < i) :
+    (h : ¬k < i) :
     fermionSign i (removeOccupation k n) = fermionSign i n := by
   have hfilter : (removeOccupation k n).filter (· < i) = n.filter (· < i) := by
     rw [removeOccupation, Finset.filter_erase, Finset.erase_eq_of_notMem]
@@ -100,11 +100,11 @@ theorem fermionSign_create_create_cancel {i j : Mode} {n : Occupation Mode} (hij
     fermionSign j n * fermionSign i (insertOccupation j n) +
       fermionSign i n * fermionSign j (insertOccupation i n) = 0 := by
   rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [fermionSign_insertOccupation_of_not_lt hj (not_lt.mpr h.le),
+  · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
       fermionSign_insertOccupation_of_lt hi h]
     ring
   · rw [fermionSign_insertOccupation_of_lt hj h,
-      fermionSign_insertOccupation_of_not_lt hi (not_lt.mpr h.le)]
+      fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le)]
     ring
 
 /-- **The sign-cancellation identity behind `{aᵢ, aⱼ} = 0`.** For distinct, both-occupied modes
@@ -114,11 +114,11 @@ theorem fermionSign_annihilate_annihilate_cancel {i j : Mode} {n : Occupation Mo
     fermionSign j n * fermionSign i (removeOccupation j n) +
       fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
   rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [fermionSign_removeOccupation_of_not_lt hj (not_lt.mpr h.le),
+  · rw [fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le),
       fermionSign_removeOccupation_of_lt hi h]
     ring
   · rw [fermionSign_removeOccupation_of_lt hj h,
-      fermionSign_removeOccupation_of_not_lt hi (not_lt.mpr h.le)]
+      fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
     ring
 
 /-! ## `{aᵢ†, aⱼ†} = 0` -/
@@ -227,14 +227,14 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
         rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
       rw [create_basisState_of_mem hi, map_zero, zero_add, annihilate_basisState_of_mem hi,
         map_smul, create_basisState_of_not_mem hnotmem,
-        fermionSign_removeOccupation_of_not_lt hi (lt_irrefl i), heq, smul_smul,
+        fermionSign_removeOccupation_of_not_lt (lt_irrefl i), heq, smul_smul,
         fermionSign_sq_complex, one_smul]
     · have hmem : i ∈ insertOccupation i n := Finset.mem_insert_self i n
       have heq : removeOccupation i (insertOccupation i n) = n := by
         rw [removeOccupation, insertOccupation, Finset.erase_insert hi]
       rw [annihilate_basisState_of_not_mem hi, map_zero, add_zero,
         create_basisState_of_not_mem hi, map_smul, annihilate_basisState_of_mem hmem,
-        fermionSign_insertOccupation_of_not_lt hi (lt_irrefl i), heq, smul_smul,
+        fermionSign_insertOccupation_of_not_lt (lt_irrefl i), heq, smul_smul,
         fermionSign_sq_complex, one_smul]
   · rw [if_neg hij]
     by_cases hj : j ∈ n
@@ -252,11 +252,11 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
         rw [create_basisState_of_not_mem hj, map_smul, annihilate_basisState_of_mem hij',
           annihilate_basisState_of_mem hi, map_smul, create_basisState_of_not_mem hjni, hswap]
         rcases lt_or_lt_iff_ne.mpr hij with h | h
-        · rw [fermionSign_insertOccupation_of_not_lt hj (not_lt.mpr h.le),
+        · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
             fermionSign_removeOccupation_of_lt hi h]
           exact cancel_cast_smul_smul (by ring) _
         · rw [fermionSign_insertOccupation_of_lt hj h,
-            fermionSign_removeOccupation_of_not_lt hi (not_lt.mpr h.le)]
+            fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
           exact cancel_cast_smul_smul (by ring) _
       · have hinj : i ∉ insertOccupation j n := by simp [insertOccupation, hij, hi]
         rw [create_basisState_of_not_mem hj, map_smul, annihilate_basisState_of_not_mem hinj,

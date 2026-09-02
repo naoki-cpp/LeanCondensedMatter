@@ -118,8 +118,8 @@ theorem spectralTrace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym
   exact (hadd.unique hs3).symm
 
 /-- Cyclicity of `spectralTrace` for two products satisfying the required hypotheses. -/
-theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
-    (hTsym : T.IsSymmetric) (_hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
+theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
+    (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
     (hTT' : IsCompactOperator (T * T')) (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric)
     (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
     (h1 : HasSummableRealEigenvalues (T * T'))

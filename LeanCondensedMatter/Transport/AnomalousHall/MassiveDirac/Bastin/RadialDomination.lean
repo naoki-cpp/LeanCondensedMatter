@@ -21,20 +21,20 @@ noncomputable section
 
 /-- The absolute interband gap is bounded below by `2m`, uniformly in momentum. -/
 theorem two_mul_mass_le_abs_interbandEnergyGap
-    (band : Band) (v m px py : ℝ) (hm : 0 ≤ m) :
+    (band : Band) (v m px py : ℝ) :
     2 * m ≤ |interbandEnergyGap band v m px py| := by
   rw [interbandEnergyGap_eq]
   have hE := energy_nonneg v m px py
-  have hmE := mass_le_energy v m px py hm
+  have hmE := mass_le_energy v m px py
   cases band <;> simp [bandSign, abs_of_nonneg hE] <;> linarith
 
 /-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
 theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
-    (band : Band) (v m px py radius : ℝ) (hm : 0 < m)
+    (band : Band) (v m px py radius : ℝ) (_hm : 0 < m)
     (hradius : radius < 2 * m) :
     radius < |interbandEnergyGap band v m px py| := by
   exact lt_of_lt_of_le hradius
-    (two_mul_mass_le_abs_interbandEnergyGap band v m px py hm.le)
+    (two_mul_mass_le_abs_interbandEnergyGap band v m px py)
 
 /-- On the radial axis the gauge-independent Hall interband force numerator is purely imaginary.
 Its imaginary coefficient is the one already used by the Berry-curvature bridge. -/

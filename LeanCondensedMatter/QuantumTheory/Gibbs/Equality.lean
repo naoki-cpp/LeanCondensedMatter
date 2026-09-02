@@ -67,12 +67,13 @@ complement. -/
 theorem gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
     (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
     (heq : ∑' i, diagonalExpectationValue
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
       spectralTrace (gibbsOp Hop β)) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
+  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
+    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
   apply
     ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       hcompact (gibbsOp_isPositive Hop β) hsummable hd ?_ heq

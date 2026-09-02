@@ -110,15 +110,14 @@ theorem tendsto_intrinsicHallConductivityCutoff_atTop (e hbar m εF : ℝ)
     (tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop m εF hm hmF)
 
 /-- Metallic massive-Dirac intrinsic AHE benchmark,
-`σxy^int = -(e²/2h) (m/εF)`, for positive `ℏ` and Fermi energy. -/
+`σxy^int = -(e²/2h) (m/εF)`, for nonzero `ℏ` and Fermi energy. -/
 theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ)
-    (hhbar : 0 < hbar) (hεF : 0 < εF) :
+    (hhbar : hbar ≠ 0) (hεF : εF ≠ 0) :
     intrinsicHallConductivity e hbar m εF =
       -(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF) := by
-  rw [intrinsicHallConductivity, intrinsicHallPrefactorFromMomentumMeasure_eq e hbar
-    (ne_of_gt hhbar)]
+  rw [intrinsicHallConductivity, intrinsicHallPrefactorFromMomentumMeasure_eq e hbar hhbar]
   unfold metallicBerryWeightUV
-  field_simp [ne_of_gt hhbar, Real.pi_ne_zero, ne_of_gt hεF]
+  field_simp [hhbar, Real.pi_ne_zero, hεF]
 
 end
 

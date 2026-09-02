@@ -187,8 +187,8 @@ theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
     (e hbar m εF : ℝ) (hhbar : 0 < hbar) (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (-(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF))) := by
-  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF hhbar
-    (lt_of_lt_of_le hm hmF)]
+  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF hhbar.ne'
+    (lt_of_lt_of_le hm hmF).ne']
   exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hm hmF
 
 end
