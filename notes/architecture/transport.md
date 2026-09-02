@@ -75,22 +75,19 @@ Finite ──→ Resolvent ──→ AveragedSelfEnergy
 ```
 
 `Disorder.Finite` owns the normalized finite ensemble. `Disorder.Resolvent` owns exact clean,
-configuration, and averaged Green operators. Their analytic core is parameterized by arbitrary
-signed regulator `γ`; `freeGreen side`, `configurationGreen side`, and `averagedGreen side` are
-physical specializations with `γ = side.sign * η`. Exact configuration Dyson expansions are owned
-at arbitrary nonzero `γ`.
+configuration, and averaged Green operators at arbitrary signed regulator `γ`. Exact configuration
+Dyson expansions are owned at arbitrary nonzero `γ`; physical consumers specialize the regulator
+locally when branch semantics are required.
 
 `Disorder.Moments` owns the exact second-moment action `C₂(X) = E[Vω X Vω]` and centered-disorder
 data.
 
 `Disorder.AveragedSelfEnergy` is exact: at arbitrary nonzero `γ` it proves invertibility of the exact
 averaged Green operator on an arbitrary complete complex Hilbert space and defines
-`exactSelfEnergyOfRegulator = G₀⁻¹ - Ḡ⁻¹`, satisfying `IsSelfEnergy`. `exactSelfEnergy side` is the
-physical-side specialization.
+`exactSelfEnergyOfRegulator = G₀⁻¹ - Ḡ⁻¹`, satisfying `IsSelfEnergy`.
 
 `Disorder.Born` owns `bornSelfEnergyOfRegulator`, the conventional first-Born self-energy obtained by
 applying the exact second-moment action to the clean Green operator at arbitrary `γ`.
-`bornSelfEnergy side` is the physical specialization.
 
 `Disorder.SCBA` records supplied self-consistent approximation data and derives its side-indexed
 consequences. Here retarded/advanced branch semantics are part of the physical approximation data,

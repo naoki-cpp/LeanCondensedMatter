@@ -52,21 +52,6 @@ noncomputable def averagedGreenOfRegulator
     (energy regulator : ℝ) : H →L[ℂ] H :=
   ensemble.operatorAverage (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω)
 
-/-- Exact clean Green operator on a physical spectral side. -/
-noncomputable def freeGreen
-    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.freeGreenOfRegulator energy (side.sign * broadening)
-
-/-- Exact Green operator of one disordered configuration on a physical spectral side. -/
-noncomputable def configurationGreen
-    (side : SpectralSide) (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  ensemble.configurationGreenOfRegulator energy (side.sign * broadening) ω
-
-/-- Exact finite disorder average on a physical spectral side. -/
-noncomputable def averagedGreen
-    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.averagedGreenOfRegulator energy (side.sign * broadening)
-
 /-- Adjointing the exact finite disorder-averaged Green operator reverses the signed regulator. -/
 theorem star_averagedGreenOfRegulator
     (energy regulator : ℝ) :

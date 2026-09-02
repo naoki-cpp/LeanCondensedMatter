@@ -8,8 +8,8 @@ set_option linter.style.header false
 
 This module owns the conventional first-Born self-energy for a finite disorder ensemble. The
 analytic core is the exact finite second-moment action evaluated on the clean Green operator at an
-arbitrary signed regulator `γ`; physical retarded/advanced branches specialize through
-`γ = side.sign * η`.
+arbitrary signed regulator `γ`; physical retarded/advanced consumers specialize the regulator
+locally through `γ = side.sign * η`.
 
 No equality with the exact disorder-averaged self-energy or self-consistency is asserted here.
 -/
@@ -32,11 +32,6 @@ to the corresponding clean Green operator. -/
 noncomputable def bornSelfEnergyOfRegulator
     (energy regulator : ℝ) : H →L[ℂ] H :=
   ensemble.exactSecondMoment (ensemble.freeGreenOfRegulator energy regulator)
-
-/-- First-Born self-energy on a physical spectral side. -/
-noncomputable def bornSelfEnergy
-    (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.bornSelfEnergyOfRegulator energy (side.sign * broadening)
 
 /-- Adjointing the first-Born self-energy reverses the signed regulator. -/
 theorem star_bornSelfEnergyOfRegulator

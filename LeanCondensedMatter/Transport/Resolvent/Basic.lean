@@ -128,15 +128,6 @@ theorem spectralParameter_im (side : SpectralSide) (energy broadening : ℝ) :
     (spectralParameter side energy broadening).im = side.sign * broadening := by
   simp [spectralParameter]
 
-/-- A nonzero broadening keeps either spectral-side parameter away from every real energy. -/
-theorem spectralParameter_sub_real_ne_zero
-    (side : SpectralSide) (energy broadening eigenvalue : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    spectralParameter side energy broadening - (eigenvalue : ℂ) ≠ 0 := by
-  exact spectralParameterOfRegulator_sub_real_ne_zero
-    energy (side.sign * broadening) eigenvalue
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
-
 @[simp]
 theorem retardedSpectralParameter_re (energy broadening : ℝ) :
     (retardedSpectralParameter energy broadening).re = energy := by
@@ -219,24 +210,6 @@ noncomputable def advancedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
   resolvent hamiltonian (advancedSpectralParameter energy broadening)
 
-omit [CompleteSpace H] in
-@[simp]
-theorem spectralResolvent_retarded
-    (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
-    spectralResolvent .retarded hamiltonian energy broadening =
-      retardedResolvent hamiltonian energy broadening := by
-  unfold spectralResolvent retardedResolvent
-  rw [spectralParameter_retarded]
-
-omit [CompleteSpace H] in
-@[simp]
-theorem spectralResolvent_advanced
-    (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
-    spectralResolvent .advanced hamiltonian energy broadening =
-      advancedResolvent hamiltonian energy broadening := by
-  unfold spectralResolvent advancedResolvent
-  rw [spectralParameter_advanced]
-
 /-- The side-indexed shifted operator multiplied by the canonical spectral resolvent is the
 identity. -/
 theorem spectralShift_mul_spectralResolvent
@@ -260,16 +233,6 @@ theorem spectralResolvent_mul_spectralShift
     resolvent_spectralParameterOfRegulator_mul_spectralShift
       hamiltonian hself energy (side.sign * broadening)
       (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
-
-/-- Adjointing a physical spectral resolvent exchanges it with the opposite spectral side. -/
-theorem star_spectralResolvent
-    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) :
-    star (spectralResolvent side hamiltonian energy broadening) =
-      spectralResolvent side.opposite hamiltonian energy broadening := by
-  simpa [spectralResolvent, spectralParameter] using
-    star_resolvent_spectralParameterOfRegulator
-      hamiltonian hself energy (side.sign * broadening)
 
 end
 end Transport

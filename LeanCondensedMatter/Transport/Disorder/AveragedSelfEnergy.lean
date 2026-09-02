@@ -19,8 +19,8 @@ invertibility in an arbitrary Hilbert space and hence defines the canonical exac
 Σ_exact(E, γ) = G₀(E, γ)⁻¹ - Ḡ(E, γ)⁻¹.
 ```
 
-Physical spectral sides specialize the analytic core through `γ = side.sign * η`. No exact object in
-this module is identified with Born or SCBA approximation data.
+Physical consumers specialize the signed regulator locally when retarded/advanced branch semantics
+are needed. No exact object in this module is identified with Born or SCBA approximation data.
 -/
 
 namespace QuantumTheory
@@ -332,13 +332,6 @@ noncomputable def exactSelfEnergyOfRegulator
   exact
     (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
         ensemble.baseHamiltonian.1) - averagedInverse
-
-/-- Physical-side specialization of the exact finite-disorder self-energy. -/
-noncomputable def exactSelfEnergy
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    H →L[ℂ] H :=
-  ensemble.exactSelfEnergyOfRegulator energy (side.sign * broadening)
-    (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
 
 /-- At a nonzero signed regulator, the canonical exact self-energy is the unique self-energy
 satisfying the exact two-sided Dyson relation for the clean and disorder-averaged Green operators. -/
