@@ -187,6 +187,7 @@ private theorem finiteCutoffContinuumBornDysonShiftMatrix_det
   rw [Matrix.det_fin_two]
   simp [finiteCutoffContinuumBornDysonShiftMatrix,
     finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ]
+  ring_nf
   rw [hI]
   ring
 
@@ -301,7 +302,11 @@ private theorem star_finiteCutoffContinuumBornDysonShiftMatrix
         side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening] at hstar
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   apply φ.injective
-  rw [map_star φ]
+  rw [φ.map_star']
+  change star (matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
+      side v m px py probeEnergy broadening disorderStrength hbar pMax)) =
+    matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
+      side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax)
   exact hstar
 
 private theorem star_finiteCutoffContinuumBornDysonDenominator
