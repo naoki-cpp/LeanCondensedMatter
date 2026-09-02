@@ -116,8 +116,7 @@ def isotropicUpperBandSingleParticleAngularWeight
 
 /-- The unweighted scalar-disorder overlap average is `(1 + m²/ε_F²)/2`. -/
 theorem isotropicUpperBandSingleParticleAngularWeight_eq
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy : ℝ) :
     isotropicUpperBandSingleParticleAngularWeight v m fermiEnergy =
       (1 + m ^ 2 / fermiEnergy ^ 2) / 2 := by
   rw [isotropicUpperBandSingleParticleAngularWeight]
@@ -157,8 +156,7 @@ def isotropicUpperBandTransportAngularWeight
 
 /-- The scalar-disorder transport angular weight is `(1 + 3 m²/ε_F²)/4`. -/
 theorem isotropicUpperBandTransportAngularWeight_eq
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy : ℝ) :
     isotropicUpperBandTransportAngularWeight v m fermiEnergy =
       (1 + 3 * (m ^ 2 / fermiEnergy ^ 2)) / 4 := by
   rw [isotropicUpperBandTransportAngularWeight]
@@ -216,8 +214,7 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angu
         isotropicUpperBandSingleParticleAngularWeight v m fermiEnergy := by
   rw [continuumBornUpperBandSingleParticleScatteringRate_eq
     v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
-  rw [isotropicUpperBandSingleParticleAngularWeight_eq
-    v m fermiEnergy hvelocity hm hmF.le]
+  rw [isotropicUpperBandSingleParticleAngularWeight_eq v m fermiEnergy]
   unfold continuumBornUpperBandFermiCircleRatePrefactor
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   field_simp [hvelocity, hhbar, hfermiNe]
@@ -240,8 +237,7 @@ theorem continuumBornUpperBandTransportScatteringRate_eq
       disorderStrength / (4 * hbar ^ 3 * v ^ 2) *
         (fermiEnergy + 3 * m ^ 2 / fermiEnergy) := by
   rw [continuumBornUpperBandTransportScatteringRate,
-    isotropicUpperBandTransportAngularWeight_eq
-      v m fermiEnergy hvelocity hm hmF.le]
+    isotropicUpperBandTransportAngularWeight_eq v m fermiEnergy]
   unfold continuumBornUpperBandFermiCircleRatePrefactor
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   field_simp [hvelocity, hhbar, hfermiNe]
