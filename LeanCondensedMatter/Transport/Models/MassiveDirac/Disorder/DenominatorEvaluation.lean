@@ -18,8 +18,8 @@ J(E,γ;pMax) = -(2 v²)⁻¹ [log D(E,γ;pMax) - log D(E,γ;0)].
 ```
 
 Physical spectral-side real/imaginary formulas are retained only where downstream broadening-limit
-or ultraviolet analyses consume them. No ultraviolet limit, zero-regulator limit, scattering-rate
-identification, or renormalization prescription is made here.
+analyses consume them. No ultraviolet limit, zero-regulator limit, scattering-rate identification,
+or renormalization prescription is made here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -279,7 +279,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
   rw [Complex.im_ofReal_mul]
   simp [Complex.log_im]
 
-/-- Physical-side finite-cutoff real part, retained for broadening-limit and UV consumers. -/
+/-- Physical-side finite-cutoff real part, retained for broadening-limit consumers. -/
 theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ)
     (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0) :
