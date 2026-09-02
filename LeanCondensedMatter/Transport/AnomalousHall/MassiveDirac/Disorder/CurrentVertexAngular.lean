@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.AngularReduction
+import LeanCondensedMatter.Transport.Models.MassiveDirac.AngularReduction
 import LeanCondensedMatter.Transport.Disorder.Ladder
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
