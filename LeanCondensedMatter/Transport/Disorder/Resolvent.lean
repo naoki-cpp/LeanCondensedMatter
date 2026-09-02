@@ -4,17 +4,19 @@ import LeanCondensedMatter.Transport.Resolvent.Basic
 set_option linter.style.header false
 
 /-!
-# Exact finite-disorder resolvents and Dyson identities
+# Exact finite-disorder Green operators and Dyson identities
 
-This module owns exact resolvent data for a finite disorder ensemble before any moment assumption or
-weak-disorder closure is imposed.
+This module owns exact Green-operator data for a finite disorder ensemble before any moment
+assumption or weak-disorder closure is imposed. The analytic core is parameterized by an arbitrary
+signed imaginary regulator
 
-For the clean Hamiltonian `H₀` and each exact configuration Hamiltonian `Hω = H₀ + Vω`, it defines
-side-indexed clean and configuration Green operators together with their exact finite disorder
-average. Clean and averaged retarded/advanced specializations remain public, while adjunction is
-stated once for an arbitrary spectral side and exchanges it with the opposite side. The module also
-proves side-indexed left- and right-oriented first- and second-order configuration-wise Dyson
-identities with the complete configuration Green operator retained in the remainder.
+```text
+z(E, γ) = E + iγ.
+```
+
+Physical retarded/advanced branches specialize this core through `γ = side.sign * η`. Exact Dyson
+identities are stated only for the arbitrary-regulator core; consumers specialize the regulator
+locally when physical branch semantics are needed.
 
 No centering, covariance, Born approximation, closure hypothesis, self-consistency, effective
 self-energy identification, trace-per-volume construction, or thermodynamic limit is introduced here.
@@ -33,236 +35,236 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Exact clean Green operator on either spectral side. -/
+/-- Exact clean Green operator at an arbitrary signed imaginary regulator. -/
+noncomputable def freeGreenOfRegulator
+    (energy regulator : ℝ) : H →L[ℂ] H :=
+  resolvent ensemble.baseHamiltonian.1 (spectralParameterOfRegulator energy regulator)
+
+/-- Exact Green operator of one disordered configuration at an arbitrary signed regulator. -/
+noncomputable def configurationGreenOfRegulator
+    (energy regulator : ℝ) (ω : Ω) : H →L[ℂ] H :=
+  resolvent (ensemble.configurationHamiltonian ω).1
+    (spectralParameterOfRegulator energy regulator)
+
+/-- Exact finite disorder average of the complete configuration Green operator at an arbitrary
+signed regulator. No Born or self-consistent closure is imposed. -/
+noncomputable def averagedGreenOfRegulator
+    (energy regulator : ℝ) : H →L[ℂ] H :=
+  ensemble.operatorAverage (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω)
+
+/-- Exact clean Green operator on a physical spectral side. -/
 noncomputable def freeGreen
     (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  spectralResolvent side ensemble.baseHamiltonian.1 energy broadening
+  ensemble.freeGreenOfRegulator energy (side.sign * broadening)
 
-/-- Exact Green operator of one disordered configuration on either spectral side. -/
+/-- Exact Green operator of one disordered configuration on a physical spectral side. -/
 noncomputable def configurationGreen
     (side : SpectralSide) (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  spectralResolvent side (ensemble.configurationHamiltonian ω).1 energy broadening
+  ensemble.configurationGreenOfRegulator energy (side.sign * broadening) ω
 
-/-- Exact finite disorder average of the complete configuration Green operator on either spectral
-side, `Ḡˢ = E[Gωˢ]`. No Born or self-consistent closure is imposed. -/
+/-- Exact finite disorder average on a physical spectral side. -/
 noncomputable def averagedGreen
     (side : SpectralSide) (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.operatorAverage (fun ω => ensemble.configurationGreen side energy broadening ω)
+  ensemble.averagedGreenOfRegulator energy (side.sign * broadening)
 
-/-- Exact clean retarded Green operator. -/
-noncomputable def freeRetardedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.freeGreen .retarded energy broadening
+/-- Adjointing the exact finite disorder-averaged Green operator reverses the signed regulator. -/
+theorem star_averagedGreenOfRegulator
+    (energy regulator : ℝ) :
+    star (ensemble.averagedGreenOfRegulator energy regulator) =
+      ensemble.averagedGreenOfRegulator energy (-regulator) := by
+  unfold averagedGreenOfRegulator
+  rw [← ensemble.operatorAverage_star]
+  apply congrArg ensemble.operatorAverage
+  funext ω
+  unfold configurationGreenOfRegulator
+  exact star_resolvent_spectralParameterOfRegulator
+    (ensemble.configurationHamiltonian ω).1
+    (ensemble.configurationHamiltonian ω).2 energy regulator
 
-/-- Exact finite disorder-averaged retarded Green operator. -/
-noncomputable def averagedRetardedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.averagedGreen .retarded energy broadening
-
-/-- Exact clean advanced Green operator. -/
-noncomputable def freeAdvancedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.freeGreen .advanced energy broadening
-
-/-- Exact finite disorder-averaged advanced Green operator. -/
-noncomputable def averagedAdvancedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.averagedGreen .advanced energy broadening
-
-/-- Adjointing the exact finite disorder-averaged Green operator exchanges the spectral side. -/
+/-- Adjointing the exact finite disorder-averaged Green operator exchanges the physical side. -/
 theorem star_averagedGreen
     (side : SpectralSide) (energy broadening : ℝ) :
     star (ensemble.averagedGreen side energy broadening) =
       ensemble.averagedGreen side.opposite energy broadening := by
-  unfold averagedGreen
-  rw [← ensemble.operatorAverage_star]
-  apply congrArg ensemble.operatorAverage
-  funext ω
-  unfold configurationGreen
-  exact star_spectralResolvent side
-    (ensemble.configurationHamiltonian ω).1
-    (ensemble.configurationHamiltonian ω).2 energy broadening
+  simpa [averagedGreen, SpectralSide.sign_opposite] using
+    ensemble.star_averagedGreenOfRegulator energy (side.sign * broadening)
 
-/-- Exact left-oriented configuration Dyson identity on either spectral side,
-`Gωˢ = G₀ˢ + G₀ˢ Vω Gωˢ`, for nonzero broadening. -/
-theorem configurationGreen_eq_free_add_dyson_left
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
-    ensemble.configurationGreen side energy broadening ω =
-      ensemble.freeGreen side energy broadening +
-        ensemble.freeGreen side energy broadening *
+/-- Exact left-oriented configuration Dyson identity at an arbitrary nonzero signed regulator,
+`Gω = G₀ + G₀ Vω Gω`. -/
+theorem configurationGreenOfRegulator_eq_free_add_dyson_left
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) :
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+      ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.configurationGreen side energy broadening ω := by
+            ensemble.configurationGreenOfRegulator energy regulator ω := by
   let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       ensemble.baseHamiltonian.1
   let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       (ensemble.configurationHamiltonian ω).1
   have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
     dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
     noncomm_ring
-  have hfree : ensemble.freeGreen side energy broadening * shift₀ = 1 := by
-    simpa [freeGreen, shift₀] using
-      spectralResolvent_mul_spectralShift side
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-        energy broadening hbroadening
+  have hfree : ensemble.freeGreenOfRegulator energy regulator * shift₀ = 1 := by
+    simpa [freeGreenOfRegulator, shift₀] using
+      resolvent_spectralParameterOfRegulator_mul_spectralShift
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
   have hconfiguration :
-      shiftω * ensemble.configurationGreen side energy broadening ω = 1 := by
-    simpa [configurationGreen, shiftω] using
-      spectralShift_mul_spectralResolvent side
+      shiftω * ensemble.configurationGreenOfRegulator energy regulator ω = 1 := by
+    simpa [configurationGreenOfRegulator, shiftω] using
+      spectralShift_mul_resolvent_spectralParameterOfRegulator
         (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2
-        energy broadening hbroadening
+        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator
   calc
-    ensemble.configurationGreen side energy broadening ω =
-        ensemble.freeGreen side energy broadening * shift₀ *
-          ensemble.configurationGreen side energy broadening ω := by
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+        ensemble.freeGreenOfRegulator energy regulator * shift₀ *
+          ensemble.configurationGreenOfRegulator energy regulator ω := by
       rw [hfree]
       simp
-    _ = ensemble.freeGreen side energy broadening *
+    _ = ensemble.freeGreenOfRegulator energy regulator *
           (shiftω + (ensemble.impurityPotential ω).1) *
-            ensemble.configurationGreen side energy broadening ω := by
+            ensemble.configurationGreenOfRegulator energy regulator ω := by
       rw [hshift]
-    _ = ensemble.freeGreen side energy broadening *
-          (shiftω * ensemble.configurationGreen side energy broadening ω) +
-        ensemble.freeGreen side energy broadening *
+    _ = ensemble.freeGreenOfRegulator energy regulator *
+          (shiftω * ensemble.configurationGreenOfRegulator energy regulator ω) +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.configurationGreen side energy broadening ω := by
+            ensemble.configurationGreenOfRegulator energy regulator ω := by
       noncomm_ring
-    _ = ensemble.freeGreen side energy broadening +
-        ensemble.freeGreen side energy broadening *
+    _ = ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.configurationGreen side energy broadening ω := by
+            ensemble.configurationGreenOfRegulator energy regulator ω := by
       rw [hconfiguration]
       simp
 
-/-- Exact right-oriented configuration Dyson identity on either spectral side,
-`Gωˢ = G₀ˢ + Gωˢ Vω G₀ˢ`, for nonzero broadening. -/
-theorem configurationGreen_eq_free_add_dyson_right
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
-    ensemble.configurationGreen side energy broadening ω =
-      ensemble.freeGreen side energy broadening +
-        ensemble.configurationGreen side energy broadening ω *
+/-- Exact right-oriented configuration Dyson identity at an arbitrary nonzero signed regulator,
+`Gω = G₀ + Gω Vω G₀`. -/
+theorem configurationGreenOfRegulator_eq_free_add_dyson_right
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) :
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+      ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.configurationGreenOfRegulator energy regulator ω *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening := by
+            ensemble.freeGreenOfRegulator energy regulator := by
   let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       ensemble.baseHamiltonian.1
   let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+    algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) -
       (ensemble.configurationHamiltonian ω).1
   have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
     dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
     noncomm_ring
-  have hfree : shift₀ * ensemble.freeGreen side energy broadening = 1 := by
-    simpa [freeGreen, shift₀] using
-      spectralShift_mul_spectralResolvent side
-        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-        energy broadening hbroadening
+  have hfree : shift₀ * ensemble.freeGreenOfRegulator energy regulator = 1 := by
+    simpa [freeGreenOfRegulator, shift₀] using
+      spectralShift_mul_resolvent_spectralParameterOfRegulator
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator hregulator
   have hconfiguration :
-      ensemble.configurationGreen side energy broadening ω * shiftω = 1 := by
-    simpa [configurationGreen, shiftω] using
-      spectralResolvent_mul_spectralShift side
+      ensemble.configurationGreenOfRegulator energy regulator ω * shiftω = 1 := by
+    simpa [configurationGreenOfRegulator, shiftω] using
+      resolvent_spectralParameterOfRegulator_mul_spectralShift
         (ensemble.configurationHamiltonian ω).1
-        (ensemble.configurationHamiltonian ω).2
-        energy broadening hbroadening
+        (ensemble.configurationHamiltonian ω).2 energy regulator hregulator
   calc
-    ensemble.configurationGreen side energy broadening ω =
-        ensemble.configurationGreen side energy broadening ω * shift₀ *
-          ensemble.freeGreen side energy broadening := by
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+        ensemble.configurationGreenOfRegulator energy regulator ω * shift₀ *
+          ensemble.freeGreenOfRegulator energy regulator := by
       calc
-        ensemble.configurationGreen side energy broadening ω =
-            ensemble.configurationGreen side energy broadening ω * 1 := by simp
-        _ = ensemble.configurationGreen side energy broadening ω *
-            (shift₀ * ensemble.freeGreen side energy broadening) := by rw [hfree]
+        ensemble.configurationGreenOfRegulator energy regulator ω =
+            ensemble.configurationGreenOfRegulator energy regulator ω * 1 := by simp
+        _ = ensemble.configurationGreenOfRegulator energy regulator ω *
+            (shift₀ * ensemble.freeGreenOfRegulator energy regulator) := by rw [hfree]
         _ = _ := by rw [mul_assoc]
-    _ = ensemble.configurationGreen side energy broadening ω *
+    _ = ensemble.configurationGreenOfRegulator energy regulator ω *
           (shiftω + (ensemble.impurityPotential ω).1) *
-            ensemble.freeGreen side energy broadening := by
+            ensemble.freeGreenOfRegulator energy regulator := by
       rw [hshift]
-    _ = (ensemble.configurationGreen side energy broadening ω * shiftω) *
-          ensemble.freeGreen side energy broadening +
-        ensemble.configurationGreen side energy broadening ω *
+    _ = (ensemble.configurationGreenOfRegulator energy regulator ω * shiftω) *
+          ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.configurationGreenOfRegulator energy regulator ω *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening := by
+            ensemble.freeGreenOfRegulator energy regulator := by
       noncomm_ring
-    _ = ensemble.freeGreen side energy broadening +
-        ensemble.configurationGreen side energy broadening ω *
+    _ = ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.configurationGreenOfRegulator energy regulator ω *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening := by
+            ensemble.freeGreenOfRegulator energy regulator := by
       rw [hconfiguration]
       simp
 
-/-- Exact left-oriented second-order Dyson expansion on either spectral side. -/
-theorem configurationGreen_eq_secondOrder_add_exactRemainder_left
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
-    ensemble.configurationGreen side energy broadening ω =
-      ensemble.freeGreen side energy broadening +
-        ensemble.freeGreen side energy broadening *
+/-- Exact left-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. -/
+theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) :
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+      ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening +
-        ensemble.freeGreen side energy broadening *
+            ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening *
+            ensemble.freeGreenOfRegulator energy regulator *
               (ensemble.impurityPotential ω).1 *
-                ensemble.configurationGreen side energy broadening ω := by
-  have hdyson := configurationGreen_eq_free_add_dyson_left
-    ensemble side energy broadening hbroadening ω
+                ensemble.configurationGreenOfRegulator energy regulator ω := by
+  have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_left
+    ensemble energy regulator hregulator ω
   calc
-    ensemble.configurationGreen side energy broadening ω =
-        ensemble.freeGreen side energy broadening +
-          ensemble.freeGreen side energy broadening *
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+        ensemble.freeGreenOfRegulator energy regulator +
+          ensemble.freeGreenOfRegulator energy regulator *
             (ensemble.impurityPotential ω).1 *
-              ensemble.configurationGreen side energy broadening ω := hdyson
-    _ = ensemble.freeGreen side energy broadening +
-          ensemble.freeGreen side energy broadening *
+              ensemble.configurationGreenOfRegulator energy regulator ω := hdyson
+    _ = ensemble.freeGreenOfRegulator energy regulator +
+          ensemble.freeGreenOfRegulator energy regulator *
             (ensemble.impurityPotential ω).1 *
-              (ensemble.freeGreen side energy broadening +
-                ensemble.freeGreen side energy broadening *
+              (ensemble.freeGreenOfRegulator energy regulator +
+                ensemble.freeGreenOfRegulator energy regulator *
                   (ensemble.impurityPotential ω).1 *
-                    ensemble.configurationGreen side energy broadening ω) := by
+                    ensemble.configurationGreenOfRegulator energy regulator ω) := by
       exact congrArg
         (fun green : H →L[ℂ] H =>
-          ensemble.freeGreen side energy broadening +
-            ensemble.freeGreen side energy broadening *
+          ensemble.freeGreenOfRegulator energy regulator +
+            ensemble.freeGreenOfRegulator energy regulator *
               (ensemble.impurityPotential ω).1 * green)
         hdyson
     _ = _ := by
       noncomm_ring
 
-/-- Exact right-oriented second-order Dyson expansion on either spectral side. -/
-theorem configurationGreen_eq_secondOrder_add_exactRemainder_right
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (ω : Ω) :
-    ensemble.configurationGreen side energy broadening ω =
-      ensemble.freeGreen side energy broadening +
-        ensemble.freeGreen side energy broadening *
+/-- Exact right-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. -/
+theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (ω : Ω) :
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+      ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.freeGreenOfRegulator energy regulator *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening +
-        ensemble.configurationGreen side energy broadening ω *
+            ensemble.freeGreenOfRegulator energy regulator +
+        ensemble.configurationGreenOfRegulator energy regulator ω *
           (ensemble.impurityPotential ω).1 *
-            ensemble.freeGreen side energy broadening *
+            ensemble.freeGreenOfRegulator energy regulator *
               (ensemble.impurityPotential ω).1 *
-                ensemble.freeGreen side energy broadening := by
-  have hdyson := configurationGreen_eq_free_add_dyson_right
-    ensemble side energy broadening hbroadening ω
+                ensemble.freeGreenOfRegulator energy regulator := by
+  have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_right
+    ensemble energy regulator hregulator ω
   calc
-    ensemble.configurationGreen side energy broadening ω =
-        ensemble.freeGreen side energy broadening +
-          ensemble.configurationGreen side energy broadening ω *
+    ensemble.configurationGreenOfRegulator energy regulator ω =
+        ensemble.freeGreenOfRegulator energy regulator +
+          ensemble.configurationGreenOfRegulator energy regulator ω *
             (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreen side energy broadening := hdyson
-    _ = ensemble.freeGreen side energy broadening +
-          (ensemble.freeGreen side energy broadening +
-            ensemble.configurationGreen side energy broadening ω *
+              ensemble.freeGreenOfRegulator energy regulator := hdyson
+    _ = ensemble.freeGreenOfRegulator energy regulator +
+          (ensemble.freeGreenOfRegulator energy regulator +
+            ensemble.configurationGreenOfRegulator energy regulator ω *
               (ensemble.impurityPotential ω).1 *
-                ensemble.freeGreen side energy broadening) *
+                ensemble.freeGreenOfRegulator energy regulator) *
             (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreen side energy broadening := by
+              ensemble.freeGreenOfRegulator energy regulator := by
       exact congrArg
         (fun green : H →L[ℂ] H =>
-          ensemble.freeGreen side energy broadening + green *
+          ensemble.freeGreenOfRegulator energy regulator + green *
             (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreen side energy broadening)
+              ensemble.freeGreenOfRegulator energy regulator)
         hdyson
     _ = _ := by
       noncomm_ring
