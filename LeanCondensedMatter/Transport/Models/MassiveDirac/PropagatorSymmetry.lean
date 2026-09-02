@@ -76,13 +76,6 @@ noncomputable def inversionSymmetrizedPauliGreenOperatorOfRegulator
     (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator +
       pauliGreenOperatorOfRegulator v m (-px) (-py) probeEnergy regulator)
 
-/-- Physical-side specialization of the inversion-symmetrized Green operator. -/
-noncomputable def inversionSymmetrizedPauliGreenOperator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  inversionSymmetrizedPauliGreenOperatorOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
-
 /-- Exact arbitrary-regulator momentum-inversion symmetrization retains only the scalar and `σ_z`
 Pauli channels. -/
 theorem inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels
