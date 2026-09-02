@@ -106,31 +106,36 @@ theorem metallicFermiRadius_nonneg
   unfold metallicFermiRadius
   exact div_nonneg (Real.sqrt_nonneg _) (abs_nonneg v)
 
-/-- Squaring the explicit metallic Fermi radius removes the square root and absolute value. -/
+/-- Squaring the explicit metallic Fermi radius removes the square root and absolute value whenever
+the Fermi energy lies at or above the mass magnitude. -/
 theorem metallicFermiRadius_sq
-    (v m fermiEnergy : ℝ)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy : ℝ) (hmF : |m| ≤ fermiEnergy) :
     metallicFermiRadius v m fermiEnergy ^ 2 =
       (fermiEnergy ^ 2 - m ^ 2) / v ^ 2 := by
   unfold metallicFermiRadius
+  have hplus : 0 ≤ fermiEnergy + |m| :=
+    add_nonneg ((abs_nonneg m).trans hmF) (abs_nonneg m)
+  have hprod : 0 ≤ (fermiEnergy - |m|) * (fermiEnergy + |m|) :=
+    mul_nonneg (sub_nonneg.mpr hmF) hplus
   have hrad : 0 ≤ fermiEnergy ^ 2 - m ^ 2 := by
-    nlinarith [sq_nonneg (fermiEnergy - m)]
+    rw [← sq_abs m]
+    nlinarith
   rw [div_pow, Real.sq_sqrt hrad]
   simp [sq_abs]
 
-/-- The positive Dirac energy at the metallic Fermi radius is exactly `ε_F`. -/
+/-- The positive Dirac energy at the metallic Fermi radius is exactly `ε_F` whenever
+`|m| ≤ ε_F`. -/
 theorem energy_metallicFermiRadius
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0) (hmF : |m| ≤ fermiEnergy) :
     energy v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy := by
-  have hfermiNonneg : 0 ≤ fermiEnergy := le_trans (le_of_lt hm) hmF
+  have hfermiNonneg : 0 ≤ fermiEnergy := (abs_nonneg m).trans hmF
   have hsq :
       energy v m (metallicFermiRadius v m fermiEnergy) 0 ^ 2 =
         fermiEnergy ^ 2 := by
     rw [energy_sq]
     unfold energySq
     norm_num
-    rw [metallicFermiRadius_sq v m fermiEnergy hm hmF]
+    rw [metallicFermiRadius_sq v m fermiEnergy hmF]
     field_simp [pow_ne_zero 2 hv]
     ring
   have henergyNonneg :
@@ -143,27 +148,33 @@ standard massive-Dirac Fermi-surface form
 `v^2 * (1 - m^2 / epsilon_F^2)`. -/
 theorem radialEnergyDerivative_sq_metallicFermiRadius
     (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (hmF : |m| ≤ fermiEnergy) (hfermi : fermiEnergy ≠ 0) :
     radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) ^ 2 =
       v ^ 2 * (1 - m ^ 2 / fermiEnergy ^ 2) := by
-  have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   unfold radialEnergyDerivative
-  rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF]
+  rw [energy_metallicFermiRadius v m fermiEnergy hv hmF]
   rw [div_pow, mul_pow,
-    metallicFermiRadius_sq v m fermiEnergy hm hmF]
-  field_simp [hfermiNe, hv]
+    metallicFermiRadius_sq v m fermiEnergy hmF]
+  field_simp [hfermi, hv]
 
-/-- In the strictly metallic regime `0 < m < epsilon_F`, the squared Fermi-surface radial
-derivative is strictly positive when `v ≠ 0`. -/
+/-- In the strictly metallic regime `|m| < epsilon_F`, the squared Fermi-surface radial derivative
+is strictly positive when `v ≠ 0`. -/
 theorem radialEnergyDerivative_sq_metallicFermiRadius_pos
     (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) ^ 2 := by
-  rw [radialEnergyDerivative_sq_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
+  have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
+  rw [radialEnergyDerivative_sq_metallicFermiRadius
+    v m fermiEnergy hv hmF.le hfermiNe]
   have hvSq : 0 < v ^ 2 := sq_pos_of_ne_zero hv
-  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_pos (lt_trans hm hmF)
+  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_pos hfermiPos
+  have hplus : 0 < fermiEnergy + |m| :=
+    add_pos_of_pos_of_nonneg hfermiPos (abs_nonneg m)
+  have hprod : 0 < (fermiEnergy - |m|) * (fermiEnergy + |m|) :=
+    mul_pos (sub_pos.mpr hmF) hplus
   have hmSqLt : m ^ 2 < fermiEnergy ^ 2 := by
+    rw [← sq_abs m]
     nlinarith
   have hratio : m ^ 2 / fermiEnergy ^ 2 < 1 := by
     exact (div_lt_one hfermiSq).2 hmSqLt
@@ -171,10 +182,9 @@ theorem radialEnergyDerivative_sq_metallicFermiRadius_pos
 
 /-- The upper-band energy at the explicit metallic Fermi radius is exactly `ε_F`. -/
 theorem bandEnergy_upper_metallicFermiRadius
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy : ℝ) (hv : v ≠ 0) (hmF : |m| ≤ fermiEnergy) :
     bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy := by
-  simpa using energy_metallicFermiRadius v m fermiEnergy hv hm hmF
+  simpa using energy_metallicFermiRadius v m fermiEnergy hv hmF
 
 /-- Positive radial energy is strictly increasing on the nonnegative axis when `v ≠ 0`. -/
 theorem energy_radial_lt_of_lt_of_nonneg
@@ -192,15 +202,15 @@ theorem energy_radial_lt_of_lt_of_nonneg
   have hqEnergy : 0 ≤ energy v m q 0 := Real.sqrt_nonneg _
   nlinarith
 
-/-- In the positive-mass metallic-or-band-edge regime `0 < m ≤ ε_F`, the upper band is occupied
-exactly below the explicit Fermi radius. At `ε_F = m`, this occupied region is empty and `p_F = 0`. -/
+/-- In the metallic-or-band-edge regime `|m| ≤ ε_F`, the upper band is occupied exactly below the
+explicit Fermi radius. At `ε_F = |m|`, this occupied region is empty and `p_F = 0`. -/
 theorem bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius
     (v m fermiEnergy p : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) (hp : 0 ≤ p) :
+    (hmF : |m| ≤ fermiEnergy) (hp : 0 ≤ p) :
     bandEnergy .upper v m p 0 < fermiEnergy ↔
       p < metallicFermiRadius v m fermiEnergy := by
   rw [bandEnergy_upper]
-  have hfermi := energy_metallicFermiRadius v m fermiEnergy hv hm hmF
+  have hfermi := energy_metallicFermiRadius v m fermiEnergy hv hmF
   constructor
   · intro henergy
     by_contra hpF
@@ -219,33 +229,31 @@ theorem bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius
     rw [hfermi] at hmono
     exact hmono
 
-/-- In the positive-mass metallic-or-band-edge regime `0 < m ≤ ε_F`, the lower band is occupied at
-every radial momentum. -/
+/-- At positive Fermi energy, the lower band is occupied at every radial momentum. -/
 theorem bandEnergy_lower_lt_fermi
-    (v m fermiEnergy p : ℝ) (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy p : ℝ) (hfermi : 0 < fermiEnergy) :
     bandEnergy .lower v m p 0 < fermiEnergy := by
   rw [bandEnergy_lower]
   have henergy : 0 ≤ energy v m p 0 := Real.sqrt_nonneg _
-  have hfermi : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
   linarith
 
-/-- On the nonnegative radial axis in `0 < m ≤ ε_F`, generic upper-band occupation is exactly
-`p < p_F`; at the band edge `ε_F = m` this set is empty. -/
+/-- On the nonnegative radial axis in `|m| ≤ ε_F`, generic upper-band occupation is exactly
+`p < p_F`; at the band edge `ε_F = |m|` this set is empty. -/
 theorem mem_upperBand_radialOccupiedRegion_iff_lt_metallicFermiRadius
     (v m fermiEnergy p : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) (hp : 0 ≤ p) :
+    (hmF : |m| ≤ fermiEnergy) (hp : 0 ≤ p) :
     p ∈ occupiedRegion (radialBandEnergy v m) fermiEnergy .upper ↔
       p < metallicFermiRadius v m fermiEnergy := by
   change bandEnergy .upper v m p 0 < fermiEnergy ↔
     p < metallicFermiRadius v m fermiEnergy
   exact bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius
-    v m fermiEnergy p hv hm hmF hp
+    v m fermiEnergy p hv hmF hp
 
-/-- On the nonnegative radial axis in `0 < m ≤ ε_F`, the generic upper-band Fermi surface is the
+/-- On the nonnegative radial axis in `|m| ≤ ε_F`, the generic upper-band Fermi surface is the
 single explicit `metallicFermiRadius` value. -/
 theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
     (v m fermiEnergy p : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) (hp : 0 ≤ p) :
+    (hmF : |m| ≤ fermiEnergy) (hp : 0 ≤ p) :
     p ∈ fermiSurface (radialBandEnergy v m) fermiEnergy .upper ↔
       p = metallicFermiRadius v m fermiEnergy := by
   constructor
@@ -255,40 +263,40 @@ theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
       .upper v m p (metallicFermiRadius v m fermiEnergy) hv hp
       (metallicFermiRadius_nonneg v m fermiEnergy)
     exact hfermi.trans
-      (bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hm hmF).symm
+      (bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hmF).symm
   · intro hpF
     subst p
     change bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy
-    exact bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hm hmF
+    exact bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hmF
 
 /-- Isotropic full-angle mean square of the `x` group-velocity component evaluated at the explicit
 upper-band Fermi radius. -/
 def isotropicFermiSurfaceMeanSquareVelocityX (v m fermiEnergy : ℝ) : ℝ :=
   isotropicMeanSquareRadialGroupVelocityX v m (metallicFermiRadius v m fermiEnergy)
 
-/-- In the positive-mass metallic-or-band-edge regime, the isotropic Fermi-surface factor is
+/-- In the metallic-or-band-edge regime, the isotropic Fermi-surface factor is
 
 `<v_x²>_FS = (v² / 2) * (1 - m² / ε_F²)`.
 -/
 theorem isotropicFermiSurfaceMeanSquareVelocityX_eq
     (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (hmF : |m| ≤ fermiEnergy) (hfermi : fermiEnergy ≠ 0) :
     isotropicFermiSurfaceMeanSquareVelocityX v m fermiEnergy =
       v ^ 2 * (1 - m ^ 2 / fermiEnergy ^ 2) / 2 := by
   unfold isotropicFermiSurfaceMeanSquareVelocityX
   rw [isotropicMeanSquareRadialGroupVelocityX_eq,
-    radialEnergyDerivative_sq_metallicFermiRadius v m fermiEnergy hv hm hmF]
+    radialEnergyDerivative_sq_metallicFermiRadius v m fermiEnergy hv hmF hfermi]
 
-/-- In the strictly metallic regime `0 < m < ε_F`, the isotropic Fermi-surface `v_x²` factor is
+/-- In the strictly metallic regime `|m| < ε_F`, the isotropic Fermi-surface `v_x²` factor is
 strictly positive when `v ≠ 0`. -/
 theorem isotropicFermiSurfaceMeanSquareVelocityX_pos
     (v m fermiEnergy : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < isotropicFermiSurfaceMeanSquareVelocityX v m fermiEnergy := by
   unfold isotropicFermiSurfaceMeanSquareVelocityX
   rw [isotropicMeanSquareRadialGroupVelocityX_eq]
   exact div_pos
-    (radialEnergyDerivative_sq_metallicFermiRadius_pos v m fermiEnergy hv hm hmF)
+    (radialEnergyDerivative_sq_metallicFermiRadius_pos v m fermiEnergy hv hmF)
     (by norm_num)
 
 end
