@@ -102,23 +102,6 @@ theorem pauliGreenDenominator_radial_im
   cases side <;>
     simp [pauliGreenDenominator, SpectralSide.sign]
 
-/-- Physical-side radial denominator norm, retained for ultraviolet consumers. -/
-theorem pauliGreenDenominator_radial_norm_eq_sqrt
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
-    ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖ =
-      Real.sqrt
-        ((probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
-          (2 * probeEnergy * broadening) ^ 2) := by
-  cases side with
-  | retarded =>
-      simpa [pauliGreenDenominator, SpectralSide.sign] using
-        pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
-          v m probeEnergy broadening p
-  | advanced =>
-      simpa [pauliGreenDenominator, SpectralSide.sign] using
-        pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
-          v m probeEnergy (-broadening) p
-
 /-- At nonzero probe energy and regulator, the radial denominator path lies in the principal-log
 slit plane. -/
 theorem pauliGreenDenominatorOfRegulator_radial_mem_slitPlane
