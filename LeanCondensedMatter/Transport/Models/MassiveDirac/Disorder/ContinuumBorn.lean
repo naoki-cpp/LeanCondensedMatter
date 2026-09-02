@@ -290,13 +290,6 @@ noncomputable def finiteCutoffContinuumBornRetardedSelfEnergy
   finiteCutoffContinuumBornSelfEnergy .retarded
     v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- Advanced finite-cutoff continuum Born self-energy. -/
-noncomputable def finiteCutoffContinuumBornAdvancedSelfEnergy
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  finiteCutoffContinuumBornSelfEnergy .advanced
-    v m probeEnergy broadening disorderStrength hbar pMax
-
 end
 
 end AnomalousHall.MassiveDirac
