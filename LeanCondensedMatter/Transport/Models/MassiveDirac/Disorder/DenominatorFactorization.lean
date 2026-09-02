@@ -28,6 +28,8 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- Common radial denominator integrand at an arbitrary signed regulator, including the polar
+Jacobian `p`. -/
 noncomputable def continuumBornRadialDenominatorIntegrandOfRegulator
     (v m probeEnergy regulator p : ℝ) : ℂ :=
   (p : ℂ) *
@@ -86,6 +88,8 @@ theorem continuumBornRadialZIntegrand_eq_mass_mul_denominatorIntegrand
     continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegrand
       v m probeEnergy (side.sign * broadening) p
 
+/-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary
+signed regulator. -/
 noncomputable def finiteCutoffContinuumBornDenominatorIntegralOfRegulator
     (v m probeEnergy regulator pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
