@@ -50,7 +50,7 @@ private theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
       · subst n
         have hremove : removeOccupation i (insertOccupation i m) = m := by
           simp [removeOccupation, insertOccupation, hm]
-        rw [hremove, fermionSign_insertOccupation_of_not_lt hm (lt_irrefl i)]
+        rw [hremove, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
         simp [basisState, Common.basisState]
       · have hinsert : insertOccupation i m ≠ n := Ne.symm hnm
         have hremove : removeOccupation i n ≠ m := by
