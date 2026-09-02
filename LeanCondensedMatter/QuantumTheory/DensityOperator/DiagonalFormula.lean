@@ -95,10 +95,12 @@ theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOpera
     (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
     HasSum (fun i => w i * diagonalExpectationValue A.1 A.2 (b i))
       (ρ.observableExpectation A) := by
-  have hcomplex := HasSum.congr_fun (ρ.hasSum_expectation_diagonal A.1 b w hρ) fun i => by
-    symm
-    rw [← coe_diagonalExpectationValue_right A.1 A.2 (b i)]
-    norm_cast
+  have hcomplex :
+      HasSum
+        (fun i => ((w i * diagonalExpectationValue A.1 A.2 (b i) : ℝ) : ℂ))
+        (ρ.expectation A.1) :=
+    HasSum.congr_fun (ρ.hasSum_expectation_diagonal A.1 b w hρ) fun i => by
+      rw [Complex.ofReal_mul, coe_diagonalExpectationValue_right]
   rw [ρ.expectation_observable A] at hcomplex
   rw [HasSum] at hcomplex ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
