@@ -8,8 +8,8 @@ set_option linter.style.header false
 Under simultaneous momentum inversion `(pₓ,pᵧ) ↦ (-pₓ,-pᵧ)`, the arbitrary-regulator quadratic
 Green denominator, scalar coefficient, and `σ_z` coefficient are even, while the `σₓ` and `σᵧ`
 coefficients are odd. Consequently the inversion-symmetrized clean propagator contains only the
-`I` and `σ_z` Pauli channels. Physical spectral sides remain thin specializations of the signed
-regulator.
+`I` and `σ_z` Pauli channels. Physical spectral sides are introduced only by downstream consumers
+that need branch semantics.
 
 No integration measure, ultraviolet cutoff, disorder normalization, Born closure, or scattering-rate
 limit is introduced here.
