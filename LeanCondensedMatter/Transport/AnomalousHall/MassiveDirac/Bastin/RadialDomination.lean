@@ -30,7 +30,7 @@ theorem two_mul_mass_le_abs_interbandEnergyGap
 
 /-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
 theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
-    (band : Band) (v m px py radius : ℝ) (hm : 0 < m)
+    (band : Band) (v m px py radius : ℝ) (_hm : 0 < m)
     (hradius : radius < 2 * m) :
     radius < |interbandEnergyGap band v m px py| := by
   exact lt_of_lt_of_le hradius
