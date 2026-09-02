@@ -68,7 +68,7 @@ private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
 
 private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
+    (hprobe : 0 < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -133,7 +133,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
       (nhds (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))) := by
   have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
   have hargCutoff := tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
-    side v m probeEnergy pMax hprobe hmetal hcutoff
+    side v m probeEnergy pMax hprobe hcutoff
   have hargZero := tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
     side v m probeEnergy hprobe hmetal
   have hdiff :
