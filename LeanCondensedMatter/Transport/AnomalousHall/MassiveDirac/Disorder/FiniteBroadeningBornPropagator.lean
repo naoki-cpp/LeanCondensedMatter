@@ -294,20 +294,23 @@ private theorem star_finiteCutoffContinuumBornDysonShiftMatrix
       side v m px py probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornDysonShiftMatrix
         side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax := by
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   have hstar := star_finiteCutoffContinuumBornDysonShiftOperator
     side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening
   rw [finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening,
       finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
         side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening] at hstar
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  apply φ.injective
-  rw [φ.map_star']
-  change star (matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
+  change star (φ.toFun (finiteCutoffContinuumBornDysonShiftMatrix
       side v m px py probeEnergy broadening disorderStrength hbar pMax)) =
-    matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
+    φ.toFun (finiteCutoffContinuumBornDysonShiftMatrix
+      side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax) at hstar
+  apply φ.injective
+  change φ.toFun (star (finiteCutoffContinuumBornDysonShiftMatrix
+      side v m px py probeEnergy broadening disorderStrength hbar pMax)) =
+    φ.toFun (finiteCutoffContinuumBornDysonShiftMatrix
       side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax)
-  exact hstar
+  exact (φ.map_star' _).trans hstar
 
 private theorem star_finiteCutoffContinuumBornDysonDenominator
     (side : SpectralSide)
