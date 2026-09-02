@@ -219,10 +219,11 @@ theorem star_pauliGreenOperator_retarded_eq_advanced
       resolvent_spectralParameter_eq_pauliGreenOperator .advanced
         v m px py probeEnergy broadening hbroadening
   rw [← hret, ← hadv]
-  exact star_retardedResolvent
-    (hamiltonianOperator v m px py)
-    (hamiltonianOperator_isSelfAdjoint v m px py)
-    probeEnergy broadening
+  simpa only [spectralResolvent_retarded, SpectralSide.opposite, spectralResolvent_advanced] using
+    star_spectralResolvent .retarded
+      (hamiltonianOperator v m px py)
+      (hamiltonianOperator_isSelfAdjoint v m px py)
+      probeEnergy broadening
 
 end
 

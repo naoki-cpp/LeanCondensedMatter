@@ -277,16 +277,6 @@ theorem star_spectralResolvent
     star_resolvent_spectralParameterOfRegulator
       hamiltonian hself energy (side.sign * broadening)
 
-/-- The advanced resolvent is the adjoint of the retarded resolvent. -/
-theorem star_retardedResolvent
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) :
-    star (retardedResolvent hamiltonian energy broadening) =
-      advancedResolvent hamiltonian energy broadening := by
-  unfold retardedResolvent advancedResolvent
-  simpa [retardedSpectralParameter, advancedSpectralParameter] using
-    star_resolvent_spectralParameterOfRegulator hamiltonian hself energy broadening
-
 end
 end Transport
 end QuantumTheory
