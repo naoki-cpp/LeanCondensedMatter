@@ -28,11 +28,11 @@ algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 ```text
 Transport/
 ├── Core/          physical volume, continuum measure, normalization, conductivity tensor
-├── Resolvent/     spectral sides, Green operators, self-energy algebra
+├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Analysis/      transport-specific occupation analysis
 ├── KuboBastin/    Lehmann-to-resolvent and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
-└── Disorder/      exact finite disorder, Born, SCBA, ladder algebra
+└── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
 ```
 
 The main semantic boundaries are:
@@ -50,10 +50,15 @@ normalization has genuine reuse beyond one concrete derivation.
 
 ## Resolvent and response boundary
 
-`Resolvent.Basic` owns `SpectralSide`, the `E ± iη` convention, and physical Green-operator names.
+`Resolvent.Basic` owns the signed spectral parameter `z(E, γ) = E + iγ`, `SpectralSide`, and the
+physical `E ± iη` specializations. Analytic resolvent theorems are stated at arbitrary `γ` whenever
+the argument does not intrinsically depend on retarded/advanced branch semantics. Physical
+consumers specialize with `γ = side.sign * η` or directly with `±η`.
+
 Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
-`Resolvent.SelfEnergy` owns the two-sided Dyson relation `IsSelfEnergy G₀ G Σ` and its
-inverse-difference characterization when compatible inverses are available.
+`Resolvent.SelfEnergy` owns the representation-independent two-sided Dyson relation
+`IsSelfEnergy G₀ G Σ` and its inverse-difference characterization when compatible inverses are
+available.
 
 `KuboBastin` owns the finite/pure-point spectral response bridge. `Streda` owns the static
 surface/sea operator and traced response representation. `Core.ConductivityTensor` is independent of
@@ -70,24 +75,37 @@ Finite ──→ Resolvent ──→ AveragedSelfEnergy
 ```
 
 `Disorder.Finite` owns the normalized finite ensemble. `Disorder.Resolvent` owns exact clean,
-configuration, and averaged Green operators. `Disorder.Moments` owns the exact second-moment action
-`C₂(X) = E[Vω X Vω]` and centered-disorder data.
+configuration, and averaged Green operators. Their analytic core is parameterized by arbitrary
+signed regulator `γ`; `freeGreen side`, `configurationGreen side`, and `averagedGreen side` are
+physical specializations with `γ = side.sign * η`. Exact configuration Dyson expansions are owned
+at arbitrary nonzero `γ`.
 
-`Disorder.AveragedSelfEnergy` is exact: at nonzero broadening it proves invertibility of the averaged
-Green operator on an arbitrary complete complex Hilbert space and defines the canonical
-`Σ_exact = G₀⁻¹ - Ḡ⁻¹` satisfying `IsSelfEnergy`.
+`Disorder.Moments` owns the exact second-moment action `C₂(X) = E[Vω X Vω]` and centered-disorder
+data.
 
-`Disorder.Born` owns the side-indexed conventional first-Born self-energy, defined by applying the
-exact second-moment action to the corresponding clean Green operator.
+`Disorder.AveragedSelfEnergy` is exact: at arbitrary nonzero `γ` it proves invertibility of the exact
+averaged Green operator on an arbitrary complete complex Hilbert space and defines
+`exactSelfEnergyOfRegulator = G₀⁻¹ - Ḡ⁻¹`, satisfying `IsSelfEnergy`. `exactSelfEnergy side` is the
+physical-side specialization.
+
+`Disorder.Born` owns `bornSelfEnergyOfRegulator`, the conventional first-Born self-energy obtained by
+applying the exact second-moment action to the clean Green operator at arbitrary `γ`.
+`bornSelfEnergy side` is the physical specialization.
 
 `Disorder.SCBA` records supplied self-consistent approximation data and derives its side-indexed
-consequences. It is not identified with the exact disorder average. `Disorder.Ladder` owns reusable
-retarded-advanced ladder algebra for supplied Green operators and does not assume convergence or a
-Ward identity.
+consequences. Here retarded/advanced branch semantics are part of the physical approximation data,
+so SCBA remains explicitly `SpectralSide`-aware rather than being treated as an analytic regulator
+wrapper. `Disorder.Ladder` similarly owns retarded-advanced ladder algebra for supplied Green
+operators and does not assume convergence or a Ward identity.
 
 ## Concrete models
 
 `Transport.Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
+Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
+generic disorder layer: arbitrary-regulator definitions/theorems own the analytic calculation, while
+side-indexed objects are retained only at reusable physical boundaries such as broadening limits,
+Born-Dyson dressing, and RA vertex calculations.
+
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in the model subtree.
 
