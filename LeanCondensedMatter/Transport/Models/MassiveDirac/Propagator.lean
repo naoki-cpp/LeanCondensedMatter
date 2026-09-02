@@ -174,13 +174,17 @@ theorem resolvent_spectralParameter_eq_pauliGreenOperator
     resolvent (hamiltonianOperator v m px py)
         (spectralParameter side probeEnergy broadening) =
       pauliGreenOperator side v m px py probeEnergy broadening := by
-  apply resolvent_eq_of_spectralShift_mul_eq_one
-    side (hamiltonianOperator v m px py)
+  simpa only [spectralParameter] using
+    resolvent_eq_of_spectralShift_mul_eq_one
+      (hamiltonianOperator v m px py)
       (pauliGreenOperator side v m px py probeEnergy broadening)
       (hamiltonianOperator_isSelfAdjoint v m px py)
-      probeEnergy broadening hbroadening
-  exact spectralShift_mul_pauliGreenOperator
-    side v m px py probeEnergy broadening hbroadening
+      probeEnergy (side.sign * broadening)
+      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      (by
+        simpa only [spectralParameter] using
+          spectralShift_mul_pauliGreenOperator
+            side v m px py probeEnergy broadening hbroadening)
 
 /-- Adjointing the explicit Pauli Green operator exchanges the spectral side. -/
 theorem star_pauliGreenOperator
