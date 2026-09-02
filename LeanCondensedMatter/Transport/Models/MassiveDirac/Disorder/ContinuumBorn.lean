@@ -245,7 +245,10 @@ private theorem star_finiteCutoffContinuumBornGreenIntegralOfRegulator
 def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
   2 * Real.pi * momentumMeasurePrefactor hbar
 
-/-- Finite-cutoff continuum scalar-disorder Born self-energy at an arbitrary signed regulator. -/
+/-- Finite-cutoff continuum scalar-disorder Born self-energy at an arbitrary signed regulator.
+
+`disorderStrength` is a continuum coupling parameter. It is intentionally not identified with the
+finite-ensemble `secondMomentStrength` from `ScalarCovariance.lean`. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergyOfRegulator
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
