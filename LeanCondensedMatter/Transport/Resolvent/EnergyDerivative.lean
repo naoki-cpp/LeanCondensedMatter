@@ -13,9 +13,9 @@ dG(z) / dz = -G(z)^2
 ```
 
 is owned by `Analysis.Operator.Spectral.Resolvent`. The Středa energy integral instead
-differentiates the real-energy paths `E ↦ Gˢ(E, η)` at fixed nonzero broadening. This module
-specializes the generic resolvent derivative at the side-indexed spectral parameter, composes it
-with the real-energy path, and retains the conventional retarded/advanced names as specializations.
+differentiates real-energy paths at fixed imaginary regulator. This module first records that the
+signed-regulator spectral parameter `E ↦ E + iγ` has derivative one, then specializes to the
+physical side-indexed paths `E ↦ Gˢ(E, η)` and retains the conventional retarded/advanced names.
 
 The result remains dimension-independent and contains no trace, conductivity, zero-broadening,
 or thermodynamic-limit statement.
@@ -27,14 +27,21 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- Along the real-energy axis, a spectral parameter with fixed signed regulator has derivative one. -/
+theorem hasDerivAt_spectralParameterOfRegulator_energy
+    (energy regulator : ℝ) :
+    HasDerivAt (fun x : ℝ => spectralParameterOfRegulator x regulator)
+      (1 : ℂ) energy := by
+  simpa [spectralParameterOfRegulator] using
+    (Complex.ofRealCLM.hasDerivAt.add_const ((regulator : ℂ) * Complex.I))
+
 /-- Along the real-energy axis, the side-indexed spectral parameter has derivative one. -/
 theorem hasDerivAt_spectralParameter_energy
     (side : SpectralSide) (energy broadening : ℝ) :
     HasDerivAt (fun x : ℝ => spectralParameter side x broadening)
       (1 : ℂ) energy := by
   simpa [spectralParameter] using
-    (Complex.ofRealCLM.hasDerivAt.add_const
-      (((side.sign * broadening : ℝ) : ℂ) * Complex.I))
+    hasDerivAt_spectralParameterOfRegulator_energy energy (side.sign * broadening)
 
 /-- A spectral resolvent differentiated along the real-energy axis is `-Gˢ²`. -/
 theorem hasDerivAt_spectralResolvent_energy
