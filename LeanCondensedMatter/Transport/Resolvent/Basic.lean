@@ -52,6 +52,19 @@ def sign : SpectralSide → ℝ
 theorem sign_ne_zero (side : SpectralSide) : side.sign ≠ 0 := by
   cases side <;> simp [sign]
 
+/-- The opposite physical boundary-value side. -/
+def opposite : SpectralSide → SpectralSide
+  | .retarded => .advanced
+  | .advanced => .retarded
+
+@[simp]
+theorem opposite_opposite (side : SpectralSide) : side.opposite.opposite = side := by
+  cases side <;> rfl
+
+@[simp]
+theorem sign_opposite (side : SpectralSide) : side.opposite.sign = -side.sign := by
+  cases side <;> simp [opposite, sign]
+
 end SpectralSide
 
 /-- Spectral parameter `E + iγ` with an arbitrary signed imaginary regulator `γ`. -/
@@ -253,6 +266,16 @@ theorem spectralResolvent_mul_spectralShift
     resolvent_spectralParameterOfRegulator_mul_spectralShift
       hamiltonian hself energy (side.sign * broadening)
       (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+
+/-- Adjointing a physical spectral resolvent exchanges it with the opposite spectral side. -/
+theorem star_spectralResolvent
+    (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) :
+    star (spectralResolvent side hamiltonian energy broadening) =
+      spectralResolvent side.opposite hamiltonian energy broadening := by
+  simpa [spectralResolvent, spectralParameter] using
+    star_resolvent_spectralParameterOfRegulator
+      hamiltonian hself energy (side.sign * broadening)
 
 /-- The advanced resolvent is the adjoint of the retarded resolvent. -/
 theorem star_retardedResolvent
