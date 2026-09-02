@@ -203,7 +203,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoeff
 factor already derived microscopically between the Born transport and single-particle lifetimes. -/
 theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor_mul_singleParticleLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandTransportLifetime
         v m fermiEnergy disorderStrength hbar =
