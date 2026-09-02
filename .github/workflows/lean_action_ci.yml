@@ -16,6 +16,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  source-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      # These architecture checks inspect repository source and do not require a Lean build.
+      - name: Check source architecture
+        run: python3 scripts/check_architecture.py
+
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -24,9 +37,6 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
-
-      - name: Check architecture
-        run: python3 scripts/check_architecture.py
 
       # Mathlib's own binary cache restores dependency build products. Keep only this project's
       # build output in GitHub Cache instead of duplicating the full multi-gigabyte `.lake` tree.
@@ -57,23 +67,48 @@ jobs:
           path: .lake/build
           key: ${{ steps.project-cache.outputs.cache-primary-key }}
 
-      # These checks all consume the successful compiled environment but are diagnostically
-      # independent. `always()` prevents one failure from hiding the remaining results.
-      - name: Check compiled architecture
+      # These checks all consume the same successful compiled environment. Run them concurrently
+      # on this runner so they share the restored toolchain/packages/build tree without duplicating
+      # setup in separate jobs. Collect every result before failing so one check cannot hide another.
+      - name: Run compiled checks in parallel
         if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckArchitecture.lean
+        shell: bash
+        run: |
+          set -uo pipefail
 
-      - name: Check compiled declarations for sorryAx
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckNoSorry.lean
+          lake env lean scripts/CheckArchitecture.lean > compiled-architecture.log 2>&1 &
+          compiled_architecture_pid=$!
+          lake env lean scripts/CheckNoSorry.lean > no-sorry.log 2>&1 &
+          no_sorry_pid=$!
+          lake env lean scripts/CheckDuplicates.lean > duplicates.log 2>&1 &
+          duplicates_pid=$!
+          lake lint > lint.log 2>&1 &
+          lint_pid=$!
 
-      - name: Check duplicate declarations
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckDuplicates.lean
+          status=0
 
-      - name: Lint public library
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake lint
+          report_check() {
+            local label="$1"
+            local pid="$2"
+            local log="$3"
+            local rc=0
+
+            wait "$pid" || rc=$?
+            echo "::group::$label (exit $rc)"
+            cat "$log"
+            echo "::endgroup::"
+
+            if [ "$rc" -ne 0 ]; then
+              status=1
+            fi
+          }
+
+          report_check "compiled architecture" "$compiled_architecture_pid" compiled-architecture.log
+          report_check "no-sorry" "$no_sorry_pid" no-sorry.log
+          report_check "duplicate declarations" "$duplicates_pid" duplicates.log
+          report_check "lint" "$lint_pid" lint.log
+
+          exit "$status"
 
       - name: Report Lean cache footprint
         if: always()
@@ -90,7 +125,7 @@ jobs:
   # catalog generation and doc-gen4 consume the compiled Lean environment, so keep them on one
   # runner rather than starting independent workflows for the same commit.
   docs:
-    needs: build
+    needs: [source-checks, build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
