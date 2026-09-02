@@ -5,7 +5,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorEva
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorUV
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorBroadeningLimit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ChannelBroadeningLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.UpperBandDamping
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
