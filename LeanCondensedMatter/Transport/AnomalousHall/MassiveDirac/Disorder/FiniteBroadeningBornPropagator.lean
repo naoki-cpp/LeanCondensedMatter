@@ -231,7 +231,6 @@ theorem star_finiteCutoffContinuumBornDysonShiftOperator_retarded
       finiteCutoffContinuumBornDysonShiftOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonShiftOperator
-  rw [spectralParameter_retarded, spectralParameter_advanced]
   rw [star_sub, star_sub, (hamiltonianOperator_isSelfAdjoint v m px py).star_eq]
   rw [star_finiteCutoffContinuumBornSelfEnergy_retarded
     v m probeEnergy broadening disorderStrength hbar pMax hbroadening]
