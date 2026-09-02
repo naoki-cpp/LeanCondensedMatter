@@ -11,8 +11,8 @@ weak-disorder closure is imposed.
 
 For the clean Hamiltonian `H₀` and each exact configuration Hamiltonian `Hω = H₀ + Vω`, it defines
 side-indexed clean and configuration Green operators together with their exact finite disorder
-average. Clean and averaged retarded/advanced specializations remain public, and the averaged
-advanced Green operator is derived by adjunction from the averaged retarded one. The module also
+average. Clean and averaged retarded/advanced specializations remain public, while adjunction is
+stated once for an arbitrary spectral side and exchanges it with the opposite side. The module also
 proves side-indexed left- and right-oriented first- and second-order configuration-wise Dyson
 identities with the complete configuration Green operator retained in the remainder.
 
@@ -69,19 +69,17 @@ noncomputable def averagedAdvancedGreen
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.averagedGreen .advanced energy broadening
 
-/-- The exact finite disorder-averaged advanced Green operator is the adjoint of the exact averaged
-retarded Green operator. -/
-theorem star_averagedRetardedGreen
-    (energy broadening : ℝ) :
-    star (ensemble.averagedRetardedGreen energy broadening) =
-      ensemble.averagedAdvancedGreen energy broadening := by
-  unfold averagedRetardedGreen averagedAdvancedGreen averagedGreen
+/-- Adjointing the exact finite disorder-averaged Green operator exchanges the spectral side. -/
+theorem star_averagedGreen
+    (side : SpectralSide) (energy broadening : ℝ) :
+    star (ensemble.averagedGreen side energy broadening) =
+      ensemble.averagedGreen side.opposite energy broadening := by
+  unfold averagedGreen
   rw [← ensemble.operatorAverage_star]
   apply congrArg ensemble.operatorAverage
   funext ω
   unfold configurationGreen
-  rw [spectralResolvent_retarded, spectralResolvent_advanced]
-  exact star_retardedResolvent
+  exact star_spectralResolvent side
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy broadening
 

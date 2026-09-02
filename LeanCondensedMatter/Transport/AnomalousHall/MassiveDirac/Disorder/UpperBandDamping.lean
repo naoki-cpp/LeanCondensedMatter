@@ -42,7 +42,7 @@ noncomputable def finiteCutoffContinuumBornRetardedUpperBandFermiProjection
     (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
-      finiteCutoffContinuumBornRetardedSelfEnergy
+      finiteCutoffContinuumBornSelfEnergy .retarded
         v m fermiEnergy broadening disorderStrength hbar pMax)
 
 private theorem finiteDimensionalOperatorTrace_upperBandProjector_eq_one
@@ -87,7 +87,6 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     simpa [abs_of_pos hm] using hmF.le
   have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmAbsF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
-  unfold finiteCutoffContinuumBornRetardedSelfEnergy
   rw [finiteCutoffContinuumBornSelfEnergy_eq .retarded
     v m fermiEnergy broadening disorderStrength hbar pMax hbroadening]
   rw [mul_add, mul_smul_comm, mul_smul_comm]

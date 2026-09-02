@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.Disorder.RetardedBorn
-import LeanCondensedMatter.Transport.Disorder.AdvancedBorn
+import LeanCondensedMatter.Transport.Disorder.Born
 
 set_option linter.style.header false
 
@@ -8,7 +7,7 @@ set_option linter.style.header false
 # Finite scalar disorder for the massive-Dirac AHE model
 
 This module starts Phase 4 of #1269 by connecting the concrete two-level massive-Dirac Hilbert
-space to the repository's canonical exact finite-disorder second moment and Born self-energies.
+space to the repository's canonical exact finite-disorder second moment and Born self-energy.
 
 The scalar assumption in this first slice is only an internal-space statement:
 
@@ -24,8 +23,8 @@ E[Vω X Vω] = E[uω²] X.
 
 The theorem is exact for the supplied finite ensemble. It does not yet encode continuum momentum
 transfer, white-noise delta covariance, a thermodynamic limit, or a weak-disorder closure. In
-particular, the Born self-energies below remain Born objects; they are not identified with exact
-disorder-averaged Green operators.
+particular, the Born self-energy below remains a Born object; it is not identified with an exact
+disorder-averaged Green operator.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -91,29 +90,18 @@ theorem exactSecondMoment_eq_strength_smul
     _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
       rw [← Finset.sum_smul]
 
-/-- Massive-Dirac scalar-disorder retarded Born self-energy. This is the exact finite second moment
-applied to the clean retarded propagator, not an exact disorder-averaged self-energy. -/
-theorem bornRetardedSelfEnergy_eq_strength_smul
-    (energy broadening : ℝ) :
-    model.ensemble.bornRetardedSelfEnergy energy broadening =
+/-- Massive-Dirac scalar-disorder first-Born self-energy on either spectral side. This is the exact
+finite second moment applied to the corresponding clean propagator, not an exact disorder-averaged
+self-energy. -/
+theorem bornSelfEnergy_eq_strength_smul
+    (side : SpectralSide) (energy broadening : ℝ) :
+    model.ensemble.bornSelfEnergy side energy broadening =
       model.secondMomentStrength •
-        retardedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.bornRetardedSelfEnergy
+        spectralResolvent side (hamiltonianOperator v m px py) energy broadening := by
+  unfold FiniteDisorderEnsemble.bornSelfEnergy
   rw [model.exactSecondMoment_eq_strength_smul]
-  unfold FiniteDisorderEnsemble.freeRetardedGreen FiniteDisorderEnsemble.freeGreen
-  rw [spectralResolvent_retarded, model.baseHamiltonian_eq]
-
-/-- Massive-Dirac scalar-disorder advanced Born self-energy. As on the retarded side, no equality
-with the exact disorder average is claimed. -/
-theorem bornAdvancedSelfEnergy_eq_strength_smul
-    (energy broadening : ℝ) :
-    model.ensemble.bornAdvancedSelfEnergy energy broadening =
-      model.secondMomentStrength •
-        advancedResolvent (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.bornAdvancedSelfEnergy
-  rw [model.exactSecondMoment_eq_strength_smul]
-  unfold FiniteDisorderEnsemble.freeAdvancedGreen FiniteDisorderEnsemble.freeGreen
-  rw [spectralResolvent_advanced, model.baseHamiltonian_eq]
+  unfold FiniteDisorderEnsemble.freeGreen
+  rw [model.baseHamiltonian_eq]
 
 end FiniteScalarDisorderModel
 

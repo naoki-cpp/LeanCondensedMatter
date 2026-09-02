@@ -45,13 +45,13 @@ theorem tendsto_projectorResolventCoefficient_zero
   have hden :
       spectralParameter side probeEnergy 0 -
           ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-    simpa [spectralParameter] using
+    simpa [spectralParameter, spectralParameterOfRegulator] using
       complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
   have hcontinuous : ContinuousAt
       (fun broadening : ℝ =>
         spectralParameter side probeEnergy broadening -
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
-    unfold spectralParameter
+    unfold spectralParameter spectralParameterOfRegulator
     fun_prop
   have hinv : Tendsto
       (fun broadening : ℝ =>
@@ -61,7 +61,7 @@ theorem tendsto_projectorResolventCoefficient_zero
       (nhds ((spectralParameter side probeEnergy 0 -
         ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹)) :=
     (hcontinuous.inv₀ hden).tendsto
-  simpa [projectorResolventCoefficient, spectralParameter] using hinv
+  simpa [projectorResolventCoefficient, spectralParameter, spectralParameterOfRegulator] using hinv
 
 /-- At a probe energy away from the selected band, the retarded scalar projector-resolvent
 coefficient tends to the ordinary real-energy resolvent coefficient as `η → 0`. -/

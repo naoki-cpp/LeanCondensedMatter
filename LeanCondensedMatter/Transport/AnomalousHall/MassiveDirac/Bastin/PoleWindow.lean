@@ -39,7 +39,8 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
         (oppositeBand band) v m px py =
       ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
           ((side.sign * broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-  unfold projectorResolventCoefficient spectralParameter interbandEnergyGap
+  unfold projectorResolventCoefficient spectralParameter spectralParameterOfRegulator
+    interbandEnergyGap
   congr 1
   push_cast
   ring

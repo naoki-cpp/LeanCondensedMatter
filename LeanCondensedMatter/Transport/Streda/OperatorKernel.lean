@@ -92,11 +92,19 @@ private theorem hasDerivAt_retardedAdvancedResolventDifference
     (-(retardedResolvent hamiltonian energy broadening) ^ 2 -
       (-(advancedResolvent hamiltonian energy broadening) ^ 2))
     energy
-  exact
-    (hasDerivAt_retardedResolvent_energy
-      hamiltonian hself energy broadening hbroadening).sub
-      (hasDerivAt_advancedResolvent_energy
-        hamiltonian hself energy broadening hbroadening)
+  have hretarded :
+      HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
+        (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy broadening (ne_of_gt hbroadening)
+  have hadvanced :
+      HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
+        (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
+  exact hretarded.sub hadvanced
 
 /-- Product differentiation of the standard Smrčka–Středa surface factor. -/
 private theorem hasDerivAt_smrckaStredaSurfaceFactor
@@ -109,10 +117,18 @@ private theorem hasDerivAt_smrckaStredaSurfaceFactor
       (smrckaStredaSurfaceFactorDerivative
         hamiltonian current₁ current₂ energy broadening)
       energy := by
-  have hretarded := hasDerivAt_retardedResolvent_energy
-    hamiltonian hself energy broadening hbroadening
-  have hadvanced := hasDerivAt_advancedResolvent_energy
-    hamiltonian hself energy broadening hbroadening
+  have hretarded :
+      HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
+        (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy broadening (ne_of_gt hbroadening)
+  have hadvanced :
+      HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
+        (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself energy (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
   have hleftRetarded := (hretarded.const_mul current₁).mul_const current₂
   have hleftAdvanced := (hadvanced.const_mul current₂).mul_const current₁
   have hleft := hleftRetarded.sub hleftAdvanced
@@ -162,11 +178,20 @@ private theorem continuous_retardedAdvancedResolventDifference_energy
     Continuous (fun energy : ℝ =>
       retardedAdvancedResolventDifference hamiltonian energy broadening) := by
   unfold retardedAdvancedResolventDifference
-  exact
-    (continuous_retardedResolvent_energy
-      hamiltonian hself broadening hbroadening).sub
-      (continuous_advancedResolvent_energy
-        hamiltonian hself broadening hbroadening)
+  change Continuous
+    ((fun energy : ℝ => retardedResolvent hamiltonian energy broadening) -
+      fun energy : ℝ => advancedResolvent hamiltonian energy broadening)
+  have hretarded : Continuous (fun energy : ℝ =>
+      retardedResolvent hamiltonian energy broadening) := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself broadening (ne_of_gt hbroadening)
+  have hadvanced : Continuous (fun energy : ℝ =>
+      advancedResolvent hamiltonian energy broadening) := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
+  exact hretarded.sub hadvanced
 
 private theorem continuous_retardedAdvancedResolventDifferenceDerivative_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
@@ -174,11 +199,17 @@ private theorem continuous_retardedAdvancedResolventDifferenceDerivative_energy
     Continuous (fun energy : ℝ =>
       retardedAdvancedResolventDifferenceDerivative hamiltonian energy broadening) := by
   unfold retardedAdvancedResolventDifferenceDerivative
-  exact
-    ((continuous_retardedResolvent_energy
-      hamiltonian hself broadening hbroadening).pow 2).neg.sub
-      (((continuous_advancedResolvent_energy
-        hamiltonian hself broadening hbroadening).pow 2).neg)
+  have hretarded : Continuous (fun energy : ℝ =>
+      retardedResolvent hamiltonian energy broadening) := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself broadening (ne_of_gt hbroadening)
+  have hadvanced : Continuous (fun energy : ℝ =>
+      advancedResolvent hamiltonian energy broadening) := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
+  exact (hretarded.pow 2).neg.sub ((hadvanced.pow 2).neg)
 
 private theorem continuous_smrckaStredaSurfaceFactorDerivative_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
@@ -187,10 +218,16 @@ private theorem continuous_smrckaStredaSurfaceFactorDerivative_energy
     Continuous (fun energy : ℝ =>
       smrckaStredaSurfaceFactorDerivative
         hamiltonian current₁ current₂ energy broadening) := by
-  have hretarded :=
-    continuous_retardedResolvent_energy hamiltonian hself broadening hbroadening
-  have hadvanced :=
-    continuous_advancedResolvent_energy hamiltonian hself broadening hbroadening
+  have hretarded : Continuous (fun energy : ℝ =>
+      retardedResolvent hamiltonian energy broadening) := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself broadening (ne_of_gt hbroadening)
+  have hadvanced : Continuous (fun energy : ℝ =>
+      advancedResolvent hamiltonian energy broadening) := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
   have hdifference :=
     continuous_retardedAdvancedResolventDifference_energy
       hamiltonian hself broadening hbroadening
@@ -256,10 +293,16 @@ theorem continuous_regularizedBastinOperatorIntegrand_energy
     Continuous (fun energy : ℝ =>
       regularizedBastinOperatorIntegrand
         hamiltonian current₁ current₂ energy broadening) := by
-  have hretarded :=
-    continuous_retardedResolvent_energy hamiltonian hself broadening hbroadening
-  have hadvanced :=
-    continuous_advancedResolvent_energy hamiltonian hself broadening hbroadening
+  have hretarded : Continuous (fun energy : ℝ =>
+      retardedResolvent hamiltonian energy broadening) := by
+    simpa [retardedResolvent, retardedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself broadening (ne_of_gt hbroadening)
+  have hadvanced : Continuous (fun energy : ℝ =>
+      advancedResolvent hamiltonian energy broadening) := by
+    simpa [advancedResolvent, advancedSpectralParameter] using
+      continuous_resolvent_spectralParameterOfRegulator_energy
+        hamiltonian hself (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening))
   have hdifference :=
     continuous_retardedAdvancedResolventDifference_energy
       hamiltonian hself broadening hbroadening

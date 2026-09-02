@@ -104,7 +104,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
         ContinuousAt
           (fun broadening : ℝ =>
             ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖) 0 := by
-      unfold pauliGreenDenominator energySq spectralParameter
+      unfold pauliGreenDenominator energySq spectralParameter spectralParameterOfRegulator
       fun_prop
     exact hcontinuous.tendsto.mono_left inf_le_left
   have hzeroNormNe :

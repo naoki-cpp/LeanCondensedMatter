@@ -4,7 +4,7 @@ import Mathlib.Analysis.Complex.RealDeriv
 set_option linter.style.header false
 
 /-!
-# Real-energy derivatives of retarded and advanced resolvents
+# Real-energy derivatives of signed-regulator resolvents
 
 The representation-independent holomorphic identity
 
@@ -13,9 +13,10 @@ dG(z) / dz = -G(z)^2
 ```
 
 is owned by `Analysis.Operator.Spectral.Resolvent`. The Středa energy integral instead
-differentiates the real-energy paths `E ↦ Gˢ(E, η)` at fixed nonzero broadening. This module
-specializes the generic resolvent derivative at the side-indexed spectral parameter, composes it
-with the real-energy path, and retains the conventional retarded/advanced names as specializations.
+differentiates real-energy paths at fixed imaginary regulator. This module records that the
+signed-regulator spectral parameter `E ↦ E + iγ` has derivative one and proves the corresponding
+resolvent derivative and continuity directly for arbitrary nonzero `γ`. Physical retarded and
+advanced consumers specialize `γ` at their use sites.
 
 The result remains dimension-independent and contains no trace, conductivity, zero-broadening,
 or thermodynamic-limit statement.
@@ -27,93 +28,53 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Along the real-energy axis, the side-indexed spectral parameter has derivative one. -/
-theorem hasDerivAt_spectralParameter_energy
-    (side : SpectralSide) (energy broadening : ℝ) :
-    HasDerivAt (fun x : ℝ => spectralParameter side x broadening)
+/-- Along the real-energy axis, a spectral parameter with fixed signed regulator has derivative one. -/
+theorem hasDerivAt_spectralParameterOfRegulator_energy
+    (energy regulator : ℝ) :
+    HasDerivAt (fun x : ℝ => spectralParameterOfRegulator x regulator)
       (1 : ℂ) energy := by
-  simpa [spectralParameter] using
-    (Complex.ofRealCLM.hasDerivAt.add_const
-      (((side.sign * broadening : ℝ) : ℂ) * Complex.I))
+  simpa [spectralParameterOfRegulator] using
+    (Complex.ofRealCLM.hasDerivAt.add_const ((regulator : ℂ) * Complex.I))
 
-/-- A spectral resolvent differentiated along the real-energy axis is `-Gˢ²`. -/
-theorem hasDerivAt_spectralResolvent_energy
-    (side : SpectralSide)
+/-- A resolvent at fixed nonzero signed regulator differentiates to minus its square along the real
+energy axis. -/
+theorem hasDerivAt_resolvent_spectralParameterOfRegulator_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
     HasDerivAt
-      (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
-      (-(spectralResolvent side hamiltonian energy broadening) ^ 2)
+      (fun x : ℝ => resolvent hamiltonian (spectralParameterOfRegulator x regulator))
+      (-(resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) ^ 2)
       energy := by
   have hresolvent :
       HasDerivAt (resolvent hamiltonian)
-        (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
-        (spectralParameter side energy broadening) := by
+        (-(resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) ^ 2)
+        (spectralParameterOfRegulator energy regulator) := by
     exact spectrum.hasDerivAt_resolvent_const_left
       (spectrum.notMem_iff.mp
         (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-          hamiltonian hself (spectralParameter side energy broadening)
+          hamiltonian hself (spectralParameterOfRegulator energy regulator)
           (by
-            rw [spectralParameter_im]
-            exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)))
-  have hcomp := hresolvent.scomp
-    energy (hasDerivAt_spectralParameter_energy side energy broadening)
+            rw [spectralParameterOfRegulator_im]
+            exact hregulator)))
+  have hcomp := hresolvent.scomp energy
+    (hasDerivAt_spectralParameterOfRegulator_energy energy regulator)
   change HasDerivAt
-    (resolvent hamiltonian ∘ fun x : ℝ => spectralParameter side x broadening)
-    (-(resolvent hamiltonian (spectralParameter side energy broadening)) ^ 2)
+    (resolvent hamiltonian ∘ fun x : ℝ => spectralParameterOfRegulator x regulator)
+    (-(resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) ^ 2)
     energy
   simpa only [one_smul] using hcomp
 
-/-- The retarded resolvent differentiated along the real-energy axis is `-(Gᴿ)^2`. -/
-theorem hasDerivAt_retardedResolvent_energy
+/-- At fixed nonzero signed regulator, the resolvent is continuous along the real-energy axis. -/
+theorem continuous_resolvent_spectralParameterOfRegulator_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
-      (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [spectralResolvent_retarded] using
-    hasDerivAt_spectralResolvent_energy
-      .retarded hamiltonian hself energy broadening (ne_of_gt hbroadening)
-
-/-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
-theorem hasDerivAt_advancedResolvent_energy
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
-      (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [spectralResolvent_advanced] using
-    hasDerivAt_spectralResolvent_energy
-      .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
-
-/-- At fixed nonzero broadening, either spectral-side resolvent is continuous along the real-energy
-axis. -/
-theorem continuous_spectralResolvent_energy
-    (side : SpectralSide)
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) := by
+    (regulator : ℝ) (hregulator : regulator ≠ 0) :
+    Continuous (fun energy : ℝ =>
+      resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) := by
   rw [continuous_iff_continuousAt]
   intro energy
   exact
-    (hasDerivAt_spectralResolvent_energy
-      side hamiltonian hself energy broadening hbroadening).continuousAt
-
-/-- At fixed positive broadening, the retarded resolvent is continuous along the real-energy axis. -/
-theorem continuous_retardedResolvent_energy
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (broadening : ℝ) (hbroadening : 0 < broadening) :
-    Continuous (fun energy : ℝ => retardedResolvent hamiltonian energy broadening) := by
-  simpa only [spectralResolvent_retarded] using
-    continuous_spectralResolvent_energy .retarded hamiltonian hself broadening
-      (ne_of_gt hbroadening)
-
-/-- At fixed positive broadening, the advanced resolvent is continuous along the real-energy axis. -/
-theorem continuous_advancedResolvent_energy
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (broadening : ℝ) (hbroadening : 0 < broadening) :
-    Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
-  simpa only [spectralResolvent_advanced] using
-    continuous_spectralResolvent_energy .advanced hamiltonian hself broadening
-      (ne_of_gt hbroadening)
+    (hasDerivAt_resolvent_spectralParameterOfRegulator_energy
+      hamiltonian hself energy regulator hregulator).continuousAt
 
 end
 

@@ -298,24 +298,8 @@ private theorem star_averagedGreen_injective
     (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     Function.Injective
       ((star (ensemble.averagedGreen side energy broadening) : H →L[ℂ] H)) := by
-  cases side with
-  | retarded =>
-      change Function.Injective
-        ((star (ensemble.averagedRetardedGreen energy broadening) : H →L[ℂ] H))
-      rw [ensemble.star_averagedRetardedGreen]
-      change Function.Injective (ensemble.averagedGreen .advanced energy broadening)
-      exact ensemble.averagedGreen_injective .advanced energy broadening hbroadening
-  | advanced =>
-      change Function.Injective
-        ((star (ensemble.averagedAdvancedGreen energy broadening) : H →L[ℂ] H))
-      have hstar :
-          (star (ensemble.averagedAdvancedGreen energy broadening) : H →L[ℂ] H) =
-            ensemble.averagedRetardedGreen energy broadening := by
-        rw [← ensemble.star_averagedRetardedGreen energy broadening]
-        simp
-      rw [hstar]
-      change Function.Injective (ensemble.averagedGreen .retarded energy broadening)
-      exact ensemble.averagedGreen_injective .retarded energy broadening hbroadening
+  rw [ensemble.star_averagedGreen]
+  exact ensemble.averagedGreen_injective side.opposite energy broadening hbroadening
 
 /-- At nonzero broadening the exact averaged Green operator has dense range in any Hilbert-space
 dimension. -/
