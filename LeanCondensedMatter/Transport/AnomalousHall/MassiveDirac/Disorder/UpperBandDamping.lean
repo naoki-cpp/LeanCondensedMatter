@@ -72,7 +72,7 @@ private theorem finiteDimensionalOperatorTrace_upperBandProjector_mul_sigmaZ
 reduces to the scalar Pauli coefficient plus `m / ε_F` times the `σ_z` coefficient. -/
 theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy) (hfermiEnergy : fermiEnergy ≠ 0)
+    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy)
     (hbroadening : broadening ≠ 0) :
     finiteCutoffContinuumBornRetardedUpperBandFermiProjection
         v m fermiEnergy broadening disorderStrength hbar pMax =
@@ -97,7 +97,7 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
 
 private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
     (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy) (hfermiEnergy : fermiEnergy ≠ 0)
+    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy)
     (hbroadening : broadening ≠ 0) :
     (finiteCutoffContinuumBornRetardedUpperBandFermiProjection
         v m fermiEnergy broadening disorderStrength hbar pMax).im =
@@ -110,7 +110,7 @@ private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
               .retarded v m fermiEnergy broadening pMax).im) := by
   rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     v m fermiEnergy broadening disorderStrength hbar pMax
-    hvelocity hmF hfermiEnergy hbroadening]
+    hvelocity hmF hbroadening]
   simp
 
 /-- Physical-momentum-measure Born damping energy of the metallic upper band. -/
@@ -182,7 +182,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
     simpa [Complex.im_ofReal_mul] using
       (finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
         v m fermiEnergy broadening disorderStrength hbar pMax
-        hvelocity hmF.le hfermiNe (ne_of_gt hbroadening)).symm
+        hvelocity hmF.le (ne_of_gt hbroadening)).symm
   have htarget :
       (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
