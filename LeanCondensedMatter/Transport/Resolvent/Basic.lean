@@ -59,7 +59,7 @@ theorem opposite_opposite (side : SpectralSide) : side.opposite.opposite = side 
 
 @[simp]
 theorem sign_opposite (side : SpectralSide) : side.opposite.sign = -side.sign := by
-  cases side <;> rfl
+  cases side <;> simp [opposite, sign]
 
 theorem sign_ne_zero (side : SpectralSide) : side.sign ≠ 0 := by
   cases side <;> simp [sign]
