@@ -78,7 +78,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
 bound on the radial axis. -/
 theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
     (band : Band) (e v m p fermiEnergy offset radius broadening : ℝ)
-    (hm : 0 < m) (hradius : radius < 2 * m) (hoffset : |offset| ≤ radius)
+    (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius)
     (hbroadening : 0 ≤ broadening) :
     ‖((zeroTemperatureOccupation fermiEnergy
           (bandEnergy band v m p 0 + offset) : ℝ) : ℂ) *
@@ -112,7 +112,7 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
 bound as the unweighted one. -/
 theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_radial_le
     (band : Band) (e v m p fermiEnergy radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
         band e v m p 0 fermiEnergy radius broadening‖ ≤
@@ -148,7 +148,7 @@ theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_
 and positive broadening by the same constant as the unweighted pair. -/
 theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
     (band : Band) (e v m p fermiEnergy radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredZeroTemperatureInterbandBastinPairIntegral
         band e v m p 0 fermiEnergy radius broadening‖ ≤
