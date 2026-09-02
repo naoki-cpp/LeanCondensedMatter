@@ -83,7 +83,9 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
           (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
             finiteCutoffContinuumBornZIntegral
               .retarded v m fermiEnergy broadening pMax)) := by
-  have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hm hmF.le
+  have hmAbsF : |m| ≤ fermiEnergy := by
+    simpa [abs_of_pos hm] using hmF.le
+  have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmAbsF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
   unfold finiteCutoffContinuumBornRetardedSelfEnergy
   rw [finiteCutoffContinuumBornSelfEnergy_eq .retarded
