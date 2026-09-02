@@ -49,7 +49,6 @@ theorem pauliGreenDenominatorOfRegulator_radial_re
       probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
   rw [pauliGreenDenominatorOfRegulator_radial_eq]
   simp [spectralParameterOfRegulator, pow_two]
-  ring
 
 /-- The arbitrary-regulator radial denominator has momentum-independent imaginary part `2εγ`. -/
 @[simp]
@@ -70,6 +69,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_sq_norm
   rw [Complex.sq_norm, Complex.normSq_apply]
   rw [pauliGreenDenominatorOfRegulator_radial_re,
     pauliGreenDenominatorOfRegulator_radial_im]
+  ring
 
 /-- The arbitrary-regulator radial denominator norm is the square root of its explicit polynomial. -/
 theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
@@ -81,6 +81,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
   rw [Complex.norm_def, Complex.normSq_apply]
   rw [pauliGreenDenominatorOfRegulator_radial_re,
     pauliGreenDenominatorOfRegulator_radial_im]
+  congr 1 <;> ring
 
 /-- Physical-side radial real part, retained for broadening-limit consumers. -/
 @[simp]
@@ -89,7 +90,7 @@ theorem pauliGreenDenominator_radial_re
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).re =
       probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
   cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.sign] <;> ring
+    simp [pauliGreenDenominator, SpectralSide.sign]
 
 /-- Physical-side radial imaginary part, retained for broadening-limit consumers. -/
 @[simp]
@@ -98,7 +99,7 @@ theorem pauliGreenDenominator_radial_im
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).im =
       2 * side.sign * probeEnergy * broadening := by
   cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.sign] <;> ring
+    simp [pauliGreenDenominator, SpectralSide.sign]
 
 /-- Physical-side radial denominator norm, retained for ultraviolet consumers. -/
 theorem pauliGreenDenominator_radial_norm_eq_sqrt
@@ -107,10 +108,15 @@ theorem pauliGreenDenominator_radial_norm_eq_sqrt
       Real.sqrt
         ((probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
           (2 * probeEnergy * broadening) ^ 2) := by
-  cases side <;>
-    simpa [pauliGreenDenominator, SpectralSide.sign] using
-      pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
-        v m probeEnergy ((SpectralSide.sign side) * broadening) p
+  cases side with
+  | retarded =>
+      simpa [pauliGreenDenominator, SpectralSide.sign] using
+        pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
+          v m probeEnergy broadening p
+  | advanced =>
+      simpa [pauliGreenDenominator, SpectralSide.sign] using
+        pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
+          v m probeEnergy (-broadening) p
 
 /-- At nonzero probe energy and regulator, the radial denominator path lies in the principal-log
 slit plane. -/
