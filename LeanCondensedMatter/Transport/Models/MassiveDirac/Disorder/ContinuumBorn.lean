@@ -66,7 +66,7 @@ theorem continuumBornRadialGreenKernel_eq
   simp [continuumBornRadialScalarIntegrand, continuumBornRadialZIntegrand, smul_add, smul_smul]
 
 /-- Adjointing the radial Green kernel exchanges the spectral side. -/
-theorem star_continuumBornRadialGreenKernel
+private theorem star_continuumBornRadialGreenKernel
     (side : SpectralSide) (v m probeEnergy broadening p : ℝ)
     (hbroadening : broadening ≠ 0) :
     star (continuumBornRadialGreenKernel side v m probeEnergy broadening p) =
@@ -202,7 +202,7 @@ theorem finiteCutoffContinuumBornGreenIntegral_eq
   rfl
 
 /-- Adjointing the finite-cutoff radial Green integral exchanges the spectral side. -/
-theorem star_finiteCutoffContinuumBornGreenIntegral
+private theorem star_finiteCutoffContinuumBornGreenIntegral
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ)
     (hbroadening : broadening ≠ 0) :
     star (finiteCutoffContinuumBornGreenIntegral
