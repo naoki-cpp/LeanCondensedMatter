@@ -68,29 +68,10 @@ theorem DensityOperator.exists_diagonal_hilbertBasis (ρ : DensityOperator H) :
       refine ⟨a.1.1, ?_⟩
       rw [hb_j]
       exact apply_eigenvectorFamily hρcompact a
-    · have hspan : Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
-        rw [Submodule.span_le]
-        rintro y ⟨a, rfl⟩
-        refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
-        have hne : j a ≠ x := by
-          intro h
-          exact hx ⟨a, h⟩
-        have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
-        rw [hb_j] at horth
-        exact horth
-      have hxorth : (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
-        rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
-        intro y hy
-        have hy' := hspan hy
-        exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 hy'
-      have hxker_mem :
-          (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
-        rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
-        simpa [e] using hxorth
-      have hxker : ρ.op (b x) = 0 := by
-        have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
-        simpa using hxev
-      exact ⟨0, by simpa using hxker⟩
+    · refine ⟨0, ?_⟩
+      have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
+        hρcompact hρsym b j (fun a => by simpa [e] using hb_j a) x hx
+      simpa using hxker
   choose w hw using heigen
   exact ⟨u, b, w, hw⟩
 

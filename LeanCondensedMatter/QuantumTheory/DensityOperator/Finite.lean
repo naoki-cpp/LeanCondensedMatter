@@ -106,43 +106,23 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
         rw [apply_eigenvectorFamily hρcompact, inner_smul_left]
         simp [e]
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
-    have hspan : Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
-      rw [Submodule.span_le]
-      rintro y ⟨a, rfl⟩
-      refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
-      have hne : j a ≠ x := by
-        intro h
-        exact hx ⟨a, h⟩
-      have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
-      rw [hb_j] at horth
-      exact horth
-    have hxorth : (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
-      rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
-      intro y hy
-      have hy' := hspan hy
-      exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 hy'
-    have hxker_mem :
-        (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
-      rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
-      simpa [e] using hxorth
-    have hxker : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
-      have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
-      simpa using hxev
+    have hxker := hilbertBasis_apply_eq_zero_of_not_mem_eigenvector_range
+      hρcompact hρsym b.toHilbertBasis j (fun a => by simpa [e] using hb_j a) x hx
+    have hxker' : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
+      simpa using hxker
     change inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) = 0
     calc
       inner ℂ (b x) ((ρ.op : H →ₗ[ℂ] H) ((A : H →ₗ[ℂ] H) (b x))) =
           inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x)) ((A : H →ₗ[ℂ] H) (b x)) :=
         (hρsym (b x) ((A : H →ₗ[ℂ] H) (b x))).symm
-      _ = 0 := by rw [hxker, inner_zero_left]
+      _ = 0 := by rw [hxker', inner_zero_left]
   have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
-  have hrestricted : HasSum (g ∘ j) (∑ i, g i) :=
-    (hj.hasSum_iff hzero).mpr hfull
-  have hfunctions :
-      (g ∘ j) = fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)) := by
-    funext a
-    exact hpoint a
-  rw [hfunctions] at hrestricted
+  have hrestricted : HasSum
+      (fun a : EigenvectorIndex ρ.op =>
+        (a.1.1 : ℂ) * inner ℂ (e a) (A (e a)))
+      (∑ i, g i) := by
+    simpa only [Function.comp_apply] using
+      HasSum.congr_fun ((hj.hasSum_iff hzero).mpr hfull) fun a => (hpoint a).symm
   have hsum :
       (∑' a : EigenvectorIndex ρ.op,
         (a.1.1 : ℂ) * inner ℂ (e a) (A (e a))) = ∑ i, g i :=

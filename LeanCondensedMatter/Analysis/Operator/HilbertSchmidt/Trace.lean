@@ -19,24 +19,15 @@ theorem innerHS_one_eq_spectralTrace {A : H →L[ℂ] H} (hAcpt : IsCompactOpera
     (hAsym : A.IsSymmetric) (hAsum : HasSummableRealEigenvalues A)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     innerHS d 1 A = (spectralTrace A : ℂ) := by
-  have hone : (fun i => (inner ℂ ((1 : H →L[ℂ] H) (d i)) (A (d i)) : ℂ)) =
-      (fun i => (inner ℂ (d i) (A (d i)) : ℂ)) := by
-    funext i
-    rw [one_apply_eq_self]
   let hAself : IsSelfAdjoint A :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hAsym
   have hcast :=
     (hasSum_diagonalExpectationValue_eq_spectralTrace hAcpt hAself hAsum d).mapL
       Complex.ofRealCLM
   simp only [Complex.ofRealCLM_apply] at hcast
-  have hpoint :
-      (fun i => (diagonalExpectationValue A hAself (d i) : ℂ)) =
-        fun i => inner ℂ (d i) (A (d i)) := by
-    funext i
-    exact coe_diagonalExpectationValue_right A hAself (d i)
-  rw [hpoint] at hcast
   unfold innerHS
-  rw [hone]
-  exact hcast.tsum_eq
+  simpa only [one_apply_eq_self] using
+    (HasSum.congr_fun hcast fun i =>
+      (coe_diagonalExpectationValue_right A hAself (d i)).symm).tsum_eq
 
 end ContinuousLinearMap

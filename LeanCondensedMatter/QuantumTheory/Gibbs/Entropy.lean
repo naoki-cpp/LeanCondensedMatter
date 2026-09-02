@@ -33,18 +33,15 @@ theorem vonNeumannEntropy_gibbs_diagonal
   have hw_le_one : ∀ i, w i ≤ 1 :=
     ρ.diagonal_weight_le_one b w hρw hw_nonneg
   have hwSum := ρ.hasSum_diagonal_weights b w hρw
-  have hEnergySum := ρ.hasSum_observableExpectation_diagonal Hop b w hρw
-  have henergyTerm :
-      (fun i => w i * diagonalExpectationValue Hop.1 Hop.2 (b i)) =
-        fun i => w i * E i := by
-    funext i
-    congr 1
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
-      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
-    simp
-  rw [henergyTerm] at hEnergySum
-  change HasSum (fun i => w i * E i) (energyExpValue ρ Hop) at hEnergySum
+  have hEnergySum : HasSum (fun i => w i * E i) (energyExpValue ρ Hop) := by
+    change HasSum (fun i => w i * E i) (ρ.observableExpectation Hop)
+    exact HasSum.congr_fun (ρ.hasSum_observableExpectation_diagonal Hop b w hρw) fun i => by
+      symm
+      congr 1
+      apply Complex.ofReal_injective
+      rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
+        inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+      simp
   have hEntropySum :=
     entropyOpSpectralTraceClass_hasSum_diagonal ρ b w hρw hentropy
   have hlogw (i : ι) : Real.log (w i) = -β * E i - Real.log Z := by
@@ -57,14 +54,8 @@ theorem vonNeumannEntropy_gibbs_diagonal
   have hEntropyFormula :
       HasSum (fun i => Real.negMulLog (w i))
         (β * energyExpValue ρ Hop + Real.log Z) := by
-    have hrhs := (hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))
-    have hfun :
-        (fun i => Real.negMulLog (w i)) =
-          fun i => β * (w i * E i) + Real.log Z * w i := by
-      funext i
-      exact hterm i
-    rw [hfun]
-    simpa using hrhs
+    simpa using HasSum.congr_fun
+      ((hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))) hterm
   have htrace :
       (entropyOpSpectralTraceClass ρ hentropy).trace =
         β * energyExpValue ρ Hop + Real.log Z :=
