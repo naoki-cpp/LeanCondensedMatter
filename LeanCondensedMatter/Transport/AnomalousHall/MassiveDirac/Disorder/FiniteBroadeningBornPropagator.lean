@@ -451,10 +451,10 @@ massive-Dirac Pauli Green operator. -/
     pauliGreenOperator pauliGreenOperatorOfRegulator
     pauliGreenScalarCoefficientOfRegulator pauliGreenXCoefficientOfRegulator
     pauliGreenYCoefficientOfRegulator pauliGreenZCoefficientOfRegulator
-    pauliGreenDenominator pauliGreenDenominatorOfRegulator
+    pauliGreenDenominatorOfRegulator
   simp [finiteCutoffContinuumBornEffectiveEnergy,
     finiteCutoffContinuumBornEffectiveMass, spectralParameter,
-    matrixOperator, map_add, map_smul]
+    pauliGreenDenominator, matrixOperator, map_add, map_smul]
 
 /-- Pointwise longitudinal RA trace channel with finite external broadening retained in both
 Born-Dyson Green operators and an arbitrary supplied source/dressed vertex. -/
@@ -485,4 +485,5 @@ the disorder strength is zero. -/
 
 end
 
-end
+end MassiveDirac
+end AnomalousHall
