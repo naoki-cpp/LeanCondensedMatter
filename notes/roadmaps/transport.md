@@ -38,9 +38,10 @@ The exact averaged Green operator is invertible at nonzero broadening on an arbi
 complex Hilbert space. The resulting `exactSelfEnergy` satisfies the two-sided `IsSelfEnergy`
 relation and is not identified with Born or SCBA data.
 
-The first-Born layer is kept directly in `Disorder.RetardedBorn` and `Disorder.AdvancedBorn`: each
-self-energy is the exact second-moment action evaluated on the corresponding clean Green operator.
-There is no separate side-indexed Born routing layer or closure/truncation API.
+The first-Born layer is kept directly in `Disorder.Born`: `bornSelfEnergy side` is the exact
+second-moment action evaluated on the clean Green operator for that spectral side. Retarded and
+advanced uses specialize the side only at their consumers; no separate R/A Born routing modules or
+closure/truncation API are maintained.
 
 ## SCBA and ladder boundary
 
