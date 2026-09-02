@@ -33,10 +33,11 @@ and does not identify an SCBA Green operator with the exact disorder-averaged Gr
 L_RA(Γ) = C₂(Gᴿ Γ Gᴬ).
 ```
 
-It proves exact one-rung, finite-iterate, residual, and conditional resummation identities for
-supplied Green operators. A corrected vertex can be represented through `(I - L_RA)⁻¹` only when the
-required inverse is supplied. No geometric-series convergence or Ward identity is inferred from the
-ladder algebra alone.
+It keeps the reusable algebra at the level actually needed downstream: the supplied-Green RA kernel,
+finite fixed-point iteration, and a corrected vertex represented by `(I - L_RA)⁻¹ J` only when the
+required inverse is supplied. The corresponding fixed-point equation and uniqueness are proved under
+that hypothesis. One-rung aliases and residual-routing declarations are not separate public APIs.
+No geometric-series convergence or Ward identity is inferred from the ladder algebra alone.
 
 ## Conservation target
 
