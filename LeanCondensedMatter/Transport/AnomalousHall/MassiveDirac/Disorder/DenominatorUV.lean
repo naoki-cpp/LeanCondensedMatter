@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorEvaluation
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorEvaluation
 import Mathlib.Analysis.SpecificLimits.Basic
 
 set_option linter.style.header false
