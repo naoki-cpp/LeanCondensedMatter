@@ -61,7 +61,7 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
         (fun q : ℝ × ℝ =>
           spectralParameter side (bandEnergy band v m px py + q.1) q.2)
         p := by
-      unfold spectralParameter
+      unfold spectralParameter spectralParameterOfRegulator
       fun_prop
     have hden :
         spectralParameter side (bandEnergy band v m px py + p.1) p.2 -
@@ -70,7 +70,7 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
       have hre :
           bandEnergy band v m px py + p.1 -
             bandEnergy (oppositeBand band) v m px py = 0 := by
-        simpa [spectralParameter] using congrArg Complex.re hzero
+        simpa [spectralParameter, spectralParameterOfRegulator] using congrArg Complex.re hzero
       apply hshift
       unfold interbandEnergyGap
       linarith
