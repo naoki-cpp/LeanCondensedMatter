@@ -74,15 +74,6 @@ theorem star_continuumBornRadialGreenKernel
   unfold continuumBornRadialGreenKernel inversionSymmetrizedPauliGreenOperator
   simp [star_pauliGreenOperator, hbroadening]
 
-/-- Retarded specialization of the side-indexed radial Green adjoint relation. -/
-theorem star_continuumBornRadialGreenKernel_retarded
-    (v m probeEnergy broadening p : ℝ) (hbroadening : broadening ≠ 0) :
-    star (continuumBornRadialGreenKernel .retarded v m probeEnergy broadening p) =
-      continuumBornRadialGreenKernel .advanced v m probeEnergy broadening p := by
-  simpa [SpectralSide.opposite] using
-    star_continuumBornRadialGreenKernel .retarded
-      v m probeEnergy broadening p hbroadening
-
 private theorem continuous_pauliGreenDenominator_radial
     (side : SpectralSide) (v m probeEnergy broadening : ℝ) :
     Continuous (fun p : ℝ =>
@@ -245,17 +236,6 @@ theorem star_finiteCutoffContinuumBornGreenIntegral
       exact star_continuumBornRadialGreenKernel side
         v m probeEnergy broadening p hbroadening
 
-/-- Retarded specialization of the side-indexed radial-integral adjoint relation. -/
-theorem star_finiteCutoffContinuumBornGreenIntegral_retarded
-    (v m probeEnergy broadening pMax : ℝ) (hbroadening : broadening ≠ 0) :
-    star (finiteCutoffContinuumBornGreenIntegral
-      .retarded v m probeEnergy broadening pMax) =
-      finiteCutoffContinuumBornGreenIntegral
-        .advanced v m probeEnergy broadening pMax := by
-  simpa [SpectralSide.opposite] using
-    star_finiteCutoffContinuumBornGreenIntegral .retarded
-      v m probeEnergy broadening pMax hbroadening
-
 /-- Angular factor multiplying the existing physical-momentum measure after radial reduction:
 `2π /(2πℏ)²`. -/
 def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
@@ -303,18 +283,6 @@ theorem star_finiteCutoffContinuumBornSelfEnergy
     side v m probeEnergy broadening pMax hbroadening]
   simp
 
-/-- Retarded specialization of the side-indexed continuum Born self-energy adjoint relation. -/
-theorem star_finiteCutoffContinuumBornSelfEnergy_retarded
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    star (finiteCutoffContinuumBornSelfEnergy
-      .retarded v m probeEnergy broadening disorderStrength hbar pMax) =
-      finiteCutoffContinuumBornSelfEnergy
-        .advanced v m probeEnergy broadening disorderStrength hbar pMax := by
-  simpa [SpectralSide.opposite] using
-    star_finiteCutoffContinuumBornSelfEnergy .retarded
-      v m probeEnergy broadening disorderStrength hbar pMax hbroadening
-
 /-- Retarded finite-cutoff continuum Born self-energy. -/
 noncomputable def finiteCutoffContinuumBornRetardedSelfEnergy
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
@@ -328,19 +296,6 @@ noncomputable def finiteCutoffContinuumBornAdvancedSelfEnergy
     DiracHilbert →L[ℂ] DiracHilbert :=
   finiteCutoffContinuumBornSelfEnergy .advanced
     v m probeEnergy broadening disorderStrength hbar pMax
-
-/-- Retarded specialization for the named continuum Born self-energy definitions. -/
-theorem star_finiteCutoffContinuumBornRetardedSelfEnergy
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    star (finiteCutoffContinuumBornRetardedSelfEnergy
-      v m probeEnergy broadening disorderStrength hbar pMax) =
-      finiteCutoffContinuumBornAdvancedSelfEnergy
-        v m probeEnergy broadening disorderStrength hbar pMax := by
-  simpa [finiteCutoffContinuumBornRetardedSelfEnergy,
-    finiteCutoffContinuumBornAdvancedSelfEnergy, SpectralSide.opposite] using
-    star_finiteCutoffContinuumBornSelfEnergy .retarded
-      v m probeEnergy broadening disorderStrength hbar pMax hbroadening
 
 end
 
