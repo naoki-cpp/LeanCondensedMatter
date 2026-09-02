@@ -11,9 +11,8 @@ massive-Dirac band energy.  The Lorentzian factor is singular at that target pol
 opposite-band spectator resolvent must remain uniformly separated from its own source-band pole.
 
 This file rewrites the opposite-band spectral-side denominator in target-centered offset coordinates
-and records the elementary real-gap separation needed for later uniform estimates. Conventional
-retarded/advanced theorem names remain as specializations. No integral or limit/interchange theorem
-is proved here.
+and records the elementary real-gap separation needed for later uniform estimates. No integral or
+limit/interchange theorem is proved here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -44,33 +43,6 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
   congr 1
   push_cast
   ring
-
-/-- In target-centered offset coordinates, the retarded opposite-band spectator denominator is
-`gap + offset + i η`. -/
-theorem projectorResolventCoefficient_retarded_targetOffset_oppositeBand
-    (band : Band) (v m px py offset broadening : ℝ) :
-    projectorResolventCoefficient
-        (retardedSpectralParameter
-          (bandEnergy band v m px py + offset) broadening)
-        (oppositeBand band) v m px py =
-      ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-          (broadening : ℂ) * Complex.I))⁻¹ := by
-  simpa only [spectralParameter_retarded, SpectralSide.sign_retarded, one_mul] using
-    projectorResolventCoefficient_targetOffset_oppositeBand
-      .retarded band v m px py offset broadening
-
-/-- The advanced target-centered spectator denominator is `gap + offset - i η`. -/
-theorem projectorResolventCoefficient_advanced_targetOffset_oppositeBand
-    (band : Band) (v m px py offset broadening : ℝ) :
-    projectorResolventCoefficient
-        (advancedSpectralParameter
-          (bandEnergy band v m px py + offset) broadening)
-        (oppositeBand band) v m px py =
-      ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) -
-          (broadening : ℂ) * Complex.I))⁻¹ := by
-  simpa [spectralParameter_advanced, SpectralSide.sign_advanced, sub_eq_add_neg] using
-    projectorResolventCoefficient_targetOffset_oppositeBand
-      .advanced band v m px py offset broadening
 
 /-- If `|offset| ≤ radius`, the shifted interband denominator stays at least
 `|gap| - radius` away from zero on the real axis. -/
@@ -121,29 +93,6 @@ theorem spectralSideSpectatorDenominator_ne_zero_on_targetWindow
   intro hzero
   apply hreal
   simpa using congrArg Complex.re hzero
-
-/-- The retarded complex spectator denominator is nonzero throughout such a target-centered window,
-for every real broadening. -/
-theorem retardedSpectatorDenominator_ne_zero_on_targetWindow
-    (band : Band) (v m px py offset radius broadening : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hoffset : |offset| ≤ radius) :
-    ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-        (broadening : ℂ) * Complex.I ≠ 0 := by
-  simpa only [SpectralSide.sign_retarded, one_mul] using
-    spectralSideSpectatorDenominator_ne_zero_on_targetWindow
-      .retarded band v m px py offset radius broadening hradius hoffset
-
-/-- The advanced complex spectator denominator is likewise nonzero on the same window. -/
-theorem advancedSpectatorDenominator_ne_zero_on_targetWindow
-    (band : Band) (v m px py offset radius broadening : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hoffset : |offset| ≤ radius) :
-    ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) -
-        (broadening : ℂ) * Complex.I ≠ 0 := by
-  simpa [SpectralSide.sign_advanced, sub_eq_add_neg] using
-    spectralSideSpectatorDenominator_ne_zero_on_targetWindow
-      .advanced band v m px py offset radius broadening hradius hoffset
 
 end
 
