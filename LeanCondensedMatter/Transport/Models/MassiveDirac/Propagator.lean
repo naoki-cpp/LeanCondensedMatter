@@ -182,30 +182,37 @@ theorem resolvent_spectralParameter_eq_pauliGreenOperator
   exact spectralShift_mul_pauliGreenOperator
     side v m px py probeEnergy broadening hbroadening
 
-/-- At nonzero broadening, the explicit Pauli forms retain the canonical retarded/advanced adjoint
-relation. -/
+/-- Adjointing the explicit Pauli Green operator exchanges the spectral side. -/
+theorem star_pauliGreenOperator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    star (pauliGreenOperator side v m px py probeEnergy broadening) =
+      pauliGreenOperator side.opposite v m px py probeEnergy broadening := by
+  have hside :
+      spectralResolvent side (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator side v m px py probeEnergy broadening := by
+    simpa only [spectralResolvent] using
+      resolvent_spectralParameter_eq_pauliGreenOperator side
+        v m px py probeEnergy broadening hbroadening
+  have hopposite :
+      spectralResolvent side.opposite (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator side.opposite v m px py probeEnergy broadening := by
+    simpa only [spectralResolvent] using
+      resolvent_spectralParameter_eq_pauliGreenOperator side.opposite
+        v m px py probeEnergy broadening hbroadening
+  rw [← hside, ← hopposite]
+  exact star_spectralResolvent side
+    (hamiltonianOperator v m px py)
+    (hamiltonianOperator_isSelfAdjoint v m px py)
+    probeEnergy broadening
+
+/-- Retarded specialization of the side-indexed Pauli Green adjoint relation. -/
 theorem star_pauliGreenOperator_retarded_eq_advanced
     (v m px py probeEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     star (pauliGreenOperator .retarded v m px py probeEnergy broadening) =
       pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-  have hret :
-      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        pauliGreenOperator .retarded v m px py probeEnergy broadening := by
-    simpa only [retardedResolvent, spectralParameter_retarded] using
-      resolvent_spectralParameter_eq_pauliGreenOperator .retarded
-        v m px py probeEnergy broadening hbroadening
-  have hadv :
-      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-    simpa only [advancedResolvent, spectralParameter_advanced] using
-      resolvent_spectralParameter_eq_pauliGreenOperator .advanced
-        v m px py probeEnergy broadening hbroadening
-  rw [← hret, ← hadv]
-  simpa only [spectralResolvent_retarded, SpectralSide.opposite, spectralResolvent_advanced] using
-    star_spectralResolvent .retarded
-      (hamiltonianOperator v m px py)
-      (hamiltonianOperator_isSelfAdjoint v m px py)
-      probeEnergy broadening
+  simpa [SpectralSide.opposite] using
+    star_pauliGreenOperator .retarded v m px py probeEnergy broadening hbroadening
 
 end
 
