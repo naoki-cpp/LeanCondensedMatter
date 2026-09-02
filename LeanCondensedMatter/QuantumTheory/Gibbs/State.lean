@@ -14,8 +14,8 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 /-!
 # Gibbs density states
 
-The normalized Gibbs state `e^{-βH}/Z(β)` is constructed with explicit compactness and spectral
-summability hypotheses on the unnormalized Gibbs operator.
+For bounded Hamiltonians, compactness of the unnormalized Gibbs operator already forces finite
+dimension, so spectral summability is derived rather than supplied independently.
 -/
 
 namespace QuantumTheory
@@ -64,11 +64,22 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
   rw [gibbsOp, ← nonneg_iff_isPositive]
   exact cfc_nonneg (fun x _ => (Real.exp_pos _).le)
 
+/-- A compact Gibbs operator has summable nonzero real eigenvalues automatically. -/
+theorem gibbsOp_hasSummableRealEigenvalues_of_isCompact (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+    HasSummableRealEigenvalues (gibbsOp Hop β) := by
+  letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
+  letI : Finite (EigenvectorIndex (gibbsOp Hop β)) :=
+    (orthonormal_eigenvectorFamily hcompact
+      (gibbsOp_isPositive Hop β).isSelfAdjoint.isSymmetric).linearIndependent.finite
+  exact Summable.of_finite
+
 /-- The normalized Gibbs density operator. -/
 noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : DensityOperator H := by
+  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
+    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
   let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let r : ℝ := Z⁻¹
   have hrne : r ≠ 0 := by
