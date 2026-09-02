@@ -8,19 +8,19 @@ set_option linter.style.header false
 /-!
 # Finite-cutoff continuum Born self-energy for the massive-Dirac model
 
-This module introduces a model-specific continuum momentum-scattering Born closure for the
-massive-Dirac model. It is deliberately separate from the exact finite scalar ensemble in
-`Disorder/ScalarCovariance.lean`.
+This Phase 4 consumer introduces the first model-specific continuum momentum-scattering Born
+closure for the massive-Dirac AHE program.  It is deliberately separate from the exact finite
+scalar ensemble in `Disorder/ScalarCovariance.lean`.
 
 The clean Green operator is first paired under momentum inversion using the exact symmetry API from
-`PropagatorSymmetry.lean`. After radial reduction, the finite-cutoff Born kernel therefore has the
+`PropagatorSymmetry.lean`.  After radial reduction, the finite-cutoff Born kernel therefore has the
 form
 
 ```text
 Σ_s(ε; pMax) = Σ₀,s(ε; pMax) I + Σ_z,s(ε; pMax) σ_z.
 ```
 
-The radial integral keeps the `p dp` Jacobian explicit. The continuum prefactor uses the existing
+The radial integral keeps the `p dp` Jacobian explicit.  The continuum prefactor uses the existing
 physical-momentum measure `d²p/(2πℏ)²`, so angular reduction contributes the factor `2π`.
 
 No ultraviolet limit, zero-broadening limit, exact disorder average, SCBA closure, scattering-rate
@@ -65,9 +65,10 @@ theorem continuumBornRadialGreenKernel_eq
   rw [continuumBornRadialGreenKernel, inversionSymmetrizedPauliGreenOperator_eq_evenChannels]
   simp [continuumBornRadialScalarIntegrand, continuumBornRadialZIntegrand, smul_add, smul_smul]
 
-/-- The advanced radial Green kernel is the adjoint of the retarded radial Green kernel. -/
+/-- At nonzero broadening, the advanced radial Green kernel is the adjoint of the retarded radial
+Green kernel. -/
 theorem star_continuumBornRadialGreenKernel_retarded
-    (v m probeEnergy broadening p : ℝ) (hbroadening : 0 < broadening) :
+    (v m probeEnergy broadening p : ℝ) (hbroadening : broadening ≠ 0) :
     star (continuumBornRadialGreenKernel .retarded v m probeEnergy broadening p) =
       continuumBornRadialGreenKernel .advanced v m probeEnergy broadening p := by
   unfold continuumBornRadialGreenKernel inversionSymmetrizedPauliGreenOperator
@@ -200,9 +201,10 @@ theorem finiteCutoffContinuumBornGreenIntegral_eq
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
   rfl
 
-/-- The advanced finite-cutoff radial Green integral is the adjoint of the retarded one. -/
+/-- At nonzero broadening, the advanced finite-cutoff radial Green integral is the adjoint of the
+retarded one. -/
 theorem star_finiteCutoffContinuumBornGreenIntegral_retarded
-    (v m probeEnergy broadening pMax : ℝ) (hbroadening : 0 < broadening) :
+    (v m probeEnergy broadening pMax : ℝ) (hbroadening : broadening ≠ 0) :
     star (finiteCutoffContinuumBornGreenIntegral
       .retarded v m probeEnergy broadening pMax) =
       finiteCutoffContinuumBornGreenIntegral
@@ -216,7 +218,7 @@ theorem star_finiteCutoffContinuumBornGreenIntegral_retarded
         (continuumBornRadialGreenKernel .retarded v m probeEnergy broadening)
         volume 0 pMax :=
     (continuous_continuumBornRadialGreenKernel
-      .retarded v m probeEnergy broadening (ne_of_gt hbroadening)).intervalIntegrable 0 pMax
+      .retarded v m probeEnergy broadening hbroadening).intervalIntegrable 0 pMax
   unfold finiteCutoffContinuumBornGreenIntegral
   calc
     star (∫ p in (0 : ℝ)..pMax,
@@ -241,7 +243,7 @@ def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
 
 /-- Finite-cutoff continuum scalar-disorder Born self-energy.
 
-`disorderStrength` is a new continuum coupling parameter. It is intentionally not identified with
+`disorderStrength` is a new continuum coupling parameter.  It is intentionally not identified with
 the finite-ensemble `secondMomentStrength` from `ScalarCovariance.lean`. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergy
     (side : SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
@@ -267,10 +269,11 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq
       side v m probeEnergy broadening pMax hbroadening]
   simp [smul_add, smul_smul]
 
-/-- The advanced finite-cutoff continuum Born self-energy is the adjoint of the retarded one. -/
+/-- At nonzero broadening, the advanced finite-cutoff continuum Born self-energy is the adjoint of
+the retarded one. -/
 theorem star_finiteCutoffContinuumBornSelfEnergy_retarded
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : 0 < broadening) :
+    (hbroadening : broadening ≠ 0) :
     star (finiteCutoffContinuumBornSelfEnergy
       .retarded v m probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornSelfEnergy
@@ -294,10 +297,11 @@ noncomputable def finiteCutoffContinuumBornAdvancedSelfEnergy
   finiteCutoffContinuumBornSelfEnergy .advanced
     v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- The named advanced continuum Born self-energy is the adjoint of the named retarded one. -/
+/-- At nonzero broadening, the named advanced continuum Born self-energy is the adjoint of the named
+retarded one. -/
 theorem star_finiteCutoffContinuumBornRetardedSelfEnergy
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : 0 < broadening) :
+    (hbroadening : broadening ≠ 0) :
     star (finiteCutoffContinuumBornRetardedSelfEnergy
       v m probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornAdvancedSelfEnergy

@@ -200,13 +200,25 @@ theorem advancedResolvent_eq_pauliGreenOperator
     resolvent_spectralParameter_eq_pauliGreenOperator .advanced
       v m px py probeEnergy broadening (ne_of_gt hbroadening)
 
-/-- The explicit Pauli forms retain the canonical retarded/advanced adjoint relation. -/
+/-- At nonzero broadening, the explicit Pauli forms retain the canonical retarded/advanced adjoint
+relation. -/
 theorem star_pauliGreenOperator_retarded_eq_advanced
-    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    (v m px py probeEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     star (pauliGreenOperator .retarded v m px py probeEnergy broadening) =
       pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-  rw [← retardedResolvent_eq_pauliGreenOperator v m px py probeEnergy broadening hbroadening]
-  rw [← advancedResolvent_eq_pauliGreenOperator v m px py probeEnergy broadening hbroadening]
+  have hret :
+      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator .retarded v m px py probeEnergy broadening := by
+    simpa only [retardedResolvent, spectralParameter_retarded] using
+      resolvent_spectralParameter_eq_pauliGreenOperator .retarded
+        v m px py probeEnergy broadening hbroadening
+  have hadv :
+      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator .advanced v m px py probeEnergy broadening := by
+    simpa only [advancedResolvent, spectralParameter_advanced] using
+      resolvent_spectralParameter_eq_pauliGreenOperator .advanced
+        v m px py probeEnergy broadening hbroadening
+  rw [← hret, ← hadv]
   exact star_retardedResolvent
     (hamiltonianOperator v m px py)
     (hamiltonianOperator_isSelfAdjoint v m px py)
