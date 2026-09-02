@@ -48,6 +48,12 @@ theorem kuboBastinEnergyBroadening_pos
     0 < kuboBastinEnergyBroadening hbar eta := by
   exact mul_pos hhbar heta
 
+/-- Nonzero `ℏ` and nonzero switching rate give a nonzero resolvent energy broadening. -/
+theorem kuboBastinEnergyBroadening_ne_zero
+    (hbar eta : ℝ) (hhbar : hbar ≠ 0) (heta : eta ≠ 0) :
+    kuboBastinEnergyBroadening hbar eta ≠ 0 := by
+  exact mul_ne_zero hhbar heta
+
 /-- The time-rate Lehmann denominator is the retarded energy denominator scaled by `-i/ℏ`. -/
 theorem lehmannDenominator_eq_retardedSpectralShift
     (hbar omega eta energyₘ energyₙ : ℝ) (hhbar : hbar ≠ 0) :
@@ -66,10 +72,10 @@ theorem lehmannDenominator_eq_retardedSpectralShift
     field_simp [hhbar]
     ring
 
-/-- The retarded spectral shift is nonzero at positive switching rate. -/
+/-- The retarded spectral shift is nonzero whenever `ℏ` and the switching rate are nonzero. -/
 theorem retardedSpectralShift_ne_zero
     (hbar omega eta energyₘ energyₙ : ℝ)
-    (hhbar : 0 < hbar) (heta : 0 < eta) :
+    (hhbar : hbar ≠ 0) (heta : eta ≠ 0) :
     retardedSpectralParameter
           (kuboBastinRetardedEnergy hbar omega energyₘ)
           (kuboBastinEnergyBroadening hbar eta) -
@@ -78,7 +84,7 @@ theorem retardedSpectralShift_ne_zero
     spectralParameter_sub_real_ne_zero .retarded
       (kuboBastinRetardedEnergy hbar omega energyₘ)
       (kuboBastinEnergyBroadening hbar eta) energyₙ
-      (ne_of_gt (kuboBastinEnergyBroadening_pos hbar eta hhbar heta))
+      (kuboBastinEnergyBroadening_ne_zero hbar eta hhbar heta)
 
 variable
   (system : BoundedFreeSystem H)
@@ -145,7 +151,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
   have hhbarComplex : (system.hbar : ℂ) ≠ 0 := by
     exact_mod_cast hhbar
   have hshift := retardedSpectralShift_ne_zero system.hbar omega eta
-    (data.energy mn.1) (data.energy mn.2) system.hbar_pos heta
+    (data.energy mn.1) (data.energy mn.2) hhbar heta.ne'
   unfold lehmannTerm
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]

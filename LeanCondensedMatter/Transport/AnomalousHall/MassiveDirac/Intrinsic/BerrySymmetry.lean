@@ -8,13 +8,12 @@ set_option linter.style.header false
 The closed massive-Dirac Berry curvature must
 
 - be odd under reversal of the time-reversal-breaking mass `m`;
-- vanish in the massless model away from the Dirac-point degeneracy;
+- vanish in the massless model;
 - have opposite signs in the two bands.
 
 The algebraic `berryCurvature` definition is total even when `E = 0`, because Lean's field
-division is total. Physical statements about the massless cone therefore keep the nondegeneracy
-hypothesis explicit even though the corresponding zero numerator makes the algebraic identity
-itself stronger.
+division is total. The algebraic massless identity therefore needs no nondegeneracy hypothesis,
+while force-matrix/projector statements retain it where the spectral projectors require `E ≠ 0`.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -45,9 +44,8 @@ theorem berryCurvature_neg_mass (band : Band) (v m px py : ℝ) :
     simp [berryCurvature_upper, berryCurvature_lower, hE] <;>
     ring
 
-/-- Away from the Dirac-point degeneracy, removing the mass gives zero Berry curvature. -/
-theorem berryCurvature_massless (band : Band) (v px py : ℝ)
-    (_hE : energy v 0 px py ≠ 0) :
+/-- Removing the mass gives zero algebraic Berry curvature. -/
+theorem berryCurvature_massless (band : Band) (v px py : ℝ) :
     berryCurvature band v 0 px py = 0 := by
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower]
@@ -69,7 +67,7 @@ theorem forceMatrixBerryCurvature_massless (band : Band) (v px py : ℝ)
     (hE : energy v 0 px py ≠ 0) :
     forceMatrixBerryCurvature band v 0 px py = 0 := by
   rw [forceMatrixBerryCurvature_eq_berryCurvature band v 0 px py hE]
-  exact berryCurvature_massless band v px py hE
+  exact berryCurvature_massless band v px py
 
 end
 
