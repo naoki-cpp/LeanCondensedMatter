@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Finite-cutoff evaluation of the continuum Born denominator integral
 
-This Phase 4 slice evaluates the shared finite-cutoff radial denominator integral introduced in
+This module evaluates the shared finite-cutoff radial denominator integral introduced in
 `DenominatorFactorization.lean`.  At nonzero probe energy and broadening, the quadratic denominator
 stays off the principal-log branch cut for every radial momentum, so its complex logarithm provides
 an antiderivative.  For nonzero Dirac velocity this gives the explicit endpoint formula
