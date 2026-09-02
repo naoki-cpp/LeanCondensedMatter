@@ -13,7 +13,8 @@ z(E, γ) = E + iγ,
 ```
 
 where `γ > 0` is retarded and `γ < 0` is advanced. The physical `SpectralSide` API specializes this
-core through `γ = side.sign * η`, with `η` the nonzero broadening magnitude. Resolvent identities at
+core through `γ = side.sign * η`. The conventional physical branches take `η > 0`; algebraic
+resolvent-set results below only require the broadening to be nonzero. Resolvent identities at an
 arbitrary signed regulator are stated directly for the representation-independent `resolvent`, so no
 second Green-operator routing wrapper is introduced. The canonical physical Green operator remains
 `spectralResolvent side H E η`; conventional retarded/advanced names remain public specializations.
