@@ -28,14 +28,20 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- Scalar-channel radial Born integrand at an arbitrary signed regulator, including the `p dp`
+Jacobian. -/
 noncomputable def continuumBornRadialScalarIntegrandOfRegulator
     (v m probeEnergy regulator p : ℝ) : ℂ :=
   (p : ℂ) * pauliGreenScalarCoefficientOfRegulator v m p 0 probeEnergy regulator
 
+/-- `σ_z`-channel radial Born integrand at an arbitrary signed regulator, including the `p dp`
+Jacobian. -/
 noncomputable def continuumBornRadialZIntegrandOfRegulator
     (v m probeEnergy regulator p : ℝ) : ℂ :=
   (p : ℂ) * pauliGreenZCoefficientOfRegulator v m p 0 probeEnergy regulator
 
+/-- Operator-valued radial Green kernel at an arbitrary signed regulator before continuum disorder
+and measure prefactors are applied. -/
 noncomputable def continuumBornRadialGreenKernelOfRegulator
     (v m probeEnergy regulator p : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   (p : ℂ) • inversionSymmetrizedPauliGreenOperatorOfRegulator
@@ -149,16 +155,22 @@ private theorem continuous_continuumBornRadialGreenKernelOfRegulator
       ((continuous_continuumBornRadialZIntegrandOfRegulator
         v m probeEnergy regulator hregulator).smul continuous_const)
 
+/-- Finite-cutoff radial integral of the scalar Green coefficient at an arbitrary signed
+regulator. -/
 noncomputable def finiteCutoffContinuumBornScalarIntegralOfRegulator
     (v m probeEnergy regulator pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p
 
+/-- Finite-cutoff radial integral of the `σ_z` Green coefficient at an arbitrary signed
+regulator. -/
 noncomputable def finiteCutoffContinuumBornZIntegralOfRegulator
     (v m probeEnergy regulator pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p
 
+/-- Finite-cutoff operator-valued radial Green integral at an arbitrary signed regulator before
+continuum disorder and measure prefactors. -/
 noncomputable def finiteCutoffContinuumBornGreenIntegralOfRegulator
     (v m probeEnergy regulator pMax : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ p in (0 : ℝ)..pMax,
