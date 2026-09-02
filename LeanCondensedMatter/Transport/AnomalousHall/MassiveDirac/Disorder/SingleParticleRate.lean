@@ -69,7 +69,6 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
         fermiEnergy + m ^ 2 / fermiEnergy =
           (fermiEnergy ^ 2 + m ^ 2) / fermiEnergy := by
       field_simp [hfermiEnergy]
-      ring
     rw [hterm]
     exact div_ne_zero hsum hfermiEnergy
 
