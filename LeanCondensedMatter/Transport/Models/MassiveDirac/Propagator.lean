@@ -161,15 +161,6 @@ theorem pauliGreenDenominatorOfRegulator_ne_zero
             ((energy v m px py : ℝ) : ℂ)) by ring]
   exact mul_ne_zero hminus (by simpa using hplus)
 
-/-- Physical-side nonvanishing is a direct specialization of the signed-regulator result. -/
-theorem pauliGreenDenominator_ne_zero
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    pauliGreenDenominator side v m px py probeEnergy broadening ≠ 0 := by
-  exact pauliGreenDenominatorOfRegulator_ne_zero
-    v m px py probeEnergy (side.sign * broadening)
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
-
 /-- The arbitrary-regulator Pauli decomposition is the usual closed numerator/denominator form. -/
 theorem pauliGreenOperatorOfRegulator_eq_closedForm
     (v m px py probeEnergy regulator : ℝ) :
