@@ -11,10 +11,10 @@ set_option linter.style.header false
 # Metallic upper-band Born transport scattering rate
 
 This module separates the current-relaxation scale from the already-derived single-particle Born
-lifetime.  For scalar short-range disorder, the same upper-band Born scattering kernel is weighted
-by the gauge-independent band-projector overlap on the isotropic Fermi circle.  The
-single-particle rate uses the unweighted angular average, whereas current relaxation carries the
-additional factor `1 - cos θ`.
+lifetime. For scalar short-range disorder, the same upper-band Born scattering kernel is weighted
+by the gauge-independent band-projector overlap on the isotropic Fermi circle. The single-particle
+rate uses the unweighted angular average, whereas current relaxation carries the additional factor
+`1 - cos θ`.
 
 For `|m| < ε_F`, the upper-band projector overlap reduces to
 
@@ -30,7 +30,7 @@ Hence
 ```
 
 The transport rate is normalized by the same continuum Born prefactor already fixed by the
-microscopic single-particle self-energy.  No Kubo ladder equation, Ward identity, crossed diagram,
+microscopic single-particle self-energy. No Kubo ladder equation, Ward identity, crossed diagram,
 or identification with the exact disorder-averaged conductivity is claimed here.
 -/
 
@@ -57,7 +57,7 @@ private theorem upperBandProjectorOverlap_eq
   simp [pow_two]
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
-positive `p_x` axis and a state at relative Fermi-circle angle `θ`.  This is the canonical real
+positive `p_x` axis and a state at relative Fermi-circle angle `θ`. This is the canonical real
 representative of `Tr(P_+(p) P_+(p'))`; the theorem below proves the lossless complex-valued bridge
 in the metallic regime rather than projecting with `Complex.re`. -/
 def upperBandFermiSurfaceScalarOverlapWeight
@@ -105,7 +105,7 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
   · rw [energy_polar_eq_radial]
     exact hENe
 
-/-- Full-circle mean of the upper-band scalar-disorder overlap.  This is the angular factor carried
+/-- Full-circle mean of the upper-band scalar-disorder overlap. This is the angular factor carried
 by the single-particle Born rate. -/
 def isotropicUpperBandSingleParticleAngularWeight
     (v m fermiEnergy : ℝ) : ℝ :=
@@ -144,7 +144,7 @@ theorem isotropicUpperBandSingleParticleAngularWeight_eq
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hpi]
 
-/-- Full-circle transport angular weight.  The factor `1 - cos θ` suppresses forward scattering
+/-- Full-circle transport angular weight. The factor `1 - cos θ` suppresses forward scattering
 because it does not relax the current direction. -/
 def isotropicUpperBandTransportAngularWeight
     (v m fermiEnergy : ℝ) : ℝ :=
@@ -195,7 +195,7 @@ theorem isotropicUpperBandTransportAngularWeight_eq
   ring
 
 /-- Common continuum Born Fermi-circle rate prefactor after isolating the dimensionless projector
-angular weight.  Its normalization is checked below against the already-derived self-energy rate. -/
+angular weight. Its normalization is checked below against the already-derived self-energy rate. -/
 def continuumBornUpperBandFermiCircleRatePrefactor
     (v fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
   disorderStrength * fermiEnergy / (hbar ^ 3 * v ^ 2)
@@ -238,17 +238,17 @@ theorem continuumBornUpperBandTransportScatteringRate_eq
   field_simp [hvelocity, hhbar, hfermiEnergy]
 
 /-- The Born transport scattering rate is positive for positive disorder strength and positive
-`ℏ` in the strict metallic regime. -/
+`ℏ` in the strict metallic regime `|m| < εF`. -/
 theorem continuumBornUpperBandTransportScatteringRate_pos
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < continuumBornUpperBandTransportScatteringRate
       v m fermiEnergy disorderStrength hbar := by
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
+  have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   rw [continuumBornUpperBandTransportScatteringRate_eq
     v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hfermiNe]
-  have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
   have hnum : 0 < fermiEnergy + 3 * m ^ 2 / fermiEnergy := by positivity
   have hden : 0 < 4 * hbar ^ 3 * v ^ 2 := by positivity
   exact mul_pos (div_pos hdisorder hden) hnum
@@ -282,13 +282,13 @@ def continuumBornUpperBandTransportLifetime
 theorem continuumBornUpperBandTransportLifetime_pos
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < continuumBornUpperBandTransportLifetime
       v m fermiEnergy disorderStrength hbar := by
   unfold continuumBornUpperBandTransportLifetime
   exact inv_pos.mpr
     (continuumBornUpperBandTransportScatteringRate_pos
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hmF)
 
 /-- The transport lifetime differs from the single-particle lifetime by the reciprocal angular
 factor whenever the common Born prefactors and Fermi energy are nonzero. -/
@@ -317,17 +317,17 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
   (field_simp [hvelocity, hhbar, hfermiEnergy, hdisorder, hsum1, hsum3]; ring)
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
-consumed by the longitudinal RTA benchmark.  This bridge does not identify the derivation with a
+consumed by the longitudinal RTA benchmark. This bridge does not identify the derivation with a
 Kubo ladder resummation; it only records the positive scalar lifetime obtained from the Born angular
 transport kernel above. -/
 def continuumBornUpperBandPositiveTransportLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) : PositiveTransportLifetime where
+    (hmF : |m| < fermiEnergy) : PositiveTransportLifetime where
   lifetime := continuumBornUpperBandTransportLifetime
     v m fermiEnergy disorderStrength hbar
   lifetime_pos := continuumBornUpperBandTransportLifetime_pos
-    v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hmF
 
 end
 

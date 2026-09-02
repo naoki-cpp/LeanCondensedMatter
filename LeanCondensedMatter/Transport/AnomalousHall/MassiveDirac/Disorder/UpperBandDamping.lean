@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Upper-band projection of the continuum Born damping
 
-This Phase 4 slice projects the existing finite-cutoff retarded continuum Born self-energy onto the
-gauge-independent metallic upper-band Fermi-surface projector.  The projection is defined from the
-actual bounded operator through the ordinary finite-dimensional trace,
+This file projects the finite-cutoff retarded continuum Born self-energy onto the gauge-independent
+metallic upper-band Fermi-surface projector.  The projection is defined from the actual bounded
+operator through the ordinary finite-dimensional trace,
 
 ```text
 Tr[P₊(p_F) Σᴿ(ε_F)],
@@ -72,7 +72,7 @@ private theorem finiteDimensionalOperatorTrace_upperBandProjector_mul_sigmaZ
 reduces to the scalar Pauli coefficient plus `m / ε_F` times the `σ_z` coefficient. -/
 theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmF : m < fermiEnergy)
+    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy)
     (hbroadening : broadening ≠ 0) :
     finiteCutoffContinuumBornRetardedUpperBandFermiProjection
         v m fermiEnergy broadening disorderStrength hbar pMax =
@@ -83,9 +83,7 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
           (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
             finiteCutoffContinuumBornZIntegral
               .retarded v m fermiEnergy broadening pMax)) := by
-  have hmAbsF : |m| ≤ fermiEnergy := by
-    simpa [abs_of_pos hm] using hmF.le
-  have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmAbsF
+  have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
   rw [finiteCutoffContinuumBornSelfEnergy_eq .retarded
     v m fermiEnergy broadening disorderStrength hbar pMax hbroadening]
@@ -99,7 +97,7 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
 
 private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
     (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmF : m < fermiEnergy)
+    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy)
     (hbroadening : broadening ≠ 0) :
     (finiteCutoffContinuumBornRetardedUpperBandFermiProjection
         v m fermiEnergy broadening disorderStrength hbar pMax).im =
@@ -112,25 +110,24 @@ private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
               .retarded v m fermiEnergy broadening pMax).im) := by
   rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     v m fermiEnergy broadening disorderStrength hbar pMax
-    hvelocity hm hmF hbroadening]
+    hvelocity hmF hbroadening]
   simp
 
-/-- Physical-momentum-measure Born damping energy of the metallic upper band.  Its interpretation
-below uses nonzero `ℏ`, nonzero velocity, positive disorder strength, and the strict metallic regime. -/
+/-- Physical-momentum-measure Born damping energy of the metallic upper band. -/
 def continuumBornUpperBandDampingEnergy
     (v m fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
   disorderStrength / (4 * hbar ^ 2 * v ^ 2) *
     (fermiEnergy + m ^ 2 / fermiEnergy)
 
 /-- The upper-band Born damping energy is strictly positive for positive disorder strength in the
-strict metallic regime. -/
+strict metallic regime `|m| < εF`. -/
 theorem continuumBornUpperBandDampingEnergy_pos
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < continuumBornUpperBandDampingEnergy
       v m fermiEnergy disorderStrength hbar := by
-  have hfermi : 0 < fermiEnergy := lt_trans hm hmF
+  have hfermi : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
   have hhbarSq : 0 < hbar ^ 2 := sq_pos_of_ne_zero hhbar
   have hvelocitySq : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
   have hden : 0 < 4 * hbar ^ 2 * v ^ 2 := by positivity
@@ -146,7 +143,7 @@ self-energy has the metallic zero-broadening imaginary limit before simplifying 
 measure prefactor. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_broadening_zero
     (v m fermiEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmF : m < fermiEnergy)
+    (hvelocity : v ≠ 0) (hmF : |m| < fermiEnergy)
     (hcutoff : fermiEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -157,13 +154,14 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
         (-((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
           (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi) *
             (fermiEnergy + m ^ 2 / fermiEnergy)))) := by
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
+  have hfermi : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermi
   have hscalar :=
     tendsto_finiteCutoffContinuumBornRetardedScalarSelfEnergyCoefficient_im_broadening_zero
-      v m fermiEnergy disorderStrength hbar pMax hvelocity hm hmF hcutoff
+      v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff
   have hz :=
     tendsto_finiteCutoffContinuumBornRetardedZSelfEnergyCoefficient_im_broadening_zero
-      v m fermiEnergy disorderStrength hbar pMax hvelocity hm hmF hcutoff
+      v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff
   have hsum := hscalar.add
     ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m / fermiEnergy)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (m / fermiEnergy))).mul hz)
@@ -184,7 +182,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
     simpa [Complex.im_ofReal_mul] using
       (finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
         v m fermiEnergy broadening disorderStrength hbar pMax
-        hvelocity hm hmF (ne_of_gt hbroadening)).symm
+        hvelocity hmF.le (ne_of_gt hbroadening)).symm
   have htarget :
       (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
@@ -203,8 +201,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
 minus the positive Born damping energy. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_dampingEnergy
     (v m fermiEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hmF : |m| < fermiEnergy)
     (hcutoff : fermiEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -215,7 +212,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_dam
         v m fermiEnergy disorderStrength hbar)) := by
   have hlimit :=
     tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_broadening_zero
-      v m fermiEnergy disorderStrength hbar pMax hvelocity hm hmF hcutoff
+      v m fermiEnergy disorderStrength hbar pMax hvelocity hmF hcutoff
   have hprefactor :=
     continuumBornDampingPrefactor_eq disorderStrength hbar v hhbar hvelocity
   have htarget :

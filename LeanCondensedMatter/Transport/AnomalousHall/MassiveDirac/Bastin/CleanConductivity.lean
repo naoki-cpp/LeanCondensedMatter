@@ -174,23 +174,22 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
 profile reproduces the clean metallic intrinsic Hall conductivity. This uses the already-proved
 cutoff limit; it is not a finite-broadening/momentum limit interchange. -/
 theorem tendsto_bastinCleanHallConductivityCutoff_atTop
-    (e hbar m εF : ℝ) (hm : m ≠ 0) (hmF : |m| ≤ εF) :
+    (e hbar m εF : ℝ) (hmF : |m| ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (intrinsicHallConductivity e hbar m εF)) := by
-  refine (tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hm hmF).congr' ?_
+  refine (tendsto_intrinsicHallConductivityCutoff_atTop e hbar m εF hmF).congr' ?_
   filter_upwards with Λ
   exact (bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
     e hbar m εF Λ).symm
 
-/-- Closed metallic benchmark reached by the integrated clean Bastin-pair profile,
-`σxy = -(e²/2h) (m/εF)`. -/
+/-- Closed massive-Dirac benchmark reached by the integrated clean Bastin-pair profile,
+`σxy = -(e²/2h) (m/εF)`, including the massless endpoint. -/
 theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
-    (e hbar m εF : ℝ) (hhbar : hbar ≠ 0) (hm : m ≠ 0) (hmF : |m| ≤ εF) :
+    (e hbar m εF : ℝ) (hmF : |m| ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
       (nhds (-(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF))) := by
-  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le (abs_pos.mpr hm) hmF)
-  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF hhbar hF0]
-  exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hm hmF
+  rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF]
+  exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hmF
 
 end
 

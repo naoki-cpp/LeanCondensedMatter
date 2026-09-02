@@ -6,15 +6,15 @@ set_option linter.style.header false
 /-!
 # Metallic upper-band Born single-particle scattering rate
 
-This Phase 4 slice converts the already-proved on-shell upper-band Born damping energy into the
-single-particle scattering-rate convention used by the weak-disorder retarded/advanced propagators.
-The rate is derived from the microscopic Born damping,
+This file converts the on-shell upper-band Born damping energy into the single-particle
+scattering-rate convention used by the weak-disorder retarded/advanced propagators. The rate is
+derived from the microscopic Born damping,
 
 ```text
 1 / τ_sp = 2 Γ_Born / ℏ,
 ```
 
-and the corresponding lifetime is only its reciprocal.  Neither quantity is a supplied transport
+and the corresponding lifetime is only its reciprocal. Neither quantity is a supplied transport
 relaxation time, and no identification with the phenomenological `PositiveTransportLifetime` /
 `τ_tr` is made here.
 
@@ -29,7 +29,7 @@ noncomputable section
 
 /-- Upper-band Born single-particle scattering rate derived from the on-shell damping half-width.
 
-This is the convention `1 / τ_sp = 2 Γ_Born / ℏ`.  It is a model-specific microscopic output, not
+This is the convention `1 / τ_sp = 2 Γ_Born / ℏ`. It is a model-specific microscopic output, not
 the phenomenological current-relaxation time `τ_tr`. -/
 def continuumBornUpperBandSingleParticleScatteringRate
     (v m fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
@@ -73,11 +73,11 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
     exact div_ne_zero hsum hfermiEnergy
 
 /-- The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder
-strength in the strict metallic regime. -/
+strength in the strict metallic regime `|m| < εF`. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_pos
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < continuumBornUpperBandSingleParticleScatteringRate
       v m fermiEnergy disorderStrength hbar := by
   unfold continuumBornUpperBandSingleParticleScatteringRate
@@ -85,7 +85,7 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_pos
     (mul_pos (by norm_num)
       (continuumBornUpperBandDampingEnergy_pos
         v m fermiEnergy disorderStrength hbar
-        hvelocity (ne_of_gt hhbar) hdisorder hm hmF))
+        hvelocity (ne_of_gt hhbar) hdisorder hmF))
     hhbar
 
 /-- The damping energy is one half of `ℏ` times the derived single-particle scattering rate. -/
@@ -100,7 +100,7 @@ theorem continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate
   field_simp [hhbar]
 
 /-- Upper-band Born single-particle lifetime, defined only as the reciprocal of the microscopic
-Born scattering rate.  It is not an independent relaxation-time input. -/
+Born scattering rate. It is not an independent relaxation-time input. -/
 def continuumBornUpperBandSingleParticleLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
   (continuumBornUpperBandSingleParticleScatteringRate
@@ -110,13 +110,13 @@ def continuumBornUpperBandSingleParticleLifetime
 theorem continuumBornUpperBandSingleParticleLifetime_pos
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < continuumBornUpperBandSingleParticleLifetime
       v m fermiEnergy disorderStrength hbar := by
   unfold continuumBornUpperBandSingleParticleLifetime
   exact inv_pos.mpr
     (continuumBornUpperBandSingleParticleScatteringRate_pos
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hmF)
 
 /-- The derived scattering rate and lifetime are reciprocal whenever the rate prefactors and Fermi
 energy are nonzero. -/

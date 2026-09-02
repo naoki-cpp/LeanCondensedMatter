@@ -6,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Zero-broadening limits of the continuum Born Pauli channels
 
-At fixed finite cutoff in the positive-mass metallic regime, this file propagates the shared
-continuum Born denominator limit through the existing exact factorization
+At fixed finite cutoff in the positive-energy metallic regime `|m| < ε`, this file propagates the
+shared continuum Born denominator limit through the existing exact factorization
 
 ```text
 I₀,s = z_s J_s,
@@ -58,7 +58,7 @@ only to control the scalar-channel cross term; no ultraviolet or renormalization
 attached to this finite limit. -/
 theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -71,7 +71,10 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
               ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
             Real.log
               ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖))) := by
-  have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt (lt_trans hm hmE)
+  have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
+  have hmetalSq : m ^ 2 < probeEnergy ^ 2 := by
+    rw [← sq_abs m]
+    nlinarith [abs_nonneg m]
   have hzeroRe :
       0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
     rw [pauliGreenDenominator_radial_re]
@@ -129,7 +132,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
 `Im I_z,s → -sπm/(2v²)` as `η → 0⁺`. -/
 theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -140,7 +143,7 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
         (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)))) := by
   have hJ :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-      side v m probeEnergy pMax hvelocity hm hmE hcutoff
+      side v m probeEnergy pMax hvelocity hprobe hmetal hcutoff
   refine ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m)
     (nhdsWithin 0 (Set.Ioi 0)) (nhds m)).mul hJ).congr' ?_
   filter_upwards with broadening
@@ -152,7 +155,7 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
 `ε Im J_s + sη Re J_s` split and proves the second term vanishes. -/
 theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -164,10 +167,10 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
           (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)))) := by
   have hJim :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-      side v m probeEnergy pMax hvelocity hm hmE hcutoff
+      side v m probeEnergy pMax hvelocity hprobe hmetal hcutoff
   have hJre :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
-      side v m probeEnergy pMax hvelocity hm hmE hcutoff
+      side v m probeEnergy pMax hvelocity hprobe hmetal hcutoff
   have hmain := (tendsto_const_nhds : Tendsto (fun _ : ℝ => probeEnergy)
     (nhdsWithin 0 (Set.Ioi 0)) (nhds probeEnergy)).mul hJim
   have heta :
@@ -206,7 +209,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
 /-- Retarded scalar channel: `Im I₀,R → -πε/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedScalarIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -217,12 +220,12 @@ theorem tendsto_finiteCutoffContinuumBornRetardedScalarIntegral_im_broadening_ze
         (probeEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi))) := by
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
-      .retarded v m probeEnergy pMax hvelocity hm hmE hcutoff)
+      .retarded v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
 
 /-- Advanced scalar channel: `Im I₀,A → +πε/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornAdvancedScalarIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -233,12 +236,12 @@ theorem tendsto_finiteCutoffContinuumBornAdvancedScalarIntegral_im_broadening_ze
         (probeEnergy * (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi))) := by
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
-      .advanced v m probeEnergy pMax hvelocity hm hmE hcutoff)
+      .advanced v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
 
 /-- Retarded `σ_z` channel: `Im I_z,R → -πm/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedZIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -249,12 +252,12 @@ theorem tendsto_finiteCutoffContinuumBornRetardedZIntegral_im_broadening_zero
         (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi))) := by
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
-      .retarded v m probeEnergy pMax hvelocity hm hmE hcutoff)
+      .retarded v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
 
 /-- Advanced `σ_z` channel: `Im I_z,A → +πm/(2v²)`. -/
 theorem tendsto_finiteCutoffContinuumBornAdvancedZIntegral_im_broadening_zero
     (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -265,7 +268,7 @@ theorem tendsto_finiteCutoffContinuumBornAdvancedZIntegral_im_broadening_zero
         (m * (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi))) := by
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
-      .advanced v m probeEnergy pMax hvelocity hm hmE hcutoff)
+      .advanced v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
 
 end
 

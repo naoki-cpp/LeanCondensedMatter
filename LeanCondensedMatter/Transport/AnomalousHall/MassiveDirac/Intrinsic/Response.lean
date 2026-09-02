@@ -17,14 +17,15 @@ explicit. After angular reduction and the change from radial momentum to the pos
 
 The canonical zero-temperature finite-cutoff response multiplies that density by the generic strict
 Fermi occupation evaluated on the actual signed band energy `s ε` and integrates both bands over the
-common positive-energy interval `[|m|, Λ]`. Under `m ≠ 0` and `|m| ≤ εF ≤ Λ`, occupation leaves the
-lower band filled and truncates the upper-band integral at `εF`, giving
+common positive-energy interval `[|m|, Λ]`. Under `|m| ≤ εF ≤ Λ`, occupation leaves the lower band
+filled away from the massless endpoint and truncates the upper-band integral at `εF`, giving
 
 ```text
 m / (2 εF) - m / (2 Λ).
 ```
 
-No infinite-cutoff limit and no `e²/h` transport prefactor are claimed in this file.
+At `m = 0` the Berry density itself vanishes, so the same formula holds without excluding the
+massless cone. No infinite-cutoff limit and no `e²/h` transport prefactor are claimed in this file.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -92,25 +93,29 @@ def zeroTemperatureOccupiedBerryWeightCutoff
   zeroTemperatureOccupiedBandBerryWeightCutoff .lower m fermiEnergy Λ +
     zeroTemperatureOccupiedBandBerryWeightCutoff .upper m fermiEnergy Λ
 
-/-- If `m ≠ 0` and `|m| ≤ εF ≤ Λ`, zero-temperature occupation leaves the lower-band Berry density
-unchanged throughout the finite cutoff interval. -/
+/-- If `|m| ≤ εF ≤ Λ`, zero-temperature occupation leaves the lower-band Berry density unchanged
+throughout the finite cutoff interval, with the massless endpoint handled by the vanishing density. -/
 theorem zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq
-    (m εF Λ : ℝ) (hm : m ≠ 0) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
+    (m εF Λ : ℝ) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBandBerryWeightCutoff .lower m εF Λ =
       energyShellBerryWeight .lower m |m| Λ := by
-  have hmAbsPos : 0 < |m| := abs_pos.mpr hm
-  have hmΛ : |m| ≤ Λ := hmF.trans hFΛ
-  unfold zeroTemperatureOccupiedBandBerryWeightCutoff energyShellBerryWeight
-  apply intervalIntegral.integral_congr
-  intro ε hε
-  rw [uIcc_of_le hmΛ] at hε
-  have hocc :
-      bandStateOccupation (zeroTemperatureOccupation εF)
-          (fun band ε => bandSign band * ε) .lower ε = 1 := by
-    apply bandStateOccupation_zeroTemperature_eq_one_of_lt
-    simp only [bandSign]
-    linarith [hmAbsPos, hmF, hε.1]
-  simp [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc]
+  by_cases hm : m = 0
+  · simp [zeroTemperatureOccupiedBandBerryWeightCutoff,
+      zeroTemperatureOccupiedRadialBerryEnergyDensity, energyShellBerryWeight,
+      radialBerryEnergyDensity, hm]
+  · have hmAbsPos : 0 < |m| := abs_pos.mpr hm
+    have hmΛ : |m| ≤ Λ := hmF.trans hFΛ
+    unfold zeroTemperatureOccupiedBandBerryWeightCutoff energyShellBerryWeight
+    apply intervalIntegral.integral_congr
+    intro ε hε
+    rw [uIcc_of_le hmΛ] at hε
+    have hocc :
+        bandStateOccupation (zeroTemperatureOccupation εF)
+            (fun band ε => bandSign band * ε) .lower ε = 1 := by
+      apply bandStateOccupation_zeroTemperature_eq_one_of_lt
+      simp only [bandSign]
+      linarith [hmAbsPos, hmF, hε.1]
+    simp [zeroTemperatureOccupiedRadialBerryEnergyDensity, hocc]
 
 /-- If `|m| ≤ εF ≤ Λ`, zero-temperature occupation truncates the upper-band Berry integral at
 `εF`. The strict endpoint convention differs only at the singleton `{εF}`, which is invisible to
@@ -140,23 +145,27 @@ theorem zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq
       exact intervalIntegral.integral_indicator ⟨hmF, hFΛ⟩
 
 /-- The canonical occupation-derived finite-cutoff response keeps the single-cone regulator term
-explicit. -/
+explicit, including the massless endpoint where both sides vanish. -/
 theorem zeroTemperatureOccupiedBerryWeightCutoff_eq
-    (m εF Λ : ℝ) (hm : m ≠ 0) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
+    (m εF Λ : ℝ) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
       m / (2 * εF) - m / (2 * Λ) := by
-  have hmAbsPos : 0 < |m| := abs_pos.mpr hm
-  unfold zeroTemperatureOccupiedBerryWeightCutoff
-  rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hm hmF hFΛ,
-    zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ,
-    energyShellBerryWeight_eq .lower m |m| Λ hmAbsPos (hmF.trans hFΛ),
-    energyShellBerryWeight_eq .upper m |m| εF hmAbsPos hmF]
-  have hmAbs0 : |m| ≠ 0 := ne_of_gt hmAbsPos
-  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hmAbsPos hmF)
-  have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hmAbsPos (hmF.trans hFΛ))
-  simp
-  field_simp [hmAbs0, hF0, hΛ0]
-  ring
+  by_cases hm : m = 0
+  · simp [zeroTemperatureOccupiedBerryWeightCutoff,
+      zeroTemperatureOccupiedBandBerryWeightCutoff,
+      zeroTemperatureOccupiedRadialBerryEnergyDensity, radialBerryEnergyDensity, hm]
+  · have hmAbsPos : 0 < |m| := abs_pos.mpr hm
+    unfold zeroTemperatureOccupiedBerryWeightCutoff
+    rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hmF hFΛ,
+      zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ,
+      energyShellBerryWeight_eq .lower m |m| Λ hmAbsPos (hmF.trans hFΛ),
+      energyShellBerryWeight_eq .upper m |m| εF hmAbsPos hmF]
+    have hmAbs0 : |m| ≠ 0 := ne_of_gt hmAbsPos
+    have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hmAbsPos hmF)
+    have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hmAbsPos (hmF.trans hFΛ))
+    simp
+    field_simp [hmAbs0, hF0, hΛ0]
+    ring
 
 end
 
