@@ -35,12 +35,6 @@ noncomputable def continuumBornRadialDenominatorIntegrandOfRegulator
   (p : ℂ) *
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹
 
-/-- Physical-side common denominator integrand. -/
-noncomputable def continuumBornRadialDenominatorIntegrand
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) : ℂ :=
-  continuumBornRadialDenominatorIntegrandOfRegulator
-    v m probeEnergy (side.sign * broadening) p
-
 /-- The arbitrary-regulator scalar radial integrand is the spectral parameter times the common
 denominator integrand. -/
 theorem continuumBornRadialScalarIntegrandOfRegulator_eq_spectralParameter_mul_denominatorIntegrand
