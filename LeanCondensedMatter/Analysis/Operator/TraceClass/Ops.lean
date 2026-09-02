@@ -44,7 +44,7 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
       have hstep : (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ)
           = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
         simp
-      rw [hstep, inner_mul_inner_conj_eq_norm_sq, ← Complex.ofReal_mul]
+      rw [hstep, inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_mul]
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
   rw [HasSum] at hs' ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
