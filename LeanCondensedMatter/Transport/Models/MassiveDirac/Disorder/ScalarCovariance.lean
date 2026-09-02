@@ -99,8 +99,9 @@ theorem bornSelfEnergy_eq_strength_smul
       model.secondMomentStrength •
         spectralResolvent side (hamiltonianOperator v m px py) energy broadening := by
   unfold FiniteDisorderEnsemble.bornSelfEnergy
+    FiniteDisorderEnsemble.bornSelfEnergyOfRegulator
   rw [model.exactSecondMoment_eq_strength_smul]
-  unfold FiniteDisorderEnsemble.freeGreen
+  unfold FiniteDisorderEnsemble.freeGreenOfRegulator spectralResolvent spectralParameter
   rw [model.baseHamiltonian_eq]
 
 end FiniteScalarDisorderModel
