@@ -451,7 +451,7 @@ massive-Dirac Pauli Green operator. -/
     pauliGreenOperator pauliGreenOperatorOfRegulator
     pauliGreenScalarCoefficientOfRegulator pauliGreenXCoefficientOfRegulator
     pauliGreenYCoefficientOfRegulator pauliGreenZCoefficientOfRegulator
-    pauliGreenDenominatorOfRegulator
+    pauliGreenDenominator pauliGreenDenominatorOfRegulator
   simp [finiteCutoffContinuumBornEffectiveEnergy,
     finiteCutoffContinuumBornEffectiveMass, spectralParameter,
     matrixOperator, map_add, map_smul]
@@ -485,4 +485,4 @@ the disorder strength is zero. -/
 
 end
 
-end AnomalousHall.MassiveDirac
+end
