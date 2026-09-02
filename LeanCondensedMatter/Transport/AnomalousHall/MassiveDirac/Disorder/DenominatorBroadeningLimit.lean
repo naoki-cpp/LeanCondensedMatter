@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorEvaluation
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorEvaluation
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Tactic
 
