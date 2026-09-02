@@ -127,8 +127,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
   unfold purePointKuboBastinSpectralVertexTerm
   rw [hres, inner_smul_right]
-  simp only [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one,
-    norm_one, one_pow, one_smul]
+  simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
   unfold purePointTransitionWeight
   field_simp [hhbar, hhbarComplex, hshift]
 
