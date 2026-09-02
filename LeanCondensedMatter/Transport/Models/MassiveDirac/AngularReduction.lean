@@ -84,16 +84,6 @@ theorem pauliGreenYCoefficientOfRegulator_polar
   push_cast
   ring
 
-/-- Physical-side denominator radiality, retained for downstream side-indexed consumers. -/
-@[simp] theorem pauliGreenDenominator_polar
-    (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
-    pauliGreenDenominator side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening =
-      pauliGreenDenominator side v m p 0 probeEnergy broadening := by
-  simpa [pauliGreenDenominator] using
-    pauliGreenDenominatorOfRegulator_polar
-      v m p θ probeEnergy (side.sign * broadening)
-
 /-- Physical-side scalar coefficient radiality, retained for downstream side-indexed consumers. -/
 @[simp] theorem pauliGreenScalarCoefficient_polar
     (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
