@@ -39,16 +39,14 @@ def continuumBornUpperBandSingleParticleScatteringRate
 /-- Closed physical-momentum expression for the upper-band Born single-particle scattering rate. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_eq
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandSingleParticleScatteringRate
         v m fermiEnergy disorderStrength hbar =
       disorderStrength / (2 * hbar ^ 3 * v ^ 2) *
         (fermiEnergy + m ^ 2 / fermiEnergy) := by
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   unfold continuumBornUpperBandSingleParticleScatteringRate
     continuumBornUpperBandDampingEnergy
-  (field_simp [hvelocity, hhbar, hfermiNe]; ring)
+  (field_simp [hvelocity, hhbar, hfermiEnergy]; ring)
 
 /-- The Born single-particle scattering rate is nonzero whenever the common Born prefactors are
 nonzero in the strict metallic regime. -/
@@ -58,8 +56,9 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandSingleParticleScatteringRate
       v m fermiEnergy disorderStrength hbar ≠ 0 := by
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   rw [continuumBornUpperBandSingleParticleScatteringRate_eq
-    v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe]
   apply mul_ne_zero
   · exact div_ne_zero hdisorder
       (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 3 hhbar))

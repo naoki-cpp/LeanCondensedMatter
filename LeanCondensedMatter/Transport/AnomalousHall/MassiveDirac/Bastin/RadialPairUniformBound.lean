@@ -21,7 +21,7 @@ open MeasureTheory
 /-- The Lorentzian-weighted radial spectator integrand inherits the uniform spectator bound. -/
 theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial_le
     (band : Band) (e v m p offset radius broadening : ℝ)
-    (hm : 0 < m) (hradius : radius < 2 * m) (hoffset : |offset| ≤ radius)
+    (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius)
     (hbroadening : 0 ≤ broadening) :
     ‖(lorentzianSpectralKernel offset broadening : ℂ) *
         targetCenteredInterbandSpectatorCurrentFactor
@@ -51,7 +51,7 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial
 bound. -/
 theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
     (band : Band) (e v m p radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredInterbandSpectatorCurrentPoleIntegral
         band e v m p 0 radius broadening‖ ≤
@@ -92,7 +92,7 @@ theorem radialInterbandSpectatorUniformBound_nonneg
 /-- Uniform norm bound for the complete target-centered interband Bastin pair on the radial axis. -/
 theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
     (band : Band) (e v m p radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hbroadening : 0 < broadening) :
     ‖targetCenteredInterbandBastinPairIntegral
         band e v m p 0 radius broadening‖ ≤

@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Uniform radial spectator bounds from the massive-Dirac mass gap
 
-The radial spectator factorization and the positive-mass gap give a momentum-independent separation
+The radial spectator factorization and the mass-magnitude gap give a momentum-independent separation
 between a fixed target-centered energy window and the opposite-band pole. This file packages that
 mass-window margin, the resulting retarded/advanced resolvent bounds, and the explicit uniform bound
 for the complete regular spectator/current factor.
@@ -21,11 +21,11 @@ noncomputable section
 
 /-- Momentum-independent separation between a target-centered window and the opposite-band pole. -/
 def radialBastinMassWindowMargin (m radius : ℝ) : ℝ :=
-  2 * m - radius
+  2 * |m| - radius
 
-/-- A window narrower than the positive mass gap has strictly positive separation margin. -/
+/-- A window narrower than the mass-magnitude gap has strictly positive separation margin. -/
 theorem radialBastinMassWindowMargin_pos
-    (m radius : ℝ) (hradius : radius < 2 * m) :
+    (m radius : ℝ) (hradius : radius < 2 * |m|) :
     0 < radialBastinMassWindowMargin m radius := by
   exact sub_pos.mpr hradius
 
@@ -36,10 +36,8 @@ theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
     (hoffset : |offset| ≤ radius) :
     radialBastinMassWindowMargin m radius ≤
       |interbandEnergyGap band v m p 0 + offset| := by
-  have hgapAbs : 2 * |m| ≤ |interbandEnergyGap band v m p 0| :=
+  have hgap : 2 * |m| ≤ |interbandEnergyGap band v m p 0| :=
     two_mul_abs_mass_le_abs_interbandEnergyGap band v m p 0
-  have hgap : 2 * m ≤ |interbandEnergyGap band v m p 0| := by
-    exact (mul_le_mul_of_nonneg_left (le_abs_self m) (by norm_num)).trans hgapAbs
   have hshift :=
     abs_interbandEnergyGap_add_offset_ge_sub_radius
       band v m p 0 offset radius hoffset
@@ -78,7 +76,7 @@ theorem radialBastinMassWindowMargin_le_norm_advancedDenominator
 /-- The retarded opposite-band resolvent is uniformly bounded by the inverse mass-window margin. -/
 theorem norm_retardedRadialSpectatorResolvent_le_inv_margin
     (band : Band) (v m p offset radius broadening : ℝ)
-    (hradius : radius < 2 * m) (hoffset : |offset| ≤ radius) :
+    (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
         (broadening : ℂ) * Complex.I)⁻¹)‖ ≤
       (radialBastinMassWindowMargin m radius)⁻¹ := by
@@ -97,7 +95,7 @@ theorem norm_retardedRadialSpectatorResolvent_le_inv_margin
 inverse-margin bound. -/
 theorem norm_advancedRadialSpectatorResolvent_le_inv_margin
     (band : Band) (v m p offset radius broadening : ℝ)
-    (hradius : radius < 2 * m) (hoffset : |offset| ≤ radius) :
+    (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
         (broadening : ℂ) * Complex.I)⁻¹)‖ ≤
       (radialBastinMassWindowMargin m radius)⁻¹ := by
@@ -121,11 +119,11 @@ def radialInterbandSpectatorUniformBound
 window, independently of momentum and broadening. -/
 theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
     (band : Band) (e v m p offset radius broadening : ℝ)
-    (hm : 0 < m) (hradius : radius < 2 * m) (hoffset : |offset| ≤ radius) :
+    (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius) :
     ‖targetCenteredInterbandSpectatorCurrentFactor
         band e v m p 0 (offset, broadening)‖ ≤
       radialInterbandSpectatorUniformBound e v m radius := by
-  have hE : energy v m p 0 ≠ 0 := ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)
+  have hE : energy v m p 0 ≠ 0 := ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm)
   rw [targetCenteredInterbandSpectatorCurrentFactor_radial_eq
     band e v m p offset broadening hE]
   let r : ℂ :=
@@ -158,7 +156,7 @@ theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
       _ = 2 * (radialBastinMassWindowMargin m radius)⁻¹ ^ 2 := by ring
   have hA : ‖A‖ ≤ e ^ 2 * v ^ 2 := by
     dsimp [A]
-    exact norm_radialInterbandCurrentAmplitude_le band e v m p hm
+    exact norm_radialInterbandCurrentAmplitude_le band e v m p
   have hupper : 0 ≤ 2 * (radialBastinMassWindowMargin m radius)⁻¹ ^ 2 := by
     positivity
   change ‖(r ^ 2 + a ^ 2) * A‖ ≤ radialInterbandSpectatorUniformBound e v m radius

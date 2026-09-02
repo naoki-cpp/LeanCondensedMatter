@@ -133,7 +133,7 @@ theorem radialInterbandBastinDominatingConstant_nonneg
 /-- Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every
 strictly positive broadening. -/
 theorem stronglyMeasurable_radialInterbandPoleIntegrand
-    (band : Band) (e v m broadening : ℝ) (hm : 0 < m) :
+    (band : Band) (e v m broadening : ℝ) (hm : m ≠ 0) :
     StronglyMeasurable
       (fun z : ℝ × ℝ =>
         (lorentzianSpectralKernel z.2 broadening : ℂ) *
@@ -154,7 +154,7 @@ theorem stronglyMeasurable_radialInterbandPoleIntegrand
     funext z
     rw [targetCenteredInterbandSpectatorCurrentFactor_radial_eq
       band e v m z.1 z.2 broadening
-      (ne_of_gt (energy_pos_of_mass_pos v m z.1 0 hm))]
+      (ne_of_gt (energy_pos_of_mass_ne_zero v m z.1 0 hm))]
     ring
   rw [hfun]
   apply Measurable.stronglyMeasurable
@@ -166,7 +166,7 @@ theorem stronglyMeasurable_radialInterbandPoleIntegrand
 function of radial momentum. -/
 theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
     (band : Band) (e v m radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
       (fun p : ℝ =>
         targetCenteredInterbandBastinPairIntegral
@@ -218,7 +218,7 @@ theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
 /-- The real radial Bastin density is strongly measurable for positive broadening. -/
 theorem stronglyMeasurable_radialInterbandBastinPairDensity
     (band : Band) (e v m radius broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
       (fun p : ℝ =>
         radialInterbandBastinPairDensity
@@ -238,7 +238,7 @@ theorem stronglyMeasurable_radialInterbandBastinPairDensity
 `0 ≤ p ≤ pMax`. -/
 theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
     (band : Band) (e v m radius pMax p broadening : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hp : p ∈ Set.Icc (0 : ℝ) pMax) (hbroadening : 0 < broadening) :
     ‖radialInterbandBastinPairDensity
         band e v m radius p broadening‖ ≤
@@ -284,23 +284,21 @@ theorem integrable_radialInterbandBastinDominatingConstant
   exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun _ _ => by
     simp [Real.norm_eq_abs, abs_of_nonneg hD])
 
-/-- The model-specific positive-mass bounds discharge all hypotheses of finite-radial dominated
+/-- The model-specific nonzero-mass bounds discharge all hypotheses of finite-radial dominated
 convergence. Thus the finite-broadening radial momentum integral converges to the integral of the
 clean local limit profile as `η → 0⁺`. -/
 theorem tendsto_finiteRadialInterbandBastinPairIntegral
     (band : Band) (e v m radius pMax : ℝ)
-    (hm : 0 < m) (hpMax : 0 ≤ pMax)
-    (hradiusPos : 0 < radius) (hradius : radius < 2 * m) :
+    (hm : m ≠ 0) (hpMax : 0 ≤ pMax)
+    (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|) :
     Tendsto
       (fun broadening : ℝ =>
         finiteRadialInterbandBastinPairIntegral
           band e v m radius pMax broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (finiteRadialCleanInterbandBastinPairIntegral band e v m pMax)) := by
-  have hradiusAbs : radius < 2 * |m| := by
-    simpa [abs_of_pos hm] using hradius
   apply tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
-    band e v m radius pMax hm.ne' hradiusPos hradiusAbs
+    band e v m radius pMax hm hradiusPos hradius
     (fun _ : ℝ => radialInterbandBastinDominatingConstant e v m radius pMax)
   · filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
     exact (stronglyMeasurable_radialInterbandBastinPairDensity

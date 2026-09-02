@@ -204,22 +204,20 @@ def continuumBornUpperBandFermiCircleRatePrefactor
   disorderStrength * fermiEnergy / (hbar ^ 3 * v ^ 2)
 
 /-- The microscopic single-particle rate factorizes into the common Fermi-circle prefactor and the
-unweighted projector-overlap average. -/
+unweighted projector-overlap average whenever the algebraic denominators are nonzero. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_eq_prefactor_mul_angularWeight
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandSingleParticleScatteringRate
         v m fermiEnergy disorderStrength hbar =
       continuumBornUpperBandFermiCircleRatePrefactor
           v fermiEnergy disorderStrength hbar *
         isotropicUpperBandSingleParticleAngularWeight v m fermiEnergy := by
   rw [continuumBornUpperBandSingleParticleScatteringRate_eq
-    v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
   rw [isotropicUpperBandSingleParticleAngularWeight_eq v m fermiEnergy]
   unfold continuumBornUpperBandFermiCircleRatePrefactor
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
-  field_simp [hvelocity, hhbar, hfermiNe]
+  field_simp [hvelocity, hhbar, hfermiEnergy]
 
 /-- Upper-band Born transport scattering rate obtained from the same microscopic scalar-disorder
 normalization as `1/τ_sp`, but with the current-relaxing `1 - cos θ` angular weight. -/
@@ -232,8 +230,7 @@ def continuumBornUpperBandTransportScatteringRate
 /-- Closed physical-momentum expression for the upper-band Born transport scattering rate. -/
 theorem continuumBornUpperBandTransportScatteringRate_eq
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandTransportScatteringRate
         v m fermiEnergy disorderStrength hbar =
       disorderStrength / (4 * hbar ^ 3 * v ^ 2) *
@@ -241,8 +238,7 @@ theorem continuumBornUpperBandTransportScatteringRate_eq
   rw [continuumBornUpperBandTransportScatteringRate,
     isotropicUpperBandTransportAngularWeight_eq v m fermiEnergy]
   unfold continuumBornUpperBandFermiCircleRatePrefactor
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
-  field_simp [hvelocity, hhbar, hfermiNe]
+  field_simp [hvelocity, hhbar, hfermiEnergy]
 
 /-- The Born transport scattering rate is positive for positive disorder strength and positive
 `ℏ` in the strict metallic regime. -/
@@ -252,19 +248,20 @@ theorem continuumBornUpperBandTransportScatteringRate_pos
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     0 < continuumBornUpperBandTransportScatteringRate
       v m fermiEnergy disorderStrength hbar := by
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   rw [continuumBornUpperBandTransportScatteringRate_eq
-    v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hm hmF]
+    v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hfermiNe]
   have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
   have hnum : 0 < fermiEnergy + 3 * m ^ 2 / fermiEnergy := by positivity
   have hden : 0 < 4 * hbar ^ 3 * v ^ 2 := by positivity
   exact mul_pos (div_pos hdisorder hden) hnum
 
 /-- The transport rate relative to the single-particle rate is fixed entirely by the massive-Dirac
-Fermi-circle angular structure whenever the common rate prefactors are nonzero. -/
+Fermi-circle angular structure whenever the common rate prefactors and Fermi energy are nonzero. -/
 theorem continuumBornUpperBandTransportRate_div_singleParticleRate
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandTransportScatteringRate
         v m fermiEnergy disorderStrength hbar /
       continuumBornUpperBandSingleParticleScatteringRate
@@ -272,11 +269,10 @@ theorem continuumBornUpperBandTransportRate_div_singleParticleRate
       (fermiEnergy ^ 2 + 3 * m ^ 2) /
         (2 * (fermiEnergy ^ 2 + m ^ 2)) := by
   rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF,
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy,
     continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
-  field_simp [hvelocity, hhbar, hfermiNe, hdisorder]
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
+  field_simp [hvelocity, hhbar, hfermiEnergy, hdisorder]
   ring
 
 /-- Upper-band Born transport lifetime, defined as the reciprocal of the derived transport rate. -/
@@ -311,12 +307,12 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
           v m fermiEnergy disorderStrength hbar := by
   rw [continuumBornUpperBandTransportLifetime,
     continuumBornUpperBandSingleParticleLifetime]
-  rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF,
-    continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
   have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
+  rw [continuumBornUpperBandTransportScatteringRate_eq
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe,
+    continuumBornUpperBandSingleParticleScatteringRate_eq
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe]
   have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by positivity
   have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
   (field_simp [hvelocity, hhbar, hfermiNe, hdisorder, hsum1, hsum3]; ring)
