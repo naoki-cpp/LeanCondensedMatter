@@ -66,28 +66,6 @@ theorem continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegran
     pauliGreenZCoefficientOfRegulator
   ring
 
-/-- Physical-side scalar factorization, retained for downstream broadening-limit consumers. -/
-theorem continuumBornRadialScalarIntegrand_eq_spectralParameter_mul_denominatorIntegrand
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
-    continuumBornRadialScalarIntegrand side v m probeEnergy broadening p =
-      spectralParameter side probeEnergy broadening *
-        continuumBornRadialDenominatorIntegrand side v m probeEnergy broadening p := by
-  simpa [continuumBornRadialScalarIntegrand,
-    continuumBornRadialDenominatorIntegrand, spectralParameter] using
-    continuumBornRadialScalarIntegrandOfRegulator_eq_spectralParameter_mul_denominatorIntegrand
-      v m probeEnergy (side.sign * broadening) p
-
-/-- Physical-side `σ_z` factorization, retained for downstream broadening-limit consumers. -/
-theorem continuumBornRadialZIntegrand_eq_mass_mul_denominatorIntegrand
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
-    continuumBornRadialZIntegrand side v m probeEnergy broadening p =
-      (m : ℂ) * continuumBornRadialDenominatorIntegrand
-        side v m probeEnergy broadening p := by
-  simpa [continuumBornRadialZIntegrand,
-    continuumBornRadialDenominatorIntegrand] using
-    continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegrand
-      v m probeEnergy (side.sign * broadening) p
-
 /-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary
 signed regulator. -/
 noncomputable def finiteCutoffContinuumBornDenominatorIntegralOfRegulator
