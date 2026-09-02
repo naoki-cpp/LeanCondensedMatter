@@ -34,10 +34,11 @@ L_RA(Γ) = C₂(Gᴿ Γ Gᴬ).
 ```
 
 It keeps the reusable algebra at the level actually needed downstream: the supplied-Green RA kernel,
-finite fixed-point iteration, and a corrected vertex represented by `(I - L_RA)⁻¹ J` only when the
-required inverse is supplied. The corresponding fixed-point equation and uniqueness are proved under
-that hypothesis. One-rung aliases and residual-routing declarations are not separate public APIs.
-No geometric-series convergence or Ward identity is inferred from the ladder algebra alone.
+finite fixed-point iteration, and a corrected vertex represented by `(I - L_RA)⁻¹ J` under the
+canonical `IsUnit (1 - L_RA)` hypothesis. The corresponding fixed-point equation and uniqueness are
+proved under that hypothesis. Separate inverse-data, one-rung, and residual-routing declarations are
+not public APIs. No geometric-series convergence or Ward identity is inferred from the ladder
+algebra alone.
 
 ## Conservation target
 
