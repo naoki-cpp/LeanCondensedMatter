@@ -182,24 +182,6 @@ theorem resolvent_spectralParameter_eq_pauliGreenOperator
   exact spectralShift_mul_pauliGreenOperator
     side v m px py probeEnergy broadening hbroadening
 
-/-- Retarded massive-Dirac Green operator in the Pauli basis. -/
-theorem retardedResolvent_eq_pauliGreenOperator
-    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
-    retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-      pauliGreenOperator .retarded v m px py probeEnergy broadening := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    resolvent_spectralParameter_eq_pauliGreenOperator .retarded
-      v m px py probeEnergy broadening (ne_of_gt hbroadening)
-
-/-- Advanced massive-Dirac Green operator in the Pauli basis. -/
-theorem advancedResolvent_eq_pauliGreenOperator
-    (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
-    advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-      pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    resolvent_spectralParameter_eq_pauliGreenOperator .advanced
-      v m px py probeEnergy broadening (ne_of_gt hbroadening)
-
 /-- At nonzero broadening, the explicit Pauli forms retain the canonical retarded/advanced adjoint
 relation. -/
 theorem star_pauliGreenOperator_retarded_eq_advanced
