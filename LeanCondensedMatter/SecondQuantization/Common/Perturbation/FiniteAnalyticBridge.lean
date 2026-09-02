@@ -150,15 +150,8 @@ theorem continuous_finiteContinuousOperator
     intro m
     simpa only [finiteContinuousOperatorColumns_apply, finiteContinuousOperator_basis_apply]
       using hF m n
-  have h := finiteContinuousOperatorColumns.symm.continuous.comp hcolumns
-  have heq :
-      (finiteContinuousOperatorColumns.symm ∘ fun τ : ℝ =>
-        finiteContinuousOperatorColumns (finiteContinuousOperator (F τ))) =
-      (fun τ : ℝ => finiteContinuousOperator (F τ)) := by
-    funext τ
-    exact finiteContinuousOperatorColumns.symm_apply_apply _
-  rw [heq] at h
-  exact h
+  simpa [Function.comp_apply] using
+    finiteContinuousOperatorColumns.symm.continuous.comp hcolumns
 
 /-- Coordinate evaluation on the analytic finite-dimensional realization. -/
 noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Config →L[ℂ] ℂ :=
