@@ -152,36 +152,6 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
   exact (finiteCutoffContinuumBornDenominatorIntegral_im_eq
     side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
 
-/-- Retarded specialization: `Im J_R → -π/(2v²)`. -/
-theorem tendsto_finiteCutoffContinuumBornRetardedDenominatorIntegral_im_broadening_zero
-    (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornDenominatorIntegral
-          .retarded v m probeEnergy broadening pMax).im)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) := by
-  simpa [SpectralSide.sign] using
-    (tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-      .retarded v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
-
-/-- Advanced specialization: `Im J_A → +π/(2v²)`. -/
-theorem tendsto_finiteCutoffContinuumBornAdvancedDenominatorIntegral_im_broadening_zero
-    (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornDenominatorIntegral
-          .advanced v m probeEnergy broadening pMax).im)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (((2 : ℝ) * v ^ 2)⁻¹ * Real.pi)) := by
-  simpa [SpectralSide.sign] using
-    (tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-      .advanced v m probeEnergy pMax hvelocity hprobe hmetal hcutoff)
-
 end
 
 end AnomalousHall.MassiveDirac

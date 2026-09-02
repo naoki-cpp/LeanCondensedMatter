@@ -44,21 +44,6 @@ theorem energy_nonneg (v m px py : ℝ) :
     0 ≤ energy v m px py := by
   exact Real.sqrt_nonneg _
 
-/-- The massive-Dirac energy is bounded below by the signed mass uniformly in momentum. -/
-theorem mass_le_energy (v m px py : ℝ) :
-    m ≤ energy v m px py := by
-  by_cases hm : 0 ≤ m
-  · have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
-      positivity
-    have hsq : m ^ 2 ≤ energy v m px py ^ 2 := by
-      rw [energy_sq]
-      unfold energySq
-      linarith
-    have hE := energy_nonneg v m px py
-    nlinarith
-  · have hm' : m < 0 := lt_of_not_ge hm
-    exact hm'.le.trans (energy_nonneg v m px py)
-
 /-- The massive-Dirac energy is bounded below by the mass magnitude uniformly in momentum. -/
 theorem abs_mass_le_energy (v m px py : ℝ) :
     |m| ≤ energy v m px py := by
@@ -84,11 +69,6 @@ theorem energy_pos_of_mass_ne_zero (v m px py : ℝ) (hm : m ≠ 0) :
     linarith
   have hE := energy_nonneg v m px py
   nlinarith
-
-/-- Positive mass is a physical-domain specialization of nonzero-mass nondegeneracy. -/
-theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
-    0 < energy v m px py := by
-  exact energy_pos_of_mass_ne_zero v m px py (ne_of_gt hm)
 
 /-- The massive-Dirac dispersion polynomial is radial in polar momentum coordinates. -/
 @[simp] theorem energySq_polar (v m p θ : ℝ) :
