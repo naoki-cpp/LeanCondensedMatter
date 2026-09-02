@@ -283,13 +283,6 @@ theorem star_finiteCutoffContinuumBornSelfEnergy
     side v m probeEnergy broadening pMax hbroadening]
   simp
 
-/-- Retarded finite-cutoff continuum Born self-energy. -/
-noncomputable def finiteCutoffContinuumBornRetardedSelfEnergy
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  finiteCutoffContinuumBornSelfEnergy .retarded
-    v m probeEnergy broadening disorderStrength hbar pMax
-
 end
 
 end AnomalousHall.MassiveDirac
