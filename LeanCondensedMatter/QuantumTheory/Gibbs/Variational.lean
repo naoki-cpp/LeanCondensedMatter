@@ -18,15 +18,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- The Gibbs state has finite entropy and satisfies `S(ρβ) = β E(ρβ) + log Z`. -/
 theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
-    vonNeumannEntropy (gibbsState Hop β hcompact hsummable hZ) ≠ ⊤ ∧
-      (vonNeumannEntropy (gibbsState Hop β hcompact hsummable hZ)).toReal =
-        β * energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop +
+    vonNeumannEntropy (gibbsState Hop β hcompact hZ) ≠ ⊤ ∧
+      (vonNeumannEntropy (gibbsState Hop β hcompact hZ)).toReal =
+        β * energyExpValue (gibbsState Hop β hcompact hZ) Hop +
           Real.log (spectralTrace (gibbsOp Hop β)) := by
   classical
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
-  let ρ := gibbsState Hop β hcompact hsummable hZ
+  let ρ := gibbsState Hop β hcompact hZ
   let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let E : Fin (Module.finrank ℂ H) → ℝ :=
     Hop.2.isSymmetric.eigenvalues rfl
@@ -41,7 +40,7 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
       (ρ.op : H →ₗ[ℂ] H) (bE i) =
         ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • bE i := by
     simpa [ρ, Z, div_eq_mul_inv, mul_comm] using
-      (gibbsState_apply_eigenvector Hop β hcompact hsummable hZ (hEbE i))
+      (gibbsState_apply_eigenvector Hop β hcompact hZ (hEbE i))
   change vonNeumannEntropy ρ ≠ ⊤ ∧
     (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z
   exact vonNeumannEntropy_gibbs_diagonal ρ Hop bE.toHilbertBasis E β Z hZpos
@@ -52,19 +51,18 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
 free-energy identity. -/
 theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
-    energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop -
+    energyExpValue (gibbsState Hop β hcompact hZ) Hop -
         (1 / β) * (vonNeumannEntropy
-          (gibbsState Hop β hcompact hsummable hZ)).toReal =
+          (gibbsState Hop β hcompact hZ)).toReal =
       -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) := by
   have hEntropy :=
-    (vonNeumannEntropy_gibbsState Hop β hcompact hsummable hZ).2
+    (vonNeumannEntropy_gibbsState Hop β hcompact hZ).2
   rw [hEntropy, mul_add]
   have hscale :
       (1 / β) *
-          (β * energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop) =
-        energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop := by
+          (β * energyExpValue (gibbsState Hop β hcompact hZ) Hop) =
+        energyExpValue (gibbsState Hop β hcompact hZ) Hop := by
     rw [← mul_assoc, one_div, inv_mul_cancel₀ hβ, one_mul]
   rw [hscale]
   ring
@@ -72,14 +70,13 @@ theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ :
 /-- Every density operator has Helmholtz free energy at least that of the normalized Gibbs state. -/
 theorem gibbsState_minimizes_helmholtzFreeEnergy (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
-    energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop -
+    energyExpValue (gibbsState Hop β hcompact hZ) Hop -
         (1 / β) * (vonNeumannEntropy
-          (gibbsState Hop β hcompact hsummable hZ)).toReal ≤
+          (gibbsState Hop β hcompact hZ)).toReal ≤
       energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
-  rw [gibbsState_helmholtzFreeEnergy_eq Hop β hβ.ne' hcompact hsummable hZ]
+  rw [gibbsState_helmholtzFreeEnergy_eq Hop β hβ.ne' hcompact hZ]
   exact (helmholtzFreeEnergy_ge_and_entropy_ne_top
-    ρ Hop β hβ hcompact hsummable hZ).2
+    ρ Hop β hβ hcompact hZ).2
 
 end QuantumTheory
