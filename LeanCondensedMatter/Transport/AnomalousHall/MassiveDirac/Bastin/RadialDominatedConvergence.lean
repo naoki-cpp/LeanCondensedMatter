@@ -13,7 +13,7 @@ set_option linter.style.header false
 The clean interband Bastin-pair limit is known pointwise in radial momentum. This file packages the
 finite radial densities and integrals, records the dominated-convergence boundary for passing the
 positive zero-broadening limit through a finite radial integral, and discharges that boundary from
-the positive mass gap and uniform radial spectator bounds.
+the mass-magnitude gap and uniform radial spectator bounds.
 
 The measurability argument views the target-window pole integral as a parameter-dependent Bochner
 integral of a jointly measurable radial/energy-offset integrand. The ultraviolet cutoff remains
@@ -39,21 +39,21 @@ def radialCleanInterbandBastinPairLimitDensity
     (band : Band) (e v m p : ℝ) : ℝ :=
   p * cleanInterbandBastinPairLimitDensity band e v m p 0
 
-/-- Positive mass makes the fixed-window pointwise Bastin-pair limit uniform in the sense that one
-radius satisfying `radius < 2m` is valid at every radial momentum. -/
+/-- Nonzero mass makes the fixed-window pointwise Bastin-pair limit uniform whenever one radius
+satisfies `radius < 2|m|` at every radial momentum. -/
 theorem tendsto_radialInterbandBastinPairDensity
     (band : Band) (e v m radius p : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m) :
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|) :
     Tendsto
       (fun broadening : ℝ =>
         radialInterbandBastinPairDensity band e v m radius p broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (radialCleanInterbandBastinPairLimitDensity band e v m p)) := by
   have hE : energy v m p 0 ≠ 0 :=
-    ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)
+    ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm)
   have hgap : radius < |interbandEnergyGap band v m p 0| :=
-    radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
-      band v m p 0 radius hm hradius
+    radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
+      band v m p 0 radius hradius
   have hpair :=
     tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity
       band e v m p 0 radius hE hradiusPos hgap
@@ -74,10 +74,10 @@ def finiteRadialCleanInterbandBastinPairIntegral
 
 /-- Dominated convergence passes `η → 0⁺` through the finite radial momentum integral once a
 single integrable radial bound and eventual measurability are supplied. The pointwise convergence
-hypothesis is not repeated: it follows from the positive mass gap and `radius < 2m`. -/
+hypothesis is not repeated: it follows from nonzero mass and `radius < 2|m|`. -/
 theorem tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
     (band : Band) (e v m radius pMax : ℝ)
-    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (bound : ℝ → ℝ)
     (hMeasurable :
       ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
@@ -297,8 +297,10 @@ theorem tendsto_finiteRadialInterbandBastinPairIntegral
           band e v m radius pMax broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (finiteRadialCleanInterbandBastinPairIntegral band e v m pMax)) := by
+  have hradiusAbs : radius < 2 * |m| := by
+    simpa [abs_of_pos hm] using hradius
   apply tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
-    band e v m radius pMax hm hradiusPos hradius
+    band e v m radius pMax hm.ne' hradiusPos hradiusAbs
     (fun _ : ℝ => radialInterbandBastinDominatingConstant e v m radius pMax)
   · filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
     exact (stronglyMeasurable_radialInterbandBastinPairDensity

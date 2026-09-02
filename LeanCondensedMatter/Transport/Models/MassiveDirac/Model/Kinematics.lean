@@ -59,6 +59,20 @@ theorem mass_le_energy (v m px py : ℝ) :
   · have hm' : m < 0 := lt_of_not_ge hm
     exact hm'.le.trans (energy_nonneg v m px py)
 
+/-- The massive-Dirac energy is bounded below by the mass magnitude uniformly in momentum. -/
+theorem abs_mass_le_energy (v m px py : ℝ) :
+    |m| ≤ energy v m px py := by
+  have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
+    positivity
+  have hsq : |m| ^ 2 ≤ energy v m px py ^ 2 := by
+    rw [energy_sq]
+    unfold energySq
+    rw [sq_abs]
+    linarith
+  have hm : 0 ≤ |m| := abs_nonneg m
+  have hE := energy_nonneg v m px py
+  nlinarith
+
 /-- Any nonzero Dirac mass keeps the model uniformly away from the Dirac degeneracy. -/
 theorem energy_pos_of_mass_ne_zero (v m px py : ℝ) (hm : m ≠ 0) :
     0 < energy v m px py := by

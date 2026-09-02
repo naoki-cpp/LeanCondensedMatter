@@ -36,8 +36,10 @@ theorem radialBastinMassWindowMargin_le_abs_gap_add_offset
     (hoffset : |offset| ≤ radius) :
     radialBastinMassWindowMargin m radius ≤
       |interbandEnergyGap band v m p 0 + offset| := by
-  have hgap : 2 * m ≤ |interbandEnergyGap band v m p 0| :=
-    two_mul_mass_le_abs_interbandEnergyGap band v m p 0
+  have hgapAbs : 2 * |m| ≤ |interbandEnergyGap band v m p 0| :=
+    two_mul_abs_mass_le_abs_interbandEnergyGap band v m p 0
+  have hgap : 2 * m ≤ |interbandEnergyGap band v m p 0| := by
+    exact (mul_le_mul_of_nonneg_left (le_abs_self m) (by norm_num)).trans hgapAbs
   have hshift :=
     abs_interbandEnergyGap_add_offset_ge_sub_radius
       band v m p 0 offset radius hoffset
