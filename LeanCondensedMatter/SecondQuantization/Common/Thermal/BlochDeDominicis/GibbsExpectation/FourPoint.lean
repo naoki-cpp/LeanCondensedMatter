@@ -1,14 +1,14 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.FourPointReduction
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
 
 /-!
 # The normalized 4-point Bloch–de Dominicis identities
 
-Divides `BlochDeDominicis/FourPointReduction.lean`'s un-normalized 4-point first-operator
-reduction through by the genuine partition function, then rewrites its coefficients as normalized
-2-point values (via `TwoPoint.lean`) to reach the genuine 4-point expansion.
+Specializes the generic unnormalized peel-first trace identity to three remaining operators, divides
+through by the genuine partition function, then rewrites its coefficients as normalized 2-point
+values (via `TwoPoint.lean`) to reach the genuine 4-point expansion.
 -/
 
 namespace SecondQuantization
@@ -34,8 +34,20 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
           ζ * c13 * finiteGibbsExpectation energy β (C2.comp C4) +
           ζ ^ 2 * c14 * finiteGibbsExpectation energy β (C2.comp C3)) /
         (1 - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
-  have h := traceFock_diagonalEvolution_comp_four_point_reduction energy β q1 ζ c12 c13 c14
-    C1 C2 C3 C4 hC1 hcomm12 hcomm13 hcomm14
+  have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)], zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+    intro p hp
+    fin_cases hp
+    · exact hcomm12
+    · exact hcomm13
+    · exact hcomm14
+  have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
+    simp [traceFock, matrixCoeff]
+  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
+    [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
+  simp only [prodComp, peelSum, List.map_cons, List.map_nil, List.length_cons, List.length_nil,
+    LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
+    traceFock_add, traceFock_smul, hz, mul_zero] at h
   have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
     rwa [mul_comm β q1]
   simp only [finiteGibbsExpectation_eq_trace_div]

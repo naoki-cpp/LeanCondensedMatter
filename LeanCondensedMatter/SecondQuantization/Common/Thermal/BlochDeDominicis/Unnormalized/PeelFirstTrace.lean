@@ -8,11 +8,9 @@ set_option linter.style.header false
 
 Wraps `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirst.lean`'s pure operator-algebra peel identity
 (`comp_prodComp_eq_of_zetaCommutator`) in the trace-level KMS cyclicity step
-(`Common.traceFock_diagonalEvolution_comp_rotate`), the way
-`Common/Thermal/BlochDeDominicis/Unnormalized/FourPointReduction.lean` does for the hand-unrolled
-3-operator case — this is that same strategy, but for an arbitrary-length remaining product, so
-`FourPointReduction.lean`'s theorem is now a special case (`l := [(C2, c12), (C3, c13), (C4,
-c14)]`, not yet stated as such here).
+(`Common.traceFock_diagonalEvolution_comp_rotate`) for an arbitrary-length remaining product. Fixed
+finite cases are obtained directly by specializing this theorem rather than maintaining separate
+hand-unrolled reductions.
 
 Solving the resulting self-referential trace equation (rotating `C₁` from the end of the product
 back to the front, picking up `w₁ := e^{q₁β}`, and matching the `ζ^{l.length}` power the peel
@@ -28,13 +26,10 @@ rotated tail's diagonal-series summability isn't a separate hypothesis — it fo
 double-series hypothesis alone via `summable_matrixCoeff_diag_comp_of_summable_uncurry`, the same
 way `TwoPoint.lean`'s `tsum` theorem derives it.
 
-**Left un-reduced on the right** — *unlike* `FourPointReduction.lean`, which does expand its
-right side down to a sum of `traceFock`-of-remaining-*pairs* terms (`c₁₂Tr[D(C₃C₄)] +
-ζc₁₃Tr[D(C₂C₄)] + ζ²c₁₄Tr[D(C₂C₃)]`). Here `peelSum`'s value is *not* further decomposed at
-all — even one level short of `FourPointReduction`'s own reduction — since `peelSum` is defined
-recursively rather than as a closed sum, and unfolding it against `traceFock_add`/`_smul`
-recursively for an arbitrary-length list is deferred to whenever the general induction needs that
-form to match term-by-term against `Combinatorics.Pairing`.
+**Left un-reduced on the right** — `peelSum`'s value is not further decomposed here, since `peelSum`
+is defined recursively rather than as a closed sum. `PeelTermsIndexed.lean` provides the indexed
+form used when the general induction needs term-by-term matching against
+`Combinatorics.Pairing`.
 -/
 
 namespace SecondQuantization
