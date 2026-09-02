@@ -90,18 +90,18 @@ theorem exactSecondMoment_eq_strength_smul
     _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
       rw [← Finset.sum_smul]
 
-/-- Massive-Dirac scalar-disorder first-Born self-energy on either spectral side. This is the exact
-finite second moment applied to the corresponding clean propagator, not an exact disorder-averaged
-self-energy. -/
-theorem bornSelfEnergy_eq_strength_smul
-    (side : SpectralSide) (energy broadening : ℝ) :
-    model.ensemble.bornSelfEnergy side energy broadening =
+/-- Massive-Dirac scalar-disorder first-Born self-energy at an arbitrary signed regulator. This is
+the exact finite second moment applied to the corresponding clean propagator, not an exact
+disorder-averaged self-energy. -/
+theorem bornSelfEnergyOfRegulator_eq_strength_smul
+    (energy regulator : ℝ) :
+    model.ensemble.bornSelfEnergyOfRegulator energy regulator =
       model.secondMomentStrength •
-        spectralResolvent side (hamiltonianOperator v m px py) energy broadening := by
-  unfold FiniteDisorderEnsemble.bornSelfEnergy
-    FiniteDisorderEnsemble.bornSelfEnergyOfRegulator
+        resolvent (hamiltonianOperator v m px py)
+          (spectralParameterOfRegulator energy regulator) := by
+  unfold FiniteDisorderEnsemble.bornSelfEnergyOfRegulator
   rw [model.exactSecondMoment_eq_strength_smul]
-  unfold FiniteDisorderEnsemble.freeGreenOfRegulator spectralResolvent spectralParameter
+  unfold FiniteDisorderEnsemble.freeGreenOfRegulator
   rw [model.baseHamiltonian_eq]
 
 end FiniteScalarDisorderModel
