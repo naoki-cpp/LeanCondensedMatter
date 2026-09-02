@@ -41,12 +41,9 @@ theorem summable_particleNumber_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
         linarith [hpos i]
       have h := summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) 2 hr
-      have heq : (fun k : ℕ => (k : ℝ) ^ 2 * oneModeBoltzmannWeight β (ε i) k) =
-          fun k : ℕ => (k : ℝ) ^ 2 * Real.exp (-β * ε i) ^ k := by
-        funext k
+      exact h.congr fun k => by
         unfold oneModeBoltzmannWeight
         rw [Real.exp_nat_mul]
-      rwa [heq]
     · exact (hasSum_oneModeBoltzmannWeight (hpos i)).summable
   have hnonneg : ∀ i k, 0 ≤ g i k := by
     intro i k
@@ -57,9 +54,8 @@ theorem summable_particleNumber_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ
     · exact Real.exp_nonneg _
   have H := Finsupp.hasSum_prod_nonneg g (fun i => ∑' k, g i k)
     (fun i => (hg i).hasSum) hnonneg
-  have heq : (fun n : Occupation Mode => ∏ i, g i (n i)) =
-      fun n : Occupation Mode => (n j : ℝ) ^ 2 * boltzmannWeight ε β n := by
-    funext n
+  exact (HasSum.congr_fun H fun n => by
+    symm
     rw [← Finset.mul_prod_erase Finset.univ (fun i => g i (n i)) (Finset.mem_univ j), hgdef]
     simp only [if_true]
     have hrest : ∀ i, i ∈ Finset.univ.erase j →
@@ -68,9 +64,7 @@ theorem summable_particleNumber_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ
       simp [Finset.ne_of_mem_erase hi]
     rw [Finset.prod_congr rfl hrest, mul_assoc, boltzmannWeight_eq_prod,
       Finset.mul_prod_erase Finset.univ (fun i => oneModeBoltzmannWeight β (ε i) (n i))
-        (Finset.mem_univ j)]
-  rw [heq] at H
-  exact H.summable
+        (Finset.mem_univ j)]).summable
 
 /-- A product of two occupation numbers remains summable against the free bosonic Boltzmann weight.
 This is the degree-two estimate needed for diagonal matrix coefficients of quartic interactions. -/
