@@ -13,9 +13,10 @@ z(E, γ) = E + iγ,
 ```
 
 where `γ > 0` is retarded and `γ < 0` is advanced. The physical `SpectralSide` API specializes this
-core through `γ = side.sign * η`, with `η` the nonzero broadening magnitude. The canonical Green
-operator remains `spectralResolvent side H E η`; conventional retarded/advanced names remain public
-specializations of that physical interface.
+core through `γ = side.sign * η`, with `η` the nonzero broadening magnitude. Resolvent identities at
+arbitrary signed regulator are stated directly for the representation-independent `resolvent`, so no
+second Green-operator routing wrapper is introduced. The canonical physical Green operator remains
+`spectralResolvent side H E η`; conventional retarded/advanced names remain public specializations.
 
 The spectrum of a self-adjoint element of the endomorphism C⋆-algebra is real. Therefore a spectral
 parameter lies in the resolvent set whenever its imaginary regulator is nonzero, without a
@@ -142,14 +143,51 @@ theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
   simp [advancedSpectralParameter]
 
-@[simp] private theorem star_retardedSpectralParameter
-    (energy broadening : ℝ) :
-    star (retardedSpectralParameter energy broadening) =
-      advancedSpectralParameter energy broadening := by
-  simpa [retardedSpectralParameter, advancedSpectralParameter] using
-    star_spectralParameterOfRegulator energy broadening
-
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- For an arbitrary nonzero signed regulator, the spectral shift multiplied by its resolvent is
+the identity. -/
+theorem spectralShift_mul_resolvent_spectralParameterOfRegulator
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian) *
+        resolvent hamiltonian (spectralParameterOfRegulator energy regulator) = 1 := by
+  exact QuantumTheory.spectralShift_mul_resolvent_of_not_mem
+    hamiltonian (spectralParameterOfRegulator energy regulator)
+    (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
+      hamiltonian hself (spectralParameterOfRegulator energy regulator)
+      (by
+        rw [spectralParameterOfRegulator_im]
+        exact hregulator))
+
+/-- For an arbitrary nonzero signed regulator, its resolvent multiplied by the spectral shift is
+the identity. -/
+theorem resolvent_spectralParameterOfRegulator_mul_spectralShift
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    resolvent hamiltonian (spectralParameterOfRegulator energy regulator) *
+        (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian) =
+      1 := by
+  exact QuantumTheory.resolvent_mul_spectralShift_of_not_mem
+    hamiltonian (spectralParameterOfRegulator energy regulator)
+    (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
+      hamiltonian hself (spectralParameterOfRegulator energy regulator)
+      (by
+        rw [spectralParameterOfRegulator_im]
+        exact hregulator))
+
+/-- For a self-adjoint Hamiltonian, taking the adjoint of a resolvent reverses the arbitrary signed
+imaginary regulator. -/
+theorem star_resolvent_spectralParameterOfRegulator
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) :
+    star (resolvent hamiltonian (spectralParameterOfRegulator energy regulator)) =
+      resolvent hamiltonian (spectralParameterOfRegulator energy (-regulator)) := by
+  unfold resolvent
+  rw [← Ring.inverse_star]
+  congr 1
+  rw [star_sub, hself]
+  simp [Algebra.algebraMap_eq_smul_one]
 
 /-- Green operator on either spectral side, `((E + s iη) I - H)⁻¹`. -/
 noncomputable def spectralResolvent
@@ -192,14 +230,10 @@ theorem spectralShift_mul_spectralResolvent
     (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
     (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) *
         spectralResolvent side hamiltonian energy broadening = 1 := by
-  simpa only [spectralResolvent] using
-    QuantumTheory.spectralShift_mul_resolvent_of_not_mem
-      hamiltonian (spectralParameter side energy broadening)
-      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-        hamiltonian hself (spectralParameter side energy broadening)
-        (by
-          rw [spectralParameter_im]
-          exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening))
+  simpa only [spectralResolvent, spectralParameter] using
+    spectralShift_mul_resolvent_spectralParameterOfRegulator
+      hamiltonian hself energy (side.sign * broadening)
+      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
 
 /-- The canonical spectral resolvent multiplied by its side-indexed shift is the identity. -/
 theorem spectralResolvent_mul_spectralShift
@@ -208,14 +242,10 @@ theorem spectralResolvent_mul_spectralShift
     spectralResolvent side hamiltonian energy broadening *
         (algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) - hamiltonian) =
       1 := by
-  simpa only [spectralResolvent] using
-    QuantumTheory.resolvent_mul_spectralShift_of_not_mem
-      hamiltonian (spectralParameter side energy broadening)
-      (QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-        hamiltonian hself (spectralParameter side energy broadening)
-        (by
-          rw [spectralParameter_im]
-          exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening))
+  simpa only [spectralResolvent, spectralParameter] using
+    resolvent_spectralParameterOfRegulator_mul_spectralShift
+      hamiltonian hself energy (side.sign * broadening)
+      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
 
 /-- The advanced resolvent is the adjoint of the retarded resolvent. -/
 theorem star_retardedResolvent
@@ -223,11 +253,9 @@ theorem star_retardedResolvent
     (energy broadening : ℝ) :
     star (retardedResolvent hamiltonian energy broadening) =
       advancedResolvent hamiltonian energy broadening := by
-  unfold retardedResolvent advancedResolvent resolvent
-  rw [← Ring.inverse_star]
-  congr 1
-  rw [star_sub, hself]
-  simp [Algebra.algebraMap_eq_smul_one]
+  unfold retardedResolvent advancedResolvent
+  simpa [retardedSpectralParameter, advancedSpectralParameter] using
+    star_resolvent_spectralParameterOfRegulator hamiltonian hself energy broadening
 
 end
 end Transport
