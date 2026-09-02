@@ -7,7 +7,8 @@ set_option linter.style.header false
 # Metallic intrinsic Hall conductivity for the massive Dirac cone
 
 The canonical finite-cutoff Berry weight is the zero-temperature occupation-derived response
-proved upstream. In the benchmark regime `m ≠ 0` and `|m| ≤ εF ≤ Λ`, it reduces to
+proved upstream. In the benchmark regime `|m| ≤ εF ≤ Λ`, including the massless endpoint, it
+reduces to
 
 ```text
 C(εF, Λ) = m / (2 εF) - m / (2 Λ).
@@ -27,7 +28,9 @@ combine to `-e²/h`, with `h = 2πℏ`. The resulting metallic benchmark is
 σxy^int = -(e² / 2h) * m / εF.
 ```
 
-This file does not identify a finite regularized Středa calculation with the continuum limit.
+The algebraic normalization identities are stated for the totalized real-field operations; physical
+uses may separately impose nonzero `ℏ` and Fermi energy. This file does not identify a finite
+regularized Středa calculation with the continuum limit.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -46,10 +49,10 @@ def metallicBerryWeightUV (m εF : ℝ) : ℝ :=
 
 /-- The occupation-derived finite-cutoff Berry weight in a form adapted to the `Λ → +∞` proof. -/
 theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow (m εF Λ : ℝ)
-    (hm : m ≠ 0) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
+    (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
       metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ) := by
-  rw [zeroTemperatureOccupiedBerryWeightCutoff_eq m εF Λ hm hmF hFΛ]
+  rw [zeroTemperatureOccupiedBerryWeightCutoff_eq m εF Λ hmF hFΛ]
   simp [metallicBerryWeightUV, div_eq_mul_inv]
   ring
 
@@ -66,14 +69,14 @@ private theorem tendsto_metallicBerryWeightUV_sub_correction_atTop (m εF : ℝ)
   simpa using tendsto_const_nhds.sub hCorrection
 
 /-- The canonical zero-temperature occupation-derived finite-cutoff Berry weight converges to the
-metallic continuum weight. -/
+metallic continuum weight, including the massless endpoint. -/
 theorem tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop (m εF : ℝ)
-    (hm : m ≠ 0) (hmF : |m| ≤ εF) :
+    (hmF : |m| ≤ εF) :
     Tendsto (zeroTemperatureOccupiedBerryWeightCutoff m εF) atTop
       (nhds (metallicBerryWeightUV m εF)) := by
   apply Tendsto.congr' ?_ (tendsto_metallicBerryWeightUV_sub_correction_atTop m εF)
   filter_upwards [eventually_ge_atTop εF] with Λ hFΛ
-  exact (zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow m εF Λ hm hmF hFΛ).symm
+  exact (zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow m εF Λ hmF hFΛ).symm
 
 /-- Berry/Kubo Hall prefactor written directly in the physical-momentum convention.
 
@@ -82,12 +85,16 @@ momentum integral. -/
 def intrinsicHallPrefactorFromMomentumMeasure (e hbar : ℝ) : ℝ :=
   -(e ^ 2) * hbar * (2 * Real.pi) * momentumMeasurePrefactor hbar
 
-/-- The physical-momentum measure normalization reduces the Berry/Kubo prefactor to `-e²/h`. -/
-theorem intrinsicHallPrefactorFromMomentumMeasure_eq (e hbar : ℝ) (hhbar : hbar ≠ 0) :
+/-- The physical-momentum measure normalization reduces the Berry/Kubo prefactor to `-e²/h` as an
+identity of totalized real-field expressions. -/
+theorem intrinsicHallPrefactorFromMomentumMeasure_eq (e hbar : ℝ) :
     intrinsicHallPrefactorFromMomentumMeasure e hbar =
       -(e ^ 2 / planckFromReduced hbar) := by
-  unfold intrinsicHallPrefactorFromMomentumMeasure momentumMeasurePrefactor planckFromReduced
-  field_simp [hhbar, Real.pi_ne_zero]
+  by_cases hhbar : hbar = 0
+  · simp [intrinsicHallPrefactorFromMomentumMeasure, momentumMeasurePrefactor,
+      planckFromReduced, hhbar]
+  · unfold intrinsicHallPrefactorFromMomentumMeasure momentumMeasurePrefactor planckFromReduced
+    field_simp [hhbar, Real.pi_ne_zero]
 
 /-- Finite-cutoff intrinsic Hall conductivity obtained from the canonical zero-temperature
 occupation-derived Berry weight. -/
@@ -100,24 +107,28 @@ def intrinsicHallConductivity (e hbar m εF : ℝ) : ℝ :=
   intrinsicHallPrefactorFromMomentumMeasure e hbar * metallicBerryWeightUV m εF
 
 /-- The occupation-derived finite-cutoff Hall conductivity converges to the clean metallic intrinsic
-response. -/
+response, including the massless endpoint. -/
 theorem tendsto_intrinsicHallConductivityCutoff_atTop (e hbar m εF : ℝ)
-    (hm : m ≠ 0) (hmF : |m| ≤ εF) :
+    (hmF : |m| ≤ εF) :
     Tendsto (intrinsicHallConductivityCutoff e hbar m εF) atTop
       (nhds (intrinsicHallConductivity e hbar m εF)) := by
   unfold intrinsicHallConductivityCutoff intrinsicHallConductivity
   exact tendsto_const_nhds.mul
-    (tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop m εF hm hmF)
+    (tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop m εF hmF)
 
-/-- Metallic massive-Dirac intrinsic AHE benchmark,
-`σxy^int = -(e²/2h) (m/εF)`, for nonzero `ℏ` and Fermi energy. -/
-theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ)
-    (hhbar : hbar ≠ 0) (hεF : εF ≠ 0) :
+/-- Massive-Dirac intrinsic AHE closed form,
+`σxy^int = -(e²/2h) (m/εF)`, stated for the totalized real-field operations. -/
+theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ) :
     intrinsicHallConductivity e hbar m εF =
       -(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF) := by
-  rw [intrinsicHallConductivity, intrinsicHallPrefactorFromMomentumMeasure_eq e hbar hhbar]
+  rw [intrinsicHallConductivity, intrinsicHallPrefactorFromMomentumMeasure_eq]
   unfold metallicBerryWeightUV
-  field_simp [hhbar, Real.pi_ne_zero, hεF]
+  by_cases hhbar : hbar = 0
+  · simp [planckFromReduced, hhbar]
+  · by_cases hεF : εF = 0
+    · simp [hεF]
+    · unfold planckFromReduced
+      field_simp [hhbar, hεF, Real.pi_ne_zero]
 
 end
 
