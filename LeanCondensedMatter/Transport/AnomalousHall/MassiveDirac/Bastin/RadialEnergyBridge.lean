@@ -13,7 +13,7 @@ The dominated-convergence theorem for the finite-broadening pair is formulated i
 `p`, while the existing clean intrinsic Hall benchmark is formulated in the positive Dirac energy
 `ε`.  This file closes that coordinate boundary explicitly.
 
-For positive mass, the radial dispersion never vanishes and
+For nonzero mass, the radial dispersion never vanishes and
 
 ```text
 dE/dp = v² p / E,
@@ -33,12 +33,12 @@ open scoped Interval
 
 /-- The radial clean pair density is the energy-coordinate density times `dE/dp`. -/
 theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
-    (band : Band) (e v m p : ℝ) (hm : 0 < m) :
+    (band : Band) (e v m p : ℝ) (hm : m ≠ 0) :
     radialCleanInterbandBastinPairLimitDensity band e v m p =
       cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
         radialEnergyDerivative v m p := by
   have hE : energy v m p 0 ≠ 0 :=
-    ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)
+    ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm)
   unfold radialCleanInterbandBastinPairLimitDensity
     cleanInterbandBastinPairLimitDensity cleanInterbandBastinPairRadialEnergyDensity
     radialBerryEnergyDensity radialEnergyDerivative
@@ -47,9 +47,9 @@ theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
     field_simp [hE]
 
 /-- The clean radial energy density is continuous on the positive-energy image of any radial
-momentum interval when `m > 0`. -/
+momentum interval when the mass is nonzero. -/
 theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
-    (band : Band) (e v m pMax : ℝ) (hm : 0 < m) :
+    (band : Band) (e v m pMax : ℝ) (hm : m ≠ 0) :
     ContinuousOn (cleanInterbandBastinPairRadialEnergyDensity band e m)
       ((fun p : ℝ => energy v m p 0) '' [[(0 : ℝ), pMax]]) := by
   unfold cleanInterbandBastinPairRadialEnergyDensity radialBerryEnergyDensity
@@ -57,15 +57,15 @@ theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
   apply ContinuousOn.mul continuousOn_const
   exact continuousOn_id.zpow₀ (-2) (fun x hx => Or.inl <| by
     rcases hx with ⟨p, _, rfl⟩
-    exact ne_of_gt (energy_pos_of_mass_pos v m p 0 hm))
+    exact ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm))
 
-/-- The clean radial momentum integral equals the existing positive-energy shell integral.
+/-- The clean radial momentum integral equals the corresponding positive-energy shell integral.
 This is the explicit formal version of `p dp = E dE / v²`. -/
 theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
-    (band : Band) (e v m pMax : ℝ) (hm : 0 < m) (hpMax : 0 ≤ pMax) :
+    (band : Band) (e v m pMax : ℝ) (hm : m ≠ 0) (hpMax : 0 ≤ pMax) :
     finiteRadialCleanInterbandBastinPairIntegral band e v m pMax =
       cleanInterbandBastinPairEnergyShellIntegral
-        band e m m (energy v m pMax 0) := by
+        band e m |m| (energy v m pMax 0) := by
   unfold finiteRadialCleanInterbandBastinPairIntegral
   rw [MeasureTheory.integral_Icc_eq_integral_Ioc]
   rw [← intervalIntegral.integral_of_le hpMax]
@@ -83,8 +83,8 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     (f := fun p : ℝ => energy v m p 0)
     (f' := radialEnergyDerivative v m)
     (g := cleanInterbandBastinPairRadialEnergyDensity band e m)
-    (fun p _ => hasDerivAt_energy_radial v m p hm.ne')
-    (continuous_radialEnergyDerivative v m hm.ne').continuousOn
+    (fun p _ => hasDerivAt_energy_radial v m p hm)
+    (continuous_radialEnergyDerivative v m hm).continuousOn
     (continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
       band e v m pMax hm)
   have hsub' :
@@ -96,9 +96,9 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     simpa only [Function.comp_apply] using hsub
   rw [hsub']
   unfold cleanInterbandBastinPairEnergyShellIntegral
-  have hzero : energy v m 0 0 = m := by
+  have hzero : energy v m 0 0 = |m| := by
     unfold energy energySq
-    simp [Real.sqrt_sq_eq_abs, abs_of_pos hm]
+    simp [Real.sqrt_sq_eq_abs]
   rw [hzero]
 
 end
