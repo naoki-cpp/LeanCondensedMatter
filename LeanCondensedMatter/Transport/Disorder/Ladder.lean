@@ -74,13 +74,12 @@ private theorem shiftedLadder_apply_resummedLadderVertex
     (hinvertible : IsUnit (1 - ladder))
     (bareVertex : H →L[ℂ] H) :
     (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex := by
-  have hmul :
-      (1 - ladder) *
-          (↑(hinvertible.unit⁻¹) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) = 1 := by
-    simpa using hinvertible.mul_val_inv
-  have happ := congrArg
-    (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator bareVertex) hmul
-  simpa [resummedLadderVertex] using happ
+  let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
+  have hmul : (1 - ladder) * inverse = 1 := by
+    simpa [inverse] using hinvertible.mul_val_inv
+  change ((1 - ladder) * inverse) bareVertex = bareVertex
+  rw [hmul]
+  simp
 
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
@@ -103,16 +102,17 @@ theorem eq_resummedLadderVertex_of_fixedPoint
   let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
   have hleft : inverse * (1 - ladder) = 1 := by
     simpa [inverse] using hinvertible.val_inv_mul
-  have hinjective : Function.Injective (1 - ladder) := by
+  have hinjective : Function.Injective
+      ((1 - ladder) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) := by
     intro left right heq
     have hleftApply : inverse ((1 - ladder) left) = left := by
-      have h := congrArg
-        (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator left) hleft
-      simpa using h
+      change (inverse * (1 - ladder)) left = left
+      rw [hleft]
+      simp
     have hrightApply : inverse ((1 - ladder) right) = right := by
-      have h := congrArg
-        (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator right) hleft
-      simpa using h
+      change (inverse * (1 - ladder)) right = right
+      rw [hleft]
+      simp
     calc
       left = inverse ((1 - ladder) left) := hleftApply.symm
       _ = inverse ((1 - ladder) right) := congrArg inverse heq
