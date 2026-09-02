@@ -20,6 +20,9 @@ namespace Bosonic
 
 variable {Mode : Type*}
 
+/-- Re-export the statistics-independent label name without introducing another declaration. -/
+export Common (QuarticVertexLabel)
+
 /-- The ordered bosonic quartic vertex operator. -/
 noncomputable def quarticVertexOperator (q : Common.QuarticVertexLabel Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
