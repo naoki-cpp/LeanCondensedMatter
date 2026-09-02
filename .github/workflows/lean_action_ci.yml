@@ -57,7 +57,7 @@ jobs:
           path: .lake/build
           key: ${{ steps.project-cache.outputs.cache-primary-key }}
 
-      # These three checks all consume the successful compiled environment but are diagnostically
+      # These checks all consume the successful compiled environment but are diagnostically
       # independent. `always()` prevents one failure from hiding the remaining results.
       - name: Check compiled architecture
         if: always() && steps.lean-build.outcome == 'success'
@@ -66,6 +66,10 @@ jobs:
       - name: Check compiled declarations for sorryAx
         if: always() && steps.lean-build.outcome == 'success'
         run: lake env lean scripts/CheckNoSorry.lean
+
+      - name: Check duplicate declarations
+        if: always() && steps.lean-build.outcome == 'success'
+        run: lake env lean scripts/CheckDuplicates.lean
 
       - name: Lint public library
         if: always() && steps.lean-build.outcome == 'success'
