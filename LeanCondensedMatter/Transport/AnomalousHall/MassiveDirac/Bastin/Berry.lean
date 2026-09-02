@@ -170,8 +170,20 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
   unfold regularizedBastinTraceIntegrand projectorBastinTraceIntegrand
     projectorBastinOperatorIntegrand regularizedBastinOperatorIntegrand
     retardedAdvancedResolventDifference
-  rw [retardedResolvent_eq_projectorResolvent v m px py probeEnergy broadening hE hbroadening]
-  rw [advancedResolvent_eq_projectorResolvent v m px py probeEnergy broadening hE hbroadening]
+  have hretarded :
+      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
+    simpa only [retardedResolvent, retardedSpectralParameter] using
+      resolvent_spectralParameterOfRegulator_eq_projectorResolvent
+        v m px py probeEnergy broadening hE (ne_of_gt hbroadening)
+  have hadvanced :
+      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
+    simpa only [advancedResolvent, advancedSpectralParameter] using
+      resolvent_spectralParameterOfRegulator_eq_projectorResolvent
+        v m px py probeEnergy (-broadening) hE
+        (neg_ne_zero.mpr (ne_of_gt hbroadening))
+  rw [hretarded, hadvanced]
   congr 1
   noncomm_ring
 
