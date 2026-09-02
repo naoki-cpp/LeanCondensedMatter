@@ -184,7 +184,8 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
     rw [spectralResolvent_apply_purePointBasis_at_energy
       system data .advanced energy broadening (ne_of_gt hbroadening) n]
     rw [sub_smul]
-    rfl
+    simp only [spectralParameter_retarded, spectralParameter_advanced,
+      stredaRetardedSpectralFactor, stredaAdvancedSpectralFactor]
   rw [inner_purePointBasis_mul_diagonal_mul_mul_diagonal
     system data current₁
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2)
