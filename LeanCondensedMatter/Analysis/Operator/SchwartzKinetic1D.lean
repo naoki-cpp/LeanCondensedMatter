@@ -112,13 +112,9 @@ noncomputable def kineticOperator (κ : ℝ) : Space →ₗ[ℂ] Space :=
 noncomputable def schrodingerOperator (κ : ℝ) (potential : Space) : Space →ₗ[ℂ] Space :=
   kineticOperator κ + multiplicationOperator potential
 
-/-- The common scalar `i/ℏ` used in the Heisenberg derivation. -/
-noncomputable def heisenbergScale (ℏ : ℝ) : ℂ :=
-  Complex.I / (ℏ : ℂ)
-
 /-- Velocity associated with `H = -κ D² + V`, namely `v = -2 i κ D / ℏ`. -/
 noncomputable def velocityOperator (ℏ κ : ℝ) : Space →ₗ[ℂ] Space :=
-  ((2 : ℂ) * heisenbergScale ℏ * (-(κ : ℂ))) • derivative
+  ((2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ))) • derivative
 
 /-- Multiplication operators commute on Schwartz space. -/
 theorem multiplicationOperator_comp_comm (f g : Space) :
@@ -154,7 +150,7 @@ theorem schrodinger_localization_commutator_eq_kinetic
 `(i/ℏ)[H,M_f] = 1/2 {M_(D f),v}` on complex Schwartz space. -/
 theorem heisenberg_localization_eq_symmetrized_velocity
     (ℏ κ : ℝ) (potential f : Space) :
-    heisenbergScale ℏ •
+    (Complex.I / (ℏ : ℂ)) •
         ((schrodingerOperator κ potential).comp (multiplicationOperator f) -
           (multiplicationOperator f).comp (schrodingerOperator κ potential)) =
       (1 / 2 : ℂ) •

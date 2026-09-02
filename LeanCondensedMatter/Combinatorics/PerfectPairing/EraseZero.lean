@@ -70,7 +70,7 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
   refine
     { partner := newPartner
       partner_involutive := ?_
-      partner_ne_self := ?_ }
+      partner_ne := ?_ }
   · intro i
     dsimp [newPartner]
     rw [e.apply_symm_apply]

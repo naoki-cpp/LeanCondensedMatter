@@ -85,28 +85,6 @@ theorem freeGibbsDysonCoeff_succ
               (Common.dysonCoeff (freeEigenvalue ε) V order σ)) :=
   H.expectation_succ order t
 
-omit [Fintype Mode] in
-/-- The analytic boundary visibly supplies Gibbs-domain membership for every Dyson coefficient. -/
-theorem freeGibbsDysonCoeff_mem
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (H : FreeGibbsDysonIntegralBoundary ε β V)
-    (order : ℕ) (t : ℝ) :
-    Common.dysonCoeff (freeEigenvalue ε) V order t ∈ freeGibbsDomain ε β :=
-  H.coeff_mem order t
-
-omit [Fintype Mode] in
-/-- The analytic boundary explicitly records closure of the Gibbs domain under the interaction-picture
-product used at every recursive Dyson order. -/
-theorem freeGibbsDysonIntegrand_mem
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (H : FreeGibbsDysonIntegralBoundary ε β V)
-    (order : ℕ) (σ : ℝ) :
-    (interactionPicture ε V σ).comp
-        (Common.dysonCoeff (freeEigenvalue ε) V order σ) ∈ freeGibbsDomain ε β :=
-  H.integrand_mem order σ
-
 end
 end Bosonic
 end SecondQuantization

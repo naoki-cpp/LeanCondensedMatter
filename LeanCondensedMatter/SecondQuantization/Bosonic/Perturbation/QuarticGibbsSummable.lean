@@ -19,6 +19,8 @@ all-label quartic interaction.
 namespace SecondQuantization
 namespace Bosonic
 
+open Common
+
 noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]

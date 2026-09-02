@@ -53,8 +53,7 @@ theorem schwartzHeisenbergLocalizationFactorsThroughDifferential1D
   simpa [heisenbergLocalizationFunctional, heisenbergScale,
     localizationCommutatorFunctional, _root_.ConservationLaw.linearCommutator,
     velocityLocalizationFlux, symmetrizedProductRightLinear,
-    _root_.ConservationLaw.symmetrizedProduct,
-    SchwartzKinetic1D.heisenbergScale] using
+    _root_.ConservationLaw.symmetrizedProduct] using
     (SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
 
 /-- Probability transport (`m = I`) on the Schwartz Schrödinger model is locally represented by the

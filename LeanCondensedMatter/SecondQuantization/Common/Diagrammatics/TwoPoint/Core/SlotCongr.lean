@@ -109,7 +109,7 @@ noncomputable def TwoPointDiagram.slotCongr (e : ↥T ≃ ↥U)
         simp [Equiv.permCongr_apply],
        by
         intro i hi
-        apply d.pairing.partner_ne_self ((twoPointLegCongr e).symm i)
+        apply d.pairing.partner_ne ((twoPointLegCongr e).symm i)
         have := congrArg (twoPointLegCongr e).symm hi
         simpa [Equiv.permCongr_apply] using this⟩
 

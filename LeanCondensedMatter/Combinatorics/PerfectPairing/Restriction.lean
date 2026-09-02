@@ -41,7 +41,7 @@ private theorem Pairing.partnerSubtypePerm_ne_self {n : ℕ} (pairing : Pairing 
     (p : Fin (2 * n) → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i))
     (i : {i : Fin (2 * n) // p i}) :
     pairing.partnerSubtypePerm p hpartner i ≠ i := fun h =>
-  pairing.partner_ne_self i (by rw [← pairing.partnerSubtypePerm_val p hpartner, h])
+  pairing.partner_ne i (by rw [← pairing.partnerSubtypePerm_val p hpartner, h])
 
 /-- Restricting a pairing partner to a partner-invariant subtype preserves the pairing property. -/
 theorem Pairing.isPairing_partnerSubtypePerm {n : ℕ} (pairing : Pairing n)

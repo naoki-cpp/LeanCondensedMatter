@@ -18,7 +18,7 @@ def Pairing.relabel {n : ℕ} (P : Pairing n) (e : Equiv.Perm (Fin (2 * n))) : P
   partner_involutive := by
     intro i
     simp
-  partner_ne_self := by
+  partner_ne := by
     intro i h
     apply P.partner_ne (e i)
     have := congrArg e h

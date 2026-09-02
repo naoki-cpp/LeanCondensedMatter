@@ -15,6 +15,8 @@ single quartic vertex into the convergence-aware free Gibbs domain.
 namespace SecondQuantization
 namespace Bosonic
 
+open Common
+
 noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]

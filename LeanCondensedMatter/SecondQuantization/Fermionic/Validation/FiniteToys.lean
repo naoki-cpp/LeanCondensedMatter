@@ -29,15 +29,12 @@ open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
-/-- Concrete two-level Hilbert space. -/
-abbrev TwoLevelSpace := EuclideanSpace ℂ (Fin 2)
-
-/-- Canonical Hilbert basis of the two-level space. -/
-noncomputable def twoLevelBasis : HilbertBasis (Fin 2) ℂ TwoLevelSpace :=
+/-- Canonical Hilbert basis of the concrete two-level space. -/
+noncomputable def twoLevelBasis : HilbertBasis (Fin 2) ℂ (EuclideanSpace ℂ (Fin 2)) :=
   (EuclideanSpace.basisFun (Fin 2) ℂ).toHilbertBasis
 
 /-- Degenerate two-level free system with `H = 0` and `ℏ = 1`. -/
-noncomputable def twoLevelSystem : BoundedFreeSystem TwoLevelSpace where
+noncomputable def twoLevelSystem : BoundedFreeSystem (EuclideanSpace ℂ (Fin 2)) where
   hamiltonian := ⟨0, by simp⟩
   hbar := 1
   hbar_pos := by norm_num
@@ -74,15 +71,17 @@ theorem twoLevel_probability_symmetry :
   rfl
 
 /-- Independently supplied zero current on the two-level space. -/
-def twoLevelZeroCurrent : TwoLevelSpace →L[ℂ] TwoLevelSpace :=
+def twoLevelZeroCurrent :
+    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   0
 
 /-- Independently supplied scalar current on the two-level space. -/
-def twoLevelScalarCurrent : TwoLevelSpace →L[ℂ] TwoLevelSpace :=
+def twoLevelScalarCurrent :
+    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   1
 
 @[simp]
-theorem twoLevelScalarCurrent_apply (ψ : TwoLevelSpace) :
+theorem twoLevelScalarCurrent_apply (ψ : EuclideanSpace ℂ (Fin 2)) :
     twoLevelScalarCurrent ψ = ψ := by
   simp [twoLevelScalarCurrent]
 

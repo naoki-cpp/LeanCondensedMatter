@@ -47,17 +47,17 @@ structure Pairing (n : ℕ) where
   /-- The fixed-point-free involution sending each position to its paired partner. -/
   partner : Equiv.Perm (Fin (2 * n))
   partner_involutive : Function.Involutive partner
-  partner_ne_self : ∀ i, partner i ≠ i
+  partner_ne : ∀ i, partner i ≠ i
 
 /-- The internal equivalence used to enumerate `Pairing n` through finite permutations. -/
 private def pairingEquivSubtype (n : ℕ) :
     Pairing n ≃ {partner : Equiv.Perm (Fin (2 * n)) // IsPairing partner} where
   toFun pairing :=
-    ⟨pairing.partner, pairing.partner_involutive, pairing.partner_ne_self⟩
+    ⟨pairing.partner, pairing.partner_involutive, pairing.partner_ne⟩
   invFun pairing :=
     { partner := pairing.1
       partner_involutive := pairing.2.1
-      partner_ne_self := pairing.2.2 }
+      partner_ne := pairing.2.2 }
   left_inv pairing := by
     cases pairing
     rfl
@@ -85,16 +85,12 @@ theorem Pairing.partner_partner (pairing : Pairing n) (i : Fin (2 * n)) :
     pairing.partner (pairing.partner i) = i :=
   pairing.partner_involutive i
 
-theorem Pairing.partner_ne (pairing : Pairing n) (i : Fin (2 * n)) :
-    pairing.partner i ≠ i :=
-  pairing.partner_ne_self i
-
 /-- Construct the stable `Pairing` interface from an internally checked partner permutation. -/
 def Pairing.ofPartner (partner : Equiv.Perm (Fin (2 * n))) (hpartner : IsPairing partner) :
     Pairing n where
   partner := partner
   partner_involutive := hpartner.1
-  partner_ne_self := hpartner.2
+  partner_ne := hpartner.2
 
 /-- The finite enumeration of all perfect pairings of `Fin (2 * n)`. -/
 def allPairings (n : ℕ) : Finset (Pairing n) := Finset.univ
