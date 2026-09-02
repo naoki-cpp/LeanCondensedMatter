@@ -34,21 +34,17 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
       (diagonalExpectationValue T hTself x) := by
   set e := eigenvectorFamily hT with he_def
   have hs := (hasSum_eigenvectorFamily hT hTself.isSymmetric x).mapL (innerSL ℂ x)
-  have heq :
-      (fun a : EigenvectorIndex T => (innerSL ℂ x)
-        ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a)) =
-      (fun a => ((a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2 : ℝ) : ℂ)) := by
-    funext a
-    have hstep : (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ)
-        = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
-      simp
-    rw [hstep, inner_mul_inner_conj_eq_norm_sq, ← Complex.ofReal_mul]
-  rw [← he_def, heq] at hs
+  rw [← he_def] at hs
   have hs' :
       HasSum (fun a : EigenvectorIndex T =>
         ((a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2 : ℝ) : ℂ))
         (inner ℂ x (T x)) := by
-    simpa using hs
+    simpa using HasSum.congr_fun hs fun a => by
+      symm
+      have hstep : (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ)
+          = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
+        simp
+      rw [hstep, inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_pow]
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
   rw [HasSum] at hs' ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
@@ -85,14 +81,11 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
   have habs : Summable (fun p : EigenvectorIndex T × ι =>
       |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) :=
     (summable_prod_of_nonneg (fun p => by positivity)).mpr ⟨hcond1, hcond2⟩
-  have hg : Summable (Function.uncurry f) := by
-    have heqabs : (fun p : EigenvectorIndex T × ι => |Function.uncurry f p|) =
-        (fun p : EigenvectorIndex T × ι =>
-          |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) := by
-      funext p
+  have hg : Summable (Function.uncurry f) :=
+    Summable.of_abs <| habs.congr fun p => by
+      symm
       rw [Function.uncurry, hf_def]
       rw [abs_mul, abs_of_nonneg (sq_nonneg ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖)]
-    exact Summable.of_abs (by rw [heqabs]; exact habs)
   have hpointA : ∀ a : EigenvectorIndex T, HasSum (f a) a.1.1 := fun a => by
     have hsum := (hparseval a).mul_left (a.1.1 : ℝ)
     rwa [mul_one] at hsum
@@ -120,19 +113,13 @@ theorem spectralTrace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym
   have hs1 := hasSum_diagonalExpectationValue_eq_spectralTrace hT hTself h d
   have hs2 := hasSum_diagonalExpectationValue_eq_spectralTrace hT' hT'self h' d
   have hs3 := hasSum_diagonalExpectationValue_eq_spectralTrace hTT' hsumself hsum d
-  have hadd := hs1.add hs2
-  have heq :
-      (fun i => diagonalExpectationValue T hTself (d i) +
-        diagonalExpectationValue T' hT'self (d i)) =
-      (fun i => diagonalExpectationValue (T + T') hsumself (d i)) := by
-    funext i
-    simpa using (diagonalExpectationValue_add T T' hTself hT'self (d i)).symm
-  rw [heq] at hadd
+  have hadd := HasSum.congr_fun (hs1.add hs2) fun i =>
+    diagonalExpectationValue_add T T' hTself hT'self (d i)
   exact (hadd.unique hs3).symm
 
 /-- Cyclicity of `spectralTrace` for two products satisfying the required hypotheses. -/
-theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
-    (hTsym : T.IsSymmetric) (_hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
+theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
+    (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
     (hTT' : IsCompactOperator (T * T')) (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric)
     (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
     (h1 : HasSummableRealEigenvalues (T * T'))
@@ -145,32 +132,32 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hT'Tsym
   have hs1 := hasSum_diagonalExpectationValue_eq_spectralTrace hTT' hTT'self h1 d
   have hs2 := hasSum_diagonalExpectationValue_eq_spectralTrace hT'T hT'Tself h2 d
-  have heq :
-      (fun i => diagonalExpectationValue (T * T') hTT'self (d i)) =
-      (fun i => diagonalExpectationValue (T' * T) hT'Tself (d i)) := by
-    funext i
-    apply diagonalExpectationValue_eq_of_inner_eq hTT'self hT'Tself (d i)
-    simp only [mul_apply_eq_comp]
-    have h1' : (inner ℂ (d i) (T (T' (d i))) : ℂ) =
-        inner ℂ (T (d i)) (T' (d i)) :=
-      (hTsym (d i) (T' (d i))).symm
-    have h2' : (inner ℂ (d i) (T' (T (d i))) : ℂ) =
-        inner ℂ (T' (d i)) (T (d i)) :=
-      (hT'sym (d i) (T (d i))).symm
-    have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
-      change IsSelfAdjoint (inner ℂ (d i) ((T * T') (d i)))
-      rw [← coe_diagonalExpectationValue_right (T * T') hTT'self (d i)]
-      exact Complex.conj_ofReal _
-    have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
-      rw [← h1']
-      exact hzdiag
-    have hconj : (inner ℂ (T' (d i)) (T (d i)) : ℂ) =
-        starRingEnd ℂ (inner ℂ (T (d i)) (T' (d i))) :=
-      (inner_conj_symm (T' (d i)) (T (d i))).symm
-    rw [h1', h2', hconj]
-    exact hz.symm
-  rw [heq] at hs1
-  exact hs1.unique hs2
+  have hs1' :
+      HasSum (fun i => diagonalExpectationValue (T' * T) hT'Tself (d i))
+        (spectralTrace (T * T')) :=
+    HasSum.congr_fun hs1 fun i => by
+      symm
+      apply diagonalExpectationValue_eq_of_inner_eq hTT'self hT'Tself (d i)
+      simp only [mul_apply_eq_comp]
+      have h1' : (inner ℂ (d i) (T (T' (d i))) : ℂ) =
+          inner ℂ (T (d i)) (T' (d i)) :=
+        (hTsym (d i) (T' (d i))).symm
+      have h2' : (inner ℂ (d i) (T' (T (d i))) : ℂ) =
+          inner ℂ (T' (d i)) (T (d i)) :=
+        (hT'sym (d i) (T (d i))).symm
+      have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
+        change IsSelfAdjoint (inner ℂ (d i) ((T * T') (d i)))
+        rw [← coe_diagonalExpectationValue_right (T * T') hTT'self (d i)]
+        exact Complex.conj_ofReal _
+      have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
+        rw [← h1']
+        exact hzdiag
+      have hconj : (inner ℂ (T' (d i)) (T (d i)) : ℂ) =
+          starRingEnd ℂ (inner ℂ (T (d i)) (T' (d i))) :=
+        (inner_conj_symm (T' (d i)) (T (d i))).symm
+      rw [h1', h2', hconj]
+      exact hz.symm
+  exact hs1'.unique hs2
 
 /-- The sum of lossless diagonal expectation values of a positive spectrally summable operator
 against any orthonormal family is at most its spectral trace. -/

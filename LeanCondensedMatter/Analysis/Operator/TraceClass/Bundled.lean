@@ -103,14 +103,14 @@ theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
     hT.compact hT.symmetric hT'.compact hT'.symmetric hadd.compact hadd.symmetric
     hT.summable hT'.summable hadd.summable
 
-/-- Cyclicity of the bundled spectral trace for two products. -/
-theorem trace_comp_comm (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
+/-- Cyclicity of the bundled spectral trace for two products. The individual factors only need to
+be symmetric; compactness and summability are required for the two products whose traces appear. -/
+theorem trace_comp_comm (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
     (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
     hTT'.trace = hT'T.trace := by
   rw [hTT'.trace_eq_spectralTrace, hT'T.trace_eq_spectralTrace]
   exact ContinuousLinearMap.spectralTrace_comp_comm
-    hT.compact hT.symmetric hT'.compact hT'.symmetric
-    hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
+    hTsym hT'sym hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
     hTT'.summable hT'T.summable
 
 end SpectralTraceClass

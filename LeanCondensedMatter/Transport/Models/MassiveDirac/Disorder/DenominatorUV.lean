@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Ultraviolet behavior of the continuum Born denominator integral
 
-This Phase 4 slice isolates the large-cutoff behavior of the exact finite-broadening real part of the
+This module isolates the large-cutoff behavior of the exact finite-broadening real part of the
 shared massive-Dirac continuum Born denominator integral.  The quartic real denominator polynomial
 proved in `DenominatorEvaluation.lean` tends to `+∞`; consequently the radial denominator norm and
 its real logarithm tend to `+∞`.  Since the exact real part of `J_s` carries the negative prefactor

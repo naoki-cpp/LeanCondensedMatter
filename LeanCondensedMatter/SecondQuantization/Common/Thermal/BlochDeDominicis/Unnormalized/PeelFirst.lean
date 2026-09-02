@@ -8,10 +8,9 @@ set_option linter.style.header false
 
 The general operator-algebra step behind the finite-temperature Bloch–de Dominicis induction
 (`notes/roadmaps/second-quantization.md`, and the project's physics reference notes,
-`quantum-statistical-mechanics.tex`'s Bloch–De Dominicis theorem proof): generalizes
-`Common/Thermal/BlochDeDominicis/Unnormalized/FourPointReduction.lean`'s hand-unrolled 3-operator peel
-(`comp_comp_comp_eq_of_zetaCommutator`) to an arbitrary-length list of operators, by induction on
-the list rather than by hand.
+`quantum-statistical-mechanics.tex`'s Bloch–De Dominicis theorem proof): peel the first operator
+through an arbitrary-length list by induction rather than maintaining separately hand-unrolled
+fixed-length identities.
 
 Given `C₁` and a list `l` of `(operator Bⱼ, scalar ζ-commutator coefficient cⱼ)` pairs satisfying
 `[C₁, Bⱼ]_ζ = cⱼ•id` (`Common.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as `cⱼ • id + ζ•(BⱼC₁)`
@@ -28,8 +27,8 @@ notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — `PeelTerms
 connects the two.
 
 **Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
-here. The trace-level KMS-rotation wrapping (solving the resulting self-referential trace
-equation, the way `FourPointReduction.lean` does for the 3-operator case) is done separately, in
+here. The trace-level KMS-rotation wrapping that solves the resulting self-referential trace
+equation is done separately in
 `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`.
 
 **`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s

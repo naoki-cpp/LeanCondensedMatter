@@ -42,13 +42,9 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
         linarith [hpos i]
       have h := hasSum_coe_mul_geometric_of_norm_lt_one hr
-      have heq : (fun k : ℕ => (k : ℝ) * oneModeBoltzmannWeight β (ε i) k) =
-          fun k : ℕ => (k : ℝ) * Real.exp (-β * ε i) ^ k := by
-        funext k
+      exact HasSum.congr_fun h fun k => by
         unfold oneModeBoltzmannWeight
         rw [Real.exp_nat_mul]
-      rw [heq]
-      exact h
     · exact hasSum_oneModeBoltzmannWeight (hpos i)
   have hnn' : ∀ i n, 0 ≤ g' i n := by
     intro i n
@@ -64,9 +60,8 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
   rw [← Finset.mul_prod_erase Finset.univ b' (Finset.mem_univ j), hb'def] at H
   simp only [if_true] at H
   rw [Finset.prod_congr rfl hprod] at H
-  have heq : (fun n : Occupation Mode => ∏ i, g' i (n i)) =
-      (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) := by
-    funext n
+  exact HasSum.congr_fun H fun n => by
+    symm
     rw [← Finset.mul_prod_erase Finset.univ (fun i => g' i (n i)) (Finset.mem_univ j), hg'def]
     simp only [if_true]
     have hrest : ∀ i, i ∈ Finset.univ.erase j →
@@ -75,7 +70,6 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
     rw [Finset.prod_congr rfl hrest, mul_assoc, boltzmannWeight_eq_prod,
       Finset.mul_prod_erase Finset.univ (fun i => oneModeBoltzmannWeight β (ε i) (n i))
         (Finset.mem_univ j)]
-  rwa [heq] at H
 
 omit [Fintype Mode] in
 /-- The particle-number-weighted free Boltzmann series is summable for any finite mode type. -/

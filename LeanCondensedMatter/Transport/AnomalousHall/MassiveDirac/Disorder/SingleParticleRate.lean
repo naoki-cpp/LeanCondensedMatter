@@ -50,6 +50,24 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_eq
     continuumBornUpperBandDampingEnergy
   (field_simp [hvelocity, hhbar, hfermiNe]; ring)
 
+/-- The Born single-particle scattering rate is nonzero whenever the common Born prefactors are
+nonzero in the strict metallic regime. -/
+theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
+    (v m fermiEnergy disorderStrength hbar : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
+    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    continuumBornUpperBandSingleParticleScatteringRate
+      v m fermiEnergy disorderStrength hbar ≠ 0 := by
+  rw [continuumBornUpperBandSingleParticleScatteringRate_eq
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
+  apply mul_ne_zero
+  · exact div_ne_zero hdisorder
+      (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 3 hhbar))
+        (pow_ne_zero 2 hvelocity))
+  · have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
+    have hterm : 0 < fermiEnergy + m ^ 2 / fermiEnergy := by positivity
+    exact ne_of_gt hterm
+
 /-- The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder
 strength in the strict metallic regime. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_pos
@@ -96,21 +114,19 @@ theorem continuumBornUpperBandSingleParticleLifetime_pos
     (continuumBornUpperBandSingleParticleScatteringRate_pos
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
 
-/-- The derived scattering rate and lifetime are reciprocal in the physical metallic regime. -/
+/-- The derived scattering rate and lifetime are reciprocal whenever the rate prefactors are
+nonzero. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandSingleParticleScatteringRate
         v m fermiEnergy disorderStrength hbar *
       continuumBornUpperBandSingleParticleLifetime
         v m fermiEnergy disorderStrength hbar = 1 := by
-  have hrateNe :
-      continuumBornUpperBandSingleParticleScatteringRate
-          v m fermiEnergy disorderStrength hbar ≠ 0 :=
-    ne_of_gt
-      (continuumBornUpperBandSingleParticleScatteringRate_pos
-        v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
+  have hrateNe :=
+    continuumBornUpperBandSingleParticleScatteringRate_ne_zero
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF
   unfold continuumBornUpperBandSingleParticleLifetime
   simp [hrateNe]
 
@@ -118,21 +134,18 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime
 `Γ_Born = ℏ / (2 τ_sp)`. -/
 theorem continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandDampingEnergy
         v m fermiEnergy disorderStrength hbar =
       hbar /
         (2 * continuumBornUpperBandSingleParticleLifetime
           v m fermiEnergy disorderStrength hbar) := by
-  have hratePos :=
-    continuumBornUpperBandSingleParticleScatteringRate_pos
+  have hrateNe :=
+    continuumBornUpperBandSingleParticleScatteringRate_ne_zero
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF
-  have hrateNe :
-      continuumBornUpperBandSingleParticleScatteringRate
-          v m fermiEnergy disorderStrength hbar ≠ 0 := ne_of_gt hratePos
   rw [continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate
-    v m fermiEnergy disorderStrength hbar (ne_of_gt hhbar)]
+    v m fermiEnergy disorderStrength hbar hhbar]
   unfold continuumBornUpperBandSingleParticleLifetime
   field_simp [hrateNe]
 

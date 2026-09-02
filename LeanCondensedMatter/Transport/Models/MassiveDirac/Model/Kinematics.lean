@@ -44,23 +44,37 @@ theorem energy_nonneg (v m px py : ℝ) :
     0 ≤ energy v m px py := by
   exact Real.sqrt_nonneg _
 
-/-- For nonnegative mass, the massive-Dirac energy is bounded below by the mass uniformly in
-momentum. -/
-theorem mass_le_energy (v m px py : ℝ) (_hm : 0 ≤ m) :
+/-- The massive-Dirac energy is bounded below by the signed mass uniformly in momentum. -/
+theorem mass_le_energy (v m px py : ℝ) :
     m ≤ energy v m px py := by
-  have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
-    positivity
-  have hsq : m ^ 2 ≤ energy v m px py ^ 2 := by
+  by_cases hm : 0 ≤ m
+  · have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
+      positivity
+    have hsq : m ^ 2 ≤ energy v m px py ^ 2 := by
+      rw [energy_sq]
+      unfold energySq
+      linarith
+    have hE := energy_nonneg v m px py
+    nlinarith
+  · have hm' : m < 0 := lt_of_not_ge hm
+    exact hm'.le.trans (energy_nonneg v m px py)
+
+/-- Any nonzero Dirac mass keeps the model uniformly away from the Dirac degeneracy. -/
+theorem energy_pos_of_mass_ne_zero (v m px py : ℝ) (hm : m ≠ 0) :
+    0 < energy v m px py := by
+  have hmSq : 0 < m ^ 2 := sq_pos_of_ne_zero hm
+  have hsq : 0 < energy v m px py ^ 2 := by
     rw [energy_sq]
     unfold energySq
+    have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by positivity
     linarith
   have hE := energy_nonneg v m px py
-  nlinarith [_hm]
+  nlinarith
 
-/-- For positive mass the model stays uniformly away from the Dirac degeneracy. -/
+/-- Positive mass is a physical-domain specialization of nonzero-mass nondegeneracy. -/
 theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
     0 < energy v m px py := by
-  exact lt_of_lt_of_le hm (mass_le_energy v m px py hm.le)
+  exact energy_pos_of_mass_ne_zero v m px py (ne_of_gt hm)
 
 /-- The massive-Dirac dispersion polynomial is radial in polar momentum coordinates. -/
 @[simp] theorem energySq_polar (v m p θ : ℝ) :
@@ -85,9 +99,9 @@ theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
 def radialEnergyDerivative (v m p : ℝ) : ℝ :=
   v ^ 2 * p / energy v m p 0
 
-/-- The positive radial massive-Dirac dispersion has derivative `v² p / E` when `m > 0`. -/
+/-- The positive radial massive-Dirac dispersion has derivative `v² p / E` for nonzero mass. -/
 theorem hasDerivAt_energy_radial
-    (v m p : ℝ) (hm : 0 < m) :
+    (v m p : ℝ) (hm : m ≠ 0) :
     HasDerivAt (fun q : ℝ => energy v m q 0) (radialEnergyDerivative v m p) p := by
   have hpow : HasDerivAt (fun q : ℝ => q ^ 2) (2 * p) p := by
     simpa using (hasDerivAt_pow 2 p)
@@ -97,24 +111,25 @@ theorem hasDerivAt_energy_radial
   have hpoly :
       HasDerivAt (fun q : ℝ => energySq v m q 0) (v ^ 2 * (2 * p)) p := by
     simpa [energySq] using hmul.add_const (m ^ 2)
+  have hmSq : 0 < m ^ 2 := sq_pos_of_ne_zero hm
   have hsq_ne : energySq v m p 0 ≠ 0 := by
     unfold energySq
     positivity
   have hsqrt := hpoly.sqrt hsq_ne
   unfold radialEnergyDerivative energy
   convert hsqrt using 1
-  field_simp [ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)]
+  field_simp [ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm)]
 
-/-- The radial energy derivative is continuous for positive mass. -/
+/-- The radial energy derivative is continuous for nonzero mass. -/
 theorem continuous_radialEnergyDerivative
-    (v m : ℝ) (hm : 0 < m) :
+    (v m : ℝ) (hm : m ≠ 0) :
     Continuous (radialEnergyDerivative v m) := by
   unfold radialEnergyDerivative
   have hE : Continuous (fun p : ℝ => energy v m p 0) := by
     unfold energy energySq
     fun_prop
   exact (continuous_const.mul continuous_id).div hE
-    (fun p => ne_of_gt (energy_pos_of_mass_pos v m p 0 hm))
+    (fun p => ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm))
 
 /-- `x` component obtained by projecting the radial group velocity onto polar angle `θ`. -/
 def radialGroupVelocityX (v m p θ : ℝ) : ℝ :=

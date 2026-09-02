@@ -52,23 +52,26 @@ def upperBandFermiSurfaceDensityOfStates
     (2 * Real.pi * metallicFermiRadius v m fermiEnergy /
       |radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy)|)
 
-/-- In the strict metallic regime, the Fermi-circle Jacobian gives the single-cone upper-band DOS
+/-- In the strict metallic regime `|m| < ε_F`, the Fermi-circle Jacobian gives the single-cone
+upper-band DOS
 
 `D_F = ε_F / (2π ℏ² v²)`.
 -/
 theorem upperBandFermiSurfaceDensityOfStates_eq
     (hbar v m fermiEnergy : ℝ) (hhbar : hbar ≠ 0) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     upperBandFermiSurfaceDensityOfStates hbar v m fermiEnergy =
       fermiEnergy / (2 * Real.pi * hbar ^ 2 * v ^ 2) := by
-  have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
+  have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hplus : 0 < fermiEnergy + |m| :=
+    add_pos_of_pos_of_nonneg hfermiPos (abs_nonneg m)
+  have hprod : 0 < (fermiEnergy - |m|) * (fermiEnergy + |m|) :=
+    mul_pos (sub_pos.mpr hmF) hplus
   have hgap : 0 < fermiEnergy ^ 2 - m ^ 2 := by
-    have hsum : 0 < fermiEnergy + m := by linarith
-    have hprod : 0 < (fermiEnergy - m) * (fermiEnergy + m) :=
-      mul_pos (sub_pos.mpr hmF) hsum
+    rw [← sq_abs m]
     nlinarith
   have hpFSq : 0 < metallicFermiRadius v m fermiEnergy ^ 2 := by
-    rw [metallicFermiRadius_sq v m fermiEnergy hm hmF.le]
+    rw [metallicFermiRadius_sq v m fermiEnergy hmF.le]
     exact div_pos hgap (sq_pos_of_ne_zero hv)
   have hpFne : metallicFermiRadius v m fermiEnergy ≠ 0 := by
     intro hzero
@@ -79,14 +82,14 @@ theorem upperBandFermiSurfaceDensityOfStates_eq
   have hderivpos :
       0 < radialEnergyDerivative v m (metallicFermiRadius v m fermiEnergy) := by
     unfold radialEnergyDerivative
-    rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
+    rw [energy_metallicFermiRadius v m fermiEnergy hv hmF.le]
     exact div_pos (mul_pos (sq_pos_of_ne_zero hv) hpFpos) hfermiPos
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   unfold upperBandFermiSurfaceDensityOfStates momentumMeasurePrefactor
   rw [abs_of_pos hderivpos]
   unfold radialEnergyDerivative
-  rw [energy_metallicFermiRadius v m fermiEnergy hv hm hmF.le]
+  rw [energy_metallicFermiRadius v m fermiEnergy hv hmF.le]
   field_simp [hhbar, hv, hpFne, hfermiNe, hpi]
 
 /-- Zero-temperature Fermi-surface relaxation-time-approximation benchmark for the longitudinal
@@ -111,15 +114,16 @@ theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_eq
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime)
     (hhbar : hbar ≠ 0) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     zeroTemperatureRelaxationTimeLongitudinalConductivity
         e hbar v m fermiEnergy transportLifetime =
       e ^ 2 * transportLifetime.lifetime * (fermiEnergy ^ 2 - m ^ 2) /
         (4 * Real.pi * hbar ^ 2 * fermiEnergy) := by
+  have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   unfold zeroTemperatureRelaxationTimeLongitudinalConductivity
-  rw [upperBandFermiSurfaceDensityOfStates_eq hbar v m fermiEnergy hhbar hv hm hmF,
-    isotropicFermiSurfaceMeanSquareVelocityX_eq v m fermiEnergy hv hm hmF.le]
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
+  rw [upperBandFermiSurfaceDensityOfStates_eq hbar v m fermiEnergy hhbar hv hmF,
+    isotropicFermiSurfaceMeanSquareVelocityX_eq v m fermiEnergy hv hmF.le hfermiNe]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hhbar, hv, hfermiNe, hpi]
   ring
@@ -130,16 +134,18 @@ theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_pos
     (e hbar v m fermiEnergy : ℝ)
     (transportLifetime : PositiveTransportLifetime)
     (he : e ≠ 0) (hhbar : hbar ≠ 0) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hmF : |m| < fermiEnergy) :
     0 < zeroTemperatureRelaxationTimeLongitudinalConductivity
       e hbar v m fermiEnergy transportLifetime := by
   rw [zeroTemperatureRelaxationTimeLongitudinalConductivity_eq
-    e hbar v m fermiEnergy transportLifetime hhbar hv hm hmF]
-  have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
+    e hbar v m fermiEnergy transportLifetime hhbar hv hmF]
+  have hfermiPos : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
+  have hplus : 0 < fermiEnergy + |m| :=
+    add_pos_of_pos_of_nonneg hfermiPos (abs_nonneg m)
+  have hprod : 0 < (fermiEnergy - |m|) * (fermiEnergy + |m|) :=
+    mul_pos (sub_pos.mpr hmF) hplus
   have hgap : 0 < fermiEnergy ^ 2 - m ^ 2 := by
-    have hsum : 0 < fermiEnergy + m := by linarith
-    have hprod : 0 < (fermiEnergy - m) * (fermiEnergy + m) :=
-      mul_pos (sub_pos.mpr hmF) hsum
+    rw [← sq_abs m]
     nlinarith
   have hden : 0 < 4 * Real.pi * hbar ^ 2 * fermiEnergy := by
     have hhbarSq : 0 < hbar ^ 2 := sq_pos_of_ne_zero hhbar

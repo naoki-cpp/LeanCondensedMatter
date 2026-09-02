@@ -25,17 +25,12 @@ theorem entropyOpSpectralTraceClass_hasSum_diagonal (ρ : DensityOperator H)
     HasSum (fun i => Real.negMulLog (w i))
       (entropyOpSpectralTraceClass ρ hsummable).trace := by
   have hsum := (entropyOpSpectralTraceClass ρ hsummable).hasSum_diagonalExpectationValue b
-  have hpoint :
-      (fun i => diagonalExpectationValue (entropyOp ρ)
-        (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b i)) =
-        fun i => Real.negMulLog (w i) := by
-    funext i
+  exact HasSum.congr_fun hsum fun i => by
     apply Complex.ofReal_injective
     rw [coe_diagonalExpectationValue_right,
       entropyOp_apply_eigenvector ρ (by simpa using happly i),
       inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
-  rwa [hpoint] at hsum
 
 /-- Spectral trace form of `entropyOpSpectralTraceClass_hasSum_diagonal`. -/
 theorem entropyOpSpectralTraceClass_trace_eq_tsum_diagonal (ρ : DensityOperator H)
