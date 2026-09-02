@@ -35,16 +35,16 @@ finite normalized ensemble
 ```
 
 The exact Green and self-energy analytic core is parameterized by the signed regulator
-`z(E,γ) = E + iγ`. Physical retarded/advanced branches are specializations with
-`γ = side.sign * η` rather than separate analytic implementations.
+`z(E,γ) = E + iγ`. Physical retarded/advanced consumers specialize with
+`γ = side.sign * η` rather than relying on parallel analytic implementations.
 
 The exact averaged Green operator is invertible for arbitrary nonzero `γ` on an arbitrary complete
 complex Hilbert space. `exactSelfEnergyOfRegulator` satisfies the two-sided `IsSelfEnergy` relation
-and is not identified with Born or SCBA data. `exactSelfEnergy side` is the physical specialization.
+and is not identified with Born or SCBA data.
 
 The first-Born layer is kept directly in `Disorder.Born`:
-`bornSelfEnergyOfRegulator E γ = C₂(G₀(E,γ))`. The side-indexed `bornSelfEnergy` is only the physical
-specialization. No separate R/A Born routing modules or closure/truncation API are maintained.
+`bornSelfEnergyOfRegulator E γ = C₂(G₀(E,γ))`. No separate R/A Born routing modules or
+closure/truncation API are maintained.
 
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
