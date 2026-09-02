@@ -143,6 +143,13 @@ theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
   simp [advancedSpectralParameter]
 
+@[simp] private theorem star_retardedSpectralParameter
+    (energy broadening : ℝ) :
+    star (retardedSpectralParameter energy broadening) =
+      advancedSpectralParameter energy broadening := by
+  simpa [retardedSpectralParameter, advancedSpectralParameter] using
+    star_spectralParameterOfRegulator energy broadening
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- For an arbitrary nonzero signed regulator, the spectral shift multiplied by its resolvent is
