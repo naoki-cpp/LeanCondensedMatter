@@ -102,15 +102,32 @@ theorem eq_resummedLadderVertex_of_fixedPoint
     (bareVertex dressedVertex : H →L[ℂ] H)
     (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
     dressedVertex = resummedLadderVertex ladder hinvertible bareVertex := by
-  have hbijective : Function.Bijective (1 - ladder) :=
-    (ContinuousLinearMap.isUnit_iff_bijective).mp hinvertible
+  let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
+  have hleft : inverse * (1 - ladder) = 1 := by
+    simpa [inverse] using hinvertible.val_inv_mul
+  have hinjective : Function.Injective (1 - ladder) := by
+    intro left right heq
+    have hleftApply : inverse ((1 - ladder) left) = left := by
+      have h := congrArg
+        (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator left) hleft
+      simpa using h
+    have hrightApply : inverse ((1 - ladder) right) = right := by
+      have h := congrArg
+        (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator right) hleft
+      simpa using h
+    calc
+      left = inverse ((1 - ladder) left) := hleftApply.symm
+      _ = inverse ((1 - ladder) right) := congrArg inverse heq
+      _ = right := hrightApply
+  apply hinjective
   have hdressed : (1 - ladder) dressedVertex = bareVertex := by
     have hshift : dressedVertex - ladder dressedVertex = bareVertex :=
       (sub_eq_iff_eq_add).mpr hfixed
     simpa using hshift
-  exact hbijective.1
-    (hdressed.trans
-      (shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex).symm)
+  calc
+    (1 - ladder) dressedVertex = bareVertex := hdressed
+    _ = (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) :=
+      (shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex).symm
 
 end
 end Transport
