@@ -81,14 +81,6 @@ theorem star_averagedGreenOfRegulator
     (ensemble.configurationHamiltonian ω).1
     (ensemble.configurationHamiltonian ω).2 energy regulator
 
-/-- Adjointing the exact finite disorder-averaged Green operator exchanges the physical side. -/
-theorem star_averagedGreen
-    (side : SpectralSide) (energy broadening : ℝ) :
-    star (ensemble.averagedGreen side energy broadening) =
-      ensemble.averagedGreen side.opposite energy broadening := by
-  simpa [averagedGreen, SpectralSide.sign_opposite] using
-    ensemble.star_averagedGreenOfRegulator energy (side.sign * broadening)
-
 /-- Exact left-oriented configuration Dyson identity at an arbitrary nonzero signed regulator,
 `Gω = G₀ + G₀ Vω Gω`. -/
 theorem configurationGreenOfRegulator_eq_free_add_dyson_left
