@@ -44,7 +44,7 @@ theorem negMulLog_le_of_neg_log_le {p q Z u : ℝ} (hp : 0 ≤ p) (hq : 0 < q) (
   nlinarith [hgibbs, hlogdiv, hmul]
 
 /-- The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. -/
-theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ} (_hq : Summable q)
+theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ}
     (hsum : ∑' i, q i ≤ Z) (hZ : 0 < Z) : ∑' i, q i / Z ≤ 1 := by
   rw [show (∑' i, q i / Z) = (∑' i, q i) * Z⁻¹ by
     rw [← tsum_mul_right]; exact tsum_congr fun i => div_eq_mul_inv _ _]
@@ -112,11 +112,12 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
       -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) ≤
         energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
+  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
+    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
   set p : EigenvectorIndex ρ.op → ℝ := fun a => a.1.1 with hp_def
   set h : EigenvectorIndex ρ.op → ℝ :=
@@ -174,7 +175,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
-    tsum_div_le_one hq_summable_and_le.1 hq_summable_and_le.2 hZpos
+    tsum_div_le_one hq_summable_and_le.2 hZpos
   rw [hphsum, hpsum] at hsum_eq
   rw [hToReal]
   have hfinal : ∑' a, Real.negMulLog (p a) ≤ β * energyExpValue ρ Hop + Real.log Z := by
