@@ -427,10 +427,11 @@ denominator. -/
     finiteCutoffContinuumBornDysonDenominator
         side v m px py probeEnergy broadening 0 hbar pMax =
       pauliGreenDenominator side v m px py probeEnergy broadening := by
+  unfold pauliGreenDenominator
   simp [finiteCutoffContinuumBornDysonDenominator,
     finiteCutoffContinuumBornEffectiveEnergy,
     finiteCutoffContinuumBornEffectiveMass,
-    pauliGreenDenominator, energySq]
+    pauliGreenDenominatorOfRegulator, spectralParameter, energySq]
   ring
 
 /-- At zero disorder strength the finite-`η` Born-Dyson propagator candidate is exactly the clean
@@ -447,10 +448,14 @@ massive-Dirac Pauli Green operator. -/
     finiteCutoffContinuumBornDysonXCoefficient
     finiteCutoffContinuumBornDysonYCoefficient
     finiteCutoffContinuumBornDysonZCoefficient
-    pauliGreenOperator pauliGreenScalarCoefficient pauliGreenXCoefficient
-    pauliGreenYCoefficient pauliGreenZCoefficient
+    pauliGreenOperator pauliGreenOperatorOfRegulator
+    pauliGreenScalarCoefficientOfRegulator pauliGreenXCoefficientOfRegulator
+    pauliGreenYCoefficientOfRegulator pauliGreenZCoefficientOfRegulator
+    pauliGreenDenominatorOfRegulator
   simp [finiteCutoffContinuumBornEffectiveEnergy,
-    finiteCutoffContinuumBornEffectiveMass, matrixOperator, map_add, map_smul]
+    finiteCutoffContinuumBornEffectiveMass, spectralParameter,
+    pauliGreenDenominator, pauliGreenDenominatorOfRegulator,
+    matrixOperator, map_add, map_smul]
 
 /-- Pointwise longitudinal RA trace channel with finite external broadening retained in both
 Born-Dyson Green operators and an arbitrary supplied source/dressed vertex. -/
@@ -481,4 +486,5 @@ the disorder strength is zero. -/
 
 end
 
-end AnomalousHall.MassiveDirac
+end MassiveDirac
+end AnomalousHall

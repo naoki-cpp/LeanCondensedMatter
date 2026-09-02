@@ -48,7 +48,9 @@ theorem matrixOperator_pauliGreenMatrix
   change
     (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
         (pauliGreenMatrix side v m px py probeEnergy broadening) = _
-  simp [pauliGreenMatrix, pauliGreenOperator, matrixOperator, map_add, map_smul]
+  simp [pauliGreenMatrix, pauliGreenOperator, pauliGreenOperatorOfRegulator,
+    pauliGreenScalarCoefficient, pauliGreenXCoefficient,
+    pauliGreenYCoefficient, pauliGreenZCoefficient, matrixOperator, map_add, map_smul]
 
 private def raPauliXScalarCoefficient
     (v m p θ probeEnergy broadening : ℝ) : ℂ :=
@@ -371,4 +373,5 @@ theorem continuumAngularRetardedAdvancedPauliXIntegral_eq
 
 end
 
-end AnomalousHall.MassiveDirac
+end MassiveDirac
+end AnomalousHall

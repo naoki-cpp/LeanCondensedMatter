@@ -28,26 +28,35 @@ continuum normalization, and required limits remain explicit before constructing
 
 ```text
 finite normalized ensemble
-  → exact configuration and averaged Green operators
+  → exact configuration and averaged Green operators G(E,γ)
   → exact second moment C₂(X) = E[Vω X Vω]
-  → averaged-Green invertibility at nonzero broadening
-  → exact self-energy Σ_exact = G₀⁻¹ - Ḡ⁻¹
+  → averaged-Green invertibility for γ ≠ 0
+  → exact self-energy Σ_exact(E,γ) = G₀(E,γ)⁻¹ - Ḡ(E,γ)⁻¹
 ```
 
-The exact averaged Green operator is invertible at nonzero broadening on an arbitrary complete
-complex Hilbert space. The resulting `exactSelfEnergy` satisfies the two-sided `IsSelfEnergy`
-relation and is not identified with Born or SCBA data.
+The exact Green and self-energy analytic core is parameterized by the signed regulator
+`z(E,γ) = E + iγ`. Physical retarded/advanced branches are specializations with
+`γ = side.sign * η` rather than separate analytic implementations.
 
-The first-Born layer is kept directly in `Disorder.Born`: `bornSelfEnergy side` is the exact
-second-moment action evaluated on the clean Green operator for that spectral side. Retarded and
-advanced uses specialize the side only at their consumers; no separate R/A Born routing modules or
-closure/truncation API are maintained.
+The exact averaged Green operator is invertible for arbitrary nonzero `γ` on an arbitrary complete
+complex Hilbert space. `exactSelfEnergyOfRegulator` satisfies the two-sided `IsSelfEnergy` relation
+and is not identified with Born or SCBA data. `exactSelfEnergy side` is the physical specialization.
+
+The first-Born layer is kept directly in `Disorder.Born`:
+`bornSelfEnergyOfRegulator E γ = C₂(G₀(E,γ))`. The side-indexed `bornSelfEnergy` is only the physical
+specialization. No separate R/A Born routing modules or closure/truncation API are maintained.
+
+The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
+denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
+arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadening-limit, Born-Dyson,
+or RA vertex consumers require physical branch semantics.
 
 ## SCBA and ladder boundary
 
 SCBA stores supplied self-consistent approximation data using the same exact second-moment action
 `C₂`; it does not assert existence of the nonlinear fixed point or equality with the exact disorder
-average.
+average. Because the supplied fixed-point data distinguish physical retarded and advanced branches,
+SCBA remains explicitly `SpectralSide`-aware.
 
 `Disorder.Ladder` owns the reusable retarded-advanced action
 

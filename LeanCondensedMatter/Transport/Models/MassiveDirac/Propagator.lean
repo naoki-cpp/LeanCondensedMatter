@@ -5,19 +5,19 @@ set_option linter.style.header false
 /-!
 # Pauli decomposition of the massive-Dirac Green operator
 
-This Phase 4 consumer rewrites the existing generic retarded/advanced resolvent of the clean
-massive-Dirac Hamiltonian in the Pauli basis needed by the scalar-disorder Born calculation.
-For either spectral side `s`, with `z_s = ε + s iη`, the model identity is
+The analytic core is written at an arbitrary signed regulator `γ`,
 
 ```text
-G_s = (z_s I - H₀)⁻¹
-    = (z_s I + H₀) / (z_s² - E²)
-    = g₀ I + gₓ σₓ + gᵧ σᵧ + g_z σ_z.
+z = ε + iγ,
+G(z) = (z I - H₀)⁻¹
+     = (z I + H₀) / (z² - E²)
+     = g₀ I + gₓ σₓ + gᵧ σᵧ + g_z σ_z.
 ```
 
-The object identified below is the repository's existing resolvent; this file does not introduce a
-parallel Green-function formalism. No disorder data, momentum integration, angular average, Born
-closure, SCBA, or vertex resummation is introduced here.
+Physical retarded/advanced branches specialize through `γ = side.sign * η`. The object identified
+below is the repository's existing resolvent; this file does not introduce a parallel Green-function
+formalism. No disorder data, momentum integration, angular average, Born closure, SCBA, or vertex
+resummation is introduced here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -26,45 +26,80 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Common quadratic denominator `z_s² - E²` of the two-band Green operator. -/
-def pauliGreenDenominator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  spectralParameter side probeEnergy broadening ^ 2 -
+/-- Common quadratic denominator `z² - E²` at an arbitrary signed regulator. -/
+def pauliGreenDenominatorOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : ℂ :=
+  spectralParameterOfRegulator probeEnergy regulator ^ 2 -
     ((energySq v m px py : ℝ) : ℂ)
 
-/-- Identity-matrix coefficient in the massive-Dirac Green operator. -/
-def pauliGreenScalarCoefficient
+/-- Physical-side specialization of the quadratic Green denominator. -/
+def pauliGreenDenominator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
-    spectralParameter side probeEnergy broadening
+  pauliGreenDenominatorOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
 
-/-- `σₓ` coefficient in the massive-Dirac Green operator. -/
-def pauliGreenXCoefficient
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+/-- Identity-matrix coefficient at an arbitrary signed regulator. -/
+def pauliGreenScalarCoefficientOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : ℂ :=
+  (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
+    spectralParameterOfRegulator probeEnergy regulator
+
+/-- `σₓ` coefficient at an arbitrary signed regulator. -/
+def pauliGreenXCoefficientOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : ℂ :=
+  (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
     ((v * px : ℝ) : ℂ)
 
-/-- `σᵧ` coefficient in the massive-Dirac Green operator. -/
-def pauliGreenYCoefficient
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+/-- `σᵧ` coefficient at an arbitrary signed regulator. -/
+def pauliGreenYCoefficientOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : ℂ :=
+  (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
     ((v * py : ℝ) : ℂ)
 
-/-- `σ_z` coefficient in the massive-Dirac Green operator. -/
-def pauliGreenZCoefficient
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ *
+/-- `σ_z` coefficient at an arbitrary signed regulator. -/
+def pauliGreenZCoefficientOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : ℂ :=
+  (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
     ((m : ℝ) : ℂ)
 
-/-- Pauli-basis Green-operator candidate. The theorems below identify it with the existing generic
-resolvent at nonzero broadening. -/
+/-- Physical-side identity-matrix coefficient. -/
+def pauliGreenScalarCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  pauliGreenScalarCoefficientOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
+
+/-- Physical-side `σₓ` coefficient. -/
+def pauliGreenXCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  pauliGreenXCoefficientOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
+
+/-- Physical-side `σᵧ` coefficient. -/
+def pauliGreenYCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  pauliGreenYCoefficientOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
+
+/-- Physical-side `σ_z` coefficient. -/
+def pauliGreenZCoefficient
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  pauliGreenZCoefficientOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
+
+/-- Pauli-basis Green-operator candidate at an arbitrary signed regulator. -/
+noncomputable def pauliGreenOperatorOfRegulator
+    (v m px py probeEnergy regulator : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
+  pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator • 1 +
+    pauliGreenXCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaX +
+    pauliGreenYCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaY +
+    pauliGreenZCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaZ
+
+/-- Physical-side specialization of the Pauli-basis Green operator. -/
 noncomputable def pauliGreenOperator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  pauliGreenScalarCoefficient side v m px py probeEnergy broadening • 1 +
-    pauliGreenXCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaX +
-    pauliGreenYCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaY +
-    pauliGreenZCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaZ
+  pauliGreenOperatorOfRegulator
+    v m px py probeEnergy (side.sign * broadening)
 
 /-- The bounded massive-Dirac Hamiltonian has the same explicit Pauli decomposition as its matrix
 representative. -/
@@ -102,113 +137,97 @@ theorem hamiltonianOperator_mul_self (v m px py : ℝ) :
         (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
       rw [map_one]
 
-/-- Nonzero broadening keeps the quadratic two-band denominator away from zero. -/
-theorem pauliGreenDenominator_ne_zero
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    pauliGreenDenominator side v m px py probeEnergy broadening ≠ 0 := by
-  have hminus := spectralParameter_sub_real_ne_zero
-    side probeEnergy broadening (energy v m px py) hbroadening
-  have hplus := spectralParameter_sub_real_ne_zero
-    side probeEnergy broadening (-energy v m px py) hbroadening
+/-- A nonzero signed regulator keeps the quadratic two-band denominator away from zero. -/
+theorem pauliGreenDenominatorOfRegulator_ne_zero
+    (v m px py probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator ≠ 0 := by
+  have hminus := spectralParameterOfRegulator_sub_real_ne_zero
+    probeEnergy regulator (energy v m px py) hregulator
+  have hplus := spectralParameterOfRegulator_sub_real_ne_zero
+    probeEnergy regulator (-energy v m px py) hregulator
   have hEsq :
       (((energySq v m px py : ℝ) : ℂ)) =
         (((energy v m px py : ℝ) : ℂ)) ^ 2 := by
     norm_cast
     exact (energy_sq v m px py).symm
-  unfold pauliGreenDenominator
+  unfold pauliGreenDenominatorOfRegulator
   rw [hEsq]
   rw [show
-    spectralParameter side probeEnergy broadening ^ 2 -
+    spectralParameterOfRegulator probeEnergy regulator ^ 2 -
           (((energy v m px py : ℝ) : ℂ)) ^ 2 =
-        (spectralParameter side probeEnergy broadening -
+        (spectralParameterOfRegulator probeEnergy regulator -
             ((energy v m px py : ℝ) : ℂ)) *
-          (spectralParameter side probeEnergy broadening +
+          (spectralParameterOfRegulator probeEnergy regulator +
             ((energy v m px py : ℝ) : ℂ)) by ring]
   exact mul_ne_zero hminus (by simpa using hplus)
 
-/-- The explicit Pauli decomposition is the usual closed numerator/denominator form
-`(z_s I + H₀)/(z_s²-E²)`. -/
-theorem pauliGreenOperator_eq_closedForm
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
-    pauliGreenOperator side v m px py probeEnergy broadening =
-      (pauliGreenDenominator side v m px py probeEnergy broadening)⁻¹ •
+/-- The arbitrary-regulator Pauli decomposition is the usual closed numerator/denominator form. -/
+theorem pauliGreenOperatorOfRegulator_eq_closedForm
+    (v m px py probeEnergy regulator : ℝ) :
+    pauliGreenOperatorOfRegulator v m px py probeEnergy regulator =
+      (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ •
         (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-            (spectralParameter side probeEnergy broadening) +
+            (spectralParameterOfRegulator probeEnergy regulator) +
           hamiltonianOperator v m px py) := by
   rw [hamiltonianOperator_eq_pauli]
-  simp [pauliGreenOperator, pauliGreenScalarCoefficient,
-    pauliGreenXCoefficient, pauliGreenYCoefficient, pauliGreenZCoefficient,
-    Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
+  simp [pauliGreenOperatorOfRegulator, pauliGreenScalarCoefficientOfRegulator,
+    pauliGreenXCoefficientOfRegulator, pauliGreenYCoefficientOfRegulator,
+    pauliGreenZCoefficientOfRegulator, Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
   module
 
-private theorem spectralShift_mul_pauliGreenOperator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
+private theorem spectralShift_mul_pauliGreenOperatorOfRegulator
+    (v m px py probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-          (spectralParameter side probeEnergy broadening) -
+          (spectralParameterOfRegulator probeEnergy regulator) -
         hamiltonianOperator v m px py) *
-      pauliGreenOperator side v m px py probeEnergy broadening = 1 := by
-  rw [pauliGreenOperator_eq_closedForm]
+      pauliGreenOperatorOfRegulator v m px py probeEnergy regulator = 1 := by
+  rw [pauliGreenOperatorOfRegulator_eq_closedForm]
   rw [mul_smul_comm]
   have hquadratic :
       (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-            (spectralParameter side probeEnergy broadening) -
+            (spectralParameterOfRegulator probeEnergy regulator) -
           hamiltonianOperator v m px py) *
         (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-            (spectralParameter side probeEnergy broadening) +
+            (spectralParameterOfRegulator probeEnergy regulator) +
           hamiltonianOperator v m px py) =
-        pauliGreenDenominator side v m px py probeEnergy broadening •
+        pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator •
           (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
     rw [sub_mul, mul_add, mul_add]
     rw [hamiltonianOperator_mul_self]
-    simp [Algebra.algebraMap_eq_smul_one, pauliGreenDenominator, smul_smul, sub_smul]
+    simp [Algebra.algebraMap_eq_smul_one, pauliGreenDenominatorOfRegulator, smul_smul, sub_smul]
     module
   rw [hquadratic, smul_smul]
-  simp [pauliGreenDenominator_ne_zero side v m px py probeEnergy broadening hbroadening]
+  simp [pauliGreenDenominatorOfRegulator_ne_zero
+    v m px py probeEnergy regulator hregulator]
 
-/-- The generic side-indexed resolvent equals the explicit massive-Dirac Pauli decomposition. -/
-theorem resolvent_spectralParameter_eq_pauliGreenOperator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
+/-- The resolvent at an arbitrary nonzero signed regulator equals the explicit Pauli Green operator. -/
+theorem resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+    (v m px py probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     resolvent (hamiltonianOperator v m px py)
-        (spectralParameter side probeEnergy broadening) =
-      pauliGreenOperator side v m px py probeEnergy broadening := by
-  simpa only [spectralParameter] using
-    resolvent_eq_of_spectralShift_mul_eq_one
-      (hamiltonianOperator v m px py)
-      (pauliGreenOperator side v m px py probeEnergy broadening)
-      (hamiltonianOperator_isSelfAdjoint v m px py)
-      probeEnergy (side.sign * broadening)
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
-      (by
-        simpa only [spectralParameter] using
-          spectralShift_mul_pauliGreenOperator
-            side v m px py probeEnergy broadening hbroadening)
+        (spectralParameterOfRegulator probeEnergy regulator) =
+      pauliGreenOperatorOfRegulator v m px py probeEnergy regulator := by
+  exact resolvent_eq_of_spectralShift_mul_eq_one
+    (hamiltonianOperator v m px py)
+    (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator)
+    (hamiltonianOperator_isSelfAdjoint v m px py)
+    probeEnergy regulator hregulator
+    (spectralShift_mul_pauliGreenOperatorOfRegulator
+      v m px py probeEnergy regulator hregulator)
 
-/-- Adjointing the explicit Pauli Green operator exchanges the spectral side. -/
-theorem star_pauliGreenOperator
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    star (pauliGreenOperator side v m px py probeEnergy broadening) =
-      pauliGreenOperator side.opposite v m px py probeEnergy broadening := by
-  have hside :
-      spectralResolvent side (hamiltonianOperator v m px py) probeEnergy broadening =
-        pauliGreenOperator side v m px py probeEnergy broadening := by
-    simpa only [spectralResolvent] using
-      resolvent_spectralParameter_eq_pauliGreenOperator side
-        v m px py probeEnergy broadening hbroadening
-  have hopposite :
-      spectralResolvent side.opposite (hamiltonianOperator v m px py) probeEnergy broadening =
-        pauliGreenOperator side.opposite v m px py probeEnergy broadening := by
-    simpa only [spectralResolvent] using
-      resolvent_spectralParameter_eq_pauliGreenOperator side.opposite
-        v m px py probeEnergy broadening hbroadening
-  rw [← hside, ← hopposite]
-  exact star_spectralResolvent side
+/-- Adjointing the explicit Pauli Green operator reverses the signed regulator. -/
+theorem star_pauliGreenOperatorOfRegulator
+    (v m px py probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    star (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator) =
+      pauliGreenOperatorOfRegulator v m px py probeEnergy (-regulator) := by
+  have hreg := resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+    v m px py probeEnergy regulator hregulator
+  have hneg := resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+    v m px py probeEnergy (-regulator) (neg_ne_zero.mpr hregulator)
+  rw [← hreg, ← hneg]
+  exact star_resolvent_spectralParameterOfRegulator
     (hamiltonianOperator v m px py)
     (hamiltonianOperator_isSelfAdjoint v m px py)
-    probeEnergy broadening
+    probeEnergy regulator
 
 end
 

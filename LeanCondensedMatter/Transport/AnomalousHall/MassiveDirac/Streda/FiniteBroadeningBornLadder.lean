@@ -131,15 +131,16 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBri
   have hret :
       retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         pauliGreenOperator .retarded v m px py probeEnergy broadening := by
-    simpa [retardedResolvent, spectralParameter, retardedSpectralParameter] using
-      resolvent_spectralParameter_eq_pauliGreenOperator .retarded
+    simpa [retardedResolvent, retardedSpectralParameter, pauliGreenOperator] using
+      resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
         v m px py probeEnergy broadening (ne_of_gt hbroadening)
   have hadv :
       advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-    simpa [advancedResolvent, spectralParameter, advancedSpectralParameter] using
-      resolvent_spectralParameter_eq_pauliGreenOperator .advanced
-        v m px py probeEnergy broadening (ne_of_gt hbroadening)
+    simpa [advancedResolvent, advancedSpectralParameter, pauliGreenOperator] using
+      resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+        v m px py probeEnergy (-broadening)
+        (neg_ne_zero.mpr (ne_of_gt hbroadening))
   rw [← hret, ← hadv]
   symm
   simpa [suppliedGreenStredaSurfacePrimitiveTraceKernel] using

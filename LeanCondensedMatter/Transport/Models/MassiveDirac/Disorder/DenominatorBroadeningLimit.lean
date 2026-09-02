@@ -36,7 +36,8 @@ private theorem tendsto_pauliGreenDenominator_radial_broadening_zero
   have hcontinuous :
       ContinuousAt
         (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening) 0 := by
-    unfold pauliGreenDenominator energySq spectralParameter spectralParameterOfRegulator
+    unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
+      spectralParameterOfRegulator
     fun_prop
   exact hcontinuous.tendsto.mono_left inf_le_left
 
@@ -154,4 +155,5 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
 
 end
 
-end AnomalousHall.MassiveDirac
+end MassiveDirac
+end AnomalousHall
