@@ -44,8 +44,16 @@ theorem star_bornSelfEnergyOfRegulator
     star (ensemble.bornSelfEnergyOfRegulator energy regulator) =
       ensemble.bornSelfEnergyOfRegulator energy (-regulator) := by
   unfold bornSelfEnergyOfRegulator
-  rw [ensemble.exactSecondMoment_star]
-  rw [ensemble.star_averagedGreenOfRegulator] <;> rfl
+  calc
+    star (ensemble.exactSecondMoment (ensemble.freeGreenOfRegulator energy regulator)) =
+        ensemble.exactSecondMoment (star (ensemble.freeGreenOfRegulator energy regulator)) :=
+      (ensemble.exactSecondMoment_star
+        (ensemble.freeGreenOfRegulator energy regulator)).symm
+    _ = ensemble.exactSecondMoment (ensemble.freeGreenOfRegulator energy (-regulator)) := by
+      apply congrArg ensemble.exactSecondMoment
+      unfold freeGreenOfRegulator
+      exact star_resolvent_spectralParameterOfRegulator
+        ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy regulator
 
 end FiniteDisorderEnsemble
 
