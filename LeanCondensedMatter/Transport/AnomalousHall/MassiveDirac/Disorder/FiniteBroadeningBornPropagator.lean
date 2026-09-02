@@ -182,9 +182,12 @@ private theorem finiteCutoffContinuumBornDysonShiftMatrix_det
       side v m px py probeEnergy broadening disorderStrength hbar pMax).det =
       finiteCutoffContinuumBornDysonDenominator
         side v m px py probeEnergy broadening disorderStrength hbar pMax := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   rw [Matrix.det_fin_two]
   simp [finiteCutoffContinuumBornDysonShiftMatrix,
     finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ]
+  rw [hI]
   ring
 
 /-- The explicit Pauli candidate is a right inverse of the finite-`η` Born-Dyson shift whenever its
@@ -290,19 +293,16 @@ private theorem star_finiteCutoffContinuumBornDysonShiftMatrix
       side v m px py probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornDysonShiftMatrix
         side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax := by
+  have hstar := star_finiteCutoffContinuumBornDysonShiftOperator
+    side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening
+  rw [finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
+        side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening,
+      finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
+        side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening] at hstar
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   apply φ.injective
-  rw [map_star]
-  change star (matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
-      side v m px py probeEnergy broadening disorderStrength hbar pMax)) =
-    matrixOperator (finiteCutoffContinuumBornDysonShiftMatrix
-      side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax)
-  rw [← finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
-      side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening,
-    ← finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
-      side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening]
-  exact star_finiteCutoffContinuumBornDysonShiftOperator
-    side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening
+  rw [map_star φ]
+  exact hstar
 
 private theorem star_finiteCutoffContinuumBornDysonDenominator
     (side : SpectralSide)
@@ -368,14 +368,9 @@ theorem star_finiteCutoffContinuumBornDysonGreenOperator
         side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax := by
   have hdenOpposite : finiteCutoffContinuumBornDysonDenominator
       side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
-    intro hzero
-    have hstarZero : star (finiteCutoffContinuumBornDysonDenominator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax) = 0 := by
-      rw [star_finiteCutoffContinuumBornDysonDenominator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening, hzero]
-    have hzeroSide := congrArg star hstarZero
-    simp at hzeroSide
-    exact hden hzeroSide
+    rw [← star_finiteCutoffContinuumBornDysonDenominator
+      side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening]
+    exact star_ne_zero.mpr hden
   have hside := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
     side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening hden
   have hopposite := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
