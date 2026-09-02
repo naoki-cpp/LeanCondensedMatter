@@ -47,25 +47,6 @@ noncomputable def continuumBornRadialGreenKernelOfRegulator
   (p : ℂ) • inversionSymmetrizedPauliGreenOperatorOfRegulator
     v m p 0 probeEnergy regulator
 
-/-- Physical-side scalar-channel radial integrand. -/
-noncomputable def continuumBornRadialScalarIntegrand
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) : ℂ :=
-  continuumBornRadialScalarIntegrandOfRegulator
-    v m probeEnergy (side.sign * broadening) p
-
-/-- Physical-side `σ_z` radial integrand. -/
-noncomputable def continuumBornRadialZIntegrand
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) : ℂ :=
-  continuumBornRadialZIntegrandOfRegulator
-    v m probeEnergy (side.sign * broadening) p
-
-/-- Physical-side operator-valued radial Green kernel. -/
-noncomputable def continuumBornRadialGreenKernel
-    (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  continuumBornRadialGreenKernelOfRegulator
-    v m probeEnergy (side.sign * broadening) p
-
 /-- Pointwise arbitrary-regulator radial kernel decomposition into the two surviving Pauli channels. -/
 theorem continuumBornRadialGreenKernelOfRegulator_eq
     (v m probeEnergy regulator p : ℝ) :
@@ -186,13 +167,6 @@ noncomputable def finiteCutoffContinuumBornScalarIntegral
 noncomputable def finiteCutoffContinuumBornZIntegral
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
   finiteCutoffContinuumBornZIntegralOfRegulator
-    v m probeEnergy (side.sign * broadening) pMax
-
-/-- Physical-side operator-valued radial Green integral. -/
-noncomputable def finiteCutoffContinuumBornGreenIntegral
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  finiteCutoffContinuumBornGreenIntegralOfRegulator
     v m probeEnergy (side.sign * broadening) pMax
 
 /-- The arbitrary-regulator finite-cutoff operator integral has exactly the `I + σ_z` structure. -/
