@@ -19,13 +19,13 @@ For the model-derived two-level Lehmann table, the two off-diagonal transitions 
 ```
 
 The Peierls contact expectation remains `-1`, while the unit-volume conversion from vector
-potential to electric field is `-1 / z`.  Hence, for `η > 0`,
+potential to electric field is `-1 / z`.  Hence, for `η ≠ 0`,
 
 ```text
 σ(ω,η) = z / (z² + 4).
 ```
 
-The positivity assumption is used only to exclude the singular Lehmann/electric-field
+The nonzero-rate assumption is used only to exclude the singular Lehmann/electric-field
 denominators when algebraically combining inverse factors.  No `η → 0`, DC, or thermodynamic limit
 is taken.
 -/
@@ -47,14 +47,14 @@ def twoSiteDimerComplexRate (omega eta : ℝ) : ℂ :=
 def twoSiteDimerFrequencyDenominator (omega eta : ℝ) : ℂ :=
   twoSiteDimerComplexRate omega eta ^ 2 + 4
 
-/-- Positive switching rate keeps either dimer transition denominator nonzero. -/
+/-- A nonzero switching rate keeps either dimer transition denominator nonzero. -/
 theorem twoSiteDimerLehmannDenominator_ne_zero
-    (omega eta gap : ℝ) (heta : 0 < eta) :
+    (omega eta gap : ℝ) (heta : eta ≠ 0) :
     lehmannDenominator 1 omega eta gap ≠ 0 := by
   intro hzero
-  have hre := congrArg Complex.re hzero
-  simp [lehmannDenominator] at hre
-  linarith
+  have hre : eta = 0 := by
+    simpa [lehmannDenominator] using congrArg Complex.re hzero
+  exact heta hre
 
 /-- The closed response denominator factors into the two physical transition denominators. -/
 theorem twoSiteDimerFrequencyDenominator_eq_transitionProduct
@@ -66,9 +66,9 @@ theorem twoSiteDimerFrequencyDenominator_eq_transitionProduct
     simp [twoSiteDimerFrequencyDenominator, twoSiteDimerComplexRate,
       lehmannDenominator, pow_two] <;> ring
 
-/-- At positive switching rate the closed unit-dimer response denominator is nonsingular. -/
+/-- At nonzero switching rate the closed unit-dimer response denominator is nonsingular. -/
 theorem twoSiteDimerFrequencyDenominator_ne_zero
-    (omega eta : ℝ) (heta : 0 < eta) :
+    (omega eta : ℝ) (heta : eta ≠ 0) :
     twoSiteDimerFrequencyDenominator omega eta ≠ 0 := by
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   exact mul_ne_zero
@@ -76,9 +76,9 @@ theorem twoSiteDimerFrequencyDenominator_ne_zero
     (twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta)
 
 /-- Closed finite-frequency current-current Lehmann response of the unit-hopping dimer:
-`χ_JJ = 4 / ((η - iω)² + 4)` at every positive switching rate. -/
+`χ_JJ = 4 / ((η - iω)² + 4)` at every nonzero switching rate. -/
 theorem twoSiteDimerGroundState_lehmannResponse_frequency
-    (omega eta : ℝ) (heta : 0 < eta) :
+    (omega eta : ℝ) (heta : eta ≠ 0) :
     finiteLehmannTableResponse 1 omega eta twoSiteDimerGroundStateLehmannTable =
       4 * (twoSiteDimerFrequencyDenominator omega eta)⁻¹ := by
   classical
@@ -117,14 +117,14 @@ theorem twoSiteDimerUnitVolume_normalization_frequency
   rw [hfactor]
   simp [twoSiteDimerUnitVolume]
 
-/-- Positive switching rate keeps `z = η - iω` nonzero. -/
+/-- A nonzero switching rate keeps `z = η - iω` nonzero. -/
 theorem twoSiteDimerComplexRate_ne_zero
-    (omega eta : ℝ) (heta : 0 < eta) :
+    (omega eta : ℝ) (heta : eta ≠ 0) :
     twoSiteDimerComplexRate omega eta ≠ 0 := by
   intro hzero
-  have hre := congrArg Complex.re hzero
-  simp [twoSiteDimerComplexRate] at hre
-  linarith
+  have hre : eta = 0 := by
+    simpa [twoSiteDimerComplexRate] using congrArg Complex.re hzero
+  exact heta hre
 
 /-- Closed unit-volume finite-rate electrical conductivity of the unit-hopping dimer:
 
@@ -133,7 +133,7 @@ theorem twoSiteDimerComplexRate_ne_zero
 The proof keeps the Lehmann current response, Peierls contact `-1`, and electric-field
 normalization as the existing public definitions and simplifies them only at the final scalar step. -/
 theorem twoSiteDimerGroundState_conductivity_frequency
-    (omega eta : ℝ) (heta : 0 < eta) :
+    (omega eta : ℝ) (heta : eta ≠ 0) :
     finiteConductivityTableValue twoSiteDimerUnitVolume 1 omega eta
         twoSiteDimerGroundStateConductivityTable =
       twoSiteDimerComplexRate omega eta *
