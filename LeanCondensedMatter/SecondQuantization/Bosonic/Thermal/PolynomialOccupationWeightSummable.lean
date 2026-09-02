@@ -38,31 +38,22 @@ theorem summable_occupationMonomial_boltzmannWeight
       rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
       linarith [hpos i]
     have h := summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) (power i) hr
-    have heq :
-        (fun k : ℕ => (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k) =
-          fun k : ℕ => (k : ℝ) ^ power i * Real.exp (-β * ε i) ^ k := by
-      funext k
-      unfold oneModeBoltzmannWeight
-      rw [Real.exp_nat_mul]
     change Summable (fun k : ℕ =>
       (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k)
-    rw [heq]
-    exact h
+    exact h.congr fun k => by
+      unfold oneModeBoltzmannWeight
+      rw [Real.exp_nat_mul]
   have hnonneg : ∀ i k, 0 ≤ g i k := by
     intro i k
     rw [hgdef]
     exact mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (Real.exp_nonneg _)
   have H := Finsupp.hasSum_prod_nonneg g (fun i => ∑' k, g i k)
     (fun i => (hg i).hasSum) hnonneg
-  have heq : (fun n : Occupation Mode => ∏ i, g i (n i)) =
-      fun n : Occupation Mode =>
-        (∏ i, (n i : ℝ) ^ power i) * boltzmannWeight ε β n := by
-    funext n
+  exact (HasSum.congr_fun H fun n => by
+    symm
     rw [boltzmannWeight_eq_prod]
     simp only [hgdef]
-    exact Finset.prod_mul_distrib
-  rw [heq] at H
-  exact H.summable
+    exact Finset.prod_mul_distrib).summable
 
 omit [Fintype Mode] in
 /-- A fixed shift of the occupation number does not spoil polynomially weighted one-mode Gibbs
@@ -85,20 +76,14 @@ theorem summable_shiftedPow_oneModeBoltzmannWeight
     change Summable ((fun n : ℕ => (n : ℝ) ^ power * r ^ n) ∘ fun k : ℕ => k + shift)
     exact h.comp_injective (fun _ _ hk => Nat.add_right_cancel hk)
   have hscaled := htail.mul_left (r ^ shift)⁻¹
-  have heq :
-      (fun k : ℕ =>
-        ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β energy k) =
-      fun k : ℕ =>
-        (r ^ shift)⁻¹ * (((k + shift : ℕ) : ℝ) ^ power * r ^ (k + shift)) := by
-    funext k
+  exact hscaled.congr fun k => by
+    symm
     unfold oneModeBoltzmannWeight
     rw [Real.exp_nat_mul]
     change ((↑(k + shift) : ℝ) ^ power * r ^ k) =
       (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
     rw [pow_add]
     field_simp [hr0]
-  rw [heq]
-  exact hscaled
 
 /-- A uniform shifted power in every mode is summable against the free bosonic Gibbs weight.
 
@@ -120,15 +105,11 @@ theorem summable_shiftedOccupationPowerProduct_boltzmannWeight
     exact mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (Real.exp_nonneg _)
   have H := Finsupp.hasSum_prod_nonneg g (fun i => ∑' k, g i k)
     (fun i => (hg i).hasSum) hnonneg
-  have heq : (fun n : Occupation Mode => ∏ i, g i (n i)) =
-      fun n : Occupation Mode =>
-        (∏ i, ((n i + shift : ℕ) : ℝ) ^ power) * boltzmannWeight ε β n := by
-    funext n
+  exact (HasSum.congr_fun H fun n => by
+    symm
     rw [boltzmannWeight_eq_prod]
     simp only [hgdef]
-    exact Finset.prod_mul_distrib
-  rw [heq] at H
-  exact H.summable
+    exact Finset.prod_mul_distrib).summable
 
 end
 end Bosonic
