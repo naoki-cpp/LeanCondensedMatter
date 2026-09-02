@@ -18,9 +18,9 @@ G(z) = (z - E₋)⁻¹ P₋ + (z - E₊)⁻¹ P₊
 ```
 
 is a left inverse of `z I - H₀`. The operator-projector algebra and scalar coefficient form of that
-spectral expansion, including its square and the retarded/advanced specializations, are therefore
-model-level spectral infrastructure. Kubo–Bastin, Středa, propagator, and disorder consumers remain
-downstream.
+spectral expansion, including its square and arbitrary nonzero signed-regulator realization, are
+therefore model-level spectral infrastructure. Kubo–Bastin, Středa, propagator, and disorder
+consumers remain downstream.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -158,54 +158,25 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
   simp only [inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
   exact bandProjectorOperator_lower_add_upper v m px py
 
-/-- Nonzero broadening keeps either side-indexed spectral parameter away from every real band
-energy. -/
-theorem spectralParameter_sub_bandEnergy_ne_zero
-    (side : SpectralSide) (band : Band) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    spectralParameter side probeEnergy broadening -
-        ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-  exact spectralParameter_sub_real_ne_zero
-    side probeEnergy broadening (bandEnergy band v m px py) hbroadening
-
-/-- The generic resolvent on either spectral side equals the gauge-free two-projector expansion. -/
-theorem resolvent_spectralParameter_eq_projectorResolvent
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
-    (hE : energy v m px py ≠ 0) (hbroadening : broadening ≠ 0) :
-    resolvent (hamiltonianOperator v m px py) (spectralParameter side probeEnergy broadening) =
-      projectorResolvent (spectralParameter side probeEnergy broadening) v m px py := by
+/-- The regulated massive-Dirac resolvent equals the gauge-free two-projector expansion for any
+nonzero signed imaginary regulator. -/
+theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
+    (v m px py probeEnergy regulator : ℝ)
+    (hE : energy v m px py ≠ 0) (hregulator : regulator ≠ 0) :
+    resolvent (hamiltonianOperator v m px py)
+        (spectralParameterOfRegulator probeEnergy regulator) =
+      projectorResolvent (spectralParameterOfRegulator probeEnergy regulator) v m px py := by
   apply resolvent_eq_of_spectralShift_mul_eq_one
-    side (hamiltonianOperator v m px py)
-      (projectorResolvent (spectralParameter side probeEnergy broadening) v m px py)
-      (hamiltonianOperator_isSelfAdjoint v m px py)
-      probeEnergy broadening hbroadening
+    (hamiltonianOperator v m px py)
+    (projectorResolvent (spectralParameterOfRegulator probeEnergy regulator) v m px py)
+    (hamiltonianOperator_isSelfAdjoint v m px py)
+    probeEnergy regulator hregulator
   exact shiftedHamiltonian_mul_projectorResolvent
-    (spectralParameter side probeEnergy broadening) v m px py hE
-    (spectralParameter_sub_bandEnergy_ne_zero
-      side .lower v m px py probeEnergy broadening hbroadening)
-    (spectralParameter_sub_bandEnergy_ne_zero
-      side .upper v m px py probeEnergy broadening hbroadening)
-
-/-- The generic retarded resolvent equals the gauge-free two-projector spectral expansion. -/
-theorem retardedResolvent_eq_projectorResolvent
-    (v m px py probeEnergy broadening : ℝ)
-    (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
-    retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-      projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    resolvent_spectralParameter_eq_projectorResolvent .retarded
-      v m px py probeEnergy broadening hE (ne_of_gt hbroadening)
-
-/-- The generic advanced resolvent equals the same projector expansion at the advanced spectral
-parameter. -/
-theorem advancedResolvent_eq_projectorResolvent
-    (v m px py probeEnergy broadening : ℝ)
-    (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
-    advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-      projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    resolvent_spectralParameter_eq_projectorResolvent .advanced
-      v m px py probeEnergy broadening hE (ne_of_gt hbroadening)
+    (spectralParameterOfRegulator probeEnergy regulator) v m px py hE
+    (spectralParameterOfRegulator_sub_real_ne_zero
+      probeEnergy regulator (bandEnergy .lower v m px py) hregulator)
+    (spectralParameterOfRegulator_sub_real_ne_zero
+      probeEnergy regulator (bandEnergy .upper v m px py) hregulator)
 
 end
 

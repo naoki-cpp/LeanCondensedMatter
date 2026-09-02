@@ -5,12 +5,13 @@ import LeanCondensedMatter.Transport.Resolvent.Basic
 set_option linter.style.header false
 
 /-!
-# Spectral action of retarded and advanced resolvents
+# Spectral action of regulated resolvents
 
-For a bounded self-adjoint Hamiltonian, the retarded and advanced resolvents act diagonally on every
-Hamiltonian eigenvector. The representation-independent resolvent/eigenvector theorem is owned by
-`Analysis.Operator.Spectral.Resolvent`; this module owns the retarded/advanced and pure-point
-transport specializations.
+For a bounded self-adjoint Hamiltonian, a resolvent at `E + iγ` with nonzero signed regulator acts
+diagonally on every Hamiltonian eigenvector. The representation-independent resolvent/eigenvector
+theorem is owned by `Analysis.Operator.Spectral.Resolvent`; this module owns the regulated and
+pure-point transport specializations. Physical retarded/advanced branches are specialized locally by
+consumers with `γ = ±η`.
 
 No trace, occupation integral, contact cancellation, zero-broadening limit, or conductivity claim is
 made here.
@@ -26,119 +27,49 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- A resolvent on either spectral side acts on a Hamiltonian eigenvector by the corresponding
-scalar resolvent factor. -/
-theorem resolvent_spectralParameter_apply_eigenvector
-    (side : SpectralSide)
+/-- A resolvent with arbitrary nonzero signed regulator acts on a Hamiltonian eigenvector by the
+corresponding scalar resolvent factor. -/
+theorem resolvent_spectralParameterOfRegulator_apply_eigenvector
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     {v : H} {eigenvalue : ℝ}
     (hv : hamiltonian v = (eigenvalue : ℂ) • v)
-    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    resolvent hamiltonian (spectralParameter side energy broadening) v =
-      (spectralParameter side energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v =
+      (spectralParameterOfRegulator energy regulator - (eigenvalue : ℂ))⁻¹ • v := by
   apply QuantumTheory.resolvent_apply_eigenvector
   · exact QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
-      hamiltonian hself (spectralParameter side energy broadening)
+      hamiltonian hself (spectralParameterOfRegulator energy regulator)
         (by
-          rw [spectralParameter_im]
-          exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
-  · exact spectralParameter_sub_real_ne_zero
-      side energy broadening eigenvalue hbroadening
+          rw [spectralParameterOfRegulator_im]
+          exact hregulator)
+  · exact spectralParameterOfRegulator_sub_real_ne_zero
+      energy regulator eigenvalue hregulator
   · exact hv
-
-/-- The retarded resolvent acts on a Hamiltonian eigenvector by the corresponding scalar resolvent
-factor. -/
-theorem retardedResolvent_apply_eigenvector
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    {v : H} {eigenvalue : ℝ}
-    (hv : hamiltonian v = (eigenvalue : ℂ) • v)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    retardedResolvent hamiltonian energy broadening v =
-      (retardedSpectralParameter energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    resolvent_spectralParameter_apply_eigenvector
-      .retarded hamiltonian hself hv energy broadening (ne_of_gt hbroadening)
-
-/-- The advanced resolvent acts on a Hamiltonian eigenvector by the corresponding scalar resolvent
-factor. -/
-theorem advancedResolvent_apply_eigenvector
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    {v : H} {eigenvalue : ℝ}
-    (hv : hamiltonian v = (eigenvalue : ℂ) • v)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    advancedResolvent hamiltonian energy broadening v =
-      (advancedSpectralParameter energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    resolvent_spectralParameter_apply_eigenvector
-      .advanced hamiltonian hself hv energy broadening (ne_of_gt hbroadening)
 
 variable
   (system : BoundedFreeSystem H)
   (data : PurePointLehmannData system ι)
 
-/-- The retarded resolvent acts diagonally on a pure-point energy basis at an arbitrary real
-energy. -/
-theorem retardedResolvent_apply_purePointBasis_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    retardedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
-      (retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ •
-        data.basis n := by
-  exact retardedResolvent_apply_eigenvector
-    system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n) energy broadening hbroadening
-
-/-- The advanced resolvent acts diagonally on a pure-point energy basis at an arbitrary real
-energy. -/
-theorem advancedResolvent_apply_purePointBasis_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    advancedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
-      (advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ •
-        data.basis n := by
-  exact advancedResolvent_apply_eigenvector
-    system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n) energy broadening hbroadening
-
-/-- On a pure-point energy basis, the square of either spectral-side resolvent has the squared
-scalar denominator. -/
-theorem resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
-    (side : SpectralSide)
-    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (n : ι) :
-    ((resolvent system.hamiltonian.1 (spectralParameter side energy broadening)) ^ 2)
+/-- On a pure-point energy basis, the square of a resolvent with arbitrary nonzero signed regulator
+has the squared scalar denominator. -/
+theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (n : ι) :
+    ((resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)) ^ 2)
         (data.basis n) =
-      ((spectralParameter side energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
+      ((spectralParameterOfRegulator energy regulator - (data.energy n : ℂ))⁻¹) ^ 2 •
         data.basis n := by
   rw [pow_two]
-  change resolvent system.hamiltonian.1 (spectralParameter side energy broadening)
-      (resolvent system.hamiltonian.1 (spectralParameter side energy broadening)
+  change resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
+      (resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
         (data.basis n)) = _
-  rw [resolvent_spectralParameter_apply_eigenvector
-    side system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n) energy broadening hbroadening]
+  rw [resolvent_spectralParameterOfRegulator_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy regulator hregulator]
   rw [map_smul]
-  rw [resolvent_spectralParameter_apply_eigenvector
-    side system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n) energy broadening hbroadening]
+  rw [resolvent_spectralParameterOfRegulator_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy regulator hregulator]
   rw [smul_smul, pow_two]
-
-/-- The square of the retarded resolvent has the squared scalar denominator on the energy basis. -/
-theorem retardedResolvent_sq_apply_purePointBasis_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
-      ((retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
-        data.basis n := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
-      system data .retarded energy broadening (ne_of_gt hbroadening) n
-
-/-- The square of the advanced resolvent has the squared scalar denominator on the energy basis. -/
-theorem advancedResolvent_sq_apply_purePointBasis_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
-      ((advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
-        data.basis n := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
-      system data .advanced energy broadening (ne_of_gt hbroadening) n
 
 end
 end Transport
