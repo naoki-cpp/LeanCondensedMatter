@@ -53,7 +53,7 @@ theorem abs_radialInterbandCurrentCoefficient_le_velocity_sq
     |bandSign band * m * v ^ 2 / energy v m p 0| ≤ v ^ 2 := by
   by_cases hm : m = 0
   · subst m
-    simp
+    simpa using (sq_nonneg v)
   · have hE : 0 < energy v m p 0 := energy_pos_of_mass_ne_zero v m p 0 hm
     have hmE : |m| ≤ energy v m p 0 := abs_mass_le_energy v m p 0
     have hratio : |m| * v ^ 2 / energy v m p 0 ≤ v ^ 2 := by
