@@ -210,7 +210,7 @@ noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
       ⟨σ v, quarticLocalLegExternalFieldLabel (q v) l⟩
 
 /-- Mapping one event's field descriptors to operators recovers its atomic operator list. -/
-theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
+private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (event : TwoPointTimedEvent n) :
@@ -233,7 +233,7 @@ noncomputable def mixedTimeOrderedAtomicFields {n : ℕ} (i j : Mode)
     (twoPointTimedEventAtomicFields i j τ τ' q σ)
 
 /-- Mapping all mixed-time-ordered field descriptors to operators recovers the atomic operator list. -/
-theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
+private theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFieldOperator ε) =
@@ -287,7 +287,7 @@ noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
     (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
 
 /-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
-theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
+private theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     List.ofFn (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ) =
@@ -299,7 +299,7 @@ theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
     (List.ofFn_congr h l.get).symm.trans (List.ofFn_get l)
 
 /-- Rebuilding the operator list from its fixed-cardinality family recovers the flattened list. -/
-theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
+private theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ) =
@@ -311,7 +311,7 @@ theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
 
 /-- Every member of the mixed atomic family satisfies the general theorem's eigenoperator
 hypothesis. -/
-theorem heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
+private theorem heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * n + 1))) :
@@ -324,7 +324,7 @@ theorem heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
 
 /-- Every pair of members of the mixed atomic family satisfies the scalar zeta-commutator
 hypothesis. -/
-theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
+private theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (a b : Fin (2 * (2 * n + 1))) :
