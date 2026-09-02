@@ -122,23 +122,13 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
         (data.hamiltonian_apply_basis mn.2)
         (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
         (kuboBastinEnergyBroadening system.hbar eta) hregulator
-  have hinner :
-      inner ℂ (data.basis mn.2)
-          (retardedResolvent system.hamiltonian.1
-            (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-            (kuboBastinEnergyBroadening system.hbar eta)
-            (data.basis mn.2)) =
-        (retardedSpectralParameter
-            (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-            (kuboBastinEnergyBroadening system.hbar eta) -
-          (data.energy mn.2 : ℂ))⁻¹ := by
-    rw [hres, inner_smul_right]
-    simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
   unfold lehmannTerm
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
   unfold purePointKuboBastinSpectralVertexTerm
-  rw [hinner]
+  rw [hres, inner_smul_right]
+  simp only [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one,
+    norm_one, one_pow, one_smul]
   unfold purePointTransitionWeight
   field_simp [hhbar, hhbarComplex, hshift]
 
