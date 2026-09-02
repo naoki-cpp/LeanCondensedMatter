@@ -39,7 +39,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
         ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
           bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) := by
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
-  simp [retardedSpectralParameter, advancedSpectralParameter,
+  simp [retardedSpectralParameter, advancedSpectralParameter, spectralParameterOfRegulator,
     projectorResolventCoefficient_oppositeBand_at_bandEnergy]
 
 /-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
