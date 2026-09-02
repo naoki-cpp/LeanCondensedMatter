@@ -81,7 +81,8 @@ theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
   rw [Complex.norm_def, Complex.normSq_apply]
   rw [pauliGreenDenominatorOfRegulator_radial_re,
     pauliGreenDenominatorOfRegulator_radial_im]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 /-- Physical-side radial real part, retained for broadening-limit consumers. -/
 @[simp]
