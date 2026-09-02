@@ -95,12 +95,12 @@ theorem retardedResolvent_apply_purePointBasis
           (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
           (kuboBastinEnergyBroadening system.hbar eta) -
         (data.energy n : ℂ))⁻¹ • data.basis n := by
-  exact retardedResolvent_apply_eigenvector
-    system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n)
-    (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-    (kuboBastinEnergyBroadening system.hbar eta)
-    (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)
+  simpa only [spectralResolvent_retarded, spectralParameter_retarded] using
+    spectralResolvent_apply_purePointBasis_at_energy
+      system data .retarded
+      (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
+      (kuboBastinEnergyBroadening system.hbar eta)
+      (ne_of_gt (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)) n
 
 /-- The diagonal matrix element of the retarded resolvent is its scalar spectral denominator. -/
 theorem inner_purePointBasis_retardedResolvent
