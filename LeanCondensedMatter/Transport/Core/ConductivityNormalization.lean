@@ -55,15 +55,19 @@ theorem adiabaticElectricFieldFactor_zero_switching (ω : ℝ) :
     adiabaticElectricFieldFactor ω 0 = Complex.I * (ω : ℂ) := by
   simp [adiabaticElectricFieldFactor]
 
-/-- A strictly positive switching rate keeps the electric-field conversion factor nonzero, even at
-zero driving frequency. -/
-theorem adiabaticElectricFieldFactor_ne_zero_of_pos
-    (ω η : ℝ) (hη : 0 < η) :
+/-- The electric-field conversion factor is nonzero whenever the driving frequency and switching
+rate are not both zero. -/
+theorem adiabaticElectricFieldFactor_ne_zero
+    (ω η : ℝ) (hrate : ω ≠ 0 ∨ η ≠ 0) :
     adiabaticElectricFieldFactor ω η ≠ 0 := by
   intro hzero
-  have hre := congrArg Complex.re hzero
-  simp [adiabaticElectricFieldFactor] at hre
-  linarith
+  have hre : -η = 0 := by
+    simpa [adiabaticElectricFieldFactor] using congrArg Complex.re hzero
+  have him : ω = 0 := by
+    simpa [adiabaticElectricFieldFactor] using congrArg Complex.im hzero
+  rcases hrate with hω | hη
+  · exact hω him
+  · exact hη (neg_eq_zero.mp hre)
 
 /-- Combined conversion from total-current/vector-potential response to
 current-density/electric-field response. -/
@@ -71,13 +75,14 @@ noncomputable def finiteVolumeConductivityNormalization
     (volume : PositiveVolume) (ω η : ℝ) : ℂ :=
   (((volume.volume : ℂ) * adiabaticElectricFieldFactor ω η))⁻¹
 
-/-- The finite-volume normalization denominator is nonzero at every positive switching rate. -/
+/-- The finite-volume normalization denominator is nonzero whenever the driving frequency and
+switching rate are not both zero. -/
 theorem finiteVolumeConductivityDenominator_ne_zero
-    (volume : PositiveVolume) (ω η : ℝ) (hη : 0 < η) :
+    (volume : PositiveVolume) (ω η : ℝ) (hrate : ω ≠ 0 ∨ η ≠ 0) :
     (volume.volume : ℂ) * adiabaticElectricFieldFactor ω η ≠ 0 := by
   apply mul_ne_zero
   · exact_mod_cast ne_of_gt volume.volume_pos
-  · exact adiabaticElectricFieldFactor_ne_zero_of_pos ω η hη
+  · exact adiabaticElectricFieldFactor_ne_zero ω η hrate
 
 /-- Convert a total-current response coefficient with respect to vector potential into an
 intensive electric-field conductivity. -/
