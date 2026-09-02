@@ -116,7 +116,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     (data.hamiltonian_apply_basis mn.2)
     (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
     (kuboBastinEnergyBroadening system.hbar eta) hregulator
-  simpa only [retardedResolvent, retardedSpectralParameter] at hres
+  simp only [retardedResolvent, retardedSpectralParameter] at hres
   rw [hres, inner_smul_right]
   simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
   unfold purePointTransitionWeight
