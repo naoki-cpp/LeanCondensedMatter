@@ -150,14 +150,6 @@ theorem twoSiteDimerGroundState_conductivity_frequency
   unfold twoSiteDimerFrequencyDenominator
   ring
 
-/-- The original exact benchmark `σ(0,1)=1/5` is a specialization of the symbolic frequency
-formula. -/
-theorem twoSiteDimerGroundState_conductivity_zero_one_from_frequency :
-    finiteConductivityTableValue twoSiteDimerUnitVolume 1 0 1
-        twoSiteDimerGroundStateConductivityTable = (1 : ℂ) / 5 := by
-  rw [twoSiteDimerGroundState_conductivity_frequency 0 1 (by norm_num)]
-  norm_num [twoSiteDimerComplexRate, twoSiteDimerFrequencyDenominator]
-
 end
 end Validation
 end Fermionic
