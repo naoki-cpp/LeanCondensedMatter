@@ -55,8 +55,7 @@
         "LeanCondensedMatter/Transport/Disorder/Finite.lean",
         "LeanCondensedMatter/Transport/Disorder/Resolvent.lean",
         "LeanCondensedMatter/Transport/Disorder/Moments.lean",
-        "LeanCondensedMatter/Transport/Disorder/RetardedBorn.lean",
-        "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
+        "LeanCondensedMatter/Transport/Disorder/Born.lean",
         "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/AdiabaticSwitching.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/HarmonicSource.lean",
@@ -473,16 +472,8 @@
       "modules": ["LeanCondensedMatter.Transport.Disorder.Finite"]
     },
     {
-      "id": "transportDisorderRetardedBorn",
-      "path": "LeanCondensedMatter/Transport/Disorder/RetardedBorn.lean",
-      "modules": [
-        "LeanCondensedMatter.Transport.Disorder.Moments",
-        "LeanCondensedMatter.Transport.Disorder.Resolvent"
-      ]
-    },
-    {
-      "id": "transportDisorderAdvancedBorn",
-      "path": "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
+      "id": "transportDisorderBorn",
+      "path": "LeanCondensedMatter/Transport/Disorder/Born.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Disorder.Resolvent"
