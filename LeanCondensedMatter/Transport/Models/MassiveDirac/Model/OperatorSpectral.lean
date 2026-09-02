@@ -158,15 +158,6 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
   simp only [inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
   exact bandProjectorOperator_lower_add_upper v m px py
 
-/-- A nonzero signed regulator keeps its spectral parameter away from every real band energy. -/
-theorem spectralParameterOfRegulator_sub_bandEnergy_ne_zero
-    (band : Band) (v m px py probeEnergy regulator : ℝ)
-    (hregulator : regulator ≠ 0) :
-    spectralParameterOfRegulator probeEnergy regulator -
-        ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-  exact spectralParameterOfRegulator_sub_real_ne_zero
-    probeEnergy regulator (bandEnergy band v m px py) hregulator
-
 /-- The regulated massive-Dirac resolvent equals the gauge-free two-projector expansion for any
 nonzero signed imaginary regulator. -/
 theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
@@ -182,10 +173,10 @@ theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
     probeEnergy regulator hregulator
   exact shiftedHamiltonian_mul_projectorResolvent
     (spectralParameterOfRegulator probeEnergy regulator) v m px py hE
-    (spectralParameterOfRegulator_sub_bandEnergy_ne_zero
-      .lower v m px py probeEnergy regulator hregulator)
-    (spectralParameterOfRegulator_sub_bandEnergy_ne_zero
-      .upper v m px py probeEnergy regulator hregulator)
+    (spectralParameterOfRegulator_sub_real_ne_zero
+      probeEnergy regulator (bandEnergy .lower v m px py) hregulator)
+    (spectralParameterOfRegulator_sub_real_ne_zero
+      probeEnergy regulator (bandEnergy .upper v m px py) hregulator)
 
 end
 
