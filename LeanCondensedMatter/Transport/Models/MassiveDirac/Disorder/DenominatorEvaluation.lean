@@ -144,14 +144,14 @@ private theorem continuous_continuumBornRadialDenominatorIntegrand
   have hden : Continuous (fun p : ℝ =>
       pauliGreenDenominator side v m p 0 probeEnergy broadening) := by
     unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
-      spectralParameter spectralParameterOfRegulator
+      spectralParameterOfRegulator
     fun_prop
   have hinv : Continuous (fun p : ℝ =>
       (pauliGreenDenominator side v m p 0 probeEnergy broadening)⁻¹) :=
     hden.inv₀ (fun p =>
       pauliGreenDenominator_ne_zero side v m p 0 probeEnergy broadening hbroadening)
   unfold continuumBornRadialDenominatorIntegrand
-    continuumBornRadialDenominatorIntegrandOfRegulator pauliGreenDenominator
+    continuumBornRadialDenominatorIntegrandOfRegulator
   exact (Complex.continuous_ofReal.comp continuous_id).mul hinv
 
 /-- Before dividing by `-2v²`, the finite-cutoff denominator integral is exactly the endpoint
@@ -180,7 +180,6 @@ theorem neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegral_
     finiteCutoffContinuumBornDenominatorIntegralOfRegulator
     continuumBornRadialDenominatorIntegrand
     continuumBornRadialDenominatorIntegrandOfRegulator
-    pauliGreenDenominator
   rw [intervalIntegral.integral_const_mul]
 
 /-- Explicit finite-cutoff evaluation of the shared continuum Born denominator integral. -/
