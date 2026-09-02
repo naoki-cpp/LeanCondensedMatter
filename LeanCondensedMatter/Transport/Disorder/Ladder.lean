@@ -26,12 +26,11 @@ namespace Transport
 
 noncomputable section
 
+namespace FiniteDisorderEnsemble
+
 variable {H Ω : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable [Fintype Ω]
-
-namespace FiniteDisorderEnsemble
-
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- Finite covariance ladder map `Γ ↦ C₂(Gᴿ Γ Gᴬ)` for supplied left/right Green operators.
@@ -53,6 +52,8 @@ theorem retardedAdvancedLadderCLM_apply
 
 end FiniteDisorderEnsemble
 
+variable {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
+
 /-- Finite fixed-point ladder iterate. `n = 0` is the bare vertex and each successor performs the
 exact algebraic update `Γ ↦ J + L(Γ)`. -/
 noncomputable def finiteLadderVertex
@@ -68,7 +69,6 @@ noncomputable def resummedLadderVertex
     (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
   (↑(hinvertible.unit⁻¹) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) bareVertex
 
-omit [CompleteSpace H] in
 private theorem shiftedLadder_apply_resummedLadderVertex
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
     (hinvertible : IsUnit (1 - ladder))
@@ -82,7 +82,6 @@ private theorem shiftedLadder_apply_resummedLadderVertex
     (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator bareVertex) hmul
   simpa [resummedLadderVertex] using happ
 
-omit [CompleteSpace H] in
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
@@ -94,7 +93,6 @@ theorem resummedLadderVertex_fixedPoint
   simpa using
     shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex
 
-omit [CompleteSpace H] in
 /-- When `I - L` is a unit, the ladder fixed point is unique. -/
 theorem eq_resummedLadderVertex_of_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
