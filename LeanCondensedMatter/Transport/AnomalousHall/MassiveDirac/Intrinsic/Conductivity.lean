@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Metallic intrinsic Hall conductivity for the massive Dirac cone
 
 The canonical finite-cutoff Berry weight is the zero-temperature occupation-derived response
-proved upstream. In the benchmark regime `0 < m ≤ εF ≤ Λ`, it reduces to
+proved upstream. In the benchmark regime `m ≠ 0` and `|m| ≤ εF ≤ Λ`, it reduces to
 
 ```text
 C(εF, Λ) = m / (2 εF) - m / (2 Λ).
@@ -46,7 +46,7 @@ def metallicBerryWeightUV (m εF : ℝ) : ℝ :=
 
 /-- The occupation-derived finite-cutoff Berry weight in a form adapted to the `Λ → +∞` proof. -/
 theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow (m εF Λ : ℝ)
-    (hm : 0 < m) (hmF : m ≤ εF) (hFΛ : εF ≤ Λ) :
+    (hm : m ≠ 0) (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
       metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ) := by
   rw [zeroTemperatureOccupiedBerryWeightCutoff_eq m εF Λ hm hmF hFΛ]
@@ -68,7 +68,7 @@ private theorem tendsto_metallicBerryWeightUV_sub_correction_atTop (m εF : ℝ)
 /-- The canonical zero-temperature occupation-derived finite-cutoff Berry weight converges to the
 metallic continuum weight. -/
 theorem tendsto_zeroTemperatureOccupiedBerryWeightCutoff_atTop (m εF : ℝ)
-    (hm : 0 < m) (hmF : m ≤ εF) :
+    (hm : m ≠ 0) (hmF : |m| ≤ εF) :
     Tendsto (zeroTemperatureOccupiedBerryWeightCutoff m εF) atTop
       (nhds (metallicBerryWeightUV m εF)) := by
   apply Tendsto.congr' ?_ (tendsto_metallicBerryWeightUV_sub_correction_atTop m εF)
@@ -102,7 +102,7 @@ def intrinsicHallConductivity (e hbar m εF : ℝ) : ℝ :=
 /-- The occupation-derived finite-cutoff Hall conductivity converges to the clean metallic intrinsic
 response. -/
 theorem tendsto_intrinsicHallConductivityCutoff_atTop (e hbar m εF : ℝ)
-    (hm : 0 < m) (hmF : m ≤ εF) :
+    (hm : m ≠ 0) (hmF : |m| ≤ εF) :
     Tendsto (intrinsicHallConductivityCutoff e hbar m εF) atTop
       (nhds (intrinsicHallConductivity e hbar m εF)) := by
   unfold intrinsicHallConductivityCutoff intrinsicHallConductivity
