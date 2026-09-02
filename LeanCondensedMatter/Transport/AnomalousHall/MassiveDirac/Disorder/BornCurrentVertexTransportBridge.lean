@@ -9,11 +9,11 @@ set_option linter.style.header false
 
 This module takes the exact finite-cutoff arctangent representation of the normalized Born
 retarded-advanced longitudinal current rung and performs the one-sided weak-disorder limit at fixed
-cutoff.  The cutoff is required to lie beyond the metallic on-shell Fermi circle, so the two
+cutoff. The cutoff is required to lie beyond the metallic on-shell Fermi circle, so the two
 arctangent endpoints approach opposite sides of the resonance and their difference tends to `π`.
 
 The resulting scalar rung coefficient is then connected to the already-derived microscopic
-transport-to-single-particle lifetime factor.  This is still a Born current-vertex statement; no
+transport-to-single-particle lifetime factor. This is still a Born current-vertex statement; no
 Kubo conductivity or exact disorder-average identification is made here.
 -/
 
@@ -118,14 +118,11 @@ private theorem tendsto_continuumBornRetardedAdvancedCurrentRungPrefactorFactor_
 /-- At fixed cutoff beyond the metallic on-shell circle, the fully normalized Born RA longitudinal
 `σₓ` current rung has a finite one-sided weak-disorder limit.
 
-The cutoff condition
-`probeEnergy² - m² < v² pMax²`
-is exactly what forces the two arctangent endpoints to lie on opposite sides of the resonance as
-the disorder broadening vanishes. -/
+The cutoff condition `probeEnergy² - m² < v² pMax²` is exactly what forces the two arctangent
+endpoints to lie on opposite sides of the resonance as the disorder broadening vanishes. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_disorder_zero
     (v m probeEnergy hbar pMax : ℝ)
-    (hv : v ≠ 0) (hhbar : 0 < hbar)
-    (hm : 0 < m) (hmF : m < probeEnergy)
+    (hv : v ≠ 0) (hhbar : 0 < hbar) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun disorderStrength : ℝ =>
@@ -135,11 +132,10 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoeff
       (nhds
         (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
           m probeEnergy)) := by
-  have hprobe : 0 < probeEnergy := lt_trans hm hmF
+  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hdelta : 0 < probeEnergy ^ 2 - m ^ 2 := by
-    have hprod : 0 < (probeEnergy - m) * (probeEnergy + m) :=
-      mul_pos (sub_pos.mpr hmF) (add_pos hprobe hm)
-    nlinarith
+    rw [← sq_abs m]
+    nlinarith [abs_nonneg m]
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by positivity
   have hsumNe : probeEnergy ^ 2 + m ^ 2 ≠ 0 := ne_of_gt hsum
   have hwidth :=
