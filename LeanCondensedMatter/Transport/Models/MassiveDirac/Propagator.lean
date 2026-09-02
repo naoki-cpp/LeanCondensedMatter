@@ -206,14 +206,6 @@ theorem star_pauliGreenOperator
     (hamiltonianOperator_isSelfAdjoint v m px py)
     probeEnergy broadening
 
-/-- Retarded specialization of the side-indexed Pauli Green adjoint relation. -/
-theorem star_pauliGreenOperator_retarded_eq_advanced
-    (v m px py probeEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    star (pauliGreenOperator .retarded v m px py probeEnergy broadening) =
-      pauliGreenOperator .advanced v m px py probeEnergy broadening := by
-  simpa [SpectralSide.opposite] using
-    star_pauliGreenOperator .retarded v m px py probeEnergy broadening hbroadening
-
 end
 
 end AnomalousHall.MassiveDirac
