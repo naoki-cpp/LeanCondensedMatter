@@ -84,9 +84,11 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
           bandProjector .upper v m
             (metallicFermiRadius v m fermiEnergy * Real.cos θ)
             (metallicFermiRadius v m fermiEnergy * Real.sin θ)) := by
+  have hmAbsF : |m| ≤ fermiEnergy := by
+    simpa [abs_of_pos hm] using hmF
   have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
-  have hE := energy_metallicFermiRadius v m fermiEnergy hv hm hmF
+  have hE := energy_metallicFermiRadius v m fermiEnergy hv hmAbsF
   have hENe : energy v m (metallicFermiRadius v m fermiEnergy) 0 ≠ 0 := by
     rw [hE]
     exact hfermiNe
@@ -98,7 +100,7 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
             0 * (metallicFermiRadius v m fermiEnergy * Real.sin θ) =
           metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
       ring
-    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hm hmF]
+    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hmAbsF]
     unfold upperBandFermiSurfaceScalarOverlapWeight
     push_cast
     (field_simp [hfermiNe, hv]; ring)
