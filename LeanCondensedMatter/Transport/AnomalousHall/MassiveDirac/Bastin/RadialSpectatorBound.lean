@@ -19,6 +19,8 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
+open QuantumTheory.Transport
+
 /-- Common purely-imaginary current amplitude in the radial interband Bastin blocks. -/
 def radialInterbandCurrentAmplitude
     (band : Band) (e v m p : ℝ) : ℂ :=
