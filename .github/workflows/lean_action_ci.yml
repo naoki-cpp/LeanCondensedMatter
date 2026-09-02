@@ -16,6 +16,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  source-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      # These architecture checks inspect repository source and do not require a Lean build.
+      - name: Check source architecture
+        run: python3 scripts/check_architecture.py
+
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -24,9 +37,6 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
-
-      - name: Check architecture
-        run: python3 scripts/check_architecture.py
 
       # Mathlib's own binary cache restores dependency build products. Keep only this project's
       # build output in GitHub Cache instead of duplicating the full multi-gigabyte `.lake` tree.
@@ -57,24 +67,6 @@ jobs:
           path: .lake/build
           key: ${{ steps.project-cache.outputs.cache-primary-key }}
 
-      # These checks all consume the successful compiled environment but are diagnostically
-      # independent. `always()` prevents one failure from hiding the remaining results.
-      - name: Check compiled architecture
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckArchitecture.lean
-
-      - name: Check compiled declarations for sorryAx
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckNoSorry.lean
-
-      - name: Check duplicate declarations
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake env lean scripts/CheckDuplicates.lean
-
-      - name: Lint public library
-        if: always() && steps.lean-build.outcome == 'success'
-        run: lake lint
-
       - name: Report Lean cache footprint
         if: always()
         shell: bash
@@ -86,11 +78,64 @@ jobs:
             fi
           done
 
+  compiled-checks:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - compiled-architecture
+          - duplicates
+          - no-sorry-lint
+
+    name: compiled-checks (${{ matrix.check }})
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      # The build job saves this exact commit before these jobs start. Each independent check
+      # restores the same compiled project rather than rebuilding LeanCondensedMatter.
+      - name: Restore compiled project
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          fail-on-cache-miss: true
+
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Check compiled architecture
+        if: matrix.check == 'compiled-architecture'
+        run: lake env lean scripts/CheckArchitecture.lean
+
+      - name: Check duplicate declarations
+        if: matrix.check == 'duplicates'
+        run: lake env lean scripts/CheckDuplicates.lean
+
+      - name: Check compiled declarations for sorryAx
+        if: matrix.check == 'no-sorry-lint'
+        run: lake env lean scripts/CheckNoSorry.lean
+
+      - name: Lint public library
+        if: always() && matrix.check == 'no-sorry-lint'
+        run: lake lint
+
   # Generated developer artifacts are intentionally built only on pushes to main. Both theorem
   # catalog generation and doc-gen4 consume the compiled Lean environment, so keep them on one
   # runner rather than starting independent workflows for the same commit.
   docs:
-    needs: build
+    needs: [source-checks, build, compiled-checks]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
