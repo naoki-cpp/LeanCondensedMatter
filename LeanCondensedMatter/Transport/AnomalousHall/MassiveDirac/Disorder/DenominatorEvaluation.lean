@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorFactorization
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorFactorization
 import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
