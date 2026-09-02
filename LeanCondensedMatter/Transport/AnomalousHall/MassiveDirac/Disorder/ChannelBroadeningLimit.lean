@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.DenominatorBroadeningLimit
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorBroadeningLimit
 import Mathlib.Tactic
 
 set_option linter.style.header false
