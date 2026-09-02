@@ -65,10 +65,9 @@ def upperBandFermiSurfaceScalarOverlapWeight
   (1 + m ^ 2 / fermiEnergy ^ 2 +
     (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2
 
-/-- Closed upper-band scalar-disorder overlap on the metallic Fermi circle. -/
+/-- Closed upper-band scalar-disorder overlap. -/
 theorem upperBandFermiSurfaceScalarOverlapWeight_eq
-    (v m fermiEnergy θ : ℝ) (_hv : v ≠ 0)
-    (_hm : 0 < m) (_hmF : m ≤ fermiEnergy) :
+    (v m fermiEnergy θ : ℝ) :
     upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ =
       (1 + m ^ 2 / fermiEnergy ^ 2 +
         (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2 := by
@@ -128,7 +127,7 @@ theorem isotropicUpperBandSingleParticleAngularWeight_eq
           (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
             ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ := by
     funext θ
-    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ hv hm hmF]
+    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ]
     ring
   rw [hrewrite]
   have hconst :
@@ -172,7 +171,7 @@ theorem isotropicUpperBandTransportAngularWeight_eq
             (m ^ 2 / fermiEnergy ^ 2) * Real.cos θ -
               ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ ^ 2 := by
     funext θ
-    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ hv hm hmF]
+    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ]
     ring
   rw [hrewrite]
   have hconst :
@@ -263,10 +262,10 @@ theorem continuumBornUpperBandTransportScatteringRate_pos
   exact mul_pos (div_pos hdisorder hden) hnum
 
 /-- The transport rate relative to the single-particle rate is fixed entirely by the massive-Dirac
-Fermi-circle angular structure. -/
+Fermi-circle angular structure whenever the common rate prefactors are nonzero. -/
 theorem continuumBornUpperBandTransportRate_div_singleParticleRate
     (v m fermiEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar) (hdisorder : 0 < disorderStrength)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hm : 0 < m) (hmF : m < fermiEnergy) :
     continuumBornUpperBandTransportScatteringRate
         v m fermiEnergy disorderStrength hbar /
@@ -275,12 +274,11 @@ theorem continuumBornUpperBandTransportRate_div_singleParticleRate
       (fermiEnergy ^ 2 + 3 * m ^ 2) /
         (2 * (fermiEnergy ^ 2 + m ^ 2)) := by
   rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hm hmF,
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF,
     continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity (ne_of_gt hhbar) hm hmF]
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hm hmF]
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
-  have hdisorderNe : disorderStrength ≠ 0 := ne_of_gt hdisorder
-  field_simp [hvelocity, ne_of_gt hhbar, hfermiNe, hdisorderNe]
+  field_simp [hvelocity, hhbar, hfermiNe, hdisorder]
   ring
 
 /-- Upper-band Born transport lifetime, defined as the reciprocal of the derived transport rate. -/
