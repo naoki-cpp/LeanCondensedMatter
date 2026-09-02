@@ -6,10 +6,9 @@ set_option linter.style.header false
 /-!
 # Zero-broadening damping coefficients of the continuum Born self-energy
 
-This Phase 4 slice lifts the already-proved fixed-cutoff `η → 0⁺` limits of the scalar and `σ_z`
-Born radial channels through the real disorder/measure prefactor used by
-`finiteCutoffContinuumBornSelfEnergy`.  It does not introduce a second self-energy definition or new
-Born integrals.
+This file lifts the already-proved fixed-cutoff `η → 0⁺` limits of the scalar and `σ_z` Born radial
+channels through the real disorder/measure prefactor used by `finiteCutoffContinuumBornSelfEnergy`.
+It does not introduce a second self-energy definition or new Born integrals.
 
 For
 
@@ -74,7 +73,7 @@ coefficient appearing in the continuum Born self-energy has the side-indexed met
 theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadening_zero
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -88,7 +87,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hchannel :=
     tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
-      side v m probeEnergy pMax hvelocity hm hmE hcutoff
+      side v m probeEnergy pMax hvelocity hprobe hmetal hcutoff
   refine ((tendsto_const_nhds : Tendsto
     (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
     (nhdsWithin 0 (Set.Ioi 0))
@@ -102,7 +101,7 @@ coefficient appearing in the continuum Born self-energy has the side-indexed met
 theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero
     (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -116,7 +115,7 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hchannel :=
     tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
-      side v m probeEnergy pMax hvelocity hm hmE hcutoff
+      side v m probeEnergy pMax hvelocity hprobe hmetal hcutoff
   refine ((tendsto_const_nhds : Tendsto
     (fun _ : ℝ => disorderStrength * continuumBornAngularMeasurePrefactor hbar)
     (nhdsWithin 0 (Set.Ioi 0))
@@ -129,7 +128,7 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
 coefficient at positive disorder prefactor. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedScalarSelfEnergyCoefficient_im_broadening_zero
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -143,13 +142,13 @@ theorem tendsto_finiteCutoffContinuumBornRetardedScalarSelfEnergyCoefficient_im_
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadening_zero
       .retarded v m probeEnergy disorderStrength hbar pMax
-      hvelocity hm hmE hcutoff)
+      hvelocity hprobe hmetal hcutoff)
 
 /-- Advanced scalar self-energy coefficient: the imaginary part has the opposite sign to the
 retarded coefficient. -/
 theorem tendsto_finiteCutoffContinuumBornAdvancedScalarSelfEnergyCoefficient_im_broadening_zero
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -163,13 +162,13 @@ theorem tendsto_finiteCutoffContinuumBornAdvancedScalarSelfEnergyCoefficient_im_
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadening_zero
       .advanced v m probeEnergy disorderStrength hbar pMax
-      hvelocity hm hmE hcutoff)
+      hvelocity hprobe hmetal hcutoff)
 
 /-- Retarded `σ_z` self-energy coefficient: the imaginary part approaches the corresponding negative
 mass-channel damping coefficient. -/
 theorem tendsto_finiteCutoffContinuumBornRetardedZSelfEnergyCoefficient_im_broadening_zero
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -183,13 +182,13 @@ theorem tendsto_finiteCutoffContinuumBornRetardedZSelfEnergyCoefficient_im_broad
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero
       .retarded v m probeEnergy disorderStrength hbar pMax
-      hvelocity hm hmE hcutoff)
+      hvelocity hprobe hmetal hcutoff)
 
 /-- Advanced `σ_z` self-energy coefficient: the imaginary part has the opposite sign to the
 retarded coefficient. -/
 theorem tendsto_finiteCutoffContinuumBornAdvancedZSelfEnergyCoefficient_im_broadening_zero
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hm : 0 < m) (hmE : m < probeEnergy)
+    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -203,7 +202,7 @@ theorem tendsto_finiteCutoffContinuumBornAdvancedZSelfEnergyCoefficient_im_broad
   simpa [SpectralSide.sign] using
     (tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero
       .advanced v m probeEnergy disorderStrength hbar pMax
-      hvelocity hm hmE hcutoff)
+      hvelocity hprobe hmetal hcutoff)
 
 end
 
