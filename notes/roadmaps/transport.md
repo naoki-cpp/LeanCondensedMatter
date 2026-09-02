@@ -64,9 +64,9 @@ SCBA remains explicitly `SpectralSide`-aware.
 L_RA(Γ) = C₂(Gᴿ Γ Gᴬ)
 ```
 
-together with finite iteration and conditional resummation/uniqueness under an explicit inverse of
-`I - L_RA`. One-rung aliases and residual-routing wrappers are not separate public APIs. Convergence
-and Ward identities are separate targets.
+together with finite iteration and conditional resummation/uniqueness under the canonical
+`IsUnit (1 - L_RA)` hypothesis. Separate inverse-data, one-rung, and residual-routing wrappers are
+not public APIs. Convergence and Ward identities are separate targets.
 
 ## Open targets
 
