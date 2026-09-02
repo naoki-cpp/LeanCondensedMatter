@@ -37,14 +37,14 @@ def HasLocalAdiabaticThenStaticLimit
       HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
     HasStaticLimit regulatorRemoved L
 
-/-- A positive switching rate makes every scalar Lehmann denominator nonzero. -/
-theorem lehmannDenominator_ne_zero_of_pos
-    (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
+/-- A nonzero switching rate makes every scalar Lehmann denominator nonzero. -/
+theorem lehmannDenominator_ne_zero
+    (hbar omega eta energyGap : ℝ) (heta : eta ≠ 0) :
     lehmannDenominator hbar omega eta energyGap ≠ 0 := by
   intro hzero
   have hre : eta = 0 := by
     simpa [lehmannDenominator] using congrArg Complex.re hzero
-  exact (ne_of_gt heta) hre
+  exact heta hre
 
 /-- At zero switching rate, nonzero detuning makes the scalar denominator nonzero. -/
 theorem lehmannDenominator_zero_rate_ne_zero
@@ -61,9 +61,9 @@ noncomputable def unswitchedLehmannTerm
     (hbar omega energyGap : ℝ) (weight : ℂ) : ℂ :=
   lehmannTerm hbar omega 0 energyGap weight
 
-/-- At fixed positive rate, a scalar Lehmann term has the direct static limit. -/
-theorem hasStaticLimit_lehmannTerm_of_pos
-    (hbar eta energyGap : ℝ) (weight : ℂ) (heta : 0 < eta) :
+/-- At fixed nonzero rate, a scalar Lehmann term has the direct static limit. -/
+theorem hasStaticLimit_lehmannTerm
+    (hbar eta energyGap : ℝ) (weight : ℂ) (heta : eta ≠ 0) :
     HasStaticLimit
       (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight)
       (lehmannTerm hbar 0 eta energyGap weight) := by
@@ -75,7 +75,7 @@ theorem hasStaticLimit_lehmannTerm_of_pos
       (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight) 0 := by
     unfold lehmannTerm
     exact continuousAt_const.mul
-      (hden.inv₀ (lehmannDenominator_ne_zero_of_pos
+      (hden.inv₀ (lehmannDenominator_ne_zero
         hbar 0 eta energyGap heta))
   simpa [HasStaticLimit] using hcont.tendsto
 
@@ -139,11 +139,11 @@ noncomputable def finiteUnswitchedLehmannSum
     (hbar omega : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ) : ℂ :=
   s.sum fun j => unswitchedLehmannTerm hbar omega (energyGap j) (weight j)
 
-/-- Fixed-positive-rate finite Lehmann sums always have a static limit. -/
-theorem hasStaticLimit_finiteLehmannLimitSum_of_pos
+/-- Fixed-nonzero-rate finite Lehmann sums always have a static limit. -/
+theorem hasStaticLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
     (hbar eta : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ)
-    (heta : 0 < eta) :
+    (heta : eta ≠ 0) :
     HasStaticLimit
       (fun omega : ℝ =>
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
@@ -151,7 +151,7 @@ theorem hasStaticLimit_finiteLehmannLimitSum_of_pos
   unfold finiteLehmannLimitSum
   apply HasStaticLimit.finsetSum
   intro j _
-  exact hasStaticLimit_lehmannTerm_of_pos
+  exact hasStaticLimit_lehmannTerm
     hbar eta (energyGap j) (weight j) heta
 
 /-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
@@ -250,8 +250,8 @@ theorem finiteLehmannLimitSum_has_both_local_iterated_limits
   · refine ⟨fun eta =>
       finiteLehmannLimitSum s hbar 0 eta energyGap weight, ?_, ?_⟩
     · filter_upwards [self_mem_nhdsWithin] with eta heta
-      exact hasStaticLimit_finiteLehmannLimitSum_of_pos
-        s hbar eta energyGap weight heta
+      exact hasStaticLimit_finiteLehmannLimitSum
+        s hbar eta energyGap weight (ne_of_gt heta)
     · apply hasAdiabaticRemovalLimit_finiteLehmannLimitSum
       intro j hj
       rcases hregular j hj with hweight | hgap
