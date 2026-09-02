@@ -17,9 +17,8 @@ self-energy. The ladder itself is represented as a bounded complex-linear map, s
 SCBA, and other consumers can supply whichever Green operators their approximation requires.
 
 The public algebra is intentionally small: the RA kernel, finite fixed-point iterates, and
-conditional resummation under an explicitly supplied inverse of `I - L_RA`. No convergence,
-geometric-series expansion, Ward identity, SCBA closure, crossed diagram, or thermodynamic limit is
-asserted here.
+conditional resummation when `I - L_RA` is a unit. No convergence, geometric-series expansion, Ward
+identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.
 -/
 
 namespace QuantumTheory
@@ -62,58 +61,56 @@ noncomputable def finiteLadderVertex
   | 0 => bareVertex
   | n + 1 => bareVertex + ladder (finiteLadderVertex ladder bareVertex n)
 
-/-- Explicit invertibility data for the shifted ladder map `Γ ↦ Γ - L(Γ)`.
-
-Mathlib's `ContinuousLinearEquiv` owns the inverse and its two inverse laws. The only additional
-data retained here is the identification of the supplied equivalence with the shifted ladder
-action. This remains an algebraic resummation hypothesis, not a convergence theorem. -/
-structure LadderInverseData
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) where
-  /-- Supplied continuous-linear equivalence representing `I - L`. -/
-  shiftedEquiv : (H →L[ℂ] H) ≃L[ℂ] (H →L[ℂ] H)
-  /-- The forward equivalence acts as the shifted ladder map `Γ ↦ Γ - L(Γ)`. -/
-  shiftedEquiv_apply : ∀ vertex : H →L[ℂ] H,
-    shiftedEquiv vertex = vertex - ladder vertex
-
-/-- Resummed ladder vertex under explicit invertibility of `I - L`. -/
+/-- Resummed ladder vertex when the shifted ladder endomorphism `I - L` is a unit. -/
 noncomputable def resummedLadderVertex
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
-    (inverseData : LadderInverseData ladder)
+    (hinvertible : IsUnit (1 - ladder))
     (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  inverseData.shiftedEquiv.symm bareVertex
+  (↑(hinvertible.unit⁻¹) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) bareVertex
+
+omit [CompleteSpace H] in
+private theorem shiftedLadder_apply_resummedLadderVertex
+    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (hinvertible : IsUnit (1 - ladder))
+    (bareVertex : H →L[ℂ] H) :
+    (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex := by
+  have hmul :
+      (1 - ladder) *
+          (↑(hinvertible.unit⁻¹) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) = 1 := by
+    simpa using hinvertible.mul_val_inv
+  have happ := congrArg
+    (fun operator : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) => operator bareVertex) hmul
+  simpa [resummedLadderVertex] using happ
 
 omit [CompleteSpace H] in
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
-    (inverseData : LadderInverseData ladder)
+    (hinvertible : IsUnit (1 - ladder))
     (bareVertex : H →L[ℂ] H) :
-    resummedLadderVertex ladder inverseData bareVertex =
-      bareVertex + ladder (resummedLadderVertex ladder inverseData bareVertex) := by
+    resummedLadderVertex ladder hinvertible bareVertex =
+      bareVertex + ladder (resummedLadderVertex ladder hinvertible bareVertex) := by
   apply (sub_eq_iff_eq_add).mp
-  rw [← inverseData.shiftedEquiv_apply]
-  simpa [resummedLadderVertex] using
-    inverseData.shiftedEquiv.apply_symm_apply bareVertex
+  simpa using
+    shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex
 
 omit [CompleteSpace H] in
-/-- Under the same equivalence hypothesis, the ladder fixed point is unique. -/
+/-- When `I - L` is a unit, the ladder fixed point is unique. -/
 theorem eq_resummedLadderVertex_of_fixedPoint
     (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
-    (inverseData : LadderInverseData ladder)
+    (hinvertible : IsUnit (1 - ladder))
     (bareVertex dressedVertex : H →L[ℂ] H)
     (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
-    dressedVertex = resummedLadderVertex ladder inverseData bareVertex := by
-  have hshift : dressedVertex - ladder dressedVertex = bareVertex :=
-    (sub_eq_iff_eq_add).mpr hfixed
-  have hforward : inverseData.shiftedEquiv dressedVertex = bareVertex := by
-    rw [inverseData.shiftedEquiv_apply]
-    exact hshift
-  calc
-    dressedVertex =
-        inverseData.shiftedEquiv.symm (inverseData.shiftedEquiv dressedVertex) := by
-      exact (inverseData.shiftedEquiv.symm_apply_apply dressedVertex).symm
-    _ = inverseData.shiftedEquiv.symm bareVertex := by rw [hforward]
-    _ = resummedLadderVertex ladder inverseData bareVertex := rfl
+    dressedVertex = resummedLadderVertex ladder hinvertible bareVertex := by
+  have hbijective : Function.Bijective (1 - ladder) :=
+    (ContinuousLinearMap.isUnit_iff_bijective).mp hinvertible
+  have hdressed : (1 - ladder) dressedVertex = bareVertex := by
+    have hshift : dressedVertex - ladder dressedVertex = bareVertex :=
+      (sub_eq_iff_eq_add).mpr hfixed
+    simpa using hshift
+  exact hbijective.1
+    (hdressed.trans
+      (shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex).symm)
 
 end
 end Transport
