@@ -48,24 +48,29 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_eq
     continuumBornUpperBandDampingEnergy
   (field_simp [hvelocity, hhbar, hfermiEnergy]; ring)
 
-/-- The Born single-particle scattering rate is nonzero whenever the common Born prefactors are
-nonzero in the strict metallic regime. -/
+/-- The Born single-particle scattering rate is nonzero whenever its algebraic prefactors and Fermi
+energy are nonzero. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_ne_zero
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandSingleParticleScatteringRate
       v m fermiEnergy disorderStrength hbar ≠ 0 := by
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt (lt_trans hm hmF)
   rw [continuumBornUpperBandSingleParticleScatteringRate_eq
-    v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe]
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
   apply mul_ne_zero
   · exact div_ne_zero hdisorder
       (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 3 hhbar))
         (pow_ne_zero 2 hvelocity))
-  · have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
-    have hterm : 0 < fermiEnergy + m ^ 2 / fermiEnergy := by positivity
-    exact ne_of_gt hterm
+  · have hsum : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by
+      exact ne_of_gt
+        (add_pos_of_pos_of_nonneg (sq_pos_of_ne_zero hfermiEnergy) (sq_nonneg m))
+    have hterm :
+        fermiEnergy + m ^ 2 / fermiEnergy =
+          (fermiEnergy ^ 2 + m ^ 2) / fermiEnergy := by
+      field_simp [hfermiEnergy]
+    rw [hterm]
+    exact div_ne_zero hsum hfermiEnergy
 
 /-- The Born single-particle scattering rate is positive for positive `ℏ` and positive disorder
 strength in the strict metallic regime. -/
@@ -113,19 +118,19 @@ theorem continuumBornUpperBandSingleParticleLifetime_pos
     (continuumBornUpperBandSingleParticleScatteringRate_pos
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
 
-/-- The derived scattering rate and lifetime are reciprocal whenever the rate prefactors are
-nonzero. -/
+/-- The derived scattering rate and lifetime are reciprocal whenever the rate prefactors and Fermi
+energy are nonzero. -/
 theorem continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandSingleParticleScatteringRate
         v m fermiEnergy disorderStrength hbar *
       continuumBornUpperBandSingleParticleLifetime
         v m fermiEnergy disorderStrength hbar = 1 := by
   have hrateNe :=
     continuumBornUpperBandSingleParticleScatteringRate_ne_zero
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
   unfold continuumBornUpperBandSingleParticleLifetime
   simp [hrateNe]
 
@@ -134,7 +139,7 @@ theorem continuumBornUpperBandSingleParticleScatteringRate_mul_lifetime
 theorem continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandDampingEnergy
         v m fermiEnergy disorderStrength hbar =
       hbar /
@@ -142,7 +147,7 @@ theorem continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime
           v m fermiEnergy disorderStrength hbar) := by
   have hrateNe :=
     continuumBornUpperBandSingleParticleScatteringRate_ne_zero
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy
   rw [continuumBornUpperBandDampingEnergy_eq_half_hbar_mul_scatteringRate
     v m fermiEnergy disorderStrength hbar hhbar]
   unfold continuumBornUpperBandSingleParticleLifetime

@@ -200,11 +200,11 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoeff
       (ne_of_gt hdisorder) hsumNe).symm
 
 /-- The scalar ladder factor extracted from the weak-disorder normalized current rung is exactly the
-factor already derived microscopically between the Born transport and single-particle lifetimes. -/
+factor already derived algebraically between the Born transport and single-particle lifetimes. -/
 theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor_mul_singleParticleLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandTransportLifetime
         v m fermiEnergy disorderStrength hbar =
       (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
@@ -212,8 +212,11 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
         continuumBornUpperBandSingleParticleLifetime
           v m fermiEnergy disorderStrength hbar := by
   rw [continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime
-    v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF]
-  have hden : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
+    v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hfermiEnergy]
+  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_ne_zero hfermiEnergy
+  have hden : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
+    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq
+      (mul_nonneg (by norm_num) (sq_nonneg m)))
   rw [inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     m fermiEnergy hden]
 

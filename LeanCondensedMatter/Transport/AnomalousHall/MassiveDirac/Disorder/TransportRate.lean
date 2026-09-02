@@ -16,7 +16,7 @@ by the gauge-independent band-projector overlap on the isotropic Fermi circle.  
 single-particle rate uses the unweighted angular average, whereas current relaxation carries the
 additional factor `1 - cos θ`.
 
-For `0 < m < ε_F`, the upper-band projector overlap reduces to
+For `|m| < ε_F`, the upper-band projector overlap reduces to
 
 ```text
 W(θ) = [1 + m²/ε_F² + (1 - m²/ε_F²) cos θ] / 2.
@@ -73,25 +73,22 @@ theorem upperBandFermiSurfaceScalarOverlapWeight_eq
         (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2 := by
   rfl
 
-/-- The real overlap weight embeds back into `ℂ` as exactly the projector trace on the metallic
-Fermi circle.  This is the reality certificate for the physical scalar API. -/
+/-- The real overlap weight embeds back into `ℂ` as exactly the projector trace on the Fermi circle.
+This is the reality certificate for the physical scalar API whenever the Fermi radius is real and
+the Fermi energy is nonzero. -/
 theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
     (v m fermiEnergy θ : ℝ) (hv : v ≠ 0)
-    (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
+    (hmF : |m| ≤ fermiEnergy) (hfermiEnergy : fermiEnergy ≠ 0) :
     (upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ : ℂ) =
       Matrix.trace
         (bandProjector .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
           bandProjector .upper v m
             (metallicFermiRadius v m fermiEnergy * Real.cos θ)
             (metallicFermiRadius v m fermiEnergy * Real.sin θ)) := by
-  have hmAbsF : |m| ≤ fermiEnergy := by
-    simpa [abs_of_pos hm] using hmF
-  have hfermiPos : 0 < fermiEnergy := lt_of_lt_of_le hm hmF
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
-  have hE := energy_metallicFermiRadius v m fermiEnergy hv hmAbsF
+  have hE := energy_metallicFermiRadius v m fermiEnergy hv hmF
   have hENe : energy v m (metallicFermiRadius v m fermiEnergy) 0 ≠ 0 := by
     rw [hE]
-    exact hfermiNe
+    exact hfermiEnergy
   rw [upperBandProjectorOverlap_eq]
   · rw [energy_polar_eq_radial, hE]
     have hpFproduct :
@@ -100,10 +97,10 @@ theorem coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace
             0 * (metallicFermiRadius v m fermiEnergy * Real.sin θ) =
           metallicFermiRadius v m fermiEnergy ^ 2 * Real.cos θ := by
       ring
-    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hmAbsF]
+    rw [hpFproduct, metallicFermiRadius_sq v m fermiEnergy hmF]
     unfold upperBandFermiSurfaceScalarOverlapWeight
     push_cast
-    (field_simp [hfermiNe, hv]; ring)
+    (field_simp [hfermiEnergy, hv]; ring)
   · exact hENe
   · rw [energy_polar_eq_radial]
     exact hENe
@@ -294,11 +291,11 @@ theorem continuumBornUpperBandTransportLifetime_pos
       v m fermiEnergy disorderStrength hbar hvelocity hhbar hdisorder hm hmF)
 
 /-- The transport lifetime differs from the single-particle lifetime by the reciprocal angular
-factor whenever the common Born prefactors are nonzero. -/
+factor whenever the common Born prefactors and Fermi energy are nonzero. -/
 theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLifetime
     (v m fermiEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
-    (hm : 0 < m) (hmF : m < fermiEnergy) :
+    (hfermiEnergy : fermiEnergy ≠ 0) :
     continuumBornUpperBandTransportLifetime
         v m fermiEnergy disorderStrength hbar =
       (2 * (fermiEnergy ^ 2 + m ^ 2) /
@@ -307,15 +304,17 @@ theorem continuumBornUpperBandTransportLifetime_eq_factor_mul_singleParticleLife
           v m fermiEnergy disorderStrength hbar := by
   rw [continuumBornUpperBandTransportLifetime,
     continuumBornUpperBandSingleParticleLifetime]
-  have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
-  have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   rw [continuumBornUpperBandTransportScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe,
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy,
     continuumBornUpperBandSingleParticleScatteringRate_eq
-      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiNe]
-  have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 := by positivity
-  have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by positivity
-  (field_simp [hvelocity, hhbar, hfermiNe, hdisorder, hsum1, hsum3]; ring)
+      v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
+  have hfermiSq : 0 < fermiEnergy ^ 2 := sq_pos_of_ne_zero hfermiEnergy
+  have hsum1 : fermiEnergy ^ 2 + m ^ 2 ≠ 0 :=
+    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq (sq_nonneg m))
+  have hsum3 : fermiEnergy ^ 2 + 3 * m ^ 2 ≠ 0 :=
+    ne_of_gt (add_pos_of_pos_of_nonneg hfermiSq
+      (mul_nonneg (by norm_num) (sq_nonneg m)))
+  (field_simp [hvelocity, hhbar, hfermiEnergy, hdisorder, hsum1, hsum3]; ring)
 
 /-- Package the microscopic Born transport lifetime as the generic positive current-relaxation datum
 consumed by the longitudinal RTA benchmark.  This bridge does not identify the derivation with a
