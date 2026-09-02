@@ -43,8 +43,23 @@ def sign : SpectralSide → ℝ
   | .retarded => 1
   | .advanced => -1
 
+/-- The opposite retarded/advanced spectral side. -/
+def opposite : SpectralSide → SpectralSide
+  | .retarded => .advanced
+  | .advanced => .retarded
+
 @[simp] theorem sign_retarded : sign .retarded = 1 := rfl
 @[simp] theorem sign_advanced : sign .advanced = -1 := rfl
+@[simp] theorem opposite_retarded : opposite .retarded = .advanced := rfl
+@[simp] theorem opposite_advanced : opposite .advanced = .retarded := rfl
+
+@[simp]
+theorem opposite_opposite (side : SpectralSide) : side.opposite.opposite = side := by
+  cases side <;> rfl
+
+@[simp]
+theorem sign_opposite (side : SpectralSide) : side.opposite.sign = -side.sign := by
+  cases side <;> rfl
 
 theorem sign_ne_zero (side : SpectralSide) : side.sign ≠ 0 := by
   cases side <;> simp [sign]
@@ -80,6 +95,16 @@ theorem spectralParameter_im (side : SpectralSide) (energy broadening : ℝ) :
     (spectralParameter side energy broadening).im = side.sign * broadening := by
   simp [spectralParameter]
 
+/-- Complex conjugation exchanges the two side-indexed spectral parameters. -/
+@[simp]
+theorem star_spectralParameter
+    (side : SpectralSide) (energy broadening : ℝ) :
+    star (spectralParameter side energy broadening) =
+      spectralParameter side.opposite energy broadening := by
+  cases side <;>
+    apply Complex.ext <;>
+      simp [spectralParameter]
+
 /-- A nonzero broadening keeps either spectral-side parameter away from every real energy. -/
 theorem spectralParameter_sub_real_ne_zero
     (side : SpectralSide) (energy broadening eigenvalue : ℝ)
@@ -109,13 +134,6 @@ theorem advancedSpectralParameter_re (energy broadening : ℝ) :
 theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
   simp [advancedSpectralParameter]
-
-@[simp] private theorem star_retardedSpectralParameter
-    (energy broadening : ℝ) :
-    star (retardedSpectralParameter energy broadening) =
-      advancedSpectralParameter energy broadening := by
-  apply Complex.ext <;>
-    simp [retardedSpectralParameter, advancedSpectralParameter]
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -185,17 +203,27 @@ theorem spectralResolvent_mul_spectralShift
           rw [spectralParameter_im]
           exact mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening))
 
+/-- Taking the adjoint exchanges the retarded and advanced spectral resolvents. -/
+theorem star_spectralResolvent
+    (side : SpectralSide)
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy broadening : ℝ) :
+    star (spectralResolvent side hamiltonian energy broadening) =
+      spectralResolvent side.opposite hamiltonian energy broadening := by
+  unfold spectralResolvent resolvent
+  rw [← Ring.inverse_star]
+  congr 1
+  rw [star_sub, hself]
+  simp [Algebra.algebraMap_eq_smul_one]
+
 /-- The advanced resolvent is the adjoint of the retarded resolvent. -/
 theorem star_retardedResolvent
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) :
     star (retardedResolvent hamiltonian energy broadening) =
       advancedResolvent hamiltonian energy broadening := by
-  unfold retardedResolvent advancedResolvent resolvent
-  rw [← Ring.inverse_star]
-  congr 1
-  rw [star_sub, hself]
-  simp [Algebra.algebraMap_eq_smul_one]
+  simpa using
+    star_spectralResolvent .retarded hamiltonian hself energy broadening
 
 end
 end Transport
