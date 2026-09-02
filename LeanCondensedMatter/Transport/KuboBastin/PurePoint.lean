@@ -90,24 +90,6 @@ variable
   (system : BoundedFreeSystem H)
   (data : PurePointLehmannData system ι)
 
-/-- The retarded resolvent acts diagonally on any supplied pure-point energy eigenbasis. -/
-theorem retardedResolvent_apply_purePointBasis
-    (omega eta : ℝ) (heta : 0 < eta) (m n : ι) :
-    retardedResolvent system.hamiltonian.1
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-        (kuboBastinEnergyBroadening system.hbar eta)
-        (data.basis n) =
-      (retardedSpectralParameter
-          (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-          (kuboBastinEnergyBroadening system.hbar eta) -
-        (data.energy n : ℂ))⁻¹ • data.basis n := by
-  exact retardedResolvent_apply_eigenvector
-    system.hamiltonian.1 system.hamiltonian.2
-    (data.hamiltonian_apply_basis n)
-    (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-    (kuboBastinEnergyBroadening system.hbar eta)
-    (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)
-
 /-- The diagonal matrix element of the retarded resolvent is its scalar spectral denominator. -/
 theorem inner_purePointBasis_retardedResolvent
     (omega eta : ℝ) (heta : 0 < eta) (m n : ι) :
@@ -120,7 +102,24 @@ theorem inner_purePointBasis_retardedResolvent
           (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
           (kuboBastinEnergyBroadening system.hbar eta) -
         (data.energy n : ℂ))⁻¹ := by
-  rw [retardedResolvent_apply_purePointBasis system data omega eta heta m n]
+  have hres :
+      retardedResolvent system.hamiltonian.1
+          (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
+          (kuboBastinEnergyBroadening system.hbar eta)
+          (data.basis n) =
+        (retardedSpectralParameter
+            (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
+            (kuboBastinEnergyBroadening system.hbar eta) -
+          (data.energy n : ℂ))⁻¹ • data.basis n := by
+    simpa only [retardedResolvent, retardedSpectralParameter] using
+      resolvent_spectralParameterOfRegulator_apply_eigenvector
+        system.hamiltonian.1 system.hamiltonian.2
+        (data.hamiltonian_apply_basis n)
+        (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
+        (kuboBastinEnergyBroadening system.hbar eta)
+        (ne_of_gt (kuboBastinEnergyBroadening_pos
+          system.hbar eta system.hbar_pos heta))
+  rw [hres]
   rw [inner_smul_right]
   simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
 
