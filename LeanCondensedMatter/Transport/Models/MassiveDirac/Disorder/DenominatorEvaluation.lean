@@ -37,7 +37,7 @@ theorem pauliGreenDenominator_radial_eq
     pauliGreenDenominator side v m p 0 probeEnergy broadening =
       spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2 -
         (v : ℂ) ^ 2 * (p : ℂ) ^ 2 := by
-  unfold pauliGreenDenominator energySq
+  unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq spectralParameter
   push_cast
   ring
 
@@ -132,6 +132,7 @@ theorem hasDerivAt_log_pauliGreenDenominator_radial
         side v m probeEnergy broadening p hprobeEnergy hbroadening)
   convert hlog using 1
   unfold continuumBornRadialDenominatorIntegrand
+    continuumBornRadialDenominatorIntegrandOfRegulator pauliGreenDenominator
   rw [div_eq_mul_inv]
   ring
 
@@ -142,13 +143,15 @@ private theorem continuous_continuumBornRadialDenominatorIntegrand
       side v m probeEnergy broadening) := by
   have hden : Continuous (fun p : ℝ =>
       pauliGreenDenominator side v m p 0 probeEnergy broadening) := by
-    unfold pauliGreenDenominator energySq spectralParameter
+    unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
+      spectralParameter spectralParameterOfRegulator
     fun_prop
   have hinv : Continuous (fun p : ℝ =>
       (pauliGreenDenominator side v m p 0 probeEnergy broadening)⁻¹) :=
     hden.inv₀ (fun p =>
       pauliGreenDenominator_ne_zero side v m p 0 probeEnergy broadening hbroadening)
   unfold continuumBornRadialDenominatorIntegrand
+    continuumBornRadialDenominatorIntegrandOfRegulator pauliGreenDenominator
   exact (Complex.continuous_ofReal.comp continuous_id).mul hinv
 
 /-- Before dividing by `-2v²`, the finite-cutoff denominator integral is exactly the endpoint
@@ -174,6 +177,10 @@ theorem neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegral_
       side v m probeEnergy broadening p hprobeEnergy hbroadening) hint
   rw [← hftc]
   unfold finiteCutoffContinuumBornDenominatorIntegral
+    finiteCutoffContinuumBornDenominatorIntegralOfRegulator
+    continuumBornRadialDenominatorIntegrand
+    continuumBornRadialDenominatorIntegrandOfRegulator
+    pauliGreenDenominator
   rw [intervalIntegral.integral_const_mul]
 
 /-- Explicit finite-cutoff evaluation of the shared continuum Born denominator integral. -/
