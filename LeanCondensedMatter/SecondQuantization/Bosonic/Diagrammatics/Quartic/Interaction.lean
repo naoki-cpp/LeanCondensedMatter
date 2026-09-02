@@ -20,21 +20,18 @@ namespace Bosonic
 
 variable {Mode : Type*}
 
-/-- Compatibility alias for the statistics-independent quartic vertex label. -/
-abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
-
 /-- The ordered bosonic quartic vertex operator. -/
-noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
+noncomputable def quarticVertexOperator (q : Common.QuarticVertexLabel Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticVertexOperator create annihilate q
 
 /-- A bosonic quartic interaction supported on a finite set of vertex labels. -/
-noncomputable def quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
-    (g : QuarticVertexLabel Mode → ℂ) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+noncomputable def quarticInteractionOn (support : Finset (Common.QuarticVertexLabel Mode))
+    (g : Common.QuarticVertexLabel Mode → ℂ) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticInteractionOn support create annihilate g
 
 /-- The all-label bosonic quartic interaction on a finite mode type. -/
-noncomputable def quarticInteraction [Fintype Mode] (g : QuarticVertexLabel Mode → ℂ) :
+noncomputable def quarticInteraction [Fintype Mode] (g : Common.QuarticVertexLabel Mode → ℂ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticInteraction create annihilate g
 

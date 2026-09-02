@@ -35,7 +35,7 @@ def wholeSpaceSmearedDensityRate1D
 /-- Pairing of the derivative of a test function with a probability current. -/
 def wholeSpaceSmearedCurrentPairing1D
     (testDerivative current : ℝ → ℝ) : ℝ :=
-  ∫ x, testDerivative x * current x
+  wholeSpaceSmearedDensityRate1D testDerivative current
 
 /-- If the test support is strictly inside `a..b`, its interval-smeared density is the whole-space
 smeared density. -/
@@ -65,6 +65,7 @@ theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
     intervalSmearedCurrentPairing1D a b (deriv test) current =
       wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
   unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
+  unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
   exact ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
 /-- A compact support window transports an interval weak balance to the corresponding whole-space

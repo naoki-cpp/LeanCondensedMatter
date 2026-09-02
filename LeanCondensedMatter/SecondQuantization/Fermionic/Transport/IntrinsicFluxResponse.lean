@@ -62,7 +62,7 @@ noncomputable def boundedCurrentFunctionalRetardedResponse
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (J : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
     (t s : ℝ) : OneForm →ₗ[ℂ] ℂ :=
-  (boundedOneBodyRetardedResponseLinearMap system expectation source t s).comp J
+  boundedIntrinsicFluxRetardedResponse system expectation source J t s
 
 /-- A differential-current representation produces exactly the same bounded observable on every
 exact flux test. -/

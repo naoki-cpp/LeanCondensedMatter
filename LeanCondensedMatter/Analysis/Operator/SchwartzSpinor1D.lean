@@ -215,7 +215,7 @@ theorem hamiltonian_localization_commutator_eq_spatial
 Schwartz model, independently of the internal Hamiltonian matrix. -/
 theorem heisenberg_localization_eq_symmetrized_velocity
     (ℏ κ : ℝ) (potential : Spatial) (internalH : SpinMatrix) (f : Spatial) :
-    SchwartzKinetic1D.heisenbergScale ℏ •
+    (Complex.I / (ℏ : ℂ)) •
         ((hamiltonian κ potential internalH).comp (multiplicationOperator f) -
           (multiplicationOperator f).comp (hamiltonian κ potential internalH)) =
       (1 / 2 : ℂ) •

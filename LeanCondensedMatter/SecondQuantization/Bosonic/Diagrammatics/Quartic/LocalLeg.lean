@@ -16,6 +16,8 @@ remain owned by the bosonic layer.
 namespace SecondQuantization
 namespace Bosonic
 
+open Common
+
 noncomputable section
 
 variable {Mode : Type*}

@@ -67,9 +67,9 @@ theorem schwartzVelocityExpectationCurrent1D_apply
 
 private theorem velocityScalar_eq
     (ℏ κ : ℝ) (hℏ : ℏ ≠ 0) :
-    (2 : ℂ) * SchwartzKinetic1D.heisenbergScale ℏ * (-(κ : ℂ)) =
+    (2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ)) =
       ((-(2 * κ / ℏ) : ℝ) : ℂ) * Complex.I := by
-  simp [SchwartzKinetic1D.heisenbergScale, div_eq_mul_inv]
+  simp [div_eq_mul_inv]
   field_simp [hℏ]
 
 /-- The pointwise Schrödinger probability current is the real local expectation of the velocity
@@ -78,7 +78,7 @@ theorem probabilityCurrentValue1D_eq_velocityExpectation
     (ℏ κ : ℝ) (hℏ : ℏ ≠ 0) (ψ ψx : ℂ) :
     probabilityCurrentValue1D ℏ κ ψ ψx =
       (star ψ *
-        (((2 : ℂ) * SchwartzKinetic1D.heisenbergScale ℏ * (-(κ : ℂ))) * ψx)).re := by
+        (((2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ))) * ψx)).re := by
   rw [velocityScalar_eq ℏ κ hℏ]
   rw [probabilityCurrentValue1D_eq_coordinates]
   simp [Complex.mul_re, Complex.mul_im]
@@ -101,7 +101,7 @@ theorem chargeCurrentValue1D_eq_velocityExpectation
     (q ℏ κ : ℝ) (hℏ : ℏ ≠ 0) (ψ ψx : ℂ) :
     chargeCurrentValue1D q ℏ κ ψ ψx =
       q * (star ψ *
-        (((2 : ℂ) * SchwartzKinetic1D.heisenbergScale ℏ * (-(κ : ℂ))) * ψx)).re := by
+        (((2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ))) * ψx)).re := by
   rw [chargeCurrentValue1D]
   rw [probabilityCurrentValue1D_eq_velocityExpectation ℏ κ hℏ]
 

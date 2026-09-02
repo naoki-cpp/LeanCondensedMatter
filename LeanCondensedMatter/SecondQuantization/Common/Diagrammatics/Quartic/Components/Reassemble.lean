@@ -71,7 +71,7 @@ noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Fi
       (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
     (IsPairing.permCongr
       ⟨sigmaCongrRight_involutive _ fun B => (F B).1.pairing.partner_involutive,
-        sigmaCongrRight_ne_self _ fun B => (F B).1.pairing.partner_ne_self⟩
+        sigmaCongrRight_ne_self _ fun B => (F B).1.pairing.partner_ne⟩
       (QuarticDiagram.bigLegEquiv π).symm)
 
 /-- Reassemble an ambient labelled quartic diagram from connected diagrams on partition parts. -/

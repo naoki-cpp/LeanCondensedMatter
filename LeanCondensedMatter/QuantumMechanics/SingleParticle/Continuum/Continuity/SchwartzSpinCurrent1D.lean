@@ -52,8 +52,7 @@ theorem schwartzSpinorHeisenbergLocalizationFactorsThroughDifferential1D
   simpa [heisenbergLocalizationFunctional, heisenbergScale,
     localizationCommutatorFunctional, _root_.ConservationLaw.linearCommutator,
     velocityLocalizationFlux, symmetrizedProductRightLinear,
-    _root_.ConservationLaw.symmetrizedProduct,
-    SchwartzKinetic1D.heisenbergScale] using
+    _root_.ConservationLaw.symmetrizedProduct] using
     (SchwartzSpinor1D.heisenberg_localization_eq_symmetrized_velocity
       ℏ κ potential internalH f)
 

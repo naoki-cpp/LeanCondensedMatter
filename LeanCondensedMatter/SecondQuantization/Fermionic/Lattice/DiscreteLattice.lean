@@ -24,7 +24,7 @@ namespace Lattice
 
 /-- Algebraic one-particle states on an arbitrary discrete lattice. Every vector has finite support,
 but the site type itself need not be finite. -/
-abbrev LatticeState (Site : Type*) := Site →₀ ℂ
+abbrev LatticeState (Site : Type*) := Common.AlgebraicFock Site
 
 private theorem linearMap_finsetSum_apply
     {ι V W : Type*} [AddCommMonoid V] [AddCommMonoid W]

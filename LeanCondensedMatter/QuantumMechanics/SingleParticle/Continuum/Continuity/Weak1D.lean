@@ -30,7 +30,7 @@ def intervalSmearedDensityRate1D
 /-- Pairing of the spatial derivative of a test function with the probability current. -/
 def intervalSmearedCurrentPairing1D
     (a b : ℝ) (testDerivative current : ℝ → ℝ) : ℝ :=
-  ∫ x in a..b, testDerivative x * current x
+  intervalSmearedDensityRate1D a b testDerivative current
 
 /-- Weighted probability-current contribution at the two endpoints of an interval. -/
 def weightedBoundaryCurrent1D

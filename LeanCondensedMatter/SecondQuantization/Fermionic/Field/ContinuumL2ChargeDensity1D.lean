@@ -32,23 +32,16 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal
 
-/-- The canonical one-dimensional continuum `L²` one-particle space used by the analytic
-multiplication-operator layer. -/
-abbrev ContinuumL2Wavefunction1D := L2MultiplicationRealLine.ComplexL2
-
-/-- The canonical `L∞(ℝ, ℂ)` smearing space for bounded continuum density observables. -/
-abbrev ContinuumLInfMultiplier1D := L2MultiplicationRealLine.ComplexLInf
-
 /-- The canonical `L²` multiplication family, viewed as algebraic linear endomorphisms so it can be
 second-quantized. -/
 noncomputable def continuumL2Multiplication1D :
-    ContinuumLInfMultiplier1D →ₗ[ℂ]
-      (ContinuumL2Wavefunction1D →ₗ[ℂ] ContinuumL2Wavefunction1D) :=
+    L2MultiplicationRealLine.ComplexLInf →ₗ[ℂ]
+      (L2MultiplicationRealLine.ComplexL2 →ₗ[ℂ] L2MultiplicationRealLine.ComplexL2) :=
   L2MultiplicationRealLine.multiplicationLinear
 
 @[simp]
 theorem continuumL2Multiplication1D_apply
-    (f : ContinuumLInfMultiplier1D) (ψ : ContinuumL2Wavefunction1D) :
+    (f : L2MultiplicationRealLine.ComplexLInf) (ψ : L2MultiplicationRealLine.ComplexL2) :
     continuumL2Multiplication1D f ψ =
       L2MultiplicationRealLine.multiplicationOperator f ψ :=
   rfl
@@ -56,26 +49,26 @@ theorem continuumL2Multiplication1D_apply
 /-- The abstract fermionic charge density specialized to canonical bounded multiplication on
 `L²(ℝ, ℂ)`. -/
 noncomputable def continuumL2ChargeDensity1D (q : ℂ) :
-    ContinuumLInfMultiplier1D →ₗ[ℂ]
-      (AlgebraicFock ContinuumL2Wavefunction1D →ₗ[ℂ]
-        AlgebraicFock ContinuumL2Wavefunction1D) :=
-  chargeDensity ContinuumL2Wavefunction1D q continuumL2Multiplication1D
+    L2MultiplicationRealLine.ComplexLInf →ₗ[ℂ]
+      (AlgebraicFock L2MultiplicationRealLine.ComplexL2 →ₗ[ℂ]
+        AlgebraicFock L2MultiplicationRealLine.ComplexL2) :=
+  chargeDensity L2MultiplicationRealLine.ComplexL2 q continuumL2Multiplication1D
 
 @[simp]
 theorem continuumL2ChargeDensity1D_apply
-    (q : ℂ) (f : ContinuumLInfMultiplier1D) :
+    (q : ℂ) (f : L2MultiplicationRealLine.ComplexLInf) :
     continuumL2ChargeDensity1D q f =
-      q • AlgebraicFock.dGamma ContinuumL2Wavefunction1D
+      q • AlgebraicFock.dGamma L2MultiplicationRealLine.ComplexL2
         (continuumL2Multiplication1D f) :=
   rfl
 
 /-- On the one-particle sector, the second-quantized continuum charge density is exactly the
 charge-scaled canonical bounded multiplication operator. -/
 theorem continuumL2ChargeDensity1D_oneParticle
-    (q : ℂ) (f : ContinuumLInfMultiplier1D) (ψ : ContinuumL2Wavefunction1D) :
+    (q : ℂ) (f : L2MultiplicationRealLine.ComplexLInf) (ψ : L2MultiplicationRealLine.ComplexL2) :
     continuumL2ChargeDensity1D q f
-        (AlgebraicFock.oneParticle ContinuumL2Wavefunction1D ψ) =
-      AlgebraicFock.oneParticle ContinuumL2Wavefunction1D
+        (AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2 ψ) =
+      AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2
         (q • L2MultiplicationRealLine.multiplicationOperator f ψ) := by
   rw [continuumL2ChargeDensity1D_apply]
   simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
@@ -87,11 +80,11 @@ charge-scaled real multiplication operator used by the analytic `L²` density ex
 theorem continuumL2ChargeDensity1D_oneParticle_real
     (q : ℝ) (test : ℝ → ℝ)
     (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
-    (ψ : ContinuumL2Wavefunction1D) :
+    (ψ : L2MultiplicationRealLine.ComplexL2) :
     continuumL2ChargeDensity1D (q : ℂ)
         (L2MultiplicationRealLine.realMultiplier test htest)
-        (AlgebraicFock.oneParticle ContinuumL2Wavefunction1D ψ) =
-      AlgebraicFock.oneParticle ContinuumL2Wavefunction1D
+        (AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2 ψ) =
+      AlgebraicFock.oneParticle L2MultiplicationRealLine.ComplexL2
         (((q : ℂ) • L2MultiplicationRealLine.multiplicationOperator
           (L2MultiplicationRealLine.realMultiplier test htest)) ψ) := by
   rw [continuumL2ChargeDensity1D_oneParticle]

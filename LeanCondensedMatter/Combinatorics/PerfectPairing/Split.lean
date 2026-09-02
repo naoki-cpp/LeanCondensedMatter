@@ -153,7 +153,7 @@ noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) 
   Pairing.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
     (IsPairing.permCongr
       ⟨sumCongr_involutive _ _ P.partner_involutive Q.partner_involutive,
-        sumCongr_ne_self _ _ P.partner_ne_self Q.partner_ne_self⟩ e)
+        sumCongr_ne_self _ _ P.partner_ne Q.partner_ne⟩ e)
 
 @[simp]
 theorem Pairing.ofSplit_partner_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
