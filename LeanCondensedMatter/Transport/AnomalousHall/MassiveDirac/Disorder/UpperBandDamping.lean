@@ -156,12 +156,32 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
             (fermiEnergy + m ^ 2 / fermiEnergy)))) := by
   have hfermi : 0 < fermiEnergy := lt_of_le_of_lt (abs_nonneg m) hmF
   have hfermiNe : fermiEnergy ≠ 0 := ne_of_gt hfermi
-  have hscalar :=
-    tendsto_finiteCutoffContinuumBornRetardedScalarSelfEnergyCoefficient_im_broadening_zero
-      v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff
-  have hz :=
-    tendsto_finiteCutoffContinuumBornRetardedZSelfEnergyCoefficient_im_broadening_zero
-      v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff
+  have hscalar :
+      Tendsto
+        (fun broadening : ℝ =>
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            finiteCutoffContinuumBornScalarIntegral
+              .retarded v m fermiEnergy broadening pMax)).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+            (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)))) := by
+    simpa [SpectralSide.sign] using
+      (tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadening_zero
+        .retarded v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff)
+  have hz :
+      Tendsto
+        (fun broadening : ℝ =>
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            finiteCutoffContinuumBornZIntegral
+              .retarded v m fermiEnergy broadening pMax)).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
+            (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)))) := by
+    simpa [SpectralSide.sign] using
+      (tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero
+        .retarded v m fermiEnergy disorderStrength hbar pMax hvelocity hfermi hmF hcutoff)
   have hsum := hscalar.add
     ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m / fermiEnergy)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (m / fermiEnergy))).mul hz)

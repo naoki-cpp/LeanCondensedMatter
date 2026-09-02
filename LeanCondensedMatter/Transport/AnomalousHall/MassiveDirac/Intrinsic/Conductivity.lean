@@ -48,7 +48,7 @@ def metallicBerryWeightUV (m εF : ℝ) : ℝ :=
   m / (2 * εF)
 
 /-- The occupation-derived finite-cutoff Berry weight in a form adapted to the `Λ → +∞` proof. -/
-theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow (m εF Λ : ℝ)
+private theorem zeroTemperatureOccupiedBerryWeightCutoff_eq_zpow (m εF Λ : ℝ)
     (hmF : |m| ≤ εF) (hFΛ : εF ≤ Λ) :
     zeroTemperatureOccupiedBerryWeightCutoff m εF Λ =
       metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ) := by
