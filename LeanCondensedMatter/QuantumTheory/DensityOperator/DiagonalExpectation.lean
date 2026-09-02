@@ -69,8 +69,8 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
       simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
     rwa [htrace] at h
   have hrestricted : HasSum (g ∘ j) 1 := by
-    simpa only [Function.comp_apply] using
-      HasSum.congr_fun hweights hpoint
+    change HasSum (fun a => g (j a)) 1
+    exact HasSum.congr_fun hweights hpoint
   have hfull : HasSum g 1 := (hj.hasSum_iff hzero).mp hrestricted
   exact IsHilbertSchmidt.of_isHilbertSchmidtWrt hfull.summable
 
