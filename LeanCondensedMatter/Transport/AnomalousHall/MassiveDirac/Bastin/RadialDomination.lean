@@ -25,7 +25,7 @@ theorem two_mul_mass_le_abs_interbandEnergyGap
     2 * m ≤ |interbandEnergyGap band v m px py| := by
   rw [interbandEnergyGap_eq]
   have hE := energy_nonneg v m px py
-  have hmE := mass_le_energy v m px py hm
+  have hmE := mass_le_energy v m px py
   cases band <;> simp [bandSign, abs_of_nonneg hE] <;> linarith
 
 /-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
