@@ -44,17 +44,17 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
           (retardedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
           (oppositeBand band) v m p 0 =
         ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
-            (broadening : ℂ) * Complex.I))⁻¹ := by
-    simpa only [spectralParameter_retarded, SpectralSide.sign_retarded, one_mul] using
+            ((SpectralSide.retarded.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
+    simpa only [spectralParameter_retarded] using
       projectorResolventCoefficient_targetOffset_oppositeBand
         .retarded band v m p 0 offset broadening
   have hadv :
       projectorResolventCoefficient
           (advancedSpectralParameter (bandEnergy band v m p 0 + offset) broadening)
           (oppositeBand band) v m p 0 =
-        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
-            (broadening : ℂ) * Complex.I))⁻¹ := by
-    simpa [spectralParameter_advanced, SpectralSide.sign_advanced, sub_eq_add_neg] using
+        ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
+            ((SpectralSide.advanced.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
+    simpa only [spectralParameter_advanced] using
       projectorResolventCoefficient_targetOffset_oppositeBand
         .advanced band v m p 0 offset broadening
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
@@ -63,6 +63,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
   rw [hret, hadv,
     bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
     bastinYXBandBlockTrace_opposite_source_radial band e v m p hE]
+  simp only [SpectralSide.regulator_retarded, SpectralSide.regulator_advanced]
+  push_cast
   ring
 
 /-- The real coefficient of the radial current amplitude is bounded by `v²`; the mass-magnitude to
