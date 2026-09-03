@@ -52,8 +52,12 @@ normalization has genuine reuse beyond one concrete derivation.
 
 `Resolvent.Basic` owns the signed spectral parameter `z(E, γ) = E + iγ`, `SpectralSide`, and the
 physical `E ± iη` specializations. Analytic resolvent theorems are stated at arbitrary `γ` whenever
-the argument does not intrinsically depend on retarded/advanced branch semantics. Physical
-consumers specialize with `γ = side.sign * η` or directly with `±η`.
+the argument does not intrinsically depend on retarded/advanced branch semantics. The conversion
+from a physical side and broadening to the analytic regulator is owned by
+`SpectralSide.regulator`; physical consumers should use `side.regulator η` instead of reconstructing
+its `side.sign * η` representation. `spectralParameter` and `spectralResolvent` are the canonical
+side-indexed physical owners, while conventional retarded/advanced names are retained as consumed
+specializations.
 
 Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
 `Resolvent.SelfEnergy` owns the representation-independent two-sided Dyson relation
@@ -103,7 +107,8 @@ assume convergence or a Ward identity.
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
 generic disorder layer: arbitrary-regulator definitions/theorems own the analytic calculation, while
 side-indexed objects are retained only at reusable physical boundaries such as broadening limits,
-Born-Dyson dressing, and RA vertex calculations.
+Born-Dyson dressing, and RA vertex calculations. Physical-side specializations consume the canonical
+`SpectralSide.regulator` conversion rather than depending on the sign representation directly.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in the model subtree.
