@@ -234,7 +234,11 @@ theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi :
     completedCreate i (completedBasisState n) = 0 := by
   rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
-  simp [hi]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
+        (Common.completedBasisState (toggleOccupation i n)) = 0
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [mem_toggleOccupation, hi]
 
 @[simp]
 theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
@@ -242,14 +246,23 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
       fermionPhase i n • completedBasisState (insertOccupation i n) := by
   rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
-  simp [hi, toggleOccupation_of_not_mem]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
+        (Common.completedBasisState (toggleOccupation i n)) =
+    fermionPhase i n • Common.completedBasisState (insertOccupation i n)
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [mem_toggleOccupation, hi, toggleOccupation_of_not_mem]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedAnnihilate i (completedBasisState n) = 0 := by
   rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
-  simp [hi]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
+        (Common.completedBasisState (toggleOccupation i n)) = 0
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [mem_toggleOccupation, hi]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
@@ -257,7 +270,12 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
       fermionPhase i n • completedBasisState (removeOccupation i n) := by
   rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
-  simp [hi, toggleOccupation_of_mem]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
+        (Common.completedBasisState (toggleOccupation i n)) =
+    fermionPhase i n • Common.completedBasisState (removeOccupation i n)
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [mem_toggleOccupation, hi, toggleOccupation_of_mem]
 
 end
 end Fermionic
