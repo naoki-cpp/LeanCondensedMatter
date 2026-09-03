@@ -58,14 +58,14 @@ theorem evolveState_val (ψ : State H) (t : ℝ) :
 @[simp]
 theorem evolveState_zero (ψ : State H) :
     evolveState system ψ 0 = ψ := by
-  ext
+  apply Subtype.ext
   simp [evolveState]
 
 /-- Pure-state evolution is an action of additive time. -/
 theorem evolveState_add (ψ : State H) (t s : ℝ) :
     evolveState system (evolveState system ψ s) t =
       evolveState system ψ (t + s) := by
-  ext
+  apply Subtype.ext
   change freePropagator system t (freePropagator system s ψ.1) =
     freePropagator system (t + s) ψ.1
   simpa [mul_apply_eq_comp] using
@@ -75,7 +75,7 @@ theorem evolveState_add (ψ : State H) (t s : ℝ) :
 @[simp]
 theorem evolveState_neg_after (ψ : State H) (t : ℝ) :
     evolveState system (evolveState system ψ t) (-t) = ψ := by
-  ext
+  apply Subtype.ext
   change freePropagator system (-t) (freePropagator system t ψ.1) = ψ.1
   simpa [mul_apply_eq_comp] using
     congrArg (fun U : H →L[ℂ] H => U ψ.1) (freePropagator_neg_mul system t)
@@ -84,7 +84,7 @@ theorem evolveState_neg_after (ψ : State H) (t : ℝ) :
 @[simp]
 theorem evolveState_after_neg (ψ : State H) (t : ℝ) :
     evolveState system (evolveState system ψ (-t)) t = ψ := by
-  ext
+  apply Subtype.ext
   change freePropagator system t (freePropagator system (-t) ψ.1) = ψ.1
   simpa [mul_apply_eq_comp] using
     congrArg (fun U : H →L[ℂ] H => U ψ.1) (freePropagator_mul_neg system t)
@@ -94,7 +94,7 @@ theorem evolveState_after_neg (ψ : State H) (t : ℝ) :
 theorem evolveState_phaseState (ψ : State H) (c : ℂ) (hc : ‖c‖ = 1) (t : ℝ) :
     evolveState system (phaseState c hc ψ) t =
       phaseState c hc (evolveState system ψ t) := by
-  ext
+  apply Subtype.ext
   simp [evolveState, phaseState]
 
 end
