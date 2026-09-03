@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
 
 set_option linter.style.header false
