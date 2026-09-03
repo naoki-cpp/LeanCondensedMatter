@@ -45,13 +45,13 @@ theorem tendsto_projectorResolventCoefficient_zero
   have hden :
       spectralParameter side probeEnergy 0 -
           ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-    simpa [spectralParameter, spectralParameterOfRegulator] using
+    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
       complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
   have hcontinuous : ContinuousAt
       (fun broadening : ℝ =>
         spectralParameter side probeEnergy broadening -
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
-    unfold spectralParameter spectralParameterOfRegulator
+    unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
     fun_prop
   have hinv : Tendsto
       (fun broadening : ℝ =>
@@ -61,7 +61,8 @@ theorem tendsto_projectorResolventCoefficient_zero
       (nhds ((spectralParameter side probeEnergy 0 -
         ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹)) :=
     (hcontinuous.inv₀ hden).tendsto
-  simpa [projectorResolventCoefficient, spectralParameter, spectralParameterOfRegulator] using hinv
+  simpa [projectorResolventCoefficient, spectralParameter, spectralParameterOfRegulator,
+    SpectralSide.regulator] using hinv
 
 /-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
 zero pointwise. -/
@@ -76,8 +77,9 @@ theorem tendsto_spectralDifferenceCoefficient_zero
     .retarded band v m px py probeEnergy hprobe
   have hadv := tendsto_projectorResolventCoefficient_zero
     .advanced band v m px py probeEnergy hprobe
-  simpa [spectralDifferenceCoefficient, spectralParameter_retarded, spectralParameter_advanced] using
-    hret.sub hadv
+  simpa only [spectralDifferenceCoefficient, retardedSpectralParameter,
+    advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
+    spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
 
 /-- A fixed ordered Bastin band-pair contribution tends to zero when the probe energy avoids both
 its source and target band energies. -/
@@ -103,8 +105,10 @@ theorem tendsto_bastinBandPairContribution_zero
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => bastinBandBlockTrace .y .x source target e v m px py)
       (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py))))
-  simpa [bastinBandPairContribution, pow_two, spectralParameter_retarded,
-    spectralParameter_advanced] using hretTerm.sub hadvTerm
+  simpa only [bastinBandPairContribution, pow_two, retardedSpectralParameter,
+    advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
+    spectralParameter_advanced_ofRegulator, mul_zero, zero_mul, sub_self] using
+    hretTerm.sub hadvTerm
 
 /-- The diagonal sector tends pointwise to zero away from both band energies. -/
 theorem tendsto_diagonalBastinTraceContribution_zero

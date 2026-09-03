@@ -91,7 +91,7 @@ theorem pauliGreenDenominator_radial_re
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).re =
       probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
   cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.sign]
+    simp [pauliGreenDenominator, SpectralSide.regulator, SpectralSide.sign]
 
 /-- Physical-side radial imaginary part, retained for broadening-limit consumers. -/
 @[simp]
@@ -100,7 +100,7 @@ theorem pauliGreenDenominator_radial_im
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).im =
       2 * side.sign * probeEnergy * broadening := by
   cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.sign]
+    simp [pauliGreenDenominator, SpectralSide.regulator, SpectralSide.sign]
 
 /-- At nonzero probe energy and regulator, the radial denominator path lies in the principal-log
 slit plane. -/
@@ -290,8 +290,8 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_re_eq
           Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy broadening‖) := by
   simpa [finiteCutoffContinuumBornDenominatorIntegral, pauliGreenDenominator] using
     finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
-      v m probeEnergy (side.sign * broadening) pMax hvelocity hprobeEnergy
-        (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      v m probeEnergy (side.regulator broadening) pMax hvelocity hprobeEnergy
+        (side.regulator_ne_zero hbroadening)
 
 /-- Physical-side finite-cutoff imaginary part, retained for broadening-limit consumers. -/
 theorem finiteCutoffContinuumBornDenominatorIntegral_im_eq
@@ -304,8 +304,8 @@ theorem finiteCutoffContinuumBornDenominatorIntegral_im_eq
           (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg) := by
   simpa [finiteCutoffContinuumBornDenominatorIntegral, pauliGreenDenominator] using
     finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
-      v m probeEnergy (side.sign * broadening) pMax hvelocity hprobeEnergy
-        (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      v m probeEnergy (side.regulator broadening) pMax hvelocity hprobeEnergy
+        (side.regulator_ne_zero hbroadening)
 
 end
 

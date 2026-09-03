@@ -14,10 +14,10 @@ G(z) = (z I - H₀)⁻¹
      = g₀ I + gₓ σₓ + gᵧ σᵧ + g_z σ_z.
 ```
 
-Physical retarded/advanced branches specialize through `γ = side.sign * η`. The object identified
-below is the repository's existing resolvent; this file does not introduce a parallel Green-function
-formalism. No disorder data, momentum integration, angular average, Born closure, SCBA, or vertex
-resummation is introduced here.
+Physical retarded/advanced branches specialize through the canonical `side.regulator η` boundary.
+The object identified below is the repository's existing resolvent; this file does not introduce a
+parallel Green-function formalism. No disorder data, momentum integration, angular average, Born
+closure, SCBA, or vertex resummation is introduced here.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -36,7 +36,7 @@ def pauliGreenDenominatorOfRegulator
 def pauliGreenDenominator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
   pauliGreenDenominatorOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- Identity-matrix coefficient at an arbitrary signed regulator. -/
 def pauliGreenScalarCoefficientOfRegulator
@@ -66,25 +66,25 @@ def pauliGreenZCoefficientOfRegulator
 def pauliGreenScalarCoefficient
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
   pauliGreenScalarCoefficientOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σₓ` coefficient. -/
 def pauliGreenXCoefficient
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
   pauliGreenXCoefficientOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σᵧ` coefficient. -/
 def pauliGreenYCoefficient
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
   pauliGreenYCoefficientOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σ_z` coefficient. -/
 def pauliGreenZCoefficient
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
   pauliGreenZCoefficientOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- Pauli-basis Green-operator candidate at an arbitrary signed regulator. -/
 noncomputable def pauliGreenOperatorOfRegulator
@@ -99,7 +99,7 @@ noncomputable def pauliGreenOperator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   pauliGreenOperatorOfRegulator
-    v m px py probeEnergy (side.sign * broadening)
+    v m px py probeEnergy (side.regulator broadening)
 
 /-- The bounded massive-Dirac Hamiltonian has the same explicit Pauli decomposition as its matrix
 representative. -/

@@ -173,13 +173,15 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
   have hretarded :
       retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [retardedResolvent, retardedSpectralParameter] using
+    simpa only [retardedResolvent, retardedSpectralParameter,
+      spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
       resolvent_spectralParameterOfRegulator_eq_projectorResolvent
         v m px py probeEnergy broadening hE (ne_of_gt hbroadening)
   have hadvanced :
       advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [advancedResolvent, advancedSpectralParameter] using
+    simpa only [advancedResolvent, advancedSpectralParameter,
+      spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
       resolvent_spectralParameterOfRegulator_eq_projectorResolvent
         v m px py probeEnergy (-broadening) hE
         (neg_ne_zero.mpr (ne_of_gt hbroadening))
