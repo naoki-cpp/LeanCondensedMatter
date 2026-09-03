@@ -46,19 +46,14 @@ def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1)) :
       deletedPositions n (pairing.partner 0) where
   toFun := pairing.restrictedPartnerMap
   invFun := pairing.restrictedPartnerMap
-  left_inv x := by
-    apply Subtype.ext
-    exact pairing.partner_partner x
-  right_inv x := by
-    apply Subtype.ext
-    exact pairing.partner_partner x
+  left_inv x := Subtype.ext (pairing.partner_partner x)
+  right_inv x := Subtype.ext (pairing.partner_partner x)
 
 @[simp]
 theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (n + 1))
     (x : deletedPositions n (pairing.partner 0)) :
-    pairing.restrictedPartner (pairing.restrictedPartner x) = x := by
-  apply Subtype.ext
-  exact pairing.partner_partner x
+    pairing.restrictedPartner (pairing.restrictedPartner x) = x :=
+  Subtype.ext (pairing.partner_partner x)
 
 /-- Remove position `0` and its partner, reindexing the remaining positions increasingly. -/
 noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : Pairing n := by

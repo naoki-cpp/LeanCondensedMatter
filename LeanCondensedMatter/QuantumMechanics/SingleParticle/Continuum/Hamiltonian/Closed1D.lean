@@ -56,8 +56,8 @@ theorem continuumH2LaplacianPMap1D_eq_continuumMaximalLaplacian1D :
 
 /-- The distributional Laplacian on the explicit `H²` domain is closed. -/
 theorem continuumH2LaplacianPMap1D_isClosed : continuumH2LaplacianPMap1D.IsClosed := by
-  rw [continuumH2LaplacianPMap1D_eq_continuumMaximalLaplacian1D]
-  exact continuumMaximalLaplacian1D_isClosed
+  simpa only [continuumH2LaplacianPMap1D_eq_continuumMaximalLaplacian1D] using
+    continuumMaximalLaplacian1D_isClosed
 
 /-- The `L²` Hamiltonian value represents the expected distributional Schrödinger action. -/
 theorem l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D
@@ -145,8 +145,8 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isClosed
     (κ : ℝ) (potential : ℝ → ℝ)
     (hpotential : MemLp (fun x => (potential x : ℂ)) ∞ (volume : Measure ℝ))
     (hκ : κ ≠ 0) :
-    (continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential).IsClosed := by
-  exact continuumSchrodingerHamiltonian1D_isClosed
+    (continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential).IsClosed :=
+  continuumSchrodingerHamiltonian1D_isClosed
     κ (realLInfMultiplier1D potential hpotential) hκ
 
 end
