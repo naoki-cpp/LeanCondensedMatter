@@ -65,27 +65,10 @@ theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode)
   rw [comm_apply]
   rcases eq_or_ne i j with rfl | hij
   · exact sub_self _
-  by_cases hj : n j = 0
-  · by_cases hi : n i = 0
-    · rw [annihilate_basisState_of_zero hj, map_zero, annihilate_basisState_of_zero hi, map_zero,
-        sub_self]
-    · have hj' : removeOccupation i n j = 0 := by
-        rw [removeOccupation_apply_ne hij.symm]; exact hj
-      rw [annihilate_basisState_of_zero hj, map_zero, annihilate_basisState_of_pos hi, map_smul,
-        annihilate_basisState_of_zero hj', smul_zero, sub_zero]
-  · by_cases hi : n i = 0
-    · have hi' : removeOccupation j n i = 0 := by
-        rw [removeOccupation_apply_ne hij]; exact hi
-      rw [annihilate_basisState_of_zero hi, map_zero, annihilate_basisState_of_pos hj, map_smul,
-        annihilate_basisState_of_zero hi', smul_zero, zero_sub, neg_eq_zero]
-    · have hj' : removeOccupation i n j ≠ 0 := by
-        rw [removeOccupation_apply_ne hij.symm]; exact hj
-      have hi' : removeOccupation j n i ≠ 0 := by
-        rw [removeOccupation_apply_ne hij]; exact hi
-      rw [annihilate_basisState_of_pos hj, map_smul, annihilate_basisState_of_pos hi',
-        annihilate_basisState_of_pos hi, map_smul, annihilate_basisState_of_pos hj',
-        removeOccupation_apply_ne hij, removeOccupation_apply_ne hij.symm,
-        smul_smul, smul_smul, removeOccupation_comm hij, mul_comm, sub_self]
+  rw [annihilate_basisState_eq, map_smul, annihilate_basisState_eq,
+    annihilate_basisState_eq, map_smul, annihilate_basisState_eq,
+    removeOccupation_apply_ne hij, removeOccupation_apply_ne hij.symm,
+    smul_smul, smul_smul, removeOccupation_comm hij, mul_comm, sub_self]
 
 theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilate j) = 0 :=
   Common.linearMap_ext_basisState fun n => by
@@ -97,14 +80,13 @@ theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilat
 /-- `a_i a_i†` acts diagonally with eigenvalue `n_i + 1`. -/
 theorem annihilate_create_basisState_same (i : Mode) (n : Occupation Mode) :
     annihilate i (create i (basisState n)) = ((n i : ℂ) + 1) • basisState n := by
-  have h1 : createOccupation i n i ≠ 0 := by rw [createOccupation_apply_same]; omega
   have hscalar :
       (Real.sqrt ((n i : ℝ) + 1) : ℂ) * (Real.sqrt (createOccupation i n i : ℝ) : ℂ)
         = (n i : ℂ) + 1 := by
     rw [createOccupation_apply_same]
     push_cast
     exact_mod_cast Real.mul_self_sqrt (by positivity : (0 : ℝ) ≤ (n i : ℝ) + 1)
-  rw [create_basisState_eq, map_smul, annihilate_basisState_of_pos h1,
+  rw [create_basisState_eq, map_smul, annihilate_basisState_eq,
     removeOccupation_createOccupation, smul_smul, hscalar]
 
 /-- `a_i† a_i` acts diagonally with eigenvalue `n_i`. -/
@@ -130,21 +112,10 @@ theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
       ← sub_smul]
     have harith : ((n i : ℂ) + 1) - (n i : ℂ) = 1 := by ring
     rw [harith, one_smul]
-  · rw [if_neg hij]
-    by_cases hi : n i = 0
-    · rw [create_basisState_eq, map_smul,
-        annihilate_basisState_of_zero (show createOccupation j n i = 0 by
-          rw [createOccupation_apply_ne hij]; exact hi),
-        smul_zero, annihilate_basisState_of_zero hi, map_zero, sub_zero]
-    · have hcj : createOccupation j n i ≠ 0 := by
-        rw [createOccupation_apply_ne hij]; exact hi
-      have hswap :
-          removeOccupation i (createOccupation j n) = createOccupation j (removeOccupation i n) :=
-        removeOccupation_createOccupation_of_ne hij n
-      have hrj : (removeOccupation i n) j = n j := removeOccupation_apply_ne hij.symm n
-      rw [create_basisState_eq, map_smul, annihilate_basisState_of_pos hcj,
-        createOccupation_apply_ne hij, hswap, annihilate_basisState_of_pos hi, map_smul,
-        create_basisState_eq, hrj, smul_smul, smul_smul, mul_comm, sub_self]
+  · rw [if_neg hij, create_basisState_eq, map_smul, annihilate_basisState_eq,
+      createOccupation_apply_ne hij, annihilate_basisState_eq, map_smul, create_basisState_eq,
+      removeOccupation_apply_ne hij.symm, removeOccupation_createOccupation_of_ne hij n,
+      smul_smul, smul_smul, mul_comm, sub_self]
 
 theorem comm_annihilate_create (i j : Mode) :
     comm (annihilate i) (create j) =
