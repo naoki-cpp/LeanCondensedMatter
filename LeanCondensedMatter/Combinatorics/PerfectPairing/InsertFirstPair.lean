@@ -25,8 +25,9 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
   have hextj : extended j = j :=
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions])
   have hpartnerSq : pairing.partner * pairing.partner = 1 := by
-    ext x
-    exact pairing.partner_partner x
+    apply Equiv.ext
+    intro x
+    simpa [Equiv.Perm.mul_apply] using pairing.partner_partner x
   have hextSq : extended * extended = 1 := by
     change pairing.partner.extendDomain oi.toEquiv * pairing.partner.extendDomain oi.toEquiv = 1
     rw [Equiv.Perm.extendDomain_mul, hpartnerSq, Equiv.Perm.extendDomain_one]
@@ -70,10 +71,14 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
     have hboth := hdisjoint.mul_apply_eq_iff.mp hfixed
     by_cases hx0 : x = 0
     · subst x
-      exact hj (by simpa using hboth.1)
+      have hzero : j = (0 : Fin (2 * (n + 1))) := by
+        simpa using hboth.1
+      exact hj hzero
     · by_cases hxj : x = j
       · subst x
-        exact hj (by simpa using hboth.1).symm
+        have hzero : (0 : Fin (2 * (n + 1))) = j := by
+          simpa using hboth.1
+        exact hj hzero.symm
       · exact hextNe x (by simp [deletedPositions, hx0, hxj]) hboth.2
 
 @[simp]
