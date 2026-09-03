@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexRadial
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRadial
 
 set_option linter.style.header false
 
