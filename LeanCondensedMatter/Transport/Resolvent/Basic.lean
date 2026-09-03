@@ -165,38 +165,6 @@ def retardedSpectralParameter (energy broadening : ℝ) : ℂ :=
 def advancedSpectralParameter (energy broadening : ℝ) : ℂ :=
   spectralParameter .advanced energy broadening
 
-/-- The retarded parameter is the retarded specialization of the canonical side-indexed parameter. -/
-theorem spectralParameter_retarded (energy broadening : ℝ) :
-    spectralParameter .retarded energy broadening =
-      retardedSpectralParameter energy broadening :=
-  rfl
-
-/-- The advanced parameter is the advanced specialization of the canonical side-indexed parameter. -/
-theorem spectralParameter_advanced (energy broadening : ℝ) :
-    spectralParameter .advanced energy broadening =
-      advancedSpectralParameter energy broadening :=
-  rfl
-
-@[simp]
-theorem retardedSpectralParameter_re (energy broadening : ℝ) :
-    (retardedSpectralParameter energy broadening).re = energy := by
-  simp [retardedSpectralParameter]
-
-@[simp]
-theorem retardedSpectralParameter_im (energy broadening : ℝ) :
-    (retardedSpectralParameter energy broadening).im = broadening := by
-  simp [retardedSpectralParameter]
-
-@[simp]
-theorem advancedSpectralParameter_re (energy broadening : ℝ) :
-    (advancedSpectralParameter energy broadening).re = energy := by
-  simp [advancedSpectralParameter]
-
-@[simp]
-theorem advancedSpectralParameter_im (energy broadening : ℝ) :
-    (advancedSpectralParameter energy broadening).im = -broadening := by
-  simp [advancedSpectralParameter]
-
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- For an arbitrary nonzero signed regulator, the spectral shift multiplied by its resolvent is
