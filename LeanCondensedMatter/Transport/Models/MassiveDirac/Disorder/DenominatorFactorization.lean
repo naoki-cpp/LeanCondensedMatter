@@ -72,7 +72,7 @@ noncomputable def finiteCutoffContinuumBornDenominatorIntegralOfRegulator
 noncomputable def finiteCutoffContinuumBornDenominatorIntegral
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
   finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-    v m probeEnergy (side.sign * broadening) pMax
+    v m probeEnergy (side.regulator broadening) pMax
 
 /-- Arbitrary-regulator scalar Born channel factorization. -/
 theorem finiteCutoffContinuumBornScalarIntegralOfRegulator_eq_spectralParameter_mul_denominatorIntegral
@@ -109,7 +109,7 @@ theorem finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denomin
   simpa [finiteCutoffContinuumBornScalarIntegral,
     finiteCutoffContinuumBornDenominatorIntegral, spectralParameter] using
     finiteCutoffContinuumBornScalarIntegralOfRegulator_eq_spectralParameter_mul_denominatorIntegral
-      v m probeEnergy (side.sign * broadening) pMax
+      v m probeEnergy (side.regulator broadening) pMax
 
 /-- Physical-side `σ_z` channel factorization, retained for downstream broadening-limit consumers. -/
 theorem finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral
@@ -120,7 +120,7 @@ theorem finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral
   simpa [finiteCutoffContinuumBornZIntegral,
     finiteCutoffContinuumBornDenominatorIntegral] using
     finiteCutoffContinuumBornZIntegralOfRegulator_eq_mass_mul_denominatorIntegral
-      v m probeEnergy (side.sign * broadening) pMax
+      v m probeEnergy (side.regulator broadening) pMax
 
 end
 
