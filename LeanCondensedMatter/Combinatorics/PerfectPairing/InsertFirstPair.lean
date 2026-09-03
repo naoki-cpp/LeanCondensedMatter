@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
+import Mathlib.GroupTheory.Perm.Support
 
 set_option linter.style.header false
 
@@ -23,25 +24,12 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions])
   have hextj : extended j = j :=
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions])
-  have hextInv : ∀ x : Fin (2 * (n + 1)), extended (extended x) = x := by
-    intro x
-    by_cases hx : x ∈ deletedPositions n j
-    · have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hx⟩)) : Fin (2 * (n + 1))) :=
-        Equiv.Perm.extendDomain_apply_subtype _ _ hx
-      have hx2 : extended x ∈ deletedPositions n j := by
-        rw [h1]
-        exact (oi (pairing.partner (oi.symm ⟨x, hx⟩))).property
-      have h2 : extended (extended x) =
-          (oi (pairing.partner (oi.symm ⟨extended x, hx2⟩)) : Fin (2 * (n + 1))) :=
-        Equiv.Perm.extendDomain_apply_subtype _ _ hx2
-      rw [h2]
-      have hsymm : oi.symm ⟨extended x, hx2⟩ = pairing.partner (oi.symm ⟨x, hx⟩) := by
-        apply oi.injective
-        simp [h1]
-      rw [hsymm, pairing.partner_partner]
-      simp
-    · have hx' : extended x = x := Equiv.Perm.extendDomain_apply_not_subtype _ _ hx
-      rw [hx', hx']
+  have hpartnerSq : pairing.partner * pairing.partner = 1 := by
+    ext x
+    exact pairing.partner_partner x
+  have hextSq : extended * extended = 1 := by
+    change pairing.partner.extendDomain oi.toEquiv * pairing.partner.extendDomain oi.toEquiv = 1
+    rw [Equiv.Perm.extendDomain_mul, hpartnerSq, Equiv.Perm.extendDomain_one]
   have hextNe : ∀ x : Fin (2 * (n + 1)), x ∈ deletedPositions n j → extended x ≠ x := by
     intro x hx h
     have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hx⟩)) : Fin (2 * (n + 1))) :=
@@ -52,43 +40,41 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
       simp
     have h3 : pairing.partner (oi.symm ⟨x, hx⟩) = oi.symm ⟨x, hx⟩ := oi.injective h2
     exact pairing.partner_ne _ h3
+  have hdisjoint : Equiv.Perm.Disjoint (Equiv.swap 0 j) extended := by
+    intro x
+    by_cases hx0 : x = 0
+    · right
+      simpa [hx0] using hext0
+    · by_cases hxj : x = j
+      · right
+        simpa [hxj] using hextj
+      · left
+        exact Equiv.swap_apply_of_ne_of_ne hx0 hxj
+  have hinsertedSq :
+      (Equiv.swap 0 j * extended) * (Equiv.swap 0 j * extended) = 1 := by
+    calc
+      (Equiv.swap 0 j * extended) * (Equiv.swap 0 j * extended) =
+          Equiv.swap 0 j * (extended * Equiv.swap 0 j) * extended := by
+        simp only [mul_assoc]
+      _ = Equiv.swap 0 j * (Equiv.swap 0 j * extended) * extended := by
+        rw [hdisjoint.commute.eq.symm]
+      _ = (Equiv.swap 0 j * Equiv.swap 0 j) * (extended * extended) := by
+        simp only [mul_assoc]
+      _ = 1 := by
+        rw [Equiv.swap_mul_self, hextSq, one_mul]
   refine Pairing.ofPartner (Equiv.swap 0 j * extended) ⟨?_, ?_⟩
   · intro x
-    rw [Equiv.Perm.mul_apply, Equiv.Perm.mul_apply]
+    have hx := congrArg (fun p : Equiv.Perm (Fin (2 * (n + 1))) => p x) hinsertedSq
+    simpa [Equiv.Perm.mul_apply] using hx
+  · intro x hfixed
+    have hboth := hdisjoint.mul_apply_eq_iff.mp hfixed
     by_cases hx0 : x = 0
-    · subst hx0
-      rw [hext0, Equiv.swap_apply_left, hextj, Equiv.swap_apply_right]
+    · subst x
+      exact hj (by simpa using hboth.1)
     · by_cases hxj : x = j
-      · subst hxj
-        rw [hextj, Equiv.swap_apply_right, hext0, Equiv.swap_apply_left]
-      · have hxmem : x ∈ deletedPositions n j := by simp [deletedPositions, hx0, hxj]
-        have hex : extended x ∈ deletedPositions n j := by
-          have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hxmem⟩)) : Fin (2 * (n + 1))) :=
-            Equiv.Perm.extendDomain_apply_subtype _ _ hxmem
-          rw [h1]
-          exact (oi (pairing.partner (oi.symm ⟨x, hxmem⟩))).property
-        rw [Equiv.swap_apply_of_ne_of_ne
-          (Finset.mem_erase.mp (Finset.mem_erase.mp hex).2).1 (Finset.mem_erase.mp hex).1,
-          hextInv, Equiv.swap_apply_of_ne_of_ne hx0 hxj]
-  · intro x
-    rw [Equiv.Perm.mul_apply]
-    by_cases hx0 : x = 0
-    · subst hx0
-      rw [hext0, Equiv.swap_apply_left]
-      exact hj
-    · by_cases hxj : x = j
-      · subst hxj
-        rw [hextj, Equiv.swap_apply_right]
-        exact Ne.symm hj
-      · have hxmem : x ∈ deletedPositions n j := by simp [deletedPositions, hx0, hxj]
-        have hex : extended x ∈ deletedPositions n j := by
-          have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hxmem⟩)) : Fin (2 * (n + 1))) :=
-            Equiv.Perm.extendDomain_apply_subtype _ _ hxmem
-          rw [h1]
-          exact (oi (pairing.partner (oi.symm ⟨x, hxmem⟩))).property
-        rw [Equiv.swap_apply_of_ne_of_ne
-          (Finset.mem_erase.mp (Finset.mem_erase.mp hex).2).1 (Finset.mem_erase.mp hex).1]
-        exact hextNe x hxmem
+      · subst x
+        exact hj (by simpa using hboth.1).symm
+      · exact hextNe x (by simp [deletedPositions, hx0, hxj]) hboth.2
 
 @[simp]
 theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
