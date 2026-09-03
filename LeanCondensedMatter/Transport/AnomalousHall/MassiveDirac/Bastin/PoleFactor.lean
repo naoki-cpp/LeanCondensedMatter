@@ -40,7 +40,9 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
         (lorentzianSpectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) := by
   unfold spectralDifferenceCoefficient projectorResolventCoefficient
-    retardedSpectralParameter advancedSpectralParameter spectralParameterOfRegulator
+    retardedSpectralParameter advancedSpectralParameter
+  rw [spectralParameter_retarded_ofRegulator, spectralParameter_advanced_ofRegulator]
+  unfold spectralParameterOfRegulator
   simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
     inv_add_I_sub_inv_sub_I_eq_lorentzian
       (probeEnergy - bandEnergy band v m px py) broadening hbroadening
