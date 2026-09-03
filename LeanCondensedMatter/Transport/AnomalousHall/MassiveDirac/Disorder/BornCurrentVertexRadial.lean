@@ -572,6 +572,7 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
   push_cast
   ring_nf
   simp [hI]
+  ring
 
 /-- Closed Born `σₓ` angular coefficient before replacing the inverse denominator factors by their
 real product. -/
