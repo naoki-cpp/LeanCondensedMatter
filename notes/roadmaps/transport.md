@@ -35,8 +35,10 @@ finite normalized ensemble
 ```
 
 The exact Green and self-energy analytic core is parameterized by the signed regulator
-`z(E,γ) = E + iγ`. Physical retarded/advanced consumers specialize with
-`γ = side.sign * η` rather than relying on parallel analytic implementations.
+`z(E,γ) = E + iγ`. Physical retarded/advanced consumers specialize through the canonical
+`SpectralSide.regulator` conversion. `spectralParameter` and `spectralResolvent` own the side-indexed
+physical boundary; named retarded/advanced APIs are consumed specializations rather than parallel
+analytic implementations.
 
 The exact averaged Green operator is invertible for arbitrary nonzero `γ` on an arbitrary complete
 complex Hilbert space. `exactSelfEnergyOfRegulator` satisfies the two-sided `IsSelfEnergy` relation
@@ -49,7 +51,8 @@ closure/truncation API are maintained.
 The explicit massive-Dirac clean Green operator, its angular/radial reduction, common continuum Born
 denominator, polar-integral bridge, and finite-cutoff continuum Born self-energy use the same
 arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadening-limit, Born-Dyson,
-or RA vertex consumers require physical branch semantics.
+or RA vertex consumers require physical branch semantics, and those specializations consume
+`SpectralSide.regulator` rather than reconstructing the sign representation where practical.
 
 ## SCBA and ladder boundary
 
