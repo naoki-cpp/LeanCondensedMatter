@@ -158,7 +158,8 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
         (stredaRetardedSpectralFactor system data energy broadening n) ^ 2 • data.basis n := by
     intro n
-    simpa only [retardedResolvent, retardedSpectralParameter,
+    simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
+      retardedSpectralParameter, spectralParameter_retarded_ofRegulator,
       stredaRetardedSpectralFactor] using
       resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
         system data energy broadening (ne_of_gt hbroadening) n
@@ -166,7 +167,8 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
       ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
         (stredaAdvancedSpectralFactor system data energy broadening n) ^ 2 • data.basis n := by
     intro n
-    simpa only [advancedResolvent, advancedSpectralParameter,
+    simpa only [advancedResolvent, spectralResolvent_advanced_ofRegulator,
+      advancedSpectralParameter, spectralParameter_advanced_ofRegulator,
       stredaAdvancedSpectralFactor] using
       resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
         system data energy (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening)) n
@@ -181,7 +183,8 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
     have hretarded :
         retardedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
           stredaRetardedSpectralFactor system data energy broadening n • data.basis n := by
-      simpa only [retardedResolvent, retardedSpectralParameter,
+      simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
+        retardedSpectralParameter, spectralParameter_retarded_ofRegulator,
         stredaRetardedSpectralFactor] using
         resolvent_spectralParameterOfRegulator_apply_eigenvector
           system.hamiltonian.1 system.hamiltonian.2
@@ -189,7 +192,8 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
     have hadvanced :
         advancedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
           stredaAdvancedSpectralFactor system data energy broadening n • data.basis n := by
-      simpa only [advancedResolvent, advancedSpectralParameter,
+      simpa only [advancedResolvent, spectralResolvent_advanced_ofRegulator,
+        advancedSpectralParameter, spectralParameter_advanced_ofRegulator,
         stredaAdvancedSpectralFactor] using
         resolvent_spectralParameterOfRegulator_apply_eigenvector
           system.hamiltonian.1 system.hamiltonian.2
