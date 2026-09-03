@@ -79,7 +79,7 @@ theorem tendsto_spectralDifferenceCoefficient_zero
     .advanced band v m px py probeEnergy hprobe
   simpa only [spectralDifferenceCoefficient, retardedSpectralParameter,
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
-    spectralParameter_advanced_ofRegulator] using hret.sub hadv
+    spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
 
 /-- A fixed ordered Bastin band-pair contribution tends to zero when the probe energy avoids both
 its source and target band energies. -/
@@ -107,7 +107,8 @@ theorem tendsto_bastinBandPairContribution_zero
       (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py))))
   simpa only [bastinBandPairContribution, pow_two, retardedSpectralParameter,
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
-    spectralParameter_advanced_ofRegulator] using hretTerm.sub hadvTerm
+    spectralParameter_advanced_ofRegulator, mul_zero, zero_mul, sub_self] using
+    hretTerm.sub hadvTerm
 
 /-- The diagonal sector tends pointwise to zero away from both band energies. -/
 theorem tendsto_diagonalBastinTraceContribution_zero
