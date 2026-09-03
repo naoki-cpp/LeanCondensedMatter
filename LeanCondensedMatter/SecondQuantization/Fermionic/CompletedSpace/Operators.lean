@@ -30,12 +30,10 @@ noncomputable def completedToggleLinear (i : Mode) :
     simpa [Function.comp_def, toggleOccupationEquiv_apply] using
       hψ.comp_injective (toggleOccupationEquiv i).injective
   map_add' ψ φ := by
-    apply lp.ext
-    funext n
+    ext n
     rfl
   map_smul' c ψ := by
-    apply lp.ext
-    funext n
+    ext n
     rfl
 
 @[simp]
@@ -48,8 +46,7 @@ theorem completedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
 theorem completedToggleLinear_completedToggleLinear (i : Mode)
     (ψ : CompletedFockSpace Mode) :
     completedToggleLinear i (completedToggleLinear i ψ) = ψ := by
-  apply lp.ext
-  funext n
+  ext n
   rw [completedToggleLinear_apply, completedToggleLinear_apply,
     toggleOccupation_involutive i n]
 
@@ -66,15 +63,14 @@ private theorem norm_completedToggleLinear_le (i : Mode) (ψ : CompletedFockSpac
 theorem norm_completedToggleLinear (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ = ‖ψ‖ := by
   apply le_antisymm (norm_completedToggleLinear_le i ψ)
-  have h := norm_completedToggleLinear_le i (completedToggleLinear i ψ)
-  simpa only [completedToggleLinear_completedToggleLinear] using h
+  simpa only [completedToggleLinear_completedToggleLinear] using
+    norm_completedToggleLinear_le i (completedToggleLinear i ψ)
 
 /-- The occupation toggle as a norm-preserving continuous linear map. -/
 noncomputable def completedToggle (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
   (completedToggleLinear i).mkContinuous (1 : ℝ) fun ψ => by
-    rw [norm_completedToggleLinear]
-    simp
+    simpa [norm_completedToggleLinear]
 
 @[simp]
 theorem completedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -85,8 +81,7 @@ theorem completedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
 @[simp]
 theorem completedToggle_completedToggle (i : Mode) (ψ : CompletedFockSpace Mode) :
     completedToggle i (completedToggle i ψ) = ψ := by
-  apply lp.ext
-  funext n
+  ext n
   rw [completedToggle_apply, completedToggle_apply, toggleOccupation_involutive i n]
 
 /-- The completed fermionic creation map before continuity is bundled. At output occupation `n`,
@@ -102,8 +97,7 @@ noncomputable def completedCreateLinear (i : Mode) :
       · simp [h, norm_fermionPhase]
       · simp [h]
   map_add' ψ φ := by
-    apply lp.ext
-    funext n
+    ext n
     change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
       (ψ + φ) (toggleOccupation i n) else 0) =
       (if i ∈ n then fermionPhase i (toggleOccupation i n) *
@@ -115,8 +109,7 @@ noncomputable def completedCreateLinear (i : Mode) :
       simp [h, mul_add]
     · simp [h]
   map_smul' c ψ := by
-    apply lp.ext
-    funext n
+    ext n
     change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
       (c • ψ) (toggleOccupation i n) else 0) =
       c * (if i ∈ n then fermionPhase i (toggleOccupation i n) *
@@ -145,8 +138,7 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
       · simp [h]
       · simp [h, norm_fermionPhase]
   map_add' ψ φ := by
-    apply lp.ext
-    funext n
+    ext n
     change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
       (ψ + φ) (toggleOccupation i n)) =
       (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
@@ -158,8 +150,7 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
     · rw [toggleOccupation_of_not_mem h]
       simp [h, mul_add]
   map_smul' c ψ := by
-    apply lp.ext
-    funext n
+    ext n
     change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
       (c • ψ) (toggleOccupation i n)) =
       c * (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
