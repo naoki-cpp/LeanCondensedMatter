@@ -99,7 +99,7 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
           (oppositeBand band) v m px py ^ 2)
       (nhds 0)
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-    simpa only [spectralParameter_retarded] using
+    simpa only [retardedSpectralParameter] using
       tendsto_oppositeBandCoefficient_sq_at_bandPole .retarded band v m px py hE
   have hadv : Tendsto
       (fun broadening : ℝ =>
@@ -108,7 +108,7 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
           (oppositeBand band) v m px py ^ 2)
       (nhds 0)
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
-    simpa only [spectralParameter_advanced] using
+    simpa only [advancedSpectralParameter] using
       tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
   have hxy := hret.mul
     (tendsto_const_nhds : Tendsto
