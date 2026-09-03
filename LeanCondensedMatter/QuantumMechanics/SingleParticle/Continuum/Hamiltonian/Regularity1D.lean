@@ -69,10 +69,9 @@ theorem continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D :
 
 /-- The explicit `H²` domain equals the maximal distributional Laplacian domain. -/
 theorem continuumH2Domain1D_eq_continuumMaximalLaplacianDomain1D :
-    continuumH2Domain1D = continuumMaximalLaplacianDomain1D := by
-  apply le_antisymm
-  · exact continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D
-  · exact continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D
+    continuumH2Domain1D = continuumMaximalLaplacianDomain1D :=
+  le_antisymm continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D
+    continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D
 
 end
 end Continuum
