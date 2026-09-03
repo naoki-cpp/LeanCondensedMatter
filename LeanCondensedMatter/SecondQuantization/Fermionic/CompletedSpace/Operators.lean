@@ -233,35 +233,31 @@ private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedCreate i (completedBasisState n) = 0 := by
   rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
-    completedSignedToggle_basisState, map_smul,
-    Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi]
+    completedSignedToggle_basisState, map_smul]
+  simp [hi]
 
 @[simp]
 theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedCreate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (insertOccupation i n) := by
   rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
-    completedSignedToggle_basisState, map_smul,
-    Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi, toggleOccupation_of_not_mem]
+    completedSignedToggle_basisState, map_smul]
+  simp [hi, toggleOccupation_of_not_mem]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedAnnihilate i (completedBasisState n) = 0 := by
   rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
-    completedSignedToggle_basisState, map_smul,
-    Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi]
+    completedSignedToggle_basisState, map_smul]
+  simp [hi]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedAnnihilate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (removeOccupation i n) := by
   rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
-    completedSignedToggle_basisState, map_smul,
-    Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi, toggleOccupation_of_mem]
+    completedSignedToggle_basisState, map_smul]
+  simp [hi, toggleOccupation_of_mem]
 
 end
 end Fermionic
