@@ -12,12 +12,12 @@ signed imaginary regulator
 z(E, γ) = E + iγ,
 ```
 
-where `γ > 0` is retarded and `γ < 0` is advanced. The physical `SpectralSide` API specializes this
-core through `γ = side.sign * η`. The conventional physical branches take `η > 0`; algebraic
-resolvent-set results below only require the broadening to be nonzero. Resolvent identities at an
+where `γ > 0` is retarded and `γ < 0` is advanced. The physical `SpectralSide` API owns the
+specialization through `γ = side.regulator η`; conventional branches take `η > 0`. Algebraic
+resolvent-set results below only require the regulator to be nonzero. Resolvent identities at an
 arbitrary signed regulator are stated directly for the representation-independent `resolvent`, so no
-second Green-operator routing wrapper is introduced. The canonical physical Green operator remains
-`spectralResolvent side H E η`; conventional retarded/advanced names remain public specializations.
+second Green-operator routing wrapper is introduced. The canonical physical Green operator is
+`spectralResolvent side H E η`; conventional retarded/advanced names are public specializations.
 
 The spectrum of a self-adjoint element of the endomorphism C⋆-algebra is real. Therefore a spectral
 parameter lies in the resolvent set whenever its imaginary regulator is nonzero, without a
@@ -42,7 +42,7 @@ inductive SpectralSide
 
 namespace SpectralSide
 
-/-- Sign multiplying the imaginary broadening: `+1` for retarded and `-1` for advanced. -/
+/-- Sign distinguishing the retarded (`+1`) and advanced (`-1`) spectral sides. -/
 def sign : SpectralSide → ℝ
   | .retarded => 1
   | .advanced => -1
@@ -52,6 +52,23 @@ def sign : SpectralSide → ℝ
 
 theorem sign_ne_zero (side : SpectralSide) : side.sign ≠ 0 := by
   cases side <;> simp [sign]
+
+/-- Signed analytic regulator selected by a physical spectral side and nonnegative broadening
+parameter. This is the canonical physical-to-analytic boundary for retarded/advanced APIs. -/
+def regulator (side : SpectralSide) (broadening : ℝ) : ℝ :=
+  side.sign * broadening
+
+@[simp] theorem regulator_retarded (broadening : ℝ) :
+    SpectralSide.retarded.regulator broadening = broadening := by
+  simp [regulator]
+
+@[simp] theorem regulator_advanced (broadening : ℝ) :
+    SpectralSide.advanced.regulator broadening = -broadening := by
+  simp [regulator]
+
+theorem regulator_ne_zero (side : SpectralSide) {broadening : ℝ}
+    (hbroadening : broadening ≠ 0) : side.regulator broadening ≠ 0 := by
+  exact mul_ne_zero (sign_ne_zero side) hbroadening
 
 /-- The opposite physical boundary-value side. -/
 def opposite : SpectralSide → SpectralSide
@@ -65,6 +82,11 @@ theorem opposite_opposite (side : SpectralSide) : side.opposite.opposite = side 
 @[simp]
 theorem sign_opposite (side : SpectralSide) : side.opposite.sign = -side.sign := by
   cases side <;> simp [opposite, sign]
+
+@[simp]
+theorem regulator_opposite (side : SpectralSide) (broadening : ℝ) :
+    side.opposite.regulator broadening = -side.regulator broadening := by
+  simp [regulator]
 
 end SpectralSide
 
@@ -99,54 +121,54 @@ theorem spectralParameterOfRegulator_sub_real_ne_zero
     simpa [spectralParameterOfRegulator] using congrArg Complex.im hzero
   exact hregulator him
 
-/-- Side-indexed spectral parameter `E + s iη`, with `s = ±1`. -/
+/-- Side-indexed spectral parameter `E + iγˢ`, where `γˢ = side.regulator η`. -/
 def spectralParameter (side : SpectralSide) (energy broadening : ℝ) : ℂ :=
-  spectralParameterOfRegulator energy (side.sign * broadening)
+  spectralParameterOfRegulator energy (side.regulator broadening)
 
 /-- The retarded spectral parameter `E + iη`. -/
 def retardedSpectralParameter (energy broadening : ℝ) : ℂ :=
-  spectralParameterOfRegulator energy broadening
+  spectralParameter .retarded energy broadening
 
 /-- The advanced spectral parameter `E - iη`. -/
 def advancedSpectralParameter (energy broadening : ℝ) : ℂ :=
-  spectralParameterOfRegulator energy (-broadening)
+  spectralParameter .advanced energy broadening
 
-/-- The retarded parameter is the `+1` specialization of `spectralParameter`. -/
+/-- The retarded parameter is the retarded specialization of the canonical side-indexed parameter. -/
 theorem spectralParameter_retarded (energy broadening : ℝ) :
     spectralParameter .retarded energy broadening =
-      retardedSpectralParameter energy broadening := by
-  simp [spectralParameter, retardedSpectralParameter]
+      retardedSpectralParameter energy broadening :=
+  rfl
 
-/-- The advanced parameter is the `-1` specialization of `spectralParameter`. -/
+/-- The advanced parameter is the advanced specialization of the canonical side-indexed parameter. -/
 theorem spectralParameter_advanced (energy broadening : ℝ) :
     spectralParameter .advanced energy broadening =
-      advancedSpectralParameter energy broadening := by
-  simp [spectralParameter, advancedSpectralParameter]
+      advancedSpectralParameter energy broadening :=
+  rfl
 
 @[simp]
 theorem spectralParameter_im (side : SpectralSide) (energy broadening : ℝ) :
-    (spectralParameter side energy broadening).im = side.sign * broadening := by
+    (spectralParameter side energy broadening).im = side.regulator broadening := by
   simp [spectralParameter]
 
 @[simp]
 theorem retardedSpectralParameter_re (energy broadening : ℝ) :
     (retardedSpectralParameter energy broadening).re = energy := by
-  simp [retardedSpectralParameter]
+  simp [retardedSpectralParameter, spectralParameter]
 
 @[simp]
 theorem retardedSpectralParameter_im (energy broadening : ℝ) :
     (retardedSpectralParameter energy broadening).im = broadening := by
-  simp [retardedSpectralParameter]
+  simp [retardedSpectralParameter, spectralParameter]
 
 @[simp]
 theorem advancedSpectralParameter_re (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).re = energy := by
-  simp [advancedSpectralParameter]
+  simp [advancedSpectralParameter, spectralParameter]
 
 @[simp]
 theorem advancedSpectralParameter_im (energy broadening : ℝ) :
     (advancedSpectralParameter energy broadening).im = -broadening := by
-  simp [advancedSpectralParameter]
+  simp [advancedSpectralParameter, spectralParameter]
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -194,7 +216,7 @@ theorem star_resolvent_spectralParameterOfRegulator
   rw [star_sub, hself]
   simp [Algebra.algebraMap_eq_smul_one]
 
-/-- Green operator on either spectral side, `((E + s iη) I - H)⁻¹`. -/
+/-- Green operator on either spectral side, `((E + iγˢ) I - H)⁻¹`. -/
 noncomputable def spectralResolvent
     (side : SpectralSide) (hamiltonian : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -203,12 +225,12 @@ noncomputable def spectralResolvent
 /-- Retarded Green operator `((E + iη) I - H)⁻¹`. -/
 noncomputable def retardedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  resolvent hamiltonian (retardedSpectralParameter energy broadening)
+  spectralResolvent .retarded hamiltonian energy broadening
 
 /-- Advanced Green operator `((E - iη) I - H)⁻¹`. -/
 noncomputable def advancedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  resolvent hamiltonian (advancedSpectralParameter energy broadening)
+  spectralResolvent .advanced hamiltonian energy broadening
 
 /-- The side-indexed shifted operator multiplied by the canonical spectral resolvent is the
 identity. -/
@@ -219,8 +241,8 @@ theorem spectralShift_mul_spectralResolvent
         spectralResolvent side hamiltonian energy broadening = 1 := by
   simpa only [spectralResolvent, spectralParameter] using
     spectralShift_mul_resolvent_spectralParameterOfRegulator
-      hamiltonian hself energy (side.sign * broadening)
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      hamiltonian hself energy (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening)
 
 /-- The canonical spectral resolvent multiplied by its side-indexed shift is the identity. -/
 theorem spectralResolvent_mul_spectralShift
@@ -231,8 +253,8 @@ theorem spectralResolvent_mul_spectralShift
       1 := by
   simpa only [spectralResolvent, spectralParameter] using
     resolvent_spectralParameterOfRegulator_mul_spectralShift
-      hamiltonian hself energy (side.sign * broadening)
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      hamiltonian hself energy (side.regulator broadening)
+      (side.regulator_ne_zero hbroadening)
 
 end
 end Transport
