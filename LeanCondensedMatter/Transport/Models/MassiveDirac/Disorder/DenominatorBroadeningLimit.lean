@@ -37,7 +37,7 @@ private theorem tendsto_pauliGreenDenominator_radial_broadening_zero
       ContinuousAt
         (fun broadening : ℝ => pauliGreenDenominator side v m p 0 probeEnergy broadening) 0 := by
     unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
-      spectralParameterOfRegulator
+      spectralParameterOfRegulator SpectralSide.regulator
     fun_prop
   exact hcontinuous.tendsto.mono_left inf_le_left
 
