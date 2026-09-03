@@ -94,135 +94,188 @@ theorem completedToggle_completedToggle (i : Mode) (ψ : CompletedFockSpace Mode
   ext n
   rw [completedToggle_apply, completedToggle_apply, toggleOccupation_involutive i n]
 
+private noncomputable def completedSignedToggleLinear (i : Mode) :
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
+  toFun ψ := by
+    refine ⟨fun n => fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n), ?_⟩
+    exact (lp.memℓp (completedToggleLinear i ψ)).mono' fun n => by
+      simp [completedToggleLinear_apply, norm_fermionPhase]
+  map_add' ψ φ := by
+    ext n
+    change fermionPhase i (toggleOccupation i n) *
+        ((ψ + φ) (toggleOccupation i n)) =
+      fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) +
+        fermionPhase i (toggleOccupation i n) * φ (toggleOccupation i n)
+    simp [mul_add]
+  map_smul' c ψ := by
+    ext n
+    change fermionPhase i (toggleOccupation i n) *
+        (c * ψ (toggleOccupation i n)) =
+      c * (fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n))
+    ring
+
+@[simp]
+private theorem completedSignedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedSignedToggleLinear i ψ n =
+      fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
+  rfl
+
+private theorem norm_completedSignedToggleLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ‖completedSignedToggleLinear i ψ‖ ≤ ‖ψ‖ := by
+  calc
+    ‖completedSignedToggleLinear i ψ‖ ≤ ‖completedToggleLinear i ψ‖ :=
+      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun n => by
+        simp [completedSignedToggleLinear_apply, completedToggleLinear_apply, norm_fermionPhase]
+    _ = ‖ψ‖ := norm_completedToggleLinear i ψ
+
+private noncomputable def completedSignedToggle (i : Mode) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (completedSignedToggleLinear i).mkContinuous 1 fun ψ => by
+    simpa only [one_mul] using norm_completedSignedToggleLinear_le i ψ
+
+@[simp]
+private theorem completedSignedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedSignedToggle i ψ n =
+      fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
+  rfl
+
+private noncomputable def completedCreateMap (i : Mode) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∈ n)).comp
+    (completedSignedToggle i)
+
+private noncomputable def completedAnnihilateMap (i : Mode) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∉ n)).comp
+    (completedSignedToggle i)
+
 /-- The completed fermionic creation map before continuity is bundled. At output occupation `n`,
 creation reads the amplitude at the toggled (hence unoccupied) source configuration, multiplies by
 the source fermionic phase, and vanishes unless `i` is occupied in `n`. -/
 noncomputable def completedCreateLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ := by
-    refine ⟨fun n => if i ∈ n then fermionPhase i (toggleOccupation i n) *
-      ψ (toggleOccupation i n) else 0, ?_⟩
-    exact (lp.memℓp (completedToggleLinear i ψ)).mono' fun n => by
-      by_cases h : i ∈ n
-      · simp [h, norm_fermionPhase]
-      · simp [h]
-  map_add' ψ φ := by
-    ext n
-    change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
-      (ψ + φ) (toggleOccupation i n) else 0) =
-      (if i ∈ n then fermionPhase i (toggleOccupation i n) *
-        ψ (toggleOccupation i n) else 0) +
-      (if i ∈ n then fermionPhase i (toggleOccupation i n) *
-        φ (toggleOccupation i n) else 0)
-    by_cases h : i ∈ n
-    · rw [toggleOccupation_of_mem h]
-      simp [h, mul_add]
-    · simp [h]
-  map_smul' c ψ := by
-    ext n
-    change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
-      (c • ψ) (toggleOccupation i n) else 0) =
-      c * (if i ∈ n then fermionPhase i (toggleOccupation i n) *
-        ψ (toggleOccupation i n) else 0)
-    by_cases h : i ∈ n
-    · rw [toggleOccupation_of_mem h]
-      simp [h, mul_left_comm]
-    · simp [h]
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
+  (completedCreateMap i).toLinearMap
 
 @[simp]
 theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedCreateLinear i ψ n =
-      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 :=
-  rfl
+      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 := by
+  classical
+  simp [completedCreateLinear, completedCreateMap, completedSignedToggle_apply,
+    Common.completedCoordinateProjection_apply]
 
 /-- The completed fermionic annihilation map before continuity is bundled. It is the complementary
 output-sector restriction of the same signed occupation toggle. -/
 noncomputable def completedAnnihilateLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ := by
-    refine ⟨fun n => if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-      ψ (toggleOccupation i n), ?_⟩
-    exact (lp.memℓp (completedToggleLinear i ψ)).mono' fun n => by
-      by_cases h : i ∈ n
-      · simp [h]
-      · simp [h, norm_fermionPhase]
-  map_add' ψ φ := by
-    ext n
-    change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-      (ψ + φ) (toggleOccupation i n)) =
-      (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-        ψ (toggleOccupation i n)) +
-      (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-        φ (toggleOccupation i n))
-    by_cases h : i ∈ n
-    · simp [h]
-    · rw [toggleOccupation_of_not_mem h]
-      simp [h, mul_add]
-  map_smul' c ψ := by
-    ext n
-    change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-      (c • ψ) (toggleOccupation i n)) =
-      c * (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
-        ψ (toggleOccupation i n))
-    by_cases h : i ∈ n
-    · simp [h]
-    · rw [toggleOccupation_of_not_mem h]
-      simp [h, mul_left_comm]
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
+  (completedAnnihilateMap i).toLinearMap
 
 @[simp]
 theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedAnnihilateLinear i ψ n =
-      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
-  rfl
-
-private theorem norm_completedCreateLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
-    ‖completedCreateLinear i ψ‖ ≤ ‖ψ‖ := by
-  calc
-    ‖completedCreateLinear i ψ‖ ≤ ‖completedToggleLinear i ψ‖ :=
-      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun n => by
-        by_cases h : i ∈ n
-        · simp [completedCreateLinear_apply, completedToggleLinear_apply, h, norm_fermionPhase]
-        · simp [completedCreateLinear_apply, completedToggleLinear_apply, h]
-    _ = ‖ψ‖ := norm_completedToggleLinear i ψ
-
-private theorem norm_completedAnnihilateLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
-    ‖completedAnnihilateLinear i ψ‖ ≤ ‖ψ‖ := by
-  calc
-    ‖completedAnnihilateLinear i ψ‖ ≤ ‖completedToggleLinear i ψ‖ :=
-      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun n => by
-        by_cases h : i ∈ n
-        · simp [completedAnnihilateLinear_apply, completedToggleLinear_apply, h]
-        · simp [completedAnnihilateLinear_apply, completedToggleLinear_apply, h,
-            norm_fermionPhase]
-    _ = ‖ψ‖ := norm_completedToggleLinear i ψ
+      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
+  classical
+  simp [completedAnnihilateLinear, completedAnnihilateMap, completedSignedToggle_apply,
+    Common.completedCoordinateProjection_apply]
 
 /-- Bounded fermionic creation on completed Fock space. -/
 noncomputable def completedCreate (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (completedCreateLinear i).mkContinuous 1 fun ψ => by
-    simpa only [one_mul] using norm_completedCreateLinear_le i ψ
+  completedCreateMap i
 
 /-- Bounded fermionic annihilation on completed Fock space. -/
 noncomputable def completedAnnihilate (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (completedAnnihilateLinear i).mkContinuous 1 fun ψ => by
-    simpa only [one_mul] using norm_completedAnnihilateLinear_le i ψ
+  completedAnnihilateMap i
 
 @[simp]
 theorem completedCreate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedCreate i ψ n =
-      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 :=
-  rfl
+      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 := by
+  classical
+  simp [completedCreate, completedCreateMap, completedSignedToggle_apply,
+    Common.completedCoordinateProjection_apply]
 
 @[simp]
 theorem completedAnnihilate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedAnnihilate i ψ n =
-      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
-  rfl
+      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
+  classical
+  simp [completedAnnihilate, completedAnnihilateMap, completedSignedToggle_apply,
+    Common.completedCoordinateProjection_apply]
+
+private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode) :
+    completedSignedToggle i (completedBasisState n) =
+      fermionPhase i n • completedBasisState (toggleOccupation i n) := by
+  classical
+  ext m
+  rw [completedSignedToggle_apply]
+  by_cases hm : m = toggleOccupation i n
+  · subst m
+    rw [toggleOccupation_involutive]
+    simp
+  · have ht : toggleOccupation i m ≠ n := by
+      intro h
+      apply hm
+      calc
+        m = toggleOccupation i (toggleOccupation i m) :=
+          (toggleOccupation_involutive i m).symm
+        _ = toggleOccupation i n := congrArg (toggleOccupation i) h
+    simp [completedBasisState_apply_of_ne hm, completedBasisState_apply_of_ne ht]
+
+@[simp]
+theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
+    completedCreate i (completedBasisState n) = 0 := by
+  rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
+    completedSignedToggle_basisState, map_smul]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
+        (Common.completedBasisState (toggleOccupation i n)) = 0
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [hi, removeOccupation]
+
+@[simp]
+theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
+    completedCreate i (completedBasisState n) =
+      fermionPhase i n • completedBasisState (insertOccupation i n) := by
+  rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
+    completedSignedToggle_basisState, map_smul]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
+        (Common.completedBasisState (toggleOccupation i n)) =
+    fermionPhase i n • Common.completedBasisState (insertOccupation i n)
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [hi, insertOccupation]
+
+@[simp]
+theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
+    completedAnnihilate i (completedBasisState n) = 0 := by
+  rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
+    completedSignedToggle_basisState, map_smul]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
+        (Common.completedBasisState (toggleOccupation i n)) = 0
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [hi, insertOccupation]
+
+@[simp]
+theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
+    completedAnnihilate i (completedBasisState n) =
+      fermionPhase i n • completedBasisState (removeOccupation i n) := by
+  rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
+    completedSignedToggle_basisState, map_smul]
+  change fermionPhase i n •
+      Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
+        (Common.completedBasisState (toggleOccupation i n)) =
+    fermionPhase i n • Common.completedBasisState (removeOccupation i n)
+  rw [Common.completedCoordinateProjection_basisState]
+  simp [hi, removeOccupation]
 
 end
 end Fermionic

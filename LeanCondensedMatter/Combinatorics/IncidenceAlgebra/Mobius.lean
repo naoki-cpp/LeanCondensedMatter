@@ -18,37 +18,103 @@ open Finset
 
 namespace IncidenceAlgebra
 
+private theorem eq_mu_of_mul_zeta_eq_one {R α : Type*} [Ring R]
+    [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α] [DecidableLE α]
+    (f : IncidenceAlgebra R α) (hleft : f * zeta R = 1) :
+    f = mu R := by
+  exact left_inv_eq_right_inv hleft (zeta_mul_mu (𝕜 := R) (α := α))
+
 /-- The Möbius function is invariant under an order isomorphism. -/
 theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
     [PartialOrder α] [PartialOrder β]
     [LocallyFiniteOrder α] [LocallyFiniteOrder β] [DecidableEq α] [DecidableEq β]
     (e : α ≃o β) (x y : α) :
     mu R (e x) (e y) = mu R x y := by
-  induction hn : (Finset.Icc x y).card using Nat.strong_induction_on generalizing x y with
-  | _ n ih =>
-    subst hn
-    by_cases hxy : x = y
-    · subst hxy; simp
-    have hexy : e x ≠ e y := fun h => hxy (e.injective h)
-    have himg : Finset.Ico (e x) (e y) = (Finset.Ico x y).image e := by
-      ext w
-      simp only [Finset.mem_image, Finset.mem_Ico]
-      constructor
-      · rintro ⟨h1, h2⟩
-        refine ⟨e.symm w, ⟨?_, ?_⟩, e.apply_symm_apply w⟩
-        · rwa [← e.le_iff_le, e.apply_symm_apply]
-        · rwa [← e.lt_iff_lt, e.apply_symm_apply]
-      · rintro ⟨z, ⟨h1, h2⟩, rfl⟩
-        exact ⟨e.le_iff_le.2 h1, e.lt_iff_lt.2 h2⟩
-    rw [mu_eq_neg_sum_Ico_of_ne hexy, mu_eq_neg_sum_Ico_of_ne hxy, himg,
-      Finset.sum_image (fun z1 _ z2 _ h => e.injective h)]
-    congr 1
-    apply Finset.sum_congr rfl
-    intro z hz
-    rw [Finset.mem_Ico] at hz
-    have hcard : (Finset.Icc x z).card < (Finset.Icc x y).card :=
-      Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
-    exact ih _ hcard x z rfl
+  classical
+  letI : DecidableLE α := Classical.decRel _
+  letI : DecidableLE β := Classical.decRel _
+  let pulledMu : IncidenceAlgebra R α :=
+    { toFun := fun a b => mu R (e a) (e b)
+      eq_zero_of_not_le' := by
+        intro a b hab
+        exact (mu R : IncidenceAlgebra R β).eq_zero_of_not_le'
+          (fun h => hab (e.le_iff_le.mp h)) }
+  have hleft : pulledMu * zeta R = 1 := by
+    ext a b
+    have hsum :
+        (∑ t ∈ Finset.Icc a b, mu R (e a) (e t)) =
+          ∑ u ∈ Finset.Icc (e a) (e b), mu R (e a) u := by
+      refine Finset.sum_bij' (fun t _ => e t) (fun u _ => e.symm u) ?_ ?_ ?_ ?_ ?_
+      · intro t ht
+        exact Finset.mem_Icc.2 ⟨
+          e.le_iff_le.2 (Finset.mem_Icc.1 ht).1,
+          e.le_iff_le.2 (Finset.mem_Icc.1 ht).2⟩
+      · intro u hu
+        exact Finset.mem_Icc.2 ⟨
+          e.le_iff_le.mp (by simpa using (Finset.mem_Icc.1 hu).1),
+          e.le_iff_le.mp (by simpa using (Finset.mem_Icc.1 hu).2)⟩
+      · intro t _
+        simp
+      · intro u _
+        simp
+      · intro t _
+        simp
+    calc
+      (pulledMu * (zeta R : IncidenceAlgebra R α)) a b =
+          ∑ t ∈ Finset.Icc a b, mu R (e a) (e t) := by
+        rw [mul_apply]
+        apply Finset.sum_congr rfl
+        intro t ht
+        rw [zeta_of_le (Finset.mem_Icc.1 ht).2, mul_one]
+        rfl
+      _ = ∑ u ∈ Finset.Icc (e a) (e b), mu R (e a) u := hsum
+      _ = (1 : IncidenceAlgebra R β) (e a) (e b) := sum_Icc_mu_right ..
+      _ = (1 : IncidenceAlgebra R α) a b := by
+        by_cases h : a = b
+        · subst b
+          simp
+        · have he : e a ≠ e b := fun he => h (e.injective he)
+          simp [one_apply, h, he]
+  have hpulled : pulledMu = mu R :=
+    eq_mu_of_mul_zeta_eq_one pulledMu hleft
+  have h := congrArg (fun f : IncidenceAlgebra R α => f x y) hpulled
+  simpa [pulledMu] using h
+
+/-- Ring homomorphisms preserve the Möbius function. -/
+theorem map_mu_apply {R S α : Type*} [Ring R] [Ring S]
+    [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
+    (φ : R →+* S) (x y : α) :
+    φ (mu R x y) = mu S x y := by
+  classical
+  letI : DecidableLE α := Classical.decRel _
+  let mappedMu : IncidenceAlgebra S α :=
+    { toFun := fun a b => φ (mu R a b)
+      eq_zero_of_not_le' := by
+        intro a b hab
+        have hmu : mu R a b = 0 :=
+          apply_eq_zero_of_not_le hab (mu R : IncidenceAlgebra R α)
+        simp [hmu] }
+  have hleft : mappedMu * zeta S = 1 := by
+    ext a b
+    calc
+      (mappedMu * (zeta S : IncidenceAlgebra S α)) a b =
+          ∑ t ∈ Finset.Icc a b, φ (mu R a t) := by
+        rw [mul_apply]
+        apply Finset.sum_congr rfl
+        intro t ht
+        rw [zeta_of_le (Finset.mem_Icc.1 ht).2, mul_one]
+        rfl
+      _ = φ (∑ t ∈ Finset.Icc a b, mu R a t) := by rw [map_sum]
+      _ = (1 : IncidenceAlgebra S α) a b := by
+        rw [sum_Icc_mu_right]
+        by_cases h : a = b
+        · subst b
+          simp
+        · simp [one_apply, h]
+  have hmapped : mappedMu = mu S :=
+    eq_mu_of_mul_zeta_eq_one mappedMu hleft
+  have h := congrArg (fun f : IncidenceAlgebra S α => f x y) hmapped
+  simpa [mappedMu] using h
 
 /-- Restricting the ambient Möbius function to an order-convex subtype gives the subtype Möbius
 function. The proof uses uniqueness of the inverse of `zeta`, rather than repeating the recursive
@@ -105,12 +171,8 @@ private theorem mu_subtype_apply_of_interval_closed {R α : Type*} [CommRing R]
           simp
         · have hv : a.1 ≠ b.1 := fun hv => h (Subtype.ext hv)
           simp [one_apply, h, hv]
-  have hrestricted : restrictedMu = mu R := by
-    calc
-      restrictedMu = restrictedMu * 1 := (mul_one restrictedMu).symm
-      _ = restrictedMu * (zeta R * mu R) := by rw [zeta_mul_mu]
-      _ = (restrictedMu * zeta R) * mu R := by rw [mul_assoc]
-      _ = mu R := by rw [hleft, one_mul]
+  have hrestricted : restrictedMu = mu R :=
+    eq_mu_of_mul_zeta_eq_one restrictedMu hleft
   have h := congrArg
     (fun f : IncidenceAlgebra R {t : α // p t} => f x y) hrestricted
   simpa [restrictedMu] using h.symm
@@ -204,10 +266,10 @@ theorem mu_pi_finset_apply {R ι : Type*} [CommRing R] [DecidableEq ι]
   | @insert j s hjs ih =>
     have hmu := (mu_orderIso_apply (R := R) (piInsertOrderIso β hjs) x y).symm
     rw [← mu_prod_mu, IncidenceAlgebra.prod_apply,
-      show (piInsertOrderIso β hjs x).1 = x ⟨j, mem_insert_self j s⟩ from rfl,
-      show (piInsertOrderIso β hjs y).1 = y ⟨j, mem_insert_self j s⟩ from rfl,
-      show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl,
-      show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl]
+      (show (piInsertOrderIso β hjs x).1 = x ⟨j, mem_insert_self j s⟩ from rfl),
+      (show (piInsertOrderIso β hjs y).1 = y ⟨j, mem_insert_self j s⟩ from rfl),
+      (show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl),
+      (show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl)]
       at hmu
     rw [hmu,
       ih (fun i => x ⟨i.1, mem_insert_of_mem i.2⟩)
