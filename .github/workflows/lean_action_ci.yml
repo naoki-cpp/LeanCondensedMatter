@@ -127,6 +127,18 @@ jobs:
         if: matrix.check == 'no-sorry-lint'
         run: lake env lean scripts/CheckNoSorry.lean
 
+      - name: Audit potentially unused theorem hypotheses
+        if: matrix.check == 'no-sorry-lint'
+        run: lake env lean scripts/CheckUnusedHypotheses.lean
+
+      - name: Add unused hypothesis audit summary
+        if: always() && matrix.check == 'no-sorry-lint'
+        shell: bash
+        run: |
+          if [ -f unused-hypotheses.md ]; then
+            cat unused-hypotheses.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Lint public library
         if: always() && matrix.check == 'no-sorry-lint'
         run: lake lint
