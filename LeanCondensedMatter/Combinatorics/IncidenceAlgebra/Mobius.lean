@@ -19,11 +19,9 @@ open Finset
 namespace IncidenceAlgebra
 
 private theorem eq_mu_of_mul_zeta_eq_one {R α : Type*} [CommRing R]
-    [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
+    [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α] [DecidableLE α]
     (f : IncidenceAlgebra R α) (hleft : f * zeta R = 1) :
     f = mu R := by
-  classical
-  letI : DecidableLE α := Classical.decRel _
   calc
     f = f * 1 := (mul_one f).symm
     _ = f * (zeta R * mu R) := by rw [zeta_mul_mu]
