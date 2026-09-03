@@ -18,15 +18,11 @@ open Finset
 
 namespace IncidenceAlgebra
 
-private theorem eq_mu_of_mul_zeta_eq_one {R α : Type*} [CommRing R]
+private theorem eq_mu_of_mul_zeta_eq_one {R α : Type*} [Ring R]
     [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α] [DecidableLE α]
     (f : IncidenceAlgebra R α) (hleft : f * zeta R = 1) :
     f = mu R := by
-  calc
-    f = f * 1 := (mul_one f).symm
-    _ = f * (zeta R * mu R) := by rw [zeta_mul_mu]
-    _ = (f * zeta R) * mu R := by rw [mul_assoc]
-    _ = mu R := by rw [hleft, one_mul]
+  exact left_inv_eq_right_inv hleft (zeta_mul_mu R α)
 
 /-- The Möbius function is invariant under an order isomorphism. -/
 theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
@@ -85,7 +81,7 @@ theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
   simpa [pulledMu] using h
 
 /-- Ring homomorphisms preserve the Möbius function. -/
-theorem map_mu_apply {R S α : Type*} [CommRing R] [CommRing S]
+theorem map_mu_apply {R S α : Type*} [Ring R] [Ring S]
     [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
     (φ : R →+* S) (x y : α) :
     φ (mu R x y) = mu S x y := by
