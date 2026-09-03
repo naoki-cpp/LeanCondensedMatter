@@ -65,8 +65,8 @@ private theorem mu_subtype_apply_of_interval_closed {R α : Type*} [CommRing R]
     { toFun := fun a b => (mu R : IncidenceAlgebra R α) a.1 b.1
       eq_zero_of_not_le' := by
         intro a b hab
-        exact apply_eq_zero_of_not_le
-          (fun h => hab (Subtype.coe_le_coe.2 h)) (mu R : IncidenceAlgebra R α) }
+        exact (mu R : IncidenceAlgebra R α).eq_zero_of_not_le'
+          (fun h => hab (Subtype.coe_le_coe.2 h)) }
   have hleft : restrictedMu * zeta R = 1 := by
     ext a b hab
     have hsum :
