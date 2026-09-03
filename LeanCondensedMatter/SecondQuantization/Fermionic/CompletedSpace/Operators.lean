@@ -238,7 +238,7 @@ theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi :
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
         (Common.completedBasisState (toggleOccupation i n)) = 0
   rw [Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi]
+  simp [hi, removeOccupation]
 
 @[simp]
 theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
@@ -251,7 +251,7 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
         (Common.completedBasisState (toggleOccupation i n)) =
     fermionPhase i n • Common.completedBasisState (insertOccupation i n)
   rw [Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi, toggleOccupation_of_not_mem]
+  simp [hi, insertOccupation]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
@@ -262,7 +262,7 @@ theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
         (Common.completedBasisState (toggleOccupation i n)) = 0
   rw [Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi]
+  simp [hi, insertOccupation]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
@@ -275,7 +275,7 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
         (Common.completedBasisState (toggleOccupation i n)) =
     fermionPhase i n • Common.completedBasisState (removeOccupation i n)
   rw [Common.completedCoordinateProjection_basisState]
-  simp [mem_toggleOccupation, hi, toggleOccupation_of_mem]
+  simp [hi, removeOccupation]
 
 end
 end Fermionic
