@@ -118,22 +118,7 @@ private theorem mu_bot_top_complex {S : Finset α} (hS : S ≠ ∅) :
 private theorem intCast_mu_apply {β : Type*} [PartialOrder β] [LocallyFiniteOrder β]
     [DecidableEq β] (x y : β) :
     ((mu ℤ x y : ℤ) : ℂ) = mu ℂ x y := by
-  induction hn : (Finset.Icc x y).card using Nat.strong_induction_on generalizing x y with
-  | _ n ih =>
-    subst hn
-    by_cases hxy : x = y
-    · subst hxy
-      simp
-    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy]
-    simp only [Int.cast_neg, Int.cast_sum]
-    congr 1
-    apply Finset.sum_congr rfl
-    intro z hz
-    rw [Finset.mem_Ico] at hz
-    have hcard : (Finset.Icc x z).card < (Finset.Icc x y).card :=
-      Finset.card_lt_card
-        (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
-    exact ih _ hcard x z rfl
+  simpa using map_mu_apply (Int.castRingHom ℂ) x y
 
 /-- For a nonempty finite set, the Möbius coefficient from the discrete partition to the
 indiscrete partition is `(-1)^(n - 1) (n - 1)!`. -/
