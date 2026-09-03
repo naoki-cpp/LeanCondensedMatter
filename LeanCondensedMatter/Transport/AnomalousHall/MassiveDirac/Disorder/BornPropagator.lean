@@ -102,36 +102,6 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
   rw [continuumBornDampingPrefactor_eq disorderStrength hbar v hhbar hvelocity]
   rfl
 
-@[simp] theorem continuumBornEffectiveEnergy_retarded
-    (v probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar =
-      (probeEnergy : ℂ) +
-        ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
-          Complex.I := by
-  simp [continuumBornEffectiveEnergy]
-
-@[simp] theorem continuumBornEffectiveEnergy_advanced
-    (v probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar =
-      (probeEnergy : ℂ) -
-        ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
-          Complex.I := by
-  simp [continuumBornEffectiveEnergy, sub_eq_add_neg]
-
-@[simp] theorem continuumBornEffectiveMass_retarded
-    (v m disorderStrength hbar : ℝ) :
-    continuumBornEffectiveMass .retarded v m disorderStrength hbar =
-      (m : ℂ) -
-        ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
-  simp [continuumBornEffectiveMass]
-
-@[simp] theorem continuumBornEffectiveMass_advanced
-    (v m disorderStrength hbar : ℝ) :
-    continuumBornEffectiveMass .advanced v m disorderStrength hbar =
-      (m : ℂ) +
-        ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
-  simp [continuumBornEffectiveMass]
-
 /-- Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced
 rung.  Its real part is even in the spectral side, while its imaginary part changes sign. -/
 theorem continuumBornPauliGreenDenominator_eq_closedForm
@@ -152,78 +122,6 @@ theorem continuumBornPauliGreenDenominator_eq_closedForm
     ring_nf <;>
     simp [hI] <;>
     ring
-
-/-- Retarded and advanced effective energies are complex conjugates. -/
-theorem star_continuumBornEffectiveEnergy_retarded_eq_advanced
-    (v probeEnergy disorderStrength hbar : ℝ) :
-    star (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar) =
-      continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar := by
-  apply Complex.ext <;>
-    simp [continuumBornEffectiveEnergy]
-
-/-- Retarded and advanced effective masses are complex conjugates. -/
-theorem star_continuumBornEffectiveMass_retarded_eq_advanced
-    (v m disorderStrength hbar : ℝ) :
-    star (continuumBornEffectiveMass .retarded v m disorderStrength hbar) =
-      continuumBornEffectiveMass .advanced v m disorderStrength hbar := by
-  apply Complex.ext <;>
-    simp [continuumBornEffectiveMass]
-
-/-- The Born-dressed quadratic retarded and advanced denominators are complex conjugates. -/
-@[simp] theorem star_continuumBornPauliGreenDenominator_retarded_eq_advanced
-    (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    star
-        (continuumBornPauliGreenDenominator
-          .retarded v m px py probeEnergy disorderStrength hbar) =
-      continuumBornPauliGreenDenominator
-        .advanced v m px py probeEnergy disorderStrength hbar := by
-  rw [continuumBornPauliGreenDenominator_eq_closedForm,
-    continuumBornPauliGreenDenominator_eq_closedForm]
-  apply Complex.ext <;> simp [SpectralSide.sign]
-
-/-- The scalar Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
-coefficient. -/
-@[simp] theorem star_continuumBornPauliGreenScalarCoefficient_retarded_eq_advanced
-    (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    star
-        (continuumBornPauliGreenScalarCoefficient
-          .retarded v m px py probeEnergy disorderStrength hbar) =
-      continuumBornPauliGreenScalarCoefficient
-        .advanced v m px py probeEnergy disorderStrength hbar := by
-  simpa [continuumBornPauliGreenScalarCoefficient, mul_comm, sub_eq_add_neg]
-
-/-- The `σₓ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
-coefficient. -/
-@[simp] theorem star_continuumBornPauliGreenXCoefficient_retarded_eq_advanced
-    (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    star
-        (continuumBornPauliGreenXCoefficient
-          .retarded v m px py probeEnergy disorderStrength hbar) =
-      continuumBornPauliGreenXCoefficient
-        .advanced v m px py probeEnergy disorderStrength hbar := by
-  simp [continuumBornPauliGreenXCoefficient, mul_comm]
-
-/-- The `σᵧ` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
-coefficient. -/
-@[simp] theorem star_continuumBornPauliGreenYCoefficient_retarded_eq_advanced
-    (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    star
-        (continuumBornPauliGreenYCoefficient
-          .retarded v m px py probeEnergy disorderStrength hbar) =
-      continuumBornPauliGreenYCoefficient
-        .advanced v m px py probeEnergy disorderStrength hbar := by
-  simp [continuumBornPauliGreenYCoefficient, mul_comm]
-
-/-- The `σ_z` Pauli coefficient of the advanced Born propagator is the conjugate of the retarded
-coefficient. -/
-@[simp] theorem star_continuumBornPauliGreenZCoefficient_retarded_eq_advanced
-    (v m px py probeEnergy disorderStrength hbar : ℝ) :
-    star
-        (continuumBornPauliGreenZCoefficient
-          .retarded v m px py probeEnergy disorderStrength hbar) =
-      continuumBornPauliGreenZCoefficient
-        .advanced v m px py probeEnergy disorderStrength hbar := by
-  simp [continuumBornPauliGreenZCoefficient, mul_comm]
 
 end
 

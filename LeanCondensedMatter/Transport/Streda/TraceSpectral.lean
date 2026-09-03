@@ -32,15 +32,10 @@ variable
   (system : BoundedFreeSystem H)
   (data : PurePointLehmannData system ι)
 
-/-- Retarded scalar resolvent factor on the `n`th energy eigenvector. -/
-noncomputable def stredaRetardedSpectralFactor
-    (energy broadening : ℝ) (n : ι) : ℂ :=
-  (retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹
-
-/-- Advanced scalar resolvent factor on the `n`th energy eigenvector. -/
-noncomputable def stredaAdvancedSpectralFactor
-    (energy broadening : ℝ) (n : ι) : ℂ :=
-  (advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹
+/-- Side-indexed scalar resolvent factor on the `n`th energy eigenvector. -/
+noncomputable def stredaSpectralFactor
+    (side : SpectralSide) (energy broadening : ℝ) (n : ι) : ℂ :=
+  (spectralParameter side energy broadening - (data.energy n : ℂ))⁻¹
 
 /-- Ordinary finite-dimensional trace written as the diagonal sum in the supplied pure-point
 basis. -/
@@ -111,14 +106,14 @@ noncomputable def regularizedBastinSpectralTraceSum
     (current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : ℂ :=
   ∑ m : ι,
-    (stredaRetardedSpectralFactor system data energy broadening m -
-      stredaAdvancedSpectralFactor system data energy broadening m) *
+    (stredaSpectralFactor system data .retarded energy broadening m -
+      stredaSpectralFactor system data .advanced energy broadening m) *
       ((∑ n : ι,
-          (stredaRetardedSpectralFactor system data energy broadening n) ^ 2 *
+          (stredaSpectralFactor system data .retarded energy broadening n) ^ 2 *
             inner ℂ (data.basis m) (current₁ (data.basis n)) *
             inner ℂ (data.basis n) (current₂ (data.basis m))) -
         ∑ n : ι,
-          (stredaAdvancedSpectralFactor system data energy broadening n) ^ 2 *
+          (stredaSpectralFactor system data .advanced energy broadening n) ^ 2 *
             inner ℂ (data.basis m) (current₂ (data.basis n)) *
             inner ℂ (data.basis n) (current₁ (data.basis m)))
 
@@ -156,45 +151,41 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
   rw [sub_apply, inner_sub_right]
   have hretardedMiddle : ∀ n : ι,
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
-        (stredaRetardedSpectralFactor system data energy broadening n) ^ 2 • data.basis n := by
+        (stredaSpectralFactor system data .retarded energy broadening n) ^ 2 • data.basis n := by
     intro n
     simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
-      retardedSpectralParameter, spectralParameter_retarded_ofRegulator,
-      stredaRetardedSpectralFactor] using
+      stredaSpectralFactor, spectralParameter_retarded_ofRegulator] using
       resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
         system data energy broadening (ne_of_gt hbroadening) n
   have hadvancedMiddle : ∀ n : ι,
       ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
-        (stredaAdvancedSpectralFactor system data energy broadening n) ^ 2 • data.basis n := by
+        (stredaSpectralFactor system data .advanced energy broadening n) ^ 2 • data.basis n := by
     intro n
     simpa only [advancedResolvent, spectralResolvent_advanced_ofRegulator,
-      advancedSpectralParameter, spectralParameter_advanced_ofRegulator,
-      stredaAdvancedSpectralFactor] using
+      stredaSpectralFactor, spectralParameter_advanced_ofRegulator] using
       resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
         system data energy (-broadening) (neg_ne_zero.mpr (ne_of_gt hbroadening)) n
   have hterminal : ∀ n : ι,
       retardedAdvancedResolventDifference system.hamiltonian.1 energy broadening
           (data.basis n) =
-        (stredaRetardedSpectralFactor system data energy broadening n -
-          stredaAdvancedSpectralFactor system data energy broadening n) • data.basis n := by
+        (stredaSpectralFactor system data .retarded energy broadening n -
+          stredaSpectralFactor system data .advanced energy broadening n) • data.basis n := by
     intro n
     unfold retardedAdvancedResolventDifference
     rw [sub_apply]
     have hretarded :
         retardedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
-          stredaRetardedSpectralFactor system data energy broadening n • data.basis n := by
+          stredaSpectralFactor system data .retarded energy broadening n • data.basis n := by
       simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
-        retardedSpectralParameter, spectralParameter_retarded_ofRegulator,
-        stredaRetardedSpectralFactor] using
+        stredaSpectralFactor, spectralParameter_retarded_ofRegulator] using
         resolvent_spectralParameterOfRegulator_apply_eigenvector
           system.hamiltonian.1 system.hamiltonian.2
           (data.hamiltonian_apply_basis n) energy broadening (ne_of_gt hbroadening)
     have hadvanced :
         advancedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
-          stredaAdvancedSpectralFactor system data energy broadening n • data.basis n := by
+          stredaSpectralFactor system data .advanced energy broadening n • data.basis n := by
       simpa only [advancedResolvent, spectralResolvent_advanced_ofRegulator,
-        advancedSpectralParameter, spectralParameter_advanced_ofRegulator,
-        stredaAdvancedSpectralFactor] using
+        stredaSpectralFactor, spectralParameter_advanced_ofRegulator] using
         resolvent_spectralParameterOfRegulator_apply_eigenvector
           system.hamiltonian.1 system.hamiltonian.2
           (data.hamiltonian_apply_basis n) energy (-broadening)
@@ -205,18 +196,18 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2)
       current₂
       (retardedAdvancedResolventDifference system.hamiltonian.1 energy broadening)
-      (fun n => (stredaRetardedSpectralFactor system data energy broadening n) ^ 2)
-      (fun n => stredaRetardedSpectralFactor system data energy broadening n -
-        stredaAdvancedSpectralFactor system data energy broadening n)
+      (fun n => (stredaSpectralFactor system data .retarded energy broadening n) ^ 2)
+      (fun n => stredaSpectralFactor system data .retarded energy broadening n -
+        stredaSpectralFactor system data .advanced energy broadening n)
       hretardedMiddle hterminal m]
   rw [inner_purePointBasis_mul_diagonal_mul_mul_diagonal
     system data current₂
       ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2)
       current₁
       (retardedAdvancedResolventDifference system.hamiltonian.1 energy broadening)
-      (fun n => (stredaAdvancedSpectralFactor system data energy broadening n) ^ 2)
-      (fun n => stredaRetardedSpectralFactor system data energy broadening n -
-        stredaAdvancedSpectralFactor system data energy broadening n)
+      (fun n => (stredaSpectralFactor system data .advanced energy broadening n) ^ 2)
+      (fun n => stredaSpectralFactor system data .retarded energy broadening n -
+        stredaSpectralFactor system data .advanced energy broadening n)
       hadvancedMiddle hterminal m]
   ring
 

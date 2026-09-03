@@ -613,9 +613,7 @@ theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_inverseFactors
     rw [pow_two, Complex.I_mul_I]
   unfold continuumBornRetardedAdvancedPauliXAngularXCoefficient
   unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
-  rw [continuumBornEffectiveEnergy_retarded, continuumBornEffectiveEnergy_advanced,
-    continuumBornEffectiveMass_retarded, continuumBornEffectiveMass_advanced]
-  push_cast
+  simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
   ring_nf
   simp [hI]
   ring
@@ -635,9 +633,7 @@ theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_inverseFactors
     rw [pow_two, Complex.I_mul_I]
   unfold continuumBornRetardedAdvancedPauliXAngularYCoefficient
   unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
-  rw [continuumBornEffectiveEnergy_retarded, continuumBornEffectiveEnergy_advanced,
-    continuumBornEffectiveMass_retarded, continuumBornEffectiveMass_advanced]
-  push_cast
+  simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
   ring_nf
   simp [hI]
 
