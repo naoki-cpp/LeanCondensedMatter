@@ -249,6 +249,7 @@ noncomputable def spectralResolvent
     (energy broadening : ℝ) : H →L[ℂ] H :=
   resolvent hamiltonian (spectralParameter side energy broadening)
 
+omit [CompleteSpace H] in
 /-- The retarded side normalizes to the arbitrary-regulator resolvent at `+η`. -/
 @[simp]
 theorem spectralResolvent_retarded_ofRegulator
@@ -257,6 +258,7 @@ theorem spectralResolvent_retarded_ofRegulator
       resolvent hamiltonian (spectralParameterOfRegulator energy broadening) := by
   simp [spectralResolvent]
 
+omit [CompleteSpace H] in
 /-- The advanced side normalizes to the arbitrary-regulator resolvent at `-η`. -/
 @[simp]
 theorem spectralResolvent_advanced_ofRegulator
