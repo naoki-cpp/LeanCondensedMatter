@@ -42,8 +42,8 @@ noncomputable def completedHilbertBasis :
 theorem completedHilbertBasis_apply (c : Config) :
     completedHilbertBasis (Config := Config) c = completedBasisState c := by
   classical
-  have h := (completedHilbertBasis (Config := Config)).repr_self c
-  simpa [completedHilbertBasis, completedBasisState] using h
+  simpa [completedHilbertBasis, completedBasisState] using
+    (completedHilbertBasis (Config := Config)).repr_self c
 
 /-- Inner product with a completed basis vector in the first slot evaluates the corresponding
 coordinate. -/
@@ -72,12 +72,10 @@ noncomputable def algebraicToCompleted :
   toFun x :=
     ⟨fun c => x c, (memℓp_zero x.hasFiniteSupport).of_exponent_ge zero_le⟩
   map_add' x y := by
-    apply lp.ext
-    funext c
+    ext c
     rfl
   map_smul' a x := by
-    apply lp.ext
-    funext c
+    ext c
     rfl
 
 @[simp]
@@ -89,8 +87,7 @@ theorem algebraicToCompleted_apply (x : AlgebraicFock Config) (c : Config) :
 theorem algebraicToCompleted_basisState (c : Config) :
     algebraicToCompleted (basisState c) = completedBasisState c := by
   classical
-  apply lp.ext
-  funext d
+  ext d
   by_cases h : d = c
   · subst d
     simp [algebraicToCompleted, basisState, completedBasisState,
@@ -121,8 +118,7 @@ theorem algebraicToCompleted_denseRange :
   apply Finset.sum_congr rfl
   intro c _hc
   rw [map_smul, algebraicToCompleted_basisState]
-  apply lp.ext
-  funext d
+  ext d
   by_cases h : d = c
   · subst d
     simp [completedBasisState, lp.single_apply]

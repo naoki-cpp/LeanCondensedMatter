@@ -52,14 +52,12 @@ noncomputable def completedDiagonalOperator (w : Config → ℂ) :
         ⟨fun c => w c * (ψ : CompletedFock Config) c,
           (mem_completedDiagonalDomain_iff w (ψ : CompletedFock Config)).mp ψ.2⟩
       map_add' ψ φ := by
-        apply lp.ext
-        funext c
+        ext c
         change w c * ((ψ : CompletedFock Config) c + (φ : CompletedFock Config) c) =
           w c * (ψ : CompletedFock Config) c + w c * (φ : CompletedFock Config) c
         ring
       map_smul' a ψ := by
-        apply lp.ext
-        funext c
+        ext c
         change w c * (a * (ψ : CompletedFock Config) c) =
           a * (w c * (ψ : CompletedFock Config) c)
         ring }
@@ -106,11 +104,9 @@ noncomputable def algebraicToCompletedDiagonalDomain (w : Config → ℂ) :
     AlgebraicFock Config →ₗ[ℂ] completedDiagonalDomain w where
   toFun x := ⟨algebraicToCompleted x, algebraicToCompleted_mem_completedDiagonalDomain w x⟩
   map_add' x y := by
-    apply Subtype.ext
-    exact map_add algebraicToCompleted x y
+    exact Subtype.ext (map_add algebraicToCompleted x y)
   map_smul' a x := by
-    apply Subtype.ext
-    exact map_smul algebraicToCompleted a x
+    exact Subtype.ext (map_smul algebraicToCompleted a x)
 
 /-- Canonical basis vectors lie in every weighted diagonal domain. -/
 theorem completedBasisState_mem_completedDiagonalDomain (w : Config → ℂ) (c : Config) :
@@ -125,8 +121,7 @@ theorem completedDiagonalOperator_basisState (w : Config → ℂ) (c : Config) :
         ⟨completedBasisState c, completedBasisState_mem_completedDiagonalDomain w c⟩ =
       w c • completedBasisState c := by
   classical
-  apply lp.ext
-  funext d
+  ext d
   rw [completedDiagonalOperator_apply]
   by_cases h : d = c
   · subst d
@@ -147,8 +142,7 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Config → ℂ) :
   have hdomain :
       algebraicToCompletedDiagonalDomain w (basisState c) =
         ⟨completedBasisState c, completedBasisState_mem_completedDiagonalDomain w c⟩ := by
-    apply Subtype.ext
-    exact algebraicToCompleted_basisState c
+    exact Subtype.ext (algebraicToCompleted_basisState c)
   have hleft :
       (completedDiagonalOperator w).toFun
           (algebraicToCompletedDiagonalDomain w (basisState c)) =
