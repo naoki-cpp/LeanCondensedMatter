@@ -44,9 +44,8 @@ theorem twoLevel_scalarCurrent_spectralTraceSum
         (((retardedSpectralParameter energy broadening)⁻¹) ^ 2 -
           ((advancedSpectralParameter energy broadening)⁻¹) ^ 2) := by
   classical
-  simp [regularizedBastinSpectralTraceSum,
-    stredaRetardedSpectralFactor, stredaAdvancedSpectralFactor,
-    twoLevelScalarCurrent]
+  simp [regularizedBastinSpectralTraceSum, stredaSpectralFactor,
+    retardedSpectralParameter, advancedSpectralParameter, twoLevelScalarCurrent]
   ring
 
 /-- At `E = 1` and `γ = 1`, the two-level scalar-current spectral trace is exactly `-2`. -/
