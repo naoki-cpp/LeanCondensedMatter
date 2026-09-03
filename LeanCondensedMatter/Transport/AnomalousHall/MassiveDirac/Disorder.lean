@@ -8,7 +8,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ChannelBroaden
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.UpperBandDamping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.SingleParticleRate
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.TransportRate
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagatorOperator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
