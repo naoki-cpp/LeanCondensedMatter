@@ -70,11 +70,10 @@ theorem completedFreeGibbsDiagonalExpectation_one
   unfold completedFreeGibbsDiagonalExpectation
   simpa using (hasSum_purePointGibbsProbability (fermionEnergy ε) β hsum).tsum_eq
 
-/-- An integrable nonnegative diagonal observable has nonnegative Gibbs expectation. -/
+/-- A nonnegative diagonal observable has nonnegative Gibbs expectation. -/
 theorem completedFreeGibbsDiagonalExpectation_nonneg
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
-    (a : Occupation Mode → ℝ) (_hint : CompletedFreeGibbsIntegrableDiagonal ε β a)
-    (ha : ∀ n, 0 ≤ a n) :
+    (a : Occupation Mode → ℝ) (ha : ∀ n, 0 ≤ a n) :
     0 ≤ completedFreeGibbsDiagonalExpectation ε β a := by
   unfold completedFreeGibbsDiagonalExpectation
   exact tsum_nonneg fun n =>
