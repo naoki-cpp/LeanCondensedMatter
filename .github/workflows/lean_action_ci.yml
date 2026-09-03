@@ -88,7 +88,8 @@ jobs:
         check:
           - compiled-architecture
           - duplicates
-          - no-sorry-lint
+          - no-sorry
+          - unused-hypotheses
 
     name: compiled-checks (${{ matrix.check }})
 
@@ -124,15 +125,15 @@ jobs:
         run: lake env lean scripts/CheckDuplicates.lean
 
       - name: Check compiled declarations for sorryAx
-        if: matrix.check == 'no-sorry-lint'
+        if: matrix.check == 'no-sorry'
         run: lake env lean scripts/CheckNoSorry.lean
 
       - name: Audit potentially unused theorem hypotheses
-        if: matrix.check == 'no-sorry-lint'
+        if: matrix.check == 'unused-hypotheses'
         run: lake env lean scripts/CheckUnusedHypotheses.lean
 
       - name: Add unused hypothesis audit summary
-        if: always() && matrix.check == 'no-sorry-lint'
+        if: always() && matrix.check == 'unused-hypotheses'
         shell: bash
         run: |
           if [ -f unused-hypotheses.md ]; then
@@ -140,7 +141,7 @@ jobs:
           fi
 
       - name: Lint public library
-        if: always() && matrix.check == 'no-sorry-lint'
+        if: always() && matrix.check == 'no-sorry'
         run: lake lint
 
   # Generated developer artifacts are intentionally built only on pushes to main. Both theorem
