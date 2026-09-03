@@ -92,8 +92,10 @@ applying the exact second-moment action to the clean Green operator at arbitrary
 `Disorder.SCBA` records supplied self-consistent approximation data and derives its side-indexed
 consequences. Here retarded/advanced branch semantics are part of the physical approximation data,
 so SCBA remains explicitly `SpectralSide`-aware rather than being treated as an analytic regulator
-wrapper. `Disorder.Ladder` similarly owns retarded-advanced ladder algebra for supplied Green
-operators and does not assume convergence or a Ward identity.
+wrapper. `Disorder.Ladder` owns the RA kernel for supplied Green operators, finite fixed-point
+iteration, and conditional resummation/uniqueness under the canonical `IsUnit (1 - L_RA)`
+hypothesis. It does not expose separate inverse-data, one-rung, or residual routing APIs and does not
+assume convergence or a Ward identity.
 
 ## Concrete models
 

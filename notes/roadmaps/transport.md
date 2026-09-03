@@ -64,8 +64,9 @@ SCBA remains explicitly `SpectralSide`-aware.
 L_RA(Γ) = C₂(Gᴿ Γ Gᴬ)
 ```
 
-and exact finite algebra built from it. Resummation requires an explicit inverse of `I - L_RA`;
-convergence and Ward identities are separate targets.
+together with finite iteration and conditional resummation/uniqueness under the canonical
+`IsUnit (1 - L_RA)` hypothesis. Separate inverse-data, one-rung, and residual-routing wrappers are
+not public APIs. Convergence and Ward identities are separate targets.
 
 ## Open targets
 

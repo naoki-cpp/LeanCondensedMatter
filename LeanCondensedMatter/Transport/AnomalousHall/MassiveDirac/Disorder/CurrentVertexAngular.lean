@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.AngularReduction
-import LeanCondensedMatter.Transport.Disorder.Ladder
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
@@ -8,16 +7,15 @@ set_option linter.style.header false
 /-!
 # Angular reduction of the massive-Dirac retarded-advanced current rung
 
-This Phase 5 entry point keeps the retarded-advanced orientation used by the shared finite ladder
-API visible while performing only the model-specific `2 × 2` Pauli algebra.  At fixed radial
-momentum it studies
+This Phase 5 entry point keeps the physical retarded-advanced ordering explicit while performing
+only the model-specific `2 × 2` Pauli algebra. At fixed radial momentum it studies
 
 ```text
 Gᴿ(p,θ) σₓ Gᴬ(p,θ)
 ```
 
 before any radial integration, disorder normalization, zero-broadening limit, or ladder
-resummation.  The full polar-angle integral closes in the in-plane Pauli span. Reversing the
+resummation. The full polar-angle integral closes in the in-plane Pauli span. Reversing the
 retarded/advanced order reverses the orientation-sensitive `σᵧ` term, so the order is not hidden by
 a symmetric wrapper.
 -/
@@ -30,7 +28,7 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Matrix representative of the already-defined Pauli Green operator.  This is only a finite
+/-- Matrix representative of the already-defined Pauli Green operator. This is only a finite
 matrix adapter for explicit Pauli multiplication; it does not introduce a second Green-function
 formalism. -/
 def pauliGreenMatrix
@@ -310,7 +308,7 @@ private theorem integral_raPauliXZCoefficient_zero
     integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
   simp
 
-/-- The full retarded-advanced `x`-current rung closes exactly in the in-plane Pauli span.  The
+/-- The full retarded-advanced `x`-current rung closes exactly in the in-plane Pauli span. The
 identity and `σ_z` channels vanish under the full polar-angle integral. -/
 theorem continuumAngularRetardedAdvancedPauliXIntegral_eq
     (v m p probeEnergy broadening : ℝ) :
