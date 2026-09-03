@@ -172,9 +172,9 @@ private theorem annihilateCoeff_cancel (i j : Mode) (n : Occupation Mode) :
     · by_cases hj : j ∈ n
       · simpa [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij] using
           fermionSign_annihilate_annihilate_cancel hij hi hj
-      · simp [annihilateCoeff, hi, hj, removeOccupation, hij]
+      · simp [annihilateCoeff, hi, hj, removeOccupation]
     · by_cases hj : j ∈ n <;>
-        simp [annihilateCoeff, hi, hj, removeOccupation, Ne.symm hij]
+        simp [annihilateCoeff, hi, hj, removeOccupation]
 
 private theorem fermionSign_annihilate_create_cancel {i j : Mode} {n : Occupation Mode}
     (hij : i ≠ j) (hi : i ∈ n) (hj : j ∉ n) :
