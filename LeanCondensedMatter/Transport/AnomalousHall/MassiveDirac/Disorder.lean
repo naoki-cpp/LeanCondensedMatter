@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.ContinuumBornAngularBridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBornAngularBridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorFactorization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorEvaluation
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorUV
