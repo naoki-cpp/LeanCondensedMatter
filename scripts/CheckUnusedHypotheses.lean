@@ -86,9 +86,9 @@ private def candidateLess (left right : Candidate) : Bool :=
   let leftName := left.theoremName.toString
   let rightName := right.theoremName.toString
   if leftName != rightName then
-    leftName < rightName
+    decide (leftName < rightName)
   else
-    left.binderIndex < right.binderIndex
+    decide (left.binderIndex < right.binderIndex)
 
 private def renderMarkdown
     (theoremCount mismatchCount : Nat) (candidates : Array Candidate) : String := Id.run do
