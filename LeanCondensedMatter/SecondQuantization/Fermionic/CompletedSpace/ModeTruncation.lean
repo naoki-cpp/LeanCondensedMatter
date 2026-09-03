@@ -73,8 +73,7 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
     (hS : algebraicModeSupport x ⊆ S) :
     completedModeTruncation S (algebraicToCompleted x) = algebraicToCompleted x := by
   classical
-  apply lp.ext
-  funext n
+  ext n
   rw [completedModeTruncation_apply]
   by_cases hn : x n = 0
   · simp [algebraicToCompleted_apply, hn]
