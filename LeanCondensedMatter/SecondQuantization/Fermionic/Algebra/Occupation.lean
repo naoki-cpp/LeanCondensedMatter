@@ -10,9 +10,9 @@ Pauli exclusion means a fermionic occupation-number state is fully determined by
 occupied — no mode can hold more than one particle — so `Occupation Mode := Finset Mode` (the set
 of occupied modes), unlike the bosonic case's `Mode →₀ ℕ` in `Bosonic/Algebra/Occupation.lean`.
 
-This file owns the occupation-number bookkeeping: vacuum, particle number, and inserting or
-removing a mode from the occupied set. Creation and annihilation operators are defined separately in
-`CreationAnnihilation.lean`, and their canonical anticommutation relations are proved in
+This file owns the occupation-number bookkeeping: vacuum, particle number, and inserting, removing,
+or toggling a mode in the occupied set. Creation and annihilation operators are defined separately
+in `CreationAnnihilation.lean`, and their canonical anticommutation relations are proved in
 `CanonicalAnticommutationRelations.lean`.
 -/
 
@@ -32,7 +32,6 @@ def vacuum : Occupation Mode := ∅
 modes. -/
 def particleNumber (n : Occupation Mode) : ℕ := n.card
 
-
 omit [DecidableEq Mode] in
 @[simp]
 theorem particleNumber_vacuum :
@@ -48,6 +47,74 @@ def insertOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
 /-- **Vacating mode `i`.** Removes `i` from the occupied set; a no-op if `i` was already empty. -/
 def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n.erase i
+
+/-- Toggle one fermionic mode. This is the common occupation reindexing underlying creation and
+annihilation, independent of any Hilbert-space completion. -/
+def toggleOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
+  if i ∈ n then removeOccupation i n else insertOccupation i n
+
+@[simp]
+theorem mem_toggleOccupation (i : Mode) (n : Occupation Mode) :
+    i ∈ toggleOccupation i n ↔ i ∉ n := by
+  by_cases h : i ∈ n
+  · simp [toggleOccupation, h, removeOccupation]
+  · simp [toggleOccupation, h, insertOccupation]
+
+theorem mem_toggleOccupation_of_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
+    j ∈ toggleOccupation i n ↔ j ∈ n := by
+  by_cases hi : i ∈ n
+  · simp [toggleOccupation, hi, removeOccupation, h]
+  · simp [toggleOccupation, hi, insertOccupation, h]
+
+@[simp]
+theorem toggleOccupation_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈ n) :
+    toggleOccupation i n = removeOccupation i n := by
+  simp [toggleOccupation, h]
+
+@[simp]
+theorem toggleOccupation_of_not_mem {i : Mode} {n : Occupation Mode} (h : i ∉ n) :
+    toggleOccupation i n = insertOccupation i n := by
+  simp [toggleOccupation, h]
+
+@[simp]
+theorem toggleOccupation_involutive (i : Mode) :
+    Function.Involutive (toggleOccupation i) := by
+  intro n
+  by_cases h : i ∈ n
+  · simp [toggleOccupation, h, removeOccupation, insertOccupation]
+  · simp [toggleOccupation, h, removeOccupation, insertOccupation]
+
+/-- Toggling two modes commutes. -/
+theorem toggleOccupation_comm (i j : Mode) (n : Occupation Mode) :
+    toggleOccupation i (toggleOccupation j n) =
+      toggleOccupation j (toggleOccupation i n) := by
+  rcases eq_or_ne i j with rfl | hij
+  · rfl
+  ext k
+  by_cases hki : k = i
+  · subst k
+    simp only [mem_toggleOccupation, mem_toggleOccupation_of_ne hij]
+  · by_cases hkj : k = j
+    · subst k
+      simp only [mem_toggleOccupation, mem_toggleOccupation_of_ne (Ne.symm hij)]
+    · simp only [mem_toggleOccupation_of_ne hki, mem_toggleOccupation_of_ne hkj]
+
+/-- Toggling one mode is an equivalence of the full occupation basis. -/
+def toggleOccupationEquiv (i : Mode) : Occupation Mode ≃ Occupation Mode where
+  toFun := toggleOccupation i
+  invFun := toggleOccupation i
+  left_inv := toggleOccupation_involutive i
+  right_inv := toggleOccupation_involutive i
+
+@[simp]
+theorem toggleOccupationEquiv_apply (i : Mode) (n : Occupation Mode) :
+    toggleOccupationEquiv i n = toggleOccupation i n :=
+  rfl
+
+@[simp]
+theorem toggleOccupationEquiv_symm (i : Mode) :
+    (toggleOccupationEquiv i).symm = toggleOccupationEquiv i :=
+  rfl
 
 theorem particleNumber_insertOccupation_of_not_mem {i : Mode} {n : Occupation Mode}
     (h : i ∉ n) :
