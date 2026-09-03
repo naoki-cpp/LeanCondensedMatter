@@ -50,6 +50,70 @@ theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
       Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
     exact ih _ hcard x z rfl
 
+/-- Restricting the ambient Möbius function to an order-convex subtype gives the subtype Möbius
+function. The proof uses uniqueness of the inverse of `zeta`, rather than repeating the recursive
+construction of `mu` inside the subtype. -/
+private theorem mu_subtype_apply_of_interval_closed {R α : Type*} [CommRing R]
+    [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
+    {p : α → Prop} [LocallyFiniteOrder {t : α // p t}]
+    (hclosed : ∀ {a b : {t : α // p t}} {t : α}, a.1 ≤ t → t ≤ b.1 → p t)
+    (x y : {t : α // p t}) :
+    mu R x y = mu R x.1 y.1 := by
+  classical
+  letI : DecidableLE {t : α // p t} := Classical.decRel _
+  let restrictedMu : IncidenceAlgebra R {t : α // p t} :=
+    { toFun := fun a b => mu R a.1 b.1
+      eq_zero_of_not_le' := by
+        intro a b hab
+        exact apply_eq_zero_of_not_le
+          (fun h => hab (Subtype.coe_le_coe.2 h)) (mu R) }
+  have hleft : restrictedMu * zeta R = 1 := by
+    ext a b hab
+    have hsum :
+        (∑ w ∈ Finset.Icc a b, mu R a.1 w.1) =
+          ∑ t ∈ Finset.Icc a.1 b.1, mu R a.1 t := by
+      have hIcc : ∀ w : {t : α // p t},
+          w ∈ Finset.Icc a b ↔ w.1 ∈ Finset.Icc a.1 b.1 := by
+        intro w
+        simp only [Finset.mem_Icc, Subtype.coe_le_coe]
+      refine Finset.sum_bij' (fun w _ => w.1)
+        (fun t ht => (⟨t, hclosed (Finset.mem_Icc.1 ht).1 (Finset.mem_Icc.1 ht).2⟩ :
+          {t : α // p t})) ?_ ?_ ?_ ?_ ?_
+      · intro w hw
+        exact (hIcc w).1 hw
+      · intro t ht
+        exact (hIcc _).2 (by simpa using ht)
+      · intro w _
+        rfl
+      · intro t _
+        rfl
+      · intro w _
+        rfl
+    calc
+      (restrictedMu * zeta R) a b = ∑ w ∈ Finset.Icc a b, mu R a.1 w.1 := by
+        rw [mul_apply]
+        apply Finset.sum_congr rfl
+        intro w hw
+        rw [zeta_of_le (Finset.mem_Icc.1 hw).2, mul_one]
+        rfl
+      _ = ∑ t ∈ Finset.Icc a.1 b.1, mu R a.1 t := hsum
+      _ = (1 : IncidenceAlgebra R α) a.1 b.1 := sum_Icc_mu_right ..
+      _ = (1 : IncidenceAlgebra R {t : α // p t}) a b := by
+        by_cases h : a = b
+        · subst b
+          simp
+        · have hv : a.1 ≠ b.1 := fun hv => h (Subtype.ext hv)
+          simp [one_apply, h, hv]
+  have hrestricted : restrictedMu = mu R := by
+    calc
+      restrictedMu = restrictedMu * 1 := (mul_one restrictedMu).symm
+      _ = restrictedMu * (zeta R * mu R) := by rw [zeta_mul_mu]
+      _ = (restrictedMu * zeta R) * mu R := by rw [mul_assoc]
+      _ = mu R := by rw [hleft, one_mul]
+  have h := congrArg
+    (fun f : IncidenceAlgebra R {t : α // p t} => f x y) hrestricted
+  simpa [restrictedMu] using h.symm
+
 /-- A finite principal lower interval inherits a locally finite order. -/
 noncomputable instance instLocallyFiniteOrderSubtypeLe {α : Type*} [Fintype α]
     [PartialOrder α] {z : α} : LocallyFiniteOrder {t : α // t ≤ z} := by
@@ -61,33 +125,8 @@ Möbius function. -/
 theorem mu_subtype_le_apply {R α : Type*} [CommRing R]
     [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // t ≤ z}) :
-    mu R x y = mu R x.1 y.1 := by
-  induction hn : (Finset.Icc x.1 y.1).card using Nat.strong_induction_on generalizing x y with
-  | _ n ih =>
-    subst hn
-    by_cases hxy : x = y
-    · subst hxy; simp
-    have hxy1 : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
-    have hIco : ∀ w : {t : α // t ≤ z}, w ∈ Finset.Ico x y ↔ w.1 ∈ Finset.Ico x.1 y.1 := by
-      intro w
-      simp only [Finset.mem_Ico, Subtype.coe_lt_coe, Subtype.coe_le_coe]
-    have hsum : ∑ w ∈ Finset.Ico x y, mu R x w = ∑ t ∈ Finset.Ico x.1 y.1, mu R x.1 t := by
-      refine Finset.sum_bij' (fun w _ => w.1)
-        (fun t ht => (⟨t, (Finset.mem_Ico.1 ht).2.le.trans y.2⟩ : {t : α // t ≤ z}))
-        ?_ ?_ ?_ ?_ ?_
-      · intro w hw; exact (hIco w).1 hw
-      · intro t ht; exact (hIco _).2 (by simpa using ht)
-      · intro w _; rfl
-      · intro t _; rfl
-      · intro w hw
-        have hw' : w ∈ Finset.Ico x y := hw
-        rw [Finset.mem_Ico] at hw'
-        have hcard : (Finset.Icc x.1 w.1).card < (Finset.Icc x.1 y.1).card :=
-          Finset.card_lt_card (Finset.Icc_ssubset_Icc_right
-            ((Subtype.coe_le_coe.2 hw'.1).trans (Subtype.coe_lt_coe.2 hw'.2).le) le_rfl
-            (Subtype.coe_lt_coe.2 hw'.2))
-        exact ih _ hcard x w rfl
-    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy1, hsum]
+    mu R x y = mu R x.1 y.1 :=
+  mu_subtype_apply_of_interval_closed (fun {_a b t} _ htb => htb.trans b.2) x y
 
 /-- A finite principal upper interval inherits a locally finite order. -/
 noncomputable instance instLocallyFiniteOrderSubtypeGe {α : Type*} [Fintype α]
@@ -100,33 +139,8 @@ Möbius function. -/
 theorem mu_subtype_ge_apply {R α : Type*} [CommRing R]
     [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // z ≤ t}) :
-    mu R x y = mu R x.1 y.1 := by
-  induction hn : (Finset.Icc x.1 y.1).card using Nat.strong_induction_on generalizing x y with
-  | _ n ih =>
-    subst hn
-    by_cases hxy : x = y
-    · subst hxy; simp
-    have hxy1 : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
-    have hIco : ∀ w : {t : α // z ≤ t}, w ∈ Finset.Ico x y ↔ w.1 ∈ Finset.Ico x.1 y.1 := by
-      intro w
-      simp only [Finset.mem_Ico, Subtype.coe_lt_coe, Subtype.coe_le_coe]
-    have hsum : ∑ w ∈ Finset.Ico x y, mu R x w = ∑ t ∈ Finset.Ico x.1 y.1, mu R x.1 t := by
-      refine Finset.sum_bij' (fun w _ => w.1)
-        (fun t ht => (⟨t, x.2.trans (Finset.mem_Ico.1 ht).1⟩ : {t : α // z ≤ t}))
-        ?_ ?_ ?_ ?_ ?_
-      · intro w hw; exact (hIco w).1 hw
-      · intro t ht; exact (hIco _).2 (by simpa using ht)
-      · intro w _; rfl
-      · intro t _; rfl
-      · intro w hw
-        have hw' : w ∈ Finset.Ico x y := hw
-        rw [Finset.mem_Ico] at hw'
-        have hcard : (Finset.Icc x.1 w.1).card < (Finset.Icc x.1 y.1).card :=
-          Finset.card_lt_card (Finset.Icc_ssubset_Icc_right
-            ((Subtype.coe_le_coe.2 hw'.1).trans (Subtype.coe_lt_coe.2 hw'.2).le) le_rfl
-            (Subtype.coe_lt_coe.2 hw'.2))
-        exact ih _ hcard x w rfl
-    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy1, hsum]
+    mu R x y = mu R x.1 y.1 :=
+  mu_subtype_apply_of_interval_closed (fun {a _b t} hat _ => a.2.trans hat) x y
 
 end IncidenceAlgebra
 
