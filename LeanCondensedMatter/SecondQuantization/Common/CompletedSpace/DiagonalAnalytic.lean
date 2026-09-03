@@ -48,8 +48,7 @@ private theorem mem_completedDiagonalOperator_graph_iff (w : Config → ℂ)
       exact (hz c).symm
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
-    apply lp.ext
-    funext c
+    ext c
     rw [completedDiagonalOperator_apply]
     exact (hz c).symm
 
@@ -86,8 +85,8 @@ private theorem completedDiagonalOperator_isFormalAdjoint_conj (w : Config → �
 
 private theorem completedDiagonalOperator_conj_le_adjoint (w : Config → ℂ) :
     completedDiagonalOperator (fun c => star (w c)) ≤
-      (completedDiagonalOperator w).adjoint := by
-  exact (completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
+      (completedDiagonalOperator w).adjoint :=
+  (completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
     (completedDiagonalOperator_denseDomain w)
 
 private theorem completedDiagonalOperator_adjoint_apply (w : Config → ℂ)
@@ -122,8 +121,7 @@ private theorem completedDiagonalOperator_adjoint_le_conj (w : Config → ℂ) :
       completedDiagonalOperator (fun c => star (w c)) := by
   refine ⟨completedDiagonalOperator_adjoint_domain_le_conj w, ?_⟩
   intro x y hxy
-  apply lp.ext
-  funext c
+  ext c
   rw [completedDiagonalOperator_adjoint_apply, completedDiagonalOperator_apply]
   change star (w c) * (x : CompletedFock Config) c =
     star (w c) * (y : CompletedFock Config) c
@@ -133,8 +131,8 @@ private theorem completedDiagonalOperator_adjoint_le_conj (w : Config → ℂ) :
 complex-conjugated weight on its maximal weighted `ℓ²` domain. -/
 theorem completedDiagonalOperator_adjoint_eq (w : Config → ℂ) :
     (completedDiagonalOperator w).adjoint =
-      completedDiagonalOperator (fun c => star (w c)) := by
-  exact le_antisymm (completedDiagonalOperator_adjoint_le_conj w)
+      completedDiagonalOperator (fun c => star (w c)) :=
+  le_antisymm (completedDiagonalOperator_adjoint_le_conj w)
     (completedDiagonalOperator_conj_le_adjoint w)
 
 /-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/

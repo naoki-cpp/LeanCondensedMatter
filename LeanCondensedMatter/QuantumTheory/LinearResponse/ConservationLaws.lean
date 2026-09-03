@@ -56,9 +56,8 @@ theorem heisenbergEvolution_eq_self_of_commute_hamiltonian
 /-- An observable commuting with the Hamiltonian is fixed as a bundled Heisenberg observable. -/
 theorem heisenbergObservable_eq_self_of_commute_hamiltonian
     (A : Observable H) (hA : Commute system.hamiltonian.1 A.1) (t : ℝ) :
-    heisenbergObservable system A t = A := by
-  apply Subtype.ext
-  exact heisenbergEvolution_eq_self_of_commute_hamiltonian system A.1 hA t
+    heisenbergObservable system A t = A :=
+  Subtype.ext (heisenbergEvolution_eq_self_of_commute_hamiltonian system A.1 hA t)
 
 /-- Complex pure-state expectations of observables commuting with the Hamiltonian are conserved. -/
 theorem expValue_evolveState_eq_of_commute_hamiltonian
@@ -97,31 +96,31 @@ theorem observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian
 /-- The Hamiltonian expectation is conserved in every pure state. -/
 theorem expValue_hamiltonian_evolveState (ψ : State H) (t : ℝ) :
     expValue system.hamiltonian (evolveState system ψ t) =
-      expValue system.hamiltonian ψ := by
-  exact expValue_evolveState_eq_of_commute_hamiltonian system
+      expValue system.hamiltonian ψ :=
+  expValue_evolveState_eq_of_commute_hamiltonian system
     system.hamiltonian (Commute.refl system.hamiltonian.1) ψ t
 
 /-- The lossless real Hamiltonian expectation is conserved in every pure state. -/
 theorem observableExpValue_hamiltonian_evolveState (ψ : State H) (t : ℝ) :
     observableExpValue system.hamiltonian (evolveState system ψ t) =
-      observableExpValue system.hamiltonian ψ := by
-  exact observableExpValue_evolveState_eq_of_commute_hamiltonian system
+      observableExpValue system.hamiltonian ψ :=
+  observableExpValue_evolveState_eq_of_commute_hamiltonian system
     system.hamiltonian (Commute.refl system.hamiltonian.1) ψ t
 
 /-- The Hamiltonian expectation is conserved in every density state. -/
 theorem expectation_hamiltonian_evolveDensityOperator
     (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation system.hamiltonian.1 =
-      ρ.expectation system.hamiltonian.1 := by
-  exact expectation_evolveDensityOperator_eq_of_commute_hamiltonian system ρ
+      ρ.expectation system.hamiltonian.1 :=
+  expectation_evolveDensityOperator_eq_of_commute_hamiltonian system ρ
     system.hamiltonian.1 (Commute.refl system.hamiltonian.1) t
 
 /-- The lossless real Hamiltonian expectation is conserved in every density state. -/
 theorem observableExpectation_hamiltonian_evolveDensityOperator
     (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).observableExpectation system.hamiltonian =
-      ρ.observableExpectation system.hamiltonian := by
-  exact observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian system ρ
+      ρ.observableExpectation system.hamiltonian :=
+  observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian system ρ
     system.hamiltonian (Commute.refl system.hamiltonian.1) t
 
 /-- A bounded operator commuting with the Hamiltonian is unchanged by Schrödinger-picture unitary
@@ -135,9 +134,9 @@ theorem unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian
 /-- A density operator commuting with the Hamiltonian is stationary under Schrödinger evolution. -/
 theorem evolveDensityOperator_eq_self_of_commute_hamiltonian
     (ρ : DensityOperator H) (hρ : Commute system.hamiltonian.1 ρ.op) (t : ℝ) :
-    evolveDensityOperator system ρ t = ρ := by
-  apply DensityOperator.ext
-  exact unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian system ρ.op hρ t
+    evolveDensityOperator system ρ t = ρ :=
+  DensityOperator.ext
+    (unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian system ρ.op hρ t)
 
 /-- A density operator commuting with the Hamiltonian defines a stationary normalized expectation
 for the existing linear-response API. -/

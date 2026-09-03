@@ -31,14 +31,12 @@ private noncomputable def coordinateProjectionLinear (P : Config → Prop) :
           (lp.memℓp ψ).mono' fun c => by
             by_cases h : P c <;> simp [h]⟩
       map_add' := fun ψ φ => by
-        apply lp.ext
-        funext c
+        ext c
         change (if P c then ψ c + φ c else 0) =
           (if P c then ψ c else 0) + (if P c then φ c else 0)
         by_cases h : P c <;> simp [h]
       map_smul' := fun a ψ => by
-        apply lp.ext
-        funext c
+        ext c
         change (if P c then a • ψ c else 0) = a • (if P c then ψ c else 0)
         by_cases h : P c <;> simp [h] }
 
@@ -85,8 +83,7 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop) [Decidabl
   classical
   by_cases hc : P c
   · simp only [hc, if_true]
-    apply lp.ext
-    funext d
+    ext d
     by_cases hd : P d
     · simp [completedCoordinateProjection_apply, hd]
     · have hdc : d ≠ c := by
@@ -95,8 +92,7 @@ theorem completedCoordinateProjection_basisState (P : Config → Prop) [Decidabl
         exact hd hc
       simp [completedCoordinateProjection_apply, hd, hdc]
   · simp only [hc, if_false]
-    apply lp.ext
-    funext d
+    ext d
     by_cases hd : P d
     · have hdc : d ≠ c := by
         intro h

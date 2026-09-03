@@ -22,8 +22,7 @@ variable [LinearOrder Mode]
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedCreate i (completedBasisState n) = 0 := by
   classical
-  apply lp.ext
-  funext m
+  ext m
   by_cases hm : i ∈ m
   · have htoggle : toggleOccupation i m ≠ n := by
       intro h
@@ -43,8 +42,7 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
     completedCreate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (insertOccupation i n) := by
   classical
-  apply lp.ext
-  funext m
+  ext m
   rw [completedCreate_apply]
   change (if i ∈ m then fermionPhase i (toggleOccupation i m) *
       completedBasisState n (toggleOccupation i m) else 0) =
@@ -76,8 +74,7 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedAnnihilate i (completedBasisState n) = 0 := by
   classical
-  apply lp.ext
-  funext m
+  ext m
   by_cases hm : i ∈ m
   · rw [completedAnnihilate_apply, if_pos hm]
     simp
@@ -96,8 +93,7 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
     completedAnnihilate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (removeOccupation i n) := by
   classical
-  apply lp.ext
-  funext m
+  ext m
   rw [completedAnnihilate_apply]
   change (if i ∈ m then 0 else fermionPhase i (toggleOccupation i m) *
       completedBasisState n (toggleOccupation i m)) =
