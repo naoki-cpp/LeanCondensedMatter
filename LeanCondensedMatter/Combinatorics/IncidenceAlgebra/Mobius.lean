@@ -210,33 +210,26 @@ end IncidenceAlgebra
 /-- Split a finite dependent product at one distinguished index. -/
 noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Type*)
     [∀ i, Preorder (β i)] {j : ι} {s : Finset ι} (hjs : j ∉ s) :
-    (∀ i : (insert j s : Finset ι), β i) ≃o β j × ∀ i : s, β i where
-  toFun f := (f ⟨j, mem_insert_self j s⟩, fun i => f ⟨i.1, mem_insert_of_mem i.2⟩)
-  invFun p i := if h : i.1 = j then cast (congrArg β h.symm) p.1
-      else p.2 ⟨i.1, (mem_insert.1 i.2).resolve_left h⟩
-  left_inv f := by
-    funext i
-    obtain ⟨i1, hi2⟩ := i
-    by_cases h : i1 = j
-    · subst h; simp
-    · simp [h]
-  right_inv p := by
-    ext x
-    · simp
-    · obtain ⟨i1, hi2⟩ := x
-      have h : i1 ≠ j := fun he => hjs (he ▸ hi2)
-      simp [h]
-  map_rel_iff' := by
-    intro f g
-    simp only [Prod.le_def]
-    constructor
-    · rintro ⟨h1, h2⟩ i
-      obtain ⟨i1, hi2⟩ := i
-      by_cases hij : i1 = j
-      · subst hij; exact h1
-      · exact h2 ⟨i1, (mem_insert.1 hi2).resolve_left hij⟩
-    · intro h
-      exact ⟨h ⟨j, mem_insert_self j s⟩, fun i => h ⟨i.1, mem_insert_of_mem i.2⟩⟩
+    (∀ i : (insert j s : Finset ι), β i) ≃o β j × ∀ i : s, β i := by
+  rw [Finset.insert_eq]
+  let hdis : Disjoint ({j} : Finset ι) s := Finset.disjoint_singleton_left.mpr hjs
+  let e : (∀ i : ({j} ∪ s : Finset ι), β i) ≃ β j × ∀ i : s, β i :=
+    (Equiv.piFinsetUnion β hdis).symm.trans <|
+      Equiv.prodCongr (Equiv.piUnique fun i : ({j} : Finset ι) => β i) (Equiv.refl _)
+  refine { toEquiv := e, map_rel_iff' := ?_ }
+  intro f g
+  change
+    (f ⟨j, by simp⟩ ≤ g ⟨j, by simp⟩ ∧
+      ∀ i : s, f ⟨i.1, by simp [i.2]⟩ ≤ g ⟨i.1, by simp [i.2]⟩) ↔
+      ∀ i, f i ≤ g i
+  constructor
+  · rintro ⟨h1, h2⟩ ⟨i, hi⟩
+    simp only [Finset.mem_union, Finset.mem_singleton] at hi
+    rcases hi with rfl | hi
+    · exact h1
+    · exact h2 ⟨i, hi⟩
+  · intro h
+    exact ⟨h _, fun i => h _⟩
 
 /-- Split a product over the subtype of an inserted finite set. -/
 theorem prod_subtype_insert_eq {ι M : Type*} [DecidableEq ι] [CommMonoid M] {j : ι} {s : Finset ι}
