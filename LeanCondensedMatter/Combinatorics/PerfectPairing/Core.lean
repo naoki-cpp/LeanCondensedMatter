@@ -61,9 +61,7 @@ private def pairingEquivSubtype (n : ℕ) :
   left_inv pairing := by
     cases pairing
     rfl
-  right_inv pairing := by
-    apply Subtype.ext
-    rfl
+  right_inv pairing := Subtype.ext rfl
 
 instance (n : ℕ) : Fintype (Pairing n) :=
   Fintype.ofEquiv {partner : Equiv.Perm (Fin (2 * n)) // IsPairing partner}
