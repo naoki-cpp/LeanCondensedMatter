@@ -86,14 +86,14 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
           (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    simpa only [spectralParameter_retarded] using hside .retarded
+    simpa only [retardedSpectralParameter] using hside .retarded
   have hadv : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
           (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    simpa only [spectralParameter_advanced] using hside .advanced
+    simpa only [advancedSpectralParameter] using hside .advanced
   have hxy := (hret.mul hret).mul
     (continuousAt_const : ContinuousAt
       (fun _ : ℝ × ℝ =>
