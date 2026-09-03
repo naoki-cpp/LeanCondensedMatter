@@ -23,63 +23,58 @@ private def declarationModule? (env : Environment) (declName : Name) : Option Na
   let moduleIdx ← env.const2ModIdx.get? declName
   env.header.moduleNames[moduleIdx]?
 
-private def containsFVar (expr : Expr) (fvarId : FVarId) : Bool :=
-  (expr.find? fun subexpr =>
-    match subexpr with
-    | .fvar id => id == fvarId
-    | _ => false).isSome
-
 private def collectTheorems : CommandElabM (Array TheoremEntry) := do
   let env ← getEnv
   let mut entries := #[]
   for (declName, info) in env.constants.toList do
+    let .thmInfo theoremInfo := info | continue
     let some moduleName := declarationModule? env declName | continue
     unless projectModule? moduleName do continue
     if ← liftCoreM <| isAutoDeclOrPrivate_Internal declName then continue
     unless (← findDeclarationRanges? declName).isSome do continue
-    match info with
-    | .thmInfo theoremInfo =>
-        entries := entries.push {
-          name := declName
-          type := theoremInfo.type
-          value := theoremInfo.value
-        }
-    | _ => continue
+    entries := entries.push {
+      name := declName
+      type := theoremInfo.type
+      value := theoremInfo.value
+    }
   return entries
 
-private def analyzeTheorem (entry : TheoremEntry) : MetaM (Array Candidate) := do
+private def analyzeTheorem (entry : TheoremEntry) : MetaM (Array Candidate × Bool) := do
   forallTelescope entry.type fun typeArgs resultType => do
-    -- Apply the elaborated proof to the theorem binders and weak-head normalize it. This avoids
-    -- assuming that the stored proof is syntactically a lambda telescope: eta-reduced proofs,
-    -- leading lets, and similar elaboration details can otherwise make the two telescopes differ.
-    let proofBody ← whnf (mkAppN entry.value typeArgs)
-    let mut candidates := #[]
-    for i in List.range typeArgs.size do
-      let typeArg := typeArgs[i]!
-      let typeDecl ← typeArg.fvarId!.getDecl
-      unless ← isProp typeDecl.type do continue
+    lambdaTelescope entry.value fun proofArgs proofBody => do
+      -- Scan the proof body once. When the stored proof is eta-reduced and exposes fewer
+      -- lambdas than the theorem type, unmatched trailing binders are conservatively treated
+      -- as used rather than forcing reduction of the proof.
+      let proofFVars := (collectFVars {} proofBody).fvarSet
+      let conservativeEta := proofArgs.size < typeArgs.size
 
-      let typeFVarId := typeArg.fvarId!
-      let mut requiredByType := containsFVar resultType typeFVarId
-      unless requiredByType do
-        for j in List.range typeArgs.size do
-          if i < j then
-            let laterDecl ← typeArgs[j]!.fvarId!.getDecl
-            if containsFVar laterDecl.type typeFVarId then
-              requiredByType := true
-              break
-      if requiredByType then continue
+      -- Scan result/later-binder dependencies once from right to left. Reusing CollectFVars.State
+      -- also reuses its visited-expression set when binder types share subexpressions.
+      let mut requiredByLater := collectFVars {} resultType
+      let mut candidates := #[]
+      for offset in List.range typeArgs.size do
+        let i := typeArgs.size - 1 - offset
+        let typeArg := typeArgs[i]!
+        let typeDecl ← typeArg.fvarId!.getDecl
+        let typeFVarId := typeArg.fvarId!
+        let usedByType := requiredByLater.fvarSet.contains typeFVarId
+        let usedByProof :=
+          if h : i < proofArgs.size then
+            proofFVars.contains proofArgs[i].fvarId!
+          else
+            true
 
-      if containsFVar proofBody typeFVarId then continue
+        if !usedByType && !usedByProof && (← isProp typeDecl.type) then
+          let binderType := (← ppExpr typeDecl.type).pretty.replace "\n" " "
+          candidates := candidates.push {
+            theoremName := entry.name
+            binderName := typeDecl.userName
+            binderIndex := i
+            binderType
+          }
 
-      let binderType := (← ppExpr typeDecl.type).pretty.replace "\n" " "
-      candidates := candidates.push {
-        theoremName := entry.name
-        binderName := typeDecl.userName
-        binderIndex := i
-        binderType
-      }
-    return candidates
+        requiredByLater := collectFVars requiredByLater typeDecl.type
+      return (candidates, conservativeEta)
 
 private def candidateLess (left right : Candidate) : Bool :=
   let leftName := left.theoremName.toString
@@ -89,15 +84,18 @@ private def candidateLess (left right : Candidate) : Bool :=
   else
     decide (left.binderIndex < right.binderIndex)
 
-private def renderMarkdown (theoremCount : Nat) (candidates : Array Candidate) : String := Id.run do
+private def renderMarkdown
+    (theoremCount conservativeEtaCount : Nat) (candidates : Array Candidate) : String := Id.run do
   let mut lines := #[
     "## Potentially unused theorem hypotheses",
     "",
-    s!"Scanned {theoremCount} user-facing project theorems. Found {candidates.size} structurally unused `Prop` hypotheses.",
-    "",
-    "A hypothesis is reported only when it is absent from the theorem conclusion, all later binder types, and the weak-head-normalized elaborated proof body. This is an advisory structural audit; reported hypotheses are candidates for theorem generalization, not an automatic API change.",
-    ""
+    s!"Scanned {theoremCount} user-facing project theorems. Found {candidates.size} structurally unused `Prop` hypotheses."
   ]
+  if conservativeEtaCount > 0 then
+    lines := lines.push s!"For {conservativeEtaCount} eta-reduced theorem proofs, unmatched trailing binders were conservatively treated as used."
+  lines := lines.push ""
+  lines := lines.push "A hypothesis is reported only when it is absent from the theorem conclusion, all later binder types, and the elaborated proof body. The audit scans each proof and theorem-type dependency structure once and does not unfold theorem bodies. This is advisory: reported hypotheses are candidates for theorem generalization, not an automatic API change."
+  lines := lines.push ""
   if candidates.isEmpty then
     lines := lines.push "No candidates found."
   else
@@ -108,17 +106,20 @@ private def renderMarkdown (theoremCount : Nat) (candidates : Array Candidate) :
 elab "audit_project_unused_hypotheses" : command => do
   let theorems ← collectTheorems
   let mut candidates := #[]
+  let mut conservativeEtaCount := 0
   for theoremEntry in theorems do
-    let theoremCandidates ← liftTermElabM <| analyzeTheorem theoremEntry
+    let (theoremCandidates, conservativeEta) ← liftTermElabM <| analyzeTheorem theoremEntry
+    if conservativeEta then
+      conservativeEtaCount := conservativeEtaCount + 1
     for candidate in theoremCandidates do
       candidates := candidates.push candidate
 
   let sortedCandidates := candidates.qsort candidateLess
-  let markdown := renderMarkdown theorems.size sortedCandidates
+  let markdown := renderMarkdown theorems.size conservativeEtaCount sortedCandidates
   liftIO <| IO.FS.writeFile "unused-hypotheses.md" markdown
   for candidate in sortedCandidates do
     logInfo m!"potentially unused hypothesis: {candidate.theoremName}.{candidate.binderName} : {candidate.binderType}"
-  logInfo m!"Unused-hypothesis audit: {sortedCandidates.size} candidates across {theorems.size} user-facing theorems."
+  logInfo m!"Unused-hypothesis audit: {sortedCandidates.size} candidates across {theorems.size} user-facing theorems; {conservativeEtaCount} eta-reduced proofs handled conservatively."
 
 audit_project_unused_hypotheses
 
