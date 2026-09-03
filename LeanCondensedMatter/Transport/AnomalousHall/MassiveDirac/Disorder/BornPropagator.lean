@@ -102,36 +102,6 @@ theorem continuumBornDampingScale_eq_selfEnergyPrefactor
   rw [continuumBornDampingPrefactor_eq disorderStrength hbar v hhbar hvelocity]
   rfl
 
-@[simp] theorem continuumBornEffectiveEnergy_retarded
-    (v probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar =
-      (probeEnergy : ℂ) +
-        ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
-          Complex.I := by
-  simp [continuumBornEffectiveEnergy]
-
-@[simp] theorem continuumBornEffectiveEnergy_advanced
-    (v probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar =
-      (probeEnergy : ℂ) -
-        ((continuumBornDampingScale v disorderStrength hbar * probeEnergy : ℝ) : ℂ) *
-          Complex.I := by
-  simp [continuumBornEffectiveEnergy, sub_eq_add_neg]
-
-@[simp] theorem continuumBornEffectiveMass_retarded
-    (v m disorderStrength hbar : ℝ) :
-    continuumBornEffectiveMass .retarded v m disorderStrength hbar =
-      (m : ℂ) -
-        ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
-  simp [continuumBornEffectiveMass]
-
-@[simp] theorem continuumBornEffectiveMass_advanced
-    (v m disorderStrength hbar : ℝ) :
-    continuumBornEffectiveMass .advanced v m disorderStrength hbar =
-      (m : ℂ) +
-        ((continuumBornDampingScale v disorderStrength hbar * m : ℝ) : ℂ) * Complex.I := by
-  simp [continuumBornEffectiveMass]
-
 /-- Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced
 rung.  Its real part is even in the spectral side, while its imaginary part changes sign. -/
 theorem continuumBornPauliGreenDenominator_eq_closedForm
