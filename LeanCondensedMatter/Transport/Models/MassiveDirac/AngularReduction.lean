@@ -92,7 +92,7 @@ theorem pauliGreenYCoefficientOfRegulator_polar
       pauliGreenScalarCoefficient side v m p 0 probeEnergy broadening := by
   simpa [pauliGreenScalarCoefficient] using
     pauliGreenScalarCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.sign * broadening)
+      v m p θ probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σ_z` coefficient radiality, retained for downstream side-indexed consumers. -/
 @[simp] theorem pauliGreenZCoefficient_polar
@@ -102,7 +102,7 @@ theorem pauliGreenYCoefficientOfRegulator_polar
       pauliGreenZCoefficient side v m p 0 probeEnergy broadening := by
   simpa [pauliGreenZCoefficient] using
     pauliGreenZCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.sign * broadening)
+      v m p θ probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σₓ` polar factor, retained for downstream side-indexed consumers. -/
 theorem pauliGreenXCoefficient_polar
@@ -113,7 +113,7 @@ theorem pauliGreenXCoefficient_polar
         pauliGreenXCoefficient side v m p 0 probeEnergy broadening := by
   simpa [pauliGreenXCoefficient] using
     pauliGreenXCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.sign * broadening)
+      v m p θ probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σᵧ` polar factor, retained for downstream side-indexed consumers. -/
 theorem pauliGreenYCoefficient_polar
@@ -124,7 +124,7 @@ theorem pauliGreenYCoefficient_polar
         pauliGreenXCoefficient side v m p 0 probeEnergy broadening := by
   simpa [pauliGreenYCoefficient, pauliGreenXCoefficient] using
     pauliGreenYCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.sign * broadening)
+      v m p θ probeEnergy (side.regulator broadening)
 
 /-- Exact polar-angle decomposition of the arbitrary-regulator clean Green operator. -/
 theorem pauliGreenOperatorOfRegulator_polar_eq
