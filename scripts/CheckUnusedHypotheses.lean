@@ -120,10 +120,10 @@ elab "audit_project_unused_hypotheses" : command => do
     for candidate in theoremCandidates do
       candidates := candidates.push candidate
 
-  let candidates := candidates.qsort candidateLess
-  let markdown := renderMarkdown theorems.size mismatchCount candidates
+  let sortedCandidates := candidates.qsort candidateLess
+  let markdown := renderMarkdown theorems.size mismatchCount sortedCandidates
   liftIO <| IO.FS.writeFile "unused-hypotheses.md" markdown
-  logInfo m!"Unused-hypothesis audit: {candidates.size} candidates across {theorems.size} user-facing theorems; {mismatchCount} telescope mismatches skipped."
+  logInfo m!"Unused-hypothesis audit: {sortedCandidates.size} candidates across {theorems.size} user-facing theorems; {mismatchCount} telescope mismatches skipped."
 
 audit_project_unused_hypotheses
 
