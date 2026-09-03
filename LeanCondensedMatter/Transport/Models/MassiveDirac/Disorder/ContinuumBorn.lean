@@ -11,7 +11,7 @@ set_option linter.style.header false
 The analytic core is written at an arbitrary signed regulator `γ`. The clean Green operator is paired
 under momentum inversion using the exact symmetry API from `PropagatorSymmetry.lean`; after radial
 reduction the finite-cutoff Born kernel has only scalar and `σ_z` Pauli channels. Physical spectral
-sides specialize through `γ = side.sign * η`.
+sides specialize through the canonical `side.regulator η` boundary.
 
 The radial integral keeps the `p dp` Jacobian explicit. The continuum prefactor uses the existing
 physical-momentum measure `d²p/(2πℏ)²`, so angular reduction contributes the factor `2π`.
@@ -161,13 +161,13 @@ noncomputable def finiteCutoffContinuumBornGreenIntegralOfRegulator
 noncomputable def finiteCutoffContinuumBornScalarIntegral
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
   finiteCutoffContinuumBornScalarIntegralOfRegulator
-    v m probeEnergy (side.sign * broadening) pMax
+    v m probeEnergy (side.regulator broadening) pMax
 
 /-- Physical-side `σ_z` radial integral. -/
 noncomputable def finiteCutoffContinuumBornZIntegral
     (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
   finiteCutoffContinuumBornZIntegralOfRegulator
-    v m probeEnergy (side.sign * broadening) pMax
+    v m probeEnergy (side.regulator broadening) pMax
 
 /-- The arbitrary-regulator finite-cutoff operator integral has exactly the `I + σ_z` structure. -/
 theorem finiteCutoffContinuumBornGreenIntegralOfRegulator_eq
@@ -260,7 +260,7 @@ noncomputable def finiteCutoffContinuumBornSelfEnergy
     (side : SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   finiteCutoffContinuumBornSelfEnergyOfRegulator
-    v m probeEnergy (side.sign * broadening) disorderStrength hbar pMax
+    v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
 
 /-- The arbitrary-regulator continuum Born self-energy contains only scalar and `σ_z` channels. -/
 theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
@@ -295,8 +295,8 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq
   simpa [finiteCutoffContinuumBornSelfEnergy, finiteCutoffContinuumBornScalarIntegral,
     finiteCutoffContinuumBornZIntegral] using
     finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
-      v m probeEnergy (side.sign * broadening) disorderStrength hbar pMax
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
+      (side.regulator_ne_zero hbroadening)
 
 /-- Adjointing the arbitrary-regulator continuum Born self-energy reverses the regulator. -/
 theorem star_finiteCutoffContinuumBornSelfEnergyOfRegulator
@@ -320,11 +320,10 @@ theorem star_finiteCutoffContinuumBornSelfEnergy
       side v m probeEnergy broadening disorderStrength hbar pMax) =
       finiteCutoffContinuumBornSelfEnergy
         side.opposite v m probeEnergy broadening disorderStrength hbar pMax := by
-  simpa [finiteCutoffContinuumBornSelfEnergy, SpectralSide.sign_opposite,
-    neg_mul] using
+  simpa [finiteCutoffContinuumBornSelfEnergy] using
     star_finiteCutoffContinuumBornSelfEnergyOfRegulator
-      v m probeEnergy (side.sign * broadening) disorderStrength hbar pMax
-      (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening)
+      v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
+      (side.regulator_ne_zero hbroadening)
 
 end
 
