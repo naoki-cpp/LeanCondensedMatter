@@ -614,7 +614,6 @@ theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_inverseFactors
   unfold continuumBornRetardedAdvancedPauliXAngularXCoefficient
   unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
   simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
-  push_cast
   ring_nf
   simp [hI]
   ring
@@ -635,7 +634,6 @@ theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_inverseFactors
   unfold continuumBornRetardedAdvancedPauliXAngularYCoefficient
   unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
   simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
-  push_cast
   ring_nf
   simp [hI]
 
