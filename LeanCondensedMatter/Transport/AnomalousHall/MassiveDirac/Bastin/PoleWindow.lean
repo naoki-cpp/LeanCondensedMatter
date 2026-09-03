@@ -29,7 +29,7 @@ theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
   exact sub_ne_zero.mpr (bandEnergy_ne_oppositeBandEnergy band v m px py hE)
 
 /-- In target-centered offset coordinates, the opposite-band spectator denominator on spectral side
-`s` is `gap + offset + s i η`. -/
+`s` is `gap + offset + i γˢ`. -/
 theorem projectorResolventCoefficient_targetOffset_oppositeBand
     (side : SpectralSide) (band : Band) (v m px py offset broadening : ℝ) :
     projectorResolventCoefficient
@@ -37,7 +37,7 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
           (bandEnergy band v m px py + offset) broadening)
         (oppositeBand band) v m px py =
       ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-          ((side.sign * broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
+          ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
   unfold projectorResolventCoefficient spectralParameter spectralParameterOfRegulator
     interbandEnergyGap
   congr 1
@@ -87,7 +87,7 @@ theorem spectralSideSpectatorDenominator_ne_zero_on_targetWindow
     (hradius : radius < |interbandEnergyGap band v m px py|)
     (hoffset : |offset| ≤ radius) :
     ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-        ((side.sign * broadening : ℝ) : ℂ) * Complex.I ≠ 0 := by
+        ((side.regulator broadening : ℝ) : ℂ) * Complex.I ≠ 0 := by
   have hreal := interbandEnergyGap_add_offset_ne_zero_on_targetWindow
     band v m px py offset radius hradius hoffset
   intro hzero
