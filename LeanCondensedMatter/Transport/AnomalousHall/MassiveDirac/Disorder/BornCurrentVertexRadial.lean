@@ -553,32 +553,6 @@ theorem continuumBornRADenominatorProduct_nonneg
   unfold continuumBornRADenominatorProduct
   positivity
 
-/-- Radial retarded Born denominator as `A(p) + i B`. -/
-theorem continuumBornPauliGreenDenominator_retarded_radial_eq
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornPauliGreenDenominator
-        .retarded v m p 0 probeEnergy disorderStrength hbar =
-      (continuumBornRADenominatorCenter
-          v m p probeEnergy disorderStrength hbar : ℂ) +
-        (continuumBornRADenominatorWidth
-          v m probeEnergy disorderStrength hbar : ℂ) * Complex.I := by
-  rw [continuumBornPauliGreenDenominator_eq_closedForm]
-  simp [continuumBornRADenominatorCenter, continuumBornRADenominatorWidth,
-    SpectralSide.sign]
-
-/-- Radial advanced Born denominator as `A(p) - i B`. -/
-theorem continuumBornPauliGreenDenominator_advanced_radial_eq
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornPauliGreenDenominator
-        .advanced v m p 0 probeEnergy disorderStrength hbar =
-      (continuumBornRADenominatorCenter
-          v m p probeEnergy disorderStrength hbar : ℂ) -
-        (continuumBornRADenominatorWidth
-          v m probeEnergy disorderStrength hbar : ℂ) * Complex.I := by
-  rw [continuumBornPauliGreenDenominator_eq_closedForm]
-  simp [continuumBornRADenominatorCenter, continuumBornRADenominatorWidth,
-    SpectralSide.sign, sub_eq_add_neg]
-
 /-- The radial retarded/advanced denominator product is the real sum of squares `A(p)² + B²`. -/
 theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
     (v m p probeEnergy disorderStrength hbar : ℝ) :
@@ -588,13 +562,17 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
         .advanced v m p 0 probeEnergy disorderStrength hbar =
       (continuumBornRADenominatorProduct
         v m p probeEnergy disorderStrength hbar : ℂ) := by
-  rw [continuumBornPauliGreenDenominator_retarded_radial_eq,
-    continuumBornPauliGreenDenominator_advanced_radial_eq]
+  rw [continuumBornPauliGreenDenominator_eq_closedForm .retarded,
+    continuumBornPauliGreenDenominator_eq_closedForm .advanced]
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     rw [pow_two, Complex.I_mul_I]
-  unfold continuumBornRADenominatorProduct
+  unfold continuumBornRADenominatorProduct continuumBornRADenominatorCenter
+    continuumBornRADenominatorWidth
+  simp only [SpectralSide.sign_retarded, SpectralSide.sign_advanced]
+  push_cast
   ring_nf
   simp [hI]
+  ring
 
 /-- Closed Born `σₓ` angular coefficient before replacing the inverse denominator factors by their
 real product. -/

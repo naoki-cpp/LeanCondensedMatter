@@ -14,7 +14,7 @@ signed imaginary regulator
 z(E, γ) = E + iγ.
 ```
 
-Physical retarded/advanced branches specialize this core through `γ = side.sign * η`. Exact Dyson
+Physical retarded/advanced branches specialize this core through `γ = side.regulator η`. Exact Dyson
 identities are stated only for the arbitrary-regulator core; consumers specialize the regulator
 locally when physical branch semantics are needed.
 

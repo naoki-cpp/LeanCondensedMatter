@@ -45,7 +45,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
           (oppositeBand band) v m p 0 =
         ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
             ((SpectralSide.retarded.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-    simpa only [spectralParameter_retarded] using
+    simpa only [retardedSpectralParameter] using
       projectorResolventCoefficient_targetOffset_oppositeBand
         .retarded band v m p 0 offset broadening
   have hadv :
@@ -54,7 +54,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
           (oppositeBand band) v m p 0 =
         ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
             ((SpectralSide.advanced.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-    simpa only [spectralParameter_advanced] using
+    simpa only [advancedSpectralParameter] using
       projectorResolventCoefficient_targetOffset_oppositeBand
         .advanced band v m p 0 offset broadening
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
