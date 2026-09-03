@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Toggle
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
 
 set_option linter.style.header false
 
@@ -19,6 +20,15 @@ open scoped ENNReal
 noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
+
+/-- The fermionic sign, regarded as a complex phase for completed-space operators. -/
+def fermionPhase (i : Mode) (n : Occupation Mode) : ℂ :=
+  fermionSign i n
+
+@[simp]
+theorem norm_fermionPhase (i : Mode) (n : Occupation Mode) :
+    ‖fermionPhase i n‖ = 1 := by
+  simp [fermionPhase, fermionSign]
 
 /-- Reindex an `ℓ²` occupation amplitude by toggling mode `i`. -/
 noncomputable def completedToggleLinear (i : Mode) :

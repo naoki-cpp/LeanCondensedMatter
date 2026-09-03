@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Toggle
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations

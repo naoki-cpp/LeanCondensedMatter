@@ -69,6 +69,16 @@ theorem annihilate_basisState_of_pos {i : Mode} {n : Occupation Mode} (h : n i �
       (Real.sqrt (n i : ℝ) : ℂ) • basisState (removeOccupation i n) := by
   rw [annihilate_basisState, annihilateBasis, if_neg h]
 
+/-- Uniform basis-state action of annihilation. The zero-occupation case is absorbed by `√0 = 0`,
+so downstream proofs do not need to branch on whether mode `i` is occupied. -/
+theorem annihilate_basisState_eq (i : Mode) (n : Occupation Mode) :
+    annihilate i (basisState n) =
+      (Real.sqrt (n i : ℝ) : ℂ) • basisState (removeOccupation i n) := by
+  by_cases h : n i = 0
+  · rw [annihilate_basisState_of_zero h, h]
+    simp
+  · exact annihilate_basisState_of_pos h
+
 @[simp]
 theorem annihilate_fockVacuum (i : Mode) :
     annihilate i (fockVacuum : FockSpace Mode) = 0 :=
