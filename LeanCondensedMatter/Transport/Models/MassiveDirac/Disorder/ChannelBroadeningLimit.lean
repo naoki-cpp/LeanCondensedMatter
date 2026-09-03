@@ -12,12 +12,12 @@ shared continuum Born denominator limit through the existing exact factorization
 ```text
 I₀,s = z_s J_s,
 I_z,s = m J_s,
-z_s = ε + s iη.
+z_s = ε + iγ_s.
 ```
 
-The `σ_z` channel follows directly from `Im J_s`.  The scalar channel additionally contains the
-term `s η Re J_s`; its vanishing is proved from a finite fixed-cutoff `η → 0⁺` limit of `Re J_s`,
-rather than being discarded formally.  No scattering-rate or lifetime identification is made.
+The `σ_z` channel follows directly from `Im J_s`. The scalar channel additionally contains the
+term `γ_s Re J_s`; its vanishing is proved from a finite fixed-cutoff `η → 0⁺` limit of `Re J_s`,
+rather than being discarded formally. No scattering-rate or lifetime identification is made.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -34,7 +34,7 @@ private theorem finiteCutoffContinuumBornScalarIntegral_im_eq
       probeEnergy *
           (finiteCutoffContinuumBornDenominatorIntegral
             side v m probeEnergy broadening pMax).im +
-        side.sign * broadening *
+        side.regulator broadening *
           (finiteCutoffContinuumBornDenominatorIntegral
             side v m probeEnergy broadening pMax).re := by
   rw [finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral]
@@ -53,7 +53,7 @@ private theorem finiteCutoffContinuumBornZIntegral_im_eq
   simp
 
 /-- At fixed finite cutoff beyond the on-shell circle, the real part of the shared denominator
-integral has a finite `η → 0⁺` limit.  The endpoint norms remain explicit because this result is used
+integral has a finite `η → 0⁺` limit. The endpoint norms remain explicit because this result is used
 only to control the scalar-channel cross term; no ultraviolet or renormalization interpretation is
 attached to this finite limit. -/
 theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
@@ -108,7 +108,7 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
           (fun broadening : ℝ =>
             ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖) 0 := by
       unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
-        spectralParameterOfRegulator
+        spectralParameterOfRegulator SpectralSide.regulator
       fun_prop
     exact hcontinuous.tendsto.mono_left inf_le_left
   have hzeroNormNe :
@@ -152,8 +152,8 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
     side v m probeEnergy broadening pMax).symm
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
-`Im I₀,s → -sπε/(2v²)` as `η → 0⁺`.  The proof keeps the exact
-`ε Im J_s + sη Re J_s` split and proves the second term vanishes. -/
+`Im I₀,s → -sπε/(2v²)` as `η → 0⁺`. The proof keeps the exact
+`ε Im J_s + γ_s Re J_s` split and proves the second term vanishes. -/
 theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
     (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
@@ -178,23 +178,27 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
       Tendsto (fun broadening : ℝ => broadening)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
     exact continuousAt_id.tendsto.mono_left inf_le_left
+  have hregulator :
+      Tendsto (fun broadening : ℝ => side.regulator broadening)
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
+    simpa [SpectralSide.regulator] using
+      ((tendsto_const_nhds : Tendsto (fun _ : ℝ => side.sign)
+        (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign)).mul heta)
   have hcrossZero :
       Tendsto
         (fun broadening : ℝ =>
-          side.sign * broadening *
+          side.regulator broadening *
             (finiteCutoffContinuumBornDenominatorIntegral
               side v m probeEnergy broadening pMax).re)
         (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-    simpa using
-      (((tendsto_const_nhds : Tendsto (fun _ : ℝ => side.sign)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds side.sign)).mul heta).mul hJre)
+    simpa using hregulator.mul hJre
   have hsum :
       Tendsto
         (fun broadening : ℝ =>
           probeEnergy *
               (finiteCutoffContinuumBornDenominatorIntegral
                 side v m probeEnergy broadening pMax).im +
-            side.sign * broadening *
+            side.regulator broadening *
               (finiteCutoffContinuumBornDenominatorIntegral
                 side v m probeEnergy broadening pMax).re)
         (nhdsWithin 0 (Set.Ioi 0))
