@@ -103,7 +103,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
             (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
             (kuboBastinEnergyBroadening system.hbar eta) -
           (data.energy mn.2 : ℂ) ≠ 0 := by
-    simpa only [retardedSpectralParameter] using
+    simpa only [retardedSpectralParameter, spectralParameter_retarded_ofRegulator] using
       spectralParameterOfRegulator_sub_real_ne_zero
         (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
         (kuboBastinEnergyBroadening system.hbar eta) (data.energy mn.2) hregulator
@@ -116,7 +116,8 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
             (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
             (kuboBastinEnergyBroadening system.hbar eta) -
           (data.energy mn.2 : ℂ))⁻¹ • data.basis mn.2 := by
-    simpa only [retardedResolvent, retardedSpectralParameter] using
+    simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
+      retardedSpectralParameter, spectralParameter_retarded_ofRegulator] using
       resolvent_spectralParameterOfRegulator_apply_eigenvector
         system.hamiltonian.1 system.hamiltonian.2
         (data.hamiltonian_apply_basis mn.2)
