@@ -42,11 +42,11 @@ private def collectTheorems : CommandElabM (Array TheoremEntry) := do
 private def analyzeTheorem (entry : TheoremEntry) : MetaM (Array Candidate × Bool) := do
   forallTelescope entry.type fun typeArgs resultType => do
     lambdaTelescope entry.value fun proofArgs proofBody => do
-      -- Scan the proof body once. When the stored proof is eta-reduced and exposes fewer
-      -- lambdas than the theorem type, unmatched trailing binders are conservatively treated
-      -- as used rather than forcing reduction of the proof.
+      -- Scan the proof body once. If the stored proof exposes fewer leading lambdas than the
+      -- theorem type (for example because it is eta-reduced or starts with a non-lambda wrapper),
+      -- unmatched binders are conservatively treated as used rather than forcing proof reduction.
       let proofFVars := (collectFVars {} proofBody).fvarSet
-      let conservativeEta := proofArgs.size < typeArgs.size
+      let conservativeProofTail := proofArgs.size < typeArgs.size
 
       -- Scan result/later-binder dependencies once from right to left. Reusing CollectFVars.State
       -- also reuses its visited-expression set when binder types share subexpressions.
@@ -74,7 +74,7 @@ private def analyzeTheorem (entry : TheoremEntry) : MetaM (Array Candidate × Bo
           }
 
         requiredByLater := collectFVars requiredByLater typeDecl.type
-      return (candidates, conservativeEta)
+      return (candidates, conservativeProofTail)
 
 private def candidateLess (left right : Candidate) : Bool :=
   let leftName := left.theoremName.toString
@@ -85,14 +85,14 @@ private def candidateLess (left right : Candidate) : Bool :=
     decide (left.binderIndex < right.binderIndex)
 
 private def renderMarkdown
-    (theoremCount conservativeEtaCount : Nat) (candidates : Array Candidate) : String := Id.run do
+    (theoremCount conservativeProofCount : Nat) (candidates : Array Candidate) : String := Id.run do
   let mut lines := #[
     "## Potentially unused theorem hypotheses",
     "",
     s!"Scanned {theoremCount} user-facing project theorems. Found {candidates.size} structurally unused `Prop` hypotheses."
   ]
-  if conservativeEtaCount > 0 then
-    lines := lines.push s!"For {conservativeEtaCount} eta-reduced theorem proofs, unmatched trailing binders were conservatively treated as used."
+  if conservativeProofCount > 0 then
+    lines := lines.push s!"For {conservativeProofCount} theorem proofs that exposed fewer leading lambdas than their theorem types, unmatched binders were conservatively treated as used."
   lines := lines.push ""
   lines := lines.push "A hypothesis is reported only when it is absent from the theorem conclusion, all later binder types, and the elaborated proof body. The audit scans each proof and theorem-type dependency structure once and does not unfold theorem bodies. This is advisory: reported hypotheses are candidates for theorem generalization, not an automatic API change."
   lines := lines.push ""
@@ -106,20 +106,20 @@ private def renderMarkdown
 elab "audit_project_unused_hypotheses" : command => do
   let theorems ← collectTheorems
   let mut candidates := #[]
-  let mut conservativeEtaCount := 0
+  let mut conservativeProofCount := 0
   for theoremEntry in theorems do
-    let (theoremCandidates, conservativeEta) ← liftTermElabM <| analyzeTheorem theoremEntry
-    if conservativeEta then
-      conservativeEtaCount := conservativeEtaCount + 1
+    let (theoremCandidates, conservativeProofTail) ← liftTermElabM <| analyzeTheorem theoremEntry
+    if conservativeProofTail then
+      conservativeProofCount := conservativeProofCount + 1
     for candidate in theoremCandidates do
       candidates := candidates.push candidate
 
   let sortedCandidates := candidates.qsort candidateLess
-  let markdown := renderMarkdown theorems.size conservativeEtaCount sortedCandidates
+  let markdown := renderMarkdown theorems.size conservativeProofCount sortedCandidates
   liftIO <| IO.FS.writeFile "unused-hypotheses.md" markdown
   for candidate in sortedCandidates do
     logInfo m!"potentially unused hypothesis: {candidate.theoremName}.{candidate.binderName} : {candidate.binderType}"
-  logInfo m!"Unused-hypothesis audit: {sortedCandidates.size} candidates across {theorems.size} user-facing theorems; {conservativeEtaCount} eta-reduced proofs handled conservatively."
+  logInfo m!"Unused-hypothesis audit: {sortedCandidates.size} candidates across {theorems.size} user-facing theorems; {conservativeProofCount} proofs handled conservatively."
 
 audit_project_unused_hypotheses
 
