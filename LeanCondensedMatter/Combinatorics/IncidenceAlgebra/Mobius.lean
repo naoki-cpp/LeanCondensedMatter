@@ -58,7 +58,7 @@ theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
           e.le_iff_le.mp (by simpa using (Finset.mem_Icc.1 hu).1),
           e.le_iff_le.mp (by simpa using (Finset.mem_Icc.1 hu).2)⟩
       · intro t _
-        rfl
+        simp
       · intro u _
         simp
       · intro t _
@@ -95,7 +95,9 @@ theorem map_mu_apply {R S α : Type*} [CommRing R] [CommRing S]
     { toFun := fun a b => φ (mu R a b)
       eq_zero_of_not_le' := by
         intro a b hab
-        rw [(mu R : IncidenceAlgebra R α).eq_zero_of_not_le' hab, map_zero] }
+        have hmu : mu R a b = 0 :=
+          apply_eq_zero_of_not_le hab (mu R : IncidenceAlgebra R α)
+        simp [hmu] }
   have hleft : mappedMu * zeta S = 1 := by
     ext a b
     calc
@@ -107,8 +109,8 @@ theorem map_mu_apply {R S α : Type*} [CommRing R] [CommRing S]
         rw [zeta_of_le (Finset.mem_Icc.1 ht).2, mul_one]
         rfl
       _ = φ (∑ t ∈ Finset.Icc a b, mu R a t) := by rw [map_sum]
-      _ = φ ((1 : IncidenceAlgebra R α) a b) := by rw [sum_Icc_mu_right]
       _ = (1 : IncidenceAlgebra S α) a b := by
+        rw [sum_Icc_mu_right]
         by_cases h : a = b
         · subst b
           simp
@@ -268,10 +270,10 @@ theorem mu_pi_finset_apply {R ι : Type*} [CommRing R] [DecidableEq ι]
   | @insert j s hjs ih =>
     have hmu := (mu_orderIso_apply (R := R) (piInsertOrderIso β hjs) x y).symm
     rw [← mu_prod_mu, IncidenceAlgebra.prod_apply,
-      show (piInsertOrderIso β hjs x).1 = x ⟨j, mem_insert_self j s⟩ from rfl,
-      show (piInsertOrderIso β hjs y).1 = y ⟨j, mem_insert_self j s⟩ from rfl,
-      show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl,
-      show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl]
+      (show (piInsertOrderIso β hjs x).1 = x ⟨j, mem_insert_self j s⟩ from rfl),
+      (show (piInsertOrderIso β hjs y).1 = y ⟨j, mem_insert_self j s⟩ from rfl),
+      (show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl),
+      (show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl)]
       at hmu
     rw [hmu,
       ih (fun i => x ⟨i.1, mem_insert_of_mem i.2⟩)
