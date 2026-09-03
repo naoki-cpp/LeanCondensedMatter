@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
