@@ -151,13 +151,13 @@ private theorem createCoeff_cancel (i j : Mode) (n : Occupation Mode) :
   rcases eq_or_ne i j with rfl | hij
   · by_cases hi : i ∈ n
     · simp [createCoeff, hi]
-    · simp [createCoeff, hi, toggleOccupation_of_not_mem hi, insertOccupation]
+    · simp [createCoeff, hi, insertOccupation]
   · by_cases hi : i ∈ n
     · by_cases hj : j ∈ n
       · simp [createCoeff, hi, hj]
-      · simp [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij]
+      · simp [createCoeff, hi, hj, insertOccupation, hij]
     · by_cases hj : j ∈ n
-      · simp [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij]
+      · simp [createCoeff, hi, hj, insertOccupation, Ne.symm hij]
       · simpa [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij] using
           fermionSign_create_create_cancel hij hi hj
 
@@ -166,15 +166,15 @@ private theorem annihilateCoeff_cancel (i j : Mode) (n : Occupation Mode) :
       annihilateCoeff i n * annihilateCoeff j (toggleOccupation i n) = 0 := by
   rcases eq_or_ne i j with rfl | hij
   · by_cases hi : i ∈ n
-    · simp [annihilateCoeff, hi, toggleOccupation_of_mem hi, removeOccupation]
+    · simp [annihilateCoeff, hi, removeOccupation]
     · simp [annihilateCoeff, hi]
   · by_cases hi : i ∈ n
     · by_cases hj : j ∈ n
       · simpa [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij] using
           fermionSign_annihilate_annihilate_cancel hij hi hj
-      · simp [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij]
+      · simp [annihilateCoeff, hi, hj, removeOccupation, hij]
     · by_cases hj : j ∈ n <;>
-        simp [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij]
+        simp [annihilateCoeff, hi, hj, removeOccupation, Ne.symm hij]
 
 private theorem fermionSign_annihilate_create_cancel {i j : Mode} {n : Occupation Mode}
     (hij : i ≠ j) (hi : i ∈ n) (hj : j ∉ n) :
