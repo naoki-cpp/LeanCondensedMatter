@@ -55,10 +55,9 @@ private theorem star_scbaShift_retarded
     star (ensemble.scbaShift .retarded energy broadening selfEnergy) =
       ensemble.scbaShift .advanced energy broadening (star selfEnergy) := by
   unfold scbaShift
-  rw [spectralParameter_retarded, spectralParameter_advanced]
   rw [star_sub, star_sub, ensemble.baseHamiltonian.2.star_eq]
-  simp [Algebra.algebraMap_eq_smul_one, retardedSpectralParameter,
-    advancedSpectralParameter, sub_eq_add_neg]
+  simp [Algebra.algebraMap_eq_smul_one, spectralParameter, spectralParameterOfRegulator,
+    SpectralSide.regulator, SpectralSide.sign, sub_eq_add_neg]
 
 /-- Supplied bounded retarded SCBA solution at fixed real energy and positive broadening.
 The structure records approximation equations rather than identifying these operators with the
