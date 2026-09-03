@@ -62,11 +62,11 @@ private theorem mu_subtype_apply_of_interval_closed {R α : Type*} [CommRing R]
   classical
   letI : DecidableLE {t : α // p t} := Classical.decRel _
   let restrictedMu : IncidenceAlgebra R {t : α // p t} :=
-    { toFun := fun a b => mu R a.1 b.1
+    { toFun := fun a b => (mu R : IncidenceAlgebra R α) a.1 b.1
       eq_zero_of_not_le' := by
         intro a b hab
         exact apply_eq_zero_of_not_le
-          (fun h => hab (Subtype.coe_le_coe.2 h)) (mu R) }
+          (fun h => hab (Subtype.coe_le_coe.2 h)) (mu R : IncidenceAlgebra R α) }
   have hleft : restrictedMu * zeta R = 1 := by
     ext a b hab
     have hsum :
@@ -90,7 +90,8 @@ private theorem mu_subtype_apply_of_interval_closed {R α : Type*} [CommRing R]
       · intro w _
         rfl
     calc
-      (restrictedMu * zeta R) a b = ∑ w ∈ Finset.Icc a b, mu R a.1 w.1 := by
+      (restrictedMu * (zeta R : IncidenceAlgebra R {t : α // p t})) a b =
+          ∑ w ∈ Finset.Icc a b, mu R a.1 w.1 := by
         rw [mul_apply]
         apply Finset.sum_congr rfl
         intro w hw
@@ -126,7 +127,7 @@ theorem mu_subtype_le_apply {R α : Type*} [CommRing R]
     [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // t ≤ z}) :
     mu R x y = mu R x.1 y.1 :=
-  mu_subtype_apply_of_interval_closed (fun {_a b t} _ htb => htb.trans b.2) x y
+  mu_subtype_apply_of_interval_closed (fun {_a b _t} _ htb => htb.trans b.2) x y
 
 /-- A finite principal upper interval inherits a locally finite order. -/
 noncomputable instance instLocallyFiniteOrderSubtypeGe {α : Type*} [Fintype α]
@@ -140,7 +141,7 @@ theorem mu_subtype_ge_apply {R α : Type*} [CommRing R]
     [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // z ≤ t}) :
     mu R x y = mu R x.1 y.1 :=
-  mu_subtype_apply_of_interval_closed (fun {a _b t} hat _ => a.2.trans hat) x y
+  mu_subtype_apply_of_interval_closed (fun {a _b _t} hat _ => a.2.trans hat) x y
 
 end IncidenceAlgebra
 
