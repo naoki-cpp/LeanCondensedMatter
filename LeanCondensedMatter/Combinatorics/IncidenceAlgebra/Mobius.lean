@@ -22,7 +22,7 @@ private theorem eq_mu_of_mul_zeta_eq_one {R α : Type*} [Ring R]
     [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α] [DecidableLE α]
     (f : IncidenceAlgebra R α) (hleft : f * zeta R = 1) :
     f = mu R := by
-  exact left_inv_eq_right_inv hleft (zeta_mul_mu R α)
+  exact left_inv_eq_right_inv hleft (zeta_mul_mu (𝕜 := R) (α := α))
 
 /-- The Möbius function is invariant under an order isomorphism. -/
 theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
