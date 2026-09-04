@@ -1,9 +1,9 @@
 # Physical real scalar boundary
 
 This document defines how QuantumTheory code transports complex expressions into real-valued
-physical APIs. It complements the density-state architecture. Stable architecture contracts are
-checked from the compiled Lean environment by `scripts/CheckArchitecture.lean`; CI does not parse
-definition or proof bodies to prescribe one implementation route.
+physical APIs. It complements the density-state architecture. CI protects the source architecture,
+build, lints, and kernel-level correctness checks; `scripts/CheckArchitecture.lean` remains available
+as a focused local audit of compiled semantic relationships without prescribing proof bodies.
 
 ## Three distinct operations
 
@@ -54,10 +54,10 @@ In particular, a `HasSum` over complex coercions of real terms can be transporte
 losslessly, for example with `exact_mod_cast`. Conversely, a real `HasSum` may be embedded into `ℂ`
 through `Complex.ofRealCLM` when a complex equality is the natural target.
 
-## Compiled architecture contracts
+## Compiled architecture audit
 
-The architecture audit protects the stable typed bridge rather than the text of its implementation.
-It checks canonical ownership and semantic relationships for endpoints including:
+The optional compiled audit inspects the stable typed bridge rather than the text of its
+implementation. It can check canonical ownership and semantic relationships for endpoints including:
 
 - `QuantumTheory.expValueSelfAdjoint` and `QuantumTheory.coe_observableExpValue`;
 - `DensityOperator.observableExpectationSelfAdjoint` and `DensityOperator.expectation_observable`;
@@ -65,14 +65,15 @@ It checks canonical ownership and semantic relationships for endpoints including
   `QuantumTheory.hasSum_probNNReal`;
 - `QuantumTheory.bornPMF_apply` as the typed probability bridge.
 
-For selected bridge theorems, the compiled declaration type must mention the canonical complex and
-real/nonnegative APIs it relates. Declaration ownership is resolved through the Lean environment,
-not by recognizing `def`/`theorem` syntax in source text.
+For selected bridge theorems, the compiled declaration type can be checked to mention the canonical
+complex and real/nonnegative APIs it relates. Declaration ownership is resolved through the Lean
+environment, not by recognizing `def`/`theorem` syntax in source text. These checks are useful when
+reviewing a focused architecture refactor, but are not permanent pull-request regression guards.
 
 This deliberately does **not** make `.re`, `Complex.re`, `Complex.reCLM`, `exact_mod_cast`, or any
-other proof helper into a CI token rule. Proofs are free to change as long as the stable typed
-contract remains valid. If a future API needs a stronger invariant, add a theorem or type-level
-contract that expresses the mathematics directly.
+other proof helper into a CI token rule. Proofs are free to change as long as the mathematical API
+remains valid. If a future API needs a stronger invariant, prefer a theorem or type-level contract
+that expresses the mathematics directly.
 
 ## Review rule
 
@@ -85,5 +86,5 @@ codomain:
 
 If none applies, the public API should remain complex-valued rather than discard information.
 
-Architecture CI should then protect the resulting stable theorem/type relationship, not a preferred
-proof body or helper spelling.
+Durable guarantees should live in the Lean API or in structural source architecture checks. Use the
+compiled audit as a focused refactor tool rather than freezing one declaration layout as CI policy.
