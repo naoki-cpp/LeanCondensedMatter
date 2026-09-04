@@ -51,18 +51,11 @@ theorem thermalPeelSum_eq_thermalPeelTerms_sum
             (ContinuousLinearMap.compL ℂ
               (CompletedFockSpace Mode) (CompletedFockSpace Mode) (CompletedFockSpace Mode)
               D.operator)
-        calc
-          ((thermalPeelTerms C₁ t).map
-              (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
-              ((thermalPeelTerms C₁ t).map ⇑φ).sum := by
-            apply congrArg List.sum
-            apply List.map_congr_left
-            intro A _
-            simp only [φ, smul_apply, ContinuousLinearMap.compL_apply]
-          _ = φ (thermalPeelTerms C₁ t).sum :=
-            (map_list_sum φ (thermalPeelTerms C₁ t)).symm
-          _ = (-1 : ℂ) • (D.operator.comp (thermalPeelTerms C₁ t).sum) := by
-            simp only [φ, smul_apply, ContinuousLinearMap.compL_apply]
+        rw [show (fun A => (-1 : ℂ) • (D.operator.comp A)) = ⇑φ by
+          funext A
+          simp only [φ, smul_apply, ContinuousLinearMap.compL_apply]]
+        simpa only [φ, smul_apply, ContinuousLinearMap.compL_apply] using
+          (map_list_sum φ (thermalPeelTerms C₁ t)).symm
       rw [thermalPeelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih]
       apply ContinuousLinearMap.ext
       intro ψ
