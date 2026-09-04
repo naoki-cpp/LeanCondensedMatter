@@ -27,6 +27,6 @@ theorem hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis ι ℂ H) (x : H) :
       (inner_conj_symm (d i) x).symm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   have hs := d.hasSum_inner_mul_inner x x
   rw [← hterm, inner_self_eq_norm_sq_to_K] at hs
-  exact (hasSum_ofReal ℂ).mp (by simpa using hs)
+  exact Complex.hasSum_ofReal.mp (by simpa using hs)
 
 end HilbertBasis
