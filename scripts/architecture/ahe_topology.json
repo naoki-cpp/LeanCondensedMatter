@@ -105,7 +105,7 @@
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorUniformBound",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDominatedConvergence",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge"
           ]
         },
         {
