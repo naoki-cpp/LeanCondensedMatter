@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
 import LeanCondensedMatter.Transport.Core.ContinuumMeasure
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
@@ -19,16 +18,14 @@ j_μ = -e v_μ,  μ ∈ {x,y}.
 
 The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
 and `current` definitions are the public model-level owners used throughout the transport stack.
-The elementary `d`-vector and scalar-triple-product helpers used to derive the closed Berry
-curvature are private implementation details.
+The closed Berry-curvature benchmark is recorded directly here; its agreement with the
+model-specific force-matrix expression is proved downstream.
 
 The generic charge-like current theory is the authority for the canonical `q v` interpretation;
 this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
 
 With this convention the continuum measure is `d²p / (2πℏ)²`; its scalar normalization is owned by
-`Transport.Core.ContinuumMeasure`. The generic pointwise spectral Berry-curvature identities live
-upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file supplies the concrete
-massive-Dirac algebra that will be connected to that force-matrix API.
+`Transport.Core.ContinuumMeasure`.
 
 Disorder, Fermi occupation, Kubo–Středa integration, and ultraviolet regularization remain
 separate downstream phases.
@@ -112,51 +109,9 @@ def bandSign : Band → ℝ
 def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
   bandSign band * energy v m px py
 
-private structure Vec3 where
-  x : ℝ
-  y : ℝ
-  z : ℝ
-
-private def scalarTriple (a b c : Vec3) : ℝ :=
-  a.x * (b.y * c.z - b.z * c.y) -
-    a.y * (b.x * c.z - b.z * c.x) +
-      a.z * (b.x * c.y - b.y * c.x)
-
-private def dVector (v m px py : ℝ) : Vec3 :=
-  ⟨v * px, v * py, m⟩
-
-private def dMomentum : Direction2 → ℝ → Vec3
-  | .x, v => ⟨v, 0, 0⟩
-  | .y, v => ⟨0, v, 0⟩
-
-private def twoBandCurvatureFromTriple (sign triple radius : ℝ) : ℝ :=
-  -sign * triple / (2 * radius ^ 3)
-
 /-- Closed clean massive-Dirac Berry-curvature benchmark before occupation/integration. -/
 def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
-  twoBandCurvatureFromTriple (bandSign band)
-    (scalarTriple (dVector v m px py) (dMomentum .x v) (dMomentum .y v))
-    (energy v m px py)
-
-@[simp] theorem hamiltonian_00 (v m px py : ℝ) :
-    hamiltonian v m px py 0 0 = (m : ℂ) := by
-  simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
-
-@[simp] theorem hamiltonian_01 (v m px py : ℝ) :
-    hamiltonian v m px py 0 1 =
-      (v : ℂ) * ((px : ℂ) - Complex.I * (py : ℂ)) := by
-  simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
-  ring
-
-@[simp] theorem hamiltonian_10 (v m px py : ℝ) :
-    hamiltonian v m px py 1 0 =
-      (v : ℂ) * ((px : ℂ) + Complex.I * (py : ℂ)) := by
-  simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
-  ring
-
-@[simp] theorem hamiltonian_11 (v m px py : ℝ) :
-    hamiltonian v m px py 1 1 = -(m : ℂ) := by
-  simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
+  -(bandSign band * m * v ^ 2) / (2 * energy v m px py ^ 3)
 
 /-- The dispersion polynomial is nonnegative. -/
 theorem energySq_nonneg (v m px py : ℝ) : 0 ≤ energySq v m px py := by
@@ -191,21 +146,17 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
     bandEnergy .upper v m px py = energy v m px py := by
   simp [bandEnergy]
 
-private theorem scalarTriple_dirac (v m px py : ℝ) :
-    scalarTriple (dVector v m px py) (dMomentum .x v) (dMomentum .y v) = m * v ^ 2 := by
-  simp [scalarTriple, dVector, dMomentum, pow_two]
-
 /-- Upper-band Berry curvature `Ω₊ = -m v²/(2E³)`. -/
 theorem berryCurvature_upper (v m px py : ℝ) :
     berryCurvature .upper v m px py =
       -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
+  simp [berryCurvature]
 
 /-- Lower-band Berry curvature `Ω₋ = +m v²/(2E³)`. -/
 theorem berryCurvature_lower (v m px py : ℝ) :
     berryCurvature .lower v m px py =
       (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
+  simp [berryCurvature]
 
 end
 
