@@ -67,57 +67,23 @@ private theorem star_continuumBornRadialGreenKernelOfRegulator
     inversionSymmetrizedPauliGreenOperatorOfRegulator
   simp [star_pauliGreenOperatorOfRegulator, hregulator]
 
-private theorem continuous_pauliGreenDenominatorOfRegulator_radial
-    (v m probeEnergy regulator : ℝ) :
-    Continuous (fun p : ℝ =>
-      pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator) := by
-  unfold pauliGreenDenominatorOfRegulator energySq spectralParameterOfRegulator
-  fun_prop
-
-private theorem continuous_pauliGreenScalarCoefficientOfRegulator_radial
-    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous (fun p : ℝ =>
-      pauliGreenScalarCoefficientOfRegulator v m p 0 probeEnergy regulator) := by
-  have hden := continuous_pauliGreenDenominatorOfRegulator_radial
-    v m probeEnergy regulator
-  have hinv : Continuous (fun p : ℝ =>
-      (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹) :=
-    hden.inv₀ (fun p =>
-      pauliGreenDenominatorOfRegulator_ne_zero
-        v m p 0 probeEnergy regulator hregulator)
-  unfold pauliGreenScalarCoefficientOfRegulator
-  exact hinv.mul continuous_const
-
-private theorem continuous_pauliGreenZCoefficientOfRegulator_radial
-    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous (fun p : ℝ =>
-      pauliGreenZCoefficientOfRegulator v m p 0 probeEnergy regulator) := by
-  have hden := continuous_pauliGreenDenominatorOfRegulator_radial
-    v m probeEnergy regulator
-  have hinv : Continuous (fun p : ℝ =>
-      (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹) :=
-    hden.inv₀ (fun p =>
-      pauliGreenDenominatorOfRegulator_ne_zero
-        v m p 0 probeEnergy regulator hregulator)
-  unfold pauliGreenZCoefficientOfRegulator
-  exact hinv.mul continuous_const
-
 private theorem continuous_continuumBornRadialScalarIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialScalarIntegrandOfRegulator
       v m probeEnergy regulator) := by
   unfold continuumBornRadialScalarIntegrandOfRegulator
+    pauliGreenScalarCoefficientOfRegulator
   exact (Complex.continuous_ofReal.comp continuous_id).mul
-    (continuous_pauliGreenScalarCoefficientOfRegulator_radial
-      v m probeEnergy regulator hregulator)
+    ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
+      v m probeEnergy regulator hregulator).mul continuous_const)
 
 private theorem continuous_continuumBornRadialZIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator) := by
-  unfold continuumBornRadialZIntegrandOfRegulator
+  unfold continuumBornRadialZIntegrandOfRegulator pauliGreenZCoefficientOfRegulator
   exact (Complex.continuous_ofReal.comp continuous_id).mul
-    (continuous_pauliGreenZCoefficientOfRegulator_radial
-      v m probeEnergy regulator hregulator)
+    ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
+      v m probeEnergy regulator hregulator).mul continuous_const)
 
 private theorem continuous_continuumBornRadialGreenKernelOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :

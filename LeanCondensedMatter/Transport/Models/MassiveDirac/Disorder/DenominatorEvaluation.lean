@@ -158,17 +158,10 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialDenominatorIntegrandOfRegulator
       v m probeEnergy regulator) := by
-  have hden : Continuous (fun p : ℝ =>
-      pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator) := by
-    unfold pauliGreenDenominatorOfRegulator energySq spectralParameterOfRegulator
-    fun_prop
-  have hinv : Continuous (fun p : ℝ =>
-      (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹) :=
-    hden.inv₀ (fun p =>
-      pauliGreenDenominatorOfRegulator_ne_zero
-        v m p 0 probeEnergy regulator hregulator)
   unfold continuumBornRadialDenominatorIntegrandOfRegulator
-  exact (Complex.continuous_ofReal.comp continuous_id).mul hinv
+  exact (Complex.continuous_ofReal.comp continuous_id).mul
+    (continuous_inv_pauliGreenDenominatorOfRegulator_radial
+      v m probeEnergy regulator hregulator)
 
 /-- Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the
 endpoint principal-log difference. -/
