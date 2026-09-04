@@ -54,20 +54,11 @@ theorem resolventEvolutionStrongLimit_zero_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
     resolventEvolutionStrongLimit A hA 0 x = x := by
   have hlimit := tendsto_resolventApproximationEvolutionAtScale_apply A hA 0 x
-  have hid :
-      Tendsto (fun _ : ℝ => x) atTop (𝓝 x) := tendsto_const_nhds
-  have hsame :
-      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r 0 x) =
-        (fun _ : ℝ => x) := by
-    funext r
-    rw [resolventApproximationEvolutionAtScale_zero]
-    rfl
-  have hid' :
-      Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r 0 x)
-        atTop (𝓝 x) := by
-    rw [hsame]
-    exact hid
-  exact tendsto_nhds_unique hlimit hid'
+  exact tendsto_nhds_unique hlimit <|
+    (tendsto_const_nhds : Tendsto (fun _ : ℝ => x) atTop (𝓝 x)).congr'
+      (Eventually.of_forall fun r => by
+        rw [resolventApproximationEvolutionAtScale_zero]
+        rfl)
 
 /-- The bundled strong-limit evolution is the identity at time zero. -/
 @[simp]
@@ -135,23 +126,11 @@ theorem resolventEvolutionStrongLimit_add_time_apply
   have hleft := tendsto_resolventApproximationEvolutionAtScale_apply A hA (t + s) x
   have hright :=
     tendsto_resolventApproximationEvolutionAtScale_comp_apply A hA t s x
-  have hfun :
-      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r (t + s) x) =
-        (fun r : ℝ =>
-          resolventApproximationEvolutionAtScale A hA r t
-            (resolventApproximationEvolutionAtScale A hA r s x)) := by
-    funext r
-    have hgroup := congrArg (fun T : H →L[ℂ] H => T x)
-      (resolventApproximationEvolutionAtScale_add A hA r t s)
-    simpa using hgroup
-  have hright' :
-      Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r (t + s) x)
-        atTop
-        (𝓝 (resolventEvolutionStrongLimitOperator A hA t
-          (resolventEvolutionStrongLimitOperator A hA s x))) := by
-    rw [hfun]
-    exact hright
-  exact tendsto_nhds_unique hleft hright'
+  exact tendsto_nhds_unique hleft <|
+    hright.congr' (Eventually.of_forall fun r => by
+      have hgroup := congrArg (fun T : H →L[ℂ] H => T x)
+        (resolventApproximationEvolutionAtScale_add A hA r t s)
+      simpa using hgroup.symm)
 
 /-- The bundled strong-limit operators form an additive one-parameter group. -/
 theorem resolventEvolutionStrongLimitOperator_add
