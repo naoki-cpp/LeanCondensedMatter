@@ -27,31 +27,6 @@ noncomputable section
 open Filter
 open QuantumTheory.Transport
 
-private theorem finiteCutoffContinuumBornScalarIntegral_im_eq
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) :
-    (finiteCutoffContinuumBornScalarIntegral
-      side v m probeEnergy broadening pMax).im =
-      probeEnergy *
-          (finiteCutoffContinuumBornDenominatorIntegral
-            side v m probeEnergy broadening pMax).im +
-        side.regulator broadening *
-          (finiteCutoffContinuumBornDenominatorIntegral
-            side v m probeEnergy broadening pMax).re := by
-  rw [finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral]
-  rw [Complex.mul_im]
-  simp [spectralParameter]
-
-private theorem finiteCutoffContinuumBornZIntegral_im_eq
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) :
-    (finiteCutoffContinuumBornZIntegral
-      side v m probeEnergy broadening pMax).im =
-      m *
-        (finiteCutoffContinuumBornDenominatorIntegral
-          side v m probeEnergy broadening pMax).im := by
-  rw [finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral]
-  rw [Complex.mul_im]
-  simp
-
 /-- At fixed finite cutoff beyond the on-shell circle, the real part of the shared denominator
 integral has a finite `η → 0⁺` limit. The endpoint norms remain explicit because this result is used
 only to control the scalar-channel cross term; no ultraviolet or renormalization interpretation is
@@ -148,8 +123,8 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
   refine ((tendsto_const_nhds : Tendsto (fun _ : ℝ => m)
     (nhdsWithin 0 (Set.Ioi 0)) (nhds m)).mul hJ).congr' ?_
   filter_upwards with broadening
-  exact (finiteCutoffContinuumBornZIntegral_im_eq
-    side v m probeEnergy broadening pMax).symm
+  rw [finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral, Complex.mul_im]
+  simp
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
 `Im I₀,s → -sπε/(2v²)` as `η → 0⁺`. The proof keeps the exact
@@ -208,8 +183,9 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     simpa using hmain.add hcrossZero
   refine hsum.congr' ?_
   filter_upwards with broadening
-  exact (finiteCutoffContinuumBornScalarIntegral_im_eq
-    side v m probeEnergy broadening pMax).symm
+  rw [finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral,
+    Complex.mul_im]
+  simp [spectralParameter]
 
 end
 
