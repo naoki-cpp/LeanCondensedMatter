@@ -57,8 +57,9 @@ theorem resolventEvolutionStrongLimit_zero_apply
   exact tendsto_nhds_unique hlimit <|
     (tendsto_const_nhds : Tendsto (fun _ : ℝ => x) atTop (𝓝 x)).congr'
       (Eventually.of_forall fun r => by
-        rw [resolventApproximationEvolutionAtScale_zero]
-        rfl)
+        have happ := congrArg (fun T : H →L[ℂ] H => T x)
+          (resolventApproximationEvolutionAtScale_zero A hA r)
+        simpa using happ.symm)
 
 /-- The bundled strong-limit evolution is the identity at time zero. -/
 @[simp]
