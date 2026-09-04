@@ -41,20 +41,6 @@ noncomputable def inPlaneLadderOperatorAction
   inPlaneLadderXCoefficient x y alpha beta • matrixOperator sigmaX +
     inPlaneLadderYCoefficient x y alpha beta • matrixOperator sigmaY
 
-@[simp] theorem inPlaneLadderOperatorAction_sigmaX
-    (x y : ℂ) :
-    inPlaneLadderOperatorAction x y 1 0 =
-      x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
-  simp [inPlaneLadderOperatorAction, inPlaneLadderXCoefficient,
-    inPlaneLadderYCoefficient]
-
-@[simp] theorem inPlaneLadderOperatorAction_sigmaY
-    (x y : ℂ) :
-    inPlaneLadderOperatorAction x y 0 1 =
-      (-y) • matrixOperator sigmaX + x • matrixOperator sigmaY := by
-  simp [inPlaneLadderOperatorAction, inPlaneLadderXCoefficient,
-    inPlaneLadderYCoefficient]
-
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
   (1 - x) ^ 2 + y ^ 2
