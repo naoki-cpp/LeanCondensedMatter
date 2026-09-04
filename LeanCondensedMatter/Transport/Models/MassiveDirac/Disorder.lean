@@ -10,8 +10,8 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac disorder transport
 
-Public umbrella for the disorder-dependent massive-Dirac anomalous Hall benchmark. It exposes the
-exact finite scalar-disorder specialization, the finite-cutoff continuum Born self-energy and its
+Public umbrella for the disorder-dependent massive-Dirac transport benchmark. It exposes the exact
+finite scalar-disorder specialization, the finite-cutoff continuum Born self-energy and its
 broadening/UV limits, the microscopic single-particle and transport rates, and the retarded-advanced
 current-vertex chain.
 
