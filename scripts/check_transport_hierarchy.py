@@ -42,7 +42,7 @@ def main() -> int:
         MD_MODEL,
         f"{MD_PUBLIC}.Propagator",
         f"{MD_IMPL}.Intrinsic",
-        f"{MD_IMPL}.Streda",
+        f"{MD_PUBLIC}.Streda",
         f"{MD_IMPL}.Bastin",
         f"{MD_PUBLIC}.Disorder",
         f"{MD_PUBLIC}.Conductivity.Longitudinal",
@@ -204,18 +204,18 @@ def main() -> int:
             "Transport/AnomalousHall/MassiveDirac/Propagator.lean must not remain after "
             "the propagator owner moves to Transport/Models/MassiveDirac"
         )
-    streda_prefix = f"{MD_IMPL}.Streda."
+    streda_prefix = f"{MD_PUBLIC}.Streda."
     if any(module.startswith(streda_prefix) for module in lean_imports(canonical_propagator_path)):
         errors.append(
             f"{canonical_propagator_path.relative_to(ROOT)} must depend on MassiveDirac.Model, "
             "not MassiveDirac.Streda"
         )
 
-    massive_dirac_streda_umbrella = massive_dirac_root / "Streda.lean"
-    fiber_response_module = f"{MD_IMPL}.Streda.FiberResponse"
+    massive_dirac_streda_umbrella = massive_dirac_model_root / "Streda.lean"
+    fiber_response_module = f"{MD_PUBLIC}.Streda.FiberResponse"
     for module in (
-        f"{MD_IMPL}.Streda.Response",
-        f"{MD_IMPL}.Streda.Integral",
+        f"{MD_PUBLIC}.Streda.Response",
+        f"{MD_PUBLIC}.Streda.Integral",
         fiber_response_module,
     ):
         require_import(
@@ -225,7 +225,7 @@ def main() -> int:
             root=ROOT,
             description="massive-Dirac Streda implementation umbrella",
         )
-    fiber_response_path = massive_dirac_root / "Streda" / "FiberResponse.lean"
+    fiber_response_path = massive_dirac_model_root / "Streda" / "FiberResponse.lean"
     require_import(
         errors,
         fiber_response_path,

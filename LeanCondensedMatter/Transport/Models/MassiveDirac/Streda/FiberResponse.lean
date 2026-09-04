@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Integral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.Integral
 import LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation
 
 set_option linter.style.header false
