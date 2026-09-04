@@ -98,17 +98,6 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVertex
     (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax)
 
-/-- The model-specific solved vertex has the canonical solved `σₓ`/`σᵧ` coefficients. -/
-theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_eq
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedVertex
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaX +
-        finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaY := by
-  rfl
-
 /-- The normalized finite-`η` Born-Dyson vertex solves `Γ = σₓ + L(Γ)` exactly whenever the
 specialized two-component determinant is nonzero. -/
 theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_fixedPoint
@@ -212,7 +201,9 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_fixedPoint
     (v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonLadderSolvedVertex
       v m probeEnergy broadening 0 hbar pMax = matrixOperator sigmaX := by
-  simp [finiteCutoffContinuumBornDysonLadderSolvedVertex_eq]
+  simp [finiteCutoffContinuumBornDysonLadderSolvedVertex,
+    inPlaneLadderSolvedVertex, inPlaneLadderSolvedXCoefficient,
+    inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
