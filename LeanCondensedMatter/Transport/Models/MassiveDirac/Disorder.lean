@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBornAngularBridge
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorUV
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -10,10 +11,10 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac disorder transport
 
-Public umbrella for the disorder-dependent massive-Dirac transport benchmark. It exposes the exact
-finite scalar-disorder specialization, the finite-cutoff continuum Born self-energy and its
-broadening/UV limits, the microscopic single-particle and transport rates, and the retarded-advanced
-current-vertex chain.
+Public umbrella for the disorder-dependent massive-Dirac transport benchmark. The continuum Born
+chain is organized by physical and analytic responsibility: `Born.SelfEnergy` owns the finite-cutoff
+self-energy and its polar provenance, `Born.Denominator` owns exact denominator evaluation and its
+UV/broadening limits, and `Born.Damping` owns the channel limits and upper-band damping projection.
 
 The finite-external-broadening Born-Dyson rung reduces through the shared polar Pauli algebra to an
 in-plane coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Radial integration

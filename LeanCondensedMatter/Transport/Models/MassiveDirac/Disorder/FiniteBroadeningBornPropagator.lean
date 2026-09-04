@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBorn
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
