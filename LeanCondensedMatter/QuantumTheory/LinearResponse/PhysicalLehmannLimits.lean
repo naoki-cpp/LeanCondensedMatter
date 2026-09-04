@@ -108,18 +108,11 @@ theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
             (purePointTransitionWeight system data A B mn)) := by
-  let F : ℝ → ℝ → ℂ := fun omega eta =>
-    Finset.univ.sum fun mn : ι × ι =>
-      lehmannTerm system.hbar omega eta
-        (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn)
-  have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
-    funext omega eta
+  convert finite_purePointLehmann_has_both_local_iterated_limits
+    system data A B hregular using 1 <;>
+    funext omega eta <;>
     exact finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
       system data A B omega eta
-  rw [hfun]
-  exact finite_purePointLehmann_has_both_local_iterated_limits
-    system data A B hregular
 
 /-- For the actual finite-observation-time response, taking `T -> infinity` first and then either
 local order of `omega -> 0` and `eta -> 0+` gives the same finite static Lehmann value. -/
