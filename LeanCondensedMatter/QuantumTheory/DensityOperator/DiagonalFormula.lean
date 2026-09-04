@@ -102,9 +102,7 @@ theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOpera
     HasSum.congr_fun (ρ.hasSum_expectation_diagonal A.1 b w hρ) fun i => by
       rw [Complex.ofReal_mul, coe_diagonalExpectationValue_right]
   rw [ρ.expectation_observable A] at hcomplex
-  rw [HasSum] at hcomplex ⊢
-  exact Filter.tendsto_ofReal_iff.mp (by
-    simpa only [Complex.ofReal_sum] using hcomplex)
+  exact Complex.hasSum_ofReal.mp hcomplex
 
 /-- The real-valued observable expectation is the `tsum` of the weighted diagonal values. -/
 theorem DensityOperator.observableExpectation_eq_tsum_diagonal (ρ : DensityOperator H)

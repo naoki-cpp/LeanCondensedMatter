@@ -78,11 +78,8 @@ theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
       Real.sqrt
         ((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
           (2 * probeEnergy * regulator) ^ 2) := by
-  rw [Complex.norm_def, Complex.normSq_apply]
-  rw [pauliGreenDenominatorOfRegulator_radial_re,
-    pauliGreenDenominatorOfRegulator_radial_im]
-  congr 1
-  ring
+  rw [← pauliGreenDenominatorOfRegulator_radial_sq_norm,
+    Real.sqrt_sq (norm_nonneg _)]
 
 /-- Physical-side radial real part, retained for broadening-limit consumers. -/
 @[simp]
