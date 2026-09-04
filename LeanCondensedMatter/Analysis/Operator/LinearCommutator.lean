@@ -34,8 +34,7 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
 theorem linearCommutator_smul_right {V : Type*} [AddCommGroup V] [Module ℂ V]
     (q : ℂ) (S T : V →ₗ[ℂ] V) :
     linearCommutator S (q • T) = q • linearCommutator S T := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [linearCommutator, smul_sub]
 
 /-- Commutation with a fixed left operator, packaged as a linear map on endomorphisms. -/
@@ -45,14 +44,12 @@ noncomputable def commutatorEvolution {V : Type*} [AddCommGroup V] [Module ℂ V
   toFun := fun T => linearCommutator S T
   map_add' := by
     intro A B
-    apply LinearMap.ext
-    intro v
+    ext v
     simp [linearCommutator]
     module
   map_smul' := by
     intro c A
-    apply LinearMap.ext
-    intro v
+    ext v
     simp [linearCommutator]
     module
 
@@ -67,8 +64,7 @@ theorem commutatorEvolution_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
 theorem linearCommutator_smul_id_right {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S : V →ₗ[ℂ] V) (q : ℂ) :
     linearCommutator S (q • LinearMap.id) = 0 := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [linearCommutator]
 
 end ConservationLaw
