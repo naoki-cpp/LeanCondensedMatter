@@ -121,7 +121,6 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
         ∑ j : Fin l.length,
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
     rw [Submodule.coe_sum]
-    rfl
   rw [← hcoe]
   have hmap :
       freeGibbsExpectation ε β
