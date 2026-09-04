@@ -106,7 +106,7 @@ private theorem continuumBornPauliGreenOperator_polar_eq
       continuumBornPauliGreenDenominator
     rw [hradial]
     push_cast
-    ring
+    ring_nf
   simpa [continuumBornPauliGreenOperator, polarPauliOperator] using
     congrArg matrixOperator hmatrix
 
