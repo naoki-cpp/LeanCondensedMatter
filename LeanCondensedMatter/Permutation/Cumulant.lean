@@ -21,11 +21,10 @@ theorem cumulantFromMoment_permutationSum_eq_singleCycleContribution
     {S : Finset α} (hS : S ≠ ∅) :
     Finpartition.cumulantFromMoment (permutationSum ζ K) S =
       singleCycleContribution ζ K S := by
-  have h := Finpartition.cumulantFromMoment_momentFromCumulant
+  rw [show permutationSum ζ K =
+      Finpartition.momentFromCumulant (singleCycleContribution ζ K) from
+    funext fun T => permutationSum_eq_momentFromCumulant ζ K T]
+  exact Finpartition.cumulantFromMoment_momentFromCumulant
     (singleCycleContribution ζ K) (S := S) hS
-  have hfun : Finpartition.momentFromCumulant (singleCycleContribution ζ K) =
-      permutationSum ζ K :=
-    funext fun T => (permutationSum_eq_momentFromCumulant ζ K T).symm
-  rwa [hfun] at h
 
 end Combinatorics
