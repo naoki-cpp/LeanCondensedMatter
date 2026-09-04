@@ -81,8 +81,11 @@ theorem continuous_commutatorSusceptibility_timeDifference
       (heisenbergEvolution system A τ * B -
         B * heisenbergEvolution system A τ)) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
-  simpa only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero] using
+  convert
     ((continuous_const : Continuous (fun _ : ℝ => Complex.I / (system.hbar : ℂ))).mul hexpect)
+    using 1
+  funext τ
+  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero]
 
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
