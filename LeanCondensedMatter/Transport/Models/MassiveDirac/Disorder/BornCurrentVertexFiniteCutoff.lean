@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.PauliRung
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
 set_option linter.style.header false
