@@ -69,15 +69,8 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
   unfold finiteRadialCleanInterbandBastinPairIntegral
   rw [MeasureTheory.integral_Icc_eq_integral_Ioc]
   rw [← intervalIntegral.integral_of_le hpMax]
-  have hfun :
-      (fun p : ℝ => radialCleanInterbandBastinPairLimitDensity band e v m p) =
-      (fun p : ℝ =>
-        cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
-          radialEnergyDerivative v m p) := by
-    funext p
-    exact radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
-      band e v m p hm
-  rw [hfun]
+  simp_rw [radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
+    band e v m _ hm]
   have hsub := intervalIntegral.integral_comp_mul_deriv'
     (a := (0 : ℝ)) (b := pMax)
     (f := fun p : ℝ => energy v m p 0)
@@ -87,14 +80,13 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     (continuous_radialEnergyDerivative v m hm).continuousOn
     (continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
       band e v m pMax hm)
-  have hsub' :
-      (∫ p in (0 : ℝ)..pMax,
-        cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
-          radialEnergyDerivative v m p) =
-        ∫ ε in energy v m 0 0..energy v m pMax 0,
-          cleanInterbandBastinPairRadialEnergyDensity band e m ε := by
-    simpa only [Function.comp_apply] using hsub
-  rw [hsub']
+  rw [show
+    (∫ p in (0 : ℝ)..pMax,
+      cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
+        radialEnergyDerivative v m p) =
+      ∫ ε in energy v m 0 0..energy v m pMax 0,
+        cleanInterbandBastinPairRadialEnergyDensity band e m ε by
+    simpa only [Function.comp_apply] using hsub]
   unfold cleanInterbandBastinPairEnergyShellIntegral
   have hzero : energy v m 0 0 = |m| := by
     unfold energy energySq
