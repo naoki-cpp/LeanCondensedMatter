@@ -48,15 +48,9 @@ theorem comp_const_mul_zero {F : ℂ → V} {F' : V}
     (hF : HasAlgebraicDerivAt F F' 0) (c : ℂ) :
     HasAlgebraicDerivAt (fun z => F (c * z)) (c • F') 0 := by
   intro ℓ
-  have hinner : HasDerivAt (fun z : ℂ => c * z) c 0 :=
-    hasDerivAt_const_mul (x := (0 : ℂ)) c
-  have houter : HasDerivAt (fun z => ℓ (F z)) (ℓ F') (c * 0) := by
-    simpa using hF ℓ
-  have hcomp := HasDerivAt.comp 0 houter hinner
-  have hcomp' : HasDerivAt (fun z => ℓ (F (c * z))) (ℓ F' * c) 0 := by
-    apply hcomp.congr_of_eventuallyEq
-    exact Filter.Eventually.of_forall (fun _ => rfl)
-  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp'
+  have hcomp := HasDerivAt.comp 0 (by simpa using hF ℓ)
+    (hasDerivAt_const_mul (x := (0 : ℂ)) c)
+  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp
 
 /-- Finite sums preserve algebraic derivatives. -/
 theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} {A : ℂ}
