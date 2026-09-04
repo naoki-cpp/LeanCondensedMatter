@@ -1,5 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.CurrentVertexAngular
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.PauliRung
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Tactic
 
