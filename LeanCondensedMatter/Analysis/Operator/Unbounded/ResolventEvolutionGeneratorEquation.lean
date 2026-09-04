@@ -49,31 +49,22 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined
             (resolventEvolutionStrongLimitOperator A hA (0 + h) (x : H) -
               resolventEvolutionStrongLimitOperator A hA 0 (x : H)))) := by
     funext h
-    have hgroup :
-        resolventEvolutionStrongLimitOperator A hA (s + h) (x : H) =
-          resolventEvolutionStrongLimitOperator A hA s
-            (resolventEvolutionStrongLimitOperator A hA h (x : H)) := by
-      have happ := congrArg (fun T : H →L[ℂ] H => T (x : H))
-        (resolventEvolutionStrongLimitOperator_add A hA s h)
-      simpa using happ
-    have hzero_apply :
-        resolventEvolutionStrongLimitOperator A hA 0 (x : H) = (x : H) := by
-      have happ := congrArg (fun T : H →L[ℂ] H => T (x : H))
-        (resolventEvolutionStrongLimitOperator_zero A hA)
-      simpa using happ
-    rw [hgroup, hzero_apply]
+    rw [show
+      resolventEvolutionStrongLimitOperator A hA (s + h) (x : H) =
+        resolventEvolutionStrongLimitOperator A hA s
+          (resolventEvolutionStrongLimitOperator A hA h (x : H)) by
+      simpa only [resolventEvolutionStrongLimitOperator_apply] using
+        resolventEvolutionStrongLimit_add_time_apply A hA s h (x : H)]
+    rw [show resolventEvolutionStrongLimitOperator A hA 0 (x : H) = (x : H) by
+      simpa only [resolventEvolutionStrongLimitOperator_apply] using
+        resolventEvolutionStrongLimit_zero_apply A hA (x : H)]
     simp only [zero_add]
     rw [← (resolventEvolutionStrongLimitOperator A hA s).map_sub]
     symm
     exact (resolventEvolutionStrongLimitOperator A hA s).toLinearMap.map_smul_of_tower
       h⁻¹ (resolventEvolutionStrongLimitOperator A hA h (x : H) - (x : H))
   rw [hfun]
-  have hmapgen :
-      resolventEvolutionStrongLimitOperator A hA s ((-I : ℂ) • A x) =
-        (-I : ℂ) • resolventEvolutionStrongLimitOperator A hA s (A x) := by
-    exact (resolventEvolutionStrongLimitOperator A hA s).map_smul _ _
-  rw [hmapgen] at hmapped
-  exact hmapped
+  simpa only [map_smul] using hmapped
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt
