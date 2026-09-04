@@ -140,19 +140,13 @@ theorem resolventEvolutionStrongLimitOperator_dist_time_eq_sub
     dist (resolventEvolutionStrongLimitOperator A hA t x)
         (resolventEvolutionStrongLimitOperator A hA s x) =
       dist (resolventEvolutionStrongLimitOperator A hA (t - s) x) x := by
-  have ht : t = s + (t - s) := by ring
-  have htime :
-      resolventEvolutionStrongLimitOperator A hA t x =
-        resolventEvolutionStrongLimitOperator A hA (s + (t - s)) x :=
-    congrArg (fun u : ℝ => resolventEvolutionStrongLimitOperator A hA u x) ht
-  have hgroup :
-      resolventEvolutionStrongLimitOperator A hA (s + (t - s)) x =
-        resolventEvolutionStrongLimitOperator A hA s
-          (resolventEvolutionStrongLimitOperator A hA (t - s) x) := by
-    have happ := congrArg (fun T : H →L[ℂ] H => T x)
-      (resolventEvolutionStrongLimitOperator_add A hA s (t - s))
-    simpa using happ
-  rw [htime, hgroup]
+  rw [show
+    resolventEvolutionStrongLimitOperator A hA t x =
+      resolventEvolutionStrongLimitOperator A hA s
+        (resolventEvolutionStrongLimitOperator A hA (t - s) x) by
+    simpa only [resolventEvolutionStrongLimitOperator_apply,
+      show s + (t - s) = t by ring] using
+      resolventEvolutionStrongLimit_add_time_apply A hA s (t - s) x]
   exact resolventEvolutionStrongLimitOperator_dist_eq A hA s _ x
 
 /-- The limiting evolution is strongly continuous at every time, for every vector. -/
