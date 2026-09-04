@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
+import Mathlib.Algebra.Module.LinearMap.End
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -45,16 +46,16 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       simp [FreeThermalField.operatorPeelSum, operatorPeelTerms,
         Common.BlochDeDominicis.operatorPeelSum]
   | cons D t ih =>
-      have hmap : ∀ L : List (FockSpace Mode →ₗ[ℂ] FockSpace Mode),
-          (L.map (fun A => D.operator.comp A)).sum = D.operator.comp L.sum := by
-        intro L
-        induction L with
-        | nil => simp
-        | cons A T ihT =>
-            rw [List.map_cons, List.sum_cons, List.sum_cons, ihT]
-            apply LinearMap.ext
-            intro x
-            simp only [LinearMap.add_apply, LinearMap.comp_apply, map_add]
+      have hfun :
+          (fun A : FockSpace Mode →ₗ[ℂ] FockSpace Mode => D.operator.comp A) =
+            fun A => (LinearMap.compRight ℂ D.operator) A := by
+        rfl
+      have hmap :
+          ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum =
+            D.operator.comp (C₁.operatorPeelTerms t).sum := by
+        rw [hfun]
+        exact
+          (map_list_sum (LinearMap.compRight ℂ D.operator) (C₁.operatorPeelTerms t)).symm
       rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
       unfold FreeThermalField.operatorPeelSum
       rw [Common.BlochDeDominicis.operatorPeelSum]
@@ -101,35 +102,6 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     (freeGibbsDomain ε β).smul_mem _
       (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))
 
-omit [Fintype Mode] in
-/-- Finite additivity of the normalized free-Gibbs expectation on explicitly summable terms. -/
-private theorem freeGibbsExpectation_finset_sum
-    {ι : Type*}
-    (ε : Mode → ℝ) (β : ℝ) (s : Finset ι)
-    (f : ι → (FockSpace Mode →ₗ[ℂ] FockSpace Mode))
-    (hf : ∀ i ∈ s, f i ∈ freeGibbsDomain ε β) :
-    freeGibbsExpectation ε β (∑ i ∈ s, f i) =
-      ∑ i ∈ s, freeGibbsExpectation ε β (f i) := by
-  classical
-  revert hf
-  induction s using Finset.induction_on with
-  | empty =>
-      intro _
-      have hzero : freeGibbsExpectation ε β
-          (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 0 := by
-        simpa using freeGibbsExpectation_smul ε β (0 : ℂ)
-          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-      simpa [hzero]
-  | @insert a s ha ih =>
-      intro hf
-      have hfa : f a ∈ freeGibbsDomain ε β := hf a (Finset.mem_insert_self a s)
-      have hfs : ∀ i ∈ s, f i ∈ freeGibbsDomain ε β := fun i hi =>
-        hf i (Finset.mem_insert_of_mem hi)
-      have hsum : (∑ i ∈ s, f i) ∈ freeGibbsDomain ε β :=
-        Submodule.sum_mem (freeGibbsDomain ε β) hfs
-      rw [Finset.sum_insert ha, freeGibbsExpectation_add ε β hfa hsum,
-        Finset.sum_insert ha, ih hfs]
-
 /-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
 theorem freeGibbsExpectation_operatorPeelSum_eq_sum
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
@@ -140,15 +112,35 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
   rw [operatorPeelSum_eq_operatorPeelTerms_sum, operatorPeelTerms_eq_ofFn,
     List.sum_ofFn]
-  rw [freeGibbsExpectation_finset_sum ε β Finset.univ
-    (fun j : Fin l.length =>
-      C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))]
-  · apply Finset.sum_congr rfl
-    intro j _
-    rw [freeGibbsExpectation_smul]
-  · intro j _
-    exact (freeGibbsDomain ε β).smul_mem _
-      (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))
+  let terms : Fin l.length → freeGibbsDomain ε β := fun j =>
+    ⟨C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j),
+      (freeGibbsDomain ε β).smul_mem _
+        (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))⟩
+  have hcoe :
+      ((↑(∑ j, terms j) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) =
+        ∑ j : Fin l.length,
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    rw [Submodule.coe_sum]
+  rw [← hcoe]
+  have hmap :
+      freeGibbsExpectation ε β
+          ((∑ j, terms j : freeGibbsDomain ε β).1) =
+        ∑ j, freeGibbsExpectation ε β (terms j).1 := by
+    change (freeGibbsExpectationLinear ε β) (∑ j, terms j) =
+      ∑ j, (freeGibbsExpectationLinear ε β) (terms j)
+    simpa using map_sum (freeGibbsExpectationLinear ε β) terms Finset.univ
+  calc
+    freeGibbsExpectation ε β
+        ((∑ j, terms j : freeGibbsDomain ε β).1) =
+        ∑ j, freeGibbsExpectation ε β (terms j).1 := hmap
+    _ = ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
+          freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      change freeGibbsExpectation ε β
+          (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) = _
+      rw [freeGibbsExpectation_smul]
 
 end FreeThermalField
 
