@@ -102,21 +102,13 @@ theorem hasSumUniformlyOn_analyticDysonEvolution (energy : Config → ℝ)
       (fun n τ => analyticDysonTerm energy V τ lam n)
       (fun τ => analyticDysonEvolution energy V τ lam)
       (Set.Icc (0 : ℝ) β) := by
-  have hterm : (fun n τ => analyticDysonTerm energy V τ lam n) =
-      fun n τ => Dyson.term (continuousInteractionPicture energy V) lam τ n := by
-    funext n τ
-    exact analyticDysonTerm_eq_term energy V τ lam n
-  have hevolution : (fun τ => analyticDysonEvolution energy V τ lam) =
-      fun τ => Dyson.evolution (continuousInteractionPicture energy V) lam τ := by
-    funext τ
-    exact analyticDysonEvolution_eq_evolution energy V τ lam
-  rw [hterm, hevolution]
-  exact Dyson.hasSumUniformlyOn_evolution_of_bound
-    (continuousInteractionPicture energy V)
-    ContinuousLinearMap.norm_id_le
-    (interactionPictureNormBound_nonneg energy V hβ)
-    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
-    lam
+  simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
+    (Dyson.hasSumUniformlyOn_evolution_of_bound
+      (continuousInteractionPicture energy V)
+      ContinuousLinearMap.norm_id_le
+      (interactionPictureNormBound_nonneg energy V hβ)
+      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+      lam)
 
 /-- At zero imaginary time only the zeroth Dyson coefficient survives. -/
 @[simp]
