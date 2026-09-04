@@ -44,7 +44,7 @@ def main() -> int:
         f"{MD_IMPL}.Intrinsic",
         f"{MD_IMPL}.Streda",
         f"{MD_IMPL}.Bastin",
-        f"{MD_IMPL}.Disorder",
+        f"{MD_PUBLIC}.Disorder",
         f"{MD_IMPL}.Longitudinal",
     ):
         require_import(
