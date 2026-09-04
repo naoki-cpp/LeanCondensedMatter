@@ -40,8 +40,10 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
         (fun p : ℝ => v ^ 2 * p ^ 2 -
           (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2))
         atTop atTop := by
-    simpa [sub_eq_add_neg] using tendsto_atTop_add_const_right atTop
-      (-(probeEnergy ^ 2 - regulator ^ 2 - m ^ 2)) hlead
+    convert tendsto_atTop_add_const_right atTop
+      (-(probeEnergy ^ 2 - regulator ^ 2 - m ^ 2)) hlead using 1
+    funext p
+    ring
   have hsq :
       Tendsto
         (fun p : ℝ =>
@@ -62,7 +64,7 @@ theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
       (fun p : ℝ =>
         ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
       atTop atTop := by
-  simpa only [pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt] using
+  simpa [Function.comp_def, pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt] using
     Real.tendsto_sqrt_atTop.comp
       (tendsto_continuumBornRadialNormPolynomial_atTop
         v m probeEnergy regulator hvelocity)
