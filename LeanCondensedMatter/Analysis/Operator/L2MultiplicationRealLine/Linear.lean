@@ -25,14 +25,12 @@ noncomputable def multiplicationLinear :
   toFun := fun f => (multiplicationOperator f).toLinearMap
   map_add' := by
     intro f g
-    apply LinearMap.ext
-    intro ψ
+    ext ψ
     change (f + g) • ψ = f • ψ + g • ψ
     exact Lp.smul_add f g ψ
   map_smul' := by
     intro c f
-    apply LinearMap.ext
-    intro ψ
+    ext ψ
     change (c • f) • ψ = c • (f • ψ)
     exact Lp.smul_assoc c f ψ
 
