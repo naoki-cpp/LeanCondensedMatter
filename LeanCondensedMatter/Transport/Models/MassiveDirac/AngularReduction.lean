@@ -182,15 +182,7 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
     (hsin.smul (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable
       0 (2 * Real.pi)
   unfold continuumAngularGreenIntegralOfRegulator
-  have hfun :
-      (fun θ : ℝ =>
-        pauliGreenOperatorOfRegulator v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy regulator) =
-        fun θ : ℝ =>
-          even + ((Real.cos θ : ℝ) : ℂ) • xPart + ((Real.sin θ : ℝ) : ℂ) • yPart := by
-    funext θ
-    exact pauliGreenOperatorOfRegulator_polar_eq v m p θ probeEnergy regulator
-  rw [hfun]
+  simp_rw [pauliGreenOperatorOfRegulator_polar_eq v m p _ probeEnergy regulator]
   rw [intervalIntegral.integral_add (heven.add hx) hy]
   rw [intervalIntegral.integral_add heven hx]
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]

@@ -176,24 +176,15 @@ theorem tendsto_completedFreeModeTruncatedGibbsDensityOperator_expectation
         (completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A)
       atTop (𝓝 ((purePointGibbsDensityOperator completedOccupationHilbertBasis
         (fermionEnergy ε) β hsum).expectation A)) := by
-  have hratioReal := tendsto_completedFreeModeTruncationNormalizationRatio ε β hsum
   have hratio :
       Tendsto (fun S : Finset Mode => (completedFreeModeTruncationNormalizationRatio ε β S : ℂ))
         atTop (𝓝 (1 : ℂ)) :=
-    hratioReal.ofReal
+    (tendsto_completedFreeModeTruncationNormalizationRatio ε β hsum).ofReal
   have hretained := tendsto_completedFreeModeRetainedExpectation ε β hsum A
-  have hprod := hratio.mul hretained
-  have hfun :
-      (fun S : Finset Mode =>
-        (completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A) =
-      (fun S : Finset Mode =>
-        (completedFreeModeTruncationNormalizationRatio ε β S : ℂ) *
-          completedFreeModeRetainedExpectation ε β S A) := by
-    funext S
-    exact completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
-      ε β hsum S A
-  rw [hfun]
-  simpa using hprod
+  simpa using (hratio.mul hretained).congr'
+    (Eventually.of_forall fun S =>
+      (completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
+        ε β hsum S A).symm)
 
 end
 end Fermionic
