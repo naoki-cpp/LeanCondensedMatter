@@ -55,25 +55,11 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
   have hZ := tendsto_completedFreeModeTruncatedPartitionFunction ε β hsum
   have hZne : purePointPartitionFunction (fermionEnergy ε) β ≠ 0 :=
     ne_of_gt (purePointPartitionFunction_pos (fermionEnergy ε) β hsum)
-  have hconst :
-      Tendsto (fun _ : Finset Mode => purePointPartitionFunction (fermionEnergy ε) β) atTop
-        (𝓝 (purePointPartitionFunction (fermionEnergy ε) β)) :=
-    tendsto_const_nhds
-  have hratio :
+  simpa [completedFreeModeTruncationNormalizationRatio, div_self hZne] using
+    ((tendsto_const_nhds :
       Tendsto
-        (fun S : Finset Mode =>
-          purePointPartitionFunction (fermionEnergy ε) β /
-            completedFreeModeTruncatedPartitionFunction ε β S)
-        atTop
-        (𝓝 (purePointPartitionFunction (fermionEnergy ε) β /
-          purePointPartitionFunction (fermionEnergy ε) β)) :=
-    hconst.div hZ hZne
-  change Tendsto
-    (fun S : Finset Mode =>
-      purePointPartitionFunction (fermionEnergy ε) β /
-        completedFreeModeTruncatedPartitionFunction ε β S)
-    atTop (𝓝 1)
-  simpa [div_self hZne] using hratio
+        (fun _ : Finset Mode => purePointPartitionFunction (fermionEnergy ε) β)
+        atTop (𝓝 (purePointPartitionFunction (fermionEnergy ε) β))).div hZ hZne)
 
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
 normalization correction. -/
@@ -176,24 +162,15 @@ theorem tendsto_completedFreeModeTruncatedGibbsDensityOperator_expectation
         (completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A)
       atTop (𝓝 ((purePointGibbsDensityOperator completedOccupationHilbertBasis
         (fermionEnergy ε) β hsum).expectation A)) := by
-  have hratioReal := tendsto_completedFreeModeTruncationNormalizationRatio ε β hsum
   have hratio :
       Tendsto (fun S : Finset Mode => (completedFreeModeTruncationNormalizationRatio ε β S : ℂ))
         atTop (𝓝 (1 : ℂ)) :=
-    hratioReal.ofReal
+    (tendsto_completedFreeModeTruncationNormalizationRatio ε β hsum).ofReal
   have hretained := tendsto_completedFreeModeRetainedExpectation ε β hsum A
-  have hprod := hratio.mul hretained
-  have hfun :
-      (fun S : Finset Mode =>
-        (completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A) =
-      (fun S : Finset Mode =>
-        (completedFreeModeTruncationNormalizationRatio ε β S : ℂ) *
-          completedFreeModeRetainedExpectation ε β S A) := by
-    funext S
-    exact completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
-      ε β hsum S A
-  rw [hfun]
-  simpa using hprod
+  simpa using (hratio.mul hretained).congr'
+    (Eventually.of_forall fun S =>
+      (completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
+        ε β hsum S A).symm)
 
 end
 end Fermionic
