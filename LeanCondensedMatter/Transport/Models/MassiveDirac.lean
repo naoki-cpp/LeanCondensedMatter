@@ -5,7 +5,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal
 
 set_option linter.style.header false
 
