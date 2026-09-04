@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalPeel
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
+import Mathlib.Analysis.Normed.Operator.Bilinear
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -40,18 +41,16 @@ theorem thermalPeelSum_eq_thermalPeelTerms_sum
   induction l with
   | nil => simp [thermalPeelSum, thermalPeelTerms]
   | cons D t ih =>
-      have hmap : ∀ L : List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode),
-          (L.map (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
-            (-1 : ℂ) • (D.operator.comp L.sum) := by
-        intro L
-        induction L with
-        | nil => simp
-        | cons A T ihT =>
-            rw [List.map_cons, List.sum_cons, List.sum_cons, ihT]
-            apply ContinuousLinearMap.ext
-            intro ψ
-            simp only [add_apply, smul_apply, ContinuousLinearMap.comp_apply, map_add]
-            module
+      have hmap :
+          ((thermalPeelTerms C₁ t).map (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
+            (-1 : ℂ) • (D.operator.comp (thermalPeelTerms C₁ t).sum) := by
+        have h := (map_list_sum
+          ((-1 : ℂ) •
+            (ContinuousLinearMap.compL ℂ
+              (CompletedFockSpace Mode) (CompletedFockSpace Mode) (CompletedFockSpace Mode)
+              D.operator))
+          (thermalPeelTerms C₁ t)).symm
+        simpa only [smul_apply, ContinuousLinearMap.compL_apply] using h
       rw [thermalPeelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih]
       apply ContinuousLinearMap.ext
       intro ψ
@@ -107,10 +106,9 @@ theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
         (L.map (purePointGibbsDensityOperator completedOccupationHilbertBasis
           (fermionEnergy ε) β hsum).expectation).sum := by
     intro L
-    induction L with
-    | nil => simp
-    | cons A T ih =>
-        rw [List.sum_cons, map_add, List.map_cons, List.sum_cons, ih]
+    exact map_list_sum
+      (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation L
   rw [thermalPeelSum_eq_thermalPeelTerms_sum, thermalPeelTerms_eq_ofFn, hmap,
     List.map_ofFn, List.sum_ofFn]
   apply Finset.sum_congr rfl
