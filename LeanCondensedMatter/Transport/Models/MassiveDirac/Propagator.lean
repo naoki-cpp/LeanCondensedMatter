@@ -161,6 +161,19 @@ theorem pauliGreenDenominatorOfRegulator_ne_zero
             ((energy v m px py : ℝ) : ℂ)) by ring]
   exact mul_ne_zero hminus (by simpa using hplus)
 
+/-- The inverse radial Green denominator is continuous for every nonzero signed regulator. -/
+theorem continuous_inv_pauliGreenDenominatorOfRegulator_radial
+    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
+    Continuous (fun p : ℝ =>
+      (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹) := by
+  have hden : Continuous (fun p : ℝ =>
+      pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator) := by
+    unfold pauliGreenDenominatorOfRegulator energySq spectralParameterOfRegulator
+    fun_prop
+  exact hden.inv₀ (fun p =>
+    pauliGreenDenominatorOfRegulator_ne_zero
+      v m p 0 probeEnergy regulator hregulator)
+
 /-- The arbitrary-regulator Pauli decomposition is the usual closed numerator/denominator form. -/
 theorem pauliGreenOperatorOfRegulator_eq_closedForm
     (v m px py probeEnergy regulator : ℝ) :
