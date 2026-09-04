@@ -61,14 +61,7 @@ parts. -/
 theorem pow_card_eq_prod_parts (π : Finpartition s) (a : M) :
     a ^ s.card = ∏ B : π.parts, a ^ (B : Finset α).card := by
   classical
-  rw [Finset.prod_coe_sort π.parts (fun B => a ^ B.card)]
-  have hpow : ∀ T : Finset (Finset α),
-      (∏ B ∈ T, a ^ B.card) = a ^ (∑ B ∈ T, B.card) := by
-    intro T
-    induction T using Finset.induction_on with
-    | empty => simp
-    | @insert B T hBT ih =>
-      simp [hBT, ih, pow_add]
-  rw [hpow, π.sum_card_parts]
+  rw [Finset.prod_coe_sort π.parts (fun B => a ^ B.card),
+    Finset.prod_pow_eq_pow_sum, π.sum_card_parts]
 
 end Finpartition
