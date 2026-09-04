@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.RelaxationTime
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadeningBornLadder
 
 set_option linter.style.header false
 

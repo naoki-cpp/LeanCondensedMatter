@@ -5,12 +5,12 @@
       "sourceRoots": [
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Longitudinal"
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Longitudinal"
       ],
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
         "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic",
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal"
       ],
       "layers": [
         {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic"]},
@@ -23,10 +23,10 @@
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
         {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"]},
-        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.RelaxationTime"]},
+        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]},
         {"id": "longitudinalFiniteBroadening", "modulePrefixes": [
-          "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadening",
-          "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal.FiniteBroadeningBornLadder"
+          "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadening",
+          "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadeningBornLadder"
         ]}
       ],
       "edges": [

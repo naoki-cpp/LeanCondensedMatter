@@ -45,7 +45,7 @@ def main() -> int:
         f"{MD_IMPL}.Streda",
         f"{MD_IMPL}.Bastin",
         f"{MD_PUBLIC}.Disorder",
-        f"{MD_IMPL}.Longitudinal",
+        f"{MD_PUBLIC}.Conductivity.Longitudinal",
     ):
         require_import(
             errors,
