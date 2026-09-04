@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBornAngularBridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.DenominatorUV
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
 
