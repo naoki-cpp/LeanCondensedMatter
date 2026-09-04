@@ -1,8 +1,8 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Integral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.FiberResponse
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.Integral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiberResponse
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
 
 set_option linter.style.header false
 

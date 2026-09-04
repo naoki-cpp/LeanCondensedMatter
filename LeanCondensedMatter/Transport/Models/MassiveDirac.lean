@@ -2,7 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Model
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal
