@@ -37,25 +37,12 @@ private theorem inPlaneLadderRotatedSolvedVertex_fixedPoint
       x * (-inPlaneLadderSolvedYCoefficient x y) -
           y * inPlaneLadderSolvedXCoefficient x y =
         -inPlaneLadderSolvedYCoefficient x y := by
-    calc
-      x * (-inPlaneLadderSolvedYCoefficient x y) -
-          y * inPlaneLadderSolvedXCoefficient x y =
-        -(y * inPlaneLadderSolvedXCoefficient x y +
-          x * inPlaneLadderSolvedYCoefficient x y) := by ring
-      _ = -inPlaneLadderSolvedYCoefficient x y := by rw [← hY]
+    linear_combination hY
   have hrotY :
       y * (-inPlaneLadderSolvedYCoefficient x y) +
           x * inPlaneLadderSolvedXCoefficient x y =
         inPlaneLadderSolvedXCoefficient x y - 1 := by
-    calc
-      y * (-inPlaneLadderSolvedYCoefficient x y) +
-          x * inPlaneLadderSolvedXCoefficient x y =
-        x * inPlaneLadderSolvedXCoefficient x y -
-          y * inPlaneLadderSolvedYCoefficient x y := by ring
-      _ = (1 +
-          (x * inPlaneLadderSolvedXCoefficient x y -
-            y * inPlaneLadderSolvedYCoefficient x y)) - 1 := by ring
-      _ = inPlaneLadderSolvedXCoefficient x y - 1 := by rw [← hX]
+    linear_combination hX
   unfold inPlaneLadderOperatorAction inPlaneLadderXCoefficient inPlaneLadderYCoefficient
   rw [hrotX, hrotY]
   module
