@@ -2,8 +2,8 @@
 
 This document defines how QuantumTheory code transports complex expressions into real-valued
 physical APIs. It complements the density-state architecture. CI protects the source architecture,
-build, lints, and kernel-level correctness checks; `scripts/CheckArchitecture.lean` remains available
-as a focused local audit of compiled semantic relationships without prescribing proof bodies.
+build, lints, and kernel-level correctness checks; compiled semantic/routing inspection remains
+available through focused local audits.
 
 ## Three distinct operations
 
@@ -54,9 +54,9 @@ In particular, a `HasSum` over complex coercions of real terms can be transporte
 losslessly, for example with `exact_mod_cast`. Conversely, a real `HasSum` may be embedded into `ℂ`
 through `Complex.ofRealCLM` when a complex equality is the natural target.
 
-## Compiled architecture audit
+## Compiled architecture audits
 
-The optional compiled audit inspects the stable typed bridge rather than the text of its
+The optional local architecture audit inspects selected typed bridges rather than the text of their
 implementation. It can check canonical ownership and semantic relationships for endpoints including:
 
 - `QuantumTheory.expValueSelfAdjoint` and `QuantumTheory.coe_observableExpValue`;
@@ -69,6 +69,11 @@ For selected bridge theorems, the compiled declaration type can be checked to me
 complex and real/nonnegative APIs it relates. Declaration ownership is resolved through the Lean
 environment, not by recognizing `def`/`theorem` syntax in source text. These checks are useful when
 reviewing a focused architecture refactor, but are not permanent pull-request regression guards.
+
+The separate `scripts/CheckSemanticBoundaries.lean` local audit is deliberately broader and less
+routing-sensitive. It can inspect public-type boundaries such as dimension independence and upward
+module dependencies without requiring a particular bridge theorem to remain in a particular file or
+mention a particular helper.
 
 This deliberately does **not** make `.re`, `Complex.re`, `Complex.reCLM`, `exact_mod_cast`, or any
 other proof helper into a CI token rule. Proofs are free to change as long as the mathematical API
@@ -86,5 +91,6 @@ codomain:
 
 If none applies, the public API should remain complex-valued rather than discard information.
 
-Durable guarantees should live in the Lean API or in structural source architecture checks. Use the
-compiled audit as a focused refactor tool rather than freezing one declaration layout as CI policy.
+Durable semantic guarantees should live in the Lean API. Use the compiled semantic-boundary and
+architecture audits as focused refactor tools rather than freezing one historical declaration or
+routing layout as CI policy.

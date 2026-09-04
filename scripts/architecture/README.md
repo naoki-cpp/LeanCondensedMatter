@@ -24,17 +24,28 @@ python3 scripts/check_architecture.py
 
 Focused local scopes are available as `--scope core` and `--scope second-quantization`.
 
-After a successful build, additional compiled analysis is available locally when a refactor needs it:
+After a successful build, two compiled architecture tools are available for focused local work:
 
 ```bash
+lake env lean scripts/CheckSemanticBoundaries.lean
 lake env lean scripts/CheckArchitecture.lean
+```
+
+`CheckSemanticBoundaries.lean` checks elaborated public declaration types for broad properties such
+as dimension independence and forbidden upward dependencies. It is deliberately local-only: these
+checks are useful while reviewing or carrying out a refactor, but they do not become bespoke CI
+regression machinery.
+
+`CheckArchitecture.lean` handles more declaration-specific questions such as exact ownership,
+namespace routing, and bridge-specific type-shape checks. It is also intentionally not part of the
+pull-request gate.
+
+Other compiled checks can be run locally as needed:
+
+```bash
 lake env lean scripts/CheckNoSorry.lean
 lake lint
 ```
-
-`CheckArchitecture.lean` is intentionally not part of the pull-request gate. Declaration-by-declaration
-ownership and semantic routing checks are useful during focused refactors, but they should not turn
-past layouts into permanent CI regression guards.
 
 ## Declarative source topology
 
@@ -71,26 +82,24 @@ Focused Python checkers are reserved for rules that do not fit the uniform graph
 data shapes. Only checkers explicitly listed in `check_architecture.py` participate in CI; a local
 `check_*.py` script is not enrolled automatically.
 
-Lean owns properties of the elaborated environment. The optional `CheckArchitecture.lean` audit can
-inspect canonical owners, module/namespace relationships, declaration-type dependencies,
-dimension-independent signatures, and typed semantic bridges. Private declarations are normalized
-to their user-facing names before namespace checks.
+Lean owns properties of the elaborated environment. `CheckSemanticBoundaries.lean` provides a
+focused local view of broad public-type boundaries, while `CheckArchitecture.lean` provides a more
+routing-sensitive local audit. Neither is a permanent CI regression guard.
 
 `CheckNoSorry.lean` independently rejects any project declaration whose axioms contain `sorryAx` and
-remains part of CI. Mathematical identities belong in ordinary Lean theorems rather than architecture
-scripts.
+remains part of CI. Mathematical identities and durable semantic guarantees should be expressed in
+ordinary Lean definitions, types, and theorems when possible rather than architecture scripts.
 
 ## Adding or changing a rule
 
 Choose one authoritative mechanism:
 
-1. dependency direction or reachability -> an architecture DAG;
+1. dependency direction or reachability -> an existing architecture DAG;
 2. a required current file, directory, or direct import -> `source_contracts.json`;
-3. a declaration-level semantic investigation for a focused refactor -> `CheckArchitecture.lean`;
-4. a genuinely distinct source layout or syntax invariant -> a focused Python checker.
+3. a broad elaborated public-type investigation for a focused refactor -> `CheckSemanticBoundaries.lean`;
+4. a declaration-level ownership or routing investigation for a focused refactor -> `CheckArchitecture.lean`;
+5. a genuinely distinct source layout or syntax invariant -> a focused Python checker.
 
 Reuse `architecture_audit_common.py` and `architecture_graph_scopes.py` for shared source mechanics.
-Add a focused checker to `check_architecture.py` only when it expresses a durable CI invariant.
-
-Prefer structural invariants over path-by-path regression guards. Do not duplicate the same invariant
-across checkers or freeze proof-helper choices as CI policy.
+Do not turn a one-off historical absence or refactor-specific expectation into a new CI regression
+check. Prefer Lean theorems or type-level guarantees for semantic invariants that must be durable.

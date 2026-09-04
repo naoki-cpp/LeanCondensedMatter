@@ -171,26 +171,8 @@ def checkNamespaceRequirements
             s!"namespace contract `{requirement.id}`: source declaration `{userName}` in module `{declaration.moduleName}` must be under `{requirement.declarationPrefix}`"
   return errors
 
-def exprUsesModulePrefix (snapshot : Snapshot) (expr : Expr) (modulePrefix : Name) : Bool :=
-  expr.getUsedConstants.any fun constName =>
-    match declarationModule? snapshot.env constName with
-    | some moduleName => nameMatchesPrefix moduleName modulePrefix
-    | none => false
-
 def exprUsesConstant (expr : Expr) (expected : Name) : Bool :=
   expr.getUsedConstants.any fun constName => constName == expected
-
-def checkTypeDoesNotDependOn
-    (snapshot : Snapshot) (declName : Name) (forbiddenModulePrefixes : Array Name) : Array String :=
-  match snapshot.declarationType? declName with
-  | none => #[s!"missing compiled declaration `{declName}`"]
-  | some type => Id.run do
-      let mut errors : Array String := #[]
-      for forbiddenPrefix in forbiddenModulePrefixes do
-        if exprUsesModulePrefix snapshot type forbiddenPrefix then
-          errors := errors.push
-            s!"type of `{declName}` depends on forbidden module prefix `{forbiddenPrefix}`"
-      return errors
 
 def checkTypeUsesConstants
     (snapshot : Snapshot) (declName : Name) (requiredConstants : Array Name) : Array String :=
@@ -215,20 +197,6 @@ def checkModuleDeclarationTypesDoNotUseConstants
       if exprUsesConstant type forbidden then
         errors := errors.push
           s!"type of `{userDeclarationName declaration.name}` in `{declaration.moduleName}` uses forbidden semantic dependency `{forbidden}`"
-  return errors
-
-def checkModuleDeclarationTypesDoNotDependOn
-    (snapshot : Snapshot) (modulePrefixes forbiddenModulePrefixes : Array Name) : Array String := Id.run do
-  let mut errors : Array String := #[]
-  for declaration in snapshot.sourceDeclarations do
-    unless modulePrefixes.any (fun modulePrefix =>
-        nameMatchesPrefix declaration.moduleName modulePrefix) do
-      continue
-    let some type := snapshot.declarationType? declaration.name | continue
-    for forbidden in forbiddenModulePrefixes do
-      if exprUsesModulePrefix snapshot type forbidden then
-        errors := errors.push
-          s!"type of `{userDeclarationName declaration.name}` in `{declaration.moduleName}` depends on forbidden module prefix `{forbidden}`"
   return errors
 
 def appendErrors (errors newErrors : Array String) : Array String :=
@@ -430,30 +398,7 @@ private def namespaceRequirements : Array NamespaceRequirement := #[
     declarationPrefix := `SecondQuantization.Fermionic.Validation },
 ]
 
-private def boundedDimensionIndependentModules : Array Name := #[
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence,
-  `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation,
-  `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic,
-  `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation,
-  `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula,
-]
-
-private def modeFoundationModules : Array Name := #[
-  `LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace,
-  `LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis,
-  `LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock,
-  `LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation,
-  `LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace,
-  `LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.Occupation,
-  `LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FockSpace,
-]
-
-private def checkTypedSemanticContracts (snapshot : Snapshot) : Array String := Id.run do
+private def checkTypedRoutingContracts (snapshot : Snapshot) : Array String := Id.run do
   let mut errors : Array String := #[]
   errors := appendErrors errors <| checkTypeUsesConstants snapshot `QuantumTheory.coe_observableExpValue #[
     `QuantumTheory.observableExpValue, `QuantumTheory.expValue]
@@ -467,40 +412,7 @@ private def checkTypedSemanticContracts (snapshot : Snapshot) : Array String := 
   errors := appendErrors errors <| checkTypeUsesConstants snapshot
     `QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian #[`QuantumTheory.Observable]
   errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    boundedDimensionIndependentModules #[`FiniteDimensional, `Fintype]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
     #[`LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws] #[`HasDerivAt]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotDependOn snapshot
-    #[`LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation] #[
-      `LeanCondensedMatter.Analysis.Dyson,
-      `LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotDependOn snapshot
-    #[`LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula] #[
-      `LeanCondensedMatter.QuantumTheory.Entropy]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    modeFoundationModules #[`Fintype, `Finite]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace] #[`DecidableEq]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock] #[
-      `Fintype, `FiniteDimensional]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotDependOn snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Fermionic.Lattice] #[
-      `LeanCondensedMatter.QuantumTheory.LinearResponse,
-      `LeanCondensedMatter.Transport]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion]
-    #[`Fintype]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotDependOn snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion] #[
-      `LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator,
-      `LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperatorAlgebra,
-      `LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge,
-      `LeanCondensedMatter.QuantumTheory.DensityOperator]
-  errors := appendErrors errors <| checkModuleDeclarationTypesDoNotDependOn snapshot
-    #[`LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator] #[
-      `LeanCondensedMatter.QuantumTheory.Gibbs,
-      `LeanCondensedMatter.QuantumTheory.DensityOperator]
   return errors
 
 def runChecks (snapshot : Snapshot) (checks : Array NamedCheck) : Array String := Id.run do
@@ -529,7 +441,7 @@ private def checks : Array NamedCheck := #[
   { name := "quantum core owners", run := fun s => checkOwnerRequirements s quantumCoreOwnerRequirements },
   { name := "semantic endpoint owners", run := fun s => checkOwnerRequirements s semanticOwnerRequirements },
   { name := "path-owned namespaces", run := fun s => checkNamespaceRequirements s namespaceRequirements },
-  { name := "typed semantic contracts", run := checkTypedSemanticContracts },
+  { name := "typed routing contracts", run := checkTypedRoutingContracts },
 ]
 
 run_cmd do
