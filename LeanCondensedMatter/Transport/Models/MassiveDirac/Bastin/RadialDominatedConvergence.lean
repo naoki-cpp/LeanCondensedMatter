@@ -117,6 +117,7 @@ theorem radialInterbandBastinPairUniformBound_nonneg
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpi := Real.pi_pos.le
   positivity
+
 /-- Constant dominating function after attaching the radial Jacobian on `0 ≤ p ≤ pMax`. -/
 def radialInterbandBastinDominatingConstant
     (e v m radius pMax : ℝ) : ℝ :=
