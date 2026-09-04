@@ -38,20 +38,9 @@ theorem resolventEvolutionStrongLimit_add
   have hsum :=
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x).add
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
-  have hfun :
-      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x + y)) =
-        (fun r : ℝ =>
-          resolventApproximationEvolutionAtScale A hA r t x +
-            resolventApproximationEvolutionAtScale A hA r t y) := by
-    funext r
-    exact (resolventApproximationEvolutionAtScale A hA r t).map_add x y
-  have hsum' :
-      Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x + y)) atTop
-        (𝓝 (resolventEvolutionStrongLimit A hA t x +
-          resolventEvolutionStrongLimit A hA t y)) := by
-    rw [hfun]
-    exact hsum
-  exact tendsto_nhds_unique hxy hsum'
+  exact tendsto_nhds_unique hxy <|
+    hsum.congr' (Eventually.of_forall fun r =>
+      ((resolventApproximationEvolutionAtScale A hA r t).map_add x y).symm)
 
 /-- Complex scalar multiplication passes from the bounded approximants to their strong limit. -/
 theorem resolventEvolutionStrongLimit_smul
@@ -62,17 +51,9 @@ theorem resolventEvolutionStrongLimit_smul
   have hc : Tendsto (fun _ : ℝ => c) atTop (𝓝 c) := tendsto_const_nhds
   have hsmul := hc.smul
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x)
-  have hfun :
-      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (c • x)) =
-        (fun r : ℝ => c • resolventApproximationEvolutionAtScale A hA r t x) := by
-    funext r
-    exact (resolventApproximationEvolutionAtScale A hA r t).map_smul c x
-  have hsmul' :
-      Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (c • x)) atTop
-        (𝓝 (c • resolventEvolutionStrongLimit A hA t x)) := by
-    rw [hfun]
-    exact hsmul
-  exact tendsto_nhds_unique hcx hsmul'
+  exact tendsto_nhds_unique hcx <|
+    hsmul.congr' (Eventually.of_forall fun r =>
+      ((resolventApproximationEvolutionAtScale A hA r t).map_smul c x).symm)
 
 /-- The vectorwise strong limit is a complex linear map. -/
 noncomputable def resolventEvolutionStrongLimitLinearMap
