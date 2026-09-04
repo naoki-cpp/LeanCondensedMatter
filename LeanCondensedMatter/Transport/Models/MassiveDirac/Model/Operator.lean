@@ -47,20 +47,6 @@ noncomputable def currentOperator
     (direction : Direction2) (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (current direction e v)
 
-/-- The bounded velocity is the Dirac velocity scale multiplying the direction Pauli operator. -/
-@[simp] theorem velocityOperator_eq_smul_directionPauli
-    (direction : Direction2) (v : ℝ) :
-    velocityOperator direction v =
-      (((v : ℝ) : ℂ)) • matrixOperator (directionPauli direction) := by
-  change
-    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
-        (velocity direction v) =
-      (((v : ℝ) : ℂ)) •
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
-          (directionPauli direction)
-  unfold velocity
-  exact map_smul _ _ _
-
 /-- The bounded current vertex is electron charge times the bounded velocity in either direction. -/
 @[simp]
 theorem currentOperator_eq_charge_smul_velocityOperator
@@ -70,15 +56,6 @@ theorem currentOperator_eq_charge_smul_velocityOperator
   change φ (current direction e v) = (((-e : ℝ) : ℂ)) • φ (velocity direction v)
   unfold current
   exact map_smul φ _ _
-
-/-- Direction-indexed Pauli form of the physical massive-Dirac charge current. -/
-theorem currentOperator_eq_chargeVelocity_smul_directionPauli
-    (direction : Direction2) (e v : ℝ) :
-    currentOperator direction e v =
-      ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
-        matrixOperator (directionPauli direction) := by
-  rw [currentOperator_eq_charge_smul_velocityOperator,
-    velocityOperator_eq_smul_directionPauli, smul_smul]
 
 /-- Dimensionless in-plane Pauli vertex `α σₓ + β σᵧ` as a bounded operator. -/
 noncomputable def inPlanePauliVertexOperator
@@ -98,9 +75,13 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
         inPlanePauliVertexOperator alpha beta := by
   rw [inPlaneCurrentOperator,
-    currentOperator_eq_chargeVelocity_smul_directionPauli,
-    currentOperator_eq_chargeVelocity_smul_directionPauli]
-  simp [directionPauli, inPlanePauliVertexOperator, smul_add, smul_smul, mul_comm]
+    currentOperator_eq_charge_smul_velocityOperator,
+    currentOperator_eq_charge_smul_velocityOperator]
+  unfold velocityOperator velocity inPlanePauliVertexOperator matrixOperator
+  rw [map_smul, map_smul]
+  simp only [directionPauli]
+  push_cast
+  module
 
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
 theorem hamiltonian_isHermitian (v m px py : ℝ) :
@@ -146,17 +127,6 @@ noncomputable def boundedFreeSystem (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
   hamiltonian := ⟨hamiltonianOperator v m px py, hamiltonianOperator_isSelfAdjoint v m px py⟩
   hbar := hbar
   hbar_pos := hhbar
-
-@[simp]
-theorem boundedFreeSystem_hamiltonian (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
-    (boundedFreeSystem hbar v m px py hhbar).hamiltonian.1 =
-      hamiltonianOperator v m px py :=
-  rfl
-
-@[simp]
-theorem boundedFreeSystem_hbar (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
-    (boundedFreeSystem hbar v m px py hhbar).hbar = hbar :=
-  rfl
 
 end
 
