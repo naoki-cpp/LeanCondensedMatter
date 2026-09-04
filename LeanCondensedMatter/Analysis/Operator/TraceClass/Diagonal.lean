@@ -75,7 +75,8 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     refine Finset.sum_induction (fun i => diagonalTerm b a i)
       (fun A : H →L[ℂ] H => IsCompactOperator ⇑A) ?_ ?_ ?_
     · intro A B hA hB
-      simpa only [ContinuousLinearMap.add_apply] using hA.add hB
+      change IsCompactOperator (fun x : H => A x + B x)
+      exact hA.add hB
     · change IsCompactOperator (fun _ : H => (0 : H))
       exact isCompactOperator_zero
     · intro i _
