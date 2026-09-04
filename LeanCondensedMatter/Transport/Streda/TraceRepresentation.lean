@@ -137,17 +137,7 @@ theorem TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced
           lowerEnergy upperEnergy occupation := by
   unfold regularizedBastinEnergyIntegral regularizedTracedBastinEnergyIntegral
     TracedStredaAnalyticData.toRegularizedStredaIntegralData
-  rw [show
-      (fun energy => occupation energy *
-        (regularizedStredaSurfacePrimitiveTraceDerivative
-            hamiltonian current₁ current₂ energy broadening +
-          regularizedStredaResidualSeaTraceKernel
-            hamiltonian current₁ current₂ energy broadening)) =
-      (fun energy => occupation energy *
-        regularizedBastinTraceIntegrand
-          hamiltonian current₁ current₂ energy broadening) by
-    funext energy
-    rw [regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]]
+  simp_rw [regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
 
 /-- A chosen response becomes a concrete Středa representation once its equality with the
 canonical traced Bastin energy integral is supplied explicitly. -/
