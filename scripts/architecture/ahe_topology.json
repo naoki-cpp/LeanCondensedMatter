@@ -48,10 +48,12 @@
       "id": "massiveDiracBastinLayers",
       "sourceRoots": [
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin"
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin"
+        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin"
       ],
       "layers": [
         {
@@ -109,7 +111,7 @@
         {
           "id": "bastinZeroTemperature",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.ZeroTemperaturePair"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.ZeroTemperaturePair"
           ]
         }
       ],
