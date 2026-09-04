@@ -46,10 +46,15 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       simp [FreeThermalField.operatorPeelSum, operatorPeelTerms,
         Common.BlochDeDominicis.operatorPeelSum]
   | cons D t ih =>
+      have hfun :
+          (fun A : FockSpace Mode →ₗ[ℂ] FockSpace Mode => D.operator.comp A) =
+            fun A => (LinearMap.compRight ℂ D.operator) A := by
+        rfl
       have hmap :
           ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum =
             D.operator.comp (C₁.operatorPeelTerms t).sum := by
-        simpa using
+        rw [hfun]
+        exact
           (map_list_sum (LinearMap.compRight ℂ D.operator) (C₁.operatorPeelTerms t)).symm
       rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
       unfold FreeThermalField.operatorPeelSum
@@ -111,13 +116,32 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
     ⟨C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j),
       (freeGibbsDomain ε β).smul_mem _
         (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))⟩
-  change (freeGibbsExpectationLinear ε β) (∑ j, terms j) = _
-  rw [map_sum]
-  apply Finset.sum_congr rfl
-  intro j _
-  change freeGibbsExpectation ε β
-      (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) = _
-  rw [freeGibbsExpectation_smul]
+  have hcoe :
+      ((↑(∑ j, terms j) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) =
+        ∑ j : Fin l.length,
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
+    rw [Submodule.coe_sum]
+    rfl
+  rw [← hcoe]
+  have hmap :
+      freeGibbsExpectation ε β
+          ((∑ j, terms j : freeGibbsDomain ε β).1) =
+        ∑ j, freeGibbsExpectation ε β (terms j).1 := by
+    change (freeGibbsExpectationLinear ε β) (∑ j, terms j) =
+      ∑ j, (freeGibbsExpectationLinear ε β) (terms j)
+    simpa using map_sum (freeGibbsExpectationLinear ε β) terms Finset.univ
+  calc
+    freeGibbsExpectation ε β
+        ((∑ j, terms j : freeGibbsDomain ε β).1) =
+        ∑ j, freeGibbsExpectation ε β (terms j).1 := hmap
+    _ = ∑ j : Fin l.length,
+        C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
+          freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      change freeGibbsExpectation ε β
+          (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) = _
+      rw [freeGibbsExpectation_smul]
 
 end FreeThermalField
 
