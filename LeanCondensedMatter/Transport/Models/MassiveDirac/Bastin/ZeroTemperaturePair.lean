@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
 import Mathlib.Tactic
