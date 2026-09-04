@@ -41,20 +41,6 @@ noncomputable def inPlaneLadderOperatorAction
   inPlaneLadderXCoefficient x y alpha beta • matrixOperator sigmaX +
     inPlaneLadderYCoefficient x y alpha beta • matrixOperator sigmaY
 
-@[simp] theorem inPlaneLadderOperatorAction_sigmaX
-    (x y : ℂ) :
-    inPlaneLadderOperatorAction x y 1 0 =
-      x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
-  simp [inPlaneLadderOperatorAction, inPlaneLadderXCoefficient,
-    inPlaneLadderYCoefficient]
-
-@[simp] theorem inPlaneLadderOperatorAction_sigmaY
-    (x y : ℂ) :
-    inPlaneLadderOperatorAction x y 0 1 =
-      (-y) • matrixOperator sigmaX + x • matrixOperator sigmaY := by
-  simp [inPlaneLadderOperatorAction, inPlaneLadderXCoefficient,
-    inPlaneLadderYCoefficient]
-
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
   (1 - x) ^ 2 + y ^ 2
@@ -134,50 +120,6 @@ theorem inPlaneLadderSolvedVertex_fixedPoint
             (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaY) := by
       module
 
-/-- Any scalar coefficient pair satisfying the same two fixed-point equations has the solved
-longitudinal coefficient. -/
-theorem eq_inPlaneLadderSolvedXCoefficient_of_fixedPoint
-    (x y alpha beta : ℂ)
-    (hdet : inPlaneLadderDeterminant x y ≠ 0)
-    (hX : alpha = 1 + inPlaneLadderXCoefficient x y alpha beta)
-    (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
-    alpha = inPlaneLadderSolvedXCoefficient x y := by
-  unfold inPlaneLadderXCoefficient at hX
-  unfold inPlaneLadderYCoefficient at hY
-  have hxlin : (1 - x) * alpha + y * beta = 1 := by
-    linear_combination hX
-  have hylin : -y * alpha + (1 - x) * beta = 0 := by
-    linear_combination hY
-  have halphaRaw : ((1 - x) ^ 2 + y ^ 2) * alpha = 1 - x := by
-    linear_combination (1 - x) * hxlin - y * hylin
-  have halpha : inPlaneLadderDeterminant x y * alpha = 1 - x := by
-    simpa [inPlaneLadderDeterminant] using halphaRaw
-  unfold inPlaneLadderSolvedXCoefficient
-  apply (eq_div_iff hdet).2
-  simpa [mul_comm] using halpha
-
-/-- Any scalar coefficient pair satisfying the same two fixed-point equations has the solved
-orientation-sensitive transverse coefficient. -/
-theorem eq_inPlaneLadderSolvedYCoefficient_of_fixedPoint
-    (x y alpha beta : ℂ)
-    (hdet : inPlaneLadderDeterminant x y ≠ 0)
-    (hX : alpha = 1 + inPlaneLadderXCoefficient x y alpha beta)
-    (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
-    beta = inPlaneLadderSolvedYCoefficient x y := by
-  unfold inPlaneLadderXCoefficient at hX
-  unfold inPlaneLadderYCoefficient at hY
-  have hxlin : (1 - x) * alpha + y * beta = 1 := by
-    linear_combination hX
-  have hylin : -y * alpha + (1 - x) * beta = 0 := by
-    linear_combination hY
-  have hbetaRaw : ((1 - x) ^ 2 + y ^ 2) * beta = y := by
-    linear_combination y * hxlin + (1 - x) * hylin
-  have hbeta : inPlaneLadderDeterminant x y * beta = y := by
-    simpa [inPlaneLadderDeterminant] using hbetaRaw
-  unfold inPlaneLadderSolvedYCoefficient
-  apply (eq_div_iff hdet).2
-  simpa [mul_comm] using hbeta
-
 /-- The coefficient representation of the in-plane fixed point is unique under the same determinant
 hypothesis. -/
 theorem inPlaneLadder_fixedPoint_coefficients_unique
@@ -187,8 +129,27 @@ theorem inPlaneLadder_fixedPoint_coefficients_unique
     (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
     alpha = inPlaneLadderSolvedXCoefficient x y ∧
       beta = inPlaneLadderSolvedYCoefficient x y := by
-  exact ⟨eq_inPlaneLadderSolvedXCoefficient_of_fixedPoint x y alpha beta hdet hX hY,
-    eq_inPlaneLadderSolvedYCoefficient_of_fixedPoint x y alpha beta hdet hX hY⟩
+  unfold inPlaneLadderXCoefficient at hX
+  unfold inPlaneLadderYCoefficient at hY
+  have hxlin : (1 - x) * alpha + y * beta = 1 := by
+    linear_combination hX
+  have hylin : -y * alpha + (1 - x) * beta = 0 := by
+    linear_combination hY
+  have halphaRaw : ((1 - x) ^ 2 + y ^ 2) * alpha = 1 - x := by
+    linear_combination (1 - x) * hxlin - y * hylin
+  have hbetaRaw : ((1 - x) ^ 2 + y ^ 2) * beta = y := by
+    linear_combination y * hxlin + (1 - x) * hylin
+  have halpha : inPlaneLadderDeterminant x y * alpha = 1 - x := by
+    simpa [inPlaneLadderDeterminant] using halphaRaw
+  have hbeta : inPlaneLadderDeterminant x y * beta = y := by
+    simpa [inPlaneLadderDeterminant] using hbetaRaw
+  constructor
+  · unfold inPlaneLadderSolvedXCoefficient
+    apply (eq_div_iff hdet).2
+    simpa [mul_comm] using halpha
+  · unfold inPlaneLadderSolvedYCoefficient
+    apply (eq_div_iff hdet).2
+    simpa [mul_comm] using hbeta
 
 @[simp] theorem inPlaneLadderSolvedYCoefficient_zero
     (x : ℂ) :

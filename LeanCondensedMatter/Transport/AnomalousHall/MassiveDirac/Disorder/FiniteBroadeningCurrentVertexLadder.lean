@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.InPlaneLadder
 
 set_option linter.style.header false
 
@@ -36,25 +37,12 @@ private theorem inPlaneLadderRotatedSolvedVertex_fixedPoint
       x * (-inPlaneLadderSolvedYCoefficient x y) -
           y * inPlaneLadderSolvedXCoefficient x y =
         -inPlaneLadderSolvedYCoefficient x y := by
-    calc
-      x * (-inPlaneLadderSolvedYCoefficient x y) -
-          y * inPlaneLadderSolvedXCoefficient x y =
-        -(y * inPlaneLadderSolvedXCoefficient x y +
-          x * inPlaneLadderSolvedYCoefficient x y) := by ring
-      _ = -inPlaneLadderSolvedYCoefficient x y := by rw [← hY]
+    linear_combination hY
   have hrotY :
       y * (-inPlaneLadderSolvedYCoefficient x y) +
           x * inPlaneLadderSolvedXCoefficient x y =
         inPlaneLadderSolvedXCoefficient x y - 1 := by
-    calc
-      y * (-inPlaneLadderSolvedYCoefficient x y) +
-          x * inPlaneLadderSolvedXCoefficient x y =
-        x * inPlaneLadderSolvedXCoefficient x y -
-          y * inPlaneLadderSolvedYCoefficient x y := by ring
-      _ = (1 +
-          (x * inPlaneLadderSolvedXCoefficient x y -
-            y * inPlaneLadderSolvedYCoefficient x y)) - 1 := by ring
-      _ = inPlaneLadderSolvedXCoefficient x y - 1 := by rw [← hX]
+    linear_combination -hX
   unfold inPlaneLadderOperatorAction inPlaneLadderXCoefficient inPlaneLadderYCoefficient
   rw [hrotX, hrotY]
   module
@@ -97,17 +85,6 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVertex
       v m probeEnergy broadening disorderStrength hbar pMax)
     (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax)
-
-/-- The model-specific solved vertex has the canonical solved `σₓ`/`σᵧ` coefficients. -/
-theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_eq
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedVertex
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaX +
-        finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaY := by
-  rfl
 
 /-- The normalized finite-`η` Born-Dyson vertex solves `Γ = σₓ + L(Γ)` exactly whenever the
 specialized two-component determinant is nonzero. -/
@@ -212,7 +189,9 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_fixedPoint
     (v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonLadderSolvedVertex
       v m probeEnergy broadening 0 hbar pMax = matrixOperator sigmaX := by
-  simp [finiteCutoffContinuumBornDysonLadderSolvedVertex_eq]
+  simp [finiteCutoffContinuumBornDysonLadderSolvedVertex,
+    inPlaneLadderSolvedVertex, inPlaneLadderSolvedXCoefficient,
+    inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :

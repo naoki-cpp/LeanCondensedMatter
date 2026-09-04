@@ -35,28 +35,6 @@ noncomputable section
 open Filter
 open QuantumTheory.Transport
 
-private theorem continuumBornScalarSelfEnergyCoefficient_im_eq
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-        finiteCutoffContinuumBornScalarIntegral
-          side v m probeEnergy broadening pMax)).im =
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
-        (finiteCutoffContinuumBornScalarIntegral
-          side v m probeEnergy broadening pMax).im := by
-  rw [Complex.im_ofReal_mul]
-
-private theorem continuumBornZSelfEnergyCoefficient_im_eq
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-        finiteCutoffContinuumBornZIntegral
-          side v m probeEnergy broadening pMax)).im =
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
-        (finiteCutoffContinuumBornZIntegral
-          side v m probeEnergy broadening pMax).im := by
-  rw [Complex.im_ofReal_mul]
-
 /-- The common damping magnitude from the physical-momentum continuum measure simplifies to
 `disorderStrength / (4 ℏ² v²)`. -/
 theorem continuumBornDampingPrefactor_eq
@@ -93,8 +71,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
     (nhdsWithin 0 (Set.Ioi 0))
     (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar))).mul hchannel).congr' ?_
   filter_upwards with broadening
-  exact (continuumBornScalarSelfEnergyCoefficient_im_eq
-    side v m probeEnergy broadening disorderStrength hbar pMax).symm
+  rw [Complex.im_ofReal_mul]
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the `σ_z` Pauli
 coefficient appearing in the continuum Born self-energy has the side-indexed metallic limit. -/
@@ -121,8 +98,7 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
     (nhdsWithin 0 (Set.Ioi 0))
     (nhds (disorderStrength * continuumBornAngularMeasurePrefactor hbar))).mul hchannel).congr' ?_
   filter_upwards with broadening
-  exact (continuumBornZSelfEnergyCoefficient_im_eq
-    side v m probeEnergy broadening disorderStrength hbar pMax).symm
+  rw [Complex.im_ofReal_mul]
 
 end
 

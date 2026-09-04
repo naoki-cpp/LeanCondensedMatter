@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexAngular
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.InPlaneLadder
 
 set_option linter.style.header false
 
@@ -122,29 +121,6 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient_eq
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
     finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient
   rw [intervalIntegral.integral_const_mul]
-
-/-- Substituting the normalized finite-`η` Born-Dyson coefficients into the canonical in-plane
-ladder action gives the repository-oriented rotation `[[X,-Y],[Y,X]]`. -/
-theorem finiteCutoffContinuumBornDyson_inPlaneLadderOperatorAction_eq
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (alpha beta : ℂ) :
-    inPlaneLadderOperatorAction
-        (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax)
-        alpha beta =
-      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax * alpha -
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax * beta) •
-          matrixOperator sigmaX +
-        (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-            v m probeEnergy broadening disorderStrength hbar pMax * alpha +
-          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-            v m probeEnergy broadening disorderStrength hbar pMax * beta) •
-          matrixOperator sigmaY := by
-  rfl
 
 @[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient_zero_cutoff
     (v m probeEnergy broadening disorderStrength hbar : ℝ) :

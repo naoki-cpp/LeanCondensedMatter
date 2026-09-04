@@ -95,24 +95,6 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
   rw [henergy]
   ring
 
-private theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
-    (v m fermiEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmF : |m| ≤ fermiEnergy)
-    (hbroadening : broadening ≠ 0) :
-    (finiteCutoffContinuumBornRetardedUpperBandFermiProjection
-        v m fermiEnergy broadening disorderStrength hbar pMax).im =
-      (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
-          (finiteCutoffContinuumBornScalarIntegral
-            .retarded v m fermiEnergy broadening pMax).im +
-        (m / fermiEnergy) *
-          ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
-            (finiteCutoffContinuumBornZIntegral
-              .retarded v m fermiEnergy broadening pMax).im) := by
-  rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
-    v m fermiEnergy broadening disorderStrength hbar pMax
-    hvelocity hmF hbroadening]
-  simp
-
 /-- Physical-momentum-measure Born damping energy of the metallic upper band. -/
 def continuumBornUpperBandDampingEnergy
     (v m fermiEnergy disorderStrength hbar : ℝ) : ℝ :=
@@ -199,10 +181,10 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
                 (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi))))) := by
     refine hsum.congr' ?_
     filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-    simpa [Complex.im_ofReal_mul] using
-      (finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_eq
-        v m fermiEnergy broadening disorderStrength hbar pMax
-        hvelocity hmF.le (ne_of_gt hbroadening)).symm
+    rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
+      v m fermiEnergy broadening disorderStrength hbar pMax
+      hvelocity hmF.le (ne_of_gt hbroadening)]
+    simp
   have htarget :
       (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
