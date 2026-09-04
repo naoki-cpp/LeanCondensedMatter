@@ -46,14 +46,9 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       simp [FreeThermalField.operatorPeelSum, operatorPeelTerms,
         Common.BlochDeDominicis.operatorPeelSum]
   | cons D t ih =>
-      have hfun :
-          (fun A : FockSpace Mode →ₗ[ℂ] FockSpace Mode => D.operator.comp A) =
-            fun A => (LinearMap.compRight ℂ D.operator) A := by
-        rfl
       have hmap :
           ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum =
             D.operator.comp (C₁.operatorPeelTerms t).sum := by
-        rw [hfun]
         exact
           (map_list_sum (LinearMap.compRight ℂ D.operator) (C₁.operatorPeelTerms t)).symm
       rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
