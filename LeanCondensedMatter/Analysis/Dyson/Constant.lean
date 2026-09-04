@@ -28,7 +28,10 @@ equation. -/
 theorem hasDerivAt_constantExponential (K : A) (lam : ℂ) (τ : ℝ) :
     HasDerivAt (constantExponential K lam)
       (-(lam • (K * constantExponential K lam τ))) τ := by
-  simpa only [constantExponential, smul_neg, smul_assoc, neg_mul, smul_mul_assoc] using
+  change HasDerivAt
+    (fun u : ℝ => NormedSpace.exp (-(((u : ℝ) • lam) • K)))
+    (-(lam • (K * NormedSpace.exp (-(((τ : ℝ) • lam) • K))))) τ
+  simpa only [smul_neg, smul_assoc, neg_mul, smul_mul_assoc] using
     (hasDerivAt_exp_smul_const' (-(lam • K)) τ)
 
 /-- The constant exponential candidate is continuous in time. -/
