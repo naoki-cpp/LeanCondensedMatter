@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Tactic
@@ -117,7 +117,6 @@ theorem radialInterbandBastinPairUniformBound_nonneg
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpi := Real.pi_pos.le
   positivity
-
 /-- Constant dominating function after attaching the radial Jacobian on `0 ≤ p ≤ pMax`. -/
 def radialInterbandBastinDominatingConstant
     (e v m radius pMax : ℝ) : ℝ :=
