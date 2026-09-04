@@ -108,13 +108,12 @@ theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
             (purePointTransitionWeight system data A B mn)) := by
-  have hfun :
-      finitePurePointPhysicalSusceptibilityExtension system data A B =
-        fun omega eta =>
-          Finset.univ.sum fun mn : ι × ι =>
-            lehmannTerm system.hbar omega eta
-              (data.energy mn.1 - data.energy mn.2)
-              (purePointTransitionWeight system data A B mn) := by
+  let F : ℝ → ℝ → ℂ := fun omega eta =>
+    Finset.univ.sum fun mn : ι × ι =>
+      lehmannTerm system.hbar omega eta
+        (data.energy mn.1 - data.energy mn.2)
+        (purePointTransitionWeight system data A B mn)
+  have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     exact finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
       system data A B omega eta
