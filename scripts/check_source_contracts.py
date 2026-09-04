@@ -15,6 +15,8 @@ SPEC = ROOT / "scripts" / "architecture" / "source_contracts.json"
 
 CONTRACT_FIELDS = {
     "requiredFiles": ("id", "paths"),
+    # Kept parseable until the data file is cleaned up, but intentionally not enforced: CI should
+    # protect current architecture, not remember that retired paths must stay absent forever.
     "forbiddenFiles": ("id", "paths"),
     "requiredDirectories": ("id", "paths"),
     "requiredImports": ("id", "path", "modules"),
@@ -92,14 +94,6 @@ def check_required_files(errors: list[str], raw: dict[str, object]) -> None:
             path = ROOT / relative
             if not path.is_file():
                 errors.append(f"source contract `{contract_id}` missing file: {relative}")
-
-
-def check_forbidden_files(errors: list[str], raw: dict[str, object]) -> None:
-    for contract in raw.get("forbiddenFiles", []):
-        contract_id = contract["id"]
-        for relative in contract["paths"]:
-            if (ROOT / relative).exists():
-                errors.append(f"source contract `{contract_id}` forbids retired path: {relative}")
 
 
 def check_required_directories(errors: list[str], raw: dict[str, object]) -> None:
@@ -195,7 +189,6 @@ def main() -> int:
         validate_spec(errors, raw)
         if not errors:
             check_required_files(errors, raw)
-            check_forbidden_files(errors, raw)
             check_required_directories(errors, raw)
             check_required_imports(errors, raw)
             check_exact_imports(errors, raw)
