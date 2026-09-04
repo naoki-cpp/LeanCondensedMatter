@@ -41,20 +41,11 @@ theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β
   have hdouble : Summable (fun n : Occupation Mode =>
       ∑ i, ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
     exact summable_sum fun i (_ : i ∈ Finset.univ) => hinner i
-  convert hdouble using 1
-  funext n
+  refine hdouble.congr fun n => ?_
   rw [particleNumber_eq_sum_univ]
   push_cast
-  calc
-    (∑ i, (n i : ℝ)) ^ 2 * boltzmannWeight ε β n =
-        ((∑ i, (n i : ℝ)) * (∑ j, (n j : ℝ))) * boltzmannWeight ε β n := by rw [pow_two]
-    _ = (∑ i, ∑ j, (n i : ℝ) * (n j : ℝ)) * boltzmannWeight ε β n := by
-      rw [Finset.sum_mul_sum]
-    _ = ∑ i, ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n := by
-      rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [Finset.sum_mul]
+  rw [pow_two, Finset.sum_mul_sum, Finset.sum_mul]
+  simp_rw [Finset.sum_mul]
 
 end
 end Bosonic

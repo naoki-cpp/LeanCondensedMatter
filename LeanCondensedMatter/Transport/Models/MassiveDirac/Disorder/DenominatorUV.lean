@@ -64,12 +64,10 @@ theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
       (fun p : ℝ =>
         ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
       atTop atTop := by
-  have hpoly := tendsto_continuumBornRadialNormPolynomial_atTop
-    v m probeEnergy regulator hvelocity
-  have hsqrt := Real.tendsto_sqrt_atTop.comp hpoly
-  refine hsqrt.congr' (Eventually.of_forall fun p => ?_)
-  exact (pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
-    v m probeEnergy regulator p).symm
+  simpa [Function.comp_def, pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt] using
+    Real.tendsto_sqrt_atTop.comp
+      (tendsto_continuumBornRadialNormPolynomial_atTop
+        v m probeEnergy regulator hvelocity)
 
 /-- The logarithm carrying the cutoff dependence of the arbitrary-regulator Born denominator real
 part tends to `+∞`. -/

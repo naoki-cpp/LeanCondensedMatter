@@ -81,10 +81,9 @@ theorem continuous_commutatorSusceptibility_timeDifference
       (heisenbergEvolution system A τ * B -
         B * heisenbergEvolution system A τ)) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
-  have hprefactor : Continuous (fun _ : ℝ =>
-      Complex.I / (system.hbar : ℂ)) :=
-    continuous_const
-  convert hprefactor.mul hexpect using 1
+  convert
+    ((continuous_const : Continuous (fun _ : ℝ => Complex.I / (system.hbar : ℂ))).mul hexpect)
+    using 1
   funext τ
   simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero]
 
