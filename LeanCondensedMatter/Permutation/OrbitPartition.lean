@@ -51,31 +51,15 @@ private theorem cycleDefect_eq_sum_cycleFactorsFinset (σ : Perm α) :
     simp
   have hcard : σ.cycleType.card = σ.cycleFactorsFinset.card := by
     simp [Equiv.Perm.cycleType_def]
-  have hpred : ∀ s : Finset (Perm α), s ⊆ σ.cycleFactorsFinset →
-      (∑ c ∈ s, (c.support.card - 1)) =
-        (∑ c ∈ s, c.support.card) - s.card := by
-    intro s hs
-    induction s using Finset.induction_on with
-    | empty => simp
-    | @insert c s hc ih =>
-        have hc_mem : c ∈ σ.cycleFactorsFinset := hs (by simp)
-        have hc_cycle : c.IsCycle := (Equiv.Perm.mem_cycleFactorsFinset_iff.1 hc_mem).1
-        have hc_one : 1 ≤ c.support.card := (hc_cycle.two_le_card_support).trans' (by omega)
-        have hs_sub : s ⊆ σ.cycleFactorsFinset := by
-          intro d hd
-          exact hs (by simp [hd])
-        have ih' := ih hs_sub
-        have hs_card_le : s.card ≤ ∑ d ∈ s, d.support.card := by
-          calc
-            s.card = ∑ _d ∈ s, 1 := by simp
-            _ ≤ ∑ d ∈ s, d.support.card := by
-              exact Finset.sum_le_sum fun d hd =>
-                (Equiv.Perm.mem_cycleFactorsFinset_iff.1 (hs_sub hd)).1.two_le_card_support.trans' (by omega)
-        simp only [Finset.sum_insert hc, Finset.card_insert_of_notMem hc]
-        rw [ih']
-        omega
-  rw [cycleDefect, Equiv.Perm.sum_cycleType, hcard, ← hsum, ← hpred σ.cycleFactorsFinset]
-  exact subset_rfl
+  have hpred :
+      (∑ c ∈ σ.cycleFactorsFinset, (c.support.card - 1)) =
+        (∑ c ∈ σ.cycleFactorsFinset, c.support.card) - σ.cycleFactorsFinset.card := by
+    simpa using
+      (Finset.sum_tsub_distrib σ.cycleFactorsFinset
+        (f := fun c : Perm α => c.support.card) (g := fun _ => 1)
+        (fun c hc =>
+          (Equiv.Perm.mem_cycleFactorsFinset_iff.1 hc).1.two_le_card_support.trans' (by omega)))
+  rw [cycleDefect, Equiv.Perm.sum_cycleType, hcard, ← hsum, ← hpred]
 
 /-- Two points lie in the same block exactly when they are in the same permutation orbit. -/
 theorem mem_part_orbitFinpartition_iff (σ : Perm α) [DecidableRel σ.SameCycle] (a b : α) :
