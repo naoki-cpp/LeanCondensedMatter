@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBorn
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
 
@@ -453,33 +452,6 @@ massive-Dirac Pauli Green operator. -/
     finiteCutoffContinuumBornEffectiveMass, spectralParameter,
     pauliGreenDenominator, pauliGreenDenominatorOfRegulator,
     matrixOperator, map_add, map_smul]
-
-/-- Pointwise longitudinal RA trace channel with finite external broadening retained in both
-Born-Dyson Green operators and an arbitrary supplied source/dressed vertex. -/
-noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedTraceKernel
-    (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (dressedVertex : DiracHilbert →L[ℂ] DiracHilbert) : ℂ :=
-  retardedAdvancedVertexTraceKernel
-    (currentOperator .x e v)
-    (finiteCutoffContinuumBornDysonGreenOperator
-      .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
-    dressedVertex
-    (finiteCutoffContinuumBornDysonGreenOperator
-      .advanced v m px py probeEnergy broadening disorderStrength hbar pMax)
-
-/-- The finite-`η` Born-Dyson RA channel reduces exactly to the clean supplied-Green RA channel when
-the disorder strength is zero. -/
-@[simp] theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedTraceKernel_zero_disorder
-    (e v m px py probeEnergy broadening hbar pMax : ℝ)
-    (dressedVertex : DiracHilbert →L[ℂ] DiracHilbert) :
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedTraceKernel
-        e v m px py probeEnergy broadening 0 hbar pMax dressedVertex =
-      retardedAdvancedVertexTraceKernel
-        (currentOperator .x e v)
-        (pauliGreenOperator .retarded v m px py probeEnergy broadening)
-        dressedVertex
-        (pauliGreenOperator .advanced v m px py probeEnergy broadening) := by
-  simp [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedTraceKernel]
 
 end
 

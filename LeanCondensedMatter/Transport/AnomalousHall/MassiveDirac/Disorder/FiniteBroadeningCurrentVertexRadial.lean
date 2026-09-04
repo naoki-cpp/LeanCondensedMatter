@@ -6,22 +6,12 @@ set_option linter.style.header false
 # Finite-broadening Born-Dyson radial current rung
 
 This module integrates the fixed-radius finite-external-broadening Born-Dyson in-plane rung over
-radial momentum and attaches the continuum scalar-disorder line and physical momentum measure.
+radial momentum. The angular coefficients already contain the full `2π` angle integral, so this
+layer attaches only the polar Jacobian `p dp`, one scalar-disorder line, and the physical momentum
+measure `momentumMeasurePrefactor hbar`.
 
-The angular coefficients imported from `FiniteBroadeningCurrentVertexAngular.lean` already contain
-the full `2π` polar-angle factor.  The radial layer therefore contributes only the polar Jacobian
-`p dp`, and the normalized ladder coefficient uses
-
-```text
-disorderStrength * momentumMeasurePrefactor hbar
-```
-
-exactly once.  In particular, `continuumBornAngularMeasurePrefactor hbar` is not used here because
-that would count the angular `2π` a second time.
-
-The resulting normalized coefficient pair is consumed directly by the existing
-`inPlaneLadderOperatorAction`; the fixed-point solve, Kubo/Středa insertion, and broadening/disorder
-limits remain downstream.
+The resulting normalized coefficient pair is consumed by the in-plane ladder algebra. Fixed-point
+solving and conductivity insertion remain downstream.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -32,51 +22,20 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Finite-`η` radial `X` integrand after the full-angle Born-Dyson reduction, including only the
-polar Jacobian `p dp`. -/
-def finiteCutoffContinuumBornDysonRetardedAdvancedRadialXIntegrand
+/-- Normalized finite-`η` radial `X` current-rung integrand. The angular `2π` is already included
+upstream, so the normalization attaches the scalar-disorder line and `d²p/(2πℏ)²` prefactor exactly
+once. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (p : ℂ) *
+  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
       v m p probeEnergy broadening disorderStrength hbar pMax
 
-/-- Finite-`η` radial orientation-sensitive `Y` integrand after the full-angle Born-Dyson reduction,
-including only the polar Jacobian `p dp`. -/
-def finiteCutoffContinuumBornDysonRetardedAdvancedRadialYIntegrand
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (p : ℂ) *
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
-      v m p probeEnergy broadening disorderStrength hbar pMax
-
-/-- Finite-cutoff radial `X` coefficient before the external scalar-disorder line and physical
-momentum-measure prefactor are attached. -/
-noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  ∫ p in (0 : ℝ)..pMax,
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialXIntegrand
-      v m p probeEnergy broadening disorderStrength hbar pMax
-
-/-- Finite-cutoff radial orientation-sensitive `Y` coefficient before the external scalar-disorder
-line and physical momentum-measure prefactor are attached. -/
-noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  ∫ p in (0 : ℝ)..pMax,
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialYIntegrand
-      v m p probeEnergy broadening disorderStrength hbar pMax
-
-/-- Normalized finite-`η` radial `X` current-rung integrand.  The angular `2π` is already included
-upstream, so only the scalar-disorder line and `d²p/(2πℏ)²` prefactor are attached here. -/
-def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialXIntegrand
-      v m p probeEnergy broadening disorderStrength hbar pMax
-
-/-- Normalized finite-`η` radial orientation-sensitive `Y` current-rung integrand. -/
+/-- Normalized finite-`η` orientation-sensitive radial `Y` current-rung integrand. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialYIntegrand
+  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
       v m p probeEnergy broadening disorderStrength hbar pMax
 
 /-- Normalized finite-cutoff finite-`η` `X` coefficient supplied to the in-plane ladder. -/
@@ -93,58 +52,6 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoef
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
       v m p probeEnergy broadening disorderStrength hbar pMax
-
-/-- The normalized finite-`η` `X` coefficient contains exactly one scalar-disorder factor and one
-physical momentum-measure prefactor multiplying the radial Green-product coefficient. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient_eq_prefactor_mul_radial
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient
-  rw [intervalIntegral.integral_const_mul]
-
-/-- The normalized finite-`η` `Y` coefficient contains exactly one scalar-disorder factor and one
-physical momentum-measure prefactor multiplying the radial Green-product coefficient. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient_eq_prefactor_mul_radial
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient
-  rw [intervalIntegral.integral_const_mul]
-
-@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient_zero_cutoff
-    (v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient
-      v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedRadialXCoefficient]
-
-@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient_zero_cutoff
-    (v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient
-      v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedRadialYCoefficient]
-
-@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient_zero_cutoff
-    (v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-      v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient]
-
-@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient_zero_cutoff
-    (v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-      v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient]
 
 @[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :

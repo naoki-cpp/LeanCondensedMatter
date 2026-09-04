@@ -11,8 +11,8 @@ set_option linter.style.header false
 /-!
 # Finite disorder transport API
 
-Public umbrella for exact finite disorder ensembles, disorder resolvents/moments, the conditional
-exact averaged-Green/self-energy bridge, the side-indexed first-Born self-energy, reusable
+Public umbrella for exact finite disorder ensembles, arbitrary-regulator disorder resolvents and
+moments, the exact averaged-Green/self-energy bridge, first-Born self-energy, reusable
 retarded-advanced covariance ladder algebra, and the SCBA approximation layer. Canonical
 implementations live under `Transport/Disorder/`.
 -/
