@@ -64,7 +64,12 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined
     exact (resolventEvolutionStrongLimitOperator A hA s).toLinearMap.map_smul_of_tower
       h⁻¹ (resolventEvolutionStrongLimitOperator A hA h (x : H) - (x : H))
   rw [hfun]
-  simpa only [map_smul] using hmapped
+  have hmapgen :
+      resolventEvolutionStrongLimitOperator A hA s ((-I : ℂ) • A x) =
+        (-I : ℂ) • resolventEvolutionStrongLimitOperator A hA s (A x) := by
+    exact (resolventEvolutionStrongLimitOperator A hA s).map_smul _ _
+  rw [hmapgen] at hmapped
+  exact hmapped
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt
