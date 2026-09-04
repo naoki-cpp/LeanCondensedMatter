@@ -82,18 +82,10 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral
       (fun _ : ℝ => (-2 * Complex.I : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-2 * Complex.I)) := tendsto_const_nhds
-  have hprod := hconst.mul hpole
-  apply Metric.tendsto_nhds.2
-  intro ε hε
-  have hclose := (Metric.tendsto_nhds.1 hprod) ε hε
-  have hpositive : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
-      0 < broadening := by
-    change Set.Ioi (0 : ℝ) ∈ nhdsWithin 0 (Set.Ioi 0)
-    exact self_mem_nhdsWithin
-  filter_upwards [hpositive, hclose] with broadening hbroadening hcloseAt
-  rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
-    band e v m px py radius broadening hbroadening.ne']
-  exact hcloseAt
+  refine (hconst.mul hpole).congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+  exact (targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
+    band e v m px py radius broadening hbroadening.ne').symm
 
 end
 
