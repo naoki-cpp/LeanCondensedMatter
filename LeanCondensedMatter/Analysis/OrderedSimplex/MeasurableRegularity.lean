@@ -113,14 +113,9 @@ theorem MeasurableLocallyBounded.mul {n : ℕ} {f g : (Fin n → ℝ) → ℂ}
 theorem MeasurableLocallyBounded.finsetProd {ι : Type*} {n : ℕ} (s : Finset ι)
     (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
     MeasurableLocallyBounded (fun x => ∏ i ∈ s, f i x) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using measurableLocallyBounded_const (n := n) 1
-  | @insert a s ha ih =>
-      have hprod : MeasurableLocallyBounded (fun x => ∏ i ∈ s, f i x) :=
-        ih fun i hi => hf i (Finset.mem_insert_of_mem hi)
-      have hcons := (hf a (Finset.mem_insert_self a s)).mul hprod
-      simpa [Finset.prod_insert ha] using hcons
+  simp_rw [← Finset.prod_apply]
+  exact Finset.prod_induction f MeasurableLocallyBounded
+    (fun _ _ ha hb => ha.mul hb) (measurableLocallyBounded_const (n := n) 1) hf
 
 /-- Fixing the outermost finite coordinate preserves measurable local boundedness. -/
 theorem MeasurableLocallyBounded.finCons {n : ℕ}

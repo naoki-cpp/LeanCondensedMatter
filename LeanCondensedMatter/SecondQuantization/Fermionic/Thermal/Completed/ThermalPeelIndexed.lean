@@ -107,10 +107,9 @@ theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
         (L.map (purePointGibbsDensityOperator completedOccupationHilbertBasis
           (fermionEnergy ε) β hsum).expectation).sum := by
     intro L
-    induction L with
-    | nil => simp
-    | cons A T ih =>
-        rw [List.sum_cons, map_add, List.map_cons, List.sum_cons, ih]
+    exact map_list_sum
+      (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation L
   rw [thermalPeelSum_eq_thermalPeelTerms_sum, thermalPeelTerms_eq_ofFn, hmap,
     List.map_ofFn, List.sum_ofFn]
   apply Finset.sum_congr rfl
