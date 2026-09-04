@@ -74,8 +74,13 @@ theorem sourceCoupled_responseIntegral_eq
             expectation
               (heisenbergEvolution system A t * heisenbergEvolution system B s -
                 heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-  rw [show
-      (∫ s in (0 : ℝ)..t,
+  let g : ℝ → ℂ := fun s =>
+    (f s : ℂ) *
+      expectation
+        (heisenbergEvolution system A t * heisenbergEvolution system B s -
+          heisenbergEvolution system B s * heisenbergEvolution system A t)
+  have hfun :
+      (fun s : ℝ =>
         expectation
           (heisenbergEvolution system A t *
               timeDependentInteractionPerturbation system
@@ -83,13 +88,8 @@ theorem sourceCoupled_responseIntegral_eq
             timeDependentInteractionPerturbation system
                 (sourceCoupledPerturbation f B) s *
               heisenbergEvolution system A t)) =
-      ∫ s in (0 : ℝ)..t,
-        -((f s : ℂ) *
-          expectation
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t)) by
-    apply intervalIntegral.integral_congr
-    intro s _
+        fun s => -g s := by
+    funext s
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
     calc
       expectation
@@ -108,13 +108,10 @@ theorem sourceCoupled_responseIntegral_eq
             (heisenbergEvolution system A t * heisenbergEvolution system B s -
               heisenbergEvolution system B s * heisenbergEvolution system A t) := by
         exact map_smul expectation.toContinuousLinearMap _ _
-      _ = -((f s : ℂ) *
-          expectation
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-        ring]
-  rw [intervalIntegral.integral_neg]
-  simp
+      _ = -g s := by
+        simp [g]
+  rw [hfun, intervalIntegral.integral_neg]
+  simp [g]
 
 /-- The bounded Kubo formula for the standard source convention
 `H_λ(t) = H₀ - λ f(t) B`. -/
