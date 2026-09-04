@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Tactic
