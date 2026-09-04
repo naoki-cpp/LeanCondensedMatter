@@ -107,7 +107,7 @@ theorem continuumAngularRetardedAdvancedPauliXIntegral_eq
             polarPauliOperator aA bA dA θ by
     funext θ
     rw [pauliGreenOperator_polar_eq, pauliGreenOperator_polar_eq]
-    simp [aR, aA, bR, bA, dR, dA]]
+    simp [aR, aA, bR, bA, dR, dA] ]
   simpa [retardedAdvancedPauliXAngularXCoefficient,
     retardedAdvancedPauliXAngularYCoefficient, aR, aA, dR, dA] using
     (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA (1 : ℂ) 0)
