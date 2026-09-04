@@ -63,9 +63,7 @@ theorem add {F G : ℂ → V} {F' G' : V} {A : ℂ}
     (hF : HasAlgebraicDerivAt F F' A) (hG : HasAlgebraicDerivAt G G' A) :
     HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A := by
   intro ℓ
-  simp only [map_add]
-  apply ((hF ℓ).add (hG ℓ)).congr_of_eventuallyEq
-  exact Filter.Eventually.of_forall (fun _ => rfl)
+  simpa only [map_add] using (hF ℓ).add (hG ℓ)
 
 /-- A complex-linear map transports algebraic derivatives. -/
 theorem map {F : ℂ → V} {F' : V} {A : ℂ}
