@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumBorn
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -202,30 +203,26 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax *
       finiteCutoffContinuumBornDysonGreenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  ext i j
-  fin_cases i <;> fin_cases j
-  all_goals
-    simp [finiteCutoffContinuumBornDysonShiftMatrix,
-      finiteCutoffContinuumBornDysonGreenMatrix,
-      finiteCutoffContinuumBornDysonScalarCoefficient,
-      finiteCutoffContinuumBornDysonXCoefficient,
-      finiteCutoffContinuumBornDysonYCoefficient,
-      finiteCutoffContinuumBornDysonZCoefficient,
-      Matrix.mul_apply, sigmaX, sigmaY, sigmaZ]
-  all_goals
-    field_simp [hden]
-  all_goals
-    simp [finiteCutoffContinuumBornDysonDenominator]
-  all_goals
-    try ring_nf
-  all_goals
-    try rw [hI]
-  all_goals
-    simp
-  all_goals
-    ring
+  have hunit : IsUnit (finiteCutoffContinuumBornDysonShiftMatrix
+      side v m px py probeEnergy broadening disorderStrength hbar pMax).det := by
+    rw [finiteCutoffContinuumBornDysonShiftMatrix_det]
+    exact isUnit_iff_ne_zero.mpr hden
+  rw [show finiteCutoffContinuumBornDysonGreenMatrix
+      side v m px py probeEnergy broadening disorderStrength hbar pMax =
+      (finiteCutoffContinuumBornDysonShiftMatrix
+        side v m px py probeEnergy broadening disorderStrength hbar pMax)⁻¹ by
+    rw [Matrix.inv_def, Ring.inverse_eq_inv, finiteCutoffContinuumBornDysonShiftMatrix_det]
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [finiteCutoffContinuumBornDysonShiftMatrix,
+        finiteCutoffContinuumBornDysonGreenMatrix,
+        finiteCutoffContinuumBornDysonScalarCoefficient,
+        finiteCutoffContinuumBornDysonXCoefficient,
+        finiteCutoffContinuumBornDysonYCoefficient,
+        finiteCutoffContinuumBornDysonZCoefficient,
+        Matrix.adjugate_fin_two, sigmaX, sigmaY, sigmaZ] <;>
+      ring]
+  exact Matrix.mul_nonsing_inv _ hunit
 
 /-- Operator-level Dyson shift corresponding exactly to the existing finite-cutoff Born self-energy. -/
 noncomputable def finiteCutoffContinuumBornDysonShiftOperator
