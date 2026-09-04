@@ -27,17 +27,6 @@ namespace Lattice
 but the site type itself need not be finite. -/
 abbrev LatticeState (Site : Type*) := Common.AlgebraicFock Site
 
-private theorem linearMap_finsetSum_apply
-    {ι V W : Type*} [AddCommMonoid V] [AddCommMonoid W]
-    [Module ℂ V] [Module ℂ W]
-    (s : Finset ι) (F : ι → V →ₗ[ℂ] W) (v : V) :
-    (∑ i ∈ s, F i) v = ∑ i ∈ s, F i v := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert a s ha ih =>
-      simp [ha, ih]
-
 variable {Site : Type*}
 
 /-- The canonical one-particle ket localized at a lattice site. -/
@@ -178,7 +167,7 @@ theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
   by_cases hzx : z = x
   · subst z
     simp only [LinearMap.comp_apply, siteProjector_apply, Finsupp.single_eq_same]
-    rw [linearMap_finsetSum_apply]
+    rw [LinearMap.sum_apply]
     change K.operator (Finsupp.single x c) =
       ∑ y ∈ K.incident x,
         (K.amplitude y x • matrixUnit y x) (Finsupp.single x c)
@@ -188,7 +177,7 @@ theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
     intro y _
     simp [mul_comm]
   · have hxz : x ≠ z := Ne.symm hzx
-    simp [LinearMap.comp_apply, hxz, linearMap_finsetSum_apply]
+    simp [LinearMap.comp_apply, hxz, LinearMap.sum_apply]
 
 /-- `Pₓ h` is a finite sum over the incident sites of `x`. -/
 theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
@@ -198,7 +187,7 @@ theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
   apply Finsupp.lhom_ext
   intro z c
   simp only [LinearMap.comp_apply, operator_single, siteProjector_apply, Finsupp.smul_apply]
-  rw [linearMap_finsetSum_apply]
+  rw [LinearMap.sum_apply]
   change Finsupp.single x (c • K.column z x) =
     ∑ y ∈ K.incident x,
       (K.amplitude x y • matrixUnit x y) (Finsupp.single z c)
