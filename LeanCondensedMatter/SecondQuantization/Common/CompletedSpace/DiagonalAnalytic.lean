@@ -42,10 +42,7 @@ private theorem mem_completedDiagonalOperator_graph_iff (w : Config → ℂ)
   · intro hz
     have hdomain : z.1 ∈ completedDiagonalDomain w := by
       rw [mem_completedDiagonalDomain_iff]
-      have hout := lp.memℓp z.2
-      convert hout using 1
-      funext c
-      exact (hz c).symm
+      simpa only [hz] using lp.memℓp z.2
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     ext c
@@ -111,10 +108,8 @@ private theorem completedDiagonalOperator_adjoint_domain_le_conj (w : Config →
   intro y hy
   rw [mem_completedDiagonalDomain_iff]
   let y' : (completedDiagonalOperator w).adjoint.domain := ⟨y, hy⟩
-  have hout := lp.memℓp ((completedDiagonalOperator w).adjoint y')
-  convert hout using 1
-  funext c
-  exact (completedDiagonalOperator_adjoint_apply w y' c).symm
+  simpa only [completedDiagonalOperator_adjoint_apply] using
+    lp.memℓp ((completedDiagonalOperator w).adjoint y')
 
 private theorem completedDiagonalOperator_adjoint_le_conj (w : Config → ℂ) :
     (completedDiagonalOperator w).adjoint ≤
