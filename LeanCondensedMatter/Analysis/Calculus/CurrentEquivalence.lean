@@ -67,9 +67,7 @@ theorem iff_comp_eq
     DifferentialCurrentEquivalent d J₁ J₂ ↔ J₁.comp d = J₂.comp d := by
   constructor
   · intro h
-    apply LinearMap.ext
-    intro f
-    exact h f
+    exact LinearMap.ext h
   · intro h f
     simpa using congrArg (fun L : Test →ₗ[𝕜] Obs => L f) h
 
@@ -109,8 +107,7 @@ theorem exists_current_eq_add_invisible
     change R₁.current (d f) - R₂.current (d f) = 0
     rw [R₁.currentEquivalent R₂ f]
     simp
-  · apply LinearMap.ext
-    intro α
+  · ext α
     change R₁.current α = R₂.current α + (R₁.current α - R₂.current α)
     module
 
