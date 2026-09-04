@@ -16,7 +16,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpe
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorUniformBound
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDominatedConvergence
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.ZeroTemperaturePair
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
 
