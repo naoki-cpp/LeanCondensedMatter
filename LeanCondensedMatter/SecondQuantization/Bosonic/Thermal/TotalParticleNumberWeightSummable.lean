@@ -27,23 +27,6 @@ theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
   simp only [Finsupp.mem_support_iff, not_not] at hi
   simp [hi]
 
-omit [Fintype Mode] in
-/-- A finite sum of summable occupation-indexed functions is summable. -/
-private theorem summable_finset_sum
-    (s : Finset Mode) (f : Mode → Occupation Mode → ℝ)
-    (hf : ∀ i ∈ s, Summable (f i)) :
-    Summable (fun n => ∑ i ∈ s, f i n) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℝ)))
-  | @insert a s ha ih =>
-      have hfa : Summable (f a) := hf a (Finset.mem_insert_self a s)
-      have hfs : ∀ i ∈ s, Summable (f i) := by
-        intro i hi
-        exact hf i (Finset.mem_insert_of_mem hi)
-      have hih := ih hfs
-      simpa [Finset.sum_insert ha] using hfa.add hih
-
 /-- The square of the total particle number remains summable against the free bosonic Boltzmann
 weight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. -/
 theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
@@ -53,16 +36,11 @@ theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β
   have hinner : ∀ i : Mode, Summable (fun n : Occupation Mode =>
       ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
     intro i
-    simpa only [Finset.mem_univ, true_implies] using
-      summable_finset_sum (Finset.univ : Finset Mode)
-        (fun j n => (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n)
-        (fun j _ => summable_particleNumber_mul_particleNumber_boltzmannWeight ε β hpos i j)
+    exact summable_sum fun j (_ : j ∈ Finset.univ) =>
+      summable_particleNumber_mul_particleNumber_boltzmannWeight ε β hpos i j
   have hdouble : Summable (fun n : Occupation Mode =>
       ∑ i, ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
-    simpa only [Finset.mem_univ, true_implies] using
-      summable_finset_sum (Finset.univ : Finset Mode)
-        (fun i n => ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n)
-        (fun i _ => hinner i)
+    exact summable_sum fun i (_ : i ∈ Finset.univ) => hinner i
   convert hdouble using 1
   funext n
   rw [particleNumber_eq_sum_univ]

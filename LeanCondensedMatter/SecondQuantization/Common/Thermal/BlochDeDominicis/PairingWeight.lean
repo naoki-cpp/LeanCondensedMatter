@@ -68,18 +68,12 @@ theorem zetaInt_pow_eq_prod_of_sum_mod_two_eq (s : Statistics)
     (s.zetaInt : ℂ) ^ globalExponent =
       ∏ i, (s.zetaInt : ℂ) ^ localExponent i := by
   classical
-  have hpow (t : Finset ι) :
-      (s.zetaInt : ℂ) ^ (t.sum localExponent) =
-        t.prod fun i => (s.zetaInt : ℂ) ^ localExponent i := by
-    induction t using Finset.induction_on with
-    | empty => simp
-    | @insert a t ha ih => simp [ha, pow_add, ih]
   calc
     (s.zetaInt : ℂ) ^ globalExponent =
         (s.zetaInt : ℂ) ^ (∑ i, localExponent i) :=
       zetaInt_pow_eq_of_mod_two_eq s h
     _ = ∏ i, (s.zetaInt : ℂ) ^ localExponent i := by
-      simpa using hpow Finset.univ
+      rw [← Finset.prod_pow_eq_pow_sum]
 
 /-- Pairing weights multiply whenever the global crossing count has the same parity as the sum of
 two local crossing counts. This isolates sign factorization from the combinatorial parity proof. -/
