@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.InPlaneLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
 
 set_option linter.style.header false
 
