@@ -4,7 +4,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Longitudinal
 
 set_option linter.style.header false
