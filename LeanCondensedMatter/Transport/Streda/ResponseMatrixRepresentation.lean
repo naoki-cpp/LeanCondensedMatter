@@ -77,7 +77,17 @@ theorem fermiSeaMatrix_swap
     data.fermiSeaMatrix i j = -data.fermiSeaMatrix j i := by
   unfold fermiSeaMatrix regularizedStredaFermiSea
     TracedStredaAnalyticData.toRegularizedStredaIntegralData
-  simp_rw [regularizedStredaResidualSeaTraceKernel_swap, mul_neg]
+  rw [show
+      (fun energy => occupation energy *
+        regularizedStredaResidualSeaTraceKernel
+          hamiltonian (current i) (current j) energy broadening) =
+      (fun energy =>
+        -(occupation energy *
+          regularizedStredaResidualSeaTraceKernel
+            hamiltonian (current j) (current i) energy broadening)) by
+    funext energy
+    rw [regularizedStredaResidualSeaTraceKernel_swap]
+    ring]
   rw [intervalIntegral.integral_neg]
 
 /-- Static Středa response matrix associated with one shared traced analytic setup. -/
