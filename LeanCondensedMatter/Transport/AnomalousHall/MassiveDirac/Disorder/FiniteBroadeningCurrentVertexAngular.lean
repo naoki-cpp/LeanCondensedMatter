@@ -231,7 +231,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
           (polarPauliMatrix aA bA dA θ)
     rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_eq,
       finiteCutoffContinuumBornDysonGreenMatrix_polar_eq]
-    simp [polarPauliMatrix, aR, aA, bR, bA, dR, dA]]
+    simp [polarPauliMatrix, aR, aA, bR, bA, dR, dA] ]
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
     aR, aA, bR, bA, dR, dA] using
