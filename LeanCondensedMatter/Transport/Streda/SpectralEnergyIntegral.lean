@@ -56,16 +56,8 @@ theorem regularizedTracedBastinEnergyIntegral_eq_spectral
           lowerEnergy upperEnergy occupation := by
   unfold regularizedTracedBastinEnergyIntegral
     regularizedBastinSpectralEnergyIntegral
-  rw [show
-      (fun energy => occupation energy *
-        regularizedBastinTraceIntegrand
-          system.hamiltonian.1 current₁ current₂ energy broadening) =
-      (fun energy => occupation energy *
-        regularizedBastinSpectralTraceSum
-          system data current₁ current₂ energy broadening) by
-    funext energy
-    rw [regularizedBastinTraceIntegrand_eq_spectral_sum
-      system data current₁ current₂ energy broadening hbroadening]]
+  simp_rw [regularizedBastinTraceIntegrand_eq_spectral_sum
+    system data current₁ current₂ _ broadening hbroadening]
 
 end
 end Transport

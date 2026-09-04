@@ -35,10 +35,8 @@ theorem hasSum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
 theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
     Summable (oneModeBoltzmannWeight β ε) ↔ 0 < β * ε := by
   unfold oneModeBoltzmannWeight
-  have hpow : (fun k : ℕ => Real.exp ((k : ℝ) * (-β * ε))) =
-      fun k : ℕ => Real.exp (-β * ε) ^ k :=
-    funext fun k => Real.exp_nat_mul _ k
-  rw [hpow, summable_geometric_iff_norm_lt_one, Real.norm_eq_abs,
+  simp_rw [Real.exp_nat_mul]
+  rw [summable_geometric_iff_norm_lt_one, Real.norm_eq_abs,
     abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
   constructor
   · intro h; linarith

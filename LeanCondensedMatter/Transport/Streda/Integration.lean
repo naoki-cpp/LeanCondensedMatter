@@ -122,17 +122,9 @@ theorem regularizedBastinEnergyIntegral_eq_surface_add_sea
     simpa using hparts
   unfold regularizedBastinEnergyIntegral regularizedStredaFermiSurface
     regularizedStredaFermiSea
-  rw [show
-      (fun energy => data.occupation energy *
-        (data.surfacePrimitiveDerivative energy + data.seaKernel energy)) =
-      (fun energy =>
-        data.occupation energy * data.surfacePrimitiveDerivative energy +
-          data.occupation energy * data.seaKernel energy) by
-      funext energy
-      ring]
+  simp_rw [mul_add]
   rw [intervalIntegral.integral_add
-    data.surfaceProduct_intervalIntegrable data.seaProduct_intervalIntegrable]
-  rw [hsurface]
+    data.surfaceProduct_intervalIntegrable data.seaProduct_intervalIntegrable, hsurface]
 
 /-- A proof that a chosen regularized response has the energy-integral representation required by
 the Středa integration boundary. -/
