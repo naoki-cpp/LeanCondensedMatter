@@ -91,19 +91,12 @@ theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_apply
           (resolventEvolutionStrongLimitOperator A hA t y))) := by
     exact ((nonrealResolvent A hA z hz).continuous.tendsto _).comp
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
-  have hfun :
-      (fun r : ℝ =>
-        resolventApproximationEvolutionAtScale A hA r t
-          (nonrealResolvent A hA z hz y)) =
-        (fun r : ℝ =>
-          nonrealResolvent A hA z hz
-            (resolventApproximationEvolutionAtScale A hA r t y)) := by
-    funext r
-    have happ := congrArg (fun T : H →L[ℂ] H => T y)
-      (resolventApproximationEvolutionAtScale_nonrealResolvent_commute A hA r t z hz).eq
-    simpa using happ
-  rw [hfun] at hleft
-  exact tendsto_nhds_unique hleft hright
+  exact tendsto_nhds_unique
+    (hleft.congr' (Eventually.of_forall fun r => by
+      have happ := congrArg (fun T : H →L[ℂ] H => T y)
+        (resolventApproximationEvolutionAtScale_nonrealResolvent_commute A hA r t z hz).eq
+      simpa using happ))
+    hright
 
 /-- Operator form of nonreal resolvent commutation for the limiting Stone evolution. -/
 theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm

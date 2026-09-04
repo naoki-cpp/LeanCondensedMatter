@@ -180,12 +180,8 @@ theorem isSelfAdjoint_shiftDomainMap_range_isClosed
     rw [← hn]
     abel
   have hAseq : Tendsto (fun n => A (x n)) atTop (𝓝 (y + z • xlim)) := by
-    have hsum := huy.add (hxlim.const_smul z)
-    have hfun : (fun n => A (x n)) = fun n => u n + z • (x n : H) := by
-      funext n
-      exact hAeq n
-    rw [hfun]
-    exact hsum
+    exact (huy.add (hxlim.const_smul z)).congr'
+      (Eventually.of_forall fun n => (hAeq n).symm)
   have hpair :
       Tendsto (fun n => ((x n : H), A (x n))) atTop (𝓝 (xlim, y + z • xlim)) :=
     hxlim.prodMk_nhds hAseq
