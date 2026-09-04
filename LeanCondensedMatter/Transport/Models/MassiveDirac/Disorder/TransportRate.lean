@@ -65,14 +65,6 @@ def upperBandFermiSurfaceScalarOverlapWeight
   (1 + m ^ 2 / fermiEnergy ^ 2 +
     (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2
 
-/-- Closed upper-band scalar-disorder overlap. -/
-theorem upperBandFermiSurfaceScalarOverlapWeight_eq
-    (v m fermiEnergy θ : ℝ) :
-    upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ =
-      (1 + m ^ 2 / fermiEnergy ^ 2 +
-        (1 - m ^ 2 / fermiEnergy ^ 2) * Real.cos θ) / 2 := by
-  rfl
-
 /-- The real overlap weight embeds back into `ℂ` as exactly the projector trace on the Fermi circle.
 This is the reality certificate for the physical scalar API whenever the Fermi radius is real and
 the Fermi energy is nonzero. -/
@@ -125,7 +117,7 @@ theorem isotropicUpperBandSingleParticleAngularWeight_eq
           (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
             ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ := by
     funext θ
-    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ]
+    unfold upperBandFermiSurfaceScalarOverlapWeight
     ring
   rw [hrewrite]
   have hconst :
@@ -168,7 +160,7 @@ theorem isotropicUpperBandTransportAngularWeight_eq
             (m ^ 2 / fermiEnergy ^ 2) * Real.cos θ -
               ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ ^ 2 := by
     funext θ
-    rw [upperBandFermiSurfaceScalarOverlapWeight_eq v m fermiEnergy θ]
+    unfold upperBandFermiSurfaceScalarOverlapWeight
     ring
   rw [hrewrite]
   have hconst :
