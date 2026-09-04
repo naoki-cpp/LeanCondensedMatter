@@ -19,10 +19,11 @@ class ArchitectureCheck:
     scope: str
 
 
-# This manifest owns architecture-audit registration only. Dependency DAGs and uniform source
-# contracts live in shared specifications under scripts/architecture/. Scopes are optional local
-# filters and must not become a second architecture model. A checker with scope `all` participates
-# in both focused scopes.
+# This manifest is the explicit CI allowlist for source architecture checks. Local analysis scripts
+# may also use a check_*.py name without being promoted automatically into CI. Dependency DAGs and
+# uniform source contracts live in shared specifications under scripts/architecture/. Scopes are
+# optional local filters and must not become a second architecture model. A checker with scope
+# `all` participates in both focused scopes.
 CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
     ArchitectureCheck("declarative source contracts", "check_source_contracts.py", "all"),
@@ -31,21 +32,6 @@ CHECKS: tuple[ArchitectureCheck, ...] = (
 )
 
 SCOPES = ("core", "second-quantization", "all")
-
-# `check_*.py` is reserved for checks that should normally participate in architecture CI.
-# Keep explicit exceptions here so adding a new checker cannot silently bypass the registry.
-NON_ARCHITECTURE_CHECK_SCRIPTS = {
-    "check_and_fix_warnings.py",
-    "check_architecture.py",
-}
-
-
-def architecture_script_candidates() -> set[str]:
-    return {
-        path.name
-        for path in SCRIPTS.glob("check_*.py")
-        if path.name not in NON_ARCHITECTURE_CHECK_SCRIPTS
-    }
 
 
 def validate_manifest() -> list[str]:
@@ -63,9 +49,6 @@ def validate_manifest() -> list[str]:
 
         if check.scope not in SCOPES:
             errors.append(f"unknown architecture check scope `{check.scope}` for {check.script}")
-
-    for script in sorted(architecture_script_candidates() - seen_scripts):
-        errors.append(f"unregistered architecture check: scripts/{script}")
 
     return errors
 
