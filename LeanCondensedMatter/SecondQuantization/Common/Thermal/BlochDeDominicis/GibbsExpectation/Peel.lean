@@ -47,17 +47,10 @@ theorem finiteGibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : �
       finiteGibbsExpectation energy β L.sum =
         (L.map (finiteGibbsExpectation energy β)).sum := by
     intro L
-    induction L with
-    | nil =>
-        change finiteGibbsExpectationLinearMap energy β 0 = 0
-        exact (finiteGibbsExpectationLinearMap energy β).map_zero
-    | cons A T ih =>
-        change finiteGibbsExpectationLinearMap energy β (A + T.sum) =
-          finiteGibbsExpectationLinearMap energy β A +
-            (T.map (finiteGibbsExpectation energy β)).sum
-        rw [(finiteGibbsExpectationLinearMap energy β).map_add]
-        simpa only [finiteGibbsExpectation] using
-          congrArg (finiteGibbsExpectationLinearMap energy β A + ·) ih
+    change finiteGibbsExpectationLinearMap energy β L.sum =
+      (L.map (finiteGibbsExpectation energy β)).sum
+    simpa only [finiteGibbsExpectation] using
+      map_list_sum (finiteGibbsExpectationLinearMap energy β) L
   rw [peelSum_eq_peelTerms_sum, peelTerms_eq_ofFn, hmap, List.map_ofFn, List.sum_ofFn]
   apply Finset.sum_congr rfl
   intro j _
