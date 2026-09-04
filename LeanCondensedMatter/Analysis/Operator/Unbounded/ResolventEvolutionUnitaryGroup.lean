@@ -181,9 +181,9 @@ theorem resolventEvolutionStrongLimitOperator_adjoint
   have hcancel :
       resolventEvolutionStrongLimitOperator A hA t
         (resolventEvolutionStrongLimitOperator A hA (-t) x) = x := by
-    have happ := congrArg (fun T : H →L[ℂ] H => T x)
-      (resolventEvolutionStrongLimitOperator_mul_neg A hA t)
-    simpa using happ
+    simpa only [resolventEvolutionStrongLimitOperator_apply, add_neg_cancel,
+      resolventEvolutionStrongLimit_zero_apply] using
+      (resolventEvolutionStrongLimit_add_time_apply A hA t (-t) x).symm
   rw [hcancel] at hinner
   exact hinner.symm
 
