@@ -184,7 +184,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
     rw [finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
       v m fermiEnergy broadening disorderStrength hbar pMax
       hvelocity hmF.le (ne_of_gt hbroadening)]
-    simp [Complex.im_ofReal_mul]
+    simp
   have htarget :
       (disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
             (fermiEnergy * (-(((2 : ℝ) * v ^ 2)⁻¹) * Real.pi)) +
