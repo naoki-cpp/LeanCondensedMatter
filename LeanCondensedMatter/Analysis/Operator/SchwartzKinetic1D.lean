@@ -150,7 +150,8 @@ theorem heisenberg_localization_eq_symmetrized_velocity
         ((multiplicationOperator (derivative f)).comp (velocityOperator ℏ κ) +
           (velocityOperator ℏ κ).comp (multiplicationOperator (derivative f))) := by
   rw [schrodinger_localization_commutator_eq_kinetic]
-  ext ψ
+  apply LinearMap.ext
+  intro ψ
   simp only [LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
     LinearMap.add_apply, kineticOperator, velocityOperator]
   rw [secondDerivative_multiplication_apply]
