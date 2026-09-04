@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalPeel
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
-import Mathlib.Analysis.Normed.Operator.Bilinear
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -41,21 +40,18 @@ theorem thermalPeelSum_eq_thermalPeelTerms_sum
   induction l with
   | nil => simp [thermalPeelSum, thermalPeelTerms]
   | cons D t ih =>
-      have hmap :
-          ((thermalPeelTerms C₁ t).map (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
-            (-1 : ℂ) • (D.operator.comp (thermalPeelTerms C₁ t).sum) := by
-        let φ :
-            (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) →L[ℂ]
-              (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :=
-          (-1 : ℂ) •
-            (ContinuousLinearMap.compL ℂ
-              (CompletedFockSpace Mode) (CompletedFockSpace Mode) (CompletedFockSpace Mode)
-              D.operator)
-        rw [show (fun A => (-1 : ℂ) • (D.operator.comp A)) = ⇑φ by
-          funext A
-          simp only [φ, smul_apply, ContinuousLinearMap.compL_apply]]
-        simpa only [φ, smul_apply, ContinuousLinearMap.compL_apply] using
-          (map_list_sum φ (thermalPeelTerms C₁ t)).symm
+      have hmap : ∀ L : List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode),
+          (L.map (fun A => (-1 : ℂ) • (D.operator.comp A))).sum =
+            (-1 : ℂ) • (D.operator.comp L.sum) := by
+        intro L
+        induction L with
+        | nil => simp
+        | cons A T ihT =>
+            rw [List.map_cons, List.sum_cons, List.sum_cons, ihT]
+            apply ContinuousLinearMap.ext
+            intro ψ
+            simp only [add_apply, smul_apply, ContinuousLinearMap.comp_apply, map_add]
+            module
       rw [thermalPeelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih]
       apply ContinuousLinearMap.ext
       intro ψ
