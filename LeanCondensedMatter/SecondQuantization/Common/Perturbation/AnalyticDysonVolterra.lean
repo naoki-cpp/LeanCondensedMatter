@@ -26,9 +26,8 @@ theorem continuous_analyticDysonTerm (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (lam : ℂ) (n : ℕ) :
     Continuous (fun τ => analyticDysonTerm energy V τ lam n) := by
-  exact (Dyson.continuous_term
-    (continuous_continuousInteractionPicture energy V) lam n).congr
-      (fun τ => (analyticDysonTerm_eq_term energy V τ lam n).symm)
+  simpa only [analyticDysonTerm_eq_term] using
+    (Dyson.continuous_term (continuous_continuousInteractionPicture energy V) lam n)
 
 /-- The finite analytic Dyson evolution solves the Volterra equation by specialization of the
 generic bounded-algebra theorem. -/
