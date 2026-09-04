@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.SelfEnergyBroadeningLimit
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import Mathlib.Tactic
 
@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Weak-disorder Born-dressed massive-Dirac propagator
 
-This Phase 5 bridge consumes the already-derived metallic Born damping scale and feeds both
-surviving self-energy channels back into the massive-Dirac Pauli propagator.  In the zero-external-
-broadening weak-disorder form used by the NCA benchmark,
+This module consumes the already-derived metallic Born damping scale and feeds both surviving
+self-energy channels back into the massive-Dirac Pauli propagator. In the zero-external-broadening
+weak-disorder form used by the NCA benchmark,
 
 ```text
 γ = W / (4 ℏ² v²),

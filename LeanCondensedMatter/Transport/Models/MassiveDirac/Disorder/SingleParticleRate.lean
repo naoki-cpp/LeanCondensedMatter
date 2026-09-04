@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.UpperBandDamping
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import Mathlib.Tactic
 
 set_option linter.style.header false
