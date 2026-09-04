@@ -46,6 +46,70 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- Proof-local bounded-operator realization of the Cartesian Born-dressed Pauli coefficients. -/
+private noncomputable def continuumBornPauliGreenOperator
+    (side : SpectralSide)
+    (v m px py probeEnergy disorderStrength hbar : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  matrixOperator
+    (continuumBornPauliGreenScalarCoefficient
+        side v m px py probeEnergy disorderStrength hbar • (1 : Matrix2) +
+      continuumBornPauliGreenXCoefficient
+        side v m px py probeEnergy disorderStrength hbar • sigmaX +
+      continuumBornPauliGreenYCoefficient
+        side v m px py probeEnergy disorderStrength hbar • sigmaY +
+      continuumBornPauliGreenZCoefficient
+        side v m px py probeEnergy disorderStrength hbar • sigmaZ)
+
+/-- The Cartesian Born-dressed propagator reduces exactly to the shared polar Pauli form. -/
+private theorem continuumBornPauliGreenOperator_polar_eq
+    (side : SpectralSide)
+    (v m p θ probeEnergy disorderStrength hbar : ℝ) :
+    continuumBornPauliGreenOperator side v m
+        (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar =
+      polarPauliOperator
+        (continuumBornPauliGreenScalarCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar)
+        (continuumBornPauliGreenXCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar)
+        (continuumBornPauliGreenZCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar) θ := by
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    nlinarith [Real.sin_sq_add_cos_sq θ]
+  have hradial :
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
+    calc
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
+          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
+      _ = p ^ 2 := by rw [htrig]; ring
+      _ = p ^ 2 + 0 ^ 2 := by ring
+  have hmatrix :
+      continuumBornPauliGreenScalarCoefficient side v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar •
+          (1 : Matrix2) +
+        continuumBornPauliGreenXCoefficient side v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaX +
+        continuumBornPauliGreenYCoefficient side v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaY +
+        continuumBornPauliGreenZCoefficient side v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaZ =
+      polarPauliMatrix
+        (continuumBornPauliGreenScalarCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar)
+        (continuumBornPauliGreenXCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar)
+        (continuumBornPauliGreenZCoefficient
+          side v m p 0 probeEnergy disorderStrength hbar) θ := by
+    unfold polarPauliMatrix
+    unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenXCoefficient
+      continuumBornPauliGreenYCoefficient continuumBornPauliGreenZCoefficient
+      continuumBornPauliGreenDenominator
+    rw [hradial]
+    push_cast
+    ring
+  simpa [continuumBornPauliGreenOperator, polarPauliOperator] using
+    congrArg matrixOperator hmatrix
+
 /-- `σₓ` coefficient after the full polar-angle integral of the Born-dressed `Gᴿ σₓ Gᴬ` rung. -/
 def continuumBornRetardedAdvancedPauliXAngularXCoefficient
     (v m p probeEnergy disorderStrength hbar : ℝ) : ℂ :=
@@ -73,26 +137,17 @@ def continuumBornRetardedAdvancedPauliXAngularYCoefficient
     (continuumBornPauliGreenZCoefficient
       .advanced v m p 0 probeEnergy disorderStrength hbar)
 
-/-- Full polar-angle Born-dressed Green-product rung at fixed radial momentum. -/
+/-- Full polar-angle Born-dressed Green-product rung at fixed radial momentum, defined from the
+Cartesian Born propagator before reducing to the shared polar form. -/
 noncomputable def continuumBornAngularRetardedAdvancedPauliXIntegral
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    polarPauliOperator
-        (continuumBornPauliGreenScalarCoefficient
-          .retarded v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenXCoefficient
-          .retarded v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenZCoefficient
-          .retarded v m p 0 probeEnergy disorderStrength hbar) θ *
+    continuumBornPauliGreenOperator .retarded v m
+        (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar *
       matrixOperator sigmaX *
-      polarPauliOperator
-        (continuumBornPauliGreenScalarCoefficient
-          .advanced v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenXCoefficient
-          .advanced v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenZCoefficient
-          .advanced v m p 0 probeEnergy disorderStrength hbar) θ
+      continuumBornPauliGreenOperator .advanced v m
+        (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar
 
 /-- The full Born-dressed Green-product `x`-current rung closes exactly in the in-plane Pauli span. -/
 theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
@@ -116,6 +171,22 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
   let dA := continuumBornPauliGreenZCoefficient
     .advanced v m p 0 probeEnergy disorderStrength hbar
   unfold continuumBornAngularRetardedAdvancedPauliXIntegral
+  have hpolar :
+      (fun θ : ℝ =>
+        continuumBornPauliGreenOperator .retarded v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar *
+          matrixOperator sigmaX *
+          continuumBornPauliGreenOperator .advanced v m
+            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar) =
+        fun θ : ℝ =>
+          polarPauliOperator aR bR dR θ *
+            matrixOperator ((1 : ℂ) • sigmaX + (0 : ℂ) • sigmaY) *
+            polarPauliOperator aA bA dA θ := by
+    funext θ
+    rw [continuumBornPauliGreenOperator_polar_eq,
+      continuumBornPauliGreenOperator_polar_eq]
+    simp [aR, aA, bR, bA, dR, dA]
+  rw [hpolar]
   simpa [continuumBornRetardedAdvancedPauliXAngularXCoefficient,
     continuumBornRetardedAdvancedPauliXAngularYCoefficient,
     aR, aA, bR, bA, dR, dA] using
