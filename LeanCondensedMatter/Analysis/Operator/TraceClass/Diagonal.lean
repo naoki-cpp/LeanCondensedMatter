@@ -72,15 +72,15 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   classical
   have hfinite (s : Finset ι) :
       IsCompactOperator ⇑(∑ i ∈ s, diagonalTerm b a i : H →L[ℂ] H) := by
-    refine Finset.sum_induction (fun i => diagonalTerm b a i)
-      (fun A : H →L[ℂ] H => IsCompactOperator ⇑A) ?_ ?_ ?_
-    · intro A B hA hB
-      change IsCompactOperator (fun x : H => A x + B x)
-      exact hA.add hB
-    · change IsCompactOperator (fun _ : H => (0 : H))
-      exact isCompactOperator_zero
-    · intro i _
-      exact diagonalTerm_isCompact b a i
+    induction s using Finset.induction_on with
+    | empty =>
+        change IsCompactOperator (fun _ : H => (0 : H))
+        exact isCompactOperator_zero
+    | @insert i s hi ih =>
+        simp only [Finset.sum_insert hi]
+        change IsCompactOperator (fun x : H =>
+          diagonalTerm b a i x + (∑ j ∈ s, diagonalTerm b a j) x)
+        exact (diagonalTerm_isCompact b a i).add ih
   refine isCompactOperator_of_tendsto
     (l := Filter.atTop)
     (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
