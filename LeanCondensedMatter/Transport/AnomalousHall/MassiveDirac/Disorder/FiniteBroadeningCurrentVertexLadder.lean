@@ -42,7 +42,7 @@ private theorem inPlaneLadderRotatedSolvedVertex_fixedPoint
       y * (-inPlaneLadderSolvedYCoefficient x y) +
           x * inPlaneLadderSolvedXCoefficient x y =
         inPlaneLadderSolvedXCoefficient x y - 1 := by
-    linear_combination hX
+    linear_combination -hX
   unfold inPlaneLadderOperatorAction inPlaneLadderXCoefficient inPlaneLadderYCoefficient
   rw [hrotX, hrotY]
   module
