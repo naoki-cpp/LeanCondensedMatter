@@ -141,7 +141,8 @@ theorem pauliShiftMatrix_mul_closedInverse
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
       ring_nf <;>
-      simp [hI]
+      simp [hI] <;>
+      ring
   rw [hquadratic, smul_smul]
   simp [hden]
 
