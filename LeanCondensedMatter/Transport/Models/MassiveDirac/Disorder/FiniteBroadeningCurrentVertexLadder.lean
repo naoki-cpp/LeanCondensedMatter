@@ -12,8 +12,7 @@ its determinant remain owned by `InPlaneLadder.lean`; this file only names the s
 pair and the longitudinal/transverse bounded vertices consumed downstream.
 
 For repository orientation `Gᴿ Γ Gᴬ`, the bare-`σᵧ` solution is the canonical rotation `(-β, α)` of
-the bare-`σₓ` solved pair `(α, β)`. The underlying ladder solver itself accepts an arbitrary
-in-plane source.
+the bare-`σₓ` solved pair `(α, β)`.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -49,8 +48,8 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVertex
     (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax)
 
-/-- Bounded dimensionless in-plane current vertex for a bare `σᵧ` source, represented by the
-canonical rotation of the bare-`σₓ` solved pair. -/
+/-- Bounded dimensionless in-plane current vertex for a bare `σᵧ` source, obtained by rotating the
+canonical bare-`σₓ` solved pair. -/
 noncomputable def finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
@@ -64,24 +63,21 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
     finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
       v m probeEnergy broadening 0 hbar pMax = 1 := by
   simp [finiteCutoffContinuumBornDysonLadderSolvedXCoefficient,
-    inPlaneLadderSolvedXCoefficient, inPlaneLadderSolvedXCoefficientForSource,
-    inPlaneLadderDeterminant]
+    inPlaneLadderSolvedXCoefficient, inPlaneLadderDeterminant]
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedYCoefficient_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
       v m probeEnergy broadening 0 hbar pMax = 0 := by
-  simp [finiteCutoffContinuumBornDysonLadderSolvedYCoefficient,
-    inPlaneLadderSolvedYCoefficient, inPlaneLadderSolvedYCoefficientForSource]
+  simp [finiteCutoffContinuumBornDysonLadderSolvedYCoefficient]
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonLadderSolvedVertex
       v m probeEnergy broadening 0 hbar pMax = matrixOperator sigmaX := by
   simp [finiteCutoffContinuumBornDysonLadderSolvedVertex,
-    inPlaneLadderSolvedVertex, inPlaneLadderSolvedVertexForSource,
-    inPlaneLadderSolvedXCoefficientForSource, inPlaneLadderSolvedYCoefficientForSource,
-    inPlaneLadderDeterminant]
+    inPlaneLadderSolvedVertex, inPlaneLadderSolvedXCoefficient,
+    inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
