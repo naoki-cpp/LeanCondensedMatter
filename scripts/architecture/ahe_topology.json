@@ -86,7 +86,7 @@
           "modulePrefixes": [
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleFactor",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindow",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleContinuity",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction"
           ]
