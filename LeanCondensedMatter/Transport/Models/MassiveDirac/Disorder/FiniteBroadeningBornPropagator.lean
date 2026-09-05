@@ -237,8 +237,19 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
       finiteCutoffContinuumBornDysonXCoefficient,
       finiteCutoffContinuumBornDysonYCoefficient,
       finiteCutoffContinuumBornDysonZCoefficient, smul_add, smul_smul]
-  rw [hgreen, ← hdenEq]
-  simpa [finiteCutoffContinuumBornDysonShiftMatrix] using
+  have hshift :
+      finiteCutoffContinuumBornDysonShiftMatrix
+          side v m px py probeEnergy broadening disorderStrength hbar pMax =
+        finiteCutoffContinuumBornEffectiveEnergy
+            side v m probeEnergy broadening disorderStrength hbar pMax • (1 : Matrix2) -
+          ((((v * px : ℝ) : ℂ)) • sigmaX +
+            (((v * py : ℝ) : ℂ)) • sigmaY +
+            finiteCutoffContinuumBornEffectiveMass
+              side v m probeEnergy broadening disorderStrength hbar pMax • sigmaZ) := by
+    unfold finiteCutoffContinuumBornDysonShiftMatrix
+    module
+  rw [hgreen, ← hdenEq, hshift]
+  simpa [smul_add, smul_smul] using
     (pauliShiftMatrix_mul_closedInverse
       (finiteCutoffContinuumBornEffectiveEnergy
         side v m probeEnergy broadening disorderStrength hbar pMax)
