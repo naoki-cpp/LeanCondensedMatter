@@ -24,14 +24,6 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-/-- Exchanging the two bands reverses the interband energy denominator. -/
-@[simp] theorem interbandEnergyGap_oppositeBand
-    (band : Band) (v m px py : ℝ) :
-    interbandEnergyGap (oppositeBand band) v m px py =
-      -interbandEnergyGap band v m px py := by
-  rw [interbandEnergyGap_eq, interbandEnergyGap_eq]
-  cases band <;> simp [oppositeBand, bandSign]
-
 /-- With the source chosen as the opposite band, the natural Bastin `x-y` trace is the Hall
 interband current trace whose target label is the opposite band. -/
 theorem bastinXYBandBlockTrace_opposite_source

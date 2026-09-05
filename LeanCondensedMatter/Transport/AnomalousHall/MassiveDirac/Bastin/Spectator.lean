@@ -21,15 +21,6 @@ noncomputable section
 
 open Filter QuantumTheory.Transport
 
-/-- Away from the Dirac degeneracy, the two band energies are distinct. -/
-theorem bandEnergy_ne_oppositeBandEnergy
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandEnergy band v m px py ≠ bandEnergy (oppositeBand band) v m px py := by
-  have hgap : interbandEnergyGap band v m px py ≠ 0 := by
-    rw [interbandEnergyGap_eq]
-    cases band <;> simp [hE]
-  exact sub_ne_zero.mp (by simpa [interbandEnergyGap] using hgap)
-
 /-- Evaluating the opposite-band scalar resolvent at the selected band pole gives the inverse
 interband energy gap exactly. -/
 theorem projectorResolventCoefficient_oppositeBand_at_bandEnergy

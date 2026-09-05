@@ -21,13 +21,6 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Away from the Dirac degeneracy, the interband energy gap is nonzero. -/
-theorem interbandEnergyGap_ne_zero_of_energy_ne_zero
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    interbandEnergyGap band v m px py ≠ 0 := by
-  unfold interbandEnergyGap
-  exact sub_ne_zero.mpr (bandEnergy_ne_oppositeBandEnergy band v m px py hE)
-
 /-- In target-centered offset coordinates, the opposite-band spectator denominator on spectral side
 `s` is `gap + offset + i γˢ`. -/
 theorem projectorResolventCoefficient_targetOffset_oppositeBand
