@@ -1,7 +1,6 @@
+import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexFiniteCutoff
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Topology.Algebra.Order.Field
 import Mathlib.Tactic
 
@@ -114,117 +113,6 @@ def continuumBornRetardedAdvancedCurrentRungArctanPhase
     (continuumBornRADenominatorCenter v m p probeEnergy disorderStrength hbar /
       continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)
 
-private theorem continuumBornRADenominatorProduct_ne_zero_of_width_ne_zero
-    (v m p probeEnergy disorderStrength hbar : ℝ)
-    (hwidth : continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar ≠ 0) :
-    continuumBornRADenominatorProduct
-      v m p probeEnergy disorderStrength hbar ≠ 0 := by
-  unfold continuumBornRADenominatorProduct
-  have hwidthSq :
-      0 < continuumBornRADenominatorWidth
-        v m probeEnergy disorderStrength hbar ^ 2 := sq_pos_of_ne_zero hwidth
-  nlinarith [sq_nonneg
-    (continuumBornRADenominatorCenter v m p probeEnergy disorderStrength hbar)]
-
-private theorem hasDerivAt_continuumBornRADenominatorCenter
-    (v m probeEnergy disorderStrength hbar p : ℝ) :
-    HasDerivAt
-      (fun q : ℝ => continuumBornRADenominatorCenter
-        v m q probeEnergy disorderStrength hbar)
-      (-2 * v ^ 2 * p) p := by
-  unfold continuumBornRADenominatorCenter
-  simpa [mul_assoc, mul_comm, mul_left_comm] using
-    (((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).const_sub
-      ((probeEnergy ^ 2 - m ^ 2) *
-        (1 - continuumBornDampingScale v disorderStrength hbar ^ 2))
-
-private theorem hasDerivAt_continuumBornRetardedAdvancedCurrentRungArctanPhase
-    (v m probeEnergy disorderStrength hbar p : ℝ)
-    (hwidth : continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar ≠ 0) :
-    HasDerivAt
-      (fun q : ℝ => continuumBornRetardedAdvancedCurrentRungArctanPhase
-        v m q probeEnergy disorderStrength hbar)
-      (-2 * v ^ 2 * p *
-          continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar /
-        continuumBornRADenominatorProduct
-          v m p probeEnergy disorderStrength hbar) p := by
-  have hratio :=
-    (hasDerivAt_continuumBornRADenominatorCenter
-      v m probeEnergy disorderStrength hbar p).div_const
-        (continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)
-  have hatan := hratio.arctan
-  unfold continuumBornRetardedAdvancedCurrentRungArctanPhase
-  convert hatan using 1
-  unfold continuumBornRADenominatorProduct
-  field_simp [hwidth]
-  ring
-
-private theorem continuous_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    (v m probeEnergy disorderStrength hbar : ℝ)
-    (hwidth : continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar ≠ 0) :
-    Continuous
-      (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-        v m · probeEnergy disorderStrength hbar) := by
-  have hden : Continuous (fun p : ℝ =>
-      continuumBornRADenominatorProduct
-        v m p probeEnergy disorderStrength hbar) := by
-    unfold continuumBornRADenominatorProduct continuumBornRADenominatorCenter
-    fun_prop
-  have hinv : Continuous (fun p : ℝ =>
-      (continuumBornRADenominatorProduct
-        v m p probeEnergy disorderStrength hbar)⁻¹) :=
-    hden.inv₀ (fun p =>
-      continuumBornRADenominatorProduct_ne_zero_of_width_ne_zero
-        v m p probeEnergy disorderStrength hbar hwidth)
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-  fun_prop
-
-private theorem hasDerivAt_normalizedBornCurrentRungAntiderivative
-    (v m probeEnergy disorderStrength hbar p : ℝ)
-    (hv : v ≠ 0)
-    (hwidth : continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar ≠ 0) :
-    HasDerivAt
-      (fun q : ℝ =>
-        -(continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-            Real.pi *
-            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-            (probeEnergy ^ 2 - m ^ 2) /
-            (v ^ 2 * continuumBornRADenominatorWidth
-              v m probeEnergy disorderStrength hbar)) *
-          continuumBornRetardedAdvancedCurrentRungArctanPhase
-            v m q probeEnergy disorderStrength hbar)
-      (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-        v m p probeEnergy disorderStrength hbar) p := by
-  let C : ℝ :=
-    -(continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-        Real.pi *
-        (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-        (probeEnergy ^ 2 - m ^ 2) /
-        (v ^ 2 * continuumBornRADenominatorWidth
-          v m probeEnergy disorderStrength hbar))
-  have hphase :=
-    hasDerivAt_continuumBornRetardedAdvancedCurrentRungArctanPhase
-      v m probeEnergy disorderStrength hbar p hwidth
-  have hscaled := hphase.const_mul C
-  have hproduct := continuumBornRADenominatorProduct_ne_zero_of_width_ne_zero
-    v m p probeEnergy disorderStrength hbar hwidth
-  have hderiv :
-      C * (-2 * v ^ 2 * p *
-          continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar /
-        continuumBornRADenominatorProduct
-          v m p probeEnergy disorderStrength hbar) =
-        continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-          v m p probeEnergy disorderStrength hbar := by
-    dsimp [C]
-    unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    field_simp [hv, hwidth, hproduct, Real.pi_ne_zero]
-  rw [hderiv] at hscaled
-  simpa [C] using hscaled
-
 /-- Exact finite-cutoff arctangent evaluation of the fully normalized Born RA `σₓ` current rung.
 The assumptions only keep the resonance width and radial velocity scale nonzero; no weak-disorder
 limit is taken in this theorem. -/
@@ -245,16 +133,58 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
             v m 0 probeEnergy disorderStrength hbar -
           continuumBornRetardedAdvancedCurrentRungArctanPhase
             v m pMax probeEnergy disorderStrength hbar) := by
-  have hint : IntervalIntegrable
-      (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-        v m · probeEnergy disorderStrength hbar) volume 0 pMax :=
-    (continuous_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-      v m probeEnergy disorderStrength hbar hwidth).intervalIntegrable 0 pMax
-  have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (fun p _ => hasDerivAt_normalizedBornCurrentRungAntiderivative
-      v m probeEnergy disorderStrength hbar p hv hwidth) hint
+  let A : ℝ :=
+    (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
+      (probeEnergy ^ 2 - m ^ 2)
+  let B : ℝ :=
+    continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar
+  have hradial := integral_radialQuadraticLorentzian_eq_arctan
+    v A B pMax hv hwidth
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-  rw [hftc]
+    continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
+  rw [show
+      (fun p : ℝ =>
+        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+          2 * Real.pi * p *
+          (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
+          (probeEnergy ^ 2 - m ^ 2) *
+          (continuumBornRADenominatorProduct
+            v m p probeEnergy disorderStrength hbar)⁻¹) =
+      (fun p : ℝ =>
+        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+          2 * Real.pi *
+          (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
+          (probeEnergy ^ 2 - m ^ 2)) *
+          (p / continuumBornRADenominatorProduct
+            v m p probeEnergy disorderStrength hbar)) by
+    funext p
+    rw [div_eq_mul_inv]
+    ring]
+  rw [intervalIntegral.integral_const_mul]
+  rw [show
+      (∫ p in (0 : ℝ)..pMax,
+        p / continuumBornRADenominatorProduct
+          v m p probeEnergy disorderStrength hbar) =
+        (2 * v ^ 2 * B)⁻¹ *
+          (Real.arctan ((v ^ 2 * pMax ^ 2 - A) / B) +
+            Real.arctan (A / B)) by
+    simpa [A, B, continuumBornRADenominatorProduct,
+      continuumBornRADenominatorCenter, mul_comm] using hradial]
+  unfold continuumBornRetardedAdvancedCurrentRungArctanPhase
+  dsimp [A, B]
+  rw [show
+      (v ^ 2 * pMax ^ 2 -
+          (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
+            (probeEnergy ^ 2 - m ^ 2)) /
+          continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar =
+        -(((probeEnergy ^ 2 - m ^ 2) *
+              (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) -
+            v ^ 2 * pMax ^ 2) /
+          continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar) by
+    ring]
+  rw [Real.arctan_neg]
+  unfold continuumBornRADenominatorCenter
+  field_simp [hv, hwidth]
   ring
 
 /-- Exact endpoint formula with the disorder normalization already cancelled against the resonance
@@ -517,5 +447,3 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
     m fermiEnergy hden]
 
 end
-
-end AnomalousHall.MassiveDirac
