@@ -197,7 +197,31 @@ private theorem spectralShift_mul_pauliGreenOperatorOfRegulator
   rw [pauliGreenOperatorOfRegulator_eq_closedForm, ← hdenEq, hamiltonianOperator_eq_pauli,
     Algebra.algebraMap_eq_smul_one]
   simp only [matrixOperator, map_mul, map_add, map_sub, map_smul, map_one] at hmatrix
-  convert hmatrix using 1 <;> module
+  unfold matrixOperator
+  have hshift :
+      spectralParameterOfRegulator probeEnergy regulator •
+            (1 : DiracHilbert →L[ℂ] DiracHilbert) -
+          ((((v * px : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaX +
+            (((v * py : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaY +
+            (((m : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaZ) =
+        spectralParameterOfRegulator probeEnergy regulator • 1 -
+          (((v * px : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaX -
+          (((v * py : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaY -
+          (((m : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaZ := by
+    module
+  have hnumerator :
+      spectralParameterOfRegulator probeEnergy regulator •
+            (1 : DiracHilbert →L[ℂ] DiracHilbert) +
+          ((((v * px : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaX +
+            (((v * py : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaY +
+            (((m : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaZ) =
+        spectralParameterOfRegulator probeEnergy regulator • 1 +
+          (((v * px : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaX +
+          (((v * py : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaY +
+          (((m : ℝ) : ℂ)) • Matrix.toEuclideanCLM sigmaZ := by
+    module
+  rw [hshift, hnumerator]
+  exact hmatrix
 
 /-- The resolvent at an arbitrary nonzero signed regulator equals the explicit Pauli Green operator. -/
 theorem resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
