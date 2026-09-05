@@ -184,8 +184,9 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
         v m probeEnergy regulator p ψ)).im =
       -regulator * continuumBornRadialDissipationDensity
         v m probeEnergy regulator ψ p
-  exact im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
-    v m probeEnergy regulator p hregulator ψ
+  simpa only [neg_mul] using
+    im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
+      v m probeEnergy regulator p hregulator ψ
 
 private theorem regulator_mul_im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply_nonpos
     (v m probeEnergy regulator pMax : ℝ) (hregulator : regulator ≠ 0)
@@ -310,6 +311,7 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
           (inner ℂ (ψ - φ)
             (finiteCutoffContinuumBornSelfEnergy
               side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im := by
+      rw [map_sub]
       simpa using him
     rw [← hbalance] at hSigma
     have hpositive :
