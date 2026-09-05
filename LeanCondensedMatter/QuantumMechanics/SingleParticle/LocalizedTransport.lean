@@ -84,10 +84,7 @@ theorem heisenbergTransportFunctional_eq_symmetrizedProductRight_comp
     heisenbergTransportFunctional V ℏ h M m =
       (_root_.ConservationLaw.symmetrizedProductRightLinear V m).comp
         (heisenbergLocalizationFunctional V ℏ h M) := by
-  apply LinearMap.ext
-  intro f
-  apply LinearMap.ext
-  intro x
+  ext f x
   simp [heisenbergTransportFunctional, heisenbergLocalizationFunctional,
     heisenbergScale, _root_.ConservationLaw.transportFunctional,
     _root_.ConservationLaw.localizationCommutatorFunctional,
@@ -137,19 +134,13 @@ noncomputable def operatorLocalCurrentPairing
     (_root_.ConservationLaw.symmetrizedProductRightLinear V current).comp N
   map_add' := by
     intro j₁ j₂
-    apply LinearMap.ext
-    intro α
-    apply LinearMap.ext
-    intro x
+    ext α x
     simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
       _root_.ConservationLaw.symmetrizedProduct]
     module
   map_smul' := by
     intro c j
-    apply LinearMap.ext
-    intro α
-    apply LinearMap.ext
-    intro x
+    ext α x
     simp [_root_.ConservationLaw.symmetrizedProductRightLinear,
       _root_.ConservationLaw.symmetrizedProduct]
     module

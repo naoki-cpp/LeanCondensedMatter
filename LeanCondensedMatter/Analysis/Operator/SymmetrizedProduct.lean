@@ -33,16 +33,14 @@ theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
 theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :
     symmetrizedProduct A B = symmetrizedProduct B A := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [symmetrizedProduct, add_comm]
 
 @[simp]
 theorem symmetrizedProduct_zero_left {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) :
     symmetrizedProduct (0 : W →ₗ[ℂ] W) A = 0 := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [symmetrizedProduct]
 
 @[simp]
@@ -57,8 +55,7 @@ theorem symmetrizedProduct_zero_right {W : Type*} [AddCommGroup W] [Module ℂ W
 theorem symmetrizedProduct_smul_id {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A : W →ₗ[ℂ] W) (q : ℂ) :
     symmetrizedProduct A (q • LinearMap.id) = q • A := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [symmetrizedProduct]
   module
 
@@ -67,8 +64,7 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
     (A B : W →ₗ[ℂ] W)
     (hAB : linearCommutator A B = 0) :
     symmetrizedProduct A B = A.comp B := by
-  apply LinearMap.ext
-  intro v
+  ext v
   have hzero : A (B v) - B (A v) = 0 := by
     have h := congrArg (fun T : W →ₗ[ℂ] W => T v) hAB
     simpa [linearCommutator] using h
@@ -86,8 +82,7 @@ theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
     symmetrizedProduct (symmetrizedProduct A v) m =
       symmetrizedProduct A (symmetrizedProduct v m) +
         (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
-  apply LinearMap.ext
-  intro x
+  ext x
   simp [symmetrizedProduct, linearCommutator]
   module
 
@@ -108,8 +103,7 @@ theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module
     linearCommutator h (symmetrizedProduct A B) =
       symmetrizedProduct (linearCommutator h A) B +
         symmetrizedProduct A (linearCommutator h B) := by
-  apply LinearMap.ext
-  intro v
+  ext v
   simp [linearCommutator, symmetrizedProduct]
   module
 

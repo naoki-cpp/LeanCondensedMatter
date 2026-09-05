@@ -65,16 +65,12 @@ noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Sp
   toFun := multiplicationOperator
   map_add' := by
     intro f g
-    apply LinearMap.ext
-    intro ψ
-    ext x
+    ext ψ x
     change (f x + g x) * ψ x = f x * ψ x + g x * ψ x
     ring
   map_smul' := by
     intro c f
-    apply LinearMap.ext
-    intro ψ
-    ext x
+    ext ψ x
     change c * f x * ψ x = c * (f x * ψ x)
     ring
 
@@ -120,9 +116,7 @@ noncomputable def velocityOperator (ℏ κ : ℝ) : Space →ₗ[ℂ] Space :=
 theorem multiplicationOperator_comp_comm (f g : Space) :
     (multiplicationOperator f).comp (multiplicationOperator g) =
       (multiplicationOperator g).comp (multiplicationOperator f) := by
-  apply LinearMap.ext
-  intro ψ
-  ext x
+  ext ψ x
   change f x * (g x * ψ x) = g x * (f x * ψ x)
   ring
 
@@ -134,8 +128,7 @@ theorem schrodinger_localization_commutator_eq_kinetic
       (kineticOperator κ).comp (multiplicationOperator f) -
         (multiplicationOperator f).comp (kineticOperator κ) := by
   rw [schrodingerOperator]
-  apply LinearMap.ext
-  intro ψ
+  ext ψ
   simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
   have hcomm := congrArg (fun T : Space →ₗ[ℂ] Space => T ψ)
     (multiplicationOperator_comp_comm potential f)

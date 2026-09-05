@@ -56,9 +56,7 @@ theorem iff_eq_comp
     FactorsThroughDifferential d Φ J ↔ Φ = J.comp d := by
   constructor
   · intro h
-    apply LinearMap.ext
-    intro f
-    exact h f
+    exact LinearMap.ext h
   · intro h f
     rw [h]
     rfl
