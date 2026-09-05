@@ -1,5 +1,6 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -7,19 +8,21 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Born-Dyson current vertex
 
-This module reduces the fixed-radius finite-external-broadening Born-Dyson retarded-advanced current
-rung to the shared massive-Dirac polar Pauli algebra. The concrete propagator owns its Cartesian
-coefficients and a proof-local polar reduction; the public result is the action on an arbitrary
-in-plane Pauli vertex.
-
-For repository orientation `Gᴿ Γ Gᴬ`,
+This module owns the finite-cutoff finite-external-broadening Born-Dyson current-vertex chain from
+fixed-radius angular reduction through radial normalization to the solved in-plane ladder vertex.
+The Cartesian propagator is reduced to the shared massive-Dirac polar Pauli algebra, producing the
+repository-oriented in-plane action
 
 ```text
 α σₓ + β σᵧ ↦ (X α - Y β) σₓ + (Y α + X β) σᵧ.
 ```
 
-Radial momentum integration, disorder normalization, and the ladder fixed-point solve remain
-downstream.
+Radial integration then attaches the polar Jacobian `p dp`, one scalar-disorder line, and the
+physical momentum measure `momentumMeasurePrefactor hbar` exactly once. The resulting normalized
+coefficient pair is consumed by the canonical two-component ladder solution in `InPlaneLadder`.
+
+This module does not insert the solved vertex into Kubo/Středa, take broadening or disorder limits,
+or identify the Born-Dyson approximation with an exact disorder average.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -29,6 +32,8 @@ noncomputable section
 open QuantumTheory.Transport
 open MeasureTheory
 open scoped Interval
+
+/-! ## Angular reduction -/
 
 /-- The Cartesian finite-`η` Born-Dyson propagator reduces exactly to the shared polar Pauli form. -/
 private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
@@ -167,6 +172,121 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
     aR, aA, bR, bA, dR, dA] using
     (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA alpha beta)
+
+/-! ## Radial normalization -/
+
+/-- Normalized finite-`η` radial `X` current-rung integrand. The angular `2π` is already included
+upstream, so the normalization attaches the scalar-disorder line and `d²p/(2πℏ)²` prefactor exactly
+once. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
+      v m p probeEnergy broadening disorderStrength hbar pMax
+
+/-- Normalized finite-`η` orientation-sensitive radial `Y` current-rung integrand. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
+      v m p probeEnergy broadening disorderStrength hbar pMax
+
+/-- Normalized finite-cutoff finite-`η` `X` coefficient supplied to the in-plane ladder. -/
+noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  ∫ p in (0 : ℝ)..pMax,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand
+      v m p probeEnergy broadening disorderStrength hbar pMax
+
+/-- Normalized finite-cutoff finite-`η` orientation-sensitive `Y` coefficient supplied to the
+in-plane ladder. -/
+noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  ∫ p in (0 : ℝ)..pMax,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand
+      v m p probeEnergy broadening disorderStrength hbar pMax
+
+@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+      v m probeEnergy broadening 0 hbar pMax = 0 := by
+  simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialXIntegrand]
+
+@[simp] theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+      v m probeEnergy broadening 0 hbar pMax = 0 := by
+  simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialYIntegrand]
+
+/-! ## Ladder specialization -/
+
+/-- Solved longitudinal coefficient of the normalized finite-`η` Born-Dyson current vertex. -/
+noncomputable def finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  inPlaneLadderSolvedXCoefficient
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+
+/-- Solved orientation-sensitive transverse coefficient of the normalized finite-`η` Born-Dyson
+current vertex. -/
+noncomputable def finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  inPlaneLadderSolvedYCoefficient
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+
+/-- Bounded dimensionless in-plane current vertex for a bare `σₓ` source. -/
+noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVertex
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  inPlaneLadderSolvedVertex
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax)
+
+/-- Bounded dimensionless in-plane current vertex for a bare `σᵧ` source, obtained by rotating the
+canonical bare-`σₓ` solved pair. -/
+noncomputable def finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  (-finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax) • matrixOperator sigmaX +
+    finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+      v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaY
+
+@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedXCoefficient_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+      v m probeEnergy broadening 0 hbar pMax = 1 := by
+  simp [finiteCutoffContinuumBornDysonLadderSolvedXCoefficient,
+    inPlaneLadderSolvedXCoefficient, inPlaneLadderDeterminant]
+
+@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedYCoefficient_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+      v m probeEnergy broadening 0 hbar pMax = 0 := by
+  simp [finiteCutoffContinuumBornDysonLadderSolvedYCoefficient]
+
+@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedVertex_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedVertex
+      v m probeEnergy broadening 0 hbar pMax = matrixOperator sigmaX := by
+  simp [finiteCutoffContinuumBornDysonLadderSolvedVertex,
+    inPlaneLadderSolvedVertex, inPlaneLadderSolvedXCoefficient,
+    inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
+
+@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
+      v m probeEnergy broadening 0 hbar pMax = matrixOperator sigmaY := by
+  simp [finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex]
 
 end
 
