@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Bands
 import Mathlib.Topology.Algebra.GroupWithZero
 import Mathlib.Tactic
 
