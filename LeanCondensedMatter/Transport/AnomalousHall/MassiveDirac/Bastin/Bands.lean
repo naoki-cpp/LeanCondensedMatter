@@ -167,7 +167,7 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
   rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
-    e v m px py probeEnergy broadening hE hbroadening]
+    e v m px py probeEnergy broadening hE (ne_of_gt hbroadening)]
   exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
     e v m px py probeEnergy broadening hE
 

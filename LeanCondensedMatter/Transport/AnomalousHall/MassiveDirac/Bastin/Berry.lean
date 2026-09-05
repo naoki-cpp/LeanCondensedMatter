@@ -158,11 +158,11 @@ theorem regularizedBastinTraceIntegrand_eq_canonicalChargeVelocityVertices
   rw [currentOperator_eq_charge_smul_velocityOperator,
     currentOperator_eq_charge_smul_velocityOperator]
 
-/-- At positive broadening and away from the band degeneracy, the generic massive-Dirac Bastin trace
+/-- At nonzero broadening and away from the band degeneracy, the generic massive-Dirac Bastin trace
 integrand is exactly the projector-expanded expression. -/
 theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     (e v m px py probeEnergy broadening : ℝ)
-    (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
+    (hE : energy v m px py ≠ 0) (hbroadening : broadening ≠ 0) :
     regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
         (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
@@ -176,7 +176,7 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     simpa only [retardedResolvent, retardedSpectralParameter,
       spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
       resolvent_spectralParameterOfRegulator_eq_projectorResolvent
-        v m px py probeEnergy broadening hE (ne_of_gt hbroadening)
+        v m px py probeEnergy broadening hE hbroadening
   have hadvanced :
       advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
@@ -184,7 +184,7 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
       spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
       resolvent_spectralParameterOfRegulator_eq_projectorResolvent
         v m px py probeEnergy (-broadening) hE
-        (neg_ne_zero.mpr (ne_of_gt hbroadening))
+        (neg_ne_zero.mpr hbroadening)
   rw [hretarded, hadvanced]
   congr 1
   noncomm_ring
