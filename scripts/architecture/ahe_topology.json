@@ -66,9 +66,9 @@
           ]
         },
         {
-          "id": "intrinsicConductivity",
+          "id": "intrinsicResponse",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"
           ]
         },
         {
@@ -121,7 +121,7 @@
         {"upstream": "intrinsicGeometry", "downstream": "bastinFoundation"},
         {"upstream": "bastinFoundation", "downstream": "bastinPole"},
         {"upstream": "bastinPole", "downstream": "bastinPair"},
-        {"upstream": "intrinsicConductivity", "downstream": "bastinPair"},
+        {"upstream": "intrinsicResponse", "downstream": "bastinPair"},
         {"upstream": "bastinPair", "downstream": "bastinRadial"},
         {"upstream": "bastinRadial", "downstream": "bastinZeroTemperature"}
       ]
