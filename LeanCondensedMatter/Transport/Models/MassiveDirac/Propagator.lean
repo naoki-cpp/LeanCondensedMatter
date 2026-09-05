@@ -108,12 +108,7 @@ theorem hamiltonianOperator_eq_pauli (v m px py : ℝ) :
       (((v * px : ℝ) : ℂ)) • matrixOperator sigmaX +
         (((v * py : ℝ) : ℂ)) • matrixOperator sigmaY +
           (((m : ℝ) : ℂ)) • matrixOperator sigmaZ := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (hamiltonian v m px py) =
-    (((v * px : ℝ) : ℂ)) • φ sigmaX +
-      (((v * py : ℝ) : ℂ)) • φ sigmaY +
-        (((m : ℝ) : ℂ)) • φ sigmaZ
-  unfold hamiltonian
+  unfold hamiltonianOperator matrixOperator hamiltonian
   rw [map_add, map_add, map_smul, map_smul, map_smul]
 
 /-- Transporting `H₀² = E² I` to `DiracHilbert` gives the bounded-operator square identity used by
@@ -122,20 +117,8 @@ theorem hamiltonianOperator_mul_self (v m px py : ℝ) :
     hamiltonianOperator v m px py * hamiltonianOperator v m px py =
       (((energySq v m px py : ℝ) : ℂ)) •
         (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (hamiltonian v m px py) * φ (hamiltonian v m px py) = _
-  calc
-    φ (hamiltonian v m px py) * φ (hamiltonian v m px py) =
-        φ (hamiltonian v m px py * hamiltonian v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = φ ((((energySq v m px py : ℝ) : ℂ)) • (1 : Matrix2)) := by
-      rw [hamiltonian_mul_self]
-    _ = (((energySq v m px py : ℝ) : ℂ)) • φ (1 : Matrix2) := by
-      exact map_smul φ _ _
-    _ = (((energySq v m px py : ℝ) : ℂ)) •
-        (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
-      rw [map_one]
+  unfold hamiltonianOperator matrixOperator
+  rw [← map_mul, hamiltonian_mul_self, map_smul, map_one]
 
 /-- A nonzero signed regulator keeps the quadratic two-band denominator away from zero. -/
 theorem pauliGreenDenominatorOfRegulator_ne_zero

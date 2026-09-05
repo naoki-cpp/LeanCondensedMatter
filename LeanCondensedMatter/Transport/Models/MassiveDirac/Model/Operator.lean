@@ -52,10 +52,8 @@ noncomputable def currentOperator
 theorem currentOperator_eq_charge_smul_velocityOperator
     (direction : Direction2) (e v : ℝ) :
     currentOperator direction e v = (((-e : ℝ) : ℂ)) • velocityOperator direction v := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (current direction e v) = (((-e : ℝ) : ℂ)) • φ (velocity direction v)
-  unfold current
-  exact map_smul φ _ _
+  unfold currentOperator velocityOperator current matrixOperator
+  rw [map_smul]
 
 /-- Dimensionless in-plane Pauli vertex `α σₓ + β σᵧ` as a bounded operator. -/
 noncomputable def inPlanePauliVertexOperator
@@ -104,20 +102,16 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
 bounded operator, as required by the generic free-system API. -/
 theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator v m px py) := by
-  change IsSelfAdjoint
-    ((Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
-      (hamiltonian v m px py))
-  exact (hamiltonian_isHermitian v m px py).isSelfAdjoint.map
-    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+  simpa [hamiltonianOperator, matrixOperator] using
+    (hamiltonian_isHermitian v m px py).isSelfAdjoint.map
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The direction-indexed current operator is self-adjoint. -/
 theorem currentOperator_isSelfAdjoint (direction : Direction2) (e v : ℝ) :
     IsSelfAdjoint (currentOperator direction e v) := by
-  change IsSelfAdjoint
-    ((Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
-      (current direction e v))
-  exact (current_isHermitian direction e v).isSelfAdjoint.map
-    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+  simpa [currentOperator, matrixOperator] using
+    (current_isHermitian direction e v).isSelfAdjoint.map
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The clean massive-Dirac model as the bounded free system consumed by generic response layers.
 The currents remain supplied separately because `BoundedFreeSystem` intentionally stores only
