@@ -196,7 +196,7 @@ theorem continuumBornRADenominatorProduct_nonneg
   positivity
 
 /-- The radial retarded/advanced denominator product is the real sum of squares `A(p)² + B²`. -/
-theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
+private theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornPauliGreenDenominator
         .retarded v m p 0 probeEnergy disorderStrength hbar *
@@ -218,7 +218,7 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
 
 /-- Closed Born `σₓ` angular coefficient before replacing the inverse denominator factors by their
 real product. -/
-theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_inverseFactors
+private theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_inverseFactors
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXAngularXCoefficient
         v m p probeEnergy disorderStrength hbar =
@@ -240,7 +240,7 @@ theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_inverseFactors
   ring
 
 /-- Closed Born `σᵧ` angular coefficient in repository orientation `Gᴿ σₓ Gᴬ`. -/
-theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_inverseFactors
+private theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_inverseFactors
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXAngularYCoefficient
         v m p probeEnergy disorderStrength hbar =
@@ -401,37 +401,6 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoeffici
     continuumBornRetardedAdvancedPauliXRadialYIntegrand
       v m p probeEnergy disorderStrength hbar
 
-/-- The finite-cutoff `σₓ` coefficient is the integral of the closed real-denominator kernel. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient_eq_closed
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient
-        v m probeEnergy disorderStrength hbar pMax =
-      ∫ p in (0 : ℝ)..pMax,
-        (((2 * Real.pi * p *
-            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-            (probeEnergy ^ 2 - m ^ 2) : ℝ) : ℂ)) *
-          (continuumBornRADenominatorProduct
-            v m p probeEnergy disorderStrength hbar : ℂ)⁻¹ := by
-  apply intervalIntegral.integral_congr
-  intro p _
-  exact continuumBornRetardedAdvancedPauliXRadialXIntegrand_eq_closed
-    v m p probeEnergy disorderStrength hbar
-
-/-- The finite-cutoff `σᵧ` coefficient is the integral of the closed real-denominator kernel. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient_eq_closed
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient
-        v m probeEnergy disorderStrength hbar pMax =
-      ∫ p in (0 : ℝ)..pMax,
-        (((8 * Real.pi * p * continuumBornDampingScale v disorderStrength hbar *
-            probeEnergy * m : ℝ) : ℂ)) *
-          (continuumBornRADenominatorProduct
-            v m p probeEnergy disorderStrength hbar : ℂ)⁻¹ := by
-  apply intervalIntegral.integral_congr
-  intro p _
-  exact continuumBornRetardedAdvancedPauliXRadialYIntegrand_eq_closed
-    v m p probeEnergy disorderStrength hbar
-
 /-- The orientation-sensitive radial `σᵧ` Green-product kernel vanishes in the massless model. -/
 @[simp] theorem continuumBornRetardedAdvancedPauliXRadialYIntegrand_massless
     (v p probeEnergy disorderStrength hbar : ℝ) :
@@ -447,70 +416,6 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient_eq_clo
       v 0 probeEnergy disorderStrength hbar pMax = 0 := by
   simp [finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient]
 
-/-- Finite-cutoff in-plane Pauli package for the Born-dressed RA Green-product rung, before the
-external scalar-disorder line and physical momentum-measure prefactor are attached. -/
-noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient
-      v m probeEnergy disorderStrength hbar pMax • matrixOperator sigmaX +
-    finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient
-      v m probeEnergy disorderStrength hbar pMax • matrixOperator sigmaY
-
-/-- Actual finite-cutoff radial integral of the full-angle Born-dressed `Gᴿ σₓ Gᴬ` Green product,
-including the polar Jacobian `p` but not the external disorder-line or momentum-measure prefactor. -/
-noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  ∫ p in (0 : ℝ)..pMax,
-    (p : ℂ) • continuumBornAngularRetardedAdvancedPauliXIntegral
-      v m p probeEnergy disorderStrength hbar
-
-/-- Under the component interval-integrability hypotheses needed for Bochner-integral additivity,
-the actual finite-cutoff Born-dressed `Gᴿ σₓ Gᴬ` integral equals the packaged in-plane rung. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral_eq_rung
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hX : IntervalIntegrable
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXRadialXIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaX)
-      volume 0 pMax)
-    (hY : IntervalIntegrable
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXRadialYIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaY)
-      volume 0 pMax) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral
-        v m probeEnergy disorderStrength hbar pMax =
-      finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung
-        v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral
-  rw [show (fun p : ℝ =>
-      (p : ℂ) • continuumBornAngularRetardedAdvancedPauliXIntegral
-        v m p probeEnergy disorderStrength hbar) =
-      fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXRadialXIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaX +
-          continuumBornRetardedAdvancedPauliXRadialYIntegrand
-            v m p probeEnergy disorderStrength hbar • matrixOperator sigmaY by
-    funext p
-    rw [continuumBornAngularRetardedAdvancedPauliXIntegral_eq]
-    simp [continuumBornRetardedAdvancedPauliXRadialXIntegrand,
-      continuumBornRetardedAdvancedPauliXRadialYIntegrand, smul_add, smul_smul]
-  ]
-  rw [intervalIntegral.integral_add hX hY,
-    intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rfl
-
-/-- In the massless model the finite-cutoff Born-dressed RA Green-product rung is purely `σₓ`. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung_massless
-    (v probeEnergy disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung
-        v 0 probeEnergy disorderStrength hbar pMax =
-      finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient
-          v 0 probeEnergy disorderStrength hbar pMax • matrixOperator sigmaX := by
-  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung]
-
 /-- A zero radial cutoff gives a vanishing Born-dressed RA `σₓ` coefficient. -/
 @[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient_zero
     (v m probeEnergy disorderStrength hbar : ℝ) :
@@ -524,20 +429,6 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung_massless
     finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient
       v m probeEnergy disorderStrength hbar 0 = 0 := by
   simp [finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient]
-
-/-- A zero radial cutoff gives a vanishing packaged Born-dressed RA Green-product rung. -/
-@[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung_zero
-    (v m probeEnergy disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung
-      v m probeEnergy disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductRung]
-
-/-- A zero radial cutoff gives a vanishing actual Born-dressed RA Green-product integral. -/
-@[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral_zero
-    (v m probeEnergy disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral
-      v m probeEnergy disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXGreenProductIntegral]
 
 end
 
