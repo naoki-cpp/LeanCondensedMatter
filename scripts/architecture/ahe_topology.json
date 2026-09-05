@@ -102,7 +102,7 @@
           "modulePrefixes": [
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorBound",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorUniformBound",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge"
