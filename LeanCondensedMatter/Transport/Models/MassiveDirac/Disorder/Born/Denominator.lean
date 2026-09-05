@@ -546,5 +546,4 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
 
 end
 
-end MassiveDirac
-end AnomalousHall
+end QuantumTheory.Transport.Models.MassiveDirac
