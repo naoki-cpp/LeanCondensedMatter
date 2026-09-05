@@ -19,7 +19,7 @@ lifetime factor.  Exact finite-cutoff normalization and arctangent evaluation ar
 identification is made here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -254,4 +254,4 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

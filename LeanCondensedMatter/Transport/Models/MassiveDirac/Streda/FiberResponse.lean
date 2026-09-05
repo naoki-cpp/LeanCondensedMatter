@@ -16,7 +16,7 @@ before constructing a conductivity tensor. The full ordered fiber response is re
 than selecting longitudinal or Hall projections before that physical normalization.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -59,4 +59,4 @@ theorem massiveDiracStredaFiberTotalResponse_eq_tracedBastin
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

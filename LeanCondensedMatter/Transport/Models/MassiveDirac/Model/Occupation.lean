@@ -15,7 +15,7 @@ the radial group-velocity average because both are consequences of the spectrum 
 not of a particular response representation or relaxation model.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -301,4 +301,4 @@ theorem isotropicFermiSurfaceMeanSquareVelocityX_pos
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

@@ -26,7 +26,7 @@ not solve a new ladder equation, insert the result into Kubo–Středa, claim Wa
 include crossed diagrams.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -531,4 +531,4 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

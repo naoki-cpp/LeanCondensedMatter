@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
 
 set_option linter.style.header false
 
@@ -16,7 +16,7 @@ division is total. The algebraic massless identity therefore needs no nondegener
 while force-matrix/projector statements retain it where the spectral projectors require `E ≠ 0`.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -71,4 +71,4 @@ theorem forceMatrixBerryCurvature_massless (band : Band) (v px py : ℝ)
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

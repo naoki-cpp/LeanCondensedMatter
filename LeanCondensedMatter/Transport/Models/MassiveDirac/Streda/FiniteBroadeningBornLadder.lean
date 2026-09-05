@@ -29,7 +29,7 @@ conductivity prefactor, disorder/broadening limit, or exact disorder-average cla
 here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -152,4 +152,4 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBri
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

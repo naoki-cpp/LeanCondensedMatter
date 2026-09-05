@@ -17,7 +17,7 @@ bound already proved for the unweighted pair.  This gives the domination input n
 occupation-weighted momentum DCT while keeping the exact Fermi-edge limit separate.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -172,4 +172,4 @@ theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

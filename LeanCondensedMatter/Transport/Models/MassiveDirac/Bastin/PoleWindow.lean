@@ -15,7 +15,7 @@ and records the elementary real-gap separation needed for later uniform estimate
 limit/interchange theorem is proved here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -89,4 +89,4 @@ theorem spectralSideSpectatorDenominator_ne_zero_on_targetWindow
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

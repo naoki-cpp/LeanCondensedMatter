@@ -26,7 +26,7 @@ averaged Green functions and do not introduce a second self-energy definition.  
 integration, ladder resummation, Ward claim, or conductivity theorem occurs here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -125,4 +125,4 @@ theorem continuumBornPauliGreenDenominator_eq_closedForm
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

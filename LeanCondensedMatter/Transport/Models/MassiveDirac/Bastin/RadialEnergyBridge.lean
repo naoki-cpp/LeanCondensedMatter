@@ -24,7 +24,7 @@ Jacobian.  Mathlib's interval-integral change-of-variables theorem then identifi
 radial integrals without hiding the `p dp = E dE / v²` step.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -95,4 +95,4 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

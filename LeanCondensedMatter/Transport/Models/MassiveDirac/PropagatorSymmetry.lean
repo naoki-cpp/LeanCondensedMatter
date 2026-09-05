@@ -15,7 +15,7 @@ No integration measure, ultraviolet cutoff, disorder normalization, Born closure
 limit is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -90,4 +90,4 @@ theorem inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

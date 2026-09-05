@@ -27,7 +27,7 @@ particular, the Born self-energy below remains a Born object; it is not identifi
 disorder-averaged Green operator.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -90,4 +90,4 @@ end FiniteScalarDisorderModel
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

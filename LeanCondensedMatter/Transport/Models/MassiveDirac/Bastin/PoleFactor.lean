@@ -20,7 +20,7 @@ energy integral must extract next.
 No energy integration or momentum integration is performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -124,4 +124,4 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

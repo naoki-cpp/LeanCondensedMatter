@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,7 +20,7 @@ No energy integration, zero-broadening limit/integral interchange, or momentum i
 performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -94,4 +94,4 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

@@ -14,7 +14,7 @@ On the radial axis `pᵧ = 0`, the interband current trace is also purely imagin
 those two inputs in a form adapted to uniform spectator and dominated-convergence bounds.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -84,4 +84,4 @@ theorem bastinYXBandBlockTrace_opposite_source_radial
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

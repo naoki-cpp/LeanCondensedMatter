@@ -17,7 +17,7 @@ E_n - E_m = 2 s E,
 so the two-band force-matrix curvature reduces to `-s m v² / (2 E³)`.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -56,4 +56,4 @@ theorem forceMatrixBerryCurvature_lower (v m px py : ℝ)
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

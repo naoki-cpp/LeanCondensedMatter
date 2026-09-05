@@ -18,7 +18,7 @@ inputs used by the generic Lorentzian pole-extraction theorem.
 No energy integration, zero-broadening limit exchange, or momentum integration is performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -96,4 +96,4 @@ theorem exists_nonneg_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pol
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

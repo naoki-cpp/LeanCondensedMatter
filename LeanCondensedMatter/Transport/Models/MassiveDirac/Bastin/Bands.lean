@@ -22,7 +22,7 @@ This decomposition is pointwise in probe energy and broadening. Occupation integ
 zero-broadening limit remain downstream steps.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -173,4 +173,4 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

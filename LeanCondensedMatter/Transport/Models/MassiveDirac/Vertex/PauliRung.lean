@@ -27,7 +27,7 @@ remain responsible for supplying those coefficients and for proving that their p
 this shared algebra.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -341,4 +341,4 @@ theorem integral_polarPauliOperator_inPlane_eq
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

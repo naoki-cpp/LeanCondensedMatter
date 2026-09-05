@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response
 import Mathlib.Topology.Algebra.Order.Field
 
 set_option linter.style.header false
@@ -33,7 +33,7 @@ uses may separately impose nonzero `ℏ` and Fermi energy. This file does not id
 regularized Středa calculation with the continuum limit.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -132,4 +132,4 @@ theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ) :
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

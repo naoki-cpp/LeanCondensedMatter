@@ -4,12 +4,12 @@
       "id": "massiveDiracFoundation",
       "sourceRoots": [
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Longitudinal"
       ],
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal"
       ],
       "layers": [
@@ -20,10 +20,10 @@
         {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral"]},
         {"id": "modelInterband", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband"]},
         {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
-        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge"]},
-        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
-        {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
-        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"]},
+        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge"]},
+        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
+        {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"]},
+        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
         {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]},
         {"id": "longitudinalFiniteBroadening", "modulePrefixes": [
           "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadening",
@@ -49,26 +49,27 @@
     {
       "id": "massiveDiracBastinLayers",
       "sourceRoots": [
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
-        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin"
       ],
       "coveragePrefixes": [
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin"
       ],
       "layers": [
         {
           "id": "intrinsicGeometry",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"
           ]
         },
         {
           "id": "intrinsicResponse",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"
           ]
         },
         {
@@ -102,7 +103,7 @@
         {
           "id": "bastinRadial",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDomination",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUniformBound",
