@@ -163,6 +163,20 @@ theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficie
   rw [intervalIntegral.integral_const_mul]
   rfl
 
+private theorem finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
+    (v m probeEnergy disorderStrength hbar pMax prefactor : ℝ)
+    (integrand : ℝ → ℝ)
+    (hfactor : ∀ p,
+      integrand p =
+        prefactor * (p / continuumBornRADenominatorProduct
+          v m p probeEnergy disorderStrength hbar)) :
+    (∫ p in (0 : ℝ)..pMax, integrand p) =
+      prefactor * finiteCutoffContinuumBornRARadialIntegral
+        v m probeEnergy disorderStrength hbar pMax := by
+  unfold finiteCutoffContinuumBornRARadialIntegral
+  simp_rw [hfactor]
+  rw [intervalIntegral.integral_const_mul]
+
 /-- The canonical finite-cutoff longitudinal coefficient factors through the shared real radial
 integral. -/
 theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_radialIntegral
@@ -176,23 +190,11 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
         finiteCutoffContinuumBornRARadialIntegral
           v m probeEnergy disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-    finiteCutoffContinuumBornRARadialIntegral
-  rw [show
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-          v m p probeEnergy disorderStrength hbar) =
-      (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (2 * Real.pi *
-            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-            (probeEnergy ^ 2 - m ^ 2))) *
-          (p / continuumBornRADenominatorProduct
-            v m p probeEnergy disorderStrength hbar)) by
-    funext p
-    unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    rw [div_eq_mul_inv]
-    ring]
-  rw [intervalIntegral.integral_const_mul]
+  apply finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
+  intro p
+  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
+  rw [div_eq_mul_inv]
+  ring
 
 /-- The finite-cutoff transverse coefficient factors through the same shared real radial integral. -/
 theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_radialIntegral
@@ -205,22 +207,11 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_e
         finiteCutoffContinuumBornRARadialIntegral
           v m probeEnergy disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-    finiteCutoffContinuumBornRARadialIntegral
-  rw [show
-      (fun p : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-          v m p probeEnergy disorderStrength hbar) =
-      (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          (8 * Real.pi * continuumBornDampingScale v disorderStrength hbar *
-            probeEnergy * m)) *
-          (p / continuumBornRADenominatorProduct
-            v m p probeEnergy disorderStrength hbar)) by
-    funext p
-    unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-    rw [div_eq_mul_inv]
-    ring]
-  rw [intervalIntegral.integral_const_mul]
+  apply finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
+  intro p
+  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
+  rw [div_eq_mul_inv]
+  ring
 
 /-- Infinite-cutoff full `σₓ` one-rung coefficient at fixed positive Born width. -/
 def continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
