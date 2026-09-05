@@ -199,23 +199,6 @@
       ]
     }
   ],
-  "forbiddenFiles": [
-    {
-      "id": "retiredTransportModules",
-      "paths": [
-        "LeanCondensedMatter/Transport/System.lean",
-        "LeanCondensedMatter/Transport/LinearResponse.lean",
-        "LeanCondensedMatter/Transport/StredaResolventSpectral.lean",
-        "LeanCondensedMatter/Transport/StredaOccupation.lean",
-        "LeanCondensedMatter/Transport/StredaCommonKernel.lean",
-        "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
-        "LeanCondensedMatter/Transport/KuboBastin/FiniteTrace.lean",
-        "LeanCondensedMatter/Transport/AnomalousHall.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaOccupation.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaCommonKernel.lean"
-      ]
-    }
-  ],
   "requiredDirectories": [
     {
       "id": "singleParticleContinuum",
