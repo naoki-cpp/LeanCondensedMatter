@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity
 import Mathlib.Tactic
 
