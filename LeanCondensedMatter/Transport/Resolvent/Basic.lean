@@ -198,6 +198,68 @@ theorem resolvent_spectralParameterOfRegulator_mul_spectralShift
         rw [spectralParameterOfRegulator_im]
         exact hregulator))
 
+/-- The resolvent quadratic form has the signed-regulator Herglotz identity in the orientation
+`⟪Gv,v⟫`. -/
+theorem im_inner_resolvent_spectralParameterOfRegulator_apply_self
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
+    (inner ℂ
+      (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v) v).im =
+      regulator *
+        ‖resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v‖ ^ 2 := by
+  let green := resolvent hamiltonian (spectralParameterOfRegulator energy regulator)
+  let w := green v
+  have hshift :
+      (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian) *
+          green = 1 := by
+    simpa [green] using
+      spectralShift_mul_resolvent_spectralParameterOfRegulator
+        hamiltonian hself energy regulator hregulator
+  have hshiftApply :
+      (algebraMap ℂ (H →L[ℂ] H) (spectralParameterOfRegulator energy regulator) - hamiltonian)
+          w = v := by
+    have h := congrArg (fun operator : H →L[ℂ] H => operator v) hshift
+    simpa [w] using h
+  have hshiftApply' :
+      spectralParameterOfRegulator energy regulator • w - hamiltonian w = v := by
+    simpa [Algebra.algebraMap_eq_smul_one] using hshiftApply
+  have hsymm : (hamiltonian : H →ₗ[ℂ] H).IsSymmetric :=
+    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hself
+  have hinner :
+      inner ℂ w v =
+        inner ℂ w (spectralParameterOfRegulator energy regulator • w - hamiltonian w) :=
+    congrArg (fun x : H => inner ℂ w x) hshiftApply'.symm
+  have himHamiltonian : (inner ℂ w (hamiltonian w)).im = 0 :=
+    hsymm.im_inner_self_apply w
+  have himSelf : (inner ℂ w w).im = 0 := by
+    exact inner_self_im (𝕜 := ℂ) w
+  have hreSelf : (inner ℂ w w).re = ‖w‖ ^ 2 := by
+    exact (norm_sq_eq_re_inner (𝕜 := ℂ) w).symm
+  change (inner ℂ w v).im = regulator * ‖w‖ ^ 2
+  rw [hinner, inner_sub_right, inner_smul_right]
+  simp only [Complex.sub_im, Complex.mul_im, himHamiltonian, himSelf, hreSelf,
+    spectralParameterOfRegulator_im, sub_zero, mul_zero, zero_add]
+
+/-- Reversing the inner-product orientation reverses the signed imaginary part of the same
+resolvent quadratic form. -/
+theorem im_inner_self_resolvent_spectralParameterOfRegulator_apply
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
+    (inner ℂ v
+      (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v)).im =
+      -(regulator *
+        ‖resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v‖ ^ 2) := by
+  have hsymm := inner_im_symm (𝕜 := ℂ)
+    (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v) v
+  change
+    (inner ℂ
+      (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v) v).im =
+      -(inner ℂ v
+        (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v)).im at hsymm
+  rw [im_inner_resolvent_spectralParameterOfRegulator_apply_self
+    hamiltonian hself energy regulator hregulator v] at hsymm
+  linarith
+
 /-- For a self-adjoint Hamiltonian, taking the adjoint of a resolvent reverses the arbitrary signed
 imaginary regulator. -/
 theorem star_resolvent_spectralParameterOfRegulator
