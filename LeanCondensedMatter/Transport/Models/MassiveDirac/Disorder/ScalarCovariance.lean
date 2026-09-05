@@ -29,8 +29,6 @@ disorder-averaged Green operator.
 
 namespace AnomalousHall.MassiveDirac
 
-open scoped BigOperators
-
 noncomputable section
 
 open QuantumTheory QuantumTheory.Transport
@@ -63,7 +61,7 @@ variable (model : FiniteScalarDisorderModel Ω v m px py)
 /-- Weighted finite scalar second moment `E[uω²]`, represented in `ℂ` so it acts directly on
 bounded complex-linear operators. -/
 noncomputable def secondMomentStrength : ℂ :=
-  ∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2
+  model.ensemble.scalarSecondMomentStrength model.amplitude
 
 /-- The canonical exact finite second-moment action becomes scalar multiplication when every
 impurity potential is scalar in the Dirac internal space. -/
@@ -71,24 +69,8 @@ theorem exactSecondMoment_eq_strength_smul
     (kernel : DiracHilbert →L[ℂ] DiracHilbert) :
     model.ensemble.exactSecondMoment kernel =
       model.secondMomentStrength • kernel := by
-  rw [model.ensemble.exactSecondMoment_eq_operatorAverage]
-  unfold FiniteDisorderEnsemble.operatorAverage secondMomentStrength
-  change
-    (∑ ω, (model.ensemble.probability ω : ℂ) •
-      ((model.ensemble.impurityPotential ω).1 * kernel *
-        (model.ensemble.impurityPotential ω).1)) =
-      (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel
-  calc
-    (∑ ω, (model.ensemble.probability ω : ℂ) •
-      ((model.ensemble.impurityPotential ω).1 * kernel *
-        (model.ensemble.impurityPotential ω).1)) =
-        ∑ ω, ((model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      rw [model.impurityPotential_eq ω]
-      simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two]
-    _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
-      rw [← Finset.sum_smul]
+  exact model.ensemble.exactSecondMoment_eq_scalarSecondMomentStrength_smul
+    model.amplitude model.impurityPotential_eq kernel
 
 /-- Massive-Dirac scalar-disorder first-Born self-energy at an arbitrary signed regulator. This is
 the exact finite second moment applied to the corresponding clean propagator, not an exact
