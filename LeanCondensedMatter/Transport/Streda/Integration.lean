@@ -126,6 +126,25 @@ theorem regularizedBastinEnergyIntegral_eq_surface_add_sea
   rw [intervalIntegral.integral_add
     data.surfaceProduct_intervalIntegrable data.seaProduct_intervalIntegrable, hsurface]
 
+/-- If the occupation derivative vanishes identically, the regularized Fermi-surface contribution
+vanishes. This is a smooth finite-interval statement, not a zero-temperature distributional claim. -/
+theorem regularizedStredaFermiSurface_eq_zero_of_occupationDerivative_eq_zero
+    (data : RegularizedStredaIntegralData)
+    (hzero : data.occupationDerivative = fun _ => 0) :
+    regularizedStredaFermiSurface data = 0 := by
+  unfold regularizedStredaFermiSurface
+  simp [hzero]
+
+/-- If the occupation derivative vanishes identically, the regularized Bastin energy integral is
+carried entirely by the residual Fermi-sea term. -/
+theorem regularizedBastinEnergyIntegral_eq_sea_of_occupationDerivative_eq_zero
+    (data : RegularizedStredaIntegralData)
+    (hzero : data.occupationDerivative = fun _ => 0) :
+    regularizedBastinEnergyIntegral data = regularizedStredaFermiSea data := by
+  rw [regularizedBastinEnergyIntegral_eq_surface_add_sea,
+    regularizedStredaFermiSurface_eq_zero_of_occupationDerivative_eq_zero data hzero,
+    zero_add]
+
 /-- A proof that a chosen regularized response has the energy-integral representation required by
 the Středa integration boundary. -/
 structure RegularizedStredaRepresentation (response : ℂ)

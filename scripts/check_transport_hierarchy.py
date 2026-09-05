@@ -215,7 +215,6 @@ def main() -> int:
     fiber_response_module = f"{MD_PUBLIC}.Streda.FiberResponse"
     for module in (
         f"{MD_PUBLIC}.Streda.Response",
-        f"{MD_PUBLIC}.Streda.Integral",
         fiber_response_module,
     ):
         require_import(
