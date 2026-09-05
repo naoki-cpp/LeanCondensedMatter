@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import Mathlib.Tactic
 

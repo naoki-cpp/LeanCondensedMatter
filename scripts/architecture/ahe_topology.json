@@ -78,7 +78,7 @@
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband"
           ]
         },
         {
