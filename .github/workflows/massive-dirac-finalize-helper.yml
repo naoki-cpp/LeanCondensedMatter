@@ -1,0 +1,191 @@
+name: MassiveDirac finalize helper
+
+on:
+  push:
+    branches:
+      - refactor/1840-finalize-massive-dirac-migration
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Finalize MassiveDirac migration
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          moves = {
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin/RadialDomination.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin/RadialDomination.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic/BerryBridge.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry/Bridge.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic/BerrySymmetry.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry/Symmetry.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic/Response.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic/Response.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic/Conductivity.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic/Conductivity.lean",
+              "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic.lean":
+                  "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic.lean",
+          }
+          for old, new in moves.items():
+              src, dst = Path(old), Path(new)
+              if src.exists():
+                  dst.parent.mkdir(parents=True, exist_ok=True)
+                  src.rename(dst)
+
+          replacements = [
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+              ),
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry",
+              ),
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response",
+              ),
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
+              ),
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
+              ),
+              (
+                  "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin",
+                  "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin",
+              ),
+          ]
+          for path in Path(".").rglob("*"):
+              if not path.is_file() or path.suffix not in {".lean", ".json", ".md", ".py"}:
+                  continue
+              try:
+                  text = path.read_text()
+              except UnicodeDecodeError:
+                  continue
+              original = text
+              for old, new in replacements:
+                  text = text.replace(old, new)
+              if path.suffix == ".lean":
+                  text = text.replace(
+                      "namespace AnomalousHall.MassiveDirac",
+                      "namespace QuantumTheory.Transport.Models.MassiveDirac",
+                  )
+                  text = text.replace(
+                      "end AnomalousHall.MassiveDirac",
+                      "end QuantumTheory.Transport.Models.MassiveDirac",
+                  )
+                  text = text.replace(
+                      "AnomalousHall.MassiveDirac.",
+                      "QuantumTheory.Transport.Models.MassiveDirac.",
+                  )
+              if text != original:
+                  path.write_text(text)
+
+          intrinsic = Path("LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic.lean")
+          text = intrinsic.read_text()
+          text = text.replace(
+              "Canonical implementations live under `MassiveDirac/Intrinsic/`.",
+              "Berry geometry is owned by `MassiveDirac/Model/Berry/`; intrinsic response and conductivity live under `MassiveDirac/Conductivity/Hall/Intrinsic/`.",
+          )
+          intrinsic.write_text(text)
+
+          hall = Path("LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall.lean")
+          text = hall.read_text()
+          intrinsic_import = "import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic\n"
+          if intrinsic_import not in text:
+              anchor = "import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.CleanBastin\n"
+              text = text.replace(anchor, anchor + intrinsic_import)
+          hall.write_text(text)
+
+          topo_path = Path("scripts/architecture/ahe_topology.json")
+          topo = json.loads(topo_path.read_text())
+          foundation, bastin = topo["scopedImportGraphs"]
+          foundation["sourceRoots"] = [
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Longitudinal",
+          ]
+          foundation["coveragePrefixes"] = [
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal",
+          ]
+          for layer in foundation["layers"]:
+              if layer["id"] == "intrinsicResponse":
+                  layer["modulePrefixes"] = [
+                      "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"
+                  ]
+          bastin["sourceRoots"] = [
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry",
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
+              "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin",
+          ]
+          bastin["coveragePrefixes"] = [
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry",
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
+              "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin",
+          ]
+          for layer in bastin["layers"]:
+              if layer["id"] == "intrinsicResponse":
+                  layer["modulePrefixes"] = [
+                      "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"
+                  ]
+          topo_path.write_text(json.dumps(topo, indent=2) + "\n")
+
+          checker = Path("scripts/check_transport_hierarchy.py")
+          text = checker.read_text()
+          text = text.replace('MD_IMPL = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"\n', '')
+          text = text.replace('f"{MD_IMPL}.Intrinsic"', 'f"{MD_PUBLIC}.Conductivity.Hall.Intrinsic"')
+          text = text.replace('f"{MD_IMPL}.Bastin"', 'f"{MD_PUBLIC}.Bastin"')
+          text = text.replace(
+              '        f"{MD_PUBLIC}.Conductivity.Longitudinal",\n',
+              '        f"{MD_PUBLIC}.Conductivity.Longitudinal",\n        f"{MD_PUBLIC}.Conductivity.Hall",\n',
+          )
+          text = text.replace(
+              '    massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"\n    canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"\n    historical_propagator_path = massive_dirac_root / "Propagator.lean"\n',
+              '    canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"\n',
+          )
+          text = text.replace(
+              '    if historical_propagator_path.exists():\n        errors.append(\n            "Transport/AnomalousHall/MassiveDirac/Propagator.lean must not remain after "\n            "the propagator owner moves to Transport/Models/MassiveDirac"\n        )\n',
+              '',
+          )
+          text = text.replace(
+              'massive_dirac_bastin_umbrella = massive_dirac_root / "Bastin.lean"',
+              'massive_dirac_bastin_umbrella = massive_dirac_model_root / "Bastin.lean"',
+          )
+          checker.write_text(text)
+          PY
+      - name: Audit stale paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          find LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac -type f -print 2>/dev/null || true
+          grep -R -n 'LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac' LeanCondensedMatter scripts notes || true
+          grep -R -n 'namespace AnomalousHall.MassiveDirac' LeanCondensedMatter || true
+          if find LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac -type f -print -quit 2>/dev/null | grep -q .; then exit 1; fi
+          if grep -R -q 'LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac' LeanCondensedMatter scripts; then exit 1; fi
+          if grep -R -q 'namespace AnomalousHall.MassiveDirac' LeanCondensedMatter; then exit 1; fi
+      - name: Commit migration
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "refactor(transport): finalize MassiveDirac migration"
+          git push origin HEAD:${GITHUB_REF_NAME}
