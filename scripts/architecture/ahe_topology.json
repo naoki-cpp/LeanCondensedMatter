@@ -74,7 +74,7 @@
         {
           "id": "bastinFoundation",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Berry",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Berry",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Bands",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator",
