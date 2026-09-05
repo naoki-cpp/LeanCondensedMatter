@@ -55,7 +55,7 @@
       ],
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin"
       ],
       "layers": [
