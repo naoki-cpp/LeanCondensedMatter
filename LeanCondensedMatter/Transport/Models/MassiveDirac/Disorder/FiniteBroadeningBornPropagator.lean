@@ -249,7 +249,7 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
     unfold finiteCutoffContinuumBornDysonShiftMatrix
     module
   rw [hgreen, ← hdenEq, hshift]
-  simpa [smul_add, smul_smul] using
+  simpa [smul_add, smul_smul, add_assoc] using
     (pauliShiftMatrix_mul_closedInverse
       (finiteCutoffContinuumBornEffectiveEnergy
         side v m probeEnergy broadening disorderStrength hbar pMax)
