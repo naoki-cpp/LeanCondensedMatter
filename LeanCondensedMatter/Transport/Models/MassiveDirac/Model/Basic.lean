@@ -123,17 +123,17 @@ theorem energy_sq (v m px py : ℝ) :
     energy v m px py ^ 2 = energySq v m px py := by
   exact Real.sq_sqrt (energySq_nonneg v m px py)
 
-/-- A Pauli shift means `a I - x σₓ - y σᵧ - z σ_z`; when its quadratic denominator is nonzero,
+/-- A Pauli shift means `a I - (x σₓ + y σᵧ + z σ_z)`; when its quadratic denominator is nonzero,
 its closed inverse is the denominator-scaled conjugate Pauli numerator. -/
 theorem pauliShiftMatrix_mul_closedInverse
     (a x y z : ℂ) (hden : a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 ≠ 0) :
-    (a • (1 : Matrix2) - x • sigmaX - y • sigmaY - z • sigmaZ) *
+    (a • (1 : Matrix2) - (x • sigmaX + y • sigmaY + z • sigmaZ)) *
       ((a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2)⁻¹ •
-        (a • (1 : Matrix2) + x • sigmaX + y • sigmaY + z • sigmaZ)) = 1 := by
+        (a • (1 : Matrix2) + (x • sigmaX + y • sigmaY + z • sigmaZ))) = 1 := by
   rw [mul_smul_comm]
   have hquadratic :
-      (a • (1 : Matrix2) - x • sigmaX - y • sigmaY - z • sigmaZ) *
-          (a • (1 : Matrix2) + x • sigmaX + y • sigmaY + z • sigmaZ) =
+      (a • (1 : Matrix2) - (x • sigmaX + y • sigmaY + z • sigmaZ)) *
+          (a • (1 : Matrix2) + (x • sigmaX + y • sigmaY + z • sigmaZ)) =
         (a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2) • (1 : Matrix2) := by
     have hI : Complex.I ^ 2 = (-1 : ℂ) := by
       simpa [pow_two] using Complex.I_mul_I
