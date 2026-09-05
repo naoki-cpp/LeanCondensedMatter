@@ -118,6 +118,7 @@
         }
       ],
       "edges": [
+        {"upstream": "intrinsicGeometry", "downstream": "intrinsicResponse"},
         {"upstream": "intrinsicGeometry", "downstream": "bastinFoundation"},
         {"upstream": "bastinFoundation", "downstream": "bastinPole"},
         {"upstream": "bastinPole", "downstream": "bastinPair"},
