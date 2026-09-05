@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 
 set_option linter.style.header false

@@ -2,7 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovarian
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
