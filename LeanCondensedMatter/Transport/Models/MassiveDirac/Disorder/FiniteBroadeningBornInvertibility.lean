@@ -306,13 +306,18 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
     rw [inner_sub_right, inner_sub_right, inner_smul_right] at him
     simp only [Complex.sub_im, Complex.mul_im, spectralParameter_re, spectralParameter_im,
       himSelf, hreSelf, hH, mul_zero, zero_add, sub_zero] at him
+    have himZero :
+        side.regulator broadening * ‖ψ - φ‖ ^ 2 -
+            (inner ℂ (ψ - φ)
+              (finiteCutoffContinuumBornSelfEnergy
+                side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im = 0 := by
+      simpa using him
     have hbalance :
         side.regulator broadening * ‖ψ - φ‖ ^ 2 =
           (inner ℂ (ψ - φ)
             (finiteCutoffContinuumBornSelfEnergy
-              side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im := by
-      rw [map_sub]
-      exact sub_eq_zero.mp him
+              side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im :=
+      sub_eq_zero.mp himZero
     rw [← hbalance] at hSigma
     have hpositive :
         0 < (side.regulator broadening) ^ 2 * ‖ψ - φ‖ ^ 2 :=
