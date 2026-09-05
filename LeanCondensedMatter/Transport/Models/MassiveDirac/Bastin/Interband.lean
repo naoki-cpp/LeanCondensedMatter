@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry
 import Mathlib.Tactic
 
