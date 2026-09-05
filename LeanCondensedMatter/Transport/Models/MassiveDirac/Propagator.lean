@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 set_option linter.style.header false
 
@@ -14,10 +15,14 @@ G(z) = (z I - H₀)⁻¹
      = g₀ I + gₓ σₓ + gᵧ σᵧ + g_z σ_z.
 ```
 
+The same Pauli inversion algebra is also exposed for arbitrary complex effective spectral energy
+and mass.  Disorder approximations may specialize that algebra after deriving their self-energy
+coefficients instead of reimplementing the `2 × 2` inverse.
+
 Physical retarded/advanced branches specialize through the canonical `side.regulator η` boundary.
-The object identified below is the repository's existing resolvent; this file does not introduce a
-parallel Green-function formalism. No disorder data, momentum integration, angular average, Born
-closure, SCBA, or vertex resummation is introduced here.
+The clean object identified below is the repository's existing resolvent; this file does not
+introduce disorder data, momentum integration, angular average, Born closure, SCBA, or vertex
+resummation.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -25,6 +30,91 @@ namespace AnomalousHall.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+
+/-- Quadratic massive-Dirac denominator for arbitrary complex effective spectral energy and mass. -/
+def effectivePauliGreenDenominator
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  effectiveEnergy ^ 2 - effectiveMass ^ 2 -
+    ((v ^ 2 * (px ^ 2 + py ^ 2) : ℝ) : ℂ)
+
+/-- Identity coefficient of the effective massive-Dirac Pauli propagator. -/
+def effectivePauliGreenScalarCoefficient
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  (effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass)⁻¹ * effectiveEnergy
+
+/-- `σₓ` coefficient of the effective massive-Dirac Pauli propagator. -/
+def effectivePauliGreenXCoefficient
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  (effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass)⁻¹ *
+    ((v * px : ℝ) : ℂ)
+
+/-- `σᵧ` coefficient of the effective massive-Dirac Pauli propagator. -/
+def effectivePauliGreenYCoefficient
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  (effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass)⁻¹ *
+    ((v * py : ℝ) : ℂ)
+
+/-- `σ_z` coefficient of the effective massive-Dirac Pauli propagator. -/
+def effectivePauliGreenZCoefficient
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
+  (effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass)⁻¹ * effectiveMass
+
+/-- Matrix form of the effective massive-Dirac Pauli propagator. -/
+def effectivePauliGreenMatrix
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : Matrix2 :=
+  effectivePauliGreenScalarCoefficient v px py effectiveEnergy effectiveMass • (1 : Matrix2) +
+    effectivePauliGreenXCoefficient v px py effectiveEnergy effectiveMass • sigmaX +
+    effectivePauliGreenYCoefficient v px py effectiveEnergy effectiveMass • sigmaY +
+    effectivePauliGreenZCoefficient v px py effectiveEnergy effectiveMass • sigmaZ
+
+/-- Bounded-operator realization of the effective massive-Dirac Pauli propagator. -/
+noncomputable def effectivePauliGreenOperator
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  matrixOperator (effectivePauliGreenMatrix v px py effectiveEnergy effectiveMass)
+
+/-- Matrix inverted by `effectivePauliGreenMatrix`. -/
+def effectivePauliShiftMatrix
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) : Matrix2 :=
+  effectiveEnergy • (1 : Matrix2) -
+    (((v * px : ℝ) : ℂ)) • sigmaX -
+    (((v * py : ℝ) : ℂ)) • sigmaY -
+    effectiveMass • sigmaZ
+
+/-- The determinant of the effective Pauli shift is its quadratic Green denominator. -/
+theorem effectivePauliShiftMatrix_det
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ) :
+    (effectivePauliShiftMatrix v px py effectiveEnergy effectiveMass).det =
+      effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [Matrix.det_fin_two]
+  simp [effectivePauliShiftMatrix, effectivePauliGreenDenominator, sigmaX, sigmaY, sigmaZ]
+  ring_nf
+  rw [hI]
+  ring
+
+/-- The effective Pauli Green matrix is a right inverse of its shift whenever the quadratic
+denominator is nonzero. -/
+theorem effectivePauliShiftMatrix_mul_greenMatrix
+    (v px py : ℝ) (effectiveEnergy effectiveMass : ℂ)
+    (hden : effectivePauliGreenDenominator v px py effectiveEnergy effectiveMass ≠ 0) :
+    effectivePauliShiftMatrix v px py effectiveEnergy effectiveMass *
+      effectivePauliGreenMatrix v px py effectiveEnergy effectiveMass = 1 := by
+  have hunit : IsUnit (effectivePauliShiftMatrix v px py effectiveEnergy effectiveMass).det := by
+    rw [effectivePauliShiftMatrix_det]
+    exact isUnit_iff_ne_zero.mpr hden
+  rw [show effectivePauliGreenMatrix v px py effectiveEnergy effectiveMass =
+      (effectivePauliShiftMatrix v px py effectiveEnergy effectiveMass)⁻¹ by
+    rw [Matrix.inv_def, Ring.inverse_eq_inv, effectivePauliShiftMatrix_det]
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [effectivePauliShiftMatrix, effectivePauliGreenMatrix,
+        effectivePauliGreenScalarCoefficient, effectivePauliGreenXCoefficient,
+        effectivePauliGreenYCoefficient, effectivePauliGreenZCoefficient,
+        Matrix.adjugate_fin_two, sigmaX, sigmaY, sigmaZ] <;>
+      ring]
+  exact Matrix.mul_nonsing_inv _ hunit
 
 /-- Common quadratic denominator `z² - E²` at an arbitrary signed regulator. -/
 def pauliGreenDenominatorOfRegulator
