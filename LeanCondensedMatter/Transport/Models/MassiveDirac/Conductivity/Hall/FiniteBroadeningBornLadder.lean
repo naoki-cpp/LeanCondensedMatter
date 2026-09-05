@@ -13,9 +13,11 @@ so the physical momentum measure contributes `momentumMeasurePrefactor hbar` exa
 with the polar Jacobian `p dp`.
 
 The source vertex is the solved retarded-advanced ladder vertex while the explicit RR/AA same-side
-remainder remains bare, exactly as upstream. Therefore the result is a physically normalized Hall
-surface conductivity bridge, not yet the final non-crossing conductivity theorem and not an exact
-disorder average. No broadening, disorder, or ultraviolet limit is taken here.
+remainder remains bare, exactly as upstream. Therefore the result below is the physically normalized
+ordered `x`-measured/`y`-source conductivity-component bridge. It is not identified with the
+antisymmetric Hall projection until a downstream theorem relates the ordered `xy` and `yx`
+components. It is also not yet the final non-crossing conductivity theorem or an exact disorder
+average. No broadening, disorder, or ultraviolet limit is taken here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -50,22 +52,24 @@ noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfa
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
       e v m p probeEnergy broadening disorderStrength hbar pMax
 
-/-- Physically normalized finite-cutoff finite-`η` Hall surface conductivity bridge. The explicit
-angle integral already supplies the angular measure, so `momentumMeasurePrefactor hbar` is attached
-without an additional `2π` factor. -/
-noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceConductivityBridge
+/-- Physically normalized finite-cutoff finite-`η` ordered `xy` conductivity-component bridge. The
+explicit angle integral already supplies the angular measure, so `momentumMeasurePrefactor hbar` is
+attached without an additional `2π` factor. This is not yet the antisymmetric Hall projection
+`(σxy - σyx) / 2`. -/
+noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ((bastinTraceHallPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral
       e v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- With zero radial cutoff, the physically normalized Hall surface bridge vanishes exactly. -/
+/-- With zero radial cutoff, the physically normalized ordered `xy` conductivity-component bridge
+vanishes exactly. -/
 @[simp]
-theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceConductivityBridge_zero_cutoff
+theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge_zero_cutoff
     (e v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceConductivityBridge
+    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
       e v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceConductivityBridge,
+  simp [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge,
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral]
 
 end
