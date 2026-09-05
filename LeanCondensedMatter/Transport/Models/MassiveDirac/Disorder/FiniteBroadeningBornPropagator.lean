@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -26,6 +25,7 @@ G_B,s = D_s⁻¹ (ε̃_s I + v pₓ σₓ + v pᵧ σᵧ + m̃_s σ_z).
 
 The sign `m̃_s = m + Σ_z,s` follows from
 `G₀⁻¹ - Σ = (z_s - Σ₀) I - v p·σ - (m + Σ_z) σ_z`.
+The `2 × 2` inversion itself is inherited from the model-level effective Pauli propagator algebra.
 
 This is a finite-cutoff Born-Dyson approximation candidate.  It is not identified with the exact
 disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivity-limit statement is made
@@ -182,14 +182,14 @@ private theorem finiteCutoffContinuumBornDysonShiftMatrix_det
       side v m px py probeEnergy broadening disorderStrength hbar pMax).det =
       finiteCutoffContinuumBornDysonDenominator
         side v m px py probeEnergy broadening disorderStrength hbar pMax := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  rw [Matrix.det_fin_two]
-  simp [finiteCutoffContinuumBornDysonShiftMatrix,
-    finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ]
-  ring_nf
-  rw [hI]
-  ring
+  simpa [finiteCutoffContinuumBornDysonShiftMatrix,
+    finiteCutoffContinuumBornDysonDenominator,
+    effectivePauliShiftMatrix, effectivePauliGreenDenominator] using
+    effectivePauliShiftMatrix_det v px py
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
 
 /-- The explicit Pauli candidate is a right inverse of the finite-`η` Born-Dyson shift whenever its
 quadratic denominator is nonzero. -/
@@ -202,26 +202,23 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax *
       finiteCutoffContinuumBornDysonGreenMatrix
         side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
-  have hunit : IsUnit (finiteCutoffContinuumBornDysonShiftMatrix
-      side v m px py probeEnergy broadening disorderStrength hbar pMax).det := by
-    rw [finiteCutoffContinuumBornDysonShiftMatrix_det]
-    exact isUnit_iff_ne_zero.mpr hden
-  rw [show finiteCutoffContinuumBornDysonGreenMatrix
-      side v m px py probeEnergy broadening disorderStrength hbar pMax =
-      (finiteCutoffContinuumBornDysonShiftMatrix
-        side v m px py probeEnergy broadening disorderStrength hbar pMax)⁻¹ by
-    rw [Matrix.inv_def, Ring.inverse_eq_inv, finiteCutoffContinuumBornDysonShiftMatrix_det]
-    ext i j
-    fin_cases i <;> fin_cases j <;>
-      simp [finiteCutoffContinuumBornDysonShiftMatrix,
-        finiteCutoffContinuumBornDysonGreenMatrix,
-        finiteCutoffContinuumBornDysonScalarCoefficient,
-        finiteCutoffContinuumBornDysonXCoefficient,
-        finiteCutoffContinuumBornDysonYCoefficient,
-        finiteCutoffContinuumBornDysonZCoefficient,
-        Matrix.adjugate_fin_two, sigmaX, sigmaY, sigmaZ] <;>
-      ring]
-  exact Matrix.mul_nonsing_inv _ hunit
+  simpa [finiteCutoffContinuumBornDysonShiftMatrix,
+    finiteCutoffContinuumBornDysonGreenMatrix,
+    finiteCutoffContinuumBornDysonScalarCoefficient,
+    finiteCutoffContinuumBornDysonXCoefficient,
+    finiteCutoffContinuumBornDysonYCoefficient,
+    finiteCutoffContinuumBornDysonZCoefficient,
+    finiteCutoffContinuumBornDysonDenominator,
+    effectivePauliShiftMatrix, effectivePauliGreenMatrix,
+    effectivePauliGreenScalarCoefficient, effectivePauliGreenXCoefficient,
+    effectivePauliGreenYCoefficient, effectivePauliGreenZCoefficient,
+    effectivePauliGreenDenominator] using
+    effectivePauliShiftMatrix_mul_greenMatrix v px py
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      hden
 
 /-- Operator-level Dyson shift corresponding exactly to the existing finite-cutoff Born self-energy. -/
 noncomputable def finiteCutoffContinuumBornDysonShiftOperator
