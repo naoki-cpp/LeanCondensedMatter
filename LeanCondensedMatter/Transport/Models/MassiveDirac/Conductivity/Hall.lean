@@ -1,0 +1,11 @@
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.CleanBastin
+
+set_option linter.style.header false
+
+/-!
+# Massive-Dirac Hall conductivity
+
+Public entry point for physically normalized Hall-conductivity results of the massive-Dirac
+benchmark. Formalism-specific analysis remains upstream under the corresponding Bastin/Středa
+owners; this layer attaches the physical conductivity normalization and exposes final Hall results.
+-/

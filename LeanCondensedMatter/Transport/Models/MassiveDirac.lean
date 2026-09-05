@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall
 
 set_option linter.style.header false
 
@@ -14,5 +15,6 @@ set_option linter.style.header false
 
 Model-owned public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes
 the clean model, propagator and its momentum-inversion symmetry, intrinsic Hall benchmark, Středa
-and Bastin representations, disorder specialization, and longitudinal response.
+and Bastin representations, disorder specialization, and physically normalized longitudinal/Hall
+conductivity results.
 -/

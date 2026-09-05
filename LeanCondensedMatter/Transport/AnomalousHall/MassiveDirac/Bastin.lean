@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
@@ -18,7 +19,6 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialPairUnifor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.ZeroTemperaturePair
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
 
 set_option linter.style.header false
 
