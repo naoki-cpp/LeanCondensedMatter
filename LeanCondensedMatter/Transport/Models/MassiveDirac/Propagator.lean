@@ -194,8 +194,10 @@ private theorem spectralShift_mul_pauliGreenOperatorOfRegulator
     (pauliShiftMatrix_mul_closedInverse
       (spectralParameterOfRegulator probeEnergy regulator)
       (((v * px : ℝ) : ℂ)) (((v * py : ℝ) : ℂ)) (((m : ℝ) : ℂ)) hden)
-  rw [pauliGreenOperatorOfRegulator_eq_closedForm, ← hdenEq, hamiltonianOperator_eq_pauli]
-  simpa [matrixOperator, Algebra.algebraMap_eq_smul_one] using hmatrix
+  rw [pauliGreenOperatorOfRegulator_eq_closedForm, ← hdenEq, hamiltonianOperator_eq_pauli,
+    Algebra.algebraMap_eq_smul_one]
+  simp only [matrixOperator, map_mul, map_add, map_sub, map_smul, map_one] at hmatrix
+  convert hmatrix using 1 <;> module
 
 /-- The resolvent at an arbitrary nonzero signed regulator equals the explicit Pauli Green operator. -/
 theorem resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
