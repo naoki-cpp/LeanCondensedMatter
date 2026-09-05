@@ -47,6 +47,10 @@ noncomputable def exactSecondMoment
     (kernel : H →L[ℂ] H) : H →L[ℂ] H :=
   ensemble.exactSecondMomentCLM kernel
 
+/-- Weighted second moment `E[uω²]` of a supplied real scalar impurity amplitude. -/
+noncomputable def scalarSecondMomentStrength (amplitude : Ω → ℝ) : ℂ :=
+  ∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2
+
 /-- The canonical exact second moment is the normalized finite operator average `E[Vω X Vω]`. -/
 theorem exactSecondMoment_eq_operatorAverage
     (kernel : H →L[ℂ] H) :
@@ -56,6 +60,35 @@ theorem exactSecondMoment_eq_operatorAverage
           (ensemble.impurityPotential ω).1) := by
   unfold exactSecondMoment exactSecondMomentCLM operatorAverage
   simp
+
+/-- If every impurity potential is scalar, `Vω = uω I`, the exact second-moment action is scalar
+multiplication by `E[uω²]`. -/
+theorem exactSecondMoment_eq_scalarSecondMomentStrength_smul
+    (amplitude : Ω → ℝ)
+    (hscalar : ∀ ω,
+      (ensemble.impurityPotential ω).1 =
+        (amplitude ω : ℂ) • (1 : H →L[ℂ] H))
+    (kernel : H →L[ℂ] H) :
+    ensemble.exactSecondMoment kernel =
+      ensemble.scalarSecondMomentStrength amplitude • kernel := by
+  rw [ensemble.exactSecondMoment_eq_operatorAverage]
+  unfold operatorAverage scalarSecondMomentStrength
+  change
+    (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * kernel *
+        (ensemble.impurityPotential ω).1)) =
+      (∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel
+  calc
+    (∑ ω, (ensemble.probability ω : ℂ) •
+      ((ensemble.impurityPotential ω).1 * kernel *
+        (ensemble.impurityPotential ω).1)) =
+        ∑ ω, ((ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel := by
+      apply Finset.sum_congr rfl
+      intro ω _
+      rw [hscalar ω]
+      simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, pow_two]
+    _ = (∑ ω, (ensemble.probability ω : ℂ) * (amplitude ω : ℂ) ^ 2) • kernel := by
+      rw [← Finset.sum_smul]
 
 /-- The exact second-moment action preserves subtraction because its canonical realization is
 complex-linear. -/
