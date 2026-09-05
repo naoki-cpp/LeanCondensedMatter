@@ -235,7 +235,7 @@ def main() -> int:
     )
 
     massive_dirac_bastin_umbrella = massive_dirac_root / "Bastin.lean"
-    pole_extraction_module = f"{MD_IMPL}.Bastin.PoleExtraction"
+    pole_extraction_module = f"{MD_PUBLIC}.Bastin.PoleExtraction"
     require_import(
         errors,
         massive_dirac_bastin_umbrella,
