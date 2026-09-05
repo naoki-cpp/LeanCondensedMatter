@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 

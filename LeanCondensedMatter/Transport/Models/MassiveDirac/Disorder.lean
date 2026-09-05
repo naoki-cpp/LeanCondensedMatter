@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnerg
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
 
@@ -19,8 +20,9 @@ UV/broadening limits, and `Born.Damping` owns the channel limits and upper-band 
 The finite-external-broadening Born-Dyson rung reduces through the shared polar Pauli algebra to an
 in-plane coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Radial integration
 attaches the scalar-disorder line and physical momentum measure exactly once before the pair is
-consumed by the canonical in-plane ladder solution. The zero-external-broadening weak-disorder path
-and its transport-lifetime relation remain separate from the finite-`η` path.
+consumed by the canonical in-plane ladder solution. For the zero-external-broadening Born route,
+`BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal rung, while the
+fixed-cutoff weak-disorder and infinite-cutoff limits remain separate downstream routes.
 
 Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
 crossed diagrams, and simultaneous thermodynamic, UV, disorder, and zero-broadening limits are not
