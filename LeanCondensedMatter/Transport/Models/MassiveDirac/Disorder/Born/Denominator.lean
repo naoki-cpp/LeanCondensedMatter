@@ -412,7 +412,7 @@ open Filter
 open QuantumTheory.Transport
 
 private theorem mass_sq_lt_probe_sq
-    (m probeEnergy : ℝ) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy) :
+    (m probeEnergy : ℝ) (hmetal : |m| < probeEnergy) :
     m ^ 2 < probeEnergy ^ 2 := by
   rw [← sq_abs m]
   nlinarith [abs_nonneg m]
@@ -433,12 +433,12 @@ private theorem tendsto_pauliGreenDenominator_radial_broadening_zero
 
 private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
     (side : SpectralSide) (v m probeEnergy : ℝ)
-    (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy) :
+    (hmetal : |m| < probeEnergy) :
     Tendsto
       (fun broadening : ℝ =>
         (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  have hmetalSq := mass_sq_lt_probe_sq m probeEnergy hprobe hmetal
+  have hmetalSq := mass_sq_lt_probe_sq m probeEnergy hmetal
   have hre : 0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
     rw [pauliGreenDenominator_radial_re]
     nlinarith
@@ -514,7 +514,7 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
 /-- At fixed finite cutoff beyond the on-shell circle, `Im J_s → -sπ/(2v²)` as `η → 0⁺`. -/
 theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hprobe : 0 < probeEnergy) (hmetal : |m| < probeEnergy)
+    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
@@ -522,11 +522,12 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
           side v m probeEnergy broadening pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))) := by
+  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
   have hargCutoff := tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
     side v m probeEnergy pMax hprobe hcutoff
   have hargZero := tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
-    side v m probeEnergy hprobe hmetal
+    side v m probeEnergy hmetal
   have hdiff :
       Tendsto
         (fun broadening : ℝ =>
