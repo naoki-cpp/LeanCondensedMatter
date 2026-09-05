@@ -24,18 +24,13 @@
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
         {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
-        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]},
-        {"id": "longitudinalFiniteBroadening", "modulePrefixes": [
-          "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadening",
-          "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.FiniteBroadeningBornLadder"
-        ]}
+        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
       ],
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelOperator"},
         {"upstream": "modelBasic", "downstream": "modelKinematics"},
         {"upstream": "modelKinematics", "downstream": "modelOccupation"},
         {"upstream": "modelOccupation", "downstream": "longitudinalRelaxationTime"},
-        {"upstream": "modelOperator", "downstream": "longitudinalFiniteBroadening"},
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelInterband"},
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
