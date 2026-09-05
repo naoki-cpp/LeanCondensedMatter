@@ -4,7 +4,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleFactor
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound

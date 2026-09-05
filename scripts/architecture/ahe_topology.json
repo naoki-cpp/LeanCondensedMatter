@@ -84,7 +84,7 @@
         {
           "id": "bastinPole",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleFactor",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound",
