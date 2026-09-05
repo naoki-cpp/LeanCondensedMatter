@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Berry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Bands
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Limit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband
