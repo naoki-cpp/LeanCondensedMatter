@@ -10,11 +10,11 @@ set_option linter.style.header false
 
 For nonzero external broadening, nonnegative scalar-disorder strength, and a nonnegative radial
 cutoff, the finite-cutoff continuum Born self-energy is dissipative with the sign selected by the
-spectral regulator.  Consequently the corresponding Born-Dyson shift has trivial kernel.  Since the
+spectral regulator. Consequently the corresponding Born-Dyson shift has trivial kernel. Since the
 massive-Dirac Hilbert space is finite-dimensional, the shift is a unit, and its explicit Pauli
 quadratic denominator is nonzero at every momentum.
 
-This closes the invertibility boundary of the finite-`η` Born-Dyson propagator.  No equality with the
+This closes the invertibility boundary of the finite-`η` Born-Dyson propagator. No equality with the
 exact disorder average, SCBA closure, Ward identity, or broadening/disorder limit is asserted here.
 -/
 
@@ -64,8 +64,8 @@ private theorem im_inner_self_inversionSymmetrizedPauliGreenOperatorOfRegulator_
         (‖pauliGreenOperatorOfRegulator v m p 0 probeEnergy regulator ψ‖ ^ 2 +
           ‖pauliGreenOperatorOfRegulator v m (-p) 0 probeEnergy regulator ψ‖ ^ 2)) := by
   rw [inversionSymmetrizedPauliGreenOperatorOfRegulator]
-  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
-    inner_smul_right, inner_add_right, Complex.add_im, Complex.mul_im]
+  simp only [smul_apply, add_apply, inner_smul_right, inner_add_right,
+    Complex.add_im, Complex.mul_im]
   norm_num
   rw [im_inner_self_pauliGreenOperatorOfRegulator_apply
       v m p 0 probeEnergy regulator hregulator ψ,
@@ -82,8 +82,8 @@ private theorem im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
       -(regulator *
         continuumBornRadialDissipationDensity v m probeEnergy regulator ψ p) := by
   rw [continuumBornRadialGreenKernelOfRegulator]
-  simp only [ContinuousLinearMap.smul_apply, inner_smul_right, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im, mul_zero, zero_mul, zero_add]
+  simp only [smul_apply, inner_smul_right, Complex.mul_im,
+    Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   rw [im_inner_self_inversionSymmetrizedPauliGreenOperatorOfRegulator_apply
     v m probeEnergy regulator p hregulator ψ]
   unfold continuumBornRadialDissipationDensity
@@ -167,7 +167,7 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
       _ = ∫ p in (0 : ℝ)..pMax,
           (L (continuumBornRadialGreenKernelOfRegulator
             v m probeEnergy regulator p)).im := by
-            exact (RCLike.intervalIntegral_im hLint).symm
+            exact (intervalIntegral.intervalIntegral_im hLint).symm
       _ = ∫ p in (0 : ℝ)..pMax,
           (inner ℂ ψ
             (continuumBornRadialGreenKernelOfRegulator
@@ -178,9 +178,14 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
   rw [hquad, ← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro p _
-  rw [im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
-    v m probeEnergy regulator p hregulator ψ]
-  ring
+  change
+    (inner ℂ ψ
+      (continuumBornRadialGreenKernelOfRegulator
+        v m probeEnergy regulator p ψ)).im =
+      -regulator * continuumBornRadialDissipationDensity
+        v m probeEnergy regulator ψ p
+  exact im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
+    v m probeEnergy regulator p hregulator ψ
 
 private theorem regulator_mul_im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply_nonpos
     (v m probeEnergy regulator pMax : ℝ) (hregulator : regulator ≠ 0)
@@ -227,8 +232,8 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
     regulator_mul_im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply_nonpos
       v m probeEnergy regulator pMax hregulator hpMax ψ
   unfold finiteCutoffContinuumBornSelfEnergyOfRegulator
-  simp only [ContinuousLinearMap.smul_apply, inner_smul_right, Complex.mul_im,
-    Complex.ofReal_re, Complex.ofReal_im, mul_zero, zero_mul, zero_add]
+  simp only [smul_apply, inner_smul_right, Complex.mul_im,
+    Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   calc
     regulator *
         ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
@@ -242,8 +247,7 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
               v m probeEnergy regulator pMax ψ)).im) := by ring
     _ ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hscale hgreen
 
-/-- Physical-side specialization of the Born dissipativity inequality. -/
-theorem finiteCutoffContinuumBornSelfEnergy_dissipative
+private theorem finiteCutoffContinuumBornSelfEnergy_dissipative
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -300,13 +304,13 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
       (fun w : DiracHilbert => (inner ℂ (ψ - φ) w).im) hshiftApply
     rw [inner_sub_right, inner_sub_right, inner_smul_right] at him
     simp only [Complex.sub_im, Complex.mul_im, spectralParameter_re, spectralParameter_im,
-      himSelf, hreSelf, hH, mul_zero, zero_add, sub_zero, map_zero] at him
+      himSelf, hreSelf, hH, mul_zero, zero_add, sub_zero] at him
     have hbalance :
         side.regulator broadening * ‖ψ - φ‖ ^ 2 =
           (inner ℂ (ψ - φ)
             (finiteCutoffContinuumBornSelfEnergy
               side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im := by
-      linarith
+      simpa using him
     rw [← hbalance] at hSigma
     have hpositive :
         0 < (side.regulator broadening) ^ 2 * ‖ψ - φ‖ ^ 2 :=
@@ -337,7 +341,7 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_isUnit
     exact LinearMap.surjective_of_injective (f := shift.toLinearMap) hinj
   exact ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinj, hsurj⟩
 
-/-- In the physical finite-broadening regime with nonnegative scalar disorder and radial cutoff, the
+/-- In the finite-broadening regime with nonnegative scalar disorder and radial cutoff, the
 finite-cutoff Born-Dyson quadratic denominator is nonzero at every momentum. -/
 theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
     (side : SpectralSide)
@@ -360,7 +364,7 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
     apply (isUnit_map_iff φ M).mp
     simpa [φ, matrixOperator] using hoperatorUnit
   have hdetUnit : IsUnit M.det :=
-    (Matrix.isUnit_iff_isUnit_det).mp hmatrixUnit
+    (Matrix.isUnit_iff_isUnit_det M).mp hmatrixUnit
   have hdet : M.det ≠ 0 := isUnit_iff_ne_zero.mp hdetUnit
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
@@ -376,23 +380,6 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
     ring
   rw [hdetEq] at hdet
   exact hdet
-
-/-- The physical Born-Dyson propagator candidate is therefore an actual right inverse without a
-separate denominator hypothesis. -/
-theorem finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator_of_physical
-    (side : SpectralSide)
-    (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
-    (hpMax : 0 ≤ pMax) :
-    finiteCutoffContinuumBornDysonShiftOperator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax *
-      finiteCutoffContinuumBornDysonGreenOperator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
-  exact finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
-    side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening
-    (finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m px py probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax)
 
 end
 
