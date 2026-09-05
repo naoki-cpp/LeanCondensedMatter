@@ -53,28 +53,28 @@ private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
           p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
       _ = p ^ 2 := by rw [htrig]; ring
       _ = p ^ 2 + 0 ^ 2 := by ring
-  have hmatrix :
-      finiteCutoffContinuumBornDysonGreenMatrix
+  have hden :
+      finiteCutoffContinuumBornDysonDenominator
           side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix
-          (finiteCutoffContinuumBornDysonScalarCoefficient
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonXCoefficient
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonZCoefficient
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
-    unfold finiteCutoffContinuumBornDysonGreenMatrix polarPauliMatrix
-    unfold finiteCutoffContinuumBornDysonScalarCoefficient
-      finiteCutoffContinuumBornDysonXCoefficient
-      finiteCutoffContinuumBornDysonYCoefficient
-      finiteCutoffContinuumBornDysonZCoefficient
-      finiteCutoffContinuumBornDysonDenominator
+        finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold finiteCutoffContinuumBornDysonDenominator
     rw [hradial]
-    push_cast
-    ring_nf
-  simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator] using
-    congrArg matrixOperator hmatrix
+  simpa [finiteCutoffContinuumBornDysonGreenOperator,
+    finiteCutoffContinuumBornDysonGreenMatrix,
+    finiteCutoffContinuumBornDysonScalarCoefficient,
+    finiteCutoffContinuumBornDysonXCoefficient,
+    finiteCutoffContinuumBornDysonYCoefficient,
+    finiteCutoffContinuumBornDysonZCoefficient, hden] using
+    (commonDenominatorPauliOperator_polar_eq
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      v p θ)
 
 /-- Full-angle `σₓ` coefficient of the finite-`η` Born-Dyson retarded-advanced rung. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient

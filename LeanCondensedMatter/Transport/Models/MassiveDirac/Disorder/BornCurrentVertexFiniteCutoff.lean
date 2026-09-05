@@ -67,32 +67,24 @@ private theorem continuumBornPauliGreenOperator_polar_eq
           p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
       _ = p ^ 2 := by rw [htrig]; ring
       _ = p ^ 2 + 0 ^ 2 := by ring
-  have hmatrix :
-      continuumBornPauliGreenScalarCoefficient side v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar •
-          (1 : Matrix2) +
-        continuumBornPauliGreenXCoefficient side v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaX +
-        continuumBornPauliGreenYCoefficient side v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaY +
-        continuumBornPauliGreenZCoefficient side v m
-            (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar • sigmaZ =
-      polarPauliMatrix
-        (continuumBornPauliGreenScalarCoefficient
-          side v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenXCoefficient
-          side v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenZCoefficient
-          side v m p 0 probeEnergy disorderStrength hbar) θ := by
-    unfold polarPauliMatrix
-    unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenXCoefficient
-      continuumBornPauliGreenYCoefficient continuumBornPauliGreenZCoefficient
-      continuumBornPauliGreenDenominator
+  have hden :
+      continuumBornPauliGreenDenominator side v m
+          (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar =
+        continuumBornPauliGreenDenominator
+          side v m p 0 probeEnergy disorderStrength hbar := by
+    unfold continuumBornPauliGreenDenominator
     rw [hradial]
-    push_cast
-    ring_nf
-  simpa [continuumBornPauliGreenOperator, polarPauliOperator] using
-    congrArg matrixOperator hmatrix
+  simpa [continuumBornPauliGreenOperator,
+    continuumBornPauliGreenScalarCoefficient,
+    continuumBornPauliGreenXCoefficient,
+    continuumBornPauliGreenYCoefficient,
+    continuumBornPauliGreenZCoefficient, hden] using
+    (commonDenominatorPauliOperator_polar_eq
+      (continuumBornPauliGreenDenominator
+        side v m p 0 probeEnergy disorderStrength hbar)
+      (continuumBornEffectiveEnergy side v probeEnergy disorderStrength hbar)
+      (continuumBornEffectiveMass side v m disorderStrength hbar)
+      v p θ)
 
 /-- `σₓ` coefficient after the full polar-angle integral of the Born-dressed `Gᴿ σₓ Gᴬ` rung. -/
 def continuumBornRetardedAdvancedPauliXAngularXCoefficient

@@ -47,6 +47,26 @@ noncomputable def polarPauliOperator (a b d : ℂ) (θ : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (polarPauliMatrix a b d θ)
 
+/-- A Cartesian Pauli operator with one common denominator, angle-independent scalar and mass
+numerators, and isotropic linear in-plane numerator reduces to `polarPauliOperator` after the polar
+substitution `pₓ = p cos θ`, `pᵧ = p sin θ`. -/
+theorem commonDenominatorPauliOperator_polar_eq
+    (denominator energy mass : ℂ) (v p θ : ℝ) :
+    matrixOperator
+        ((denominator⁻¹ * energy) • (1 : Matrix2) +
+          (denominator⁻¹ * ((v * (p * Real.cos θ) : ℝ) : ℂ)) • sigmaX +
+          (denominator⁻¹ * ((v * (p * Real.sin θ) : ℝ) : ℂ)) • sigmaY +
+          (denominator⁻¹ * mass) • sigmaZ) =
+      polarPauliOperator
+        (denominator⁻¹ * energy)
+        (denominator⁻¹ * ((v * p : ℝ) : ℂ))
+        (denominator⁻¹ * mass) θ := by
+  unfold polarPauliOperator
+  apply congrArg matrixOperator
+  unfold polarPauliMatrix
+  push_cast
+  module
+
 /-- Full-angle longitudinal coefficient of a retarded-advanced polar Pauli rung. -/
 def pauliRungAngularXCoefficient (aR aA dR dA : ℂ) : ℂ :=
   (((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA)
