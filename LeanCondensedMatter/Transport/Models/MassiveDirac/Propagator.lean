@@ -177,24 +177,25 @@ private theorem spectralShift_mul_pauliGreenOperatorOfRegulator
           (spectralParameterOfRegulator probeEnergy regulator) -
         hamiltonianOperator v m px py) *
       pauliGreenOperatorOfRegulator v m px py probeEnergy regulator = 1 := by
-  rw [pauliGreenOperatorOfRegulator_eq_closedForm]
-  rw [mul_smul_comm]
-  have hquadratic :
-      (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-            (spectralParameterOfRegulator probeEnergy regulator) -
-          hamiltonianOperator v m px py) *
-        (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-            (spectralParameterOfRegulator probeEnergy regulator) +
-          hamiltonianOperator v m px py) =
-        pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator •
-          (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
-    rw [sub_mul, mul_add, mul_add]
-    rw [hamiltonianOperator_mul_self]
-    simp [Algebra.algebraMap_eq_smul_one, pauliGreenDenominatorOfRegulator, smul_smul, sub_smul]
-    module
-  rw [hquadratic, smul_smul]
-  simp [pauliGreenDenominatorOfRegulator_ne_zero
-    v m px py probeEnergy regulator hregulator]
+  have hdenEq :
+      spectralParameterOfRegulator probeEnergy regulator ^ 2 -
+          (((v * px : ℝ) : ℂ)) ^ 2 - (((v * py : ℝ) : ℂ)) ^ 2 - (((m : ℝ) : ℂ)) ^ 2 =
+        pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator := by
+    unfold pauliGreenDenominatorOfRegulator energySq
+    push_cast
+    ring
+  have hden :
+      spectralParameterOfRegulator probeEnergy regulator ^ 2 -
+          (((v * px : ℝ) : ℂ)) ^ 2 - (((v * py : ℝ) : ℂ)) ^ 2 - (((m : ℝ) : ℂ)) ^ 2 ≠ 0 := by
+    rw [hdenEq]
+    exact pauliGreenDenominatorOfRegulator_ne_zero
+      v m px py probeEnergy regulator hregulator
+  have hmatrix := congrArg matrixOperator
+    (pauliShiftMatrix_mul_closedInverse
+      (spectralParameterOfRegulator probeEnergy regulator)
+      (((v * px : ℝ) : ℂ)) (((v * py : ℝ) : ℂ)) (((m : ℝ) : ℂ)) hden)
+  rw [pauliGreenOperatorOfRegulator_eq_closedForm, ← hdenEq, hamiltonianOperator_eq_pauli]
+  simpa [matrixOperator, Algebra.algebraMap_eq_smul_one] using hmatrix
 
 /-- The resolvent at an arbitrary nonzero signed regulator equals the explicit Pauli Green operator. -/
 theorem resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
