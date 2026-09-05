@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Normalization
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -20,12 +21,6 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open Filter QuantumTheory.Transport
-
-/-- Scalar prefactor that converts the canonical traced Bastin energy kernel to the static Hall
-response before the momentum measure is applied. Because the current vertices already contain the
-charge `-e`, this factor carries no additional charge power. -/
-def bastinTraceHallPrefactor (hbar : ℝ) : ℝ :=
-  hbar / (2 * Real.pi)
 
 /-- Finite-cutoff Hall response obtained from the canonical occupation-weighted clean Bastin-pair
 radial integral, the Bastin trace normalization, the angular integral, and the physical-momentum
