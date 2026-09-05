@@ -128,7 +128,7 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
   simp
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
-`Im I₀,s → -sπε/(2v²)` as `η → 0⁺`. The proof keeps the exact
+`Im I₀,s → -sπε/(2v²)`. The proof keeps the exact
 `ε Im J_s + γ_s Re J_s` split and proves the second term vanishes. -/
 theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
