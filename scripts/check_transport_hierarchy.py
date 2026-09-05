@@ -243,7 +243,7 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac Bastin implementation umbrella",
     )
-    pair_integral_path = massive_dirac_root / "Bastin" / "PairIntegral.lean"
+    pair_integral_path = massive_dirac_model_root / "Bastin" / "PairIntegral.lean"
     require_import(
         errors,
         pair_integral_path,
