@@ -213,17 +213,13 @@ def main() -> int:
 
     massive_dirac_streda_umbrella = massive_dirac_model_root / "Streda.lean"
     fiber_response_module = f"{MD_PUBLIC}.Streda.FiberResponse"
-    for module in (
-        f"{MD_PUBLIC}.Streda.Response",
+    require_import(
+        errors,
+        massive_dirac_streda_umbrella,
         fiber_response_module,
-    ):
-        require_import(
-            errors,
-            massive_dirac_streda_umbrella,
-            module,
-            root=ROOT,
-            description="massive-Dirac Streda implementation umbrella",
-        )
+        root=ROOT,
+        description="massive-Dirac Streda implementation umbrella",
+    )
     fiber_response_path = massive_dirac_model_root / "Streda" / "FiberResponse.lean"
     require_import(
         errors,
