@@ -15,9 +15,6 @@ SPEC = ROOT / "scripts" / "architecture" / "source_contracts.json"
 
 CONTRACT_FIELDS = {
     "requiredFiles": ("id", "paths"),
-    # Kept parseable until the data file is cleaned up, but intentionally not enforced: CI should
-    # protect current architecture, not remember that retired paths must stay absent forever.
-    "forbiddenFiles": ("id", "paths"),
     "requiredDirectories": ("id", "paths"),
     "requiredImports": ("id", "path", "modules"),
     "exactImports": ("id", "path", "modules"),
