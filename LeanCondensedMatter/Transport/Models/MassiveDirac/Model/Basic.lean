@@ -123,6 +123,28 @@ theorem energy_sq (v m px py : ℝ) :
     energy v m px py ^ 2 = energySq v m px py := by
   exact Real.sq_sqrt (energySq_nonneg v m px py)
 
+/-- A Pauli shift means `a I - (x σₓ + y σᵧ + z σ_z)`; when its quadratic denominator is nonzero,
+its closed inverse is the denominator-scaled conjugate Pauli numerator. -/
+theorem pauliShiftMatrix_mul_closedInverse
+    (a x y z : ℂ) (hden : a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 ≠ 0) :
+    (a • (1 : Matrix2) - (x • sigmaX + y • sigmaY + z • sigmaZ)) *
+      ((a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2)⁻¹ •
+        (a • (1 : Matrix2) + (x • sigmaX + y • sigmaY + z • sigmaZ))) = 1 := by
+  rw [mul_smul_comm]
+  have hquadratic :
+      (a • (1 : Matrix2) - (x • sigmaX + y • sigmaY + z • sigmaZ)) *
+          (a • (1 : Matrix2) + (x • sigmaX + y • sigmaY + z • sigmaZ)) =
+        (a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2) • (1 : Matrix2) := by
+    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+      simpa [pow_two] using Complex.I_mul_I
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
+      ring_nf <;>
+      simp [hI]; ring
+  rw [hquadratic, smul_smul]
+  simp [hden]
+
 /-- The massive-Dirac Hamiltonian squares to `E² I`. -/
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
