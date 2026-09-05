@@ -19,7 +19,7 @@ limit, ladder resummation, transport-lifetime identification, or Kubo conductivi
 in this module.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -222,4 +222,4 @@ def continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

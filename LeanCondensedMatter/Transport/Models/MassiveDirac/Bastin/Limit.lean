@@ -19,7 +19,7 @@ limit.  The present file deliberately proves only the pointwise statement.  It d
 an energy integral with a limit and it does not introduce a delta-distribution identity.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -170,4 +170,4 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

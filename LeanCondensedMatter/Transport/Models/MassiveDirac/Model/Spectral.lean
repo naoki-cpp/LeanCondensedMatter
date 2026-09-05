@@ -18,7 +18,7 @@ The algebraic spectral identities below are stated away from the degeneracy `E =
 eigenvector gauge is introduced.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -210,4 +210,4 @@ theorem bandProjector_upper_mul_lower (v m px py : ℝ)
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

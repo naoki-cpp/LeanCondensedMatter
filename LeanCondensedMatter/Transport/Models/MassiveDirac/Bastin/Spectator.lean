@@ -15,7 +15,7 @@ side-indexed finite-broadening coefficient converges to that value on either spe
 square therefore converges to the inverse squared gap. No energy-limit interchange is performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -63,4 +63,4 @@ theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

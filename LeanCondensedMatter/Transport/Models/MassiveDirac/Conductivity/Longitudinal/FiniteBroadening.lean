@@ -19,7 +19,7 @@ No ladder solution, zero-broadening limit, exact disorder average, SCBA/Ward cla
 correction, or thermodynamic limit is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -49,4 +49,4 @@ theorem massiveDiracLongitudinalDressedBastinEnergyIntegral_eq_surface_add_sea
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

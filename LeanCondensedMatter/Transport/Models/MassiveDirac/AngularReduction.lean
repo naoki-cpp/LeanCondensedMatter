@@ -30,7 +30,7 @@ calculations; the operator-valued angular integral itself is owned only at arbit
 No radial integration, disorder normalization, UV limit, or zero-broadening limit is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -191,4 +191,4 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

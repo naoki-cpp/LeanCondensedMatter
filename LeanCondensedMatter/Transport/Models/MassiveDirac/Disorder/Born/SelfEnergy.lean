@@ -22,7 +22,7 @@ No ultraviolet limit, zero-broadening limit, exact disorder average, SCBA closur
 identification, or current-vertex resummation is claimed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -295,11 +295,11 @@ theorem star_finiteCutoffContinuumBornSelfEnergy
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -375,11 +375,11 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac
 
 set_option linter.style.header false
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -483,4 +483,4 @@ theorem finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

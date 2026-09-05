@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDomination
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -15,7 +15,7 @@ step: the current amplitude is controlled by `|m| / E ≤ 1`, while the resolven
 controlled by the mass-magnitude gap and a fixed target window `radius < 2|m|`.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -100,4 +100,4 @@ theorem norm_radialInterbandCurrentAmplitude_le
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

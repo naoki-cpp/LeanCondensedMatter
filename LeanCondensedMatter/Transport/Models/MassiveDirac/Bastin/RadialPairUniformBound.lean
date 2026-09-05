@@ -12,7 +12,7 @@ by the spectator constant times the exact symmetric Lorentzian mass.  Since that
 `π`, the full interband Bastin pair receives a momentum- and broadening-independent bound.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -116,4 +116,4 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

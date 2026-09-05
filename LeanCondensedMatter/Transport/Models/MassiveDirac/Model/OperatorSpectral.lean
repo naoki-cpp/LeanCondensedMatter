@@ -23,7 +23,7 @@ therefore model-level spectral infrastructure. Kubo–Bastin, Středa, propagato
 consumers remain downstream.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -171,4 +171,4 @@ theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

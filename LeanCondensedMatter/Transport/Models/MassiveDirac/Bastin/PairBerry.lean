@@ -20,7 +20,7 @@ This remains pointwise in momentum.  No momentum integration or interchange of t
 integral with the zero-broadening limit is performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -101,4 +101,4 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

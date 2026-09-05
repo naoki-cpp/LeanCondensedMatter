@@ -15,7 +15,7 @@ The resulting bound is independent of radial momentum, energy offset inside the 
 broadening. It is the model-specific domination input used before integrating the Lorentzian pole.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -170,4 +170,4 @@ theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

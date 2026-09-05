@@ -20,7 +20,7 @@ No Kubo–Bastin or Středa kernel is defined here. Response-specific trace iden
 representations remain downstream of this model realization.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -124,4 +124,4 @@ noncomputable def boundedFreeSystem (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

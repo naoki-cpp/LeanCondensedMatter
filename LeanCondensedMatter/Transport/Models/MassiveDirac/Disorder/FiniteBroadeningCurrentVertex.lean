@@ -25,7 +25,7 @@ This module does not insert the solved vertex into Kubo/Středa, take broadening
 or identify the Born-Dyson approximation with an exact disorder average.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -290,4 +290,4 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

@@ -22,7 +22,7 @@ No weak-disorder limit, infinite-cutoff limit, ladder resummation, transport-lif
 identification, Ward claim, or conductivity theorem is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -432,4 +432,4 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoeffici
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

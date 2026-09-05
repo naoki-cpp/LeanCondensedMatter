@@ -31,7 +31,7 @@ For an isotropic Fermi circle, projecting the radial group velocity onto the `x`
 factor of `1/2`.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -148,4 +148,4 @@ theorem isotropicMeanSquareRadialGroupVelocityX_eq
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

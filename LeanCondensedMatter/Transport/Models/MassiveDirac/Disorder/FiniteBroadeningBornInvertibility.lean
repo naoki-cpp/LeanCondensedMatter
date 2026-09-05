@@ -18,7 +18,7 @@ This closes the invertibility boundary of the finite-`η` Born-Dyson propagator.
 exact disorder average, SCBA closure, Ward identity, or broadening/disorder limit is asserted here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -390,4 +390,4 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

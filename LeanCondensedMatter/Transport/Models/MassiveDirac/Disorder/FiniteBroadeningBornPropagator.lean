@@ -32,7 +32,7 @@ disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivit
 here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 

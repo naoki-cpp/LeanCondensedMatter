@@ -31,7 +31,7 @@ No Kubo ladder equation, Ward identity, crossed diagram, or identification with 
 averaged conductivity is claimed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -446,4 +446,4 @@ def continuumBornUpperBandPositiveTransportLifetime
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

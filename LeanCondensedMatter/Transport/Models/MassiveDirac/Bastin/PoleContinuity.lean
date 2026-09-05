@@ -16,7 +16,7 @@ target-window continuity as corollaries. No compactness bound, energy integratio
 integration is performed here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -178,4 +178,4 @@ theorem continuousOn_targetCenteredInterbandSpectatorCurrentFactor_targetStrip
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

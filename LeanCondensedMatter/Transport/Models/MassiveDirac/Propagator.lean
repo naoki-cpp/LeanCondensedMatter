@@ -20,7 +20,7 @@ parallel Green-function formalism. No disorder data, momentum integration, angul
 closure, SCBA, or vertex resummation is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -229,4 +229,4 @@ theorem star_pauliGreenOperatorOfRegulator
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

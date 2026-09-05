@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.CleanBastin
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 
 set_option linter.style.header false
 

@@ -11,7 +11,6 @@ ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 
-MD_IMPL = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
 MD_PUBLIC = "LeanCondensedMatter.Transport.Models.MassiveDirac"
 MD_MODEL = f"{MD_PUBLIC}.Model"
 
@@ -41,11 +40,12 @@ def main() -> int:
     for module in (
         MD_MODEL,
         f"{MD_PUBLIC}.Propagator",
-        f"{MD_IMPL}.Intrinsic",
+        f"{MD_PUBLIC}.Conductivity.Hall.Intrinsic",
         f"{MD_PUBLIC}.Streda",
-        f"{MD_IMPL}.Bastin",
+        f"{MD_PUBLIC}.Bastin",
         f"{MD_PUBLIC}.Disorder",
         f"{MD_PUBLIC}.Conductivity.Longitudinal",
+        f"{MD_PUBLIC}.Conductivity.Hall",
     ):
         require_import(
             errors,
@@ -189,9 +189,7 @@ def main() -> int:
             description="massive-Dirac model implementation umbrella",
         )
 
-    massive_dirac_root = TRANSPORT / "AnomalousHall" / "MassiveDirac"
     canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
-    historical_propagator_path = massive_dirac_root / "Propagator.lean"
     require_import(
         errors,
         canonical_propagator_path,
@@ -199,11 +197,6 @@ def main() -> int:
         root=ROOT,
         description="massive-Dirac propagator model ownership",
     )
-    if historical_propagator_path.exists():
-        errors.append(
-            "Transport/AnomalousHall/MassiveDirac/Propagator.lean must not remain after "
-            "the propagator owner moves to Transport/Models/MassiveDirac"
-        )
     streda_prefix = f"{MD_PUBLIC}.Streda."
     if any(module.startswith(streda_prefix) for module in lean_imports(canonical_propagator_path)):
         errors.append(
@@ -229,7 +222,7 @@ def main() -> int:
         description="massive-Dirac shared Streda fiber response",
     )
 
-    massive_dirac_bastin_umbrella = massive_dirac_root / "Bastin.lean"
+    massive_dirac_bastin_umbrella = massive_dirac_model_root / "Bastin.lean"
     pole_extraction_module = f"{MD_PUBLIC}.Bastin.PoleExtraction"
     require_import(
         errors,

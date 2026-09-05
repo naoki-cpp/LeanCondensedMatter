@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
@@ -30,7 +30,7 @@ projector expression into its diagonal/interband band blocks and then perform th
 zero-broadening analysis. No such limiting statement is made here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -191,4 +191,4 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

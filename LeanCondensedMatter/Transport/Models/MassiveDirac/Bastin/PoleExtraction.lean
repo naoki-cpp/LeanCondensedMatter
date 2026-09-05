@@ -16,7 +16,7 @@ narrower than the interband gap. No model-local error split, duplicate approxima
 momentum integration, or momentum-limit interchange is introduced here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -86,4 +86,4 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

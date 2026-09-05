@@ -11,7 +11,7 @@ trace. These are consequences of the massive-Dirac spectrum and spectral project
 a particular response representation.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -82,4 +82,4 @@ theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

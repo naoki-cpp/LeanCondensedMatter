@@ -20,7 +20,7 @@ This file does not define the Born-Dyson momentum integrals that supply `X` and 
 broadening/disorder limit, identify a transport lifetime, or insert the result into conductivity.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -167,4 +167,4 @@ theorem inPlaneLadderSolvedXCoefficient_zero
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac

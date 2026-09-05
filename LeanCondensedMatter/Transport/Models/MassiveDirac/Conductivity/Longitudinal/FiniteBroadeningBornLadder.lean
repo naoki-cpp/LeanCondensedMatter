@@ -14,7 +14,7 @@ No Kubo/Středa trace insertion, conductivity theorem, broadening/disorder limit
 average claim is made here.
 -/
 
-namespace AnomalousHall.MassiveDirac
+namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
@@ -52,4 +52,4 @@ longitudinal charge-current operator. -/
 
 end
 
-end AnomalousHall.MassiveDirac
+end QuantumTheory.Transport.Models.MassiveDirac
