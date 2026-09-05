@@ -93,7 +93,7 @@
           "id": "bastinPair",
           "modulePrefixes": [
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairIntegral",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity"
           ]
         },
