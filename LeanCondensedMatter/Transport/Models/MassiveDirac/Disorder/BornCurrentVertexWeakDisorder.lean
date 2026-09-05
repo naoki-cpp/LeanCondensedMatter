@@ -185,7 +185,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
   rw [Real.arctan_neg]
   unfold continuumBornRADenominatorCenter
   field_simp [hv, hwidth]
-  ring
+  ring_nf
 
 /-- Exact endpoint formula with the disorder normalization already cancelled against the resonance
 width.  This is the form adapted to the `disorderStrength → 0⁺` limit. -/
@@ -447,3 +447,5 @@ theorem continuumBornUpperBandTransportLifetime_eq_weakDisorderCurrentRungFactor
     m fermiEnergy hden]
 
 end
+
+end AnomalousHall.MassiveDirac
