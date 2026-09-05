@@ -53,16 +53,17 @@ substitution `pₓ = p cos θ`, `pᵧ = p sin θ`. -/
 theorem commonDenominatorPauliOperator_polar_eq
     (denominator energy mass : ℂ) (v p θ : ℝ) :
     matrixOperator
-        (denominator⁻¹ * energy • (1 : Matrix2) +
-          denominator⁻¹ * ((v * (p * Real.cos θ) : ℝ) : ℂ) • sigmaX +
-          denominator⁻¹ * ((v * (p * Real.sin θ) : ℝ) : ℂ) • sigmaY +
-          denominator⁻¹ * mass • sigmaZ) =
+        ((denominator⁻¹ * energy) • (1 : Matrix2) +
+          (denominator⁻¹ * ((v * (p * Real.cos θ) : ℝ) : ℂ)) • sigmaX +
+          (denominator⁻¹ * ((v * (p * Real.sin θ) : ℝ) : ℂ)) • sigmaY +
+          (denominator⁻¹ * mass) • sigmaZ) =
       polarPauliOperator
         (denominator⁻¹ * energy)
         (denominator⁻¹ * ((v * p : ℝ) : ℂ))
         (denominator⁻¹ * mass) θ := by
-  unfold polarPauliOperator polarPauliMatrix
-  congr 1
+  unfold polarPauliOperator
+  apply congrArg matrixOperator
+  unfold polarPauliMatrix
   push_cast
   module
 
