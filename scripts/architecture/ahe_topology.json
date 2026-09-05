@@ -96,7 +96,7 @@
           "modulePrefixes": [
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit"
           ]
         },
         {
