@@ -139,6 +139,22 @@ theorem TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced
     TracedStredaAnalyticData.toRegularizedStredaIntegralData
   simp_rw [regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
 
+/-- A traced Bastin energy integral with identically zero occupation derivative is carried entirely
+by the residual Fermi-sea term. -/
+theorem TracedStredaAnalyticData.regularizedTracedBastinEnergyIntegral_eq_sea_of_derivative_zero
+    {hamiltonian current₁ current₂ : H →L[ℂ] H}
+    {broadening lowerEnergy upperEnergy : ℝ}
+    {occupation occupationDerivative : ℝ → ℂ}
+    (data : TracedStredaAnalyticData hamiltonian current₁ current₂
+      broadening lowerEnergy upperEnergy occupation occupationDerivative)
+    (hzero : occupationDerivative = fun _ => 0) :
+    regularizedTracedBastinEnergyIntegral
+        hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy occupation =
+      regularizedStredaFermiSea data.toRegularizedStredaIntegralData := by
+  rw [← data.regularizedBastinEnergyIntegral_eq_traced]
+  exact regularizedBastinEnergyIntegral_eq_sea_of_occupationDerivative_eq_zero
+    data.toRegularizedStredaIntegralData hzero
+
 /-- A chosen response becomes a concrete Středa representation once its equality with the
 canonical traced Bastin energy integral is supplied explicitly. -/
 noncomputable def TracedStredaAnalyticData.toRegularizedStredaRepresentation
