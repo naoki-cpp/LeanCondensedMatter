@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic
