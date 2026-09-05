@@ -312,7 +312,7 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
             (finiteCutoffContinuumBornSelfEnergy
               side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im := by
       rw [map_sub]
-      simpa using him
+      exact sub_eq_zero.mp him
     rw [← hbalance] at hSigma
     have hpositive :
         0 < (side.regulator broadening) ^ 2 * ‖ψ - φ‖ ^ 2 :=
