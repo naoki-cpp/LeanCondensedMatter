@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Momentum-inversion symmetry of the massive-Dirac Green operator
 
 Under simultaneous momentum inversion `(pₓ,pᵧ) ↦ (-pₓ,-pᵧ)`, the arbitrary-regulator quadratic
-Green denominator, scalar coefficient, and `σ_z` coefficient are even, while the `σₓ` and `σᵧ`
-coefficients are odd. Consequently the inversion-symmetrized clean propagator contains only the
+Green denominator, scalar coefficient, and `σ_z` coefficient are even, while every in-plane Pauli
+coefficient is odd. Consequently the inversion-symmetrized clean propagator contains only the
 `I` and `σ_z` Pauli channels. Physical spectral sides are introduced only by downstream consumers
 that need branch semantics.
 
@@ -38,17 +38,14 @@ open QuantumTheory.Transport
       pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator := by
   simp [pauliGreenScalarCoefficientOfRegulator]
 
-@[simp] theorem pauliGreenXCoefficientOfRegulator_neg_momentum
-    (v m px py probeEnergy regulator : ℝ) :
-    pauliGreenXCoefficientOfRegulator v m (-px) (-py) probeEnergy regulator =
-      -pauliGreenXCoefficientOfRegulator v m px py probeEnergy regulator := by
-  simp [pauliGreenXCoefficientOfRegulator]
-
-@[simp] theorem pauliGreenYCoefficientOfRegulator_neg_momentum
-    (v m px py probeEnergy regulator : ℝ) :
-    pauliGreenYCoefficientOfRegulator v m (-px) (-py) probeEnergy regulator =
-      -pauliGreenYCoefficientOfRegulator v m px py probeEnergy regulator := by
-  simp [pauliGreenYCoefficientOfRegulator]
+@[simp] theorem pauliGreenInPlaneCoefficientOfRegulator_neg_momentum
+    (direction : Direction2) (v m px py probeEnergy regulator : ℝ) :
+    pauliGreenInPlaneCoefficientOfRegulator
+        direction v m (-px) (-py) probeEnergy regulator =
+      -pauliGreenInPlaneCoefficientOfRegulator
+        direction v m px py probeEnergy regulator := by
+  cases direction <;>
+    simp [pauliGreenInPlaneCoefficientOfRegulator, directionComponent]
 
 @[simp] theorem pauliGreenZCoefficientOfRegulator_neg_momentum
     (v m px py probeEnergy regulator : ℝ) :
