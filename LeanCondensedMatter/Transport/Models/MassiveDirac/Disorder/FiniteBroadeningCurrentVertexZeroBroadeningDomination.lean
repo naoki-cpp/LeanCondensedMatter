@@ -225,7 +225,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       dsimp [DR, DR0]
       unfold finiteCutoffContinuumBornDysonDenominator
         finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-      ring
+      ring_nf
     have hdiffA :
         DA - DA0 =
           finiteCutoffContinuumBornDysonDenominator
@@ -235,7 +235,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       dsimp [DA, DA0]
       unfold finiteCutoffContinuumBornDysonDenominator
         finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
-      ring
+      ring_nf
     have herrR : ‖DR - DR0‖ < cR := by
       rw [hdiffR]
       simpa [cR, dist_eq_norm] using hRcloseAt
@@ -253,13 +253,13 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
         _ ≤ ‖DA0 - DA‖ + ‖DA‖ := norm_add_le _ _
         _ = ‖DA - DA0‖ + ‖DA‖ := by rw [norm_sub_rev]
     have hRlower : cR ≤ ‖DR‖ := by
-      have hmin := hminR p hp
+      have hmin := hminR hp
       dsimp [δR] at hmin
       dsimp [DR0]
       dsimp [cR]
       linarith
     have hAlower : cA ≤ ‖DA‖ := by
-      have hmin := hminA p hp
+      have hmin := hminA hp
       dsimp [δA] at hmin
       dsimp [DA0]
       dsimp [cA]
@@ -268,7 +268,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
         ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax‖ = ‖DR‖ * ‖DA‖ := by
       dsimp [DR, DA]
-      simp [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct, norm_mul]
+      simp [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct]
     have hproductLower :
         cDen ≤
           ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
@@ -314,7 +314,38 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp only [norm_mul]
     dsimp [boundValue]
-    gcongr
+    let prefNorm : ℝ := ‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖
+    let angleNorm : ℝ := ‖(((2 * Real.pi : ℝ) : ℂ))‖
+    let invNorm : ℝ :=
+      ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+        v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖
+    let numNorm : ℝ :=
+      ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+        i j v m probeEnergy broadening disorderStrength hbar pMax‖
+    have hpref : 0 ≤ prefNorm := norm_nonneg _
+    have hangle : 0 ≤ angleNorm := norm_nonneg _
+    have hinv : 0 ≤ invNorm := norm_nonneg _
+    have hnum : 0 ≤ numNorm := norm_nonneg _
+    have hcDenInv : 0 ≤ cDen⁻¹ := (inv_pos.mpr hcDen).le
+    have hnumBoundary : 0 ≤ ‖numeratorBoundary‖ + 1 := by positivity
+    have h1 : prefNorm * ‖(p : ℂ)‖ * angleNorm * invNorm * numNorm ≤
+        prefNorm * pMax * angleNorm * invNorm * numNorm := by
+      have h := mul_le_mul_of_nonneg_left hpNorm hpref
+      have h := mul_le_mul_of_nonneg_right h hangle
+      have h := mul_le_mul_of_nonneg_right h hinv
+      exact mul_le_mul_of_nonneg_right h hnum
+    have h2 : prefNorm * pMax * angleNorm * invNorm * numNorm ≤
+        prefNorm * pMax * angleNorm * cDen⁻¹ * numNorm := by
+      have hleft : 0 ≤ prefNorm * pMax * angleNorm := by positivity
+      have h := mul_le_mul_of_nonneg_left hinvBound hleft
+      exact mul_le_mul_of_nonneg_right h hnum
+    have h3 : prefNorm * pMax * angleNorm * cDen⁻¹ * numNorm ≤
+        prefNorm * pMax * angleNorm * cDen⁻¹ * (‖numeratorBoundary‖ + 1) := by
+      have hleft : 0 ≤ prefNorm * pMax * angleNorm * cDen⁻¹ := by positivity
+      exact mul_le_mul_of_nonneg_left hnumBound hleft
+    change prefNorm * ‖(p : ℂ)‖ * angleNorm * invNorm * numNorm ≤
+      prefNorm * pMax * angleNorm * cDen⁻¹ * (‖numeratorBoundary‖ + 1)
+    exact h1.trans (h2.trans h3)
   have hBoundIntegrable :
       Integrable (fun _ : ℝ => boundValue) (volume.restrict (Set.Icc 0 pMax)) := by
     exact integrableOn_const isCompact_Icc.measure_lt_top.ne
