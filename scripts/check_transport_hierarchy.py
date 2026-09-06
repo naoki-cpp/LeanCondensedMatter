@@ -204,24 +204,6 @@ def main() -> int:
             "not MassiveDirac.Streda"
         )
 
-    massive_dirac_streda_umbrella = massive_dirac_model_root / "Streda.lean"
-    fiber_response_module = f"{MD_PUBLIC}.Streda.FiberResponse"
-    require_import(
-        errors,
-        massive_dirac_streda_umbrella,
-        fiber_response_module,
-        root=ROOT,
-        description="massive-Dirac Streda implementation umbrella",
-    )
-    fiber_response_path = massive_dirac_model_root / "Streda" / "FiberResponse.lean"
-    require_import(
-        errors,
-        fiber_response_path,
-        response_matrix_representation_module,
-        root=ROOT,
-        description="massive-Dirac shared Streda fiber response",
-    )
-
     massive_dirac_bastin_umbrella = massive_dirac_model_root / "Bastin.lean"
     pole_extraction_module = f"{MD_PUBLIC}.Bastin.PoleExtraction"
     require_import(
