@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import Mathlib.Tactic
 
@@ -7,9 +8,9 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Born-Dyson radial rung denominator form
 
-This module exposes the common retarded-advanced denominator and numerators already implicit in the
-finite-`η` Born-Dyson in-plane rung coefficients.  It is a purely algebraic reduction of the
-canonical `X/Y` coefficients: no disorder, external-broadening, or ultraviolet limit is taken.
+This module exposes the numerators already implicit in the finite-`η` Born-Dyson in-plane rung
+coefficients and reduces the canonical `X/Y` coefficients over the shared propagator-level RA
+denominator product.  No disorder, external-broadening, or ultraviolet limit is taken.
 
 The repository ordering remains `Gᴿ Γ Gᴬ`.  In that orientation the transverse numerator is
 `i (E_A M_R - E_R M_A)`.
@@ -18,14 +19,6 @@ The repository ordering remains `Gᴿ Γ Gᴬ`.  In that orientation the transve
 namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
-
-/-- Product of the radial retarded and advanced finite-`η` Born-Dyson denominators. -/
-def finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornDysonDenominator
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonDenominator
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
 
 /-- Numerator of the longitudinal `X` coefficient before the common RA denominator is attached. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularXNumerator
