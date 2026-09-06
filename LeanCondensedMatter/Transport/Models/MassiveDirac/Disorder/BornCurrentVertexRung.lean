@@ -44,13 +44,8 @@ theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
         v m p probeEnergy disorderStrength hbar : ℂ) =
       continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrand
         v m p probeEnergy disorderStrength hbar := by
-  have h := continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed
-    .x .x v m p probeEnergy disorderStrength hbar
-  simp only [inPlaneRotationCoefficient] at h
-  rw [h]
+  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrand_eq_closed]
   unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    continuumBornRetardedAdvancedPauliXAngularNumerator
-  simp [inPlaneRotationCoefficient]
   push_cast
   ring
 
