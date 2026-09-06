@@ -67,22 +67,17 @@ retarded-advanced rung. Coordinate-specific consumers specialize `i` and `j`. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
     (i j : Direction2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    inPlaneRotationCoefficient
-        (finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
-          v m p probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
-          v m p probeEnergy broadening disorderStrength hbar pMax)
-        i j =
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+        i j v m p probeEnergy broadening disorderStrength hbar pMax =
       (((2 * Real.pi : ℝ) : ℂ)) *
         (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
           i j v m probeEnergy broadening disorderStrength hbar pMax := by
   cases i <;> cases j <;>
-    simp [inPlaneRotationCoefficient,
+    simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
+      inPlaneRotationCoefficient,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient,
       pauliRungAngularXCoefficient, pauliRungAngularYCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,
       finiteCutoffContinuumBornDysonZCoefficient,
