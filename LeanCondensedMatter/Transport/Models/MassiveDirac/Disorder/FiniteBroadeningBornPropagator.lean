@@ -480,12 +480,11 @@ massive-Dirac Pauli Green operator. -/
     finiteCutoffContinuumBornDysonYCoefficient
     finiteCutoffContinuumBornDysonZCoefficient
     pauliGreenOperator pauliGreenOperatorOfRegulator
-    pauliGreenScalarCoefficientOfRegulator pauliGreenXCoefficientOfRegulator
-    pauliGreenYCoefficientOfRegulator pauliGreenZCoefficientOfRegulator
-    pauliGreenDenominatorOfRegulator
+    pauliGreenScalarCoefficientOfRegulator pauliGreenInPlaneCoefficientOfRegulator
+    pauliGreenZCoefficientOfRegulator pauliGreenDenominatorOfRegulator
   simp [finiteCutoffContinuumBornEffectiveEnergy,
     finiteCutoffContinuumBornEffectiveMass, spectralParameter,
-    pauliGreenDenominator, pauliGreenDenominatorOfRegulator,
+    pauliGreenDenominator, pauliGreenDenominatorOfRegulator, directionComponent,
     matrixOperator, map_add, map_smul]
 
 end
