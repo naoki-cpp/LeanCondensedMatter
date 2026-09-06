@@ -44,17 +44,12 @@ def pauliGreenScalarCoefficientOfRegulator
   (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
     spectralParameterOfRegulator probeEnergy regulator
 
-/-- `σₓ` coefficient at an arbitrary signed regulator. -/
-def pauliGreenXCoefficientOfRegulator
+/-- Direction-indexed in-plane Pauli coefficient at an arbitrary signed regulator. -/
+def pauliGreenInPlaneCoefficientOfRegulator
+    (direction : Direction2)
     (v m px py probeEnergy regulator : ℝ) : ℂ :=
   (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
-    ((v * px : ℝ) : ℂ)
-
-/-- `σᵧ` coefficient at an arbitrary signed regulator. -/
-def pauliGreenYCoefficientOfRegulator
-    (v m px py probeEnergy regulator : ℝ) : ℂ :=
-  (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
-    ((v * py : ℝ) : ℂ)
+    ((v * directionComponent direction px py : ℝ) : ℂ)
 
 /-- `σ_z` coefficient at an arbitrary signed regulator. -/
 def pauliGreenZCoefficientOfRegulator
@@ -68,16 +63,11 @@ def pauliGreenScalarCoefficient
   pauliGreenScalarCoefficientOfRegulator
     v m px py probeEnergy (side.regulator broadening)
 
-/-- Physical-side `σₓ` coefficient. -/
-def pauliGreenXCoefficient
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  pauliGreenXCoefficientOfRegulator
-    v m px py probeEnergy (side.regulator broadening)
-
-/-- Physical-side `σᵧ` coefficient. -/
-def pauliGreenYCoefficient
-    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  pauliGreenYCoefficientOfRegulator
+/-- Physical-side direction-indexed in-plane Pauli coefficient. -/
+def pauliGreenInPlaneCoefficient
+    (direction : Direction2) (side : SpectralSide)
+    (v m px py probeEnergy broadening : ℝ) : ℂ :=
+  pauliGreenInPlaneCoefficientOfRegulator direction
     v m px py probeEnergy (side.regulator broadening)
 
 /-- Physical-side `σ_z` coefficient. -/
@@ -90,8 +80,10 @@ def pauliGreenZCoefficient
 noncomputable def pauliGreenOperatorOfRegulator
     (v m px py probeEnergy regulator : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator • 1 +
-    pauliGreenXCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaX +
-    pauliGreenYCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaY +
+    pauliGreenInPlaneCoefficientOfRegulator .x v m px py probeEnergy regulator •
+      matrixOperator sigmaX +
+    pauliGreenInPlaneCoefficientOfRegulator .y v m px py probeEnergy regulator •
+      matrixOperator sigmaY +
     pauliGreenZCoefficientOfRegulator v m px py probeEnergy regulator • matrixOperator sigmaZ
 
 /-- Physical-side specialization of the Pauli-basis Green operator. -/
@@ -167,7 +159,7 @@ theorem pauliGreenOperatorOfRegulator_eq_closedForm
           hamiltonianOperator v m px py) := by
   rw [hamiltonianOperator_eq_pauli]
   simp [pauliGreenOperatorOfRegulator, pauliGreenScalarCoefficientOfRegulator,
-    pauliGreenXCoefficientOfRegulator, pauliGreenYCoefficientOfRegulator,
+    pauliGreenInPlaneCoefficientOfRegulator, directionComponent,
     pauliGreenZCoefficientOfRegulator, Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
   module
 
