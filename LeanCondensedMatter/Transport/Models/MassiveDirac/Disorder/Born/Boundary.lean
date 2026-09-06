@@ -1,18 +1,18 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
 
 set_option linter.style.header false
 
 /-!
 # Complex positive-broadening boundary values for continuum Born transport
 
-This module packages the finite-cutoff metallic `η → 0⁺` boundary values of the continuum Born
-radial integrals as complex limits. The canonical denominator boundary value keeps its finite real
-part and side-indexed imaginary part together; scalar and `σ_z` channel limits are then obtained by
-ordinary complex multiplication before physical consumers project to real or imaginary parts.
+This module owns the finite-cutoff metallic `η → 0⁺` boundary values of the continuum Born radial
+integrals. The common denominator boundary is packaged as a complex number with its finite real part
+and side-indexed imaginary part kept together; scalar and `σ_z` channel limits are then obtained by
+ordinary complex multiplication before physical damping consumers project to the imaginary part.
 
-The existing coordinate-valued limit theorems remain available as physical convenience APIs. No
-ultraviolet removal, renormalization prescription, simultaneous limit, or exact disorder-average
-claim is introduced here.
+The coordinate-valued denominator limits remain available as analytic ingredients and convenience
+APIs. No ultraviolet removal, renormalization prescription, simultaneous limit, or exact
+disorder-average claim is introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -21,6 +21,83 @@ noncomputable section
 
 open Filter
 open QuantumTheory.Transport
+
+/-- At fixed finite cutoff beyond the on-shell circle, the real part of the shared denominator
+integral has a finite `η → 0⁺` limit. The endpoint norms remain explicit; no ultraviolet or
+renormalization interpretation is attached to this finite limit. -/
+theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
+    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
+    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
+    Tendsto
+      (fun broadening : ℝ =>
+        (finiteCutoffContinuumBornDenominatorIntegral
+          side v m probeEnergy broadening pMax).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (-(((2 : ℝ) * v ^ 2)⁻¹) *
+          (Real.log
+              ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
+            Real.log
+              ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖))) := by
+  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
+  have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
+  have hmetalSq : m ^ 2 < probeEnergy ^ 2 := by
+    rw [← sq_abs m]
+    nlinarith [abs_nonneg m]
+  have hzeroRe :
+      0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
+    rw [pauliGreenDenominator_radial_re]
+    nlinarith
+  have hcutoffRe :
+      (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
+    rw [pauliGreenDenominator_radial_re]
+    nlinarith
+  have hzeroDen :
+      pauliGreenDenominator side v m 0 0 probeEnergy 0 ≠ 0 := by
+    intro hzero
+    have hre :
+        (pauliGreenDenominator side v m 0 0 probeEnergy 0).re = 0 := by
+      simpa using congrArg Complex.re hzero
+    linarith
+  have hcutoffDen :
+      pauliGreenDenominator side v m pMax 0 probeEnergy 0 ≠ 0 := by
+    intro hzero
+    have hre :
+        (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re = 0 := by
+      simpa using congrArg Complex.re hzero
+    linarith
+  have hnorm (p : ℝ) :
+      Tendsto
+        (fun broadening : ℝ =>
+          ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds ‖pauliGreenDenominator side v m p 0 probeEnergy 0‖) := by
+    have hcontinuous :
+        ContinuousAt
+          (fun broadening : ℝ =>
+            ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖) 0 := by
+      unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
+        spectralParameterOfRegulator SpectralSide.regulator
+      fun_prop
+    exact hcontinuous.tendsto.mono_left inf_le_left
+  have hzeroNormNe :
+      ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖ ≠ 0 := by
+    simpa using hzeroDen
+  have hcutoffNormNe :
+      ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ ≠ 0 := by
+    simpa using hcutoffDen
+  have hlogCutoff := (hnorm pMax).log hcutoffNormNe
+  have hlogZero := (hnorm 0).log hzeroNormNe
+  have hdiff := hlogCutoff.sub hlogZero
+  refine ((tendsto_const_nhds : Tendsto
+    (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
+    (nhdsWithin 0 (Set.Ioi 0))
+    (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
+  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+  have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
+  exact (finiteCutoffContinuumBornDenominatorIntegral_re_eq
+    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
 
 /-- Complex finite-cutoff metallic boundary value of the common Born denominator integral. The
 imaginary component retains the retarded/advanced side through `side.sign`; it is intentionally not
