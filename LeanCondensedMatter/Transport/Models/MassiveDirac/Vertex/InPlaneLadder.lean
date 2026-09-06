@@ -24,6 +24,8 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
+open Filter
+
 /-- Entry `(i,j)` of the repository-oriented isotropic in-plane map `[[x,-y],[y,x]]`, with `i`
 the output direction and `j` the input/source direction. -/
 def inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
