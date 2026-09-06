@@ -8,10 +8,9 @@ set_option linter.style.header false
 # Finite-cutoff Born retarded-advanced current rung
 
 This module owns the Born-dressed current rung from the Cartesian propagator through angular and
-radial reduction to the finite-cutoff integral.  The full polar-angle `Gᴿ σₓ Gᴬ` product is reduced
-with the shared massive-Dirac Pauli rung algebra, its retarded-advanced denominator is expressed as
-a real sum of squares, and the resulting one-dimensional kernels are integrated over radial
-momentum.
+radial reduction to the finite-cutoff integral. The full polar-angle `Gᴿ σₓ Gᴬ` product is reduced
+with the shared massive-Dirac Pauli rung algebra, reuses the propagator-owned retarded-advanced
+denominator pair, and integrates the resulting one-dimensional kernels over radial momentum.
 
 The operator order is intentionally `Gᴿ σₓ Gᴬ`, matching `Transport.Disorder.Ladder`; reversing the
 retarded/advanced order reverses the orientation-sensitive `σᵧ` coefficient.  The angular
@@ -167,54 +166,6 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
     continuumBornRetardedAdvancedPauliXAngularYCoefficient,
     aR, aA, bR, bA, dR, dA] using
     (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA (1 : ℂ) 0)
-
-/-- Real radial center of the Born retarded/advanced denominator pair. -/
-def continuumBornRADenominatorCenter
-    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
-      (probeEnergy ^ 2 - m ^ 2) -
-    v ^ 2 * p ^ 2
-
-/-- Signed width parameter multiplying `i` in the retarded denominator. -/
-def continuumBornRADenominatorWidth
-    (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  2 * continuumBornDampingScale v disorderStrength hbar *
-    (probeEnergy ^ 2 + m ^ 2)
-
-/-- Manifestly real retarded-advanced denominator product. -/
-def continuumBornRADenominatorProduct
-    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRADenominatorCenter v m p probeEnergy disorderStrength hbar ^ 2 +
-    continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar ^ 2
-
-/-- The real retarded-advanced denominator product is nonnegative. -/
-theorem continuumBornRADenominatorProduct_nonneg
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    0 ≤ continuumBornRADenominatorProduct
-      v m p probeEnergy disorderStrength hbar := by
-  unfold continuumBornRADenominatorProduct
-  positivity
-
-/-- The radial retarded/advanced denominator product is the real sum of squares `A(p)² + B²`. -/
-private theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornPauliGreenDenominator
-        .retarded v m p 0 probeEnergy disorderStrength hbar *
-      continuumBornPauliGreenDenominator
-        .advanced v m p 0 probeEnergy disorderStrength hbar =
-      (continuumBornRADenominatorProduct
-        v m p probeEnergy disorderStrength hbar : ℂ) := by
-  rw [continuumBornPauliGreenDenominator_eq_closedForm .retarded,
-    continuumBornPauliGreenDenominator_eq_closedForm .advanced]
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    rw [pow_two, Complex.I_mul_I]
-  unfold continuumBornRADenominatorProduct continuumBornRADenominatorCenter
-    continuumBornRADenominatorWidth
-  simp only [SpectralSide.sign_retarded, SpectralSide.sign_advanced]
-  push_cast
-  ring_nf
-  simp [hI]
-  ring
 
 /-- Closed Born `σₓ` angular coefficient before replacing the inverse denominator factors by their
 real product. -/
