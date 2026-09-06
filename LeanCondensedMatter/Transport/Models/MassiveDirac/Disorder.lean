@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovarian
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar
@@ -20,8 +21,10 @@ set_option linter.style.header false
 Public umbrella for the disorder-dependent massive-Dirac transport benchmark. The continuum Born
 chain is organized by physical and analytic responsibility: `Born.SelfEnergy` owns the finite-cutoff
 self-energy and its polar provenance, `Born.Denominator` owns exact denominator evaluation and its
-UV/broadening limits, `Born.Damping` owns the channel limits and upper-band damping projection, and
-`TransportRate` owns the microscopic upper-band single-particle and transport scattering scales.
+UV/broadening coordinate limits, `Born.Damping` owns the physical channel and upper-band damping
+projections, `Born.Boundary` packages the metallic positive-broadening limits as complex boundary
+values, and `TransportRate` owns the microscopic upper-band single-particle and transport scattering
+scales.
 
 The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
 its use in the current rung. The rung reduces through the shared polar Pauli algebra to an in-plane
