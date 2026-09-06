@@ -200,15 +200,15 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     v m probeEnergy broadening disorderStrength hbar pMax
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bR := finiteCutoffContinuumBornDysonXCoefficient
+  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dR := finiteCutoffContinuumBornDysonZCoefficient
+  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let aA := finiteCutoffContinuumBornDysonScalarCoefficient
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bA := finiteCutoffContinuumBornDysonXCoefficient
+  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dA := finiteCutoffContinuumBornDysonZCoefficient
+  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hjx : currentOperator .x e v = q • matrixOperator sigmaX := by
     dsimp [q]

@@ -102,7 +102,8 @@ private theorem continuous_continuumBornRadialGreenKernelForDissipation
         v m probeEnergy regulator hregulator).mul continuous_const)
   have hz : Continuous
       (continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator) := by
-    unfold continuumBornRadialZIntegrandOfRegulator pauliGreenZCoefficientOfRegulator
+    unfold continuumBornRadialZIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
+    simp only [pauliAxisComponent]
     exact (Complex.continuous_ofReal.comp continuous_id).mul
       ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
         v m probeEnergy regulator hregulator).mul continuous_const)

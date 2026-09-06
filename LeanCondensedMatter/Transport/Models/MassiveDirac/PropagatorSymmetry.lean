@@ -6,10 +6,10 @@ set_option linter.style.header false
 # Momentum-inversion symmetry of the massive-Dirac Green operator
 
 Under simultaneous momentum inversion `(pₓ,pᵧ) ↦ (-pₓ,-pᵧ)`, the arbitrary-regulator quadratic
-Green denominator, scalar coefficient, and `σ_z` coefficient are even, while the `σₓ` and `σᵧ`
-coefficients are odd. Consequently the inversion-symmetrized clean propagator contains only the
-`I` and `σ_z` Pauli channels. Physical spectral sides are introduced only by downstream consumers
-that need branch semantics.
+Green denominator and scalar coefficient are even. The Pauli-vector coefficients have axis-dependent
+parity: `σₓ` and `σᵧ` are odd, while `σ_z` is even. Consequently the inversion-symmetrized clean
+propagator contains only the `I` and `σ_z` Pauli channels. Physical spectral sides are introduced
+only by downstream consumers that need branch semantics.
 
 No integration measure, ultraviolet cutoff, disorder normalization, Born closure, or scattering-rate
 limit is introduced here.
@@ -20,6 +20,12 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+
+/-- Sign acquired by a Pauli-vector coefficient under simultaneous in-plane momentum inversion. -/
+def pauliAxisMomentumInversionSign : PauliAxis → ℝ
+  | .x => -1
+  | .y => -1
+  | .z => 1
 
 /-- Simultaneous momentum inversion leaves the massive-Dirac dispersion polynomial unchanged. -/
 @[simp] theorem energySq_neg_momentum (v m px py : ℝ) :
@@ -38,23 +44,16 @@ open QuantumTheory.Transport
       pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator := by
   simp [pauliGreenScalarCoefficientOfRegulator]
 
-@[simp] theorem pauliGreenXCoefficientOfRegulator_neg_momentum
-    (v m px py probeEnergy regulator : ℝ) :
-    pauliGreenXCoefficientOfRegulator v m (-px) (-py) probeEnergy regulator =
-      -pauliGreenXCoefficientOfRegulator v m px py probeEnergy regulator := by
-  simp [pauliGreenXCoefficientOfRegulator]
-
-@[simp] theorem pauliGreenYCoefficientOfRegulator_neg_momentum
-    (v m px py probeEnergy regulator : ℝ) :
-    pauliGreenYCoefficientOfRegulator v m (-px) (-py) probeEnergy regulator =
-      -pauliGreenYCoefficientOfRegulator v m px py probeEnergy regulator := by
-  simp [pauliGreenYCoefficientOfRegulator]
-
-@[simp] theorem pauliGreenZCoefficientOfRegulator_neg_momentum
-    (v m px py probeEnergy regulator : ℝ) :
-    pauliGreenZCoefficientOfRegulator v m (-px) (-py) probeEnergy regulator =
-      pauliGreenZCoefficientOfRegulator v m px py probeEnergy regulator := by
-  simp [pauliGreenZCoefficientOfRegulator]
+@[simp] theorem pauliGreenPauliCoefficientOfRegulator_neg_momentum
+    (axis : PauliAxis) (v m px py probeEnergy regulator : ℝ) :
+    pauliGreenPauliCoefficientOfRegulator
+        axis v m (-px) (-py) probeEnergy regulator =
+      ((pauliAxisMomentumInversionSign axis : ℝ) : ℂ) *
+        pauliGreenPauliCoefficientOfRegulator
+          axis v m px py probeEnergy regulator := by
+  cases axis <;>
+    simp [pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
+      pauliAxisMomentumInversionSign]
 
 /-- The inversion symmetrization of the arbitrary-regulator Green operator retains only its scalar
 and `σ_z` channels. -/
@@ -64,9 +63,9 @@ theorem pauliGreenOperatorOfRegulator_add_neg_momentum
         pauliGreenOperatorOfRegulator v m (-px) (-py) probeEnergy regulator =
       (2 : ℂ) •
         (pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator • 1 +
-          pauliGreenZCoefficientOfRegulator v m px py probeEnergy regulator •
+          pauliGreenPauliCoefficientOfRegulator .z v m px py probeEnergy regulator •
             matrixOperator sigmaZ) := by
-  simp [pauliGreenOperatorOfRegulator, two_smul]
+  simp [pauliGreenOperatorOfRegulator, pauliAxisMomentumInversionSign, two_smul]
   module
 
 /-- Clean Green operator at arbitrary regulator averaged with its momentum-inverted partner. -/
@@ -82,7 +81,7 @@ theorem inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels
     (v m px py probeEnergy regulator : ℝ) :
     inversionSymmetrizedPauliGreenOperatorOfRegulator v m px py probeEnergy regulator =
       pauliGreenScalarCoefficientOfRegulator v m px py probeEnergy regulator • 1 +
-        pauliGreenZCoefficientOfRegulator v m px py probeEnergy regulator •
+        pauliGreenPauliCoefficientOfRegulator .z v m px py probeEnergy regulator •
           matrixOperator sigmaZ := by
   unfold inversionSymmetrizedPauliGreenOperatorOfRegulator
   rw [pauliGreenOperatorOfRegulator_add_neg_momentum]
