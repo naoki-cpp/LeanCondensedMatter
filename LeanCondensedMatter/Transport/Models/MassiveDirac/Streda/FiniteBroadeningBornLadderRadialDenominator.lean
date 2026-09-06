@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Common-denominator form of the finite-broadening dressed Hall surface
 
 This module rewrites the angularly reduced finite-`η` ordered `xy` Hall-surface coefficient from the
-canonical rung pair `(X,Y)` into the shared retarded-advanced Born-Dyson denominator form. The shared
-ladder-regularity proof is threaded through the dressed-response objects unchanged.
+direction-indexed in-plane rung matrix into the shared retarded-advanced Born-Dyson denominator
+form. The shared ladder-regularity proof is threaded through the dressed-response objects unchanged.
 
 No disorder, external-broadening, or ultraviolet limit is taken. The result remains the ordered
 `x`-measured/`y`-source Středa response component rather than the antisymmetric Hall projection.
@@ -26,12 +26,12 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumera
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (_hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
-  finiteCutoffContinuumBornDysonRetardedAdvancedAngularXNumerator
-      v m probeEnergy broadening disorderStrength hbar pMax *
+  finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+      .x .x v m probeEnergy broadening disorderStrength hbar pMax *
     finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax +
-  finiteCutoffContinuumBornDysonRetardedAdvancedAngularYNumerator
-      v m probeEnergy broadening disorderStrength hbar pMax *
+  finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+      .y .x v m probeEnergy broadening disorderStrength hbar pMax *
     finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
       v m probeEnergy broadening disorderStrength hbar pMax
 
@@ -51,8 +51,10 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
           v m probeEnergy broadening disorderStrength hbar pMax hdet := by
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient_eq_denominatorForm,
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient_eq_denominatorForm]
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
+        .x .x v m p probeEnergy broadening disorderStrength hbar pMax,
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
+        .y .x v m p probeEnergy broadening disorderStrength hbar pMax]
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
   have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
       (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by

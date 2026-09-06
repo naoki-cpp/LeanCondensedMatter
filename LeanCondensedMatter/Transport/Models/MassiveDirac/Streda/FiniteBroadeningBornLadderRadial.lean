@@ -15,8 +15,8 @@ The shared ladder-regularity hypothesis remains explicit throughout this reducti
 The explicit RR/AA same-side remainder is not discarded by approximation: for an isotropic
 same-side polar propagator its orientation-sensitive rung coefficient is identically zero, so both
 same-side ordered `xy` traces vanish after the full angular integral. The surviving radial
-coefficient is therefore the RA contribution expressed through the already-owned finite-broadening
-`X/Y` rung coefficients and solved ladder coefficients.
+coefficient is therefore the RA contribution specialized from the direction-indexed in-plane rung
+matrix and the solved ladder coefficients.
 
 No radial antiderivative, conductivity normalization, disorder/broadening limit, ultraviolet
 removal, Hall antisymmetrization, mechanism label, or exact-disorder-average claim is introduced
@@ -177,14 +177,14 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTrace
     v m probeEnergy broadening disorderStrength hbar pMax
   let beta := finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
     v m probeEnergy broadening disorderStrength hbar pMax
-  let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient
-    v m p probeEnergy broadening disorderStrength hbar pMax
-  let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient
-    v m p probeEnergy broadening disorderStrength hbar pMax
+  let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+    .x .x v m p probeEnergy broadening disorderStrength hbar pMax
+  let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+    .y .x v m p probeEnergy broadening disorderStrength hbar pMax
   (2 : ℂ) * q ^ 2 * (-(x * beta + y * alpha))
 
 /-- The full finite-`η` dressed Hall-surface angular trace is exactly the explicit radial
-coefficient built from the existing `X/Y` rung coefficients and solved ladder coefficients. -/
+coefficient built from the direction-indexed rung entries and solved ladder coefficients. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
@@ -305,8 +305,8 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
   simp only [add_zero, mul_zero, sub_zero]
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   simp only [q, alpha, beta, aR, aA, dR, dA,
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient]
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
+    inPlaneRotationCoefficient]
   ring
 
 /-- The finite-`η` radial integrand is the polar Jacobian `p` multiplying the explicit angularly

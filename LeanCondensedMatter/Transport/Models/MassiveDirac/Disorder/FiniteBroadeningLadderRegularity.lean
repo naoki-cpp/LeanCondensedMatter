@@ -23,10 +23,10 @@ represents the actual fixed-point solution. -/
 def finiteCutoffContinuumBornDysonLadderRegular
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : Prop :=
   inPlaneLadderDeterminant
-      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
-        v m probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
-        v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+        .x .x v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+        .y .x v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
 
 /-- At zero disorder the finite-cutoff Born-Dyson ladder determinant is one. -/
 @[simp]
