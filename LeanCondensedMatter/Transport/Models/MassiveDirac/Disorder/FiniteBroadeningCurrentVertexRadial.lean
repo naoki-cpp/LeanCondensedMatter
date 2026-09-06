@@ -80,7 +80,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       pauliRungAngularXCoefficient, pauliRungAngularYCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,
-      finiteCutoffContinuumBornDysonZCoefficient,
+      finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent,
       finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
       mul_inv_rev] <;>
     ring
