@@ -51,7 +51,7 @@ private theorem continuous_polarPauliOperator (a b d : ℂ) :
   unfold polarPauliMatrix
   fun_prop
 
-@[simp] private theorem finiteTrace_smul_sigmaX_mul_inPlane
+private theorem finiteTrace_smul_sigmaX_mul_inPlane
     (q x y : ℂ) :
     finiteDimensionalOperatorTrace
         ((q • matrixOperator sigmaX) *
