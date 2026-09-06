@@ -40,7 +40,6 @@ def main() -> int:
     for module in (
         MD_MODEL,
         f"{MD_PUBLIC}.Propagator",
-        f"{MD_PUBLIC}.Conductivity.Hall.Intrinsic",
         f"{MD_PUBLIC}.Streda",
         f"{MD_PUBLIC}.Bastin",
         f"{MD_PUBLIC}.Disorder",
