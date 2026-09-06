@@ -10,6 +10,7 @@ set_option linter.style.header false
 This module reduces the full polar-angle trace of the finite-cutoff finite-`η` Born-Dyson Hall
 Středa surface response to the existing shared polar-Pauli rung coefficients. The measured channel
 is the physical `jₓ`, while the retarded-advanced source is the solved rotated `jᵧ` ladder vertex.
+The shared ladder-regularity hypothesis remains explicit throughout this reduction.
 
 The explicit RR/AA same-side remainder is not discarded by approximation: for an isotropic
 same-side polar propagator its orientation-sensitive rung coefficient is identically zero, so both
@@ -165,9 +166,12 @@ private theorem integral_polarPauli_sameSideXYTrace_eq_zero
   simpa [pauliRungAngularYCoefficient] using h
 
 /-- Explicit radial coefficient of the finite-`η` RA-dressed ordered `xy` Hall-surface trace after
-the full polar-angle integral. -/
+the full polar-angle integral. The regularity proof is carried so this public dressed-response
+coefficient is only formed from a valid ladder fixed point. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (_hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let alpha := finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
     v m probeEnergy broadening disorderStrength hbar pMax
@@ -182,11 +186,13 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTrace
 /-- The full finite-`η` dressed Hall-surface angular trace is exactly the explicit radial
 coefficient built from the existing `X/Y` rung coefficients and solved ladder coefficients. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral
-        e v m p probeEnergy broadening disorderStrength hbar pMax =
+        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
       finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        e v m p probeEnergy broadening disorderStrength hbar pMax := by
+        e v m p probeEnergy broadening disorderStrength hbar pMax hdet := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let alpha := finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
     v m probeEnergy broadening disorderStrength hbar pMax
@@ -218,7 +224,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
-          e v m probeEnergy broadening disorderStrength hbar pMax =
+          e v m probeEnergy broadening disorderStrength hbar pMax hdet =
         (q * (-beta)) • matrixOperator sigmaX +
           (q * alpha) • matrixOperator sigmaY := by
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
@@ -248,7 +254,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
       (fun θ : ℝ =>
         finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
           e v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax) =
+          probeEnergy broadening disorderStrength hbar pMax hdet) =
         fun θ : ℝ => ra θ - (1 / 2 : ℂ) * (rr θ + aa θ) := by
     funext θ
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
@@ -306,12 +312,14 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
 /-- The finite-`η` radial integrand is the polar Jacobian `p` multiplying the explicit angularly
 reduced Hall-surface coefficient. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
-        e v m p probeEnergy broadening disorderStrength hbar pMax =
+        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
       (p : ℂ) *
         finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-          e v m p probeEnergy broadening disorderStrength hbar pMax := by
+          e v m p probeEnergy broadening disorderStrength hbar pMax hdet := by
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
   rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
 

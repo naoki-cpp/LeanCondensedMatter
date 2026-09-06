@@ -8,7 +8,8 @@ set_option linter.style.header false
 
 This module integrates the finite-cutoff finite-`η` RA-dressed/bare-same-side Hall Středa surface
 trace bridge over the two-dimensional momentum domain in polar coordinates. It owns only the
-response-level angular integral, radial Jacobian, and finite-cutoff momentum integral.
+response-level angular integral, radial Jacobian, and finite-cutoff momentum integral. The shared
+ladder-regularity hypothesis is threaded unchanged from the pointwise response.
 
 No Bastin/Středa conductivity prefactor, physical momentum-measure prefactor, Hall
 antisymmetrization, disorder/broadening limit, ultraviolet removal, mechanism label, or exact
@@ -26,27 +27,33 @@ open scoped Interval
 /-- Full polar-angle integral of the finite-`η` RA-dressed Hall Středa surface trace bridge at fixed
 radial momentum. -/
 noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
       e v m (p * Real.cos θ) (p * Real.sin θ)
-      probeEnergy broadening disorderStrength hbar pMax
+      probeEnergy broadening disorderStrength hbar pMax hdet
 
 /-- Radial integrand for the finite-`η` RA-dressed Hall surface response after the full polar-angle
 integral, including exactly one polar Jacobian factor `p`. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   (p : ℂ) *
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral
-      e v m p probeEnergy broadening disorderStrength hbar pMax
+      e v m p probeEnergy broadening disorderStrength hbar pMax hdet
 
 /-- Finite-cutoff polar momentum integral of the finite-`η` RA-dressed Hall surface response before
 the Bastin/Středa trace prefactor and physical momentum-measure prefactor are attached. -/
 noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
-      e v m p probeEnergy broadening disorderStrength hbar pMax
+      e v m p probeEnergy broadening disorderStrength hbar pMax hdet
 
 end
 

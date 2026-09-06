@@ -8,7 +8,8 @@ set_option linter.style.header false
 
 This module is the downstream physical-normalization consumer of the finite-cutoff finite-`η`
 Hall Středa momentum response. The upstream Středa layer owns the pointwise surface trace, full
-polar-angle integral, radial Jacobian, and finite-cutoff momentum integral.
+polar-angle integral, radial Jacobian, and finite-cutoff momentum integral. The shared nonzero
+ladder determinant remains an explicit hypothesis through this conductivity boundary.
 
 This layer attaches `bastinTraceConductivityPrefactor hbar` and
 `momentumMeasurePrefactor hbar` exactly once and exposes the physically normalized ordered
@@ -26,21 +27,26 @@ open QuantumTheory.Transport
 
 /-- Physically normalized finite-cutoff finite-`η` ordered `xy` conductivity-component bridge. The
 upstream angle integral already supplies the angular measure, so `momentumMeasurePrefactor hbar` is
-attached without an additional `2π` factor. This is not yet the antisymmetric Hall projection
+attached without an additional `2π` factor. The explicit ladder-regularity proof licenses the
+solved-vertex interpretation upstream. This is not yet the antisymmetric Hall projection
 `(σxy - σyx) / 2`. -/
 noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral
-      e v m probeEnergy broadening disorderStrength hbar pMax
+      e v m probeEnergy broadening disorderStrength hbar pMax hdet
 
 /-- With zero radial cutoff, the physically normalized ordered `xy` conductivity-component bridge
-vanishes exactly. -/
+vanishes exactly whenever the in-plane ladder is regular. -/
 @[simp]
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge_zero_cutoff
-    (e v m probeEnergy broadening disorderStrength hbar : ℝ) :
+    (e v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar 0) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
-      e v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
+      e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
   simp [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge,
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral]
 

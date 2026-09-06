@@ -11,9 +11,9 @@ response owned upstream by `MassiveDirac.Streda.FiniteBroadeningBornLadderLongit
 the common static Bastin/Středa conductivity prefactor and physical two-dimensional momentum-measure
 normalization exactly once.
 
-The nonzero determinant required for the in-plane ladder fixed point remains an explicit hypothesis.
-No disorder, broadening, ultraviolet, thermodynamic, or simultaneous limit is taken here, and the
-Born-Dyson candidate is not identified with an exact disorder average.
+The shared nonzero determinant required for the in-plane ladder fixed point remains an explicit
+hypothesis. No disorder, broadening, ultraviolet, thermodynamic, or simultaneous limit is taken here,
+and the Born-Dyson candidate is not identified with an exact disorder average.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -30,7 +30,7 @@ fixed point. This is the finite-`η` conductivity-level insertion needed before 
 justified weak-disorder or zero-broadening recovery of the RTA benchmark. -/
 noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral
@@ -41,7 +41,7 @@ vanishes exactly whenever the in-plane ladder is regular. -/
 @[simp]
 theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge_zero_cutoff
     (e v m probeEnergy broadening disorderStrength hbar : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+    (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar 0) :
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge
       e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
