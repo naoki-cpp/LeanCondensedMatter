@@ -60,6 +60,13 @@ noncomputable def inPlanePauliVertexOperator
     (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY
 
+/-- Entry `(i,j)` of the repository-oriented isotropic in-plane map `[[x,-y],[y,x]]`. -/
+def inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
+  | .x, .x => x
+  | .x, .y => -y
+  | .y, .x => y
+  | .y, .y => x
+
 /-- Physical in-plane current vertex `α jₓ + β jᵧ`. -/
 noncomputable def inPlaneCurrentOperator
     (e v : ℝ) (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
