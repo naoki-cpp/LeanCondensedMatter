@@ -1,7 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
 
 set_option linter.style.header false
