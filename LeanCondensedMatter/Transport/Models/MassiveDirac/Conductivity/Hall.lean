@@ -2,7 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Clean
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Normalization
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 
 set_option linter.style.header false
 
