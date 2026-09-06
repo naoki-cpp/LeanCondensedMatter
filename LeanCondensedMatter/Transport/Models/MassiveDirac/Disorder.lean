@@ -4,6 +4,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominat
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderRegularity
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
@@ -22,13 +23,14 @@ self-energy and its polar provenance, `Born.Denominator` owns exact denominator 
 UV/broadening limits, `Born.Damping` owns the channel limits and upper-band damping projection, and
 `TransportRate` owns the microscopic upper-band single-particle and transport scattering scales.
 
-The finite-external-broadening Born-Dyson rung reduces through the shared polar Pauli algebra to an
-in-plane coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Radial integration
-attaches the scalar-disorder line and physical momentum measure exactly once before the pair is
-consumed by the canonical in-plane ladder solution. `FiniteBroadeningLadderRegularity` owns the
-shared determinant condition that licenses interpreting that algebraic coefficient pair as the
-actual ladder fixed point. For the zero-external-broadening Born route, `BornCurrentVertexRung` owns
-the exact normalized finite-cutoff longitudinal rung, while the fixed-cutoff weak-disorder and
+The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
+its use in the current rung. The rung reduces through the shared polar Pauli algebra to an in-plane
+coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Radial integration attaches
+the scalar-disorder line and physical momentum measure exactly once before the pair is consumed by
+the canonical in-plane ladder formulas. `FiniteBroadeningLadderRegularity` owns the shared
+determinant condition that licenses interpreting that algebraic coefficient pair as the actual
+ladder fixed point. For the zero-external-broadening Born route, `BornCurrentVertexRung` owns the
+exact normalized finite-cutoff longitudinal rung, while the fixed-cutoff weak-disorder and
 infinite-cutoff limits remain separate downstream routes.
 
 Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
