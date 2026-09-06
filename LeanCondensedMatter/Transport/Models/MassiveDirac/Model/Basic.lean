@@ -80,12 +80,6 @@ def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
   | .y => y
   | .z => z
 
-/-- Pauli matrix associated with an internal Pauli axis. -/
-def pauliMatrix : PauliAxis → Matrix2
-  | .x => sigmaX
-  | .y => sigmaY
-  | .z => sigmaZ
-
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
   | .x => sigmaX
