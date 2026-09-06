@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.CleanBastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Normalization
 

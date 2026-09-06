@@ -36,7 +36,7 @@ open scoped Interval
 /-! ## Angular reduction -/
 
 /-- The Cartesian finite-`η` Born-Dyson propagator reduces exactly to the shared polar Pauli form. -/
-private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
     (side : SpectralSide)
     (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonGreenOperator
