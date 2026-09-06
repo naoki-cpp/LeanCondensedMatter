@@ -1,0 +1,211 @@
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
+import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Finite-broadening Born-Dyson longitudinal Středa conductivity
+
+This module is the conductivity-level consumer of the finite-cutoff finite-external-broadening
+Born-Dyson propagator and solved in-plane retarded-advanced current vertex. The measured current is
+the bare physical longitudinal current `jₓ`. Only the RA source vertex is dressed, because the
+existing non-crossing ladder solves `Gᴿ Γ Gᴬ`; the explicit RR/AA same-side remainder therefore keeps
+the bare `jₓ` source rather than assuming an unproved same-side Bethe–Salpeter dressing.
+
+The pointwise trace is integrated over the physical two-dimensional momentum measure in polar
+coordinates. The Bastin/Středa trace prefactor and `d²p/(2πℏ)²` measure are each attached exactly
+once. The nonzero determinant required for the in-plane ladder fixed point remains an explicit
+hypothesis of every conductivity-level bridge. No disorder, broadening, ultraviolet, thermodynamic,
+or simultaneous limit is taken here, and the Born-Dyson candidate is not identified with an exact
+disorder average.
+-/
+
+namespace QuantumTheory.Transport.Models.MassiveDirac
+
+noncomputable section
+
+open MeasureTheory QuantumTheory.Transport
+open scoped Interval
+
+/-- Regularity condition under which the finite-cutoff Born-Dyson in-plane ladder coefficients
+represent the actual fixed-point solution. This is exactly the nonzero determinant hypothesis owned
+by the canonical two-component ladder algebra, specialized to the finite-`η` Born-Dyson rung. -/
+noncomputable def finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : Prop :=
+  inPlaneLadderDeterminant
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungXCoefficient
+        v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungYCoefficient
+        v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+
+/-- At zero disorder the Born-Dyson ladder determinant is one, so the longitudinal ladder is
+regular without any additional hypothesis. -/
+@[simp]
+theorem finiteCutoffContinuumBornDysonLongitudinalLadderRegular_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening 0 hbar pMax := by
+  simp [finiteCutoffContinuumBornDysonLongitudinalLadderRegular, inPlaneLadderDeterminant]
+
+/-- Pointwise finite-cutoff finite-`η` longitudinal Středa surface bridge. The RA block uses the
+solved in-plane source current, while the same-side RR/AA remainder retains the bare longitudinal
+source. The explicit regularity hypothesis is what licenses interpreting the supplied coefficient
+pair as the solved ladder fixed point. -/
+noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
+    (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (_hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+  retardedAdvancedVertexTraceKernel
+      (currentOperator .x e v)
+      (finiteCutoffContinuumBornDysonGreenOperator
+        .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
+      (inPlaneCurrentOperator e v
+        (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+          v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+          v m probeEnergy broadening disorderStrength hbar pMax))
+      (finiteCutoffContinuumBornDysonGreenOperator
+        .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
+    sameSideVertexTraceRemainder
+      (currentOperator .x e v)
+      (currentOperator .x e v)
+      (finiteCutoffContinuumBornDysonGreenOperator
+        .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornDysonGreenOperator
+        .advanced v m px py probeEnergy broadening disorderStrength hbar pMax)
+
+/-- The finite-`η` longitudinal bridge is exactly its RA-dressed block minus the bare-source
+same-side RR/AA remainder. -/
+theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge_eq_ra_sub_sameSide
+    (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) :
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
+        e v m px py probeEnergy broadening disorderStrength hbar pMax hdet =
+      retardedAdvancedVertexTraceKernel
+          (currentOperator .x e v)
+          (finiteCutoffContinuumBornDysonGreenOperator
+            .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
+          (inPlaneCurrentOperator e v
+            (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+              v m probeEnergy broadening disorderStrength hbar pMax)
+            (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+              v m probeEnergy broadening disorderStrength hbar pMax))
+          (finiteCutoffContinuumBornDysonGreenOperator
+            .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
+        sameSideVertexTraceRemainder
+          (currentOperator .x e v)
+          (currentOperator .x e v)
+          (finiteCutoffContinuumBornDysonGreenOperator
+            .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornDysonGreenOperator
+            .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) := by
+  rfl
+
+/-- At zero disorder and positive external broadening, the RA-dressed/bare-same-side longitudinal
+bridge reduces exactly to the clean massive-Dirac `jₓ-jₓ` Středa surface primitive. -/
+@[simp]
+theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder
+    (e v m px py probeEnergy broadening hbar pMax : ℝ)
+    (hbroadening : 0 < broadening) :
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
+        e v m px py probeEnergy broadening 0 hbar pMax
+        (finiteCutoffContinuumBornDysonLongitudinalLadderRegular_zero_disorder
+          v m probeEnergy broadening hbar pMax) =
+      regularizedStredaSurfacePrimitiveTrace
+        (hamiltonianOperator v m px py)
+        (currentOperator .x e v)
+        (currentOperator .x e v)
+        probeEnergy broadening := by
+  unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
+  simp only [finiteCutoffContinuumBornDysonLadderSolvedXCoefficient_zero_disorder,
+    finiteCutoffContinuumBornDysonLadderSolvedYCoefficient_zero_disorder,
+    finiteCutoffContinuumBornDysonGreenOperator_zero_disorder]
+  simp only [inPlaneCurrentOperator, one_smul, zero_smul, add_zero]
+  have hret :
+      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator .retarded v m px py probeEnergy broadening := by
+    simpa [retardedResolvent, retardedSpectralParameter, pauliGreenOperator] using
+      resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+        v m px py probeEnergy broadening (ne_of_gt hbroadening)
+  have hadv :
+      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        pauliGreenOperator .advanced v m px py probeEnergy broadening := by
+    simpa [advancedResolvent, advancedSpectralParameter, pauliGreenOperator] using
+      resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
+        v m px py probeEnergy (-broadening)
+        (neg_ne_zero.mpr (ne_of_gt hbroadening))
+  rw [← hret, ← hadv]
+  symm
+  simpa [suppliedGreenStredaSurfacePrimitiveTraceKernel] using
+    (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
+      (hamiltonianOperator v m px py)
+      (currentOperator .x e v)
+      (currentOperator .x e v)
+      probeEnergy broadening)
+
+/-- Full polar-angle integral of the finite-`η` RA-dressed longitudinal Středa surface trace at
+fixed radial momentum. -/
+noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceIntegral
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+  ∫ θ in (0 : ℝ)..(2 * Real.pi),
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
+      e v m (p * Real.cos θ) (p * Real.sin θ)
+      probeEnergy broadening disorderStrength hbar pMax hdet
+
+/-- Radial integrand after the full polar-angle integral, including exactly one polar Jacobian
+factor `p`. -/
+def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceRadialIntegrand
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+  (p : ℂ) *
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceIntegral
+      e v m p probeEnergy broadening disorderStrength hbar pMax hdet
+
+/-- Finite-cutoff polar momentum integral of the finite-`η` RA-dressed longitudinal surface response
+before the common Bastin/Středa trace prefactor and physical momentum-measure prefactor are
+attached. -/
+noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+  ∫ p in (0 : ℝ)..pMax,
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceRadialIntegrand
+      e v m p probeEnergy broadening disorderStrength hbar pMax hdet
+
+/-- Physically normalized finite-cutoff finite-`η` longitudinal Středa surface conductivity bridge.
+The explicit angle integral already supplies the angular measure, so the physical momentum measure
+is attached without an extra `2π` factor. The nonzero ladder determinant is an explicit input, so
+this object is only exposed where the solved two-component vertex is known to represent the ladder
+fixed point. This is the finite-`η` conductivity-level insertion needed before any separately
+justified weak-disorder or zero-broadening recovery of the RTA benchmark. -/
+noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+  ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral
+      e v m probeEnergy broadening disorderStrength hbar pMax hdet
+
+/-- With zero radial cutoff, the physically normalized longitudinal surface conductivity bridge
+vanishes exactly whenever the in-plane ladder is regular. -/
+@[simp]
+theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge_zero_cutoff
+    (e v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hdet : finiteCutoffContinuumBornDysonLongitudinalLadderRegular
+      v m probeEnergy broadening disorderStrength hbar 0) :
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge
+      e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
+  simp [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge,
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral]
+
+end
+
+end QuantumTheory.Transport.Models.MassiveDirac

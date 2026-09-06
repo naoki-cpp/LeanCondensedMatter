@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Normalization
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
 import Mathlib.Tactic
 
@@ -58,7 +58,7 @@ attached without an additional `2π` factor. This is not yet the antisymmetric H
 `(σxy - σyx) / 2`. -/
 noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  ((bastinTraceHallPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+  ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral
       e v m probeEnergy broadening disorderStrength hbar pMax
 
