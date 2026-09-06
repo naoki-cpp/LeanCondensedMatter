@@ -49,7 +49,12 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient_eq_denominatorForm,
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient_eq_denominatorForm]
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-  ring_nf
+  have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
+      (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
+    push_cast
+    ring
+  rw [hpi]
+  ring
 
 /-- The #2011 radial Hall-surface integrand is the polar Jacobian multiplying the explicit common
 RA Born-Dyson denominator form. -/
