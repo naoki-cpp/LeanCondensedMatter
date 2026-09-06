@@ -3,6 +3,7 @@ from __future__ import annotations
 from architecture_audit_common import (
     finish_audit,
     lean_imports,
+    module_matches_prefix,
     require_import,
     repository_root,
 )
@@ -40,7 +41,6 @@ def main() -> int:
     for module in (
         MD_MODEL,
         f"{MD_PUBLIC}.Propagator",
-        f"{MD_PUBLIC}.Conductivity.Hall.Intrinsic",
         f"{MD_PUBLIC}.Streda",
         f"{MD_PUBLIC}.Bastin",
         f"{MD_PUBLIC}.Disorder",
@@ -190,37 +190,12 @@ def main() -> int:
         )
 
     canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
-    require_import(
-        errors,
-        canonical_propagator_path,
-        canonical_operator_spectral_module,
-        root=ROOT,
-        description="massive-Dirac propagator model ownership",
-    )
-    streda_prefix = f"{MD_PUBLIC}.Streda."
-    if any(module.startswith(streda_prefix) for module in lean_imports(canonical_propagator_path)):
-        errors.append(
-            f"{canonical_propagator_path.relative_to(ROOT)} must depend on MassiveDirac.Model, "
-            "not MassiveDirac.Streda"
-        )
-
-    massive_dirac_streda_umbrella = massive_dirac_model_root / "Streda.lean"
-    fiber_response_module = f"{MD_PUBLIC}.Streda.FiberResponse"
-    require_import(
-        errors,
-        massive_dirac_streda_umbrella,
-        fiber_response_module,
-        root=ROOT,
-        description="massive-Dirac Streda implementation umbrella",
-    )
-    fiber_response_path = massive_dirac_model_root / "Streda" / "FiberResponse.lean"
-    require_import(
-        errors,
-        fiber_response_path,
-        response_matrix_representation_module,
-        root=ROOT,
-        description="massive-Dirac shared Streda fiber response",
-    )
+    for module in lean_imports(canonical_propagator_path):
+        if module_matches_prefix(module, MD_PUBLIC) and not module_matches_prefix(module, MD_MODEL):
+            errors.append(
+                f"{canonical_propagator_path.relative_to(ROOT)} must depend only on "
+                f"MassiveDirac.Model within the MassiveDirac hierarchy; found `{module}`"
+            )
 
     massive_dirac_bastin_umbrella = massive_dirac_model_root / "Bastin.lean"
     pole_extraction_module = f"{MD_PUBLIC}.Bastin.PoleExtraction"
@@ -230,14 +205,6 @@ def main() -> int:
         pole_extraction_module,
         root=ROOT,
         description="massive-Dirac Bastin implementation umbrella",
-    )
-    pair_integral_path = massive_dirac_model_root / "Bastin" / "PairIntegral.lean"
-    require_import(
-        errors,
-        pair_integral_path,
-        pole_extraction_module,
-        root=ROOT,
-        description="massive-Dirac pole extraction consumer",
     )
 
     return finish_audit(

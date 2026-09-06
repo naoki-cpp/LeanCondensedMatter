@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.PropagatorSymmetry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
