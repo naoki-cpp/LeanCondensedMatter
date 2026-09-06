@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Normalization
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -27,7 +27,7 @@ radial integral, the Bastin trace normalization, the angular integral, and the p
 measure. -/
 def bastinCleanHallConductivityCutoff
     (e hbar m εF Λ : ℝ) : ℝ :=
-  bastinTraceHallPrefactor hbar *
+  bastinTraceConductivityPrefactor hbar *
     (2 * Real.pi * momentumMeasurePrefactor hbar) *
       zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ
 
@@ -39,7 +39,7 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
       intrinsicHallConductivityCutoff e hbar m εF Λ := by
   unfold bastinCleanHallConductivityCutoff
   rw [zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq]
-  unfold bastinTraceHallPrefactor intrinsicHallConductivityCutoff
+  unfold bastinTraceConductivityPrefactor intrinsicHallConductivityCutoff
     intrinsicHallPrefactorFromMomentumMeasure
   field_simp [Real.pi_ne_zero]
 

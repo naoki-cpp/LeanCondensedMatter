@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
@@ -7,10 +7,9 @@ set_option linter.style.header false
 /-!
 # Radial reduction of the finite-broadening dressed Hall surface
 
-This module reduces the full polar-angle trace introduced by the finite-cutoff finite-`η`
-Born-Dyson Hall-surface conductivity bridge to the existing shared polar-Pauli rung coefficients.
-The measured channel is the physical `jₓ`, while the retarded-advanced source is the solved rotated
-`jᵧ` ladder vertex.
+This module reduces the full polar-angle trace of the finite-cutoff finite-`η` Born-Dyson Hall
+Středa surface response to the existing shared polar-Pauli rung coefficients. The measured channel
+is the physical `jₓ`, while the retarded-advanced source is the solved rotated `jᵧ` ladder vertex.
 
 The explicit RR/AA same-side remainder is not discarded by approximation: for an isotropic
 same-side polar propagator its orientation-sensitive rung coefficient is identically zero, so both
@@ -18,8 +17,9 @@ same-side ordered `xy` traces vanish after the full angular integral. The surviv
 coefficient is therefore the RA contribution expressed through the already-owned finite-broadening
 `X/Y` rung coefficients and solved ladder coefficients.
 
-No radial antiderivative, disorder/broadening limit, ultraviolet removal, Hall antisymmetrization,
-mechanism label, or exact-disorder-average claim is introduced here.
+No radial antiderivative, conductivity normalization, disorder/broadening limit, ultraviolet
+removal, Hall antisymmetrization, mechanism label, or exact-disorder-average claim is introduced
+here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -303,8 +303,8 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient]
   ring
 
-/-- The #2011 radial integrand is the polar Jacobian `p` multiplying the explicit angularly reduced
-Hall-surface coefficient. -/
+/-- The finite-`η` radial integrand is the polar Jacobian `p` multiplying the explicit angularly
+reduced Hall-surface coefficient. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
