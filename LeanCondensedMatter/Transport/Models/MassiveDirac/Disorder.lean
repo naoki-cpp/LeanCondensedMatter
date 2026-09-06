@@ -5,6 +5,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -18,6 +19,8 @@ Public umbrella for the disorder-dependent massive-Dirac transport benchmark. Th
 chain is organized by physical and analytic responsibility: `Born.SelfEnergy` owns the finite-cutoff
 self-energy and its polar provenance, `Born.Denominator` owns exact denominator evaluation and its
 UV/broadening limits, and `Born.Damping` owns the channel limits and upper-band damping projection.
+The finite-`η` Born-Dyson layer exposes its fixed-cutoff zero-broadening boundary separately, retaining
+the finite real self-energy contribution before any weak-disorder limit is taken.
 
 The finite-external-broadening Born-Dyson rung reduces through the shared polar Pauli algebra to an
 in-plane coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Radial integration
