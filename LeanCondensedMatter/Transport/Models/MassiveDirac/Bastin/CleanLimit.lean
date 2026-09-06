@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Tactic
 
 set_option linter.style.header false
