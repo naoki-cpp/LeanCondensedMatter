@@ -68,7 +68,6 @@ theorem pauliGreenPauliCoefficientOfRegulator_polar
   cases axis <;>
     simp [pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
       pauliGreenDenominatorOfRegulator_polar] <;>
-    push_cast <;>
     ring
 
 /-- Exact polar-angle decomposition of the arbitrary-regulator clean Green operator. -/
