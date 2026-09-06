@@ -66,27 +66,35 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
       (nhds
         (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
           side v m probeEnergy pMax)) := by
-  have hre :=
-    tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have him :=
-    tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
+  have hre :
+      Tendsto
+        (fun broadening : ℝ =>
+          (finiteCutoffContinuumBornDenominatorIntegral
+            side v m probeEnergy broadening pMax).re)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+            side v m probeEnergy pMax).re) := by
+    simpa using
+      (tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
+        side v m probeEnergy pMax hvelocity hmetal hcutoff)
+  have him :
+      Tendsto
+        (fun broadening : ℝ =>
+          (finiteCutoffContinuumBornDenominatorIntegral
+            side v m probeEnergy broadening pMax).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+            side v m probeEnergy pMax).im) := by
+    simpa using
+      (tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero
+        side v m probeEnergy pMax hvelocity hmetal hcutoff)
   have hcomplex :=
     hre.ofReal.add
       (him.ofReal.mul
         (tendsto_const_nhds : Tendsto (fun _ : ℝ => Complex.I)
           (nhdsWithin 0 (Set.Ioi 0)) (nhds Complex.I)))
-  have htarget :
-      (((-(((2 : ℝ) * v ^ 2)⁻¹) *
-          (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
-            Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖) : ℝ) : ℂ) +
-        ((-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi) : ℝ) : ℂ) * Complex.I =
-      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-        side v m probeEnergy pMax := by
-    apply Complex.ext <;>
-      simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
-  rw [← htarget]
   simpa only [Complex.re_add_im] using hcomplex
 
 /-- The full `σ_z` Born radial integral converges as a complex number to `m` times the common
