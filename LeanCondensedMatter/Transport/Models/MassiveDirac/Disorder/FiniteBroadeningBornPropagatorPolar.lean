@@ -26,9 +26,9 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
       polarPauliOperator
         (finiteCutoffContinuumBornDysonScalarCoefficient
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonXCoefficient
+        (finiteCutoffContinuumBornDysonPauliCoefficient .x
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonZCoefficient
+        (finiteCutoffContinuumBornDysonPauliCoefficient .z
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
   have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
     nlinarith [Real.sin_sq_add_cos_sq θ]
@@ -50,9 +50,7 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
   simpa [finiteCutoffContinuumBornDysonGreenOperator,
     finiteCutoffContinuumBornDysonGreenMatrix,
     finiteCutoffContinuumBornDysonScalarCoefficient,
-    finiteCutoffContinuumBornDysonXCoefficient,
-    finiteCutoffContinuumBornDysonYCoefficient,
-    finiteCutoffContinuumBornDysonZCoefficient, hden] using
+    finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent, hden] using
     (commonDenominatorPauliOperator_polar_eq
       (finiteCutoffContinuumBornDysonDenominator
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
