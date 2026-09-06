@@ -31,10 +31,18 @@ open scoped Interval
 
 private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
 
+private theorem continuous_matrixOperator :
+    Continuous (matrixOperator : Matrix2 → DiracOperator) := by
+  unfold matrixOperator
+  exact LinearMap.continuous_of_finiteDimensional
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] DiracOperator).toLinearMap
+
 /-- Continuity of the shared polar Pauli operator as a function of its angle. -/
 private theorem continuous_polarPauliOperator (a b d : ℂ) :
     Continuous (fun θ : ℝ => polarPauliOperator a b d θ) := by
-  unfold polarPauliOperator polarPauliMatrix matrixOperator
+  unfold polarPauliOperator
+  apply continuous_matrixOperator.comp
+  unfold polarPauliMatrix
   fun_prop
 
 @[simp] private theorem finiteTrace_smul_sigmaX_mul_inPlane
@@ -120,7 +128,7 @@ private theorem integral_polarPauli_xyTrace_eq
     funext θ
     simp [L, rung, mul_assoc]
   rw [hfun]
-  rw [← L.intervalIntegral_comp_comm hrungIntegrable]
+  rw [L.intervalIntegral_comp_comm hrungIntegrable]
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         (pauliRungAngularXCoefficient aL aR dL dR * alpha -
