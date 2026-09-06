@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnerg
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar
@@ -24,10 +25,11 @@ chain is organized by physical and analytic responsibility: `Born.SelfEnergy` ow
 self-energy and its polar provenance, `Born.Denominator` owns exact denominator evaluation and the
 branch-oriented imaginary boundary analysis, `Born.Boundary` owns the finite metallic boundary value
 as a complex number together with its scalar and `σ_z` propagation, `Born.Damping` projects that
-complex API to the physical damping observables, and `TransportRate` owns the microscopic upper-band
-single-particle and transport scattering scales. The finite-`η` Born-Dyson layer propagates the same
-fixed-cutoff boundary through its effective energy, effective mass, and radial denominator before any
-weak-disorder or ultraviolet limit is taken.
+complex API to the physical damping observables, `BornPropagator` feeds those damping channels into
+the weak-disorder propagator and owns its retarded-advanced radial denominator pair, and
+`TransportRate` owns the microscopic upper-band single-particle and transport scattering scales. The
+finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
+effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 
 The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
 its use in the current rung. The rung reduces through the shared polar Pauli algebra to an in-plane
