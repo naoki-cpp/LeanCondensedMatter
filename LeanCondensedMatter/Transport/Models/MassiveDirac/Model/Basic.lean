@@ -18,6 +18,8 @@ j_μ = -e v_μ,  μ ∈ {x,y}.
 
 The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
 and `current` definitions are the public model-level owners used throughout the transport stack.
+The Pauli-vector basis is indexed separately by `PauliAxis`, since its `z` component is an internal
+mass/pseudospin channel rather than a third momentum direction.
 The closed Berry-curvature benchmark is recorded directly here; its agreement with the
 model-specific force-matrix expression is proved downstream.
 
@@ -64,11 +66,25 @@ instance : Fintype Direction2 where
     intro direction
     cases direction <;> simp
 
-/-- Select the Cartesian component associated with an in-plane direction. -/
-def directionComponent {α : Type*} (direction : Direction2) (x y : α) : α :=
-  match direction with
+/-- Axes of the internal Pauli-vector basis. -/
+inductive PauliAxis where
+  | x
+  | y
+  | z
+  deriving DecidableEq
+
+/-- Select a component of a Pauli vector. -/
+def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
+  match axis with
   | .x => x
   | .y => y
+  | .z => z
+
+/-- Pauli matrix associated with an internal Pauli axis. -/
+def pauliMatrix : PauliAxis → Matrix2
+  | .x => sigmaX
+  | .y => sigmaY
+  | .z => sigmaZ
 
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
