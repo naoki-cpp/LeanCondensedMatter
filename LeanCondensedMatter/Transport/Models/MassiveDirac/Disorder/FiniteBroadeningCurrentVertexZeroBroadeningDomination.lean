@@ -257,11 +257,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     have hAboundaryLower : δA ≤ ‖DA0‖ := by
       simpa [δA, DA0] using hminA hp
     have hRlower : cR ≤ ‖DR‖ := by
-      dsimp [cR]
-      linarith
+      dsimp [cR] at herrR ⊢
+      linarith [hRboundaryLower, htriR]
     have hAlower : cA ≤ ‖DA‖ := by
-      dsimp [cA]
-      linarith
+      dsimp [cA] at herrA ⊢
+      linarith [hAboundaryLower, htriA]
     have hproductNorm :
         ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax‖ = ‖DR‖ * ‖DA‖ := by
