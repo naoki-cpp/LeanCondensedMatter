@@ -121,8 +121,13 @@ private theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegra
         v m p probeEnergy disorderStrength hbar : ℂ) =
       continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand
         v m p probeEnergy disorderStrength hbar := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand_eq_closed]
+  have h := continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed
+    .y .x v m p probeEnergy disorderStrength hbar
+  simp only [inPlaneRotationCoefficient] at h
+  rw [h]
   unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
+    continuumBornRetardedAdvancedPauliXAngularNumerator
+  simp [inPlaneRotationCoefficient]
   push_cast
   ring
 
