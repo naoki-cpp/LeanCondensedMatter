@@ -129,8 +129,9 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
         (fun broadening : ℝ => spectralParameter side probeEnergy broadening) 0 := by
       unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
       fun_prop
-    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
-      hcont.tendsto.mono_left inf_le_left
+    have hrestricted := hcont.tendsto.mono_left
+      (show nhdsWithin (0 : ℝ) (Set.Ioi 0) ≤ nhds 0 from inf_le_left)
+    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using hrestricted
   refine (hz.mul hJ).congr' ?_
   filter_upwards with broadening
   exact (finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral
@@ -270,8 +271,9 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero
         (fun broadening : ℝ => spectralParameter side probeEnergy broadening) 0 := by
       unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
       fun_prop
-    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
-      hcont.tendsto.mono_left inf_le_left
+    have hrestricted := hcont.tendsto.mono_left
+      (show nhdsWithin (0 : ℝ) (Set.Ioi 0) ≤ nhds 0 from inf_le_left)
+    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using hrestricted
   have hsigma :=
     tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_broadening_zero
       side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
