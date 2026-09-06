@@ -60,27 +60,29 @@ open scoped Interval
       pauliGreenZCoefficientOfRegulator v m p 0 probeEnergy regulator := by
   simp [pauliGreenZCoefficientOfRegulator]
 
-/-- The arbitrary-regulator `σₓ` coefficient carries the polar factor `cos θ`. -/
-theorem pauliGreenXCoefficientOfRegulator_polar
+/-- The arbitrary-regulator x-direction coefficient carries the polar factor `cos θ`. -/
+theorem pauliGreenInPlaneCoefficientOfRegulator_polar_x
     (v m p θ probeEnergy regulator : ℝ) :
-    pauliGreenXCoefficientOfRegulator v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy regulator =
+    pauliGreenInPlaneCoefficientOfRegulator .x
+        v m (p * Real.cos θ) (p * Real.sin θ) probeEnergy regulator =
       ((Real.cos θ : ℝ) : ℂ) *
-        pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator := by
-  rw [pauliGreenXCoefficientOfRegulator, pauliGreenXCoefficientOfRegulator]
+        pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator := by
+  rw [pauliGreenInPlaneCoefficientOfRegulator, pauliGreenInPlaneCoefficientOfRegulator]
+  simp only [directionComponent]
   rw [pauliGreenDenominatorOfRegulator_polar]
   push_cast
   ring
 
-/-- The arbitrary-regulator `σᵧ` coefficient carries the polar factor `sin θ`, with the same radial
-amplitude as the `σₓ` coefficient on the positive x axis. -/
-theorem pauliGreenYCoefficientOfRegulator_polar
+/-- The arbitrary-regulator y-direction coefficient carries the polar factor `sin θ`, with the same
+radial amplitude as the x-direction coefficient on the positive x axis. -/
+theorem pauliGreenInPlaneCoefficientOfRegulator_polar_y
     (v m p θ probeEnergy regulator : ℝ) :
-    pauliGreenYCoefficientOfRegulator v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy regulator =
+    pauliGreenInPlaneCoefficientOfRegulator .y
+        v m (p * Real.cos θ) (p * Real.sin θ) probeEnergy regulator =
       ((Real.sin θ : ℝ) : ℂ) *
-        pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator := by
-  rw [pauliGreenYCoefficientOfRegulator, pauliGreenXCoefficientOfRegulator]
+        pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator := by
+  rw [pauliGreenInPlaneCoefficientOfRegulator, pauliGreenInPlaneCoefficientOfRegulator]
+  simp only [directionComponent]
   rw [pauliGreenDenominatorOfRegulator_polar]
   push_cast
   ring
@@ -92,16 +94,16 @@ theorem pauliGreenOperatorOfRegulator_polar_eq
         probeEnergy regulator =
       inversionSymmetrizedPauliGreenOperatorOfRegulator v m p 0 probeEnergy regulator +
         (((Real.cos θ : ℝ) : ℂ) •
-          (pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator •
+          (pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
             matrixOperator sigmaX)) +
         (((Real.sin θ : ℝ) : ℂ) •
-          (pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator •
+          (pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
             matrixOperator sigmaY)) := by
   rw [inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels]
   rw [pauliGreenOperatorOfRegulator]
   rw [pauliGreenScalarCoefficientOfRegulator_polar,
-    pauliGreenXCoefficientOfRegulator_polar,
-    pauliGreenYCoefficientOfRegulator_polar,
+    pauliGreenInPlaneCoefficientOfRegulator_polar_x,
+    pauliGreenInPlaneCoefficientOfRegulator_polar_y,
     pauliGreenZCoefficientOfRegulator_polar]
   module
 
@@ -123,9 +125,11 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
   let even : DiracHilbert →L[ℂ] DiracHilbert :=
     inversionSymmetrizedPauliGreenOperatorOfRegulator v m p 0 probeEnergy regulator
   let xPart : DiracHilbert →L[ℂ] DiracHilbert :=
-    pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator • matrixOperator sigmaX
+    pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+      matrixOperator sigmaX
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
-    pauliGreenXCoefficientOfRegulator v m p 0 probeEnergy regulator • matrixOperator sigmaY
+    pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+      matrixOperator sigmaY
   have hcos : Continuous (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ)) :=
     Complex.continuous_ofReal.comp Real.continuous_cos
   have hsin : Continuous (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ)) :=
