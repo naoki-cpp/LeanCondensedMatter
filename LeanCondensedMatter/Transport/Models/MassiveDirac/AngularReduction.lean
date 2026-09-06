@@ -25,9 +25,10 @@ are proportional to `cos θ` and `sin θ`. Their explicit full-angle interval in
   = 2π (g₀(p,0) I + g_z(p,0) σ_z).
 ```
 
-Physical side-indexed coefficient lemmas are retained where they are shared by downstream vertex
-calculations; the operator-valued angular integral itself is owned only at arbitrary regulator.
-No radial integration, disorder normalization, UV limit, or zero-broadening limit is introduced here.
+The reusable coefficient and operator identities are owned at arbitrary signed regulator. Physical
+retarded/advanced consumers specialize through `SpectralSide.regulator` only where branch semantics
+are actually needed. No radial integration, disorder normalization, UV limit, or zero-broadening
+limit is introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -83,48 +84,6 @@ theorem pauliGreenYCoefficientOfRegulator_polar
   rw [pauliGreenDenominatorOfRegulator_polar]
   push_cast
   ring
-
-/-- Physical-side scalar coefficient radiality, retained for downstream side-indexed consumers. -/
-@[simp] theorem pauliGreenScalarCoefficient_polar
-    (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
-    pauliGreenScalarCoefficient side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening =
-      pauliGreenScalarCoefficient side v m p 0 probeEnergy broadening := by
-  simpa [pauliGreenScalarCoefficient] using
-    pauliGreenScalarCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.regulator broadening)
-
-/-- Physical-side `σ_z` coefficient radiality, retained for downstream side-indexed consumers. -/
-@[simp] theorem pauliGreenZCoefficient_polar
-    (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
-    pauliGreenZCoefficient side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening =
-      pauliGreenZCoefficient side v m p 0 probeEnergy broadening := by
-  simpa [pauliGreenZCoefficient] using
-    pauliGreenZCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.regulator broadening)
-
-/-- Physical-side `σₓ` polar factor, retained for downstream side-indexed consumers. -/
-theorem pauliGreenXCoefficient_polar
-    (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
-    pauliGreenXCoefficient side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening =
-      ((Real.cos θ : ℝ) : ℂ) *
-        pauliGreenXCoefficient side v m p 0 probeEnergy broadening := by
-  simpa [pauliGreenXCoefficient] using
-    pauliGreenXCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.regulator broadening)
-
-/-- Physical-side `σᵧ` polar factor, retained for downstream side-indexed consumers. -/
-theorem pauliGreenYCoefficient_polar
-    (side : SpectralSide) (v m p θ probeEnergy broadening : ℝ) :
-    pauliGreenYCoefficient side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening =
-      ((Real.sin θ : ℝ) : ℂ) *
-        pauliGreenXCoefficient side v m p 0 probeEnergy broadening := by
-  simpa [pauliGreenYCoefficient, pauliGreenXCoefficient] using
-    pauliGreenYCoefficientOfRegulator_polar
-      v m p θ probeEnergy (side.regulator broadening)
 
 /-- Exact polar-angle decomposition of the arbitrary-regulator clean Green operator. -/
 theorem pauliGreenOperatorOfRegulator_polar_eq
