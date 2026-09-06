@@ -31,8 +31,7 @@ open scoped Interval
 
 private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
 
-/-- Continuity of the shared polar Pauli operator as a function of its angle. Kept private because
-this file only needs it to justify moving finite-dimensional traces through interval integrals. -/
+/-- Continuity of the shared polar Pauli operator as a function of its angle. -/
 private theorem continuous_polarPauliOperator (a b d : ℂ) :
     Continuous (fun θ : ℝ => polarPauliOperator a b d θ) := by
   unfold polarPauliOperator polarPauliMatrix matrixOperator
@@ -55,8 +54,6 @@ private theorem continuous_polarPauliOperator (a b d : ℂ) :
   simp [Matrix.trace, sigmaX, sigmaY]
   ring
 
-/-- The polar Pauli rung used by the trace reduction is interval-integrable at fixed radial
-coefficients. -/
 private theorem intervalIntegrable_polarPauli_rung
     (aL aR bL bR dL dR alpha beta : ℂ) :
     IntervalIntegrable
@@ -70,8 +67,22 @@ private theorem intervalIntegrable_polarPauli_rung
     ((continuous_polarPauliOperator aL bL dL).mul continuous_const).mul
       (continuous_polarPauliOperator aR bR dR)
 
-/-- Full-angle trace of a polar Pauli rung with a measured `q σₓ` vertex. This is proof-local
-infrastructure for the concrete Hall reduction rather than a new transport API. -/
+private theorem intervalIntegrable_polarPauli_xyTrace
+    (q aL aR bL bR dL dR alpha beta : ℂ) :
+    IntervalIntegrable
+      (fun θ : ℝ =>
+        finiteDimensionalOperatorTrace
+          ((q • matrixOperator sigmaX) *
+            polarPauliOperator aL bL dL θ *
+            (alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY) *
+            polarPauliOperator aR bR dR θ))
+      volume 0 (2 * Real.pi) := by
+  apply Continuous.intervalIntegrable
+  exact (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.comp
+    (((continuous_const.mul (continuous_polarPauliOperator aL bL dL)).mul
+      continuous_const).mul (continuous_polarPauliOperator aR bR dR))
+
+/-- Full-angle trace of a polar Pauli rung with a measured `q σₓ` vertex. -/
 private theorem integral_polarPauli_xyTrace_eq
     (q aL aR bL bR dL dR alpha beta : ℂ) :
     (∫ θ in (0 : ℝ)..(2 * Real.pi),
@@ -122,9 +133,7 @@ private theorem integral_polarPauli_xyTrace_eq
   rw [hrungIntegral]
   simp [L]
 
-/-- For equal left/right polar propagators, the full-angle ordered `xy` trace vanishes exactly.
-This is the algebraic reason the bare-source RR/AA same-side remainder drops out after angular
-integration in the isotropic massive-Dirac Born-Dyson bridge. -/
+/-- For equal left/right polar propagators, the full-angle ordered `xy` trace vanishes exactly. -/
 private theorem integral_polarPauli_sameSideXYTrace_eq_zero
     (q a b d : ℂ) :
     (∫ θ in (0 : ℝ)..(2 * Real.pi),
@@ -137,8 +146,8 @@ private theorem integral_polarPauli_sameSideXYTrace_eq_zero
   simpa [pauliRungAngularYCoefficient] using h
 
 /-- The finite-cutoff Born-Dyson propagator has the shared polar Pauli form at fixed radial
-momentum. This local bridge is used for the same-side terms in addition to the already-public RA
-rung reduction. -/
+momentum. This local bridge is used for the same-side terms in addition to the existing RA
+angular-reduction API. -/
 private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall
     (side : SpectralSide)
     (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
@@ -185,8 +194,7 @@ private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall
       v p θ)
 
 /-- Explicit radial coefficient of the finite-`η` RA-dressed ordered `xy` Hall-surface trace after
-the full polar-angle integral. The same-side RR/AA remainder has not been omitted from the upstream
-bridge; the theorem below proves that its full-angle contribution vanishes. -/
+the full polar-angle integral. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
@@ -291,19 +299,14 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     rw [hcyclic]
   have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
     simpa [ra] using
-      (intervalIntegrable_polarPauli_rung
-        aR aA bR bA dR dA (q * (-beta)) (q * alpha)).const_mul
-        (q : ℂ) |>.clm_apply
+      intervalIntegrable_polarPauli_xyTrace
+        q aR aA bR bA dR dA (q * (-beta)) (q * alpha)
   have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    exact (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.comp
-      ((((continuous_const.mul (continuous_polarPauliOperator aR bR dR)).mul
-        continuous_const).mul (continuous_polarPauliOperator aR bR dR)))
+    simpa [rr] using
+      intervalIntegrable_polarPauli_xyTrace q aR aR bR bR dR dR 0 q
   have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    exact (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.comp
-      ((((continuous_const.mul (continuous_polarPauliOperator aA bA dA)).mul
-        continuous_const).mul (continuous_polarPauliOperator aA bA dA)))
+    simpa [aa] using
+      intervalIntegrable_polarPauli_xyTrace q aA aA bA bA dA dA 0 q
   have hra :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), ra θ) =
         2 * q *
