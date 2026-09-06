@@ -45,7 +45,18 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
   have hcomplex :=
     tendsto_finiteCutoffContinuumBornZIntegral_broadening_zero
       side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  have him :
+      Tendsto
+        (fun broadening : ℝ =>
+          (finiteCutoffContinuumBornZIntegral
+            side v m probeEnergy broadening pMax).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (((m : ℂ) *
+            finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+              side v m probeEnergy pMax).im)) := by
+    simpa only [Function.comp_apply] using
+      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
@@ -66,7 +77,18 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
   have hcomplex :=
     tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
       side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  have him :
+      Tendsto
+        (fun broadening : ℝ =>
+          (finiteCutoffContinuumBornScalarIntegral
+            side v m probeEnergy broadening pMax).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (((probeEnergy : ℂ) *
+            finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+              side v m probeEnergy pMax).im)) := by
+    simpa only [Function.comp_apply] using
+      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
 /-- The common damping magnitude from the physical-momentum continuum measure simplifies to
@@ -100,7 +122,20 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
   have hcomplex :=
     tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_broadening_zero
       side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  have him :
+      Tendsto
+        (fun broadening : ℝ =>
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            finiteCutoffContinuumBornScalarIntegral
+              side v m probeEnergy broadening pMax)).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            ((probeEnergy : ℂ) *
+              finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+                side v m probeEnergy pMax)).im)) := by
+    simpa only [Function.comp_apply] using
+      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the `σ_z` Pauli
@@ -123,7 +158,20 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
   have hcomplex :=
     tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_broadening_zero
       side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  have him :
+      Tendsto
+        (fun broadening : ℝ =>
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            finiteCutoffContinuumBornZIntegral
+              side v m probeEnergy broadening pMax)).im)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+            ((m : ℂ) *
+              finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+                side v m probeEnergy pMax)).im)) := by
+    simpa only [Function.comp_apply] using
+      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
 /-- Retarded continuum Born self-energy projected onto the upper-band Fermi-surface state through
