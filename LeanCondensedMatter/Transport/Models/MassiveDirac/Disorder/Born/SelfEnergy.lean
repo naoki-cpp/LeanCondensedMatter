@@ -40,7 +40,7 @@ noncomputable def continuumBornRadialScalarIntegrandOfRegulator
 Jacobian. -/
 noncomputable def continuumBornRadialZIntegrandOfRegulator
     (v m probeEnergy regulator p : ℝ) : ℂ :=
-  (p : ℂ) * pauliGreenZCoefficientOfRegulator v m p 0 probeEnergy regulator
+  (p : ℂ) * pauliGreenPauliCoefficientOfRegulator .z v m p 0 probeEnergy regulator
 
 /-- Operator-valued radial Green kernel at an arbitrary signed regulator before continuum disorder
 and measure prefactors are applied. -/
@@ -82,7 +82,8 @@ private theorem continuous_continuumBornRadialScalarIntegrandOfRegulator
 private theorem continuous_continuumBornRadialZIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator) := by
-  unfold continuumBornRadialZIntegrandOfRegulator pauliGreenZCoefficientOfRegulator
+  unfold continuumBornRadialZIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
+  simp only [pauliAxisComponent]
   exact (Complex.continuous_ofReal.comp continuous_id).mul
     ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
       v m probeEnergy regulator hregulator).mul continuous_const)
@@ -416,7 +417,8 @@ theorem continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegran
         v m probeEnergy regulator p := by
   unfold continuumBornRadialZIntegrandOfRegulator
     continuumBornRadialDenominatorIntegrandOfRegulator
-    pauliGreenZCoefficientOfRegulator
+    pauliGreenPauliCoefficientOfRegulator
+  simp only [pauliAxisComponent]
   ring
 
 /-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary
