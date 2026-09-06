@@ -55,7 +55,7 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
           (((m : ℂ) *
             finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
               side v m probeEnergy pMax).im)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
@@ -87,7 +87,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
           (((probeEnergy : ℂ) *
             finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
               side v m probeEnergy pMax).im)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
@@ -134,7 +134,7 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
             ((probeEnergy : ℂ) *
               finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
                 side v m probeEnergy pMax)).im)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
@@ -170,7 +170,7 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
             ((m : ℂ) *
               finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
                 side v m probeEnergy pMax)).im)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_def] using
       Complex.continuous_im.continuousAt.tendsto.comp hcomplex
   simpa [Complex.mul_im] using him
 
