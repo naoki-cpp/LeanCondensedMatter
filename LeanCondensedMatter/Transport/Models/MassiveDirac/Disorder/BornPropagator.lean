@@ -70,29 +70,16 @@ def continuumBornPauliGreenScalarCoefficient
       side v m px py probeEnergy disorderStrength hbar)⁻¹ *
     continuumBornEffectiveEnergy side v probeEnergy disorderStrength hbar
 
-/-- `σₓ` coefficient of the Born-dressed Pauli propagator. -/
-def continuumBornPauliGreenXCoefficient
-    (side : SpectralSide)
+/-- Direction-indexed Pauli-vector coefficient of the Born-dressed propagator. -/
+def continuumBornPauliGreenPauliCoefficient
+    (axis : PauliAxis) (side : SpectralSide)
     (v m px py probeEnergy disorderStrength hbar : ℝ) : ℂ :=
   (continuumBornPauliGreenDenominator
       side v m px py probeEnergy disorderStrength hbar)⁻¹ *
-    ((v * px : ℝ) : ℂ)
-
-/-- `σᵧ` coefficient of the Born-dressed Pauli propagator. -/
-def continuumBornPauliGreenYCoefficient
-    (side : SpectralSide)
-    (v m px py probeEnergy disorderStrength hbar : ℝ) : ℂ :=
-  (continuumBornPauliGreenDenominator
-      side v m px py probeEnergy disorderStrength hbar)⁻¹ *
-    ((v * py : ℝ) : ℂ)
-
-/-- `σ_z` coefficient of the Born-dressed Pauli propagator. -/
-def continuumBornPauliGreenZCoefficient
-    (side : SpectralSide)
-    (v m px py probeEnergy disorderStrength hbar : ℝ) : ℂ :=
-  (continuumBornPauliGreenDenominator
-      side v m px py probeEnergy disorderStrength hbar)⁻¹ *
-    continuumBornEffectiveMass side v m disorderStrength hbar
+    pauliAxisComponent axis
+      (((v * px : ℝ) : ℂ))
+      (((v * py : ℝ) : ℂ))
+      (continuumBornEffectiveMass side v m disorderStrength hbar)
 
 /-- The damping scale is exactly the physical-momentum prefactor already extracted from the Born
 self-energy. -/
