@@ -38,7 +38,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         e v m p probeEnergy broadening disorderStrength hbar pMax =
-      let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
+      let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       -(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
         (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
@@ -57,7 +57,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIn
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
         e v m p probeEnergy broadening disorderStrength hbar pMax =
-      let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
+      let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       (p : ℂ) *
         (-(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
