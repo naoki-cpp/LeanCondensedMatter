@@ -12,6 +12,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeni
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -33,12 +34,13 @@ finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through i
 effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 
 The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
-its use in the current rung. The rung reduces through the shared polar Pauli algebra to an in-plane
-coefficient pair `(X,Y)` with repository orientation `[[X,-Y],[Y,X]]`. Its fixed-radial-momentum
+its use in the current rung. The rung reduces through the shared polar Pauli algebra to a direction-
+indexed in-plane matrix with repository orientation `[[X,-Y],[Y,X]]`. Its fixed-radial-momentum
 positive-broadening boundary is exposed separately, under the explicit nonzero boundary denominator
 hypothesis needed by the inverse. Radial integration attaches the scalar-disorder line and physical
-momentum measure exactly once before the pair is consumed by the canonical in-plane ladder formulas;
-interchanging that integral with the zero-broadening limit remains a separate downstream step.
+momentum measure exactly once before the canonical entries are consumed by the ladder formulas; the
+dominated-convergence boundary for interchanging that integral with the zero-broadening limit is
+exposed separately and still requires explicit compact domination hypotheses.
 `FiniteBroadeningLadderRegularity` owns the shared determinant condition that licenses interpreting
 that algebraic coefficient pair as the actual ladder fixed point. For the zero-external-broadening
 Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal rung, while
