@@ -37,15 +37,10 @@ theorem tendsto_inPlaneRotationCoefficient
     {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
     (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
     (i j : Direction2) :
-    Tendsto
-      (fun a => inPlaneRotationCoefficient (x a) (y a) i j)
-      l
+    Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
       (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
-  cases i <;> cases j
-  · simpa [inPlaneRotationCoefficient] using hx
-  · simpa [inPlaneRotationCoefficient] using hy.neg
-  · simpa [inPlaneRotationCoefficient] using hy
-  · simpa [inPlaneRotationCoefficient] using hx
+  cases i <;> cases j <;> simp only [inPlaneRotationCoefficient]
+  all_goals first | exact hx | exact hy.neg | exact hy
 
 /-- `σₓ` coefficient of the repository-oriented in-plane ladder action. -/
 def inPlaneLadderXCoefficient
