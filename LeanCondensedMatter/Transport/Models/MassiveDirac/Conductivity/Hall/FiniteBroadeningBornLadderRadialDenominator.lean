@@ -49,7 +49,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularXCoefficient_eq_denominatorForm,
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularYCoefficient_eq_denominatorForm]
   unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-  ring
+  ring_nf
 
 /-- The #2011 radial Hall-surface integrand is the polar Jacobian multiplying the explicit common
 RA Born-Dyson denominator form. -/
