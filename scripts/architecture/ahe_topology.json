@@ -22,7 +22,7 @@
         {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
         {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge"]},
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
-        {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation"]},
+        {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation", "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
         {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
       ],
