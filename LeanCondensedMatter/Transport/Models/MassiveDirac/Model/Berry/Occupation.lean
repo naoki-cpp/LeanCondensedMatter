@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 set_option linter.style.header false
 
 /-!
-# Intrinsic Berry weight for the metallic massive Dirac cone
+# Occupation-weighted Berry weight for the metallic massive Dirac cone
 
 For a single continuum Dirac cone, the occupied-state response keeps the ultraviolet regulator
 explicit. After angular reduction and the change from radial momentum to the positive Dirac energy

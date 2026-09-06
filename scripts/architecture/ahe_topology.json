@@ -22,7 +22,7 @@
         {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
         {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge"]},
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
-        {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"]},
+        {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
         {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
       ],
@@ -37,20 +37,18 @@
         {"upstream": "modelSpectral", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelInterband", "downstream": "intrinsicBerryBridge"},
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
-        {"upstream": "intrinsicBerrySymmetry", "downstream": "intrinsicResponse"},
-        {"upstream": "intrinsicResponse", "downstream": "intrinsicConductivity"}
+        {"upstream": "intrinsicBerrySymmetry", "downstream": "occupiedBerryWeight"},
+        {"upstream": "occupiedBerryWeight", "downstream": "intrinsicConductivity"}
       ]
     },
     {
       "id": "massiveDiracBastinLayers",
       "sourceRoots": [
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Model/Berry",
-        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin"
       ],
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin"
       ],
       "layers": [
@@ -62,9 +60,9 @@
           ]
         },
         {
-          "id": "intrinsicResponse",
+          "id": "occupiedBerryWeight",
           "modulePrefixes": [
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Response"
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation"
           ]
         },
         {
@@ -114,11 +112,11 @@
         }
       ],
       "edges": [
-        {"upstream": "intrinsicGeometry", "downstream": "intrinsicResponse"},
+        {"upstream": "intrinsicGeometry", "downstream": "occupiedBerryWeight"},
         {"upstream": "intrinsicGeometry", "downstream": "bastinFoundation"},
         {"upstream": "bastinFoundation", "downstream": "bastinPole"},
         {"upstream": "bastinPole", "downstream": "bastinPair"},
-        {"upstream": "intrinsicResponse", "downstream": "bastinPair"},
+        {"upstream": "occupiedBerryWeight", "downstream": "bastinPair"},
         {"upstream": "bastinPair", "downstream": "bastinRadial"},
         {"upstream": "bastinRadial", "downstream": "bastinZeroTemperature"}
       ]
