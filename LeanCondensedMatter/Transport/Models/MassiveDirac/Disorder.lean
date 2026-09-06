@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeni
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderRegularity
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -29,7 +30,8 @@ complex API to the physical damping observables, `BornPropagator` feeds those da
 the weak-disorder propagator and owns its retarded-advanced radial denominator pair, and
 `TransportRate` owns the microscopic upper-band single-particle and transport scattering scales. The
 finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
-effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
+effective mass, radial denominator, and pointwise current-rung coefficients before any weak-disorder
+or ultraviolet limit is taken.
 
 The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
 its use in the current rung. The rung reduces through the shared polar Pauli algebra to an in-plane
