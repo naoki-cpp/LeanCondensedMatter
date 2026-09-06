@@ -64,6 +64,12 @@ instance : Fintype Direction2 where
     intro direction
     cases direction <;> simp
 
+/-- Select the Cartesian component associated with an in-plane direction. -/
+def directionComponent {α : Type*} (direction : Direction2) (x y : α) : α :=
+  match direction with
+  | .x => x
+  | .y => y
+
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
   | .x => sigmaX
