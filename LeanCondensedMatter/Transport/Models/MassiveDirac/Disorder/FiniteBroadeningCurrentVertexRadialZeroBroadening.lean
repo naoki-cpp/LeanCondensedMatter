@@ -50,7 +50,7 @@ private theorem eventually_norm_le_norm_add_one_of_tendsto
   rw [hdecomp]
   calc
     ‖f x - z + z‖ ≤ ‖f x - z‖ + ‖z‖ := norm_add_le _ _
-    _ ≤ 1 + ‖z‖ := add_le_add_right hx.le _
+    _ ≤ 1 + ‖z‖ := by linarith
     _ = ‖z‖ + 1 := by ring
 
 /-- The finite-broadening longitudinal radial current-rung integrand is strongly measurable in
@@ -257,9 +257,7 @@ theorem eventually_norm_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRun
   have hpNorm : ‖((p : ℝ) : ℂ)‖ ≤ ‖((pMax : ℝ) : ℂ)‖ := by
     simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp.1, abs_of_nonneg hpMax] using hp.2
   gcongr
-  · exact hpNorm
-  · exact hinv p hp
-  · exact hnumAt
+  exact hinv p hp
 
 /-- A uniform inverse bound for the RA denominator product gives an eventual constant domination of
 the normalized orientation-sensitive radial current-rung integrand. -/
@@ -293,9 +291,7 @@ theorem eventually_norm_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRun
   have hpNorm : ‖((p : ℝ) : ℂ)‖ ≤ ‖((pMax : ℝ) : ℂ)‖ := by
     simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp.1, abs_of_nonneg hpMax] using hp.2
   gcongr
-  · exact hpNorm
-  · exact hinv p hp
-  · exact hnumAt
+  exact hinv p hp
 
 /-- The integrated longitudinal current-rung coefficient converges under a compact-radial uniform
 inverse bound for the RA denominator product. -/
