@@ -33,9 +33,15 @@ private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
 
 private theorem continuous_matrixOperator :
     Continuous (matrixOperator : Matrix2 → DiracOperator) := by
-  unfold matrixOperator
-  exact LinearMap.continuous_of_finiteDimensional
-    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] DiracOperator).toLinearMap
+  let linearMatrixOperator : Matrix2 →ₗ[ℂ] DiracOperator :=
+    { toFun := matrixOperator
+      map_add' := by
+        intro A B
+        simp [matrixOperator]
+      map_smul' := by
+        intro c A
+        simp [matrixOperator] }
+  exact linearMatrixOperator.continuous_of_finiteDimensional
 
 /-- Continuity of the shared polar Pauli operator as a function of its angle. -/
 private theorem continuous_polarPauliOperator (a b d : ℂ) :
@@ -139,7 +145,12 @@ private theorem integral_polarPauli_xyTrace_eq
       (integral_polarPauliOperator_inPlane_eq
         aL aR bL bR dL dR alpha beta)
   rw [hrungIntegral]
-  simp [L]
+  simpa [L] using
+    (finiteTrace_smul_sigmaX_mul_inPlane q
+      (pauliRungAngularXCoefficient aL aR dL dR * alpha -
+        pauliRungAngularYCoefficient aL aR dL dR * beta)
+      (pauliRungAngularYCoefficient aL aR dL dR * alpha +
+        pauliRungAngularXCoefficient aL aR dL dR * beta))
 
 /-- For equal left/right polar propagators, the full-angle ordered `xy` trace vanishes exactly. -/
 private theorem integral_polarPauli_sameSideXYTrace_eq_zero
@@ -152,54 +163,6 @@ private theorem integral_polarPauli_sameSideXYTrace_eq_zero
           polarPauliOperator a b d θ)) = 0 := by
   have h := integral_polarPauli_xyTrace_eq q a a b b d d 0 q
   simpa [pauliRungAngularYCoefficient] using h
-
-/-- The finite-cutoff Born-Dyson propagator has the shared polar Pauli form at fixed radial
-momentum. This local bridge is used for the same-side terms in addition to the existing RA
-angular-reduction API. -/
-private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall
-    (side : SpectralSide)
-    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonGreenOperator
-        side v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy broadening disorderStrength hbar pMax =
-      polarPauliOperator
-        (finiteCutoffContinuumBornDysonScalarCoefficient
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonXCoefficient
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonZCoefficient
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
-  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-    nlinarith [Real.sin_sq_add_cos_sq θ]
-  have hradial :
-      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
-    calc
-      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
-          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
-      _ = p ^ 2 := by rw [htrig]; ring
-      _ = p ^ 2 + 0 ^ 2 := by ring
-  have hden :
-      finiteCutoffContinuumBornDysonDenominator
-          side v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax =
-        finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold finiteCutoffContinuumBornDysonDenominator
-    rw [hradial]
-  simpa [finiteCutoffContinuumBornDysonGreenOperator,
-    finiteCutoffContinuumBornDysonGreenMatrix,
-    finiteCutoffContinuumBornDysonScalarCoefficient,
-    finiteCutoffContinuumBornDysonXCoefficient,
-    finiteCutoffContinuumBornDysonYCoefficient,
-    finiteCutoffContinuumBornDysonZCoefficient, hden] using
-    (commonDenominatorPauliOperator_polar_eq
-      (finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornEffectiveEnergy
-        side v m probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornEffectiveMass
-        side v m probeEnergy broadening disorderStrength hbar pMax)
-      v p θ)
 
 /-- Explicit radial coefficient of the finite-`η` RA-dressed ordered `xy` Hall-surface trace after
 the full polar-angle integral. -/
@@ -291,8 +254,8 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
       retardedAdvancedVertexTraceKernel sameSideVertexTraceRemainder twoGreenVertexTraceKernel
     rw [hjx, hjy, hsource]
-    rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall,
-      finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall]
+    rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
+      finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
     have hcyclic :
         finiteDimensionalOperatorTrace
           ((q • matrixOperator sigmaY) * polarPauliOperator aA bA dA θ *
