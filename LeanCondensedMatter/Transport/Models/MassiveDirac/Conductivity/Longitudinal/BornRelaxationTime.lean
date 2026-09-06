@@ -47,7 +47,6 @@ private theorem continuumBornUpperBandTransportLifetime_eq_closed
   rw [continuumBornUpperBandTransportScatteringRate_eq
     v m fermiEnergy disorderStrength hbar hvelocity hhbar hfermiEnergy]
   field_simp [hvelocity, hhbar, hdisorder, hfermiEnergy, hsum]
-  <;> ring
 
 /-- The zero-temperature massive-Dirac RTA benchmark evaluated on the microscopic Born transport
 lifetime has the explicit `1/W` form
@@ -87,7 +86,6 @@ theorem zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifet
     v m fermiEnergy disorderStrength hbar
     hvelocity hhbarNe hdisorderNe hfermiNe]
   field_simp [hhbarNe, hvelocity, hdisorderNe, hfermiNe, hsum, Real.pi_ne_zero]
-  <;> ring
 
 /-- Multiplying the microscopic Born-RTA longitudinal conductivity by the disorder strength removes
 the Drude `1/W` scaling and exposes the finite coefficient that a controlled weak-disorder Středa
@@ -115,7 +113,6 @@ theorem disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivi
       (add_pos_of_pos_of_nonneg hfermiSq
         (mul_nonneg (by norm_num) (sq_nonneg m)))
   field_simp [hdisorderNe, hsum, Real.pi_ne_zero]
-  <;> ring
 
 end
 
