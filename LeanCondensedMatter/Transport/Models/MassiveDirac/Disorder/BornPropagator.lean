@@ -21,9 +21,11 @@ with `s = +1` for retarded and `s = -1` for advanced.  The opposite signs of the
 `σ_z` damping channels are retained explicitly; this is not replaced by a single phenomenological
 broadening.
 
-The definitions here are model-specific Born approximation data.  They are not exact disorder-
-averaged Green functions and do not introduce a second self-energy definition.  No radial
-integration, ladder resummation, Ward claim, or conductivity theorem occurs here.
+The propagator-level retarded-advanced denominator pair is exposed here as a real center, signed
+width, and manifestly nonnegative product for downstream radial consumers. The definitions here are
+model-specific Born approximation data. They are not exact disorder-averaged Green functions and do
+not introduce a second self-energy definition. No radial integration, ladder resummation, Ward
+claim, or conductivity theorem occurs here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -122,6 +124,54 @@ theorem continuumBornPauliGreenDenominator_eq_closedForm
     ring_nf <;>
     simp [hI] <;>
     ring
+
+/-- Real radial center of the Born retarded-advanced denominator pair. -/
+def continuumBornRADenominatorCenter
+    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
+  (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
+      (probeEnergy ^ 2 - m ^ 2) -
+    v ^ 2 * p ^ 2
+
+/-- Signed width parameter multiplying `i` in the retarded denominator. -/
+def continuumBornRADenominatorWidth
+    (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
+  2 * continuumBornDampingScale v disorderStrength hbar *
+    (probeEnergy ^ 2 + m ^ 2)
+
+/-- Manifestly real retarded-advanced denominator product. -/
+def continuumBornRADenominatorProduct
+    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
+  continuumBornRADenominatorCenter v m p probeEnergy disorderStrength hbar ^ 2 +
+    continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar ^ 2
+
+/-- The real retarded-advanced denominator product is nonnegative. -/
+theorem continuumBornRADenominatorProduct_nonneg
+    (v m p probeEnergy disorderStrength hbar : ℝ) :
+    0 ≤ continuumBornRADenominatorProduct
+      v m p probeEnergy disorderStrength hbar := by
+  unfold continuumBornRADenominatorProduct
+  positivity
+
+/-- The radial retarded-advanced denominator product is the real sum of squares `A(p)² + B²`. -/
+theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
+    (v m p probeEnergy disorderStrength hbar : ℝ) :
+    continuumBornPauliGreenDenominator
+        .retarded v m p 0 probeEnergy disorderStrength hbar *
+      continuumBornPauliGreenDenominator
+        .advanced v m p 0 probeEnergy disorderStrength hbar =
+      (continuumBornRADenominatorProduct
+        v m p probeEnergy disorderStrength hbar : ℂ) := by
+  rw [continuumBornPauliGreenDenominator_eq_closedForm .retarded,
+    continuumBornPauliGreenDenominator_eq_closedForm .advanced]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
+  unfold continuumBornRADenominatorProduct continuumBornRADenominatorCenter
+    continuumBornRADenominatorWidth
+  simp only [SpectralSide.sign_retarded, SpectralSide.sign_advanced]
+  push_cast
+  ring_nf
+  simp [hI]
+  ring
 
 end
 
