@@ -31,6 +31,13 @@ open scoped Interval
 
 private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
 
+/-- Continuity of the shared polar Pauli operator as a function of its angle. Kept private because
+this file only needs it to justify moving finite-dimensional traces through interval integrals. -/
+private theorem continuous_polarPauliOperator (a b d : ℂ) :
+    Continuous (fun θ : ℝ => polarPauliOperator a b d θ) := by
+  unfold polarPauliOperator polarPauliMatrix matrixOperator
+  fun_prop
+
 @[simp] private theorem finiteTrace_smul_sigmaX_mul_inPlane
     (q x y : ℂ) :
     finiteDimensionalOperatorTrace
@@ -45,8 +52,23 @@ private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
   rw [hop]
   unfold matrixOperator
   rw [finiteDimensionalOperatorTrace_toEuclideanCLM]
-  simp [Matrix.trace, Matrix.mul_apply, sigmaX, sigmaY]
+  simp [Matrix.trace, sigmaX, sigmaY]
   ring
+
+/-- The polar Pauli rung used by the trace reduction is interval-integrable at fixed radial
+coefficients. -/
+private theorem intervalIntegrable_polarPauli_rung
+    (aL aR bL bR dL dR alpha beta : ℂ) :
+    IntervalIntegrable
+      (fun θ : ℝ =>
+        polarPauliOperator aL bL dL θ *
+          (alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY) *
+          polarPauliOperator aR bR dR θ)
+      volume 0 (2 * Real.pi) := by
+  apply Continuous.intervalIntegrable
+  exact
+    ((continuous_polarPauliOperator aL bL dL).mul continuous_const).mul
+      (continuous_polarPauliOperator aR bR dR)
 
 /-- Full-angle trace of a polar Pauli rung with a measured `q σₓ` vertex. This is proof-local
 infrastructure for the concrete Hall reduction rather than a new transport API. -/
@@ -63,20 +85,18 @@ private theorem integral_polarPauli_xyTrace_eq
           pauliRungAngularYCoefficient aL aR dL dR * beta) := by
   let rung : ℝ → DiracOperator := fun θ =>
     polarPauliOperator aL bL dL θ *
-      matrixOperator (alpha • sigmaX + beta • sigmaY) *
+      (alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY) *
       polarPauliOperator aR bR dR θ
-  have hrungContinuous : Continuous rung := by
-    unfold rung polarPauliOperator polarPauliMatrix matrixOperator
-    fun_prop
-  have hrungIntegrable : IntervalIntegrable rung volume 0 (2 * Real.pi) :=
-    hrungContinuous.intervalIntegrable 0 (2 * Real.pi)
+  have hrungIntegrable : IntervalIntegrable rung volume 0 (2 * Real.pi) := by
+    simpa [rung] using
+      intervalIntegrable_polarPauli_rung aL aR bL bR dL dR alpha beta
   let L : DiracOperator →L[ℂ] ℂ :=
     finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
         (q • matrixOperator sigmaX) 1)
   have hsource :
-      alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY =
-        matrixOperator (alpha • sigmaX + beta • sigmaY) := by
+      matrixOperator (alpha • sigmaX + beta • sigmaY) =
+        alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY := by
     simp [matrixOperator]
   have hfun :
       (fun θ : ℝ =>
@@ -87,19 +107,19 @@ private theorem integral_polarPauli_xyTrace_eq
             polarPauliOperator aR bR dR θ)) =
         fun θ : ℝ => L (rung θ) := by
     funext θ
-    simp [L, rung, hsource, mul_assoc]
+    simp [L, rung, mul_assoc]
   rw [hfun]
   rw [← L.intervalIntegral_comp_comm hrungIntegrable]
-  have hrung := integral_polarPauliOperator_inPlane_eq
-    aL aR bL bR dL dR alpha beta
-  change L (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) = _
-  rw [show
-    (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
-      (pauliRungAngularXCoefficient aL aR dL dR * alpha -
-        pauliRungAngularYCoefficient aL aR dL dR * beta) • matrixOperator sigmaX +
-      (pauliRungAngularYCoefficient aL aR dL dR * alpha +
-        pauliRungAngularXCoefficient aL aR dL dR * beta) • matrixOperator sigmaY by
-      simpa [rung] using hrung]
+  have hrungIntegral :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
+        (pauliRungAngularXCoefficient aL aR dL dR * alpha -
+          pauliRungAngularYCoefficient aL aR dL dR * beta) • matrixOperator sigmaX +
+        (pauliRungAngularYCoefficient aL aR dL dR * alpha +
+          pauliRungAngularXCoefficient aL aR dL dR * beta) • matrixOperator sigmaY := by
+    simpa [rung, hsource] using
+      (integral_polarPauliOperator_inPlane_eq
+        aL aR bL bR dL dR alpha beta)
+  rw [hrungIntegral]
   simp [L]
 
 /-- For equal left/right polar propagators, the full-angle ordered `xy` trace vanishes exactly.
@@ -115,6 +135,54 @@ private theorem integral_polarPauli_sameSideXYTrace_eq_zero
           polarPauliOperator a b d θ)) = 0 := by
   have h := integral_polarPauli_xyTrace_eq q a a b b d d 0 q
   simpa [pauliRungAngularYCoefficient] using h
+
+/-- The finite-cutoff Born-Dyson propagator has the shared polar Pauli form at fixed radial
+momentum. This local bridge is used for the same-side terms in addition to the already-public RA
+rung reduction. -/
+private theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall
+    (side : SpectralSide)
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenOperator
+        side v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      polarPauliOperator
+        (finiteCutoffContinuumBornDysonScalarCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonXCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonZCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    nlinarith [Real.sin_sq_add_cos_sq θ]
+  have hradial :
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
+    calc
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
+          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
+      _ = p ^ 2 := by rw [htrig]; ring
+      _ = p ^ 2 + 0 ^ 2 := by ring
+  have hden :
+      finiteCutoffContinuumBornDysonDenominator
+          side v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax =
+        finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold finiteCutoffContinuumBornDysonDenominator
+    rw [hradial]
+  simpa [finiteCutoffContinuumBornDysonGreenOperator,
+    finiteCutoffContinuumBornDysonGreenMatrix,
+    finiteCutoffContinuumBornDysonScalarCoefficient,
+    finiteCutoffContinuumBornDysonXCoefficient,
+    finiteCutoffContinuumBornDysonYCoefficient,
+    finiteCutoffContinuumBornDysonZCoefficient, hden] using
+    (commonDenominatorPauliOperator_polar_eq
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      v p θ)
 
 /-- Explicit radial coefficient of the finite-`η` RA-dressed ordered `xy` Hall-surface trace after
 the full polar-angle integral. The same-side RR/AA remainder has not been omitted from the upstream
@@ -158,9 +226,17 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
   let dA := finiteCutoffContinuumBornDysonZCoefficient
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hjx : currentOperator .x e v = q • matrixOperator sigmaX := by
-    simp [q, currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
+    dsimp [q]
+    unfold currentOperator current velocity directionPauli matrixOperator
+    rw [map_smul, map_smul]
+    push_cast
+    module
   have hjy : currentOperator .y e v = q • matrixOperator sigmaY := by
-    simp [q, currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
+    dsimp [q]
+    unfold currentOperator current velocity directionPauli matrixOperator
+    rw [map_smul, map_smul]
+    push_cast
+    module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
           e v m probeEnergy broadening disorderStrength hbar pMax =
@@ -170,51 +246,6 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
       inPlaneCurrentOperator
     rw [hjx, hjy]
     module
-  have hpolar (side : SpectralSide) :
-      (fun θ : ℝ =>
-        finiteCutoffContinuumBornDysonGreenOperator
-          side v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax) =
-        fun θ : ℝ =>
-          polarPauliOperator
-            (finiteCutoffContinuumBornDysonScalarCoefficient
-              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonXCoefficient
-              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonZCoefficient
-              side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
-    funext θ
-    have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
-      nlinarith [Real.sin_sq_add_cos_sq θ]
-    have hradial :
-        (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
-      calc
-        (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
-            p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
-        _ = p ^ 2 := by rw [htrig]; ring
-        _ = p ^ 2 + 0 ^ 2 := by ring
-    have hden :
-        finiteCutoffContinuumBornDysonDenominator
-            side v m (p * Real.cos θ) (p * Real.sin θ)
-            probeEnergy broadening disorderStrength hbar pMax =
-          finiteCutoffContinuumBornDysonDenominator
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-      unfold finiteCutoffContinuumBornDysonDenominator
-      rw [hradial]
-    simpa [finiteCutoffContinuumBornDysonGreenOperator,
-      finiteCutoffContinuumBornDysonGreenMatrix,
-      finiteCutoffContinuumBornDysonScalarCoefficient,
-      finiteCutoffContinuumBornDysonXCoefficient,
-      finiteCutoffContinuumBornDysonYCoefficient,
-      finiteCutoffContinuumBornDysonZCoefficient, hden] using
-      (commonDenominatorPauliOperator_polar_eq
-        (finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornEffectiveEnergy
-          side v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornEffectiveMass
-          side v m probeEnergy broadening disorderStrength hbar pMax)
-        v p θ)
   let ra : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator sigmaX) *
@@ -244,7 +275,8 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
       retardedAdvancedVertexTraceKernel sameSideVertexTraceRemainder twoGreenVertexTraceKernel
     rw [hjx, hjy, hsource]
-    rw [congrFun (hpolar .retarded) θ, congrFun (hpolar .advanced) θ]
+    rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall,
+      finiteCutoffContinuumBornDysonGreenOperator_polar_eq_forHall]
     have hcyclic :
         finiteDimensionalOperatorTrace
           ((q • matrixOperator sigmaY) * polarPauliOperator aA bA dA θ *
@@ -257,22 +289,21 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
           ((q • matrixOperator sigmaY) * polarPauliOperator aA bA dA θ)
           ((q • matrixOperator sigmaX) * polarPauliOperator aA bA dA θ))
     rw [hcyclic]
-    rfl
-  have hraContinuous : Continuous ra := by
-    unfold ra polarPauliOperator polarPauliMatrix matrixOperator
-    fun_prop
-  have hrrContinuous : Continuous rr := by
-    unfold rr polarPauliOperator polarPauliMatrix matrixOperator
-    fun_prop
-  have haaContinuous : Continuous aa := by
-    unfold aa polarPauliOperator polarPauliMatrix matrixOperator
-    fun_prop
-  have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) :=
-    hraContinuous.intervalIntegrable 0 (2 * Real.pi)
-  have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) :=
-    hrrContinuous.intervalIntegrable 0 (2 * Real.pi)
-  have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) :=
-    haaContinuous.intervalIntegrable 0 (2 * Real.pi)
+  have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
+    simpa [ra] using
+      (intervalIntegrable_polarPauli_rung
+        aR aA bR bA dR dA (q * (-beta)) (q * alpha)).const_mul
+        (q : ℂ) |>.clm_apply
+  have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    exact (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.comp
+      ((((continuous_const.mul (continuous_polarPauliOperator aR bR dR)).mul
+        continuous_const).mul (continuous_polarPauliOperator aR bR dR)))
+  have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    exact (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.comp
+      ((((continuous_const.mul (continuous_polarPauliOperator aA bA dA)).mul
+        continuous_const).mul (continuous_polarPauliOperator aA bA dA)))
   have hra :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), ra θ) =
         2 * q *
@@ -307,7 +338,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIn
       (p : ℂ) *
         finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
           e v m p probeEnergy broadening disorderStrength hbar pMax := by
-  rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand]
+  unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
   rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
 
 end
