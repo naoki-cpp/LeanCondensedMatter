@@ -10,7 +10,7 @@
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
-        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal"
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
       ],
       "layers": [
         {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic"]},
@@ -24,17 +24,13 @@
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
         {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation", "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry"]},
         {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity"]},
-        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]},
-        {"id": "longitudinalBornRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime"]},
-        {"id": "longitudinalBornDysonStreda", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornDysonStreda"]}
+        {"id": "longitudinalRelaxationTime", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"]}
       ],
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelOperator"},
         {"upstream": "modelBasic", "downstream": "modelKinematics"},
         {"upstream": "modelKinematics", "downstream": "modelOccupation"},
         {"upstream": "modelOccupation", "downstream": "longitudinalRelaxationTime"},
-        {"upstream": "longitudinalRelaxationTime", "downstream": "longitudinalBornRelaxationTime"},
-        {"upstream": "modelOperator", "downstream": "longitudinalBornDysonStreda"},
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelInterband"},
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
@@ -43,6 +39,88 @@
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
         {"upstream": "intrinsicBerrySymmetry", "downstream": "occupiedBerryWeight"},
         {"upstream": "occupiedBerryWeight", "downstream": "intrinsicConductivity"}
+      ]
+    },
+    {
+      "id": "massiveDiracFiniteBroadeningTransport",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Vertex",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Streda",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderRegularity",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornDysonStreda",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadder"
+      ],
+      "layers": [
+        {
+          "id": "vertexCore",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder"
+          ]
+        },
+        {
+          "id": "disorderTransportRate",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate"
+          ]
+        },
+        {
+          "id": "disorderFiniteBroadening",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderRegularity",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexRadial"
+          ]
+        },
+        {
+          "id": "stredaFiniteBroadening",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder"
+          ]
+        },
+        {
+          "id": "longitudinalRelaxationTime",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
+          ]
+        },
+        {
+          "id": "longitudinalBornRelaxationTime",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime"
+          ]
+        },
+        {
+          "id": "conductivityFiniteBroadening",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornDysonStreda",
+            "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadder"
+          ]
+        }
+      ],
+      "edges": [
+        {"upstream": "vertexCore", "downstream": "disorderFiniteBroadening"},
+        {"upstream": "vertexCore", "downstream": "stredaFiniteBroadening"},
+        {"upstream": "disorderFiniteBroadening", "downstream": "stredaFiniteBroadening"},
+        {"upstream": "stredaFiniteBroadening", "downstream": "conductivityFiniteBroadening"},
+        {"upstream": "disorderTransportRate", "downstream": "longitudinalBornRelaxationTime"},
+        {"upstream": "longitudinalRelaxationTime", "downstream": "longitudinalBornRelaxationTime"}
       ]
     },
     {
