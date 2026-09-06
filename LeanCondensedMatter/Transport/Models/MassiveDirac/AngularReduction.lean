@@ -53,39 +53,23 @@ open scoped Interval
       pauliGreenScalarCoefficientOfRegulator v m p 0 probeEnergy regulator := by
   simp [pauliGreenScalarCoefficientOfRegulator]
 
-@[simp] theorem pauliGreenZCoefficientOfRegulator_polar
-    (v m p θ probeEnergy regulator : ℝ) :
-    pauliGreenZCoefficientOfRegulator v m (p * Real.cos θ) (p * Real.sin θ)
-        probeEnergy regulator =
-      pauliGreenZCoefficientOfRegulator v m p 0 probeEnergy regulator := by
-  simp [pauliGreenZCoefficientOfRegulator]
-
-/-- The arbitrary-regulator x-direction coefficient carries the polar factor `cos θ`. -/
-theorem pauliGreenInPlaneCoefficientOfRegulator_polar_x
-    (v m p θ probeEnergy regulator : ℝ) :
-    pauliGreenInPlaneCoefficientOfRegulator .x
-        v m (p * Real.cos θ) (p * Real.sin θ) probeEnergy regulator =
-      ((Real.cos θ : ℝ) : ℂ) *
-        pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator := by
-  rw [pauliGreenInPlaneCoefficientOfRegulator, pauliGreenInPlaneCoefficientOfRegulator]
-  simp only [directionComponent]
-  rw [pauliGreenDenominatorOfRegulator_polar]
-  push_cast
-  ring
-
-/-- The arbitrary-regulator y-direction coefficient carries the polar factor `sin θ`, with the same
-radial amplitude as the x-direction coefficient on the positive x axis. -/
-theorem pauliGreenInPlaneCoefficientOfRegulator_polar_y
-    (v m p θ probeEnergy regulator : ℝ) :
-    pauliGreenInPlaneCoefficientOfRegulator .y
-        v m (p * Real.cos θ) (p * Real.sin θ) probeEnergy regulator =
-      ((Real.sin θ : ℝ) : ℂ) *
-        pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator := by
-  rw [pauliGreenInPlaneCoefficientOfRegulator, pauliGreenInPlaneCoefficientOfRegulator]
-  simp only [directionComponent]
-  rw [pauliGreenDenominatorOfRegulator_polar]
-  push_cast
-  ring
+/-- Polar-angle dependence of every Pauli-vector Green coefficient. The `y` channel shares the
+positive-x-axis radial amplitude of the `x` channel, while the `z` channel is angle independent. -/
+theorem pauliGreenPauliCoefficientOfRegulator_polar
+    (axis : PauliAxis) (v m p θ probeEnergy regulator : ℝ) :
+    pauliGreenPauliCoefficientOfRegulator
+        axis v m (p * Real.cos θ) (p * Real.sin θ) probeEnergy regulator =
+      match axis with
+      | .x => ((Real.cos θ : ℝ) : ℂ) *
+          pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator
+      | .y => ((Real.sin θ : ℝ) : ℂ) *
+          pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator
+      | .z => pauliGreenPauliCoefficientOfRegulator .z v m p 0 probeEnergy regulator := by
+  cases axis <;>
+    simp [pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
+      pauliGreenDenominatorOfRegulator_polar] <;>
+    push_cast <;>
+    ring
 
 /-- Exact polar-angle decomposition of the arbitrary-regulator clean Green operator. -/
 theorem pauliGreenOperatorOfRegulator_polar_eq
@@ -94,17 +78,17 @@ theorem pauliGreenOperatorOfRegulator_polar_eq
         probeEnergy regulator =
       inversionSymmetrizedPauliGreenOperatorOfRegulator v m p 0 probeEnergy regulator +
         (((Real.cos θ : ℝ) : ℂ) •
-          (pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+          (pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
             matrixOperator sigmaX)) +
         (((Real.sin θ : ℝ) : ℂ) •
-          (pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+          (pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
             matrixOperator sigmaY)) := by
   rw [inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels]
   rw [pauliGreenOperatorOfRegulator]
   rw [pauliGreenScalarCoefficientOfRegulator_polar,
-    pauliGreenInPlaneCoefficientOfRegulator_polar_x,
-    pauliGreenInPlaneCoefficientOfRegulator_polar_y,
-    pauliGreenZCoefficientOfRegulator_polar]
+    pauliGreenPauliCoefficientOfRegulator_polar .x,
+    pauliGreenPauliCoefficientOfRegulator_polar .y,
+    pauliGreenPauliCoefficientOfRegulator_polar .z]
   module
 
 /-- Full polar-angle integral of the clean Green operator at fixed radial momentum and arbitrary
@@ -125,10 +109,10 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
   let even : DiracHilbert →L[ℂ] DiracHilbert :=
     inversionSymmetrizedPauliGreenOperatorOfRegulator v m p 0 probeEnergy regulator
   let xPart : DiracHilbert →L[ℂ] DiracHilbert :=
-    pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+    pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
       matrixOperator sigmaX
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
-    pauliGreenInPlaneCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
+    pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
       matrixOperator sigmaY
   have hcos : Continuous (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ)) :=
     Complex.continuous_ofReal.comp Real.continuous_cos
