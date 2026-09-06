@@ -28,10 +28,10 @@ written as the principal logarithm evaluated directly on the negative real axis,
 approach would be lost. -/
 noncomputable def finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
     (side : SpectralSide) (v m probeEnergy pMax : ℝ) : ℂ :=
-  ((-(((2 : ℝ) * v ^ 2)⁻¹) *
+  ⟨-(((2 : ℝ) * v ^ 2)⁻¹) *
       (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
-        Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖) : ℝ) : ℂ) +
-    ((-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi) : ℝ) : ℂ) * Complex.I
+        Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖),
+    -(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)⟩
 
 @[simp]
 theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re
@@ -41,7 +41,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re
       -(((2 : ℝ) * v ^ 2)⁻¹) *
         (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
           Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖) := by
-  simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
+  rfl
 
 @[simp]
 theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im
@@ -49,7 +49,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im
     (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
       side v m probeEnergy pMax).im =
       -(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi) := by
-  simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
+  rfl
 
 /-- At fixed finite cutoff beyond the on-shell circle, the full complex denominator integral has a
 side-indexed metallic `η → 0⁺` boundary value. This is the complex owner of the paired finite real
@@ -77,8 +77,17 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
       (him.ofReal.mul
         (tendsto_const_nhds : Tendsto (fun _ : ℝ => Complex.I)
           (nhdsWithin 0 (Set.Ioi 0)) (nhds Complex.I)))
-  simpa [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
-    Complex.re_add_im] using hcomplex
+  have htarget :
+      (((-(((2 : ℝ) * v ^ 2)⁻¹) *
+          (Real.log ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
+            Real.log ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖) : ℝ) : ℂ) +
+        ((-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi) : ℝ) : ℂ) * Complex.I =
+      finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
+        side v m probeEnergy pMax := by
+    apply Complex.ext <;>
+      simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
+  rw [← htarget]
+  simpa only [Complex.re_add_im] using hcomplex
 
 /-- The full `σ_z` Born radial integral converges as a complex number to `m` times the common
 complex denominator boundary value. -/
@@ -132,8 +141,13 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
         ContinuousAt (fun broadening : ℝ => spectralParameter side probeEnergy broadening) 0 := by
       unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
       fun_prop
-    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using
+    have hlimit :
+        Tendsto
+          (fun broadening : ℝ => spectralParameter side probeEnergy broadening)
+          (nhdsWithin 0 (Set.Ioi 0))
+          (nhds (spectralParameter side probeEnergy 0)) :=
       hcontinuous.tendsto.mono_left inf_le_left
+    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using hlimit
   refine (hspectral.mul hJ).congr' ?_
   filter_upwards with broadening
   rw [finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral]
