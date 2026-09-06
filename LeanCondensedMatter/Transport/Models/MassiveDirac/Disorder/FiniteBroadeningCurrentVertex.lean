@@ -48,18 +48,18 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
       (finiteCutoffContinuumBornDysonScalarCoefficient
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonZCoefficient
+      (finiteCutoffContinuumBornDysonPauliCoefficient .z
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonZCoefficient
+      (finiteCutoffContinuumBornDysonPauliCoefficient .z
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax))
     (pauliRungAngularYCoefficient
       (finiteCutoffContinuumBornDysonScalarCoefficient
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
       (finiteCutoffContinuumBornDysonScalarCoefficient
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonZCoefficient
+      (finiteCutoffContinuumBornDysonPauliCoefficient .z
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonZCoefficient
+      (finiteCutoffContinuumBornDysonPauliCoefficient .z
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax))
     i j
 
@@ -96,13 +96,13 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let aA := finiteCutoffContinuumBornDysonScalarCoefficient
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bR := finiteCutoffContinuumBornDysonXCoefficient
+  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bA := finiteCutoffContinuumBornDysonXCoefficient
+  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dR := finiteCutoffContinuumBornDysonZCoefficient
+  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dA := finiteCutoffContinuumBornDysonZCoefficient
+  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   unfold finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
   have hpolar :
