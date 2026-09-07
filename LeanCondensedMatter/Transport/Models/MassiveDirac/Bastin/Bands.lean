@@ -14,10 +14,9 @@ expression into the four ordered band blocks
 (--), (-+), (+-), (++).
 ```
 
-The ordered current blocks and their band-pair contributions remain direction-indexed. The concrete
-Hall trace specializes them to `(x,y)` only when assembling the diagonal and interband sectors. In
-particular, no finite-broadening diagonal term is discarded. The two interband traces are exactly
-the current-current blocks connected to `e²` times the clean Berry curvature downstream.
+The ordered current blocks, the projector-expanded kernel, and their band-pair contributions remain
+direction-indexed. The concrete Hall trace specializes them to `(x,y)` only when assembling the
+diagonal and interband sectors. In particular, no finite-broadening diagonal term is discarded.
 
 This decomposition is pointwise in probe energy and broadening. Occupation integration and the
 zero-broadening limit remain downstream steps.
@@ -125,15 +124,15 @@ noncomputable def interbandBastinTraceContribution
   bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
     bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening
 
-/-- The full projector Bastin Hall trace is the sum over all four ordered band pairs. -/
+/-- The full direction-indexed projector Bastin trace is the sum over all four ordered band pairs. -/
 theorem projectorBastinTraceIntegrand_eq_four_band_blocks
-    (e v m px py probeEnergy broadening : ℝ)
+    (μ ν : Direction2) (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) :
-    projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
-      bastinBandPairContribution .x .y .lower .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .upper .upper e v m px py probeEnergy broadening := by
+    projectorBastinTraceIntegrand μ ν e v m px py probeEnergy broadening =
+      bastinBandPairContribution μ ν .lower .lower e v m px py probeEnergy broadening +
+      bastinBandPairContribution μ ν .lower .upper e v m px py probeEnergy broadening +
+      bastinBandPairContribution μ ν .upper .lower e v m px py probeEnergy broadening +
+      bastinBandPairContribution μ ν .upper .upper e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   rw [projectorResolvent_sq
@@ -149,14 +148,15 @@ theorem projectorBastinTraceIntegrand_eq_four_band_blocks
   simp only [map_add, map_sub, map_smul]
   ring_nf
 
-/-- Exact finite-broadening separation into diagonal and interband sectors. -/
+/-- Exact finite-broadening Hall separation into diagonal and interband sectors. -/
 theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
     (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) :
-    projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
+    projectorBastinTraceIntegrand .x .y e v m px py probeEnergy broadening =
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
-  rw [projectorBastinTraceIntegrand_eq_four_band_blocks e v m px py probeEnergy broadening hE]
+  rw [projectorBastinTraceIntegrand_eq_four_band_blocks
+    .x .y e v m px py probeEnergy broadening hE]
   unfold diagonalBastinTraceContribution interbandBastinTraceContribution
   ring
 
@@ -171,7 +171,7 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
   rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
-    e v m px py probeEnergy broadening hE (ne_of_gt hbroadening)]
+    .x .y e v m px py probeEnergy broadening hE (ne_of_gt hbroadening)]
   exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
     e v m px py probeEnergy broadening hE
 
