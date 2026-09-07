@@ -75,52 +75,16 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary] using
     tendsto_inPlaneRotationCoefficient hX hY i j
 
-/-- Fixed-`p` zero-broadening boundary of output/input entry `(i,j)` of the RA angular rung matrix. -/
-def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficientZeroBroadeningBoundary
-    (i j : Direction2)
-    (v m p probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((2 * Real.pi : ℝ) : ℂ)) *
-    (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
-      v m p probeEnergy disorderStrength hbar pMax)⁻¹ *
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-      i j v m probeEnergy disorderStrength hbar pMax
-
-/-- At fixed radial momentum, every angular rung entry converges whenever the boundary RA
-denominator product is nonzero. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_broadening_zero
-    (i j : Direction2)
-    (v m p probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
-    (hden : finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
-      v m p probeEnergy disorderStrength hbar pMax ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          i j v m p probeEnergy broadening disorderStrength hbar pMax)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficientZeroBroadeningBoundary
-          i j v m p probeEnergy disorderStrength hbar pMax)) := by
-  have hdenLimit :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero
-      v m p probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have hnum :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero
-      i j v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have hclosed :=
-    ((hdenLimit.inv₀ hden).const_mul (((2 * Real.pi : ℝ) : ℂ))).mul hnum
-  apply Tendsto.congr' ?_ hclosed
-  filter_upwards with broadening
-  rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
-
 /-- Fixed-`p` zero-broadening boundary of normalized output/input current-rung entry `(i,j)`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
     (i j : Direction2)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficientZeroBroadeningBoundary
-      i j v m p probeEnergy disorderStrength hbar pMax
+    ((((2 * Real.pi : ℝ) : ℂ)) *
+      (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
+        v m p probeEnergy disorderStrength hbar pMax)⁻¹ *
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
+        i j v m probeEnergy disorderStrength hbar pMax)
 
 /-- Every normalized radial current-rung entry has the corresponding fixed-`p` positive-broadening
 boundary. -/
@@ -139,9 +103,29 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialI
       (nhds
         (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
           i j v m p probeEnergy disorderStrength hbar pMax)) := by
-  have hcoefficient :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_broadening_zero
-      i j v m p probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff hden
+  have hdenLimit :=
+    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero
+      v m p probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+  have hnum :=
+    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero
+      i j v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+  have hclosed :=
+    ((hdenLimit.inv₀ hden).const_mul (((2 * Real.pi : ℝ) : ℂ))).mul hnum
+  have hcoefficient :
+      Tendsto
+        (fun broadening : ℝ =>
+          finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+            i j v m p probeEnergy broadening disorderStrength hbar pMax)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          ((((2 * Real.pi : ℝ) : ℂ)) *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
+              v m p probeEnergy disorderStrength hbar pMax)⁻¹ *
+            finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
+              i j v m probeEnergy disorderStrength hbar pMax)) := by
+    apply Tendsto.congr' ?_ hclosed
+    filter_upwards with broadening
+    rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary] using
     hcoefficient.const_mul
