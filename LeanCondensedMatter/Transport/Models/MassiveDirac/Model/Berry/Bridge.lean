@@ -32,19 +32,20 @@ def forceMatrixBerryCurvatureComponent
     interbandEnergyGap band v m px py ^ 2
 
 /-- Exchanging the two in-plane directions reverses the oriented Berry-curvature component. -/
-@[simp] theorem forceMatrixBerryCurvatureComponent_swap
+theorem forceMatrixBerryCurvatureComponent_swap
     (μ ν : Direction2) (band : Band) (v m px py : ℝ) :
     forceMatrixBerryCurvatureComponent ν μ band v m px py =
       -forceMatrixBerryCurvatureComponent μ ν band v m px py := by
   unfold forceMatrixBerryCurvatureComponent
-  rw [forceMatrixAntisymmetricNumerator_swap]
-  simp
+  rw [forceMatrixAntisymmetricNumerator_swap, Complex.neg_im]
+  ring
 
 /-- The oriented Berry-curvature component vanishes on equal directions. -/
 @[simp] theorem forceMatrixBerryCurvatureComponent_self
     (μ : Direction2) (band : Band) (v m px py : ℝ) :
     forceMatrixBerryCurvatureComponent μ μ band v m px py = 0 := by
-  simp [forceMatrixBerryCurvatureComponent]
+  rw [forceMatrixBerryCurvatureComponent, forceMatrixAntisymmetricNumerator_self]
+  simp
 
 /-- Two-dimensional scalar Berry curvature is the positively oriented `(x,y)` component. -/
 def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
