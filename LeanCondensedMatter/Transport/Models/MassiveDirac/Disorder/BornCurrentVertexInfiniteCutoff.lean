@@ -9,11 +9,11 @@ set_option linter.style.header false
 # Infinite-cutoff Born retarded-advanced current rung
 
 This module uses the model-independent radial quadratic Lorentzian calculus to take the
-`pMax → +∞` Born current-rung limit.  The shared real radial denominator integral is evaluated
+`pMax → +∞` Born current-rung limit. The shared real radial denominator integral is evaluated
 exactly by an arctangent formula, then used for both longitudinal and orientation-sensitive
 transverse current-rung coefficients.
 
-The continuum disorder is parameterized by `W(γ) = 4 γ ℏ² v²`.  In the metallic regime
+The continuum disorder is parameterized by `W(γ) = 4 γ ℏ² v²`. In the metallic regime
 `m² < ε²`, the infinite-cutoff longitudinal coefficient tends to the canonical weak-disorder rung
 coefficient, while in repository orientation `Gᴿ σₓ Gᴬ`
 
@@ -21,7 +21,7 @@ coefficient, while in repository orientation `Gᴿ σₓ Gᴬ`
 Y₁ / γ → 2 ε m / (ε² + m²).
 ```
 
-The convergent radial cutoff limit is kept distinct from the later `γ → 0⁺` limit.  This module does
+The convergent radial cutoff limit is kept distinct from the later `γ → 0⁺` limit. This module does
 not solve a new ladder equation, insert the result into Kubo–Středa, claim Ward consistency, or
 include crossed diagrams.
 -/
@@ -35,7 +35,7 @@ open QuantumTheory.Transport
 open scoped Interval
 
 /-- Finite-cutoff real radial denominator integral shared by the Born `σₓ` and `σᵧ` current-rung
-channels.  This contains the `p dp` Jacobian but no numerator or continuum prefactor. -/
+channels. This contains the `p dp` Jacobian but no numerator or continuum prefactor. -/
 private noncomputable def finiteCutoffContinuumBornRARadialIntegral
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
   ∫ p in (0 : ℝ)..pMax,
@@ -114,15 +114,16 @@ private def continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
     (continuumBornRADenominatorProduct
       v m p probeEnergy disorderStrength hbar)⁻¹
 
-/-- The real transverse current-rung kernel embeds exactly into the existing complex radial API. -/
+/-- The real transverse current-rung kernel embeds exactly into the indexed complex radial API. -/
 private theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     (continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
         v m p probeEnergy disorderStrength hbar : ℂ) =
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand
+      continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand .y
         v m p probeEnergy disorderStrength hbar := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand_eq_closed]
+  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed]
   unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
+    continuumBornRetardedAdvancedPauliXAngularNumerator
   push_cast
   ring
 
@@ -133,14 +134,14 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoe
     continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
       v m p probeEnergy disorderStrength hbar
 
-/-- The normalized finite-cutoff transverse coefficient is the integrated Green-product
-`σᵧ` coefficient multiplied by the physical current-rung prefactor. -/
+/-- The normalized finite-cutoff transverse coefficient is the indexed Green-product `.y`
+coefficient multiplied by the physical current-rung prefactor. -/
 private theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_prefactor_mul_greenProduct
     (v m probeEnergy disorderStrength hbar pMax : ℝ) :
     (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
         v m probeEnergy disorderStrength hbar pMax : ℂ) =
       (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient
+        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient .y
           v m probeEnergy disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
   rw [← Complex.ofRealLI_apply
@@ -154,7 +155,7 @@ private theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYC
           v m p probeEnergy disorderStrength hbar)) =
       (fun p : ℝ =>
         (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-          continuumBornRetardedAdvancedPauliXRadialYIntegrand
+          continuumBornRetardedAdvancedPauliXRadialIntegrand .y
             v m p probeEnergy disorderStrength hbar) by
     funext p
     rw [Complex.ofRealLI_apply,
@@ -444,7 +445,7 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficie
   exact (continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal).symm
 
-/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient.  The
+/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient. The
 limit is the canonical scalar rung coefficient already used by the fixed-cutoff transport bridge. -/
 theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorder
     (v m probeEnergy hbar : ℝ)
@@ -475,7 +476,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div
     v m probeEnergy hbar gamma hvelocity hhbar hgamma hmetal]
   field_simp [hgamma]
 
-/-- Metallic weak-disorder limit of the leading transverse one-rung coefficient.  The unscaled
+/-- Metallic weak-disorder limit of the leading transverse one-rung coefficient. The unscaled
 `σᵧ` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. -/
 theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div_gamma_weakDisorder
     (v m probeEnergy hbar : ℝ)
