@@ -110,7 +110,8 @@ theorem continuous_continuumBornRadialIntegrandOfRegulator
         ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
           v m probeEnergy regulator hregulator).mul continuous_const)
 
-private theorem continuous_continuumBornRadialGreenKernelOfRegulator
+/-- The operator-valued radial Born Green kernel is continuous away from zero regulator. -/
+theorem continuous_continuumBornRadialGreenKernelOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) := by
   rw [show continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator =
