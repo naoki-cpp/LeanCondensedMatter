@@ -52,7 +52,7 @@ def main() -> int:
             massive_dirac_public_umbrella,
             module,
             root=ROOT,
-            description="massive-Dirac model-owned public entrypoint",
+            description="massive-Dirac public entrypoint",
         )
 
     core_umbrella = TRANSPORT / "Core.lean"
@@ -189,7 +189,21 @@ def main() -> int:
             description="massive-Dirac model implementation umbrella",
         )
 
-    canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
+    massive_dirac_propagator_umbrella = massive_dirac_model_root / "Propagator.lean"
+    for module in (
+        f"{MD_PUBLIC}.Propagator.Basic",
+        f"{MD_PUBLIC}.Propagator.Symmetry",
+        f"{MD_PUBLIC}.Propagator.AngularReduction",
+    ):
+        require_import(
+            errors,
+            massive_dirac_propagator_umbrella,
+            module,
+            root=ROOT,
+            description="massive-Dirac propagator public umbrella",
+        )
+
+    canonical_propagator_path = massive_dirac_model_root / "Propagator" / "Basic.lean"
     for module in lean_imports(canonical_propagator_path):
         if module_matches_prefix(module, MD_PUBLIC) and not module_matches_prefix(module, MD_MODEL):
             errors.append(

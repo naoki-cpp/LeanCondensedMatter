@@ -42,6 +42,26 @@
       ]
     },
     {
+      "id": "massiveDiracPropagatorLayers",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Propagator"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator"
+      ],
+      "layers": [
+        {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
+        {"id": "propagatorBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic"]},
+        {"id": "propagatorSymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Symmetry"]},
+        {"id": "propagatorAngularReduction", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction"]}
+      ],
+      "edges": [
+        {"upstream": "modelOperatorSpectral", "downstream": "propagatorBasic"},
+        {"upstream": "propagatorBasic", "downstream": "propagatorSymmetry"},
+        {"upstream": "propagatorSymmetry", "downstream": "propagatorAngularReduction"}
+      ]
+    },
+    {
       "id": "massiveDiracFiniteBroadeningTransport",
       "sourceRoots": [
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Vertex",
