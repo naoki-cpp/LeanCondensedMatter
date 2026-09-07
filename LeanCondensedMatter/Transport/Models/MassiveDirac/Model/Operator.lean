@@ -11,10 +11,10 @@ set_option linter.style.header false
 
 The clean massive-Dirac model is defined first by explicit `2 × 2` matrices. This module owns the
 model-level passage from those matrices to bounded operators on the canonical two-level Hilbert
-space. It supplies the bounded Hamiltonian, velocity and current vertices, their self-adjointness,
-the in-plane current-combination API, and the `BoundedFreeSystem` adapter used by generic response
-theory. Generic finite-dimensional matrix/operator trace transport lives upstream in
-`Analysis.Operator.FiniteTrace`.
+space. It supplies the bounded Hamiltonian, velocity and current vertices, the shared polar Pauli
+representation used by rotationally symmetric propagators, their self-adjointness, the in-plane
+current-combination API, and the `BoundedFreeSystem` adapter used by generic response theory. Generic
+finite-dimensional matrix/operator trace transport lives upstream in `Analysis.Operator.FiniteTrace`.
 
 No Kubo–Bastin or Středa kernel is defined here. Response-specific trace identities and energy
 representations remain downstream of this model realization.
@@ -32,6 +32,38 @@ abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
   (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) M
+
+/-- Polar Pauli matrix with a single radial in-plane coefficient. -/
+def polarPauliMatrix (a b d : ℂ) (θ : ℝ) : Matrix2 :=
+  a • (1 : Matrix2) +
+    (((Real.cos θ : ℝ) : ℂ) * b) • sigmaX +
+    (((Real.sin θ : ℝ) : ℂ) * b) • sigmaY +
+    d • sigmaZ
+
+/-- Bounded-operator realization of `polarPauliMatrix`. -/
+noncomputable def polarPauliOperator (a b d : ℂ) (θ : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  matrixOperator (polarPauliMatrix a b d θ)
+
+/-- A Cartesian Pauli operator with one common denominator, angle-independent scalar and mass
+numerators, and isotropic linear in-plane numerator reduces to `polarPauliOperator` after the polar
+substitution `pₓ = p cos θ`, `pᵧ = p sin θ`. -/
+theorem commonDenominatorPauliOperator_polar_eq
+    (denominator energy mass : ℂ) (v p θ : ℝ) :
+    matrixOperator
+        ((denominator⁻¹ * energy) • (1 : Matrix2) +
+          (denominator⁻¹ * ((v * (p * Real.cos θ) : ℝ) : ℂ)) • sigmaX +
+          (denominator⁻¹ * ((v * (p * Real.sin θ) : ℝ) : ℂ)) • sigmaY +
+          (denominator⁻¹ * mass) • sigmaZ) =
+      polarPauliOperator
+        (denominator⁻¹ * energy)
+        (denominator⁻¹ * ((v * p : ℝ) : ℂ))
+        (denominator⁻¹ * mass) θ := by
+  unfold polarPauliOperator
+  apply congrArg matrixOperator
+  unfold polarPauliMatrix
+  push_cast
+  module
 
 /-- The clean massive-Dirac Hamiltonian as a bounded operator. -/
 noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=

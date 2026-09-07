@@ -7,24 +7,18 @@ set_option linter.style.header false
 /-!
 # Shared polar Pauli rung algebra
 
-This file owns the model-specific `2 × 2` Pauli algebra common to the clean, Born-dressed, and
-finite-broadening Born-Dyson retarded-advanced current rungs.  A rotationally symmetric massive-
-Dirac propagator at fixed radial momentum has the polar form
-
-```text
-a I + b cos θ σₓ + b sin θ σᵧ + d σ_z.
-```
-
-For repository ordering `Gᴿ Γ Gᴬ`, the full-angle action on an arbitrary in-plane vertex
-`Γ = α σₓ + β σᵧ` closes as
+This file owns the model-specific `2 × 2` Pauli rung algebra common to the clean, Born-dressed, and
+finite-broadening Born-Dyson retarded-advanced current rungs. The shared polar Pauli matrix/operator
+representation itself is owned upstream by `Model.Operator`. For repository ordering `Gᴿ Γ Gᴬ`, the
+full-angle action on an arbitrary in-plane vertex `Γ = α σₓ + β σᵧ` closes as
 
 ```text
 (α, β) ↦ (X α - Y β, Y α + X β),
 ```
 
-where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients.  Concrete propagators
+where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients. Concrete propagators
 remain responsible for supplying those coefficients and for proving that their polar form matches
-this shared algebra.
+the shared model representation.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -34,38 +28,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-/-- Polar Pauli matrix with a single radial in-plane coefficient. -/
-def polarPauliMatrix (a b d : ℂ) (θ : ℝ) : Matrix2 :=
-  a • (1 : Matrix2) +
-    (((Real.cos θ : ℝ) : ℂ) * b) • sigmaX +
-    (((Real.sin θ : ℝ) : ℂ) * b) • sigmaY +
-    d • sigmaZ
-
-/-- Bounded-operator realization of `polarPauliMatrix`. -/
-noncomputable def polarPauliOperator (a b d : ℂ) (θ : ℝ) :
-    DiracHilbert →L[ℂ] DiracHilbert :=
-  matrixOperator (polarPauliMatrix a b d θ)
-
-/-- A Cartesian Pauli operator with one common denominator, angle-independent scalar and mass
-numerators, and isotropic linear in-plane numerator reduces to `polarPauliOperator` after the polar
-substitution `pₓ = p cos θ`, `pᵧ = p sin θ`. -/
-theorem commonDenominatorPauliOperator_polar_eq
-    (denominator energy mass : ℂ) (v p θ : ℝ) :
-    matrixOperator
-        ((denominator⁻¹ * energy) • (1 : Matrix2) +
-          (denominator⁻¹ * ((v * (p * Real.cos θ) : ℝ) : ℂ)) • sigmaX +
-          (denominator⁻¹ * ((v * (p * Real.sin θ) : ℝ) : ℂ)) • sigmaY +
-          (denominator⁻¹ * mass) • sigmaZ) =
-      polarPauliOperator
-        (denominator⁻¹ * energy)
-        (denominator⁻¹ * ((v * p : ℝ) : ℂ))
-        (denominator⁻¹ * mass) θ := by
-  unfold polarPauliOperator
-  apply congrArg matrixOperator
-  unfold polarPauliMatrix
-  push_cast
-  module
 
 /-- Full-angle longitudinal coefficient of a retarded-advanced polar Pauli rung. -/
 def pauliRungAngularXCoefficient (aR aA dR dA : ℂ) : ℂ :=

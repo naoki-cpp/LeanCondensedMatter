@@ -6,7 +6,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
@@ -32,14 +32,14 @@ the weak-disorder propagator and owns its retarded-advanced radial denominator p
 finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
 effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 
-The finite-external-broadening Born-Dyson propagator has a shared Cartesian-to-polar bridge before
-its use in the current rung. `FiniteBroadeningCurrentVertex` owns the direction-indexed in-plane rung,
-its common RA denominator form, radial normalization, solved coefficient pair, and the determinant
-condition that licenses interpreting that pair as the actual ladder fixed point. Its fixed-radial-
-momentum positive-broadening boundary is exposed separately, under the explicit nonzero boundary
-denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses dominated
-convergence. At fixed positive disorder, an explicit real-renormalization bound below one makes the
-boundary RA denominator nonzero and discharges the compact radial regularity needed for the
+`FiniteBroadeningBornPropagator` also owns the Cartesian-to-polar representation used by the finite-
+external-broadening current rung. `FiniteBroadeningCurrentVertex` owns the direction-indexed in-plane
+rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
+determinant condition that licenses interpreting that pair as the actual ladder fixed point. Its
+fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero
+boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses
+dominated convergence. At fixed positive disorder, an explicit real-renormalization bound below one
+makes the boundary RA denominator nonzero and discharges the compact radial regularity needed for the
 integrated limit. The resulting integrated-rung boundary is then propagated through the canonical
 two-component ladder under an explicit nonzero boundary determinant. For the zero-external-
 broadening Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal
