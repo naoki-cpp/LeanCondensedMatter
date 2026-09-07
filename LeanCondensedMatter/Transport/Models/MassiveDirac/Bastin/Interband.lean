@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Core.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic
@@ -42,26 +43,11 @@ theorem bastinBandBlockTrace_swap_opposite_source
   rw [bastinBandBlockTrace_swap_eq_currentBandBlockTrace]
   cases band <;> rfl
 
-/-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
+/-- Raw swap difference of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℂ :=
-  bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
-    bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
-
-/-- Exchanging the two current directions reverses the sign of the interband Bastin block
-difference. -/
-theorem bastinInterbandBlockDifference_swap
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    bastinInterbandBlockDifference ν μ band e v m px py =
-      -bastinInterbandBlockDifference μ ν band e v m px py := by
-  unfold bastinInterbandBlockDifference
-  ring
-
-/-- The antisymmetric interband Bastin block vanishes on equal current directions. -/
-theorem bastinInterbandBlockDifference_self
-    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
-    bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
-  simp [bastinInterbandBlockDifference]
+  swapDifference
+    (fun μ ν => bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py) μ ν
 
 /-- The canonical antisymmetric Bastin block is the difference of the two opposite interband
 current traces for the same ordered direction pair. -/
@@ -70,7 +56,7 @@ theorem bastinInterbandBlockDifference_eq_currentTraceDifference
     bastinInterbandBlockDifference μ ν band e v m px py =
       interbandCurrentTrace μ ν (oppositeBand band) e v m px py -
         interbandCurrentTrace μ ν band e v m px py := by
-  unfold bastinInterbandBlockDifference
+  unfold bastinInterbandBlockDifference swapDifference
   rw [bastinBandBlockTrace_opposite_source,
     bastinBandBlockTrace_swap_opposite_source]
 
@@ -82,7 +68,7 @@ theorem bastinInterbandBlockDifference_eq_neg_currentTraceAntisymmetrization
       -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
   rw [bastinInterbandBlockDifference_eq_currentTraceDifference,
     interbandCurrentTrace_oppositeBand_eq_swap]
-  unfold interbandCurrentTraceAntisymmetrization
+  unfold interbandCurrentTraceAntisymmetrization swapDifference
   ring
 
 /-- At a target-band pole, the normalized imaginary antisymmetric Bastin current block is minus the
