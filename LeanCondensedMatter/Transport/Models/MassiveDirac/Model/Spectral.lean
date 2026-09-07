@@ -34,7 +34,7 @@ involution, and the two spectral projectors are its `±1` eigenspace projectors.
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
   (((energy v m px py : ℝ) : ℂ)⁻¹) • hamiltonian v m px py
 
-/-- Away from the Dirac degeneracy, the normalized Hamiltonian squares to the identity. -/
+/-- Away from the band degeneracy, the normalized Hamiltonian squares to the identity. -/
 private theorem normalizedHamiltonian_mul_self
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
