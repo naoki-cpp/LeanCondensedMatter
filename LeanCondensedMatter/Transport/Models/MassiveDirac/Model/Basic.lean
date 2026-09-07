@@ -123,7 +123,7 @@ instance : Fintype Band where
     cases band <;> simp
 
 /-- A finite sum over the massive-Dirac bands is the lower-band term plus the upper-band term. -/
-@[simp] theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
+theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
     ∑ band : Band, f band = f .lower + f .upper := by
   change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
   simp
