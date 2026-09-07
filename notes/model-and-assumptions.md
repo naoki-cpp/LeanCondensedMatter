@@ -13,9 +13,11 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
   `QuantumTheory.pure ψ` for some normalized representative `ψ`.
 - An observable is a bounded self-adjoint operator `QuantumTheory.Observable H`.
 - `QuantumTheory.expValue` is the vector-representative expectation value.
-- Unit-modulus global phases leave `QuantumTheory.pure ψ` unchanged, so phase-related representatives
-  map to equal physical `PureState` values. A projective/ray quotient and the converse classification
-  of equal rank-one projectors by global phase are not yet part of the API.
+- Unit-modulus global phases leave `QuantumTheory.pure ψ` unchanged, and
+  `QuantumTheory.pure_eq_iff_exists_phase` proves that two normalized representatives define the
+  same rank-one density operator exactly when they differ by such a phase. The corresponding result
+  for physical pure states is `PureState.ofStateVector_eq_iff_exists_phase`. A separate
+  projective/ray quotient presentation is not part of the current API.
 
 ### Density states
 
