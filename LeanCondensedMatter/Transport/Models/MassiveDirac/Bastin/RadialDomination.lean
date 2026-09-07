@@ -11,7 +11,7 @@ Interchanging the positive-zero-broadening limit with the finite radial momentum
 model-specific momentum-independent lower bound on the interband gap from the mass magnitude.
 
 On the radial axis `pᵧ = 0`, the canonical opposite-band current block is purely imaginary. This file
-records that input only as local proof data for the radial Bastin blocks consumed by the uniform
+records that input only as local proof data for the radial Bastin block consumed by the uniform
 spectator and dominated-convergence bounds.
 -/
 
@@ -67,17 +67,6 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
   have h := currentBandBlockTrace_interband_radial (oppositeBand band) e v m p hE
   simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at h
   rw [h]
-  push_cast
-  ring
-
-/-- The radial `y-x` block has the opposite imaginary sign. -/
-theorem bastinYXBandBlockTrace_opposite_source_radial
-    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    bastinBandBlockTrace .y .x (oppositeBand band) band e v m p 0 =
-      -((((e ^ 2 : ℝ) : ℂ)) *
-        (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I) := by
-  rw [bastinBandBlockTrace_swap_eq_currentBandBlockTrace,
-    currentBandBlockTrace_interband_radial band e v m p hE]
   push_cast
   ring
 
