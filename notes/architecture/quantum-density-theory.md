@@ -52,10 +52,11 @@ observableExpValue A ψ : ℝ
 ```
 
 The API proves exact complex recovery and global-phase invariance. The density layer additionally
-proves that `pure ψ` is unchanged by multiplication of `ψ` by a unit-modulus scalar, and
-`PureState.ofStateVector` therefore maps global-phase-related representatives to the same physical
-pure state. The converse phase-classification theorem and an optional projective/ray presentation are
-separate follow-up work.
+proves that `pure ψ` is unchanged by multiplication of `ψ` by a unit-modulus scalar and proves the
+converse: two normalized representatives define the same rank-one density operator exactly when
+they differ by a unit-modulus global phase. The same equivalence is exposed for
+`PureState.ofStateVector`. A projective/ray presentation remains optional because the density-backed
+`PureState` already has the desired physical equality semantics.
 
 ## Mixed-state expectations
 
@@ -184,8 +185,8 @@ not naturally expressed by merely compiling the library.
 
 ## Scope boundaries
 
-The current API does not yet provide the converse classification of equal rank-one representatives by
-a unit complex phase, a projective/ray pure-state presentation, a general continuous-outcome POVM
-theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint trace-class operators, unbounded
-observables in the bounded core, or thermodynamic limits. Those extensions should build on the
-canonical state and expectation APIs rather than introduce parallel public state types.
+The current API does not yet provide a projective/ray pure-state presentation, a general
+continuous-outcome POVM theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint
+trace-class operators, unbounded observables in the bounded core, or thermodynamic limits. Those
+extensions should build on the canonical state and expectation APIs rather than introduce parallel
+public state types.
