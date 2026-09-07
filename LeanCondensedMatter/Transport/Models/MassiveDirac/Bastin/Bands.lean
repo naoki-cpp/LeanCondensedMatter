@@ -6,13 +6,9 @@ set_option linter.style.header false
 # Massive-Dirac Bastin band-block decomposition
 
 The exact finite-broadening Bastin trace from `MassiveDiracBastinBerry` is already written with the
-gauge-free two-band projector resolvent. The projector/resolvent algebra and ordered current band
+gauge-free finite-band projector resolvent. The projector/resolvent algebra and ordered current band
 blocks are owned by `MassiveDirac/Model/OperatorSpectral`; this file starts from that spectral API and
-expands the Bastin expression into the four ordered band blocks
-
-```text
-(--), (-+), (+-), (++).
-```
+expands the Bastin expression as a finite sum over ordered band pairs.
 
 The Bastin band-pair contributions remain direction-indexed. The concrete Hall trace specializes
 them to `(x,y)` only when assembling the diagonal and interband sectors. In particular, no
@@ -109,24 +105,23 @@ noncomputable def bastinBandPairContribution
 /-- Diagonal/intraband part of the finite-broadening projector Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  bastinBandPairContribution .x .y .lower .lower e v m px py probeEnergy broadening +
-    bastinBandPairContribution .x .y .upper .upper e v m px py probeEnergy broadening
+  ∑ band : Band,
+    bastinBandPairContribution .x .y band band e v m px py probeEnergy broadening
 
 /-- Interband part of the finite-broadening projector Hall trace. -/
 noncomputable def interbandBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
-    bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening
+  ∑ band : Band,
+    bastinBandPairContribution .x .y band (oppositeBand band)
+      e v m px py probeEnergy broadening
 
-/-- The full projector Bastin Hall trace is the sum over all four ordered band pairs. -/
-theorem projectorBastinTraceIntegrand_eq_four_band_blocks
+/-- The full projector Bastin Hall trace is the finite sum over all ordered band pairs. -/
+theorem projectorBastinTraceIntegrand_eq_band_sum
     (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) :
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
-      bastinBandPairContribution .x .y .lower .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .x .y .upper .upper e v m px py probeEnergy broadening := by
+      ∑ source : Band, ∑ target : Band,
+        bastinBandPairContribution .x .y source target e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   rw [projectorResolvent_sq
@@ -138,6 +133,7 @@ theorem projectorBastinTraceIntegrand_eq_four_band_blocks
   rw [projectorResolvent_eq_coefficients
     (advancedSpectralParameter probeEnergy broadening) v m px py]
   unfold bastinBandPairContribution spectralDifferenceCoefficient bastinBandBlockTrace
+  simp only [sum_band]
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul]
   ring_nf
@@ -149,8 +145,9 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
-  rw [projectorBastinTraceIntegrand_eq_four_band_blocks e v m px py probeEnergy broadening hE]
-  unfold diagonalBastinTraceContribution interbandBastinTraceContribution
+  rw [projectorBastinTraceIntegrand_eq_band_sum e v m px py probeEnergy broadening hE]
+  simp only [sum_band, diagonalBastinTraceContribution, interbandBastinTraceContribution,
+    oppositeBand_lower, oppositeBand_upper]
   ring
 
 /-- Combining the generic Bastin bridge with the band decomposition gives the same diagonal plus
