@@ -101,15 +101,14 @@ theorem continuousAt_projectorResolventCoefficient
   unfold projectorResolventCoefficient
   exact (continuousAt_id.sub continuousAt_const).inv₀ hden
 
-/-- Gauge-free two-band spectral candidate for the resolvent of the massive-Dirac Hamiltonian. -/
+/-- Gauge-free finite-band spectral candidate for the resolvent of the massive-Dirac Hamiltonian. -/
 noncomputable def projectorResolvent
     (z : ℂ) (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  (z - ((bandEnergy .lower v m px py : ℝ) : ℂ))⁻¹ •
-      bandProjectorOperator .lower v m px py +
-    (z - ((bandEnergy .upper v m px py : ℝ) : ℂ))⁻¹ •
-      bandProjectorOperator .upper v m px py
+  ∑ band : Band,
+    projectorResolventCoefficient z band v m px py •
+      bandProjectorOperator band v m px py
 
-/-- The projector resolvent written using the named scalar band coefficients. -/
+/-- The finite-band projector resolvent expanded into its lower- and upper-band terms. -/
 theorem projectorResolvent_eq_coefficients
     (z : ℂ) (v m px py : ℝ) :
     projectorResolvent z v m px py =
@@ -117,7 +116,7 @@ theorem projectorResolvent_eq_coefficients
           bandProjectorOperator .lower v m px py +
         projectorResolventCoefficient z .upper v m px py •
           bandProjectorOperator .upper v m px py := by
-  rfl
+  simp [projectorResolvent]
 
 /-- Squaring the two-band projector resolvent squares only its scalar spectral coefficients. -/
 theorem projectorResolvent_sq
@@ -147,12 +146,12 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
     (hupper : z - ((bandEnergy .upper v m px py : ℝ) : ℂ) ≠ 0) :
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
         projectorResolvent z v m px py = 1 := by
-  rw [projectorResolvent, mul_add]
+  rw [projectorResolvent_eq_coefficients, mul_add]
   rw [mul_smul_comm, mul_smul_comm]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .lower v m px py hE]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .upper v m px py hE]
   rw [smul_smul, smul_smul]
-  simp only [inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
+  simp only [projectorResolventCoefficient, inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
   exact bandProjectorOperator_lower_add_upper v m px py
 
 /-- The regulated massive-Dirac resolvent equals the gauge-free two-projector expansion for any
