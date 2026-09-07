@@ -23,6 +23,10 @@ quotient by global phase; phase invariance is expressed by the theorems below. -
 def State (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
+/-- Explicit name for the normalized vector representatives of pure quantum states.
+`State` remains the existing compatibility name while representative-dependent APIs migrate. -/
+abbrev StateVector (H : Type*) [NormedAddCommGroup H] := State H
+
 /-- **Observable (definition).** An observable is a self-adjoint bounded linear operator
 on the state space. Self-adjointness is what makes `expValue_im_eq_zero` below hold; it is
 not an independent postulate but the defining property that makes an operator eligible to
