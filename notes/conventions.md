@@ -7,14 +7,22 @@ Lean/Mathlib style and project-wide conventions.
 - **Follow Mathlib's naming conventions.** `UpperCamelCase` for types, structures, and `Prop`-valued classes/predicates; `lowerCamelCase` for definitions; `snake_case` theorem names that describe the conclusion, with `_of_` introducing hypotheses.
 - **Declarations live in the namespace of their subject.** General operator facts under the relevant Mathlib namespace (e.g. `ContinuousLinearMap`); physics-level content under `QuantumTheory` and its subnamespaces.
 - **Parallel generalizations mirror the original's names.** An infinite-dimensional (or otherwise generalized) counterpart keeps the finite-dimensional declaration's name inside a distinguishing subnamespace, so the correspondence is visible from the name alone.
-- **Physics names track the dictionary** in `model-and-assumptions.md` (see `PROJECT.md`).
+- **Physics names track the dictionary** in `model-and-assumptions.md`.
 
 ## Project structure
 
 - **One directory per track:** `Analysis/` for general mathematical infrastructure (Track C), `Combinatorics/` for Track B, `QuantumTheory/` for the physics postulates and what is built on them (Track A), `SecondQuantization/` for Track D (Fock space, creation/annihilation, CCR/CAR — kept separate from `QuantumTheory/` since second quantization is its own construction, not an extension of the axiomatic single-particle postulates). Physics files import analysis files, never the reverse.
-- **Lemmas live as far upstream as they can be stated.** A fact about a general structure belongs in the infrastructure file, not in the physics file that first needed it.
-- **Create parallel files only for semantically distinct APIs.** When a generalization subsumes an older construction, move the canonical declaration upstream and migrate callers instead of retaining a specialized copy merely for compatibility.
+- **Semantic responsibility determines ownership and file boundaries.** Move reusable facts to the earliest layer that owns their meaning; split modules that mix distinct mathematical, model, response, or observable responsibilities; collapse strict one-consumer chains whose intermediate modules only route proof stages.
+- **Use general declarations directly.** When a domain-specific declaration is only a parameter specialization of a more general result, use the general declaration at the consumer. If reusable infrastructure is genuinely missing, add it at the most general layer that can state it rather than restoring a downstream wrapper.
 - **Documentation describes the current repository.** Update architecture notes and roadmaps when the current design, constraints, or remaining work changes. Do not append completed-work logs to permanent documentation.
+
+## Documentation and provenance
+
+- **Code is the source of truth.** Keep notes consistent with current Lean declarations and enforced architecture. Use “proved” only for results that compile without `sorry`; otherwise record the statement as a target or conjecture in the relevant roadmap.
+- **Correctness is the kernel's job, not prose's.** Do not pad code with citations or explanation for facts the type checker already guarantees.
+- **Cite physical assumptions where they enter.** When a `def`, `structure`, or hypothesis embeds a physical modeling choice not forced by the mathematics, add a short source citation there. Routine lemmas need no citation.
+- **Source only imported claims and assumptions.** In notes, cite external sources for imported results or physical assumptions, separate source claims from project interpretation, and link relevant Lean files or declarations when useful.
+- **Documentation follows the canonical API.** When a refactor removes or moves an API, update prose to the current name/path rather than preserving documentation-only compatibility terminology.
 
 ## Refactoring and compatibility
 
@@ -22,18 +30,21 @@ Lean/Mathlib style and project-wide conventions.
 - **Inspect active pull requests before editing.** Avoid files, declarations, and architectural decisions currently being changed elsewhere. Unrelated old APIs and paths receive no compatibility protection.
 - **Prefer complete breaking migrations.** Rename, move, merge, or delete declarations and modules when doing so yields a clearer ownership boundary, dependency direction, or public API. Migrate all in-repository callers in the same pull request.
 - **Do not add compatibility layers by default.** Remove obsolete aliases, forwarding theorems, forwarding modules, duplicate instances, duplicate re-exports, old import paths, and specialized wrappers around canonical generic declarations. Do not replace them with deprecation aliases or forwarding imports.
+- **Prefer canonical structure over parallel specializations.** Before adding a definition, theorem, helper, or wrapper, search existing declarations, relevant `notes/`, and the generated theorem catalog (`docs/generated/theorems.md` / `docs/generated/theorems.json`, generated by `scripts/TheoremCatalog.lean`). When several declarations are coordinates, branches, cases, or projections of one mathematical object, expose one indexed or structured canonical API and specialize only at consumers that need a concrete component.
+- **Abstract only at reusable boundaries.** A new public abstraction should represent an independent mathematical or physical concept, or have multiple concrete consumers. Otherwise reuse the existing API, keep the helper private/local, or inline the specialization.
 - **Preserve mathematics, not historical packaging.** A distinct representation, theorem, or physical construction remains when it has independent semantic value. A module or declaration whose only purpose is to preserve an older name, path, layering decision, or proof organization should be removed or folded into its canonical owner.
-- **Move general facts upstream.** When a statistics-specific or physics-specific declaration is only a parameter specialization of a general result, use the general declaration directly. If genuinely reusable infrastructure is missing, add it at the most general layer rather than restoring a downstream wrapper.
-- **Keep proof helpers private.** Public declarations should express reusable mathematical or physical content. Intermediate uniqueness lemmas, transport steps, and basis calculations used by one proof should be private or local unless an independent caller exists.
+- **Keep proof helpers private.** Intermediate uniqueness lemmas, transport steps, basis calculations, and one-use proof routing should be private or local unless they express independently reusable mathematical or physical content.
 - **Delete historical prose during refactors.** Module documentation and permanent notes should state the present model, API, assumptions, dependency boundary, and unresolved limitations. Remove issue and PR numbers, phase or slice labels, migration instructions, completed roadmaps, former-path inventories, and prose whose only content is what used to exist.
 - **Retain design rationale only when it constrains current work.** A past decision belongs in permanent documentation only when understanding it is necessary to use, extend, or safely modify the current implementation.
-- **Regression checks enforce invariants, not archaeology.** Prefer checks for dependency direction, namespace ownership, canonical imports, or forbidden classes of compatibility layers. Avoid indefinitely enumerating every deleted file, declaration, or import path when a structural invariant can prevent the same regression.
+- **Protect invariants without CI archaeology.** Do not add bespoke regression-check logic, scripts, jobs, or workflows to CI. Prefer a Lean theorem or type-level guarantee; when a cross-file invariant needs checking, use the narrowest targeted local audit and express structural rules rather than enumerating deleted files, declarations, or paths.
 - **Measure refactors by the resulting structure.** Line reduction is useful but secondary. The primary test is whether the repository has fewer competing APIs, clearer ownership, narrower imports, less public proof machinery, and documentation that matches the code now present.
 
 ## Proof style
 
 General cautions distilled from past sessions; detailed incident records live in `caveats.md`.
 
+- **Proof search follows Pólya, compactly.** Understand the goal and hypotheses; search analogous results and reduce or transform to a tractable subgoal; execute the smallest justified plan; then check, simplify, and generalize. Prefer this pass over brute-force tactics or premature abstractions.
+- **Do not use `.re` as a conversion to `ℝ`.** If a complex expression is mathematically real, prove that fact and expose a real-valued API instead. Use `.re` only when the real part itself is intended.
 - **Abbreviations made with `have`/`haveI` are opaque.** They are not definitionally equal to the term they abbreviate. When a later step needs to unfold back to the original term, use `let`/`set`, or repeat the term at each use site.
 - **Do not reindex a dependent `Sigma` index type through an `Equiv`.** Cast-based equivalences on dependent types risk genuine kernel timeouts even when they type-check. Reindex only the (non-dependent) base type, or split the sum into base and fiber parts instead.
 - **Take analytic side conditions as explicit hypotheses.** When a definition needs compactness, summability, non-vanishing, or similar facts that do not follow from the ambient structure, accept them as arguments rather than deriving them — unless the derivation is itself a stated target.
@@ -63,12 +74,7 @@ General cautions distilled from past sessions; detailed incident records live in
 - Do not use verbose flags unless debugging requires them.
 - **Do not build after a docstring/comment-only change.** If a diff touches only `/-!  -/`/`/-- -/`
   comments (no code, no `omit`/`variable`/import changes), skip `lake build` entirely — check with
-  a quick read for syntax sanity instead. This also applies to `notes/`-only changes.
-- **Add regression protection after implementation.** Once the completed implementation reveals the
-  stable invariant that must not regress, add the narrowest practical automated check before the work
-  is declared complete. Prefer theorem- or type-level enforcement; use targeted scripts and CI for
-  repository structure, dependency direction, forbidden compatibility layers, or other cross-file
-  constraints that Lean does not directly express. Avoid redundant or comment-sensitive grep rules.
+  a quick read for syntax sanity instead. This also applies to `notes/`-only and root-documentation-only changes.
 
 ## Dependencies
 
@@ -79,8 +85,8 @@ General cautions distilled from past sessions; detailed incident records live in
 ## Branch and PR workflow
 
 - **One branch per unit of work**, cut from up-to-date `main`, named `type/short-slug` matching the commit type.
-- **A PR is created for every unit of work**; the full project must build with no `sorry` before the PR is opened.
-- **Merging requires an explicit instruction from the user** and passing CI; merges are squash merges with branch deletion, followed by syncing local `main`.
+- **A PR is created for every unit of work.** Lean-code changes must build with no `sorry` before the PR is opened; documentation-only changes do not require a Lean build.
+- **Merging requires an explicit instruction from the user** and passing required CI; merges are squash merges with branch deletion, followed by syncing local `main`.
 
 ## Commit conventions
 
