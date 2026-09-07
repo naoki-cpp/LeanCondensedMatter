@@ -8,7 +8,7 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Bastin projector blocks and Berry curvature
 
-The finite-broadening Kubo–Bastin layer and the clean Berry-curvature layer now share the same
+The finite-broadening Kubo–Bastin layer and the clean Berry-curvature layer share the same
 massive-Dirac spectral projectors. This file makes that common block explicit without choosing an
 eigenvector gauge.
 
@@ -22,8 +22,8 @@ Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,
 
 is transported back to the concrete `2 × 2` matrix trace. For arbitrary in-plane directions, the
 current vertices are exactly `j_μ = -e v_μ`, so the trace is `e²` times the corresponding
-force-matrix numerator. For the Hall component `(μ,ν) = (x,y)`, dividing its imaginary part by the
-squared interband gap reproduces `e² Ω_n`.
+force-matrix numerator. For the Hall component `(μ,ν) = (x,y)`, the normalized imaginary trace is
+therefore directly `e²` times the clean Berry curvature.
 
 This is still a pointwise, finite-dimensional bridge. The next step is to expand the full Bastin
 projector expression into its diagonal/interband band blocks and then perform the occupation and
@@ -101,29 +101,17 @@ theorem interbandCurrentTrace_im
   push_cast
   simp [Complex.mul_im, pow_two]
 
-/-- Berry-curvature combination formed directly from the physical-current Hall interband trace. -/
-noncomputable def interbandCurrentBerryWeight
-    (band : Band) (e v m px py : ℝ) : ℝ :=
-  2 * (interbandCurrentTrace .x .y band e v m px py).im /
-    interbandEnergyGap band v m px py ^ 2
-
-/-- The current-current interband Hall block is `e²` times the force-matrix Berry-curvature block. -/
-theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvature
-    (band : Band) (e v m px py : ℝ) :
-    interbandCurrentBerryWeight band e v m px py =
-      e ^ 2 * forceMatrixBerryCurvature band v m px py := by
-  rw [interbandCurrentBerryWeight, interbandCurrentTrace_im]
+/-- Normalizing the physical-current Hall interband trace by the squared interband gap directly
+reproduces `e²` times the clean Berry curvature away from the Dirac degeneracy. -/
+theorem two_mul_interbandCurrentTrace_im_div_gap_sq_eq_chargeSq_berryCurvature
+    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    2 * (interbandCurrentTrace .x .y band e v m px py).im /
+        interbandEnergyGap band v m px py ^ 2 =
+      e ^ 2 * berryCurvature band v m px py := by
+  rw [interbandCurrentTrace_im,
+    ← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
   unfold forceMatrixBerryCurvature
   ring
-
-/-- Away from the Dirac degeneracy, the physical-current interband block therefore reproduces
-`e²` times the clean Berry curvature. -/
-theorem interbandCurrentBerryWeight_eq_chargeSq_berryCurvature
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    interbandCurrentBerryWeight band e v m px py =
-      e ^ 2 * berryCurvature band v m px py := by
-  rw [interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvature]
-  rw [forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
 
 /-- Bastin operator integrand with the generic Green operators replaced by their exact massive-Dirac
 projector expansions. -/

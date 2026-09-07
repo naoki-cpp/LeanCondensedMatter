@@ -13,8 +13,7 @@ coordinates of one direction-indexed interband block, so this module keeps them 
 specializes that object to `(x,y)` only where the Berry-curvature relation is used.
 
 The imaginary part of the Hall antisymmetric block, normalized by the squared interband energy gap,
-is exactly minus the physical-current Berry weight and hence minus `e²` times the clean Berry
-curvature away from the Dirac degeneracy.
+is exactly minus `e²` times the clean Berry curvature away from the Dirac degeneracy.
 
 No energy integration, zero-broadening limit/integral interchange, or momentum integration is
 performed here.
@@ -86,40 +85,19 @@ theorem interbandCurrentTrace_oppositeBand_im
     forceMatrixTraceNumerator_im band v m px py hE]
   cases band <;> simp [oppositeBand, bandSign] <;> ring
 
-/-- The physical-current Berry weight changes sign under exchange of the two bands. -/
-theorem interbandCurrentBerryWeight_oppositeBand
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    interbandCurrentBerryWeight (oppositeBand band) e v m px py =
-      -interbandCurrentBerryWeight band e v m px py := by
-  rw [interbandCurrentBerryWeight_eq_chargeSq_berryCurvature
-      (oppositeBand band) e v m px py hE,
-    interbandCurrentBerryWeight_eq_chargeSq_berryCurvature band e v m px py hE,
-    berryCurvature_oppositeBand]
-  ring
-
-/-- At a target-band pole, the normalized imaginary Hall antisymmetric Bastin current block is
-minus the Berry weight of that target band. -/
-theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (bastinInterbandBlockDifference .x .y band e v m px py).im /
-        interbandEnergyGap band v m px py ^ 2 =
-      -interbandCurrentBerryWeight band e v m px py := by
-  rw [bastinInterbandBlockDifference_eq_currentTraceDifference,
-    Complex.sub_im,
-    interbandCurrentTrace_oppositeBand_im band e v m px py hE]
-  unfold interbandCurrentBerryWeight
-  ring
-
-/-- Consequently the normalized Hall antisymmetric Bastin block is the negative of `e²` times the
-clean Berry curvature. -/
+/-- The normalized Hall antisymmetric Bastin block is the negative of `e²` times the clean Berry
+curvature. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (bastinInterbandBlockDifference .x .y band e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       -(e ^ 2 * berryCurvature band v m px py) := by
-  rw [bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
-      band e v m px py hE,
-    interbandCurrentBerryWeight_eq_chargeSq_berryCurvature band e v m px py hE]
+  rw [bastinInterbandBlockDifference_eq_currentTraceDifference,
+    Complex.sub_im,
+    interbandCurrentTrace_oppositeBand_im band e v m px py hE,
+    ← two_mul_interbandCurrentTrace_im_div_gap_sq_eq_chargeSq_berryCurvature
+      band e v m px py hE]
+  ring
 
 end
 
