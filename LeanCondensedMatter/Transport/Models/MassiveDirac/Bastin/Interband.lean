@@ -94,7 +94,8 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
       -interbandCurrentBerryWeight μ ν band e v m px py := by
   rw [bastinInterbandBlockDifference_eq_neg_currentTraceAntisymmetrization]
   unfold interbandCurrentBerryWeight
-  simp
+  rw [Complex.neg_im]
+  ring
 
 /-- Consequently the normalized positively oriented Bastin block is the negative of `e²` times the
 clean two-dimensional Berry curvature. -/
