@@ -14,9 +14,10 @@ expression into the four ordered band blocks
 (--), (-+), (+-), (++).
 ```
 
-The diagonal and interband sectors are kept separate. In particular, no finite-broadening
-diagonal term is discarded. The two interband traces are exactly the current-current blocks that
-were connected to `e²` times the clean Berry curvature in `MassiveDiracBastinBerry`.
+The ordered current blocks and their band-pair contributions remain direction-indexed. The concrete
+Hall trace specializes them to `(x,y)` only when assembling the diagonal and interband sectors. In
+particular, no finite-broadening diagonal term is discarded. The two interband traces are exactly
+the current-current blocks connected to `e²` times the clean Berry curvature downstream.
 
 This decomposition is pointwise in probe energy and broadening. Occupation integration and the
 zero-broadening limit remain downstream steps.
@@ -98,38 +99,41 @@ noncomputable def spectralDifferenceCoefficient
     projectorResolventCoefficient (advancedSpectralParameter probeEnergy broadening)
       band v m px py
 
-/-- Contribution of one ordered pair `(source,target)` to the projector-expanded Bastin trace. -/
+/-- Contribution of one ordered pair `(source,target)` to the projector-expanded Bastin trace for
+one measured/source direction pair `(μ,ν)`. The reversed current ordering is kept in the same
+canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
-    (source target : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
+    (μ ν : Direction2) (source target : Band)
+    (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   let r := projectorResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening) source v m px py
   let a := projectorResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening) source v m px py
   let d := spectralDifferenceCoefficient target v m px py probeEnergy broadening
-  r ^ 2 * d * bastinBandBlockTrace .x .y source target e v m px py -
-    a ^ 2 * d * bastinBandBlockTrace .y .x source target e v m px py
+  r ^ 2 * d * bastinBandBlockTrace μ ν source target e v m px py -
+    a ^ 2 * d * bastinBandBlockTrace ν μ source target e v m px py
 
-/-- Diagonal/intraband part of the finite-broadening projector Bastin trace. -/
+/-- Diagonal/intraband part of the finite-broadening projector Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  bastinBandPairContribution .lower .lower e v m px py probeEnergy broadening +
-    bastinBandPairContribution .upper .upper e v m px py probeEnergy broadening
+  bastinBandPairContribution .x .y .lower .lower e v m px py probeEnergy broadening +
+    bastinBandPairContribution .x .y .upper .upper e v m px py probeEnergy broadening
 
-/-- Interband part of the finite-broadening projector Bastin trace. -/
+/-- Interband part of the finite-broadening projector Hall trace. -/
 noncomputable def interbandBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  bastinBandPairContribution .lower .upper e v m px py probeEnergy broadening +
-    bastinBandPairContribution .upper .lower e v m px py probeEnergy broadening
+  bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
+    bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening
 
-/-- The full projector Bastin trace is the sum over all four ordered band pairs. -/
+/-- The full projector Bastin Hall trace is the sum over all four ordered band pairs. -/
 theorem projectorBastinTraceIntegrand_eq_four_band_blocks
     (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) :
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
-      bastinBandPairContribution .lower .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .lower .upper e v m px py probeEnergy broadening +
-      bastinBandPairContribution .upper .lower e v m px py probeEnergy broadening +
-      bastinBandPairContribution .upper .upper e v m px py probeEnergy broadening := by
+      bastinBandPairContribution .x .y .lower .lower e v m px py probeEnergy broadening +
+      bastinBandPairContribution .x .y .lower .upper e v m px py probeEnergy broadening +
+      bastinBandPairContribution .x .y .upper .lower e v m px py probeEnergy broadening +
+      bastinBandPairContribution .x .y .upper .upper e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   rw [projectorResolvent_sq
@@ -157,7 +161,7 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
   ring
 
 /-- Combining the generic Bastin bridge with the band decomposition gives the same diagonal plus
-interband split directly for the repository's regularized Bastin trace. -/
+interband split directly for the repository's regularized Bastin Hall trace. -/
 theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
     (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
