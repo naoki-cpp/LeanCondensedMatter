@@ -1,15 +1,15 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinal
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
 
 set_option linter.style.header false
 
 /-!
 # Finite-broadening Born-Dyson longitudinal Středa conductivity
 
-This module is the conductivity-level consumer of the finite-cutoff finite-`η` longitudinal Středa
-response owned upstream by `MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinal`. It attaches
-the common static Bastin/Středa conductivity prefactor and physical two-dimensional momentum-measure
-normalization exactly once.
+This module is the conductivity-level consumer of the finite-cutoff finite-`η` `x`-measured/`x`-source
+Středa response owned by the source-indexed upstream Středa layer. It attaches the common static
+Bastin/Středa conductivity prefactor and physical two-dimensional momentum-measure normalization
+exactly once.
 
 The shared nonzero determinant required for the in-plane ladder fixed point remains an explicit
 hypothesis. No disorder, broadening, ultraviolet, thermodynamic, or simultaneous limit is taken here,
@@ -33,8 +33,8 @@ noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDres
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral
-      e v m probeEnergy broadening disorderStrength hbar pMax hdet
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+      .x e v m probeEnergy broadening disorderStrength hbar pMax hdet
 
 /-- With zero radial cutoff, the physically normalized longitudinal surface conductivity bridge
 vanishes exactly whenever the in-plane ladder is regular. -/
@@ -46,7 +46,7 @@ theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurface
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge
       e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
   simp [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityBridge,
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral]
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral]
 
 end
 
