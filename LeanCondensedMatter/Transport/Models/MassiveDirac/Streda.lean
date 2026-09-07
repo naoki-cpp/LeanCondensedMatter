@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderZeroBroadening
 
 set_option linter.style.header false
 
@@ -10,7 +11,8 @@ Public umbrella for the finite-`η` Born-Dyson RA-dressed/bare-same-side Středa
 bare measured current fixed along `x` and the source direction indexed by `Direction2`. The generic
 path is exposed from the pointwise trace bridge through finite-cutoff polar momentum integration;
 the ordered `xy` specialization additionally exposes the explicit Hall radial reduction and common
-denominator form.
+denominator form. The fixed-cutoff zero-broadening boundary of the source-indexed dressed current is
+also exposed for downstream response limits.
 
 All dressed source directions require the same nonzero in-plane ladder determinant owned upstream by
 `MassiveDirac.Disorder`, so the supplied algebraic coefficient pair is interpreted as a solved fixed
