@@ -7,13 +7,13 @@ set_option linter.style.header false
 # Finite-broadening Born-Dyson Hall conductivity component
 
 This module is the downstream physical-normalization consumer of the finite-cutoff finite-`η`
-Hall Středa momentum response. The upstream Středa layer owns the pointwise surface trace, full
-polar-angle integral, radial Jacobian, and finite-cutoff momentum integral. The shared nonzero
-ladder determinant remains an explicit hypothesis through this conductivity boundary.
+ordered `x`-measured/`y`-source Středa momentum response. The upstream Středa layer owns the
+source-indexed pointwise surface trace, full polar-angle integral, radial Jacobian, and finite-cutoff
+momentum integral. The shared nonzero ladder determinant remains an explicit hypothesis through this
+conductivity boundary.
 
 This layer attaches `bastinTraceConductivityPrefactor hbar` and
-`momentumMeasurePrefactor hbar` exactly once and exposes the physically normalized ordered
-`x`-measured/`y`-source conductivity-component bridge. It is not identified with the antisymmetric
+`momentumMeasurePrefactor hbar` exactly once. The result is not identified with the antisymmetric
 Hall projection until a downstream theorem relates the ordered `xy` and `yx` components. It is also
 not yet the final non-crossing conductivity theorem or an exact disorder average. No broadening,
 disorder, or ultraviolet limit is taken here.
@@ -35,8 +35,8 @@ noncomputable def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfa
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral
-      e v m probeEnergy broadening disorderStrength hbar pMax hdet
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+      .y e v m probeEnergy broadening disorderStrength hbar pMax hdet
 
 /-- With zero radial cutoff, the physically normalized ordered `xy` conductivity-component bridge
 vanishes exactly whenever the in-plane ladder is regular. -/
@@ -48,7 +48,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConduc
     finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge
       e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
   simp [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceXYConductivityComponentBridge,
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceMomentumIntegral]
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral]
 
 end
 
