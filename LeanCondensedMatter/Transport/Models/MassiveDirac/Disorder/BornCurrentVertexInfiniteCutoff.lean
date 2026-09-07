@@ -269,7 +269,9 @@ private theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
     (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)
   simpa only [show Real.pi / 2 + Real.pi / 2 = Real.pi by ring] using hhalf.add harctan
 
-private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder_closed
+/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient. The
+limit is the canonical scalar rung coefficient already used by the fixed-cutoff transport bridge. -/
+theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder
     (v m probeEnergy hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
@@ -278,8 +280,9 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficien
         continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
           v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds ((probeEnergy ^ 2 - m ^ 2) /
-        (2 * (probeEnergy ^ 2 + m ^ 2)))) := by
+      (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+        m probeEnergy)) := by
+  unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_nonneg m]
   have hgamma0 : Tendsto (fun gamma : ℝ => gamma)
@@ -319,37 +322,6 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficien
   exact (continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal).symm
 
-/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient. The
-limit is the canonical scalar rung coefficient already used by the fixed-cutoff transport bridge. -/
-theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder
-    (v m probeEnergy hbar : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hmetal : m ^ 2 < probeEnergy ^ 2) :
-    Tendsto
-      (fun gamma : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
-          v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-        m probeEnergy)) := by
-  simpa [continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient] using
-    tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder_closed
-      v m probeEnergy hbar hvelocity hhbar hmetal
-
-/-- Exact scaled transverse coefficient under the weak-disorder parameterization. -/
-private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorderStrength_eq
-    (v m probeEnergy hbar gamma : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
-    (hmetal : m ^ 2 < probeEnergy ^ 2) :
-    continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
-        v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar / gamma =
-      (2 * probeEnergy * m /
-        (Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
-        continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq
-    v m probeEnergy hbar gamma hvelocity hhbar hgamma hmetal]
-  field_simp [hgamma]
-
 /-- Metallic weak-disorder limit of the leading transverse one-rung coefficient. The unscaled
 `.y` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. -/
 theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorder
@@ -383,8 +355,9 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_di
   filter_upwards [self_mem_nhdsWithin] with gamma hgamma
   have hgamma_pos : 0 < gamma := by
     simpa only [Set.mem_Ioi] using hgamma
-  exact (continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorderStrength_eq
-    v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal).symm
+  rw [continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq
+    v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal]
+  field_simp [ne_of_gt hgamma_pos]
 
 end
 
