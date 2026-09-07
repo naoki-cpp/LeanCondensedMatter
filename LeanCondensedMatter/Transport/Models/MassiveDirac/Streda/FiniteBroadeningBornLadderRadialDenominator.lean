@@ -63,14 +63,14 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
   rw [hpi]
   ring
 
-/-- The radial Hall-surface integrand is the polar Jacobian multiplying the explicit common RA
-Born-Dyson denominator form. -/
+/-- The ordered `xy` radial Hall-surface integrand is the source-`.y` Středa radial response in
+explicit common RA Born-Dyson denominator form. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
-        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        .y e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       (p : ℂ) *
         (-(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
