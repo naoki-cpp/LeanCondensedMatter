@@ -141,11 +141,7 @@ private theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
         (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) :=
     hdenContinuous.inv₀ hdenNe
-  have hangular :
-      Continuous (fun p : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          i j v m p probeEnergy broadening disorderStrength hbar pMax) := by
-    rw [show
+  have hangularEq :
       (fun p : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
           i j v m p probeEnergy broadening disorderStrength hbar pMax) =
@@ -154,9 +150,14 @@ private theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
             v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-            i j v m probeEnergy broadening disorderStrength hbar pMax) by
-        funext p
-        rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]]
+            i j v m probeEnergy broadening disorderStrength hbar pMax) := by
+    funext p
+    rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
+  have hangular :
+      Continuous (fun p : ℝ =>
+        finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+          i j v m p probeEnergy broadening disorderStrength hbar pMax) := by
+    rw [hangularEq]
     exact (continuous_const.mul hinv).mul continuous_const
   exact
     ((continuous_const.mul (Complex.continuous_ofReal.comp continuous_id)).mul hangular)
