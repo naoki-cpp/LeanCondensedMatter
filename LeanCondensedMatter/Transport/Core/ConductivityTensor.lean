@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Core.SwapDifference
+import LeanCondensedMatter.Analysis.SwapDifference
 import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
