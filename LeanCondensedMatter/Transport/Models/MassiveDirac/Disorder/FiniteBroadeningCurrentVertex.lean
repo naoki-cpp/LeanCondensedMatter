@@ -154,40 +154,30 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
 
 /-! ## Ladder specialization -/
 
-/-- Algebraic longitudinal coefficient of the normalized finite-`η` Born-Dyson ladder formula.
-Its interpretation as the actual fixed-point coefficient requires
+/-- Output component of the normalized finite-`η` Born-Dyson ladder fixed point for a bare
+`σₓ` source. The interpretation as the actual fixed-point coefficient requires
 `finiteCutoffContinuumBornDysonLadderRegular`. -/
-noncomputable def finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+    (output : Direction2)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneLadderSolvedXCoefficient
-    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      .x .x v m probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      .y .x v m probeEnergy broadening disorderStrength hbar pMax)
+  let x := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+    .x .x v m probeEnergy broadening disorderStrength hbar pMax
+  let y := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+    .y .x v m probeEnergy broadening disorderStrength hbar pMax
+  inPlaneRotationCoefficient
+    (inPlaneLadderSolvedXCoefficient x y)
+    (inPlaneLadderSolvedYCoefficient x y)
+    output .x
 
-/-- Algebraic orientation-sensitive transverse coefficient of the normalized finite-`η` Born-Dyson
-ladder formula. Its interpretation as the actual fixed-point coefficient requires shared ladder
-regularity. -/
-noncomputable def finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneLadderSolvedYCoefficient
-    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      .x .x v m probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      .y .x v m probeEnergy broadening disorderStrength hbar pMax)
-
-@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedXCoefficient_zero_disorder
-    (v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-      v m probeEnergy broadening 0 hbar pMax = 1 := by
-  simp [finiteCutoffContinuumBornDysonLadderSolvedXCoefficient,
-    inPlaneLadderSolvedXCoefficient, inPlaneLadderDeterminant]
-
-@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedYCoefficient_zero_disorder
-    (v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-      v m probeEnergy broadening 0 hbar pMax = 0 := by
-  simp [finiteCutoffContinuumBornDysonLadderSolvedYCoefficient]
+@[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedCoefficient_zero_disorder
+    (output : Direction2) (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      output v m probeEnergy broadening 0 hbar pMax =
+      inPlaneRotationCoefficient 1 0 output .x := by
+  cases output <;>
+    simp [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
+      inPlaneRotationCoefficient, inPlaneLadderSolvedXCoefficient,
+      inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
 
 end
 
