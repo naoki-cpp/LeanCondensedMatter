@@ -14,6 +14,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeni
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningDomination
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningRegularity
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -40,9 +41,9 @@ indexed in-plane matrix with repository orientation `[[X,-Y],[Y,X]]`. Its fixed-
 positive-broadening boundary is exposed separately, under the explicit nonzero boundary denominator
 hypothesis needed by the inverse. Radial integration attaches the scalar-disorder line and physical
 momentum measure exactly once before the canonical entries are consumed by the ladder formulas. The
-zero-broadening integral bridge uses dominated convergence, while compact radial nonvanishing of the
-boundary RA denominator now supplies the required uniform finite-`η` denominator control,
-measurability, and integrable domination automatically.
+zero-broadening integral bridge uses dominated convergence. At fixed positive disorder, an explicit
+real-renormalization bound below one makes the boundary RA denominator nonzero and discharges the
+compact radial regularity needed for the integrated limit.
 `FiniteBroadeningLadderRegularity` owns the shared determinant condition that licenses interpreting
 that algebraic coefficient pair as the actual ladder fixed point. For the zero-external-broadening
 Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal rung, while
