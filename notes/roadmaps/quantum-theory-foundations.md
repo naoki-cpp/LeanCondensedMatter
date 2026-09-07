@@ -8,10 +8,10 @@ See [the project roadmap](../roadmap.md) for cross-track status and
 Status: `proved`.
 
 `QuantumTheory/Postulates.lean` defines normalized state-vector representatives, with
-`QuantumTheory.StateVector` as the explicit name and `QuantumTheory.State` retained for existing
-consumers, together with bounded self-adjoint observables. The public expectation API provides the
-canonical complex vector-state expectation, a lossless real observable expectation, reality, and
-global-phase invariance.
+`QuantumTheory.StateVector` as the canonical name and `QuantumTheory.State` as its compatibility name,
+together with bounded self-adjoint observables. The public expectation API provides the canonical
+complex vector-state expectation, a lossless real observable expectation, reality, and global-phase
+invariance.
 
 ## Bounded one-particle dynamics
 
@@ -37,7 +37,8 @@ Reusable unitary-conjugation facts for compact spectral trace-class operators li
 
 ## Density operators, physical pure states, expectations, and purity
 
-Status: `proved` for the current spectral trace-class model and the first physical-pure-state slice.
+Status: `proved` for the current spectral trace-class density model and density-backed physical pure
+states.
 
 `QuantumTheory.DensityOperator H` bundles a positive bounded operator with compact self-adjoint
 spectral trace-class data and spectral trace `1`. `QuantumTheory.PureState H` is the subtype of density
