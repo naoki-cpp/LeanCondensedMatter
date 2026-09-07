@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Core.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
@@ -114,32 +115,17 @@ theorem interbandCurrentTrace_oppositeBand_eq_swap
           bandProjectorOperator band v m px py * currentOperator μ e v) := by
       simp only [mul_assoc]
 
-/-- Antisymmetrization of the direction-indexed physical-current interband trace. -/
+/-- Raw swap difference of the direction-indexed physical-current interband trace. -/
 noncomputable def interbandCurrentTraceAntisymmetrization
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℂ :=
-  interbandCurrentTrace μ ν band e v m px py -
-    interbandCurrentTrace ν μ band e v m px py
-
-/-- Exchanging the current directions reverses the physical-current antisymmetrization. -/
-theorem interbandCurrentTraceAntisymmetrization_swap
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTraceAntisymmetrization ν μ band e v m px py =
-      -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
-  unfold interbandCurrentTraceAntisymmetrization
-  ring
-
-/-- The physical-current antisymmetrization vanishes on equal directions. -/
-@[simp] theorem interbandCurrentTraceAntisymmetrization_self
-    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTraceAntisymmetrization μ μ band e v m px py = 0 := by
-  simp [interbandCurrentTraceAntisymmetrization]
+  swapDifference (fun μ ν => interbandCurrentTrace μ ν band e v m px py) μ ν
 
 /-- Exchanging the two bands reverses the current-trace antisymmetrization. -/
 @[simp] theorem interbandCurrentTraceAntisymmetrization_oppositeBand
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
     interbandCurrentTraceAntisymmetrization μ ν (oppositeBand band) e v m px py =
       -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
-  unfold interbandCurrentTraceAntisymmetrization
+  unfold interbandCurrentTraceAntisymmetrization swapDifference
   rw [interbandCurrentTrace_oppositeBand_eq_swap μ ν,
     interbandCurrentTrace_oppositeBand_eq_swap ν μ]
   ring
@@ -152,6 +138,7 @@ theorem interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixTraceNume
       (((e ^ 2 : ℝ) : ℂ)) *
         forceMatrixTraceNumeratorAntisymmetrization μ ν band v m px py := by
   unfold interbandCurrentTraceAntisymmetrization forceMatrixTraceNumeratorAntisymmetrization
+    swapDifference
   rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator μ ν,
     interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator ν μ]
   ring
@@ -167,16 +154,15 @@ theorem interbandCurrentBerryWeight_swap
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
     interbandCurrentBerryWeight ν μ band e v m px py =
       -interbandCurrentBerryWeight μ ν band e v m px py := by
-  unfold interbandCurrentBerryWeight
-  rw [interbandCurrentTraceAntisymmetrization_swap, Complex.neg_im]
+  unfold interbandCurrentBerryWeight interbandCurrentTraceAntisymmetrization
+  rw [swapDifference_swap, Complex.neg_im]
   ring
 
 /-- The direction-indexed physical-current Berry weight vanishes on equal directions. -/
 @[simp] theorem interbandCurrentBerryWeight_self
     (μ : Direction2) (band : Band) (e v m px py : ℝ) :
     interbandCurrentBerryWeight μ μ band e v m px py = 0 := by
-  rw [interbandCurrentBerryWeight, interbandCurrentTraceAntisymmetrization_self]
-  simp
+  simp [interbandCurrentBerryWeight, interbandCurrentTraceAntisymmetrization]
 
 /-- The direction-indexed current-current Berry weight is `e²` times the corresponding force-matrix
 Berry-curvature component. -/
