@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Boundary
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadial
 import Mathlib.Tactic
 
 set_option linter.style.header false
