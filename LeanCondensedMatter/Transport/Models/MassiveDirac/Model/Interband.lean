@@ -64,7 +64,7 @@ def forceMatrixAntisymmetricNumerator
     forceMatrixTraceNumerator ν μ band v m px py
 
 /-- Exchanging the two current directions reverses the force-matrix antisymmetrization. -/
-@[simp] theorem forceMatrixAntisymmetricNumerator_swap
+theorem forceMatrixAntisymmetricNumerator_swap
     (μ ν : Direction2) (band : Band) (v m px py : ℝ) :
     forceMatrixAntisymmetricNumerator ν μ band v m px py =
       -forceMatrixAntisymmetricNumerator μ ν band v m px py := by
