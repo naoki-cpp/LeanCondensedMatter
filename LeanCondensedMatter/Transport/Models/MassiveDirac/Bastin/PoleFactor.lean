@@ -12,10 +12,10 @@ retarded-minus-advanced factor is the Lorentzian pole centered at `E_n`; the rem
 advanced opposite-band resolvent squares are regular spectators multiplying the two current-trace
 orderings.
 
-This file separates those pieces exactly and proves the regular spectator/current factor converges
-at the target-band pole to the inverse-gap-squared canonical antisymmetric current block. Together
-with the Berry numerator bridge, this is the local coefficient that the occupation-weighted
-Lorentzian energy integral must extract next.
+This file separates those pieces exactly while keeping the current directions generic. At the
+target-band pole the regular spectator/current factor converges to the inverse-gap-squared
+antisymmetric current block. Concrete Hall consumers specialize the directions to `(x,y)`
+downstream.
 
 No energy integration or momentum integration is performed here.
 -/
@@ -47,30 +47,30 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
     inv_add_I_sub_inv_sub_I_eq_lorentzian
       (probeEnergy - bandEnergy band v m px py) broadening hbroadening
 
-/-- The regular Hall current factor multiplying the target-band Lorentzian pole in an interband
-Bastin pair. The source band is fixed to the opposite band. -/
+/-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
+pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
 noncomputable def interbandSpectatorCurrentFactor
-    (band : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
+    (μ ν : Direction2) (band : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   let r := projectorResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening)
     (oppositeBand band) v m px py
   let a := projectorResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening)
     (oppositeBand band) v m px py
-  r ^ 2 * bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
-    a ^ 2 * bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py
+  r ^ 2 * bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
+    a ^ 2 * bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
-/-- Exact factorization of one interband Bastin Hall pair into its Lorentzian spectral pole and
-regular spectator/current factor. -/
+/-- Exact factorization of one direction-indexed interband Bastin pair into its Lorentzian spectral
+pole and regular spectator/current factor. -/
 theorem bastinBandPairContribution_opposite_source_eq_lorentzian
-    (band : Band) (e v m px py probeEnergy broadening : ℝ)
+    (μ ν : Direction2) (band : Band) (e v m px py probeEnergy broadening : ℝ)
     (hbroadening : broadening ≠ 0) :
-    bastinBandPairContribution .x .y (oppositeBand band) band
+    bastinBandPairContribution μ ν (oppositeBand band) band
         e v m px py probeEnergy broadening =
       (-2 * Complex.I) *
         (lorentzianSpectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) *
-        interbandSpectatorCurrentFactor
+        interbandSpectatorCurrentFactor μ ν
           band e v m px py probeEnergy broadening := by
   unfold bastinBandPairContribution interbandSpectatorCurrentFactor
   dsimp
@@ -78,18 +78,18 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
     band v m px py probeEnergy broadening hbroadening]
   ring
 
-/-- At the target-band pole, the regular spectator/current factor converges to the inverse squared
-interband gap multiplying the canonical antisymmetric Hall current block. -/
+/-- At the target-band pole, the regular direction-indexed spectator/current factor converges to the
+inverse squared interband gap multiplying the canonical antisymmetric current block. -/
 theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        interbandSpectatorCurrentFactor
+        interbandSpectatorCurrentFactor μ ν
           band e v m px py (bandEnergy band v m px py) broadening)
       (nhds 0)
       (nhds
         (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinInterbandBlockDifference .x .y band e v m px py)) := by
+          bastinInterbandBlockDifference μ ν band e v m px py)) := by
   have hret : Tendsto
       (fun broadening : ℝ =>
         projectorResolventCoefficient
@@ -108,18 +108,18 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
     simpa only [advancedSpectralParameter] using
       tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
-  have hxy := hret.mul
+  have hμν := hret.mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
+      (fun _ : ℝ => bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py)
       (nhds 0)
-      (nhds (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)))
-  have hyx := hadv.mul
+      (nhds (bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py)))
+  have hνμ := hadv.mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
+      (fun _ : ℝ => bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py)
       (nhds 0)
-      (nhds (bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)))
+      (nhds (bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py)))
   simpa [interbandSpectatorCurrentFactor, bastinInterbandBlockDifference, mul_sub] using
-    hxy.sub hyx
+    hμν.sub hνμ
 
 end
 
