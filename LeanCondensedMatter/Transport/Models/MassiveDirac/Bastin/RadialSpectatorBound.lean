@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Radial spectator factorization for massive-Dirac Bastin domination
 
 On the radial momentum axis the two interband current blocks are purely imaginary with opposite
-signs.  Consequently the regular spectator/current factor is the sum of the squared retarded and
+signs. Consequently the regular spectator/current factor is the sum of the squared retarded and
 advanced opposite-band resolvents multiplying one common current amplitude.
 
 This factorization separates the two estimates required by the finite-radial dominated-convergence
@@ -57,12 +57,16 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
     simpa only [advancedSpectralParameter] using
       projectorResolventCoefficient_targetOffset_oppositeBand
         .advanced band v m p 0 offset broadening
+  have hxyOpp :=
+    bastinXYBandBlockTrace_opposite_source_radial (oppositeBand band) e v m p hE
+  simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at hxyOpp
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
     radialInterbandCurrentAmplitude
   dsimp
   rw [hret, hadv,
     bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
-    bastinYXBandBlockTrace_opposite_source_radial band e v m p hE]
+    bastinBandBlockTrace_swap .x .y (oppositeBand band) band,
+    hxyOpp]
   simp only [SpectralSide.regulator_retarded, SpectralSide.regulator_advanced]
   push_cast
   ring

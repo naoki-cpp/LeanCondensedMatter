@@ -59,30 +59,28 @@ theorem bastinBandBlockTrace_eq_currentBandBlockTrace
           bandProjectorOperator source v m px py * currentOperator ν e v) := by
       simp only [mul_assoc]
 
-/-- Reversing the current order exchanges the source and target labels in the projector-first
-block. -/
-theorem bastinBandBlockTrace_swap_eq_currentBandBlockTrace
+/-- Reversing the current order exchanges the source and target band labels. -/
+theorem bastinBandBlockTrace_swap
     (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) :
     bastinBandBlockTrace ν μ source target e v m px py =
-      currentBandBlockTrace μ ν target source e v m px py := by
-  unfold bastinBandBlockTrace currentBandBlockTrace
+      bastinBandBlockTrace μ ν target source e v m px py := by
+  unfold bastinBandBlockTrace
   calc
     finiteDimensionalOperatorTrace
         (currentOperator ν e v * bandProjectorOperator source v m px py *
           currentOperator μ e v * bandProjectorOperator target v m px py) =
       finiteDimensionalOperatorTrace
-        (currentOperator ν e v *
-          (bandProjectorOperator source v m px py * currentOperator μ e v *
-            bandProjectorOperator target v m px py)) := by
+        ((currentOperator ν e v * bandProjectorOperator source v m px py) *
+          (currentOperator μ e v * bandProjectorOperator target v m px py)) := by
       simp only [mul_assoc]
     _ = finiteDimensionalOperatorTrace
-        ((bandProjectorOperator source v m px py * currentOperator μ e v *
-          bandProjectorOperator target v m px py) * currentOperator ν e v) := by
-      symm
-      exact finiteDimensionalOperatorTrace_mul_comm _ _
+        ((currentOperator μ e v * bandProjectorOperator target v m px py) *
+          (currentOperator ν e v * bandProjectorOperator source v m px py)) :=
+      finiteDimensionalOperatorTrace_mul_comm _ _
     _ = finiteDimensionalOperatorTrace
-        (bandProjectorOperator source v m px py * currentOperator μ e v *
-          bandProjectorOperator target v m px py * currentOperator ν e v) := by rfl
+        (currentOperator μ e v * bandProjectorOperator target v m px py *
+          currentOperator ν e v * bandProjectorOperator source v m px py) := by
+      simp only [mul_assoc]
 
 /-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
 noncomputable def spectralDifferenceCoefficient
