@@ -9,10 +9,11 @@ set_option linter.style.header false
 /-!
 # Schrödinger and Heisenberg picture equivalence
 
-This module connects normalized Schrödinger-picture state evolution with the existing bounded
-Heisenberg evolution.  Pure states remain vector representatives rather than rays.  Mixed states
-are transported by the unitary conjugation `ρ(t) = U(t) ρ U(t)†`, with positivity and spectral
-normalization preserved by construction.
+This module connects normalized Schrödinger-picture state-vector evolution with the existing bounded
+Heisenberg evolution. Physical pure states are the density-backed `PureState` subtype and are
+preserved by the same unitary conjugation used for arbitrary density operators. Mixed states are
+transported by `ρ(t) = U(t) ρ U(t)†`, with positivity and spectral normalization preserved by
+construction.
 -/
 
 namespace QuantumTheory
@@ -115,6 +116,48 @@ theorem evolveDensityOperator_trace_eq_one (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).spectralTraceClass.trace = 1 :=
   (evolveDensityOperator system ρ t).spectralTrace_eq_one
 
+/-- Density-operator evolution of a rank-one state agrees exactly with evolution of its normalized
+state-vector representative. -/
+@[simp]
+theorem evolveDensityOperator_pure (ψ : StateVector H) (t : ℝ) :
+    evolveDensityOperator system (pure ψ) t =
+      pure (evolveState system ψ t) := by
+  apply DensityOperator.ext
+  change unitaryConjugate (freePropagator system t)
+      (InnerProductSpace.rankOne ℂ ψ.1 ψ.1) =
+    InnerProductSpace.rankOne ℂ
+      (freePropagator system t ψ.1) (freePropagator system t ψ.1)
+  exact ContinuousLinearMap.unitaryConjugate_rankOne
+    (freePropagator system t) ψ.1 ψ.1
+
+/-- Bounded unitary density evolution preserves the physical pure-density predicate. -/
+theorem isPureDensity_evolveDensityOperator (ρ : PureState H) (t : ℝ) :
+    IsPureDensity (evolveDensityOperator system ρ.1 t) := by
+  obtain ⟨ψ, hψ⟩ := ρ.exists_stateVector
+  refine ⟨evolveState system ψ t, ?_⟩
+  rw [hψ]
+  exact evolveDensityOperator_pure system ψ t
+
+/-- Schrödinger-picture evolution restricted to physical pure states. The underlying density operator
+is evolved by the canonical density-state evolution. -/
+noncomputable def evolvePureState (ρ : PureState H) (t : ℝ) : PureState H :=
+  ⟨evolveDensityOperator system ρ.1 t,
+    isPureDensity_evolveDensityOperator system ρ t⟩
+
+@[simp]
+theorem evolvePureState_val (ρ : PureState H) (t : ℝ) :
+    (evolvePureState system ρ t).1 = evolveDensityOperator system ρ.1 t :=
+  rfl
+
+/-- Restricting density evolution to physical pure states agrees with evolving a chosen normalized
+representative first. -/
+@[simp]
+theorem evolvePureState_ofStateVector (ψ : StateVector H) (t : ℝ) :
+    evolvePureState system (PureState.ofStateVector ψ) t =
+      PureState.ofStateVector (evolveState system ψ t) := by
+  apply Subtype.ext
+  exact evolveDensityOperator_pure system ψ t
+
 /-- The free propagator as a linear isometric equivalence of the Hilbert space. -/
 noncomputable def freePropagatorLinearIsometryEquiv (t : ℝ) : H ≃ₗᵢ[ℂ] H where
   toLinearEquiv :=
@@ -182,6 +225,14 @@ theorem observableExpectation_evolveDensityOperator_eq_heisenberg
   rw [← (evolveDensityOperator system ρ t).expectation_observable A,
     ← ρ.expectation_observable (heisenbergObservable system A t)]
   exact expectation_evolveDensityOperator_eq_heisenberg system ρ A.1 t
+
+/-- Physical pure-state observable expectations obey the same Schrödinger/Heisenberg equivalence as
+their underlying density operators. -/
+theorem observableExpectation_evolvePureState_eq_heisenberg
+    (ρ : PureState H) (A : Observable H) (t : ℝ) :
+    (evolvePureState system ρ t).observableExpectation A =
+      ρ.observableExpectation (heisenbergObservable system A t) := by
+  exact observableExpectation_evolveDensityOperator_eq_heisenberg system ρ.1 A t
 
 end
 end LinearResponse
