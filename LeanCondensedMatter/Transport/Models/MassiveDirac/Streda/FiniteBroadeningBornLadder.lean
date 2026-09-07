@@ -51,7 +51,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourc
       v m probeEnergy broadening disorderStrength hbar pMax)
 
 /-- The physical retarded-advanced Hall source is electron charge times the Dirac velocity
-multiplying the rotated solved dimensionless transverse vertex. -/
+multiplying the rotated solved dimensionless coefficient pair. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator_eq_chargeVelocity_smul
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
@@ -59,11 +59,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOp
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
         e v m probeEnergy broadening disorderStrength hbar pMax hdet =
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
-        finiteCutoffContinuumBornDysonLadderSolvedTransverseVertex
-          v m probeEnergy broadening disorderStrength hbar pMax := by
+        inPlanePauliVertexOperator
+          (-finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
+            v m probeEnergy broadening disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
+            v m probeEnergy broadening disorderStrength hbar pMax) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-  rfl
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator_zero_disorder
