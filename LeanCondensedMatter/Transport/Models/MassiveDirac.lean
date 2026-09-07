@@ -12,8 +12,8 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac transport benchmark
 
-Model-owned public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes
-the clean model, propagator and its momentum-inversion symmetry, intrinsic Hall benchmark, Středa
-and Bastin representations, disorder specialization, and physically normalized longitudinal/Hall
-conductivity results.
+Public entry point for the two-dimensional massive-Dirac transport benchmark. It exposes the clean
+model, propagator and its momentum-inversion symmetry, intrinsic Hall benchmark, Středa and Bastin
+representations, disorder specialization, and physically normalized longitudinal/Hall conductivity
+results.
 -/

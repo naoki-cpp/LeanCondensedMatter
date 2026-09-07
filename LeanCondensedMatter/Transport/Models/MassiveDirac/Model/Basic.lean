@@ -7,8 +7,9 @@ set_option linter.style.header false
 /-!
 # Two-dimensional massive Dirac model for anomalous Hall transport
 
-This file fixes the clean two-band conventions and the first Berry-curvature benchmark used by
-#1269. The momentum variables `px`, `py` are physical momenta (not wave vectors), so
+This file fixes the clean two-band conventions and the closed Berry-curvature benchmark used
+throughout the transport stack. The momentum variables `px`, `py` are physical momenta (not wave
+vectors), so
 
 ```text
 H₀(p) = v (pₓ σₓ + pᵧ σᵧ) + m σ_z,
