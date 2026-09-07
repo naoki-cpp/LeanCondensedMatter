@@ -116,6 +116,18 @@ inductive Band where
   | upper
   deriving DecidableEq
 
+instance : Fintype Band where
+  elems := {.lower, .upper}
+  complete := by
+    intro band
+    cases band <;> simp
+
+/-- A finite sum over the massive-Dirac bands is the lower-band term plus the upper-band term. -/
+theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
+    ∑ band : Band, f band = f .lower + f .upper := by
+  change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
+  simp
+
 /-- The other band in the two-band massive-Dirac model. -/
 def oppositeBand : Band → Band
   | .lower => .upper

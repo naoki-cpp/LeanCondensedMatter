@@ -75,10 +75,11 @@ private theorem bandProjector_eq_normalizedHamiltonian
           (((bandSign band : ℝ) : ℂ)) • normalizedHamiltonian v m px py) := by
   simp [bandProjector, normalizedHamiltonian, div_eq_mul_inv, smul_smul]
 
-/-- The lower- and upper-band projectors resolve the identity, including at the algebraic
-`E = 0` value of the definition. -/
-theorem bandProjector_lower_add_upper (v m px py : ℝ) :
-    bandProjector .lower v m px py + bandProjector .upper v m px py = 1 := by
+/-- The finite sum of massive-Dirac band projectors resolves the identity, including at the
+algebraic `E = 0` value of the definition. -/
+theorem sum_bandProjector_eq_one (v m px py : ℝ) :
+    ∑ band : Band, bandProjector band v m px py = 1 := by
+  simp only [sum_band]
   rw [bandProjector_eq_normalizedHamiltonian, bandProjector_eq_normalizedHamiltonian]
   simp only [bandSign_lower, bandSign_upper]
   push_cast
@@ -88,8 +89,8 @@ theorem bandProjector_lower_add_upper (v m px py : ℝ) :
 theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
     bandProjector band v m px py + bandProjector (oppositeBand band) v m px py = 1 := by
   cases band
-  · exact bandProjector_lower_add_upper v m px py
-  · simpa [add_comm] using bandProjector_lower_add_upper v m px py
+  · simpa only [sum_band, oppositeBand_lower] using sum_bandProjector_eq_one v m px py
+  · simpa only [sum_band, oppositeBand_upper, add_comm] using sum_bandProjector_eq_one v m px py
 
 /-- The two band signs square to one. -/
 @[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by

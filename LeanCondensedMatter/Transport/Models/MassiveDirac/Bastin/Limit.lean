@@ -123,7 +123,7 @@ theorem tendsto_diagonalBastinTraceContribution_zero
     .x .y .lower .lower e v m px py probeEnergy hlower hlower
   have hu := tendsto_bastinBandPairContribution_zero
     .x .y .upper .upper e v m px py probeEnergy hupper hupper
-  simpa [diagonalBastinTraceContribution] using hl.add hu
+  simpa only [diagonalBastinTraceContribution, sum_band, zero_add] using hl.add hu
 
 /-- The interband Hall sector also tends pointwise to zero away from both band energies. Its nonzero
 clean Hall weight therefore cannot be recovered by taking the pointwise limit before energy
@@ -140,7 +140,8 @@ theorem tendsto_interbandBastinTraceContribution_zero
     .x .y .lower .upper e v m px py probeEnergy hlower hupper
   have hul := tendsto_bastinBandPairContribution_zero
     .x .y .upper .lower e v m px py probeEnergy hupper hlower
-  simpa [interbandBastinTraceContribution] using hlu.add hul
+  simpa only [interbandBastinTraceContribution, sum_band, oppositeBand_lower,
+    oppositeBand_upper, zero_add] using hlu.add hul
 
 /-- Away from the Dirac degeneracy and away from both band energies, the full projector-expanded
 Bastin trace tends pointwise to zero as `η → 0`. -/
