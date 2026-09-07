@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Core.SwapDifference
+import LeanCondensedMatter.Analysis.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral
 
 set_option linter.style.header false
