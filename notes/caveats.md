@@ -61,9 +61,9 @@ applies.
 
 - **`QuantumTheory.StateVector` stores a unit-vector representative, not a physical state.**
   `QuantumTheory.State` is the compatibility name for the same type. Physical pure states are
-  represented by the density-backed subtype `QuantumTheory.PureState`, and unit-modulus phase-related
-  representatives map to equal values of that type. A projective/ray quotient and the converse
-  theorem classifying equality of rank-one projectors by global phase are not yet implemented.
+  represented by the density-backed subtype `QuantumTheory.PureState`; two normalized
+  representatives define the same physical pure state exactly when they differ by a unit-modulus
+  global phase. A separate projective/ray quotient presentation is not implemented.
 
 - **POVMs are countable and discrete.** The current `QuantumTheory.POVM` does not model continuous
   outcomes, measurable operator-valued measures, or instruments/state update.

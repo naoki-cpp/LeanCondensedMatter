@@ -41,6 +41,40 @@ theorem pure_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 
   simp only [InnerProductSpace.rankOne_apply, inner_smul_left, smul_smul]
   rw [mul_assoc, mul_comm (inner ℂ ψ.1 x) c, ← mul_assoc, hunit, one_mul]
 
+/-- Two normalized vector representatives define the same rank-one density operator exactly when
+they differ by a unit-modulus global phase. -/
+theorem pure_eq_iff_exists_phase (ψ φ : StateVector H) :
+    pure ψ = pure φ ↔ ∃ c : ℂ, ‖c‖ = 1 ∧ φ.1 = c • ψ.1 := by
+  constructor
+  · intro h
+    have hop := congrArg (fun ρ : DensityOperator H => ρ.op) h
+    change InnerProductSpace.rankOne ℂ ψ.1 ψ.1 =
+      InnerProductSpace.rankOne ℂ φ.1 φ.1 at hop
+    have hφeig :
+        φ.1 ∈ Module.End.eigenspace
+          ((InnerProductSpace.rankOne ℂ φ.1 φ.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) 1 := by
+      rw [eigenspace_rankOne_one φ.2]
+      exact Submodule.subset_span (by simp)
+    have hψeig :
+        φ.1 ∈ Module.End.eigenspace
+          ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) 1 := by
+      rw [hop]
+      exact hφeig
+    have hspan : φ.1 ∈ Submodule.span ℂ {ψ.1} := by
+      rw [← eigenspace_rankOne_one ψ.2]
+      exact hψeig
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hspan
+    refine ⟨c, ?_, hc.symm⟩
+    have hnorm := congrArg norm hc
+    simpa [norm_smul, ψ.2, φ.2] using hnorm
+  · rintro ⟨c, hc, hφ⟩
+    have hstate :
+        φ = (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) := by
+      apply Subtype.ext
+      exact hφ
+    rw [hstate]
+    exact (pure_smul_of_norm_eq_one ψ hc).symm
+
 namespace PureState
 
 /-- Map a normalized state-vector representative to its physical pure state. -/
@@ -65,6 +99,18 @@ theorem ofStateVector_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : �
       ofStateVector ψ := by
   apply Subtype.ext
   exact pure_smul_of_norm_eq_one ψ hc
+
+/-- Equality of physical pure states coming from normalized vectors is exactly global-phase
+equivalence of those representatives. -/
+theorem ofStateVector_eq_iff_exists_phase (ψ φ : StateVector H) :
+    ofStateVector ψ = ofStateVector φ ↔ ∃ c : ℂ, ‖c‖ = 1 ∧ φ.1 = c • ψ.1 := by
+  constructor
+  · intro h
+    apply (pure_eq_iff_exists_phase ψ φ).mp
+    exact congrArg Subtype.val h
+  · intro h
+    apply Subtype.ext
+    exact (pure_eq_iff_exists_phase ψ φ).mpr h
 
 end PureState
 

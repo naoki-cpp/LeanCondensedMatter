@@ -46,8 +46,9 @@ operators represented by some normalized state vector through `QuantumTheory.pur
 
 - the rank-one embedding `QuantumTheory.pure` and `PureState.ofStateVector`;
 - existence of a normalized vector representative for every `PureState`;
-- invariance of the rank-one density operator, and therefore of `PureState.ofStateVector`, under a
-  unit-modulus global phase;
+- equivalence between equality of normalized rank-one density operators and unit-modulus global-phase
+  equivalence of their representatives, together with the corresponding `PureState.ofStateVector`
+  equality theorem;
 - normalized complex and lossless real observable expectations;
 - positivity, reality, contractivity, and countable Hilbert-basis formulas;
 - a positive square root with Hilbert--Schmidt control and the corresponding `innerHS` expectation
@@ -56,9 +57,8 @@ operators represented by some normalized state vector through `QuantumTheory.pur
 - spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the finite-dimensional
   `Tr(ρ²)` formula.
 
-The converse statement that equal rank-one density operators have representatives differing by a unit
-complex phase, and the converse characterization `purity ρ = 1 → IsPureDensity ρ`, are not yet part of
-the current API. A projective/ray presentation is optional follow-up rather than the storage type.
+The converse characterization `purity ρ = 1 → IsPureDensity ρ` is not yet part of the current API. A
+projective/ray presentation is optional follow-up rather than the storage type.
 
 ## Discrete POVMs and Born probabilities
 
@@ -94,7 +94,6 @@ or semigroup/resolvent framework with explicit domains.
 
 ## Open work
 
-- prove the converse global-phase classification for equal rank-one density operators;
 - connect `PureState` to density-state expectation and bounded unitary evolution APIs;
 - characterize maximal purity by `IsPureDensity` when the required spectral theorem is available;
 - extend the Hamiltonian interface to genuine infinite-dimensional Gibbs states;
