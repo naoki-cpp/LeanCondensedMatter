@@ -93,25 +93,17 @@ private theorem continuous_continuumBornRadialGreenKernelForDissipation
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) := by
-  have hscalar : Continuous
-      (continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator) := by
-    unfold continuumBornRadialScalarIntegrandOfRegulator
-      pauliGreenScalarCoefficientOfRegulator
-    exact (Complex.continuous_ofReal.comp continuous_id).mul
-      ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-        v m probeEnergy regulator hregulator).mul continuous_const)
-  have hz : Continuous
-      (continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator) := by
-    unfold continuumBornRadialZIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
-    simp only [pauliAxisComponent]
-    exact (Complex.continuous_ofReal.comp continuous_id).mul
-      ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-        v m probeEnergy regulator hregulator).mul continuous_const)
+  have hscalar :=
+    continuous_continuumBornRadialIntegrandOfRegulator
+      .scalar v m probeEnergy regulator hregulator
+  have hz :=
+    continuous_continuumBornRadialIntegrandOfRegulator
+      .z v m probeEnergy regulator hregulator
   rw [show continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator =
       fun p : ℝ =>
-        continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p •
+        continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
             (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-          continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p •
+          continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
             matrixOperator sigmaZ by
     funext p
     exact continuumBornRadialGreenKernelOfRegulator_eq v m probeEnergy regulator p]
