@@ -69,7 +69,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (offset, broadening)))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
+    .x .y band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring
