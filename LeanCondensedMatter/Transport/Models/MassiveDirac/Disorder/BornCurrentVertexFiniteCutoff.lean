@@ -37,11 +37,11 @@ private noncomputable def continuumBornPauliGreenOperator
   matrixOperator
     (continuumBornPauliGreenScalarCoefficient
         side v m px py probeEnergy disorderStrength hbar • (1 : Matrix2) +
-      continuumBornPauliGreenXCoefficient
+      continuumBornPauliGreenPauliCoefficient .x
         side v m px py probeEnergy disorderStrength hbar • sigmaX +
-      continuumBornPauliGreenYCoefficient
+      continuumBornPauliGreenPauliCoefficient .y
         side v m px py probeEnergy disorderStrength hbar • sigmaY +
-      continuumBornPauliGreenZCoefficient
+      continuumBornPauliGreenPauliCoefficient .z
         side v m px py probeEnergy disorderStrength hbar • sigmaZ)
 
 /-- The Cartesian Born-dressed propagator reduces exactly to the shared polar Pauli form. -/
@@ -53,9 +53,9 @@ private theorem continuumBornPauliGreenOperator_polar_eq
       polarPauliOperator
         (continuumBornPauliGreenScalarCoefficient
           side v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenXCoefficient
+        (continuumBornPauliGreenPauliCoefficient .x
           side v m p 0 probeEnergy disorderStrength hbar)
-        (continuumBornPauliGreenZCoefficient
+        (continuumBornPauliGreenPauliCoefficient .z
           side v m p 0 probeEnergy disorderStrength hbar) θ := by
   have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
     nlinarith [Real.sin_sq_add_cos_sq θ]
@@ -75,9 +75,7 @@ private theorem continuumBornPauliGreenOperator_polar_eq
     rw [hradial]
   simpa [continuumBornPauliGreenOperator,
     continuumBornPauliGreenScalarCoefficient,
-    continuumBornPauliGreenXCoefficient,
-    continuumBornPauliGreenYCoefficient,
-    continuumBornPauliGreenZCoefficient, hden] using
+    continuumBornPauliGreenPauliCoefficient, pauliAxisComponent, hden] using
     (commonDenominatorPauliOperator_polar_eq
       (continuumBornPauliGreenDenominator
         side v m p 0 probeEnergy disorderStrength hbar)
@@ -93,9 +91,9 @@ def continuumBornRetardedAdvancedPauliXAngularXCoefficient
       .retarded v m p 0 probeEnergy disorderStrength hbar)
     (continuumBornPauliGreenScalarCoefficient
       .advanced v m p 0 probeEnergy disorderStrength hbar)
-    (continuumBornPauliGreenZCoefficient
+    (continuumBornPauliGreenPauliCoefficient .z
       .retarded v m p 0 probeEnergy disorderStrength hbar)
-    (continuumBornPauliGreenZCoefficient
+    (continuumBornPauliGreenPauliCoefficient .z
       .advanced v m p 0 probeEnergy disorderStrength hbar)
 
 /-- Orientation-sensitive `σᵧ` coefficient after the full polar-angle integral of the Born-dressed
@@ -107,9 +105,9 @@ def continuumBornRetardedAdvancedPauliXAngularYCoefficient
       .retarded v m p 0 probeEnergy disorderStrength hbar)
     (continuumBornPauliGreenScalarCoefficient
       .advanced v m p 0 probeEnergy disorderStrength hbar)
-    (continuumBornPauliGreenZCoefficient
+    (continuumBornPauliGreenPauliCoefficient .z
       .retarded v m p 0 probeEnergy disorderStrength hbar)
-    (continuumBornPauliGreenZCoefficient
+    (continuumBornPauliGreenPauliCoefficient .z
       .advanced v m p 0 probeEnergy disorderStrength hbar)
 
 /-- Full polar-angle Born-dressed Green-product rung at fixed radial momentum, defined from the
@@ -137,13 +135,13 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
     .retarded v m p 0 probeEnergy disorderStrength hbar
   let aA := continuumBornPauliGreenScalarCoefficient
     .advanced v m p 0 probeEnergy disorderStrength hbar
-  let bR := continuumBornPauliGreenXCoefficient
+  let bR := continuumBornPauliGreenPauliCoefficient .x
     .retarded v m p 0 probeEnergy disorderStrength hbar
-  let bA := continuumBornPauliGreenXCoefficient
+  let bA := continuumBornPauliGreenPauliCoefficient .x
     .advanced v m p 0 probeEnergy disorderStrength hbar
-  let dR := continuumBornPauliGreenZCoefficient
+  let dR := continuumBornPauliGreenPauliCoefficient .z
     .retarded v m p 0 probeEnergy disorderStrength hbar
-  let dA := continuumBornPauliGreenZCoefficient
+  let dA := continuumBornPauliGreenPauliCoefficient .z
     .advanced v m p 0 probeEnergy disorderStrength hbar
   unfold continuumBornAngularRetardedAdvancedPauliXIntegral
   have hpolar :
@@ -184,8 +182,8 @@ private theorem continuumBornRetardedAdvancedPauliXAngularXCoefficient_eq_invers
     rw [pow_two, Complex.I_mul_I]
   unfold continuumBornRetardedAdvancedPauliXAngularXCoefficient
     pauliRungAngularXCoefficient
-  unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
-  simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
+  unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
+  simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
   ring_nf
   simp [hI]
   ring
@@ -205,8 +203,8 @@ private theorem continuumBornRetardedAdvancedPauliXAngularYCoefficient_eq_invers
     rw [pow_two, Complex.I_mul_I]
   unfold continuumBornRetardedAdvancedPauliXAngularYCoefficient
     pauliRungAngularYCoefficient
-  unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenZCoefficient
-  simp [continuumBornEffectiveEnergy, continuumBornEffectiveMass]
+  unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
+  simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
   ring_nf
   simp [hI]
 
