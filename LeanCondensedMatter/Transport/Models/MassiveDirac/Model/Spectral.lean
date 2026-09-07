@@ -101,37 +101,30 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     hamiltonian v m px py * bandProjector band v m px py =
       ((bandEnergy band v m px py : ℝ) : ℂ) • bandProjector band v m px py := by
   let Q := normalizedHamiltonian v m px py
+  let s : ℂ := ((bandSign band : ℝ) : ℂ)
   have hQ : Q * Q = 1 := by
     simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
+  have hs : s ^ 2 = 1 := by
+    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+    exact_mod_cast (bandSign_sq band)
   have hH :
       hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
     simpa [Q] using hamiltonian_eq_energy_smul_normalizedHamiltonian v m px py hE
-  have hP (b : Band) :
-      bandProjector b v m px py =
-        (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
-    simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
-  rw [hH, hP]
-  cases band
-  · simp only [bandSign_lower, bandEnergy_lower]
-    push_cast
-    simp only [neg_smul, one_smul]
-    have hmul : Q * (1 + -Q) = -(1 + -Q) := by
-      calc
-        Q * (1 + -Q) = Q - Q * Q := by noncomm_ring
-        _ = Q - 1 := by rw [hQ]
-        _ = -(1 + -Q) := by abel
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul]
+  have hP :
+      bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
+    simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
+  have hbandEnergy :
+      (((bandEnergy band v m px py : ℝ) : ℂ)) =
+        s * (((energy v m px py : ℝ) : ℂ)) := by
+    simp [bandEnergy, s]
+  have hmul : Q * ((1 : Matrix2) + s • Q) = s • ((1 : Matrix2) + s • Q) := by
+    rw [mul_add, mul_one, mul_smul_comm, hQ]
+    rw [smul_add, smul_smul]
+    rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
     module
-  · simp only [bandSign_upper, bandEnergy_upper]
-    push_cast
-    simp only [one_smul]
-    have hmul : Q * (1 + Q) = 1 + Q := by
-      calc
-        Q * (1 + Q) = Q + Q * Q := by noncomm_ring
-        _ = Q + 1 := by rw [hQ]
-        _ = 1 + Q := by abel
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul]
-    module
+  rw [hH, hP, hbandEnergy]
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul, smul_smul]
+  module
 
 /-- Away from the band degeneracy, each `P_s` is idempotent. -/
 theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
@@ -139,36 +132,35 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
     bandProjector band v m px py * bandProjector band v m px py =
       bandProjector band v m px py := by
   let Q := normalizedHamiltonian v m px py
+  let s : ℂ := ((bandSign band : ℝ) : ℂ)
   have hQ : Q * Q = 1 := by
     simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
-  have hP (b : Band) :
-      bandProjector b v m px py =
-        (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
-    simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
+  have hs : s ^ 2 = 1 := by
+    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+    exact_mod_cast (bandSign_sq band)
+  have hP :
+      bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
+    simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
+  have hsqmul : (s • Q) * (s • Q) = (s * s) • (Q * Q) := by
+    calc
+      (s • Q) * (s • Q) = s • (Q * (s • Q)) := by rw [smul_mul_assoc]
+      _ = s • (s • (Q * Q)) := by rw [mul_smul_comm]
+      _ = (s * s) • (Q * Q) := by rw [smul_smul]
+  have hmul :
+      ((1 : Matrix2) + s • Q) * ((1 : Matrix2) + s • Q) =
+        (2 : ℂ) • ((1 : Matrix2) + s • Q) := by
+    calc
+      ((1 : Matrix2) + s • Q) * ((1 : Matrix2) + s • Q) =
+          1 + s • Q + s • Q + (s • Q) * (s • Q) := by
+        rw [add_mul, one_mul, mul_add, mul_one]
+        abel
+      _ = 1 + s • Q + s • Q + (s * s) • (Q * Q) := by rw [hsqmul]
+      _ = 1 + s • Q + s • Q + 1 := by
+        rw [hQ, show s * s = 1 by simpa [pow_two] using hs, one_smul]
+      _ = (2 : ℂ) • ((1 : Matrix2) + s • Q) := by module
   rw [hP]
-  cases band
-  · simp only [bandSign_lower]
-    push_cast
-    simp only [neg_smul, one_smul]
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-    have hmul : (1 + -Q) * (1 + -Q) = (2 : ℂ) • (1 + -Q) := by
-      calc
-        (1 + -Q) * (1 + -Q) = 1 - Q - Q + Q * Q := by noncomm_ring
-        _ = 1 - Q - Q + 1 := by rw [hQ]
-        _ = (2 : ℂ) • (1 + -Q) := by module
-    rw [hmul, smul_smul]
-    module
-  · simp only [bandSign_upper]
-    push_cast
-    simp only [one_smul]
-    rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-    have hmul : (1 + Q) * (1 + Q) = (2 : ℂ) • (1 + Q) := by
-      calc
-        (1 + Q) * (1 + Q) = 1 + Q + Q + Q * Q := by noncomm_ring
-        _ = 1 + Q + Q + 1 := by rw [hQ]
-        _ = (2 : ℂ) • (1 + Q) := by module
-    rw [hmul, smul_smul]
-    module
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul, smul_smul]
+  module
 
 /-- Away from the band degeneracy, opposite-band projectors are orthogonal in either order. -/
 theorem bandProjector_mul_oppositeBand
