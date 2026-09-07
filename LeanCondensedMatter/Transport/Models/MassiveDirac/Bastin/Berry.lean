@@ -8,26 +8,22 @@ set_option linter.style.header false
 /-!
 # Massive-Dirac Bastin projector blocks and Berry curvature
 
-The finite-broadening Kubo–Bastin layer and the clean Berry-curvature layer now share the same
+The finite-broadening Kubo–Bastin layer and the clean Berry-curvature layer share the same
 massive-Dirac spectral projectors. This file makes that common block explicit without choosing an
 eigenvector gauge.
 
-First, the generic retarded/advanced resolvents in the Bastin integrand are replaced by the exact
-projector resolvents owned by `MassiveDirac/Model/OperatorSpectral`. Second, the direction-indexed
-interband operator trace
+The direction-indexed interband operator trace
 
 ```text
 Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,
 ```
 
-is transported back to the concrete `2 × 2` matrix trace. For arbitrary in-plane directions, the
-current vertices are exactly `j_μ = -e v_μ`, so the trace is `e²` times the corresponding
-force-matrix numerator. For the Hall component `(μ,ν) = (x,y)`, dividing its imaginary part by the
-squared interband gap reproduces `e² Ω_n`.
+is transported back to the concrete `2 × 2` matrix trace. Its antisymmetrization under
+`μ ↔ ν` is the physical-current counterpart of the model-level force-matrix antisymmetrization,
+and the `(x,y)` component reproduces `e² Ω_n` after division by the squared interband gap.
 
-This is still a pointwise, finite-dimensional bridge. The next step is to expand the full Bastin
-projector expression into its diagonal/interband band blocks and then perform the occupation and
-zero-broadening analysis. No such limiting statement is made here.
+The projector-expanded finite-broadening Bastin kernel itself also remains direction-indexed.
+Concrete Hall consumers specialize it to `(x,y)` downstream.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -92,81 +88,152 @@ theorem interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
   exact matrixInterbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
     μ ν band e v m px py
 
-/-- Imaginary part of the physical-current interband Hall block. -/
-theorem interbandCurrentTrace_im
-    (band : Band) (e v m px py : ℝ) :
-    (interbandCurrentTrace .x .y band e v m px py).im =
-      e ^ 2 * (forceMatrixTraceNumerator .x .y band v m px py).im := by
-  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y]
-  push_cast
-  simp [Complex.mul_im, pow_two]
+/-- Exchanging the target band with its opposite is equivalent to reversing the ordered current
+directions inside the interband trace. -/
+theorem interbandCurrentTrace_oppositeBand_eq_swap
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTrace μ ν (oppositeBand band) e v m px py =
+      interbandCurrentTrace ν μ band e v m px py := by
+  unfold interbandCurrentTrace
+  rw [oppositeBand_oppositeBand]
+  calc
+    finiteDimensionalOperatorTrace
+        (bandProjectorOperator band v m px py * currentOperator μ e v *
+          bandProjectorOperator (oppositeBand band) v m px py * currentOperator ν e v) =
+      finiteDimensionalOperatorTrace
+        ((bandProjectorOperator band v m px py * currentOperator μ e v) *
+          (bandProjectorOperator (oppositeBand band) v m px py * currentOperator ν e v)) := by
+      simp only [mul_assoc]
+    _ = finiteDimensionalOperatorTrace
+        ((bandProjectorOperator (oppositeBand band) v m px py * currentOperator ν e v) *
+          (bandProjectorOperator band v m px py * currentOperator μ e v)) :=
+      finiteDimensionalOperatorTrace_mul_comm _ _
+    _ = finiteDimensionalOperatorTrace
+        (bandProjectorOperator (oppositeBand band) v m px py * currentOperator ν e v *
+          bandProjectorOperator band v m px py * currentOperator μ e v) := by
+      simp only [mul_assoc]
 
-/-- Berry-curvature combination formed directly from the physical-current Hall interband trace. -/
-noncomputable def interbandCurrentBerryWeight
-    (band : Band) (e v m px py : ℝ) : ℝ :=
-  2 * (interbandCurrentTrace .x .y band e v m px py).im /
-    interbandEnergyGap band v m px py ^ 2
+/-- Antisymmetrization of the direction-indexed physical-current interband trace. -/
+noncomputable def interbandCurrentTraceAntisymmetrization
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℂ :=
+  interbandCurrentTrace μ ν band e v m px py -
+    interbandCurrentTrace ν μ band e v m px py
 
-/-- The current-current interband Hall block is `e²` times the force-matrix Berry-curvature block. -/
-theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvature
-    (band : Band) (e v m px py : ℝ) :
-    interbandCurrentBerryWeight band e v m px py =
-      e ^ 2 * forceMatrixBerryCurvature band v m px py := by
-  rw [interbandCurrentBerryWeight, interbandCurrentTrace_im]
-  unfold forceMatrixBerryCurvature
+/-- Exchanging the current directions reverses the physical-current antisymmetrization. -/
+@[simp] theorem interbandCurrentTraceAntisymmetrization_swap
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTraceAntisymmetrization ν μ band e v m px py =
+      -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
+  unfold interbandCurrentTraceAntisymmetrization
   ring
 
-/-- Away from the Dirac degeneracy, the physical-current interband block therefore reproduces
-`e²` times the clean Berry curvature. -/
+/-- The physical-current antisymmetrization vanishes on equal directions. -/
+@[simp] theorem interbandCurrentTraceAntisymmetrization_self
+    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTraceAntisymmetrization μ μ band e v m px py = 0 := by
+  simp [interbandCurrentTraceAntisymmetrization]
+
+/-- Exchanging the two bands reverses the current-trace antisymmetrization. -/
+@[simp] theorem interbandCurrentTraceAntisymmetrization_oppositeBand
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTraceAntisymmetrization μ ν (oppositeBand band) e v m px py =
+      -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
+  unfold interbandCurrentTraceAntisymmetrization
+  rw [interbandCurrentTrace_oppositeBand_eq_swap μ ν,
+    interbandCurrentTrace_oppositeBand_eq_swap ν μ]
+  ring
+
+/-- The physical-current antisymmetrization is `e²` times the force-matrix antisymmetrization. -/
+theorem interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixAntisymmetricNumerator
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTraceAntisymmetrization μ ν band e v m px py =
+      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixAntisymmetricNumerator μ ν band v m px py := by
+  unfold interbandCurrentTraceAntisymmetrization forceMatrixAntisymmetricNumerator
+  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator μ ν,
+    interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator ν μ]
+  ring
+
+/-- Berry-curvature weight formed from the antisymmetric physical-current interband trace. -/
+noncomputable def interbandCurrentBerryWeight
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℝ :=
+  (interbandCurrentTraceAntisymmetrization μ ν band e v m px py).im /
+    interbandEnergyGap band v m px py ^ 2
+
+/-- The direction-indexed current-current Berry weight is `e²` times the corresponding force-matrix
+Berry-curvature component. -/
+theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureComponent
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentBerryWeight μ ν band e v m px py =
+      e ^ 2 * forceMatrixBerryCurvatureComponent μ ν band v m px py := by
+  rw [interbandCurrentBerryWeight,
+    interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixAntisymmetricNumerator]
+  unfold forceMatrixBerryCurvatureComponent
+  push_cast
+  simp [Complex.mul_im]
+  ring
+
+/-- The current-current Berry weight changes sign under exchange of the two bands. -/
+@[simp] theorem interbandCurrentBerryWeight_oppositeBand
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentBerryWeight μ ν (oppositeBand band) e v m px py =
+      -interbandCurrentBerryWeight μ ν band e v m px py := by
+  unfold interbandCurrentBerryWeight
+  rw [interbandCurrentTraceAntisymmetrization_oppositeBand, interbandEnergyGap_oppositeBand]
+  simp
+
+/-- Away from the Dirac degeneracy, the positively oriented physical-current component reproduces
+`e²` times the clean two-dimensional Berry curvature. -/
 theorem interbandCurrentBerryWeight_eq_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    interbandCurrentBerryWeight band e v m px py =
+    interbandCurrentBerryWeight .x .y band e v m px py =
       e ^ 2 * berryCurvature band v m px py := by
-  rw [interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvature]
+  rw [interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureComponent]
+  change e ^ 2 * forceMatrixBerryCurvature band v m px py =
+    e ^ 2 * berryCurvature band v m px py
   rw [forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
 
 /-- Bastin operator integrand with the generic Green operators replaced by their exact massive-Dirac
-projector expansions. -/
+projector expansions for an ordered pair of current directions. -/
 noncomputable def projectorBastinOperatorIntegrand
-    (e v m px py probeEnergy broadening : ℝ) :
+    (μ ν : Direction2) (e v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   let retarded :=
     projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py
   let advanced :=
     projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py
-  (currentOperator .x e v * retarded ^ 2 * currentOperator .y e v -
-      currentOperator .y e v * advanced ^ 2 * currentOperator .x e v) *
+  (currentOperator μ e v * retarded ^ 2 * currentOperator ν e v -
+      currentOperator ν e v * advanced ^ 2 * currentOperator μ e v) *
     (retarded - advanced)
 
-/-- Ordinary trace of the projector-expanded Bastin operator kernel. -/
+/-- Ordinary trace of the direction-indexed projector-expanded Bastin operator kernel. -/
 noncomputable def projectorBastinTraceIntegrand
-    (e v m px py probeEnergy broadening : ℝ) : ℂ :=
+    (μ ν : Direction2) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
-    (projectorBastinOperatorIntegrand e v m px py probeEnergy broadening)
+    (projectorBastinOperatorIntegrand μ ν e v m px py probeEnergy broadening)
 
-/-- The existing Bastin trace integrand is unchanged when its current vertices are rewritten as the
-canonical electron-charge velocity representatives. -/
+/-- Rewriting the current vertices as canonical electron-charge velocity representatives leaves the
+direction-indexed Bastin trace integrand unchanged. -/
 theorem regularizedBastinTraceIntegrand_eq_canonicalChargeVelocityVertices
-    (e v m px py probeEnergy broadening : ℝ) :
+    (μ ν : Direction2) (e v m px py probeEnergy broadening : ℝ) :
     regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
+        (currentOperator μ e v) (currentOperator ν e v) probeEnergy broadening =
       regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        ((((-e : ℝ) : ℂ)) • velocityOperator .x v)
-        ((((-e : ℝ) : ℂ)) • velocityOperator .y v) probeEnergy broadening := by
+        ((((-e : ℝ) : ℂ)) • velocityOperator μ v)
+        ((((-e : ℝ) : ℂ)) • velocityOperator ν v) probeEnergy broadening := by
   rw [currentOperator_eq_charge_smul_velocityOperator,
     currentOperator_eq_charge_smul_velocityOperator]
 
 /-- At nonzero broadening and away from the band degeneracy, the generic massive-Dirac Bastin trace
-integrand is exactly the projector-expanded expression. -/
+integrand is exactly the direction-indexed projector-expanded expression. -/
 theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
-    (e v m px py probeEnergy broadening : ℝ)
+    (μ ν : Direction2) (e v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) (hbroadening : broadening ≠ 0) :
     regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
-      projectorBastinTraceIntegrand e v m px py probeEnergy broadening := by
+        (currentOperator μ e v) (currentOperator ν e v) probeEnergy broadening =
+      projectorBastinTraceIntegrand μ ν e v m px py probeEnergy broadening := by
   unfold regularizedBastinTraceIntegrand projectorBastinTraceIntegrand
     projectorBastinOperatorIntegrand regularizedBastinOperatorIntegrand
     retardedAdvancedResolventDifference
