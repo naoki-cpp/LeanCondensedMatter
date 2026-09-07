@@ -46,8 +46,8 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
     tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
       .z side v m probeEnergy pMax hvelocity hmetal hcutoff
   have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
-    SpectralSide.regulator, Complex.mul_im] using him
+  simpa [Function.comp_apply, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator, Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
 `Im I₀,s → -sπε/(2v²)`. The vanishing regulator cross term is already encoded in the full complex
@@ -68,8 +68,9 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
       .scalar side v m probeEnergy pMax hvelocity hmetal hcutoff
   have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
-    SpectralSide.regulator, spectralParameterOfRegulator, Complex.mul_im] using him
+  simpa [Function.comp_apply, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator,
+    spectralParameterOfRegulator, Complex.mul_im] using him
 
 /-- The common damping magnitude from the physical-momentum continuum measure simplifies to
 `disorderStrength / (4 ℏ² v²)`. -/
@@ -102,8 +103,9 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
     tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
       .scalar side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
-    SpectralSide.regulator, spectralParameterOfRegulator, Complex.mul_im] using him
+  simpa [Function.comp_apply, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator,
+    spectralParameterOfRegulator, Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the `σ_z` Pauli
 coefficient appearing in the continuum Born self-energy has the side-indexed metallic limit. -/
@@ -125,8 +127,8 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
     tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
       .z side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
-    SpectralSide.regulator, Complex.mul_im] using him
+  simpa [Function.comp_apply, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator, Complex.mul_im] using him
 
 /-- Retarded continuum Born self-energy projected onto the upper-band Fermi-surface state through
 its gauge-independent rank-one projector. -/
