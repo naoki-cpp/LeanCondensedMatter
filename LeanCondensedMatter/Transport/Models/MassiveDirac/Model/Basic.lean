@@ -116,6 +116,12 @@ inductive Band where
   | upper
   deriving DecidableEq
 
+instance : Fintype Band where
+  elems := {.lower, .upper}
+  complete := by
+    intro band
+    cases band <;> simp
+
 /-- The other band in the two-band massive-Dirac model. -/
 def oppositeBand : Band → Band
   | .lower => .upper
