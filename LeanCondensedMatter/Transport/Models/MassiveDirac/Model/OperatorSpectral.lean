@@ -42,12 +42,13 @@ noncomputable def currentBandBlockTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
 
-/-- The two operator projectors resolve the identity. -/
-theorem bandProjectorOperator_lower_add_upper (v m px py : ℝ) :
-    bandProjectorOperator .lower v m px py +
-        bandProjectorOperator .upper v m px py = 1 := by
+/-- The finite sum of operator band projectors resolves the identity. -/
+theorem sum_bandProjectorOperator_eq_one (v m px py : ℝ) :
+    ∑ band : Band, bandProjectorOperator band v m px py = 1 := by
+  simp only [sum_band]
   simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_lower_add_upper v m px py)
+    congrArg matrixOperator (by
+      simpa only [sum_band] using sum_bandProjector_eq_one v m px py)
 
 /-- Operator projectors remain idempotent after transport from `2 × 2` matrices. -/
 theorem bandProjectorOperator_mul_self
@@ -141,7 +142,7 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .upper v m px py hE]
   rw [smul_smul, smul_smul]
   simp only [projectorResolventCoefficient, inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
-  exact bandProjectorOperator_lower_add_upper v m px py
+  simpa only [sum_band] using sum_bandProjectorOperator_eq_one v m px py
 
 /-- The regulated massive-Dirac resolvent equals the gauge-free finite-projector expansion for any
 nonzero signed imaginary regulator. -/
