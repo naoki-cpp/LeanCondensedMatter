@@ -45,13 +45,8 @@ noncomputable def currentBandBlockTrace
 /-- The finite sum of operator band projectors resolves the identity. -/
 theorem sum_bandProjectorOperator_eq_one (v m px py : ℝ) :
     ∑ band : Band, bandProjectorOperator band v m px py = 1 := by
-  simp only [sum_band]
   unfold bandProjectorOperator matrixOperator
-  rw [← map_add]
-  rw [show
-    bandProjector .lower v m px py + bandProjector .upper v m px py = 1 by
-      simpa only [sum_band] using sum_bandProjector_eq_one v m px py]
-  rw [map_one]
+  rw [← map_sum, sum_bandProjector_eq_one v m px py, map_one]
 
 /-- Operator projectors remain idempotent after transport from `2 × 2` matrices. -/
 theorem bandProjectorOperator_mul_self
