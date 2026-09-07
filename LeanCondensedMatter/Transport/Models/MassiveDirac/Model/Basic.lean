@@ -116,10 +116,24 @@ inductive Band where
   | upper
   deriving DecidableEq
 
+/-- The other band in the two-band massive-Dirac model. -/
+def oppositeBand : Band → Band
+  | .lower => .upper
+  | .upper => .lower
+
+@[simp] theorem oppositeBand_lower : oppositeBand .lower = .upper := rfl
+@[simp] theorem oppositeBand_upper : oppositeBand .upper = .lower := rfl
+@[simp] theorem oppositeBand_oppositeBand (band : Band) : oppositeBand (oppositeBand band) = band := by
+  cases band <;> rfl
+
 /-- Sign of the band energy: lower `↦ -1`, upper `↦ +1`. -/
 def bandSign : Band → ℝ
   | .lower => -1
   | .upper => 1
+
+@[simp] theorem bandSign_oppositeBand (band : Band) :
+    bandSign (oppositeBand band) = -bandSign band := by
+  cases band <;> simp [oppositeBand, bandSign]
 
 /-- Band energy `E_± = ±E`. -/
 def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=

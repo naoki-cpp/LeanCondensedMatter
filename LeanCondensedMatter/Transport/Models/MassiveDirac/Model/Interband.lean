@@ -5,25 +5,14 @@ set_option linter.style.header false
 /-!
 # Interband spectral algebra for the two-dimensional massive Dirac model
 
-This file owns the model-level two-band relations shared by intrinsic and response calculations:
-the opposite-band involution, the interband energy gap, and the gauge-independent projector/velocity
-trace. These are consequences of the massive-Dirac spectrum and spectral projectors rather than of
-a particular response representation.
+This file owns model-level interband relations shared by intrinsic and response calculations:
+the interband energy gap and the gauge-independent projector/velocity trace. The two-band
+`oppositeBand` involution itself is basic model data and is owned by `Model.Basic`.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
-
-/-- The other band in the two-band massive-Dirac model. -/
-def oppositeBand : Band → Band
-  | .lower => .upper
-  | .upper => .lower
-
-@[simp] theorem oppositeBand_lower : oppositeBand .lower = .upper := rfl
-@[simp] theorem oppositeBand_upper : oppositeBand .upper = .lower := rfl
-@[simp] theorem oppositeBand_oppositeBand (band : Band) : oppositeBand (oppositeBand band) = band := by
-  cases band <;> rfl
 
 /-- Energy denominator `E_n - E_m` with `m` the opposite band. -/
 def interbandEnergyGap (band : Band) (v m px py : ℝ) : ℝ :=
@@ -39,8 +28,8 @@ theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
     (band : Band) (v m px py : ℝ) :
     interbandEnergyGap (oppositeBand band) v m px py =
       -interbandEnergyGap band v m px py := by
-  rw [interbandEnergyGap_eq, interbandEnergyGap_eq]
-  cases band <;> simp [oppositeBand, bandSign]
+  rw [interbandEnergyGap_eq, interbandEnergyGap_eq, bandSign_oppositeBand]
+  ring
 
 /-- Away from the Dirac degeneracy, the interband energy gap is nonzero. -/
 theorem interbandEnergyGap_ne_zero_of_energy_ne_zero

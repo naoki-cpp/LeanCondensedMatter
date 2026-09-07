@@ -50,19 +50,13 @@ theorem bandProjectorOperator_mul_self
   simpa [bandProjectorOperator, matrixOperator] using
     congrArg matrixOperator (bandProjector_mul_self band v m px py hE)
 
-/-- Lower then upper operator projectors are orthogonal away from the Dirac degeneracy. -/
-theorem bandProjectorOperator_lower_mul_upper
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
+/-- Opposite-band operator projectors are orthogonal away from the Dirac degeneracy. -/
+theorem bandProjectorOperator_mul_oppositeBand
+    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    bandProjectorOperator band v m px py *
+        bandProjectorOperator (oppositeBand band) v m px py = 0 := by
   simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_lower_mul_upper v m px py hE)
-
-/-- Upper then lower operator projectors are orthogonal away from the Dirac degeneracy. -/
-theorem bandProjectorOperator_upper_mul_lower
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
-  simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_upper_mul_lower v m px py hE)
+    congrArg matrixOperator (bandProjector_mul_oppositeBand band v m px py hE)
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
@@ -126,13 +120,18 @@ theorem projectorResolvent_sq
           bandProjectorOperator .lower v m px py +
         projectorResolventCoefficient z .upper v m px py ^ 2 •
           bandProjectorOperator .upper v m px py := by
+  have hlu :
+      bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
+    simpa using bandProjectorOperator_mul_oppositeBand .lower v m px py hE
+  have hul :
+      bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
+    simpa using bandProjectorOperator_mul_oppositeBand .upper v m px py hE
   rw [projectorResolvent_eq_coefficients, pow_two]
   rw [add_mul, mul_add, mul_add]
   simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [bandProjectorOperator_mul_self .lower v m px py hE]
   rw [bandProjectorOperator_mul_self .upper v m px py hE]
-  rw [bandProjectorOperator_lower_mul_upper v m px py hE]
-  rw [bandProjectorOperator_upper_mul_lower v m px py hE]
+  rw [hlu, hul]
   simp [pow_two]
 
 private theorem shiftedHamiltonian_mul_projectorResolvent
