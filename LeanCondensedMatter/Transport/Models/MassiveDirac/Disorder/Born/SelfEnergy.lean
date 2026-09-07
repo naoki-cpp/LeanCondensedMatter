@@ -16,7 +16,8 @@ arbitrary signed regulator `γ`; physical spectral sides specialize through the 
 
 The radial integral keeps the `p dp` Jacobian explicit. The continuum prefactor uses the existing
 physical-momentum measure `d²p/(2πℏ)²`, while the explicit angular reduction proves the accompanying
-factor `2π`. Both surviving Pauli channels are then factored through one common denominator integral.
+factor `2π`. The two surviving isotropic self-energy channels are represented by one indexed API and
+are then factored through one common denominator integral.
 
 No ultraviolet limit, zero-broadening limit, exact disorder average, SCBA closure, scattering-rate
 identification, or current-vertex resummation is claimed here.
@@ -30,17 +31,37 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Scalar-channel radial Born integrand at an arbitrary signed regulator, including the `p dp`
-Jacobian. -/
-noncomputable def continuumBornRadialScalarIntegrandOfRegulator
-    (v m probeEnergy regulator p : ℝ) : ℂ :=
-  (p : ℂ) * pauliGreenScalarCoefficientOfRegulator v m p 0 probeEnergy regulator
+/-- The two isotropic Pauli channels that survive angular reduction of the scalar-disorder Born
+self-energy: the identity/scalar channel and the `σ_z` channel. -/
+inductive BornSelfEnergyChannel where
+  | scalar
+  | z
+  deriving DecidableEq
 
-/-- `σ_z`-channel radial Born integrand at an arbitrary signed regulator, including the `p dp`
-Jacobian. -/
-noncomputable def continuumBornRadialZIntegrandOfRegulator
+/-- Multiplicative numerator carried by a Born self-energy channel at arbitrary signed regulator. -/
+def bornSelfEnergyChannelWeightOfRegulator
+    (channel : BornSelfEnergyChannel) (m probeEnergy regulator : ℝ) : ℂ :=
+  match channel with
+  | .scalar => spectralParameterOfRegulator probeEnergy regulator
+  | .z => (m : ℂ)
+
+/-- Physical-side specialization of the Born self-energy channel numerator. -/
+def bornSelfEnergyChannelWeight
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (m probeEnergy broadening : ℝ) : ℂ :=
+  bornSelfEnergyChannelWeightOfRegulator
+    channel m probeEnergy (side.regulator broadening)
+
+/-- Radial Born integrand for either surviving isotropic self-energy channel at an arbitrary signed
+regulator, including the `p dp` Jacobian. -/
+noncomputable def continuumBornRadialIntegrandOfRegulator
+    (channel : BornSelfEnergyChannel)
     (v m probeEnergy regulator p : ℝ) : ℂ :=
-  (p : ℂ) * pauliGreenPauliCoefficientOfRegulator .z v m p 0 probeEnergy regulator
+  match channel with
+  | .scalar =>
+      (p : ℂ) * pauliGreenScalarCoefficientOfRegulator v m p 0 probeEnergy regulator
+  | .z =>
+      (p : ℂ) * pauliGreenPauliCoefficientOfRegulator .z v m p 0 probeEnergy regulator
 
 /-- Operator-valued radial Green kernel at an arbitrary signed regulator before continuum disorder
 and measure prefactors are applied. -/
@@ -53,13 +74,13 @@ noncomputable def continuumBornRadialGreenKernelOfRegulator
 theorem continuumBornRadialGreenKernelOfRegulator_eq
     (v m probeEnergy regulator p : ℝ) :
     continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p =
-      continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p • 1 +
-        continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p •
-          matrixOperator sigmaZ := by
+      continuumBornRadialIntegrandOfRegulator .scalar
+          v m probeEnergy regulator p • 1 +
+        continuumBornRadialIntegrandOfRegulator .z
+          v m probeEnergy regulator p • matrixOperator sigmaZ := by
   rw [continuumBornRadialGreenKernelOfRegulator,
     inversionSymmetrizedPauliGreenOperatorOfRegulator_eq_evenChannels]
-  simp [continuumBornRadialScalarIntegrandOfRegulator,
-    continuumBornRadialZIntegrandOfRegulator, smul_add, smul_smul]
+  simp [continuumBornRadialIntegrandOfRegulator, smul_add, smul_smul]
 
 private theorem star_continuumBornRadialGreenKernelOfRegulator
     (v m probeEnergy regulator p : ℝ) (hregulator : regulator ≠ 0) :
@@ -69,55 +90,50 @@ private theorem star_continuumBornRadialGreenKernelOfRegulator
     inversionSymmetrizedPauliGreenOperatorOfRegulator
   simp [star_pauliGreenOperatorOfRegulator, hregulator]
 
-private theorem continuous_continuumBornRadialScalarIntegrandOfRegulator
+/-- Every surviving Born self-energy radial channel is continuous away from zero regulator. -/
+theorem continuous_continuumBornRadialIntegrandOfRegulator
+    (channel : BornSelfEnergyChannel)
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous (continuumBornRadialScalarIntegrandOfRegulator
-      v m probeEnergy regulator) := by
-  unfold continuumBornRadialScalarIntegrandOfRegulator
-    pauliGreenScalarCoefficientOfRegulator
-  exact (Complex.continuous_ofReal.comp continuous_id).mul
-    ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-      v m probeEnergy regulator hregulator).mul continuous_const)
-
-private theorem continuous_continuumBornRadialZIntegrandOfRegulator
-    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous (continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator) := by
-  unfold continuumBornRadialZIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
-  simp only [pauliAxisComponent]
-  exact (Complex.continuous_ofReal.comp continuous_id).mul
-    ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
-      v m probeEnergy regulator hregulator).mul continuous_const)
+    Continuous (continuumBornRadialIntegrandOfRegulator
+      channel v m probeEnergy regulator) := by
+  cases channel with
+  | scalar =>
+      unfold continuumBornRadialIntegrandOfRegulator
+        pauliGreenScalarCoefficientOfRegulator
+      exact (Complex.continuous_ofReal.comp continuous_id).mul
+        ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
+          v m probeEnergy regulator hregulator).mul continuous_const)
+  | z =>
+      unfold continuumBornRadialIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
+      simp only [pauliAxisComponent]
+      exact (Complex.continuous_ofReal.comp continuous_id).mul
+        ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
+          v m probeEnergy regulator hregulator).mul continuous_const)
 
 private theorem continuous_continuumBornRadialGreenKernelOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) := by
   rw [show continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator =
       fun p : ℝ =>
-        continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p •
+        continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
             (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-          continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p •
+          continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
             matrixOperator sigmaZ by
     funext p
     exact continuumBornRadialGreenKernelOfRegulator_eq v m probeEnergy regulator p]
   exact
-    ((continuous_continuumBornRadialScalarIntegrandOfRegulator
-      v m probeEnergy regulator hregulator).smul continuous_const).add
-      ((continuous_continuumBornRadialZIntegrandOfRegulator
-        v m probeEnergy regulator hregulator).smul continuous_const)
+    ((continuous_continuumBornRadialIntegrandOfRegulator
+      .scalar v m probeEnergy regulator hregulator).smul continuous_const).add
+      ((continuous_continuumBornRadialIntegrandOfRegulator
+        .z v m probeEnergy regulator hregulator).smul continuous_const)
 
-/-- Finite-cutoff radial integral of the scalar Green coefficient at an arbitrary signed
-regulator. -/
-noncomputable def finiteCutoffContinuumBornScalarIntegralOfRegulator
+/-- Finite-cutoff radial integral of either surviving Born self-energy channel at an arbitrary
+signed regulator. -/
+noncomputable def finiteCutoffContinuumBornIntegralOfRegulator
+    (channel : BornSelfEnergyChannel)
     (v m probeEnergy regulator pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
-    continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p
-
-/-- Finite-cutoff radial integral of the `σ_z` Green coefficient at an arbitrary signed
-regulator. -/
-noncomputable def finiteCutoffContinuumBornZIntegralOfRegulator
-    (v m probeEnergy regulator pMax : ℝ) : ℂ :=
-  ∫ p in (0 : ℝ)..pMax,
-    continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p
+    continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator p
 
 /-- Finite-cutoff operator-valued radial Green integral at an arbitrary signed regulator before
 continuum disorder and measure prefactors. -/
@@ -126,48 +142,45 @@ noncomputable def finiteCutoffContinuumBornGreenIntegralOfRegulator
   ∫ p in (0 : ℝ)..pMax,
     continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p
 
-/-- Physical-side scalar radial integral. -/
-noncomputable def finiteCutoffContinuumBornScalarIntegral
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornScalarIntegralOfRegulator
-    v m probeEnergy (side.regulator broadening) pMax
-
-/-- Physical-side `σ_z` radial integral. -/
-noncomputable def finiteCutoffContinuumBornZIntegral
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornZIntegralOfRegulator
-    v m probeEnergy (side.regulator broadening) pMax
+/-- Physical-side finite-cutoff radial integral of either surviving Born self-energy channel. -/
+noncomputable def finiteCutoffContinuumBornIntegral
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy broadening pMax : ℝ) : ℂ :=
+  finiteCutoffContinuumBornIntegralOfRegulator
+    channel v m probeEnergy (side.regulator broadening) pMax
 
 /-- The arbitrary-regulator finite-cutoff operator integral has exactly the `I + σ_z` structure. -/
 theorem finiteCutoffContinuumBornGreenIntegralOfRegulator_eq
     (v m probeEnergy regulator pMax : ℝ) (hregulator : regulator ≠ 0) :
     finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax =
-      finiteCutoffContinuumBornScalarIntegralOfRegulator v m probeEnergy regulator pMax • 1 +
-        finiteCutoffContinuumBornZIntegralOfRegulator v m probeEnergy regulator pMax •
-          matrixOperator sigmaZ := by
+      finiteCutoffContinuumBornIntegralOfRegulator .scalar
+          v m probeEnergy regulator pMax • 1 +
+        finiteCutoffContinuumBornIntegralOfRegulator .z
+          v m probeEnergy regulator pMax • matrixOperator sigmaZ := by
   have hscalarOp :
       IntervalIntegrable
         (fun p : ℝ =>
-          continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p •
+          continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
             (1 : DiracHilbert →L[ℂ] DiracHilbert))
         volume 0 pMax :=
-    ((continuous_continuumBornRadialScalarIntegrandOfRegulator
-      v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable 0 pMax
+    ((continuous_continuumBornRadialIntegrandOfRegulator
+      .scalar v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable
+        0 pMax
   have hzOp :
       IntervalIntegrable
         (fun p : ℝ =>
-          continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p •
+          continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
             matrixOperator sigmaZ)
         volume 0 pMax :=
-    ((continuous_continuumBornRadialZIntegrandOfRegulator
-      v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable 0 pMax
+    ((continuous_continuumBornRadialIntegrandOfRegulator
+      .z v m probeEnergy regulator hregulator).smul continuous_const).intervalIntegrable 0 pMax
   unfold finiteCutoffContinuumBornGreenIntegralOfRegulator
   have hkernel :
       (fun p : ℝ => continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator p) =
         fun p : ℝ =>
-          continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p •
+          continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
               (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-            continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p •
+            continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
               matrixOperator sigmaZ := by
     funext p
     exact continuumBornRadialGreenKernelOfRegulator_eq v m probeEnergy regulator p
@@ -214,6 +227,30 @@ private theorem star_finiteCutoffContinuumBornGreenIntegralOfRegulator
 def continuumBornAngularMeasurePrefactor (hbar : ℝ) : ℝ :=
   2 * Real.pi * momentumMeasurePrefactor hbar
 
+/-- Finite-cutoff coefficient of either surviving Born self-energy channel at arbitrary signed
+regulator. -/
+noncomputable def finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator
+    (channel : BornSelfEnergyChannel)
+    (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) : ℂ :=
+  (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
+    finiteCutoffContinuumBornIntegralOfRegulator
+      channel v m probeEnergy regulator pMax)
+
+/-- Physical-side finite-cutoff coefficient of either surviving Born self-energy channel. -/
+noncomputable def finiteCutoffContinuumBornSelfEnergyCoefficient
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator
+    channel v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
+
+@[simp] theorem finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornSelfEnergyCoefficient
+      channel side v m probeEnergy broadening 0 hbar pMax = 0 := by
+  simp [finiteCutoffContinuumBornSelfEnergyCoefficient,
+    finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator]
+
 /-- Finite-cutoff continuum scalar-disorder Born self-energy at an arbitrary signed regulator.
 
 `disorderStrength` is a continuum coupling parameter. It is intentionally not identified with the
@@ -237,16 +274,14 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
     (hregulator : regulator ≠ 0) :
     finiteCutoffContinuumBornSelfEnergyOfRegulator
         v m probeEnergy regulator disorderStrength hbar pMax =
-      (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornScalarIntegralOfRegulator
-            v m probeEnergy regulator pMax) • 1 +
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornZIntegralOfRegulator
-            v m probeEnergy regulator pMax) • matrixOperator sigmaZ := by
+      finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator .scalar
+          v m probeEnergy regulator disorderStrength hbar pMax • 1 +
+        finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator .z
+          v m probeEnergy regulator disorderStrength hbar pMax • matrixOperator sigmaZ := by
   rw [finiteCutoffContinuumBornSelfEnergyOfRegulator,
     finiteCutoffContinuumBornGreenIntegralOfRegulator_eq
       v m probeEnergy regulator pMax hregulator]
-  simp [smul_add, smul_smul]
+  simp [finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator, smul_add, smul_smul]
 
 /-- Physical-side channel decomposition, retained because it is consumed by downstream transport
 calculations. -/
@@ -255,14 +290,13 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq
     (hbroadening : broadening ≠ 0) :
     finiteCutoffContinuumBornSelfEnergy
         side v m probeEnergy broadening disorderStrength hbar pMax =
-      (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornScalarIntegral
-            side v m probeEnergy broadening pMax) • 1 +
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornZIntegral
-            side v m probeEnergy broadening pMax) • matrixOperator sigmaZ := by
-  simpa [finiteCutoffContinuumBornSelfEnergy, finiteCutoffContinuumBornScalarIntegral,
-    finiteCutoffContinuumBornZIntegral] using
+      finiteCutoffContinuumBornSelfEnergyCoefficient .scalar
+          side v m probeEnergy broadening disorderStrength hbar pMax • 1 +
+        finiteCutoffContinuumBornSelfEnergyCoefficient .z
+          side v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaZ := by
+  simpa [finiteCutoffContinuumBornSelfEnergy,
+    finiteCutoffContinuumBornSelfEnergyCoefficient,
+    finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator] using
     finiteCutoffContinuumBornSelfEnergyOfRegulator_eq
       v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
       (side.regulator_ne_zero hbroadening)
@@ -395,31 +429,21 @@ noncomputable def continuumBornRadialDenominatorIntegrandOfRegulator
   (p : ℂ) *
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹
 
-/-- The arbitrary-regulator scalar radial integrand is the spectral parameter times the common
+/-- Either surviving Born self-energy radial integrand is its channel numerator times the common
 denominator integrand. -/
-theorem continuumBornRadialScalarIntegrandOfRegulator_eq_spectralParameter_mul_denominatorIntegrand
-    (v m probeEnergy regulator p : ℝ) :
-    continuumBornRadialScalarIntegrandOfRegulator v m probeEnergy regulator p =
-      spectralParameterOfRegulator probeEnergy regulator *
+theorem continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand
+    (channel : BornSelfEnergyChannel) (v m probeEnergy regulator p : ℝ) :
+    continuumBornRadialIntegrandOfRegulator channel v m probeEnergy regulator p =
+      bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *
         continuumBornRadialDenominatorIntegrandOfRegulator
           v m probeEnergy regulator p := by
-  unfold continuumBornRadialScalarIntegrandOfRegulator
-    continuumBornRadialDenominatorIntegrandOfRegulator
-    pauliGreenScalarCoefficientOfRegulator
-  ring
-
-/-- The arbitrary-regulator `σ_z` radial integrand is the mass times the common denominator
-integrand. -/
-theorem continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegrand
-    (v m probeEnergy regulator p : ℝ) :
-    continuumBornRadialZIntegrandOfRegulator v m probeEnergy regulator p =
-      (m : ℂ) * continuumBornRadialDenominatorIntegrandOfRegulator
-        v m probeEnergy regulator p := by
-  unfold continuumBornRadialZIntegrandOfRegulator
-    continuumBornRadialDenominatorIntegrandOfRegulator
-    pauliGreenPauliCoefficientOfRegulator
-  simp only [pauliAxisComponent]
-  ring
+  cases channel <;>
+    simp [continuumBornRadialIntegrandOfRegulator,
+      bornSelfEnergyChannelWeightOfRegulator,
+      continuumBornRadialDenominatorIntegrandOfRegulator,
+      pauliGreenScalarCoefficientOfRegulator,
+      pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent] <;>
+    ring
 
 /-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary
 signed regulator. -/
@@ -435,53 +459,31 @@ noncomputable def finiteCutoffContinuumBornDenominatorIntegral
   finiteCutoffContinuumBornDenominatorIntegralOfRegulator
     v m probeEnergy (side.regulator broadening) pMax
 
-/-- Arbitrary-regulator scalar Born channel factorization. -/
-theorem finiteCutoffContinuumBornScalarIntegralOfRegulator_eq_spectralParameter_mul_denominatorIntegral
-    (v m probeEnergy regulator pMax : ℝ) :
-    finiteCutoffContinuumBornScalarIntegralOfRegulator
-        v m probeEnergy regulator pMax =
-      spectralParameterOfRegulator probeEnergy regulator *
+/-- Arbitrary-regulator factorization of either surviving Born self-energy channel. -/
+theorem finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral
+    (channel : BornSelfEnergyChannel) (v m probeEnergy regulator pMax : ℝ) :
+    finiteCutoffContinuumBornIntegralOfRegulator
+        channel v m probeEnergy regulator pMax =
+      bornSelfEnergyChannelWeightOfRegulator channel m probeEnergy regulator *
         finiteCutoffContinuumBornDenominatorIntegralOfRegulator
           v m probeEnergy regulator pMax := by
-  unfold finiteCutoffContinuumBornScalarIntegralOfRegulator
+  unfold finiteCutoffContinuumBornIntegralOfRegulator
     finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-  simp_rw [continuumBornRadialScalarIntegrandOfRegulator_eq_spectralParameter_mul_denominatorIntegrand]
+  simp_rw [continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegrand]
   rw [intervalIntegral.integral_const_mul]
 
-/-- Arbitrary-regulator `σ_z` Born channel factorization. -/
-theorem finiteCutoffContinuumBornZIntegralOfRegulator_eq_mass_mul_denominatorIntegral
-    (v m probeEnergy regulator pMax : ℝ) :
-    finiteCutoffContinuumBornZIntegralOfRegulator
-        v m probeEnergy regulator pMax =
-      (m : ℂ) * finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-        v m probeEnergy regulator pMax := by
-  unfold finiteCutoffContinuumBornZIntegralOfRegulator
-    finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-  simp_rw [continuumBornRadialZIntegrandOfRegulator_eq_mass_mul_denominatorIntegrand]
-  rw [intervalIntegral.integral_const_mul]
-
-/-- Physical-side scalar channel factorization, retained for downstream broadening-limit consumers. -/
-theorem finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) :
-    finiteCutoffContinuumBornScalarIntegral side v m probeEnergy broadening pMax =
-      spectralParameter side probeEnergy broadening *
+/-- Physical-side factorization of either surviving Born self-energy channel. -/
+theorem finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy broadening pMax : ℝ) :
+    finiteCutoffContinuumBornIntegral channel side v m probeEnergy broadening pMax =
+      bornSelfEnergyChannelWeight channel side m probeEnergy broadening *
         finiteCutoffContinuumBornDenominatorIntegral
           side v m probeEnergy broadening pMax := by
-  simpa [finiteCutoffContinuumBornScalarIntegral,
-    finiteCutoffContinuumBornDenominatorIntegral, spectralParameter] using
-    finiteCutoffContinuumBornScalarIntegralOfRegulator_eq_spectralParameter_mul_denominatorIntegral
-      v m probeEnergy (side.regulator broadening) pMax
-
-/-- Physical-side `σ_z` channel factorization, retained for downstream broadening-limit consumers. -/
-theorem finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral
-    (side : SpectralSide) (v m probeEnergy broadening pMax : ℝ) :
-    finiteCutoffContinuumBornZIntegral side v m probeEnergy broadening pMax =
-      (m : ℂ) * finiteCutoffContinuumBornDenominatorIntegral
-        side v m probeEnergy broadening pMax := by
-  simpa [finiteCutoffContinuumBornZIntegral,
+  simpa [finiteCutoffContinuumBornIntegral, bornSelfEnergyChannelWeight,
     finiteCutoffContinuumBornDenominatorIntegral] using
-    finiteCutoffContinuumBornZIntegralOfRegulator_eq_mass_mul_denominatorIntegral
-      v m probeEnergy (side.regulator broadening) pMax
+    finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral
+      channel v m probeEnergy (side.regulator broadening) pMax
 
 end
 

@@ -29,7 +29,7 @@ open Filter
 open QuantumTheory.Transport
 
 /-- At fixed finite cutoff beyond the on-shell circle, the `σ_z` Born channel obeys
-`Im I_z,s → -sπm/(2v²)` as `η → 0⁺`. This is the imaginary projection of the complex channel
+`Im I_z,s → -sπm/(2v²)` as `η → 0⁺`. This is the imaginary projection of the indexed complex channel
 boundary value. -/
 theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
     (side : SpectralSide) (v m probeEnergy pMax : ℝ)
@@ -37,27 +37,17 @@ theorem tendsto_finiteCutoffContinuumBornZIntegral_im_broadening_zero
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornZIntegral
-          side v m probeEnergy broadening pMax).im)
+        (finiteCutoffContinuumBornIntegral
+          .z side v m probeEnergy broadening pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (m * (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)))) := by
   have hcomplex :=
-    tendsto_finiteCutoffContinuumBornZIntegral_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have him :
-      Tendsto
-        (fun broadening : ℝ =>
-          (finiteCutoffContinuumBornZIntegral
-            side v m probeEnergy broadening pMax).im)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((m : ℂ) *
-            finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-              side v m probeEnergy pMax).im)) := by
-    simpa only [Function.comp_def] using
-      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [Complex.mul_im] using him
+    tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
+      .z side v m probeEnergy pMax hvelocity hmetal hcutoff
+  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  simpa [Function.comp_def, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator, Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the scalar Born channel obeys
 `Im I₀,s → -sπε/(2v²)`. The vanishing regulator cross term is already encoded in the full complex
@@ -68,28 +58,19 @@ theorem tendsto_finiteCutoffContinuumBornScalarIntegral_im_broadening_zero
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornScalarIntegral
-          side v m probeEnergy broadening pMax).im)
+        (finiteCutoffContinuumBornIntegral
+          .scalar side v m probeEnergy broadening pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (probeEnergy *
           (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi)))) := by
   have hcomplex :=
-    tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have him :
-      Tendsto
-        (fun broadening : ℝ =>
-          (finiteCutoffContinuumBornScalarIntegral
-            side v m probeEnergy broadening pMax).im)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (((probeEnergy : ℂ) *
-            finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-              side v m probeEnergy pMax).im)) := by
-    simpa only [Function.comp_def] using
-      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [Complex.mul_im] using him
+    tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
+      .scalar side v m probeEnergy pMax hvelocity hmetal hcutoff
+  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  simpa [Function.comp_def, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator,
+    spectralParameterOfRegulator, Complex.mul_im] using him
 
 /-- The common damping magnitude from the physical-momentum continuum measure simplifies to
 `disorderStrength / (4 ℏ² v²)`. -/
@@ -111,32 +92,20 @@ theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_im_broadeni
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornScalarIntegral
-            side v m probeEnergy broadening pMax)).im)
+        (finiteCutoffContinuumBornSelfEnergyCoefficient
+          .scalar side v m probeEnergy broadening disorderStrength hbar pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
           (probeEnergy *
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hcomplex :=
-    tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_broadening_zero
-      side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have him :
-      Tendsto
-        (fun broadening : ℝ =>
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornScalarIntegral
-              side v m probeEnergy broadening pMax)).im)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            ((probeEnergy : ℂ) *
-              finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-                side v m probeEnergy pMax)).im)) := by
-    simpa only [Function.comp_def] using
-      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [Complex.mul_im] using him
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
+      .scalar side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  simpa [Function.comp_def, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator,
+    spectralParameterOfRegulator, Complex.mul_im] using him
 
 /-- At fixed finite cutoff beyond the on-shell circle, the imaginary part of the `σ_z` Pauli
 coefficient appearing in the continuum Born self-energy has the side-indexed metallic limit. -/
@@ -147,32 +116,19 @@ theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_ze
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornZIntegral
-            side v m probeEnergy broadening pMax)).im)
+        (finiteCutoffContinuumBornSelfEnergyCoefficient
+          .z side v m probeEnergy broadening disorderStrength hbar pMax).im)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
           (m *
             (-(((2 : ℝ) * v ^ 2)⁻¹) * (side.sign * Real.pi))))) := by
   have hcomplex :=
-    tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_broadening_zero
-      side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have him :
-      Tendsto
-        (fun broadening : ℝ =>
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornZIntegral
-              side v m probeEnergy broadening pMax)).im)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            ((m : ℂ) *
-              finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-                side v m probeEnergy pMax)).im)) := by
-    simpa only [Function.comp_def] using
-      Complex.continuous_im.continuousAt.tendsto.comp hcomplex
-  simpa [Complex.mul_im] using him
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
+      .z side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+  have him := Complex.continuous_im.continuousAt.tendsto.comp hcomplex
+  simpa [Function.comp_def, bornSelfEnergyChannelWeight,
+    bornSelfEnergyChannelWeightOfRegulator, SpectralSide.regulator, Complex.mul_im] using him
 
 /-- Retarded continuum Born self-energy projected onto the upper-band Fermi-surface state through
 its gauge-independent rank-one projector. -/
@@ -214,13 +170,11 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     (hbroadening : broadening ≠ 0) :
     finiteCutoffContinuumBornRetardedUpperBandFermiProjection
         v m fermiEnergy broadening disorderStrength hbar pMax =
-      (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornScalarIntegral
-            .retarded v m fermiEnergy broadening pMax) +
+      finiteCutoffContinuumBornSelfEnergyCoefficient .scalar .retarded
+          v m fermiEnergy broadening disorderStrength hbar pMax +
         (((m / fermiEnergy : ℝ) : ℂ) *
-          (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornZIntegral
-              .retarded v m fermiEnergy broadening pMax)) := by
+          finiteCutoffContinuumBornSelfEnergyCoefficient .z .retarded
+            v m fermiEnergy broadening disorderStrength hbar pMax) := by
   have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
   rw [finiteCutoffContinuumBornSelfEnergy_eq .retarded
@@ -279,9 +233,8 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
   have hscalar :
       Tendsto
         (fun broadening : ℝ =>
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornScalarIntegral
-              .retarded v m fermiEnergy broadening pMax)).im)
+          (finiteCutoffContinuumBornSelfEnergyCoefficient .scalar .retarded
+            v m fermiEnergy broadening disorderStrength hbar pMax).im)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds
           ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *
@@ -292,9 +245,8 @@ theorem tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_bro
   have hz :
       Tendsto
         (fun broadening : ℝ =>
-          ((((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornZIntegral
-              .retarded v m fermiEnergy broadening pMax)).im)
+          (finiteCutoffContinuumBornSelfEnergyCoefficient .z .retarded
+            v m fermiEnergy broadening disorderStrength hbar pMax).im)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds
           ((disorderStrength * continuumBornAngularMeasurePrefactor hbar) *

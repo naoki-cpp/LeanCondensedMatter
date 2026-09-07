@@ -7,8 +7,9 @@ set_option linter.style.header false
 
 This module owns the finite-cutoff metallic `η → 0⁺` boundary values of the continuum Born radial
 integrals. The common denominator boundary is packaged as a complex number with its finite real part
-and side-indexed imaginary part kept together; scalar and `σ_z` channel limits are then obtained by
-ordinary complex multiplication before physical damping consumers project to the imaginary part.
+and side-indexed imaginary part kept together; the two surviving Born self-energy channels then
+inherit one indexed complex boundary theorem before physical damping consumers project concrete
+channels to their imaginary parts.
 
 The coordinate-valued denominator limits remain available as analytic ingredients and convenience
 APIs. No ultraviolet removal, renormalization prescription, simultaneous limit, or exact
@@ -174,122 +175,81 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
           (nhdsWithin 0 (Set.Ioi 0)) (nhds Complex.I)))
   simpa only [Complex.re_add_im] using hcomplex
 
-/-- The full `σ_z` Born radial integral converges as a complex number to `m` times the common
-complex denominator boundary value. -/
-theorem tendsto_finiteCutoffContinuumBornZIntegral_broadening_zero
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
+private theorem tendsto_bornSelfEnergyChannelWeight_broadening_zero
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (m probeEnergy : ℝ) :
+    Tendsto
+      (fun broadening : ℝ =>
+        bornSelfEnergyChannelWeight channel side m probeEnergy broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (bornSelfEnergyChannelWeight channel side m probeEnergy 0)) := by
+  cases channel with
+  | scalar =>
+      have hcontinuous :
+          ContinuousAt
+            (fun broadening : ℝ =>
+              bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening) 0 := by
+        unfold bornSelfEnergyChannelWeight bornSelfEnergyChannelWeightOfRegulator
+          spectralParameterOfRegulator SpectralSide.regulator
+        fun_prop
+      exact hcontinuous.tendsto.mono_left inf_le_left
+  | z =>
+      simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator] using
+        (tendsto_const_nhds : Tendsto (fun _ : ℝ => (m : ℂ))
+          (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)))
+
+/-- At fixed finite cutoff beyond the on-shell circle, either surviving Born self-energy channel
+converges to its zero-broadening numerator times the common complex denominator boundary value. -/
+theorem tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy pMax : ℝ)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        finiteCutoffContinuumBornZIntegral
-          side v m probeEnergy broadening pMax)
+        finiteCutoffContinuumBornIntegral
+          channel side v m probeEnergy broadening pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
-        ((m : ℂ) *
+        (bornSelfEnergyChannelWeight channel side m probeEnergy 0 *
           finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
             side v m probeEnergy pMax)) := by
   have hJ :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
       side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have hm :
-      Tendsto (fun _ : ℝ => (m : ℂ))
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)) := tendsto_const_nhds
-  refine (hm.mul hJ).congr' ?_
+  have hweight :=
+    tendsto_bornSelfEnergyChannelWeight_broadening_zero channel side m probeEnergy
+  refine (hweight.mul hJ).congr' ?_
   filter_upwards with broadening
-  rw [finiteCutoffContinuumBornZIntegral_eq_mass_mul_denominatorIntegral]
+  rw [finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral]
 
-/-- The full scalar Born radial integral converges as a complex number to `ε` times the common
-complex denominator boundary value. The vanishing regulator cross term is absorbed automatically by
-complex multiplication rather than split into separate real/imaginary bookkeeping. -/
-theorem tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        finiteCutoffContinuumBornScalarIntegral
-          side v m probeEnergy broadening pMax)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        ((probeEnergy : ℂ) *
-          finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-            side v m probeEnergy pMax)) := by
-  have hJ :=
-    tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have hspectral :
-      Tendsto
-        (fun broadening : ℝ => spectralParameter side probeEnergy broadening)
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds (probeEnergy : ℂ)) := by
-    have hcontinuous :
-        ContinuousAt (fun broadening : ℝ => spectralParameter side probeEnergy broadening) 0 := by
-      unfold spectralParameter spectralParameterOfRegulator SpectralSide.regulator
-      fun_prop
-    have hlimit :
-        Tendsto
-          (fun broadening : ℝ => spectralParameter side probeEnergy broadening)
-          (nhdsWithin 0 (Set.Ioi 0))
-          (nhds (spectralParameter side probeEnergy 0)) :=
-      hcontinuous.tendsto.mono_left inf_le_left
-    simpa [spectralParameter, spectralParameterOfRegulator, SpectralSide.regulator] using hlimit
-  refine (hspectral.mul hJ).congr' ?_
-  filter_upwards with broadening
-  rw [finiteCutoffContinuumBornScalarIntegral_eq_spectralParameter_mul_denominatorIntegral]
-
-/-- Complex scalar-channel coefficient of the finite-cutoff Born self-energy has the metallic
-positive-broadening boundary value obtained by multiplying the scalar radial boundary by the common
-continuum prefactor. -/
-theorem tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_broadening_zero
-    (side : SpectralSide)
+/-- The finite-cutoff coefficient of either surviving Born self-energy channel has the corresponding
+metallic positive-broadening boundary value. -/
+theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun broadening : ℝ =>
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornScalarIntegral
-            side v m probeEnergy broadening pMax))
+        finiteCutoffContinuumBornSelfEnergyCoefficient
+          channel side v m probeEnergy broadening disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          ((probeEnergy : ℂ) *
+          (bornSelfEnergyChannelWeight channel side m probeEnergy 0 *
             finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
               side v m probeEnergy pMax))) := by
   have hchannel :=
-    tendsto_finiteCutoffContinuumBornScalarIntegral_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  exact (tendsto_const_nhds : Tendsto
-    (fun _ : ℝ => ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))
-    (nhdsWithin 0 (Set.Ioi 0))
-    (nhds ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))).mul hchannel
-
-/-- Complex `σ_z`-channel coefficient of the finite-cutoff Born self-energy has the metallic
-positive-broadening boundary value obtained by multiplying the `σ_z` radial boundary by the common
-continuum prefactor. -/
-theorem tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_broadening_zero
-    (side : SpectralSide)
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          finiteCutoffContinuumBornZIntegral
-            side v m probeEnergy broadening pMax))
+    tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
+      channel side v m probeEnergy pMax hvelocity hmetal hcutoff
+  simpa [finiteCutoffContinuumBornSelfEnergyCoefficient,
+    finiteCutoffContinuumBornSelfEnergyCoefficientOfRegulator,
+    finiteCutoffContinuumBornIntegral] using
+    (tendsto_const_nhds : Tendsto
+      (fun _ : ℝ => ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-          ((m : ℂ) *
-            finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
-              side v m probeEnergy pMax))) := by
-  have hchannel :=
-    tendsto_finiteCutoffContinuumBornZIntegral_broadening_zero
-      side v m probeEnergy pMax hvelocity hmetal hcutoff
-  exact (tendsto_const_nhds : Tendsto
-    (fun _ : ℝ => ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))
-    (nhdsWithin 0 (Set.Ioi 0))
-    (nhds ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))).mul hchannel
+      (nhds ((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ))).mul hchannel
 
 end
 

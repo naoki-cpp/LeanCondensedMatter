@@ -15,7 +15,7 @@ The continuum Born self-energy already exists at finite cutoff and finite extern
 ```
 
 This module puts those existing coefficients back into the massive-Dirac Dyson shift without first
-taking `η → 0⁺`.  For either spectral side,
+taking `η → 0⁺`. For either spectral side,
 
 ```text
 ε̃_s = z_s(ε,η) - Σ₀,s,
@@ -27,7 +27,7 @@ G_B,s = D_s⁻¹ (ε̃_s I + v pₓ σₓ + v pᵧ σᵧ + m̃_s σ_z).
 The sign `m̃_s = m + Σ_z,s` follows from
 `G₀⁻¹ - Σ = (z_s - Σ₀) I - v p·σ - (m + Σ_z) σ_z`.
 
-This is a finite-cutoff Born-Dyson approximation candidate.  It is not identified with the exact
+This is a finite-cutoff Born-Dyson approximation candidate. It is not identified with the exact
 disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivity-limit statement is made
 here.
 -/
@@ -38,63 +38,19 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Scalar Pauli coefficient of the existing finite-cutoff continuum Born self-energy. -/
-noncomputable def finiteCutoffContinuumBornScalarSelfEnergyCoefficient
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-    finiteCutoffContinuumBornScalarIntegral
-      side v m probeEnergy broadening pMax)
-
-/-- `σ_z` Pauli coefficient of the existing finite-cutoff continuum Born self-energy. -/
-noncomputable def finiteCutoffContinuumBornZSelfEnergyCoefficient
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-    finiteCutoffContinuumBornZIntegral
-      side v m probeEnergy broadening pMax)
-
-/-- Named coefficient form of the existing finite-cutoff continuum Born self-energy. -/
-theorem finiteCutoffContinuumBornSelfEnergy_eq_coefficients
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    finiteCutoffContinuumBornSelfEnergy
-        side v m probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornScalarSelfEnergyCoefficient
-          side v m probeEnergy broadening disorderStrength hbar pMax • 1 +
-        finiteCutoffContinuumBornZSelfEnergyCoefficient
-          side v m probeEnergy broadening disorderStrength hbar pMax • matrixOperator sigmaZ := by
-  simpa [finiteCutoffContinuumBornScalarSelfEnergyCoefficient,
-    finiteCutoffContinuumBornZSelfEnergyCoefficient] using
-    finiteCutoffContinuumBornSelfEnergy_eq
-      side v m probeEnergy broadening disorderStrength hbar pMax hbroadening
-
-@[simp] theorem finiteCutoffContinuumBornScalarSelfEnergyCoefficient_zero_disorder
-    (side : SpectralSide) (v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornScalarSelfEnergyCoefficient
-      side v m probeEnergy broadening 0 hbar pMax = 0 := by
-  simp [finiteCutoffContinuumBornScalarSelfEnergyCoefficient]
-
-@[simp] theorem finiteCutoffContinuumBornZSelfEnergyCoefficient_zero_disorder
-    (side : SpectralSide) (v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornZSelfEnergyCoefficient
-      side v m probeEnergy broadening 0 hbar pMax = 0 := by
-  simp [finiteCutoffContinuumBornZSelfEnergyCoefficient]
-
 /-- Finite-`η` Born-Dyson effective spectral energy `z_s - Σ₀,s`. -/
 noncomputable def finiteCutoffContinuumBornEffectiveEnergy
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   spectralParameter side probeEnergy broadening -
-    finiteCutoffContinuumBornScalarSelfEnergyCoefficient
+    finiteCutoffContinuumBornSelfEnergyCoefficient .scalar
       side v m probeEnergy broadening disorderStrength hbar pMax
 
 /-- Finite-`η` Born-Dyson effective Dirac mass `m + Σ_z,s`. -/
 noncomputable def finiteCutoffContinuumBornEffectiveMass
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (m : ℂ) + finiteCutoffContinuumBornZSelfEnergyCoefficient
+  (m : ℂ) + finiteCutoffContinuumBornSelfEnergyCoefficient .z
     side v m probeEnergy broadening disorderStrength hbar pMax
 
 /-- Quadratic denominator of the finite-`η` Born-Dyson massive-Dirac propagator candidate. -/
@@ -281,7 +237,7 @@ theorem finiteCutoffContinuumBornDysonShiftOperator_eq_matrix
         (finiteCutoffContinuumBornDysonShiftMatrix
           side v m px py probeEnergy broadening disorderStrength hbar pMax) := by
   rw [finiteCutoffContinuumBornDysonShiftOperator,
-    finiteCutoffContinuumBornSelfEnergy_eq_coefficients
+    finiteCutoffContinuumBornSelfEnergy_eq
       side v m probeEnergy broadening disorderStrength hbar pMax hbroadening,
     hamiltonianOperator_eq_pauli]
   have hmatrix :

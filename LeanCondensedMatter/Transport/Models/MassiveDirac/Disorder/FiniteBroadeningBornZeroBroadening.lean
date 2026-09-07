@@ -59,8 +59,8 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero
         (finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
           side v m probeEnergy disorderStrength hbar pMax)) := by
   have hsigma :=
-    tendsto_finiteCutoffContinuumBornScalarSelfEnergyCoefficient_broadening_zero
-      side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
+      .scalar side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hspectral :
       Tendsto
         (fun broadening : ℝ => spectralParameter side probeEnergy broadening)
@@ -73,8 +73,9 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero
       hcontinuous.tendsto.mono_left
         (show nhdsWithin (0 : ℝ) (Set.Ioi 0) ≤ nhds 0 from inf_le_left)
   simpa [finiteCutoffContinuumBornEffectiveEnergy,
-    finiteCutoffContinuumBornScalarSelfEnergyCoefficient,
-    finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
+    bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
+    SpectralSide.regulator, spectralParameterOfRegulator] using
     hspectral.sub hsigma
 
 /-- The finite-`η` effective Dirac mass converges to its full complex fixed-cutoff boundary. -/
@@ -92,14 +93,15 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveMass_broadening_zero
         (finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
           side v m probeEnergy disorderStrength hbar pMax)) := by
   have hsigma :=
-    tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_broadening_zero
-      side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero
+      .z side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hmass :
       Tendsto (fun _ : ℝ => (m : ℂ))
         (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)) := tendsto_const_nhds
   simpa [finiteCutoffContinuumBornEffectiveMass,
-    finiteCutoffContinuumBornZSelfEnergyCoefficient,
-    finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
+    bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
+    SpectralSide.regulator] using
     hmass.add hsigma
 
 /-- Fixed-momentum zero-broadening boundary of the finite-cutoff Born-Dyson quadratic denominator. -/
