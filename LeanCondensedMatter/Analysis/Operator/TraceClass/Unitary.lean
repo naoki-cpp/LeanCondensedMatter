@@ -41,8 +41,9 @@ theorem unitaryConjugate_rankOne (U : H →L[ℂ] H) (x y : H) :
     unitaryConjugate U (InnerProductSpace.rankOne ℂ x y) =
       InnerProductSpace.rankOne ℂ (U x) (U y) := by
   ext z
-  simp only [unitaryConjugate, mul_apply_eq_comp, InnerProductSpace.rankOne_apply, map_smul]
-  simpa using congrArg (fun c : ℂ => c • U x)
+  simp only [unitaryConjugate, mul_apply_eq_comp, InnerProductSpace.rankOne_apply, map_smul,
+    ContinuousLinearMap.star_eq_adjoint]
+  exact congrArg (fun c : ℂ => c • U x)
     (ContinuousLinearMap.adjoint_inner_right U y z)
 
 /-- Unitary conjugation maps each eigenspace to the corresponding eigenspace with the same
