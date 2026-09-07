@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "name": "MassiveDirac clean Hall benchmark",
+  "nodes": [
+    {
+      "id": "intrinsic_prefactor",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallPrefactorFromMomentumMeasure_eq",
+      "statement": "∀ (e hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallPrefactorFromMomentumMeasure e hbar =\n    -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar)",
+      "dependsOn": [],
+      "meaning": "Normalize the physical-momentum Berry/Kubo Hall prefactor."
+    },
+    {
+      "id": "intrinsic_uv_limit",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_intrinsicHallConductivityCutoff_atTop",
+      "statement": "∀ (e hbar m εF : ℝ),\n  |m| ≤ εF →\n    Filter.Tendsto (QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivityCutoff e hbar m εF)\n      Filter.atTop (nhds (QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m εF))",
+      "dependsOn": [],
+      "meaning": "Remove the UV cutoff from the occupation-derived intrinsic Hall conductivity."
+    },
+    {
+      "id": "intrinsic_closed_form",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity_eq_massiveDirac",
+      "statement": "∀ (e hbar m εF : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m εF =\n    -(e ^ 2 / (2 * QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar)) * (m / εF)",
+      "dependsOn": [
+        "intrinsic_prefactor"
+      ],
+      "meaning": "Identify the clean intrinsic Hall conductivity with the massive-Dirac closed form."
+    },
+    {
+      "id": "bastin_cutoff_bridge",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff",
+      "statement": "∀ (e hbar m εF Λ : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinCleanHallConductivityCutoff e hbar m εF Λ =\n    QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivityCutoff e hbar m εF Λ",
+      "dependsOn": [],
+      "meaning": "Match the finite-cutoff clean Bastin normalization to the intrinsic Hall normalization."
+    },
+    {
+      "id": "bastin_uv_limit",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinCleanHallConductivityCutoff_atTop",
+      "statement": "∀ (e hbar m εF : ℝ),\n  |m| ≤ εF →\n    Filter.Tendsto (QuantumTheory.Transport.Models.MassiveDirac.bastinCleanHallConductivityCutoff e hbar m εF)\n      Filter.atTop (nhds (QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m εF))",
+      "dependsOn": [
+        "intrinsic_uv_limit",
+        "bastin_cutoff_bridge"
+      ],
+      "meaning": "Remove the UV cutoff from the normalized clean Bastin Hall conductivity."
+    },
+    {
+      "id": "clean_bastin_benchmark",
+      "theorem": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac",
+      "statement": "∀ (e hbar m εF : ℝ),\n  |m| ≤ εF →\n    Filter.Tendsto (QuantumTheory.Transport.Models.MassiveDirac.bastinCleanHallConductivityCutoff e hbar m εF)\n      Filter.atTop\n      (nhds (-(e ^ 2 / (2 * QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar)) * (m / εF)))",
+      "dependsOn": [
+        "intrinsic_closed_form",
+        "bastin_uv_limit"
+      ],
+      "meaning": "Reach the closed massive-Dirac Hall benchmark from the clean Bastin route."
+    }
+  ]
+}

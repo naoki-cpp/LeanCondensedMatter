@@ -76,6 +76,85 @@ jobs:
             fi
           done
 
+  # Produce machine-readable compiled and planned proof state for every successful checkout.
+  # This is an advisory developer artifact, not a pull-request correctness gate.
+  proof-state:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Restore compiled project
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          fail-on-cache-miss: true
+
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Generate compiled theorem proof state
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
+
+      - name: Resolve planned proof DAG
+        run: |
+          python3 scripts/proof_plan.py \
+            --catalog docs/generated/theorems.json \
+            --plans proof-plans \
+            --output proof-plan-state.json \
+            --summary proof-plan-summary.md \
+            --lean-check proof-plan-check.lean
+
+      - name: Check planned theorem statements
+        run: lake env lean proof-plan-check.lean
+
+      - name: Add proof state summary
+        if: success()
+        shell: bash
+        run: |
+          echo "## Compiled theorem proof state" >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Dependency edges):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          cat proof-plan-summary.md >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifacts contain the compiled theorem dependency graph and the resolved planned proof DAG." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload proof state
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-state
+          path: |
+            docs/generated/theorems.md
+            docs/generated/theorems.json
+            proof-plan-state.json
+            proof-plan-summary.md
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload proof state log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-state-log
+          path: theorem-catalog.log
+          if-no-files-found: warn
+          retention-days: 7
+
   # These independent compiled checks are intentionally parallel: they all consume the same
   # successful build and optimize pull-request wall-clock time rather than runner-minutes.
   compiled-checks:
@@ -196,40 +275,6 @@ jobs:
           if [ -f unused-hypotheses.md ]; then
             cat unused-hypotheses.md >> "$GITHUB_STEP_SUMMARY"
           fi
-
-      - name: Generate theorem catalog
-        shell: bash
-        run: |
-          set -o pipefail
-          lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
-
-      - name: Add theorem catalog summary
-        if: success()
-        run: |
-          echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
-          grep '^Theorems:' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload theorem catalog
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: theorem-catalog
-          path: |
-            docs/generated/theorems.md
-            docs/generated/theorems.json
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload theorem catalog generator log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: theorem-catalog-log
-          path: theorem-catalog.log
-          if-no-files-found: warn
-          retention-days: 7
 
       - name: Build API documentation
         shell: bash
