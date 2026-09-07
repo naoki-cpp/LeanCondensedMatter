@@ -165,7 +165,7 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
 
 /-- Real numerator multiplying the common retarded-advanced denominator product in the selected
 output direction. -/
-private def continuumBornRetardedAdvancedPauliXAngularNumerator
+def continuumBornRetardedAdvancedPauliXAngularNumerator
     (output : Direction2) (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
   match output with
   | .x => 2 * Real.pi *
