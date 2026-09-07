@@ -15,6 +15,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeni
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningDomination
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningRegularity
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
@@ -43,7 +44,9 @@ hypothesis needed by the inverse. Radial integration attaches the scalar-disorde
 momentum measure exactly once before the canonical entries are consumed by the ladder formulas. The
 zero-broadening integral bridge uses dominated convergence. At fixed positive disorder, an explicit
 real-renormalization bound below one makes the boundary RA denominator nonzero and discharges the
-compact radial regularity needed for the integrated limit.
+compact radial regularity needed for the integrated limit. The resulting integrated-rung boundary is
+then propagated through the canonical two-component ladder under an explicit nonzero boundary
+determinant.
 `FiniteBroadeningLadderRegularity` owns the shared determinant condition that licenses interpreting
 that algebraic coefficient pair as the actual ladder fixed point. For the zero-external-broadening
 Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal rung, while
