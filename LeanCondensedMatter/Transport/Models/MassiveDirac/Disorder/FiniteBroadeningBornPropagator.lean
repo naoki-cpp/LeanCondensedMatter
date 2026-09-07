@@ -27,9 +27,10 @@ G_B,s = D_s⁻¹ (ε̃_s I + v pₓ σₓ + v pᵧ σᵧ + m̃_s σ_z).
 The sign `m̃_s = m + Σ_z,s` follows from
 `G₀⁻¹ - Σ = (z_s - Σ₀) I - v p·σ - (m + Σ_z) σ_z`.
 
-This is a finite-cutoff Born-Dyson approximation candidate. It is not identified with the exact
-disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivity-limit statement is made
-here.
+The same propagator is exposed in the shared polar Pauli representation for downstream radial and
+angular reductions. This is a finite-cutoff Born-Dyson approximation candidate. It is not identified
+with the exact disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivity-limit
+statement is made here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -113,6 +114,50 @@ noncomputable def finiteCutoffContinuumBornDysonGreenOperator
   matrixOperator
     (finiteCutoffContinuumBornDysonGreenMatrix
       side v m px py probeEnergy broadening disorderStrength hbar pMax)
+
+/-- The Cartesian finite-`η` Born-Dyson propagator reduces exactly to the shared polar Pauli form. -/
+theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+    (side : SpectralSide)
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenOperator
+        side v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      polarPauliOperator
+        (finiteCutoffContinuumBornDysonScalarCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .x
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .z
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
+  have htrig : Real.cos θ ^ 2 + Real.sin θ ^ 2 = 1 := by
+    nlinarith [Real.sin_sq_add_cos_sq θ]
+  have hradial :
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 = p ^ 2 + 0 ^ 2 := by
+    calc
+      (p * Real.cos θ) ^ 2 + (p * Real.sin θ) ^ 2 =
+          p ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) := by ring
+      _ = p ^ 2 := by rw [htrig]; ring
+      _ = p ^ 2 + 0 ^ 2 := by ring
+  have hden :
+      finiteCutoffContinuumBornDysonDenominator
+          side v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax =
+        finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold finiteCutoffContinuumBornDysonDenominator
+    rw [hradial]
+  simpa [finiteCutoffContinuumBornDysonGreenOperator,
+    finiteCutoffContinuumBornDysonGreenMatrix,
+    finiteCutoffContinuumBornDysonScalarCoefficient,
+    finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent, hden] using
+    (commonDenominatorPauliOperator_polar_eq
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      v p θ)
 
 /-- Matrix whose inverse is represented by `finiteCutoffContinuumBornDysonGreenMatrix`: the exact
 finite-cutoff Born-Dyson shift `(z_s - Σ₀)I - vpₓσₓ - vpᵧσᵧ - (m + Σ_z)σ_z`. -/
