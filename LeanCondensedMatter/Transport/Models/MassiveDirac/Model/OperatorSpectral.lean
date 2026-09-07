@@ -14,12 +14,12 @@ generic transport resolvent, without choosing eigenvectors or introducing a resp
 Away from the band degeneracy,
 
 ```text
-G(z) = (z - E₋)⁻¹ P₋ + (z - E₊)⁻¹ P₊
+G(z) = ∑ₙ (z - Eₙ)⁻¹ Pₙ
 ```
 
 is a left inverse of `z I - H₀`. The operator-projector algebra, direction-indexed current band
-blocks, and scalar coefficient form of that spectral expansion, including its square and arbitrary
-nonzero signed-regulator realization, are therefore model-level spectral infrastructure.
+blocks, and finite-band scalar coefficient form of that spectral expansion, including its square and
+arbitrary nonzero signed-regulator realization, are therefore model-level spectral infrastructure.
 Kubo–Bastin, Středa, propagator, and disorder consumers remain downstream.
 -/
 
@@ -108,32 +108,21 @@ noncomputable def projectorResolvent
     projectorResolventCoefficient z band v m px py •
       bandProjectorOperator band v m px py
 
-/-- The finite-band projector resolvent expanded into its lower- and upper-band terms. -/
-theorem projectorResolvent_eq_coefficients
-    (z : ℂ) (v m px py : ℝ) :
-    projectorResolvent z v m px py =
-      projectorResolventCoefficient z .lower v m px py •
-          bandProjectorOperator .lower v m px py +
-        projectorResolventCoefficient z .upper v m px py •
-          bandProjectorOperator .upper v m px py := by
-  simp [projectorResolvent]
-
-/-- Squaring the two-band projector resolvent squares only its scalar spectral coefficients. -/
+/-- Squaring the finite-band projector resolvent squares only its scalar spectral coefficients. -/
 theorem projectorResolvent_sq
     (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     projectorResolvent z v m px py ^ 2 =
-      projectorResolventCoefficient z .lower v m px py ^ 2 •
-          bandProjectorOperator .lower v m px py +
-        projectorResolventCoefficient z .upper v m px py ^ 2 •
-          bandProjectorOperator .upper v m px py := by
+      ∑ band : Band,
+        projectorResolventCoefficient z band v m px py ^ 2 •
+          bandProjectorOperator band v m px py := by
   have hlu :
       bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
     simpa using bandProjectorOperator_mul_oppositeBand .lower v m px py hE
   have hul :
       bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
     simpa using bandProjectorOperator_mul_oppositeBand .upper v m px py hE
-  rw [projectorResolvent_eq_coefficients, pow_two]
-  rw [add_mul, mul_add, mul_add]
+  simp only [projectorResolvent, sum_band]
+  rw [pow_two, add_mul, mul_add, mul_add]
   simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [bandProjectorOperator_mul_self .lower v m px py hE]
   rw [bandProjectorOperator_mul_self .upper v m px py hE]
@@ -146,15 +135,15 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
     (hupper : z - ((bandEnergy .upper v m px py : ℝ) : ℂ) ≠ 0) :
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
         projectorResolvent z v m px py = 1 := by
-  rw [projectorResolvent_eq_coefficients, mul_add]
-  rw [mul_smul_comm, mul_smul_comm]
+  simp only [projectorResolvent, sum_band]
+  rw [mul_add, mul_smul_comm, mul_smul_comm]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .lower v m px py hE]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .upper v m px py hE]
   rw [smul_smul, smul_smul]
   simp only [projectorResolventCoefficient, inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
   exact bandProjectorOperator_lower_add_upper v m px py
 
-/-- The regulated massive-Dirac resolvent equals the gauge-free two-projector expansion for any
+/-- The regulated massive-Dirac resolvent equals the gauge-free finite-projector expansion for any
 nonzero signed imaginary regulator. -/
 theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
     (v m px py probeEnergy regulator : ℝ)
