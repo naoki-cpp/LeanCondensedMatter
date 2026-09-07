@@ -90,8 +90,7 @@ bands are integrated over the same cutoff interval; the generic spectral occupat
 filled lower band and the occupied part of the upper band. -/
 def zeroTemperatureOccupiedBerryWeightCutoff
     (m fermiEnergy Λ : ℝ) : ℝ :=
-  zeroTemperatureOccupiedBandBerryWeightCutoff .lower m fermiEnergy Λ +
-    zeroTemperatureOccupiedBandBerryWeightCutoff .upper m fermiEnergy Λ
+  ∑ band : Band, zeroTemperatureOccupiedBandBerryWeightCutoff band m fermiEnergy Λ
 
 /-- If `|m| ≤ εF ≤ Λ`, zero-temperature occupation leaves the lower-band Berry density unchanged
 throughout the finite cutoff interval, with the massless endpoint handled by the vanishing density. -/
@@ -156,7 +155,8 @@ theorem zeroTemperatureOccupiedBerryWeightCutoff_eq
       zeroTemperatureOccupiedRadialBerryEnergyDensity, radialBerryEnergyDensity, hm]
   · have hmAbsPos : 0 < |m| := abs_pos.mpr hm
     unfold zeroTemperatureOccupiedBerryWeightCutoff
-    rw [zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hmF hFΛ,
+    rw [sum_band,
+      zeroTemperatureOccupiedBandBerryWeightCutoff_lower_eq m εF Λ hmF hFΛ,
       zeroTemperatureOccupiedBandBerryWeightCutoff_upper_eq m εF Λ hmF hFΛ,
       energyShellBerryWeight_eq .lower m |m| Λ hmAbsPos (hmF.trans hFΛ),
       energyShellBerryWeight_eq .upper m |m| εF hmAbsPos hmF]
