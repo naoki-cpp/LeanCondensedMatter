@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagatorPolar
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
@@ -21,8 +22,9 @@ K = [[X,-Y],[Y,X]].
 Angular and radial rung coefficients are indexed by their output/input directions. Coordinate-
 specific consumers specialize those indices, while the ladder uses the canonical entries `Kxx`
 and `Kyx`. Radial integration attaches the polar Jacobian `p dp`, one scalar-disorder line, and the
-physical momentum measure `momentumMeasurePrefactor hbar` exactly once. Their interpretation as the
-actual fixed point requires the shared determinant condition owned by `FiniteBroadeningLadderRegularity`.
+physical momentum measure `momentumMeasurePrefactor hbar` exactly once. This module also owns the
+common RA denominator form and the determinant condition that licenses interpreting the algebraic
+coefficient pair as the actual ladder fixed point.
 
 This module does not insert the vertex into Kubo/Středa, take broadening or disorder limits, or
 identify the Born-Dyson approximation with an exact disorder average.
@@ -126,6 +128,73 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
     inPlaneRotationCoefficient, aR, aA, bR, bA, dR, dA, sub_eq_add_neg] using
     (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA alpha beta)
 
+/-! ## Common denominator form -/
+
+/-- Numerator of entry `(i,j)` of the finite-`η` Born-Dyson in-plane rung before the common RA
+denominator is attached. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+    (i j : Direction2)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  inPlaneRotationCoefficient
+    (finiteCutoffContinuumBornEffectiveEnergy
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornEffectiveEnergy
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax -
+      finiteCutoffContinuumBornEffectiveMass
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornEffectiveMass
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax)
+    (Complex.I *
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax *
+        finiteCutoffContinuumBornEffectiveMass
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax -
+      finiteCutoffContinuumBornEffectiveEnergy
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax *
+        finiteCutoffContinuumBornEffectiveMass
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax))
+    i j
+
+/-- The common finite-`η` RA denominator product is nonzero whenever the Born-Dyson invertibility
+hypotheses hold. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+      v m p probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+  exact mul_ne_zero
+    (finiteCutoffContinuumBornDysonDenominator_ne_zero
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax)
+    (finiteCutoffContinuumBornDysonDenominator_ne_zero
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax)
+
+/-- Closed common-denominator form of every entry `(i,j)` of the full-angle finite-`η` Born-Dyson
+retarded-advanced rung. Coordinate-specific consumers specialize `i` and `j`. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
+    (i j : Direction2)
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+        i j v m p probeEnergy broadening disorderStrength hbar pMax =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+          v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+        finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+          i j v m probeEnergy broadening disorderStrength hbar pMax := by
+  cases i <;> cases j <;>
+    simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
+      inPlaneRotationCoefficient,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      pauliRungAngularXCoefficient, pauliRungAngularYCoefficient,
+      finiteCutoffContinuumBornDysonScalarCoefficient,
+      finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
+      mul_inv_rev] <;>
+    ring
+
 /-! ## Radial normalization -/
 
 /-- Normalized finite-`η` radial current-rung entry `(i,j)`. The angular `2π` is already included
@@ -153,6 +222,24 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand]
 
 /-! ## Ladder specialization -/
+
+/-- Regularity condition under which the finite-cutoff Born-Dyson in-plane ladder coefficient pair
+represents the actual fixed-point solution. -/
+def finiteCutoffContinuumBornDysonLadderRegular
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : Prop :=
+  inPlaneLadderDeterminant
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+        .x .x v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+        .y .x v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+
+/-- At zero disorder the finite-cutoff Born-Dyson ladder determinant is one. -/
+@[simp]
+theorem finiteCutoffContinuumBornDysonLadderRegular_zero_disorder
+    (v m probeEnergy broadening hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening 0 hbar pMax := by
+  simp [finiteCutoffContinuumBornDysonLadderRegular, inPlaneLadderDeterminant]
 
 /-- Output component of the normalized finite-`η` Born-Dyson ladder fixed point for a bare
 `σₓ` source. The interpretation as the actual fixed-point coefficient requires
