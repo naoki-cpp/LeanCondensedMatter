@@ -1,6 +1,6 @@
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.BornDysonStreda
 
 set_option linter.style.header false
 
@@ -9,8 +9,9 @@ set_option linter.style.header false
 
 Public umbrella for longitudinal electrical conductivity of the two-dimensional massive Dirac
 model. It exposes the zero-temperature relaxation-time benchmark, its microscopic Born transport-
-lifetime specialization, and the finite-cutoff finite-`η` Born-Dyson Středa surface conductivity
-bridge.
+lifetime specialization, and the source-`.x` specialization of the finite-cutoff finite-`η`
+Born-Dyson Středa surface conductivity bridge owned by
+`MassiveDirac.Conductivity.FiniteBroadeningBornLadder`.
 
 Finite-broadening Born-Dyson propagator and vertex algebra remain owned by `MassiveDirac.Disorder`.
 The model-specific pointwise Středa response and finite-cutoff polar momentum integration are owned
