@@ -10,8 +10,9 @@ set_option linter.style.header false
 Interchanging the positive-zero-broadening limit with the finite radial momentum integral uses a
 model-specific momentum-independent lower bound on the interband gap from the mass magnitude.
 
-On the radial axis `pᵧ = 0`, the interband current trace is also purely imaginary. This file records
-those two inputs in a form adapted to uniform spectator and dominated-convergence bounds.
+On the radial axis `pᵧ = 0`, the canonical opposite-band current block is purely imaginary. This file
+records that input only as local proof data for the radial Bastin blocks consumed by the uniform
+spectator and dominated-convergence bounds.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -35,9 +36,7 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
   exact lt_of_lt_of_le hradius
     (two_mul_abs_mass_le_abs_interbandEnergyGap band v m px py)
 
-/-- On the radial axis the gauge-independent Hall interband force numerator is purely imaginary.
-Its imaginary coefficient is the one already used by the Berry-curvature bridge. -/
-theorem forceMatrixTraceNumerator_radial
+private theorem forceMatrixTraceNumerator_radial
     (band : Band) (v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
     forceMatrixTraceNumerator .x .y band v m p 0 =
       (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
@@ -49,27 +48,24 @@ theorem forceMatrixTraceNumerator_radial
     field_simp [hEc] <;>
     ring_nf
 
-/-- The physical Hall interband current trace on the radial axis is therefore purely imaginary. -/
-theorem interbandCurrentTrace_radial
+private theorem currentBandBlockTrace_interband_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    interbandCurrentTrace .x .y band e v m p 0 =
+    currentBandBlockTrace .x .y band (oppositeBand band) e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
-  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y,
+  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator .x .y,
     forceMatrixTraceNumerator_radial band v m p hE]
   ring
 
-/-- The natural radial `x-y` Bastin block at a target-band pole is the opposite-band current trace,
-now in explicit purely-imaginary form. -/
+/-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
     bastinBandBlockTrace .x .y (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
-  rw [bastinBandBlockTrace_opposite_source .x .y band e v m p 0,
-    interbandCurrentTrace_radial (oppositeBand band) e v m p hE]
-  cases band <;> simp [oppositeBand, bandSign]
-  all_goals ring
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
+  simpa [bandSign_oppositeBand] using
+    currentBandBlockTrace_interband_radial (oppositeBand band) e v m p hE
 
 /-- The radial `y-x` block has the opposite imaginary sign. -/
 theorem bastinYXBandBlockTrace_opposite_source_radial
@@ -77,8 +73,8 @@ theorem bastinYXBandBlockTrace_opposite_source_radial
     bastinBandBlockTrace .y .x (oppositeBand band) band e v m p 0 =
       -((((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I) := by
-  rw [bastinBandBlockTrace_swap_opposite_source .x .y band e v m p 0,
-    interbandCurrentTrace_radial band e v m p hE]
+  rw [bastinBandBlockTrace_swap_eq_currentBandBlockTrace,
+    currentBandBlockTrace_interband_radial band e v m p hE]
   push_cast
   ring
 
