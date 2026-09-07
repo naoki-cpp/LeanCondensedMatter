@@ -164,10 +164,7 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficient
     .x .x v m probeEnergy broadening disorderStrength hbar pMax
   let y := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
     .y .x v m probeEnergy broadening disorderStrength hbar pMax
-  inPlaneRotationCoefficient
-    (inPlaneLadderSolvedXCoefficient x y)
-    (inPlaneLadderSolvedYCoefficient x y)
-    output .x
+  inPlaneLadderSolvedCoefficient output x y
 
 @[simp] theorem finiteCutoffContinuumBornDysonLadderSolvedCoefficient_zero_disorder
     (output : Direction2) (v m probeEnergy broadening hbar pMax : ℝ) :
@@ -176,8 +173,9 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficient
       inPlaneRotationCoefficient 1 0 output .x := by
   cases output <;>
     simp [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
-      inPlaneRotationCoefficient, inPlaneLadderSolvedXCoefficient,
-      inPlaneLadderSolvedYCoefficient, inPlaneLadderDeterminant]
+      inPlaneLadderSolvedCoefficient, inPlaneRotationCoefficient,
+      inPlaneLadderSolvedXCoefficient, inPlaneLadderSolvedYCoefficient,
+      inPlaneLadderDeterminant]
 
 end
 
