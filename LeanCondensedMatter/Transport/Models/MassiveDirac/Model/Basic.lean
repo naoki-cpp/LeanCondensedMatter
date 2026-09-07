@@ -133,7 +133,7 @@ def bandSign : Band → ℝ
 
 @[simp] theorem bandSign_oppositeBand (band : Band) :
     bandSign (oppositeBand band) = -bandSign band := by
-  cases band <;> rfl
+  cases band <;> simp [oppositeBand, bandSign]
 
 /-- Band energy `E_± = ±E`. -/
 def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
