@@ -8,14 +8,14 @@ set_option linter.style.header false
 # Pointwise zero-broadening boundary for the massive-Dirac Bastin kernel
 
 The finite-broadening Bastin decomposition is not allowed to be turned into the clean Hall response
-by a pointwise substitution `η = 0`.  Away from the discrete band energies, the retarded and
+by a pointwise substitution `η = 0`. Away from the discrete band energies, the retarded and
 advanced scalar resolvent coefficients approach the same real-energy resolvent, so their spectral
-difference vanishes.  Consequently every fixed-energy band block, and hence the complete
-projector-expanded Bastin trace, tends pointwise to zero as the broadening tends to zero.
+difference vanishes. Consequently every fixed-energy band block, and hence the complete
+projector-expanded Hall trace, tends pointwise to zero as the broadening tends to zero.
 
 This is the expected distributional boundary: the nonzero clean Hall response is recovered only
 after the energy kernel is paired with an occupation and integrated before the zero-broadening
-limit.  The present file deliberately proves only the pointwise statement.  It does not interchange
+limit. The present file deliberately proves only the pointwise statement. It does not interchange
 an energy integral with a limit and it does not introduce a delta-distribution identity.
 -/
 
@@ -143,7 +143,7 @@ theorem tendsto_interbandBastinTraceContribution_zero
   simpa [interbandBastinTraceContribution] using hlu.add hul
 
 /-- Away from the Dirac degeneracy and away from both band energies, the full projector-expanded
-Bastin trace tends pointwise to zero as `η → 0`. -/
+Hall Bastin trace tends pointwise to zero as `η → 0`. -/
 theorem tendsto_projectorBastinTraceIntegrand_zero
     (e v m px py probeEnergy : ℝ)
     (hE : energy v m px py ≠ 0)
@@ -151,7 +151,7 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
     (hupper : probeEnergy ≠ bandEnergy .upper v m px py) :
     Tendsto
       (fun broadening : ℝ =>
-        projectorBastinTraceIntegrand e v m px py probeEnergy broadening)
+        projectorBastinTraceIntegrand .x .y e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hdiag := tendsto_diagonalBastinTraceContribution_zero
     e v m px py probeEnergy hlower hupper
