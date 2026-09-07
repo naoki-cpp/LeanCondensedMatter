@@ -89,26 +89,6 @@ private theorem im_inner_self_continuumBornRadialGreenKernelOfRegulator_apply
   unfold continuumBornRadialDissipationDensity
   ring
 
-private theorem continuous_continuumBornRadialGreenKernelForDissipation
-    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous
-      (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) := by
-  have hscalar :=
-    continuous_continuumBornRadialIntegrandOfRegulator
-      .scalar v m probeEnergy regulator hregulator
-  have hz :=
-    continuous_continuumBornRadialIntegrandOfRegulator
-      .z v m probeEnergy regulator hregulator
-  rw [show continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator =
-      fun p : ℝ =>
-        continuumBornRadialIntegrandOfRegulator .scalar v m probeEnergy regulator p •
-            (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-          continuumBornRadialIntegrandOfRegulator .z v m probeEnergy regulator p •
-            matrixOperator sigmaZ by
-    funext p
-    exact continuumBornRadialGreenKernelOfRegulator_eq v m probeEnergy regulator p]
-  exact (hscalar.smul continuous_const).add (hz.smul continuous_const)
-
 private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_apply
     (v m probeEnergy regulator pMax : ℝ) (hregulator : regulator ≠ 0)
     (ψ : DiracHilbert) :
@@ -125,7 +105,7 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
     (innerSL ℂ ψ).comp eval
   have hkernel : Continuous
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator) :=
-    continuous_continuumBornRadialGreenKernelForDissipation
+    continuous_continuumBornRadialGreenKernelOfRegulator
       v m probeEnergy regulator hregulator
   have hint : IntervalIntegrable
       (continuumBornRadialGreenKernelOfRegulator v m probeEnergy regulator)
