@@ -128,12 +128,8 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (retardedSpectralParameter probeEnergy broadening) v m px py hE]
   rw [projectorResolvent_sq
     (advancedSpectralParameter probeEnergy broadening) v m px py hE]
-  rw [projectorResolvent_eq_coefficients
-    (retardedSpectralParameter probeEnergy broadening) v m px py]
-  rw [projectorResolvent_eq_coefficients
-    (advancedSpectralParameter probeEnergy broadening) v m px py]
+  simp only [projectorResolvent, sum_band]
   unfold bastinBandPairContribution spectralDifferenceCoefficient bastinBandBlockTrace
-  simp only [sum_band]
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul]
   ring_nf
