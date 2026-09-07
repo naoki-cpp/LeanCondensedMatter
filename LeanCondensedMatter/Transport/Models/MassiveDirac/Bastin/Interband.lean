@@ -61,8 +61,9 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
   rw [interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
   simp [pow_two] at hopp
   unfold bastinInterbandBlockDifference
-  rw [bastinBandBlockTrace_eq_currentBandBlockTrace,
-    bastinBandBlockTrace_swap_eq_currentBandBlockTrace,
+  rw [bastinBandBlockTrace_swap .x .y (oppositeBand band) band]
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace .x .y (oppositeBand band) band,
+    bastinBandBlockTrace_eq_currentBandBlockTrace .x .y band (oppositeBand band),
     Complex.sub_im]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   field_simp [hgap] at hband hopp ⊢
