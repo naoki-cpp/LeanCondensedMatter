@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Axiomatic quantum theory: minimal postulates
 
 Minimal formalization of the standard (Dirac–von Neumann) axiomatic quantum theory:
-the state space postulate, the definition of an observable, and the expectation
+the state-vector representation postulate, the definition of an observable, and the expectation
 value they jointly define.
 
 See `notes/model-and-assumptions.md` for the physics-to-Lean correspondence and
@@ -17,15 +17,15 @@ scope notes.
 
 namespace QuantumTheory
 
-/-- **State space postulate.** A pure state of a quantum system is represented by a unit vector in
-a complex Hilbert space `H`. `State H` is the space of unit-vector representatives rather than a
-quotient by global phase; phase invariance is expressed by the theorems below. -/
-def State (H : Type*) [NormedAddCommGroup H] :=
+/-- **State space postulate.** A pure state of a quantum system has a unit-vector representative in
+a complex Hilbert space `H`. `StateVector H` stores the representative rather than identifying
+vectors that differ by global phase. -/
+def StateVector (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
-/-- Explicit name for the normalized vector representatives of pure quantum states.
-`State` remains the existing compatibility name while representative-dependent APIs migrate. -/
-abbrev StateVector (H : Type*) [NormedAddCommGroup H] := State H
+/-- Compatibility name for normalized state-vector representatives. New representative-dependent
+APIs should use `StateVector`. -/
+abbrev State (H : Type*) [NormedAddCommGroup H] := StateVector H
 
 /-- **Observable (definition).** An observable is a self-adjoint bounded linear operator
 on the state space. Self-adjointness is what makes `expValue_im_eq_zero` below hold; it is
@@ -35,9 +35,10 @@ def Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Com
   { A : H →L[ℂ] H // IsSelfAdjoint A }
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-variable (A : Observable H) (ψ : State H)
+variable (A : Observable H) (ψ : StateVector H)
 
-/-- The canonical complex expectation of an observable `A` in a state `ψ`, `⟨ψ|A|ψ⟩`. -/
+/-- The canonical complex expectation of an observable `A` in a state-vector representative `ψ`,
+`⟨ψ|A|ψ⟩`. -/
 noncomputable def expValue : ℂ := inner ℂ ψ.1 (A.1 ψ.1)
 
 /-- For a self-adjoint observable, the canonical `⟨ψ|A|ψ⟩` orientation also equals
@@ -51,17 +52,17 @@ measurable physical quantities. -/
 theorem expValue_im_eq_zero : (expValue A ψ).im = 0 := by
   simpa [expValue] using A.2.isSymmetric.im_inner_self_apply ψ.1
 
-/-- The complex pure-state expectation bundled with the proof that it is self-adjoint. -/
+/-- The complex vector-state expectation bundled with the proof that it is self-adjoint. -/
 noncomputable def expValueSelfAdjoint : selfAdjoint ℂ :=
   ⟨expValue A ψ,
     (Complex.im_eq_zero_iff_isSelfAdjoint _).mp (expValue_im_eq_zero A ψ)⟩
 
-/-- The real expectation value of an observable in a pure state, obtained losslessly from the
-proved-self-adjoint complex expectation rather than by projecting an arbitrary scalar with `.re`. -/
+/-- The real observable expectation of a normalized vector representative, obtained losslessly from
+the proved-self-adjoint complex expectation rather than by projecting an arbitrary scalar with `.re`. -/
 noncomputable def observableExpValue : ℝ :=
   Complex.selfAdjointEquiv (expValueSelfAdjoint A ψ)
 
-/-- Embedding the real pure-state observable expectation back into `ℂ` recovers the canonical
+/-- Embedding the real vector-state observable expectation back into `ℂ` recovers the canonical
 complex expectation exactly. -/
 @[simp]
 theorem coe_observableExpValue :
@@ -71,9 +72,8 @@ theorem coe_observableExpValue :
   · simpa [observableExpValue, expValueSelfAdjoint, Complex.selfAdjointEquiv] using
       (expValue_im_eq_zero A ψ).symm
 
-/-- **Phase indeterminacy.** Multiplying a state by a unit-modulus complex number (a global
-phase) does not change the expectation value of any observable — quantum states are physically
-determined only up to a global phase. -/
+/-- **Phase indeterminacy.** Multiplying a representative by a unit-modulus complex number (a global
+phase) does not change the expectation value of any observable. -/
 theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c • ψ.1‖ = 1) :
     expValue A ⟨c • ψ.1, hψ'⟩ = expValue A ψ := by
   change inner ℂ (c • ψ.1) (A.1 (c • ψ.1)) = inner ℂ ψ.1 (A.1 ψ.1)
@@ -82,7 +82,7 @@ theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c �
   simp only [map_smul, inner_smul_left, inner_smul_right]
   rw [← mul_assoc, h1, one_mul]
 
-/-- The lossless real pure-state observable expectation is also invariant under global phase. -/
+/-- The lossless real vector-state observable expectation is also invariant under global phase. -/
 theorem observableExpValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1)
     (hψ' : ‖c • ψ.1‖ = 1) :
     observableExpValue A ⟨c • ψ.1, hψ'⟩ = observableExpValue A ψ := by
