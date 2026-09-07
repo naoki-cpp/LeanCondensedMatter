@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Finite scalar disorder for the massive-Dirac AHE model
 
-This module starts Phase 4 of #1269 by connecting the concrete two-level massive-Dirac Hilbert
-space to the repository's canonical exact finite-disorder second moment and Born self-energy.
+This module connects the concrete two-level massive-Dirac Hilbert space to the repository's
+canonical exact finite-disorder second moment and Born self-energy.
 
-The scalar assumption in this first slice is only an internal-space statement:
+The scalar assumption here is only an internal-space statement:
 
 ```text
 Vω = uω I
@@ -21,7 +21,7 @@ on `DiracHilbert`. Under that exact finite-ensemble hypothesis,
 E[Vω X Vω] = E[uω²] X.
 ```
 
-The theorem is exact for the supplied finite ensemble. It does not yet encode continuum momentum
+The theorem is exact for the supplied finite ensemble. It does not encode continuum momentum
 transfer, white-noise delta covariance, a thermodynamic limit, or a weak-disorder closure. In
 particular, the Born self-energy below remains a Born object; it is not identified with an exact
 disorder-averaged Green operator.
@@ -39,7 +39,7 @@ variable {v m px py : ℝ}
 /-- Exact finite scalar-disorder specialization of the massive-Dirac model at one momentum.
 
 `impurityPotential_eq` says that disorder is scalar only in the two-component Dirac internal
-space. Spatial/momentum correlations are intentionally not represented by this first finite slice. -/
+space. Spatial and momentum correlations are not represented by this finite model. -/
 structure FiniteScalarDisorderModel (Ω : Type*) [Fintype Ω]
     (v m px py : ℝ) where
   /-- Canonical exact finite disorder ensemble. -/

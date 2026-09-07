@@ -164,36 +164,27 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
       (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_eq_radialIntegral
         output v m probeEnergy disorderStrength hbar pMax).symm)
 
-/-- Continuum disorder strength corresponding exactly to a chosen Born damping scale `γ`. -/
-def continuumBornWeakDisorderStrength (v hbar gamma : ℝ) : ℝ :=
-  4 * gamma * hbar ^ 2 * v ^ 2
-
-/-- The weak-disorder parameterization `W(γ) = 4 γ ℏ² v²` exactly inverts the Born damping scale. -/
-theorem continuumBornDampingScale_weakDisorderStrength
-    (v hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
-    continuumBornDampingScale v (continuumBornWeakDisorderStrength v hbar gamma) hbar = gamma := by
-  unfold continuumBornDampingScale continuumBornWeakDisorderStrength
-  field_simp [hvelocity, hhbar]
-
 /-- Under `W(γ) = 4 γ ℏ² v²`, the RA denominator width is `2γ(ε²+m²)`. -/
 theorem continuumBornRADenominatorWidth_weakDisorderStrength
     (v m probeEnergy hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
     continuumBornRADenominatorWidth v m probeEnergy
-        (continuumBornWeakDisorderStrength v hbar gamma) hbar =
+        (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =
       2 * gamma * (probeEnergy ^ 2 + m ^ 2) := by
   unfold continuumBornRADenominatorWidth
-  rw [continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar]
+  rw [continuumBornDampingScale_disorderStrengthOfDampingScale
+    v hbar gamma hvelocity hhbar]
 
 /-- Under the weak-disorder parameterization the physical current-rung prefactor is
 `γ v² / π²`. -/
 theorem continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
     (v hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
     continuumBornRetardedAdvancedCurrentRungPrefactor
-        (continuumBornWeakDisorderStrength v hbar gamma) hbar =
+        (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =
       gamma * v ^ 2 / Real.pi ^ 2 := by
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
-    v (continuumBornWeakDisorderStrength v hbar gamma) hbar hvelocity hhbar]
-  rw [continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar]
+    v (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar hvelocity hhbar]
+  rw [continuumBornDampingScale_disorderStrengthOfDampingScale
+    v hbar gamma hvelocity hhbar]
 
 /-- Arctangent mass controlling the infinite-cutoff metallic weak-disorder limit. -/
 private def continuumBornRAWeakDisorderArctanMass
@@ -209,7 +200,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_we
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
-        v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar =
+        v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =
       ((1 + gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2) /
         (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
@@ -220,7 +211,8 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_we
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
-    continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar,
+    continuumBornDampingScale_disorderStrengthOfDampingScale
+      v hbar gamma hvelocity hhbar,
     continuumBornRADenominatorWidth_weakDisorderStrength
       v m probeEnergy hbar gamma hvelocity hhbar]
   field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero]
@@ -232,7 +224,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_we
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
-        v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar =
+        v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =
       (2 * gamma * probeEnergy * m /
         (Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
@@ -243,7 +235,8 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_we
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
-    continuumBornDampingScale_weakDisorderStrength v hbar gamma hvelocity hhbar,
+    continuumBornDampingScale_disorderStrengthOfDampingScale
+      v hbar gamma hvelocity hhbar,
     continuumBornRADenominatorWidth_weakDisorderStrength
       v m probeEnergy hbar gamma hvelocity hhbar]
   (field_simp [hvelocity, hhbar, hgamma, ne_of_gt hsum, Real.pi_ne_zero]; ring)
@@ -311,7 +304,7 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficien
     Tendsto
       (fun gamma : ℝ =>
         continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
-          v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar)
+          v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds ((probeEnergy ^ 2 - m ^ 2) /
         (2 * (probeEnergy ^ 2 + m ^ 2)))) := by
@@ -363,7 +356,7 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_we
     Tendsto
       (fun gamma : ℝ =>
         continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
-          v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar)
+          v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
         m probeEnergy)) := by
@@ -377,7 +370,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_di
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
-        v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar / gamma =
+        v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar / gamma =
       (2 * probeEnergy * m /
         (Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
@@ -394,7 +387,7 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_di
     Tendsto
       (fun gamma : ℝ =>
         continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
-          v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar / gamma)
+          v m probeEnergy (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar / gamma)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2))) := by
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by

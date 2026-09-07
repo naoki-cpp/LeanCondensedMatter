@@ -40,6 +40,18 @@ def continuumBornDampingScale
     (v disorderStrength hbar : ℝ) : ℝ :=
   disorderStrength / (4 * hbar ^ 2 * v ^ 2)
 
+/-- Continuum disorder strength corresponding exactly to a chosen Born damping scale `γ`. -/
+def continuumBornDisorderStrengthOfDampingScale (v hbar gamma : ℝ) : ℝ :=
+  4 * gamma * hbar ^ 2 * v ^ 2
+
+/-- The parameterization `W(γ) = 4 γ ℏ² v²` exactly inverts the Born damping scale. -/
+theorem continuumBornDampingScale_disorderStrengthOfDampingScale
+    (v hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
+    continuumBornDampingScale v
+        (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar = gamma := by
+  unfold continuumBornDampingScale continuumBornDisorderStrengthOfDampingScale
+  field_simp [hvelocity, hhbar]
+
 /-- Side-indexed effective energy after retaining the metallic Born scalar damping channel. -/
 def continuumBornEffectiveEnergy
     (side : SpectralSide) (v probeEnergy disorderStrength hbar : ℝ) : ℂ :=
