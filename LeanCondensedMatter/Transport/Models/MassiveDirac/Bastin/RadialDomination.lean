@@ -64,8 +64,11 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
   rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
-  simpa [bandSign_oppositeBand] using
-    currentBandBlockTrace_interband_radial (oppositeBand band) e v m p hE
+  have h := currentBandBlockTrace_interband_radial (oppositeBand band) e v m p hE
+  simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at h
+  rw [h]
+  push_cast
+  ring
 
 /-- The radial `y-x` block has the opposite imaginary sign. -/
 theorem bastinYXBandBlockTrace_opposite_source_radial
