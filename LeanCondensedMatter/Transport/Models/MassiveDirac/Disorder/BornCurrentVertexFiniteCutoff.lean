@@ -268,12 +268,71 @@ theorem continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed
   push_cast
   ring
 
+/-- Real-valued form of the normalized radial current-rung integrand in either output direction. -/
+def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+    (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
+  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+    continuumBornRetardedAdvancedPauliXAngularNumerator output
+      v m probeEnergy disorderStrength hbar *
+    (continuumBornRADenominatorProduct
+      v m p probeEnergy disorderStrength hbar)⁻¹
+
+/-- The indexed real current-rung kernel embeds exactly into the complex radial API. -/
+theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+    (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
+    (continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
+        v m p probeEnergy disorderStrength hbar : ℂ) =
+      continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand output
+        v m p probeEnergy disorderStrength hbar := by
+  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed]
+  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+  push_cast
+  ring
+
 /-- Finite-cutoff radial Green-product coefficient in the selected in-plane output direction. -/
 noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient
     (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     continuumBornRetardedAdvancedPauliXRadialIntegrand output
       v m p probeEnergy disorderStrength hbar
+
+/-- Finite-cutoff real coefficient of the fully normalized Born RA current rung in the selected
+output direction. -/
+noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
+    (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
+  ∫ p in (0 : ℝ)..pMax,
+    continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
+      v m p probeEnergy disorderStrength hbar
+
+/-- The real normalized finite-cutoff coefficient is the indexed Green-product coefficient
+multiplied by the physical current-rung prefactor. -/
+theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_eq_prefactor_mul_greenProduct
+    (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient output
+        v m probeEnergy disorderStrength hbar pMax : ℂ) =
+      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
+        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient output
+          v m probeEnergy disorderStrength hbar pMax := by
+  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
+  rw [← Complex.ofRealLI_apply
+    (∫ p in (0 : ℝ)..pMax,
+      continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
+        v m p probeEnergy disorderStrength hbar)]
+  rw [← Complex.ofRealLI.intervalIntegral_comp_comm]
+  rw [show
+      (fun p : ℝ => Complex.ofRealLI
+        (continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
+          v m p probeEnergy disorderStrength hbar)) =
+      (fun p : ℝ =>
+        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
+          continuumBornRetardedAdvancedPauliXRadialIntegrand output
+            v m p probeEnergy disorderStrength hbar) by
+    funext p
+    rw [Complex.ofRealLI_apply,
+      coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal]
+    rfl]
+  rw [intervalIntegral.integral_const_mul]
+  rfl
 
 /-- The orientation-sensitive radial `.y` Green-product kernel vanishes in the massless model. -/
 @[simp] theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_y_massless
@@ -290,12 +349,19 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficie
       v 0 probeEnergy disorderStrength hbar pMax = 0 := by
   simp [finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient]
 
-/-- A zero radial cutoff gives a vanishing Born-dressed RA coefficient in either output direction. -/
+/-- A zero radial cutoff gives a vanishing Born-dressed RA Green-product coefficient. -/
 @[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient_zero
     (output : Direction2) (v m probeEnergy disorderStrength hbar : ℝ) :
     finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient output
       v m probeEnergy disorderStrength hbar 0 = 0 := by
   simp [finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient]
+
+/-- A zero radial cutoff gives a vanishing normalized current-rung coefficient. -/
+@[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_zero
+    (output : Direction2) (v m probeEnergy disorderStrength hbar : ℝ) :
+    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient output
+      v m probeEnergy disorderStrength hbar 0 = 0 := by
+  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient]
 
 end
 
