@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Core.SwapDifference
 import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
@@ -33,10 +34,11 @@ noncomputable def longitudinal
     (conductivity : ConductivityTensor ι) (i : ι) : ℂ :=
   conductivity.component i i
 
-/-- Hall conductivity component, defined as the antisymmetric part of the full conductivity tensor. -/
+/-- Hall conductivity component, defined as half the raw swap difference of the full conductivity
+tensor. -/
 noncomputable def hallComponent
     (conductivity : ConductivityTensor ι) (i j : ι) : ℂ :=
-  (conductivity.component i j - conductivity.component j i) / 2
+  swapDifference conductivity.component i j / 2
 
 /-- The Hall projection vanishes on the diagonal. -/
 @[simp]
