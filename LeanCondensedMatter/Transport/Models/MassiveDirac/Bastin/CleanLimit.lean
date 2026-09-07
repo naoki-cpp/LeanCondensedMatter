@@ -120,8 +120,8 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq
 bands use the same cutoff interval and occupation selects their contributing states. -/
 def zeroTemperatureOccupiedCleanInterbandBastinPairCutoff
     (e m fermiEnergy Λ : ℝ) : ℝ :=
-  zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff .lower e m fermiEnergy Λ +
-    zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff .upper e m fermiEnergy Λ
+  ∑ band : Band,
+    zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff band e m fermiEnergy Λ
 
 /-- The canonical occupied clean Bastin-pair radial weight is `-2π e²` times the canonical
 occupation-derived finite-cutoff Berry weight. -/
@@ -132,7 +132,8 @@ theorem zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq
         zeroTemperatureOccupiedBerryWeightCutoff m fermiEnergy Λ := by
   unfold zeroTemperatureOccupiedCleanInterbandBastinPairCutoff
     zeroTemperatureOccupiedBerryWeightCutoff
-  rw [zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq,
+  rw [sum_band, sum_band,
+    zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq,
     zeroTemperatureOccupiedCleanInterbandBastinPairBandCutoff_eq]
   ring
 
