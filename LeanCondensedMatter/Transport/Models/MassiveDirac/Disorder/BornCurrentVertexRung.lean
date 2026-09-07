@@ -7,16 +7,13 @@ set_option linter.style.header false
 /-!
 # Normalized finite-cutoff Born current rung
 
-This module owns the normalized longitudinal one-rung data shared by the two distinct limit routes
-for the massive-Dirac Born current vertex.  Starting from the finite-cutoff Born-dressed
-`Gᴿ σₓ Gᴬ` radial kernel, it attaches the external scalar-disorder line and physical momentum
-measure, exposes the real-valued longitudinal coefficient, and evaluates the finite radial integral
-exactly by the shared quadratic-Lorentzian arctangent calculus.
+This module evaluates the longitudinal specialization of the direction-indexed normalized
+finite-cutoff Born `Gᴿ σₓ Gᴬ` current rung by the shared quadratic-Lorentzian arctangent calculus.
+The canonical weak-disorder target coefficient is recorded here because it is consumed independently
+by the fixed-cutoff and infinite-cutoff limit routes.
 
-The canonical weak-disorder target coefficient is also recorded here because it is consumed
-independently by the fixed-cutoff and infinite-cutoff limit routes.  No weak-disorder or ultraviolet
-limit, ladder resummation, transport-lifetime identification, or Kubo conductivity theorem is taken
-in this module.
+No weak-disorder or ultraviolet limit, ladder resummation, transport-lifetime identification, or
+Kubo conductivity theorem is taken in this module.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -26,72 +23,6 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
-
-/-- Real-valued closed form of the normalized radial `σₓ` current-rung integrand. -/
-def continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-    2 * Real.pi * p *
-    (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-    (probeEnergy ^ 2 - m ^ 2) *
-    (continuumBornRADenominatorProduct
-      v m p probeEnergy disorderStrength hbar)⁻¹
-
-/-- The real current-rung kernel embeds exactly into the existing complex-valued radial API. -/
-theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-        v m p probeEnergy disorderStrength hbar : ℂ) =
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrand
-        v m p probeEnergy disorderStrength hbar := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrand_eq_closed]
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-  push_cast
-  ring
-
-/-- Finite-cutoff real `σₓ` coefficient of the fully normalized Born RA current rung. -/
-noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
-  ∫ p in (0 : ℝ)..pMax,
-    continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-      v m p probeEnergy disorderStrength hbar
-
-/-- The real normalized finite-cutoff `σₓ` current-rung coefficient is exactly the finite-cutoff
-Green-product coefficient multiplied by the physical current-rung prefactor. -/
-theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_prefactor_mul_greenProduct
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-        v m probeEnergy disorderStrength hbar pMax : ℂ) =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialXCoefficient
-          v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-  rw [← Complex.ofRealLI_apply
-    (∫ p in (0 : ℝ)..pMax,
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-        v m p probeEnergy disorderStrength hbar)]
-  rw [← Complex.ofRealLI.intervalIntegral_comp_comm]
-  rw [show
-      (fun p : ℝ => Complex.ofRealLI
-        (continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-          v m p probeEnergy disorderStrength hbar)) =
-      (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-          continuumBornRetardedAdvancedPauliXRadialXIntegrand
-            v m p probeEnergy disorderStrength hbar) by
-    funext p
-    rw [Complex.ofRealLI_apply,
-      coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal]
-    rfl]
-  rw [intervalIntegral.integral_const_mul]
-  rfl
-
-/-- A zero radial cutoff gives a vanishing normalized longitudinal Born current-rung coefficient. -/
-@[simp] theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_zero
-    (v m probeEnergy disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-      v m probeEnergy disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient]
 
 /-- The external disorder-line / physical-measure prefactor is one power of the Born damping scale:
 `W /(2πℏ)² = γ v² / π²`. -/
@@ -111,15 +42,15 @@ def continuumBornRetardedAdvancedCurrentRungArctanPhase
     (continuumBornRADenominatorCenter v m p probeEnergy disorderStrength hbar /
       continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)
 
-/-- Exact finite-cutoff arctangent evaluation of the fully normalized Born RA `σₓ` current rung.
-The assumptions only keep the resonance width and radial velocity scale nonzero; no weak-disorder
-limit is taken in this theorem. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_arctan
+/-- Exact finite-cutoff arctangent evaluation of the longitudinal `.x` specialization of the
+normalized Born RA current rung. The assumptions only keep the resonance width and radial velocity
+scale nonzero; no weak-disorder limit is taken in this theorem. -/
+theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hv : v ≠ 0)
     (hwidth : continuumBornRADenominatorWidth
       v m probeEnergy disorderStrength hbar ≠ 0) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
+    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient .x
         v m probeEnergy disorderStrength hbar pMax =
       (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
           Real.pi *
@@ -138,14 +69,15 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
     continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar
   have hradial := integral_radialQuadraticLorentzian_eq_arctan
     v A B pMax hv hwidth
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-    continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
+  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
+    continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+    continuumBornRetardedAdvancedPauliXAngularNumerator
   rw [show
       (fun p : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-          2 * Real.pi * p *
-          (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-          (probeEnergy ^ 2 - m ^ 2) *
+        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+          (2 * Real.pi *
+            (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
+            (probeEnergy ^ 2 - m ^ 2)) *
           (continuumBornRADenominatorProduct
             v m p probeEnergy disorderStrength hbar)⁻¹) =
       (fun p : ℝ =>
@@ -185,13 +117,13 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
   field_simp [hv, hwidth]
   ring_nf
 
-/-- Exact endpoint formula with the disorder normalization already cancelled against the resonance
-width.  This is the form adapted to the `disorderStrength → 0⁺` limit. -/
-theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_arctan_normalized
+/-- Exact longitudinal endpoint formula with the disorder normalization already cancelled against
+the resonance width. This is the form adapted to the `disorderStrength → 0⁺` limit. -/
+theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan_normalized
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hv : v ≠ 0) (hhbar : hbar ≠ 0) (hdisorder : disorderStrength ≠ 0)
     (hsum : probeEnergy ^ 2 + m ^ 2 ≠ 0) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
+    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient .x
         v m probeEnergy disorderStrength hbar pMax =
       ((1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
           (probeEnergy ^ 2 - m ^ 2) /
@@ -208,7 +140,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_e
       v m probeEnergy disorderStrength hbar ≠ 0 := by
     unfold continuumBornRADenominatorWidth
     exact mul_ne_zero (mul_ne_zero (by norm_num) hgamma) hsum
-  rw [finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_arctan
+  rw [finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan
     v m probeEnergy disorderStrength hbar pMax hv hwidth]
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
     v disorderStrength hbar hv hhbar]

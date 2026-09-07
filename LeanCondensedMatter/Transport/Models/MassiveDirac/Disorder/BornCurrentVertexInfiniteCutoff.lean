@@ -9,19 +9,18 @@ set_option linter.style.header false
 # Infinite-cutoff Born retarded-advanced current rung
 
 This module uses the model-independent radial quadratic Lorentzian calculus to take the
-`pMax → +∞` Born current-rung limit.  The shared real radial denominator integral is evaluated
-exactly by an arctangent formula, then used for both longitudinal and orientation-sensitive
-transverse current-rung coefficients.
+`pMax → +∞` Born current-rung limit. The shared real radial denominator integral is evaluated
+exactly by an arctangent formula, then used for the direction-indexed in-plane output coefficient.
 
-The continuum disorder is parameterized by `W(γ) = 4 γ ℏ² v²`.  In the metallic regime
-`m² < ε²`, the infinite-cutoff longitudinal coefficient tends to the canonical weak-disorder rung
+The continuum disorder is parameterized by `W(γ) = 4 γ ℏ² v²`. In the metallic regime
+`m² < ε²`, the `.x` infinite-cutoff coefficient tends to the canonical weak-disorder rung
 coefficient, while in repository orientation `Gᴿ σₓ Gᴬ`
 
 ```text
 Y₁ / γ → 2 ε m / (ε² + m²).
 ```
 
-The convergent radial cutoff limit is kept distinct from the later `γ → 0⁺` limit.  This module does
+The convergent radial cutoff limit is kept distinct from the later `γ → 0⁺` limit. This module does
 not solve a new ladder equation, insert the result into Kubo–Středa, claim Ward consistency, or
 include crossed diagrams.
 -/
@@ -34,8 +33,8 @@ open Filter MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Finite-cutoff real radial denominator integral shared by the Born `σₓ` and `σᵧ` current-rung
-channels.  This contains the `p dp` Jacobian but no numerator or continuum prefactor. -/
+/-- Finite-cutoff real radial denominator integral shared by both in-plane current-rung outputs.
+This contains the `p dp` Jacobian but no numerator or continuum prefactor. -/
 private noncomputable def finiteCutoffContinuumBornRARadialIntegral
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
   ∫ p in (0 : ℝ)..pMax,
@@ -104,175 +103,66 @@ private theorem tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
       (continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)
       hvelocity hwidth
 
-/-- Real-valued closed form of the normalized radial `σᵧ` current-rung integrand in repository
-orientation `Gᴿ σₓ Gᴬ`. -/
-private def continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-    (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-    8 * Real.pi * p * continuumBornDampingScale v disorderStrength hbar *
-    probeEnergy * m *
-    (continuumBornRADenominatorProduct
-      v m p probeEnergy disorderStrength hbar)⁻¹
-
-/-- The real transverse current-rung kernel embeds exactly into the existing complex radial API. -/
-private theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-    (v m p probeEnergy disorderStrength hbar : ℝ) :
-    (continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-        v m p probeEnergy disorderStrength hbar : ℂ) =
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand
-        v m p probeEnergy disorderStrength hbar := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrand_eq_closed]
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-  push_cast
-  ring
-
-/-- Finite-cutoff real `σᵧ` coefficient of the fully normalized Born RA current rung. -/
-noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℝ :=
-  ∫ p in (0 : ℝ)..pMax,
-    continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-      v m p probeEnergy disorderStrength hbar
-
-/-- The normalized finite-cutoff transverse coefficient is the integrated Green-product
-`σᵧ` coefficient multiplied by the physical current-rung prefactor. -/
-private theorem coe_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_prefactor_mul_greenProduct
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-        v m probeEnergy disorderStrength hbar pMax : ℂ) =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-        finiteCutoffContinuumBornRetardedAdvancedPauliXRadialYCoefficient
+/-- Each normalized finite-cutoff in-plane output coefficient factors through the same real radial
+denominator integral. -/
+private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_eq_radialIntegral
+    (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient output
+        v m probeEnergy disorderStrength hbar pMax =
+      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+        continuumBornRetardedAdvancedPauliXAngularNumerator output
+          v m probeEnergy disorderStrength hbar) *
+        finiteCutoffContinuumBornRARadialIntegral
           v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-  rw [← Complex.ofRealLI_apply
-    (∫ p in (0 : ℝ)..pMax,
-      continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-        v m p probeEnergy disorderStrength hbar)]
-  rw [← Complex.ofRealLI.intervalIntegral_comp_comm]
+  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
+    continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+    finiteCutoffContinuumBornRARadialIntegral
   rw [show
-      (fun p : ℝ => Complex.ofRealLI
-        (continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-          v m p probeEnergy disorderStrength hbar)) =
       (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
-          continuumBornRetardedAdvancedPauliXRadialYIntegrand
-            v m p probeEnergy disorderStrength hbar) by
+        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+          continuumBornRetardedAdvancedPauliXAngularNumerator output
+            v m probeEnergy disorderStrength hbar *
+          (continuumBornRADenominatorProduct
+            v m p probeEnergy disorderStrength hbar)⁻¹) =
+      (fun p : ℝ =>
+        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+          continuumBornRetardedAdvancedPauliXAngularNumerator output
+            v m probeEnergy disorderStrength hbar) *
+          (p / continuumBornRADenominatorProduct
+            v m p probeEnergy disorderStrength hbar)) by
     funext p
-    rw [Complex.ofRealLI_apply,
-      coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal]
-    rfl]
-  rw [intervalIntegral.integral_const_mul]
-  rfl
-
-private theorem finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
-    (v m probeEnergy disorderStrength hbar pMax prefactor : ℝ)
-    (integrand : ℝ → ℝ)
-    (hfactor : ∀ p,
-      integrand p =
-        prefactor * (p / continuumBornRADenominatorProduct
-          v m p probeEnergy disorderStrength hbar)) :
-    (∫ p in (0 : ℝ)..pMax, integrand p) =
-      prefactor * finiteCutoffContinuumBornRARadialIntegral
-        v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRARadialIntegral
-  simp_rw [hfactor]
+    rw [div_eq_mul_inv]
+    ring]
   rw [intervalIntegral.integral_const_mul]
 
-/-- The canonical finite-cutoff longitudinal coefficient factors through the shared real radial
-integral. -/
-private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_radialIntegral
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-        v m probeEnergy disorderStrength hbar pMax =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-        (2 * Real.pi *
-          (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-          (probeEnergy ^ 2 - m ^ 2))) *
-        finiteCutoffContinuumBornRARadialIntegral
-          v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-  apply finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
-  intro p
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialXIntegrandReal
-  rw [div_eq_mul_inv]
-  ring
+/-- Infinite-cutoff full one-rung coefficient in the selected in-plane output direction. -/
+def continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
+    (output : Direction2) (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
+  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+    continuumBornRetardedAdvancedPauliXAngularNumerator output
+      v m probeEnergy disorderStrength hbar) *
+    continuumBornRARadialIntegralUVLimit v m probeEnergy disorderStrength hbar
 
-/-- The finite-cutoff transverse coefficient factors through the same shared real radial integral. -/
-private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_radialIntegral
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-        v m probeEnergy disorderStrength hbar pMax =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-        (8 * Real.pi * continuumBornDampingScale v disorderStrength hbar *
-          probeEnergy * m)) *
-        finiteCutoffContinuumBornRARadialIntegral
-          v m probeEnergy disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
-  apply finiteCutoffContinuumBornCurrentRungCoefficient_eq_radialIntegral
-  intro p
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungRadialYIntegrandReal
-  rw [div_eq_mul_inv]
-  ring
-
-/-- Infinite-cutoff full `σₓ` one-rung coefficient at fixed positive Born width. -/
-def continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
-    (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-    (2 * Real.pi *
-      (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
-      (probeEnergy ^ 2 - m ^ 2)) *
-    continuumBornRARadialIntegralUVLimit
-      v m probeEnergy disorderStrength hbar
-
-/-- Infinite-cutoff full `σᵧ` one-rung coefficient in repository orientation `Gᴿ σₓ Gᴬ`. -/
-def continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
-    (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
-    (8 * Real.pi * continuumBornDampingScale v disorderStrength hbar *
-      probeEnergy * m) *
-    continuumBornRARadialIntegralUVLimit
-      v m probeEnergy disorderStrength hbar
-
-/-- At fixed positive Born width, the canonical finite-cutoff longitudinal coefficient converges to
-its infinite-cutoff value. -/
-theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_atTop
-    (v m probeEnergy disorderStrength hbar : ℝ)
-    (hvelocity : v ≠ 0)
-    (hwidth : 0 < continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar) :
-    Tendsto
-      (fun pMax : ℝ =>
-        finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient
-          v m probeEnergy disorderStrength hbar pMax)
-      atTop
-      (nhds (continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
-        v m probeEnergy disorderStrength hbar)) := by
-  have hradial := tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
-    v m probeEnergy disorderStrength hbar hvelocity hwidth
-  simpa [continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV] using
-    (tendsto_const_nhds.mul hradial).congr' (Eventually.of_forall fun pMax =>
-      (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungXCoefficient_eq_radialIntegral
-        v m probeEnergy disorderStrength hbar pMax).symm)
-
-/-- At fixed positive Born width, the finite-cutoff transverse coefficient converges to its
+/-- At fixed positive Born width, every in-plane output coefficient converges to its indexed
 infinite-cutoff value. -/
-theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_atTop
-    (v m probeEnergy disorderStrength hbar : ℝ)
+theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_atTop
+    (output : Direction2) (v m probeEnergy disorderStrength hbar : ℝ)
     (hvelocity : v ≠ 0)
     (hwidth : 0 < continuumBornRADenominatorWidth
       v m probeEnergy disorderStrength hbar) :
     Tendsto
       (fun pMax : ℝ =>
-        finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient
+        finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient output
           v m probeEnergy disorderStrength hbar pMax)
       atTop
-      (nhds (continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
+      (nhds (continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV output
         v m probeEnergy disorderStrength hbar)) := by
   have hradial := tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
     v m probeEnergy disorderStrength hbar hvelocity hwidth
-  simpa [continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV] using
+  simpa [continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV] using
     (tendsto_const_nhds.mul hradial).congr' (Eventually.of_forall fun pMax =>
-      (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungYCoefficient_eq_radialIntegral
-        v m probeEnergy disorderStrength hbar pMax).symm)
+      (finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_eq_radialIntegral
+        output v m probeEnergy disorderStrength hbar pMax).symm)
 
 /-- Continuum disorder strength corresponding exactly to a chosen Born damping scale `γ`. -/
 def continuumBornWeakDisorderStrength (v hbar gamma : ℝ) : ℝ :=
@@ -314,18 +204,19 @@ private def continuumBornRAWeakDisorderArctanMass
         (2 * gamma * (probeEnergy ^ 2 + m ^ 2)))
 
 /-- Exact infinite-cutoff longitudinal coefficient under the weak-disorder parameterization. -/
-private theorem continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorderStrength_eq
+private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq
     (v m probeEnergy hbar gamma : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
-    continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
+    continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
         v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar =
       ((1 + gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2) /
         (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_nonneg m]
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
+  unfold continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
+    continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
@@ -336,18 +227,19 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_wea
 
 /-- Exact infinite-cutoff transverse coefficient in repository orientation `Gᴿ σₓ Gᴬ` under the
 weak-disorder parameterization. -/
-private theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_weakDisorderStrength_eq
+private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq
     (v m probeEnergy hbar gamma : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
-    continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
+    continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
         v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar =
       (2 * gamma * probeEnergy * m /
         (Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_nonneg m]
-  unfold continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
+  unfold continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
+    continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
@@ -412,13 +304,13 @@ private theorem tendsto_continuumBornRAWeakDisorderArctanMass_zero
     (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)
   simpa only [show Real.pi / 2 + Real.pi / 2 = Real.pi by ring] using hhalf.add harctan
 
-private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorder_closed
+private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder_closed
     (v m probeEnergy hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     Tendsto
       (fun gamma : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
+        continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
           v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds ((probeEnergy ^ 2 - m ^ 2) /
@@ -459,49 +351,49 @@ private theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficie
   filter_upwards [self_mem_nhdsWithin] with gamma hgamma
   have hgamma_pos : 0 < gamma := by
     simpa only [Set.mem_Ioi] using hgamma
-  exact (continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorderStrength_eq
+  exact (continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal).symm
 
-/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient.  The
+/-- Metallic weak-disorder limit of the infinite-cutoff longitudinal one-rung coefficient. The
 limit is the canonical scalar rung coefficient already used by the fixed-cutoff transport bridge. -/
-theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorder
+theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder
     (v m probeEnergy hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     Tendsto
       (fun gamma : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV
+        continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .x
           v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
         m probeEnergy)) := by
   simpa [continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient] using
-    tendsto_continuumBornRetardedAdvancedPauliXCurrentRungXCoefficientUV_weakDisorder_closed
+    tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorder_closed
       v m probeEnergy hbar hvelocity hhbar hmetal
 
 /-- Exact scaled transverse coefficient under the weak-disorder parameterization. -/
-private theorem continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div_gamma_weakDisorderStrength_eq
+private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorderStrength_eq
     (v m probeEnergy hbar gamma : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) (hgamma : gamma ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
-    continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
+    continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
         v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar / gamma =
       (2 * probeEnergy * m /
         (Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
         continuumBornRAWeakDisorderArctanMass m probeEnergy gamma := by
-  rw [continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_weakDisorderStrength_eq
+  rw [continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar hgamma hmetal]
   field_simp [hgamma]
 
-/-- Metallic weak-disorder limit of the leading transverse one-rung coefficient.  The unscaled
-`σᵧ` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. -/
-theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div_gamma_weakDisorder
+/-- Metallic weak-disorder limit of the leading transverse one-rung coefficient. The unscaled
+`.y` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. -/
+theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorder
     (v m probeEnergy hbar : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : m ^ 2 < probeEnergy ^ 2) :
     Tendsto
       (fun gamma : ℝ =>
-        continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV
+        continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV .y
           v m probeEnergy (continuumBornWeakDisorderStrength v hbar gamma) hbar / gamma)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2))) := by
@@ -526,7 +418,7 @@ theorem tendsto_continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div
   filter_upwards [self_mem_nhdsWithin] with gamma hgamma
   have hgamma_pos : 0 < gamma := by
     simpa only [Set.mem_Ioi] using hgamma
-  exact (continuumBornRetardedAdvancedPauliXCurrentRungYCoefficientUV_div_gamma_weakDisorderStrength_eq
+  exact (continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorderStrength_eq
     v m probeEnergy hbar gamma hvelocity hhbar (ne_of_gt hgamma_pos) hmetal).symm
 
 end
