@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
 import Mathlib.Tactic
 

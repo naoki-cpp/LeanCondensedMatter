@@ -63,6 +63,14 @@ noncomputable def finiteCutoffContinuumBornDysonDenominator
       side v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
     ((v ^ 2 * (px ^ 2 + py ^ 2) : ℝ) : ℂ)
 
+/-- Product of the radial retarded and advanced finite-`η` Born-Dyson denominators. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  finiteCutoffContinuumBornDysonDenominator
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+    finiteCutoffContinuumBornDysonDenominator
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+
 /-- Scalar Pauli coefficient of the finite-`η` Born-Dyson propagator candidate. -/
 noncomputable def finiteCutoffContinuumBornDysonScalarCoefficient
     (side : SpectralSide)
