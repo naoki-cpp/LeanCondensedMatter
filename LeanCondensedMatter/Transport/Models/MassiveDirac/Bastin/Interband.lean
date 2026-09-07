@@ -48,6 +48,21 @@ noncomputable def bastinInterbandBlockDifference
   bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
     bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
+/-- Exchanging the two current directions reverses the sign of the interband Bastin block
+difference. -/
+theorem bastinInterbandBlockDifference_swap
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    bastinInterbandBlockDifference ν μ band e v m px py =
+      -bastinInterbandBlockDifference μ ν band e v m px py := by
+  unfold bastinInterbandBlockDifference
+  ring
+
+/-- The antisymmetric interband Bastin block vanishes on equal current directions. -/
+theorem bastinInterbandBlockDifference_self
+    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
+    bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
+  simp [bastinInterbandBlockDifference]
+
 /-- The canonical antisymmetric Bastin block is the difference of the two opposite interband
 current traces for the same ordered direction pair. -/
 theorem bastinInterbandBlockDifference_eq_currentTraceDifference
