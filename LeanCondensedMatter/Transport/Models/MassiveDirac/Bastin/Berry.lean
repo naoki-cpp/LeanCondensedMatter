@@ -62,8 +62,7 @@ theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryC
         interbandEnergyGap band v m px py ^ 2 =
       e ^ 2 * berryCurvature band v m px py := by
   rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator .x .y]
-  push_cast
-  simp only [Complex.mul_im]
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   rw [← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
   unfold forceMatrixBerryCurvature
   ring
