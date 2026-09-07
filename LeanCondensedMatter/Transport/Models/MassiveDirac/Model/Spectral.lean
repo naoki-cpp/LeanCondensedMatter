@@ -105,8 +105,8 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   have hQ : Q * Q = 1 := by
     simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
   have hs : s ^ 2 = 1 := by
-    have h := congrArg (fun x : ℝ => (x : ℂ)) (bandSign_sq band)
-    simpa [s] using h
+    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+    exact_mod_cast (bandSign_sq band)
   have hH :
       hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
     simpa [Q] using hamiltonian_eq_energy_smul_normalizedHamiltonian v m px py hE
@@ -136,8 +136,8 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
   have hQ : Q * Q = 1 := by
     simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
   have hs : s ^ 2 = 1 := by
-    have h := congrArg (fun x : ℝ => (x : ℂ)) (bandSign_sq band)
-    simpa [s] using h
+    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+    exact_mod_cast (bandSign_sq band)
   have hP :
       bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
     simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
@@ -151,7 +151,9 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
         (2 : ℂ) • ((1 : Matrix2) + s • Q) := by
     calc
       ((1 : Matrix2) + s • Q) * ((1 : Matrix2) + s • Q) =
-          1 + s • Q + s • Q + (s • Q) * (s • Q) := by noncomm_ring
+          1 + s • Q + s • Q + (s • Q) * (s • Q) := by
+        rw [add_mul, one_mul, mul_add, mul_one]
+        abel
       _ = 1 + s • Q + s • Q + (s * s) • (Q * Q) := by rw [hsqmul]
       _ = 1 + s • Q + s • Q + 1 := by
         rw [hQ, show s * s = 1 by simpa [pow_two] using hs, one_smul]
