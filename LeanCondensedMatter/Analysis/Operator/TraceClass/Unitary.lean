@@ -35,6 +35,18 @@ noncomputable def unitaryLinearEquiv (U : H →L[ℂ] H)
 noncomputable def unitaryConjugate (U T : H →L[ℂ] H) : H →L[ℂ] H :=
   U * T * star U
 
+/-- Conjugation transports a rank-one operator by applying the conjugating operator to both
+vectors. -/
+theorem unitaryConjugate_rankOne (U : H →L[ℂ] H) (x y : H) :
+    unitaryConjugate U (InnerProductSpace.rankOne ℂ x y) =
+      InnerProductSpace.rankOne ℂ (U x) (U y) := by
+  ext z
+  change U ((inner ℂ x ((star U) z)) • y) = (inner ℂ (U x) z) • U y
+  rw [map_smul]
+  congr 1
+  change inner ℂ x (ContinuousLinearMap.adjoint U z) = inner ℂ (U x) z
+  exact ContinuousLinearMap.adjoint_inner_right U x z
+
 /-- Unitary conjugation maps each eigenspace to the corresponding eigenspace with the same
 eigenvalue. -/
 theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
@@ -49,7 +61,7 @@ theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
     refine ⟨star U x, ?_, ?_⟩
     · rw [Module.End.mem_eigenspace_iff] at hx ⊢
       change U (T ((star U) x)) = μ • x at hx
-      have h := congrArg (fun y : H => (star U) y) hx
+      have h := congrArg (fun y => (star U) y) hx
       have hcancel : (star U) (U (T ((star U) x))) = T ((star U) x) := by
         have h' := congrArg (fun A : H →L[ℂ] H => A (T ((star U) x))) hleft
         simpa [mul_apply_eq_comp] using h'
