@@ -57,35 +57,35 @@ def forceMatrixTraceNumerator
     (bandProjector (oppositeBand band) v m px py * velocity μ v *
       bandProjector band v m px py * velocity ν v)
 
-/-- Antisymmetrization of the direction-indexed interband force-matrix numerator. -/
-def forceMatrixAntisymmetricNumerator
+/-- Raw antisymmetrization of the direction-indexed interband force-matrix trace numerator. -/
+def forceMatrixTraceNumeratorAntisymmetrization
     (μ ν : Direction2) (band : Band) (v m px py : ℝ) : ℂ :=
   forceMatrixTraceNumerator μ ν band v m px py -
     forceMatrixTraceNumerator ν μ band v m px py
 
-/-- Exchanging the two current directions reverses the force-matrix antisymmetrization. -/
-theorem forceMatrixAntisymmetricNumerator_swap
+/-- Exchanging the two in-plane directions reverses the force-matrix trace antisymmetrization. -/
+theorem forceMatrixTraceNumeratorAntisymmetrization_swap
     (μ ν : Direction2) (band : Band) (v m px py : ℝ) :
-    forceMatrixAntisymmetricNumerator ν μ band v m px py =
-      -forceMatrixAntisymmetricNumerator μ ν band v m px py := by
-  unfold forceMatrixAntisymmetricNumerator
+    forceMatrixTraceNumeratorAntisymmetrization ν μ band v m px py =
+      -forceMatrixTraceNumeratorAntisymmetrization μ ν band v m px py := by
+  unfold forceMatrixTraceNumeratorAntisymmetrization
   ring
 
-/-- The force-matrix antisymmetrization vanishes on equal directions. -/
-@[simp] theorem forceMatrixAntisymmetricNumerator_self
+/-- The force-matrix trace antisymmetrization vanishes on equal directions. -/
+@[simp] theorem forceMatrixTraceNumeratorAntisymmetrization_self
     (μ : Direction2) (band : Band) (v m px py : ℝ) :
-    forceMatrixAntisymmetricNumerator μ μ band v m px py = 0 := by
-  simp [forceMatrixAntisymmetricNumerator]
+    forceMatrixTraceNumeratorAntisymmetrization μ μ band v m px py = 0 := by
+  simp [forceMatrixTraceNumeratorAntisymmetrization]
 
-/-- The oriented `(x,y)` force-matrix numerator is `-2 s m v²/E` in imaginary part. -/
-theorem forceMatrixAntisymmetricNumerator_xy_im
+/-- The oriented `(x,y)` force-matrix trace antisymmetrization is `-2 s m v²/E` in imaginary part. -/
+theorem forceMatrixTraceNumeratorAntisymmetrization_xy_im
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (forceMatrixAntisymmetricNumerator .x .y band v m px py).im =
+    (forceMatrixTraceNumeratorAntisymmetrization .x .y band v m px py).im =
       -2 * bandSign band * m * v ^ 2 / energy v m px py := by
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   cases band <;>
-    simp [forceMatrixAntisymmetricNumerator, forceMatrixTraceNumerator, oppositeBand,
+    simp [forceMatrixTraceNumeratorAntisymmetrization, forceMatrixTraceNumerator, oppositeBand,
       bandProjector, Matrix.trace, Matrix.mul_apply, velocity, directionPauli, hamiltonian,
       sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hEc] <;>
