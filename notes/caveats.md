@@ -59,9 +59,11 @@ applies.
 
 ## State and measurement models
 
-- **`QuantumTheory.State` stores a unit-vector representative.** The quotient by global phase is not
-  implemented. The proved phase-invariance theorems justify representative-independent expectation
-  values but do not make the state type definitionally a projective Hilbert space.
+- **`QuantumTheory.StateVector` stores a unit-vector representative, not a physical state.**
+  `QuantumTheory.State` is the compatibility name for the same type. Physical pure states are
+  represented by the density-backed subtype `QuantumTheory.PureState`, and unit-modulus phase-related
+  representatives map to equal values of that type. A projective/ray quotient and the converse
+  theorem classifying equality of rank-one projectors by global phase are not yet implemented.
 
 - **POVMs are countable and discrete.** The current `QuantumTheory.POVM` does not model continuous
   outcomes, measurable operator-valued measures, or instruments/state update.

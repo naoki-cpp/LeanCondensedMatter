@@ -7,18 +7,25 @@ proof text.
 
 ## Canonical state model
 
-`QuantumTheory.DensityOperator H` is the unique mixed-state type. It contains a bounded operator,
-positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
-spectral trace to `1`.
+`QuantumTheory.StateVector H` is the explicit name for normalized state-vector representatives;
+`QuantumTheory.State H` remains the existing compatibility name. Representatives are useful for
+wavefunction calculations and are not identified by equality under global phase.
 
-The type is dimension-independent. Finite dimensionality is introduced only at theorem boundaries that
-actually require an ordinary finite matrix trace or another genuinely finite construction.
+`QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
+positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
+spectral trace to `1`. `QuantumTheory.PureState H` is the subtype of density operators represented by
+some normalized state vector through the rank-one constructor `pure`, so equality of physical pure
+states is ordinary equality of their density operators.
+
+The types are dimension-independent. Finite dimensionality is introduced only at theorem boundaries
+that actually require an ordinary finite matrix trace or another genuinely finite construction.
 
 Canonical ownership is feature-based:
 
-- `QuantumTheory/Postulates.lean` owns pure states, bounded observables, and vector-state expectations;
-- `QuantumTheory/DensityOperator/` owns mixed-state construction, expectation, purity, diagonal
-  formulas, and finite-dimensional specializations;
+- `QuantumTheory/Postulates.lean` owns normalized state-vector representatives, bounded observables,
+  and vector-state expectations;
+- `QuantumTheory/DensityOperator/` owns density states, the physical `PureState` subtype, rank-one
+  embedding, expectation, purity, diagonal formulas, and finite-dimensional specializations;
 - `QuantumTheory/POVM/` owns countable discrete measurements and Born probabilities;
 - `QuantumTheory/Entropy/` owns von Neumann entropy and its diagonal/finite specializations;
 - `QuantumTheory/Gibbs/` owns bounded Gibbs states, energy and free-energy results, entropy,
@@ -30,7 +37,7 @@ parallel finite-dimensional state hierarchy.
 
 ## Pure-state expectations
 
-The Lean API defines the canonical complex expectation
+The Lean API defines the canonical complex vector-representative expectation
 
 ```lean
 expValue A ψ = inner ℂ ψ (A ψ)
@@ -44,8 +51,11 @@ The real observable value is obtained losslessly from a proved self-adjoint comp
 observableExpValue A ψ : ℝ
 ```
 
-The API also proves the exact complex recovery theorem and global-phase invariance. These are Lean
-semantics, not source-text patterns that architecture CI needs to freeze.
+The API proves exact complex recovery and global-phase invariance. The density layer additionally
+proves that `pure ψ` is unchanged by multiplication of `ψ` by a unit-modulus scalar, and
+`PureState.ofStateVector` therefore maps global-phase-related representatives to the same physical
+pure state. The converse phase-classification theorem and an optional projective/ray presentation are
+separate follow-up work.
 
 ## Mixed-state expectations
 
@@ -174,7 +184,8 @@ not naturally expressed by merely compiling the library.
 
 ## Scope boundaries
 
-The current API does not yet provide a general continuous-outcome POVM theory, a full Schatten-ideal
-hierarchy, arbitrary non-self-adjoint trace-class operators, unbounded observables in the bounded core,
-or thermodynamic limits. Those extensions should build on the canonical state and expectation APIs
-rather than introduce parallel public state types.
+The current API does not yet provide the converse classification of equal rank-one representatives by
+a unit complex phase, a projective/ray pure-state presentation, a general continuous-outcome POVM
+theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint trace-class operators, unbounded
+observables in the bounded core, or thermodynamic limits. Those extensions should build on the
+canonical state and expectation APIs rather than introduce parallel public state types.

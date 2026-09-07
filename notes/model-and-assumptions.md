@@ -7,23 +7,28 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
 
 ### Pure states and observables
 
-- A pure state is represented by a unit vector `QuantumTheory.State H` in a complex Hilbert space.
+- A normalized pure-state representative is `QuantumTheory.StateVector H` in a complex Hilbert space.
+  `QuantumTheory.State H` is the compatibility name for the same representative type.
+- A physical pure state is `QuantumTheory.PureState H`, a density operator known to equal
+  `QuantumTheory.pure ψ` for some normalized representative `ψ`.
 - An observable is a bounded self-adjoint operator `QuantumTheory.Observable H`.
-- `QuantumTheory.expValue` is the vector-state expectation value.
-- Global phase invariance of expectation values is proved, but physical states are not yet quotiented
-  by phase.
+- `QuantumTheory.expValue` is the vector-representative expectation value.
+- Unit-modulus global phases leave `QuantumTheory.pure ψ` unchanged, so phase-related representatives
+  map to equal physical `PureState` values. A projective/ray quotient and the converse classification
+  of equal rank-one projectors by global phase are not yet part of the API.
 
-### Mixed states
+### Density states
 
-`QuantumTheory.DensityOperator H` is the only mixed-state representation. Its underlying bounded
+`QuantumTheory.DensityOperator H` is the canonical density-state representation. Its underlying bounded
 operator is positive, compact, self-adjoint, spectrally trace-class, and normalized to spectral
-trace `1`.
+trace `1`. Physical pure states form the subtype `QuantumTheory.PureState H`; arbitrary mixed states
+are represented directly by `DensityOperator H`.
 
 The model is dimension-independent. In finite dimensions, specialization theorems recover ordinary
-matrix trace formulas without changing the state type.
+matrix trace formulas without changing the density-state type.
 
-`QuantumTheory.pure` embeds a unit vector as the rank-one projector `|ψ⟩⟨ψ|`. This is not
-purification of a mixed state on an enlarged Hilbert space.
+`QuantumTheory.pure` embeds a normalized state-vector representative as the rank-one projector
+`|ψ⟩⟨ψ|`. This is not purification of a mixed state on an enlarged Hilbert space.
 
 ### Measurements
 
@@ -165,10 +170,11 @@ and later thermodynamic limits is documented in
 
 | Physical notion | Lean counterpart | Primary module |
 |---|---|---|
-| Pure state representative | `QuantumTheory.State H` | `QuantumTheory/Postulates.lean` |
+| Normalized pure-state representative | `QuantumTheory.StateVector H` | `QuantumTheory/Postulates.lean` |
+| Physical pure state | `QuantumTheory.PureState H` | `QuantumTheory/DensityOperator/PureState.lean` |
 | Bounded observable | `QuantumTheory.Observable H` | `QuantumTheory/Postulates.lean` |
 | Vector-state expectation | `QuantumTheory.expValue` | `QuantumTheory/Postulates.lean` |
-| Density operator / mixed state | `QuantumTheory.DensityOperator H` | `QuantumTheory/DensityOperator.lean` |
+| Density state | `QuantumTheory.DensityOperator H` | `QuantumTheory/DensityOperator.lean` |
 | Density-state expectation | `DensityOperator.expectation` | `QuantumTheory/DensityOperator/Expectation.lean` |
 | Pure-state projector | `QuantumTheory.pure` | `QuantumTheory/DensityOperator/Pure.lean` |
 | Countable discrete POVM | `QuantumTheory.POVM H M` | `QuantumTheory/POVM/Basic.lean` |
