@@ -39,10 +39,7 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroad
   let y :=
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
       .y .x v m probeEnergy disorderStrength hbar pMax
-  inPlaneRotationCoefficient
-    (inPlaneLadderSolvedXCoefficient x y)
-    (inPlaneLadderSolvedYCoefficient x y)
-    output .x
+  inPlaneLadderSolvedCoefficient output x y
 
 /-- The finite-`η` ladder determinant converges to its fixed-disorder zero-broadening boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
@@ -133,54 +130,16 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
       .y .x v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
-  have hdetLimit :=
-    tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
-      v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
-  have hOne :
-      Tendsto (fun _ : ℝ => (1 : ℂ))
-        (nhdsWithin 0 (Set.Ioi 0)) (nhds 1) :=
-    tendsto_const_nhds
-  have hAlpha :
-      Tendsto
-        (fun broadening : ℝ =>
-          inPlaneLadderSolvedXCoefficient
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-              .x .x v m probeEnergy broadening disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-              .y .x v m probeEnergy broadening disorderStrength hbar pMax))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (inPlaneLadderSolvedXCoefficient
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              .x .x v m probeEnergy disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              .y .x v m probeEnergy disorderStrength hbar pMax))) := by
-    have hnum := hOne.sub hX
-    simpa [inPlaneLadderSolvedXCoefficient,
-      finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
-      div_eq_mul_inv] using hnum.mul (hdetLimit.inv₀ hdet)
-  have hBeta :
-      Tendsto
-        (fun broadening : ℝ =>
-          inPlaneLadderSolvedYCoefficient
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-              .x .x v m probeEnergy broadening disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-              .y .x v m probeEnergy broadening disorderStrength hbar pMax))
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds
-          (inPlaneLadderSolvedYCoefficient
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              .x .x v m probeEnergy disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              .y .x v m probeEnergy disorderStrength hbar pMax))) := by
-    simpa [inPlaneLadderSolvedYCoefficient,
-      finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
-      div_eq_mul_inv] using hY.mul (hdetLimit.inv₀ hdet)
+  have hdet' :
+      inPlaneLadderDeterminant
+        (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+          .x .x v m probeEnergy disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+          .y .x v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
+    simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
   simpa [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
     finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary] using
-    tendsto_inPlaneRotationCoefficient hAlpha hBeta output .x
+    (tendsto_inPlaneLadderSolvedCoefficient hX hY hdet' output)
 
 end
 
