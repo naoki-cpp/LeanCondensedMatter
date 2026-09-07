@@ -29,9 +29,8 @@ theorem isPureDensity_pure (ψ : StateVector H) : IsPureDensity (pure ψ) :=
 
 /-- The rank-one density operator is invariant under multiplication of its representative by a
 unit-modulus global phase. -/
-theorem pure_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1)
-    (hψ' : ‖c • ψ.1‖ = 1) :
-    pure (⟨c • ψ.1, hψ'⟩ : StateVector H) = pure ψ := by
+theorem pure_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1) :
+    pure (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) = pure ψ := by
   apply DensityOperator.ext
   change InnerProductSpace.rankOne ℂ (c • ψ.1) (c • ψ.1) =
     InnerProductSpace.rankOne ℂ ψ.1 ψ.1
@@ -61,11 +60,11 @@ theorem exists_stateVector (ρ : PureState H) :
 /-- The canonical map from normalized vector representatives to physical pure states identifies
 global-phase-related representatives. -/
 @[simp]
-theorem ofStateVector_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1)
-    (hψ' : ‖c • ψ.1‖ = 1) :
-    ofStateVector (⟨c • ψ.1, hψ'⟩ : StateVector H) = ofStateVector ψ := by
+theorem ofStateVector_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1) :
+    ofStateVector (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) =
+      ofStateVector ψ := by
   apply Subtype.ext
-  exact pure_smul_of_norm_eq_one ψ hc hψ'
+  exact pure_smul_of_norm_eq_one ψ hc
 
 end PureState
 
