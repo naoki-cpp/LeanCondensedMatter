@@ -27,11 +27,6 @@ def pauliAxisMomentumInversionSign : PauliAxis → ℝ
   | .y => -1
   | .z => 1
 
-/-- Simultaneous momentum inversion leaves the massive-Dirac dispersion polynomial unchanged. -/
-@[simp] theorem energySq_neg_momentum (v m px py : ℝ) :
-    energySq v m (-px) (-py) = energySq v m px py := by
-  simp [energySq]
-
 @[simp] theorem pauliGreenDenominatorOfRegulator_neg_momentum
     (v m px py probeEnergy regulator : ℝ) :
     pauliGreenDenominatorOfRegulator v m (-px) (-py) probeEnergy regulator =

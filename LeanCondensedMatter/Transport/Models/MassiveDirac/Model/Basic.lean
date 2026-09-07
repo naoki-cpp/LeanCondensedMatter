@@ -106,6 +106,11 @@ def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
 def energySq (v m px py : ℝ) : ℝ :=
   v ^ 2 * (px ^ 2 + py ^ 2) + m ^ 2
 
+/-- Simultaneous momentum inversion leaves the massive-Dirac dispersion polynomial unchanged. -/
+@[simp] theorem energySq_neg_momentum (v m px py : ℝ) :
+    energySq v m (-px) (-py) = energySq v m px py := by
+  simp [energySq]
+
 /-- Positive Dirac energy `E = √(v²(pₓ²+pᵧ²)+m²)`. -/
 def energy (v m px py : ℝ) : ℝ :=
   Real.sqrt (energySq v m px py)
