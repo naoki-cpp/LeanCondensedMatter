@@ -13,6 +13,7 @@ Lean/Mathlib style and project-wide conventions.
 
 - **One directory per track:** `Analysis/` for general mathematical infrastructure (Track C), `Combinatorics/` for Track B, `QuantumTheory/` for the physics postulates and what is built on them (Track A), `SecondQuantization/` for Track D (Fock space, creation/annihilation, CCR/CAR — kept separate from `QuantumTheory/` since second quantization is its own construction, not an extension of the axiomatic single-particle postulates). Physics files import analysis files, never the reverse.
 - **Semantic responsibility determines ownership and file boundaries.** Move reusable facts to the earliest layer that owns their meaning; split modules that mix distinct mathematical, model, response, or observable responsibilities; collapse strict one-consumer chains whose intermediate modules only route proof stages.
+- **Use general declarations directly.** When a domain-specific declaration is only a parameter specialization of a more general result, use the general declaration at the consumer. If reusable infrastructure is genuinely missing, add it at the most general layer that can state it rather than restoring a downstream wrapper.
 - **Documentation describes the current repository.** Update architecture notes and roadmaps when the current design, constraints, or remaining work changes. Do not append completed-work logs to permanent documentation.
 
 ## Documentation and provenance
