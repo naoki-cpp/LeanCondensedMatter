@@ -5,14 +5,12 @@ set_option linter.style.header false
 /-!
 # Raw swap differences
 
-This module owns the raw difference obtained by exchanging two argument positions. It deliberately
-does not include the factor `1/2` used for the antisymmetric part of a tensor.
+`swapDifference` is `f i j - f j i`; unlike an antisymmetric part, it has no factor `1/2`.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace QuantumTheory.Transport
 
-/-- Raw difference under exchange of two arguments: `f i j - f j i`. -/
+/-- Raw difference under exchange of two arguments. -/
 def swapDifference {ι α : Type*} [AddGroup α]
     (f : ι → ι → α) (i j : ι) : α :=
   f i j - f j i
@@ -24,11 +22,9 @@ theorem swapDifference_swap {ι α : Type*} [AddGroup α]
   simp [swapDifference]
 
 /-- A raw swap difference vanishes on equal arguments. -/
-@[simp]
-theorem swapDifference_self {ι α : Type*} [AddGroup α]
+@[simp] theorem swapDifference_self {ι α : Type*} [AddGroup α]
     (f : ι → ι → α) (i : ι) :
     swapDifference f i i = 0 := by
   simp [swapDifference]
 
-end Transport
-end QuantumTheory
+end QuantumTheory.Transport
