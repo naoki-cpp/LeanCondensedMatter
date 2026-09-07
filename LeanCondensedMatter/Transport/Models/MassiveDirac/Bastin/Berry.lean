@@ -177,7 +177,8 @@ theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureCompone
     interbandCurrentBerryWeight μ ν (oppositeBand band) e v m px py =
       -interbandCurrentBerryWeight μ ν band e v m px py := by
   unfold interbandCurrentBerryWeight
-  rw [interbandCurrentTraceAntisymmetrization_oppositeBand, interbandEnergyGap_oppositeBand]
+  rw [interbandCurrentTraceAntisymmetrization_oppositeBand, interbandEnergyGap_oppositeBand,
+    Complex.neg_im]
   ring
 
 /-- Away from the Dirac degeneracy, the positively oriented physical-current component reproduces
