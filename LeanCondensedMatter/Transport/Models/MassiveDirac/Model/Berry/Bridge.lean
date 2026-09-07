@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband
 
 set_option linter.style.header false
