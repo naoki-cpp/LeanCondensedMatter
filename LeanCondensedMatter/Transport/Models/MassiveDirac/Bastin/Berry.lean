@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Core.SwapDifference
+import LeanCondensedMatter.Analysis.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
