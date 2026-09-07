@@ -89,8 +89,8 @@ theorem sum_bandProjector_eq_one (v m px py : ℝ) :
 theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
     bandProjector band v m px py + bandProjector (oppositeBand band) v m px py = 1 := by
   cases band
-  · simpa only [sum_band] using sum_bandProjector_eq_one v m px py
-  · simpa only [sum_band, add_comm] using sum_bandProjector_eq_one v m px py
+  · simpa only [sum_band, oppositeBand_lower] using sum_bandProjector_eq_one v m px py
+  · simpa only [sum_band, oppositeBand_upper, add_comm] using sum_bandProjector_eq_one v m px py
 
 /-- The two band signs square to one. -/
 @[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by
