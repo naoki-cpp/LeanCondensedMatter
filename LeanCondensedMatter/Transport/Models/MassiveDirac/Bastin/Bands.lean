@@ -100,7 +100,7 @@ noncomputable def spectralDifferenceCoefficient
       band v m px py
 
 /-- Contribution of one ordered pair `(source,target)` to the projector-expanded Bastin trace for
-one measured/source direction pair `(μ,ν)`. The reversed current ordering is kept in the same
+one ordered current-direction pair `(μ,ν)`. The reversed current ordering is kept in the same
 canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
     (μ ν : Direction2) (source target : Band)
