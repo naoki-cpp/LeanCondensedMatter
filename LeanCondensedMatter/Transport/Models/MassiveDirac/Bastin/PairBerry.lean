@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Berry-curvature form of the massive-Dirac Bastin pair pole limit
 
 The fixed-window interband Bastin-pair theorem already extracts the complete target-band pole at
-fixed momentum.  This file identifies the extracted regular factor with the clean Berry-curvature
-weight and then takes the real part of the complex Bastin-pair limit.
+fixed momentum. This file identifies the extracted canonical antisymmetric Hall block with the
+clean Berry-curvature weight and then takes the real part of the complex Bastin-pair limit.
 
 For a target band `n`, the zero-broadening fixed-window limit is therefore
 
@@ -16,7 +16,7 @@ For a target band `n`, the zero-broadening fixed-window limit is therefore
 Re ∫ dE K_Bastin(E, η) → -2π e² Ω_n(p).
 ```
 
-This remains pointwise in momentum.  No momentum integration or interchange of the momentum
+This remains pointwise in momentum. No momentum integration or interchange of the momentum
 integral with the zero-broadening limit is performed here.
 -/
 
@@ -41,15 +41,11 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
     rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   calc
     (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
-        ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im =
-        (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
-            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im /
-          interbandEnergyGap band v m px py ^ 2 := by
-      rw [← mul_sub, hcoeff]
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul,
-        Complex.sub_im]
+        bastinInterbandBlockDifference .x .y band e v m px py).im =
+      (bastinInterbandBlockDifference .x .y band e v m px py).im /
+        interbandEnergyGap band v m px py ^ 2 := by
+      rw [hcoeff]
+      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
       field_simp [hgap]
       ring
     _ = -(e ^ 2 * berryCurvature band v m px py) :=
@@ -57,7 +53,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
         band e v m px py hE
 
 /-- The real part of the extracted interband Bastin pair converges pointwise to
-`-2π e² Ω_n(p)`.  This is the local response density that the next momentum-integration slice will
+`-2π e² Ω_n(p)`. This is the local response density that the next momentum-integration slice will
 compare with the existing occupied-state Berry integral. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
     (band : Band) (e v m px py radius : ℝ)

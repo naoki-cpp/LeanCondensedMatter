@@ -6,12 +6,12 @@ set_option linter.style.header false
 /-!
 # Fixed-window interband Bastin-pair extraction in the massive Dirac model
 
-The opposite-source interband Bastin pair factors exactly into `-2 i`, the target-band Lorentzian
-spectral kernel, and the regular spectator/current factor.  The previous pole-extraction theorem
-therefore lifts immediately to the actual interband Bastin pair integrated over the same fixed
-target-centered energy window.
+The opposite-source interband Bastin Hall pair factors exactly into `-2 i`, the target-band
+Lorentzian spectral kernel, and the regular spectator/current factor. The previous pole-extraction
+theorem therefore lifts immediately to the actual interband Bastin pair integrated over the same
+fixed target-centered energy window.
 
-The result remains pointwise in momentum.  No momentum integration or momentum-limit interchange is
+The result remains pointwise in momentum. No momentum integration or momentum-limit interchange is
 performed here.
 -/
 
@@ -21,12 +21,12 @@ noncomputable section
 
 open Filter
 
-/-- Fixed target-centered energy-window integral of the interband Bastin pair whose source is the
-opposite band and whose target is `band`. -/
+/-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
+the opposite band and whose target is `band`. -/
 noncomputable def targetCenteredInterbandBastinPairIntegral
     (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
-    bastinBandPairContribution (oppositeBand band) band e v m px py
+    bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
       (bandEnergy band v m px py + offset) broadening
 
 /-- For nonzero broadening, the integrated opposite-source Bastin pair is exactly `-2 i` times the
@@ -46,14 +46,14 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   apply intervalIntegral.integral_congr
   intro offset _
   change
-    bastinBandPairContribution (oppositeBand band) band e v m px py
+    bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
         (bandEnergy band v m px py + offset) broadening =
       (-2 * Complex.I) *
         ((lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m px py (offset, broadening))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
+    .x .y band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring

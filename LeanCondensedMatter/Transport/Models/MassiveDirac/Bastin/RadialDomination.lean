@@ -66,7 +66,7 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
     bastinBandBlockTrace .x .y (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
-  rw [bastinXYBandBlockTrace_opposite_source,
+  rw [bastinBandBlockTrace_opposite_source .x .y band e v m p 0,
     interbandCurrentTrace_radial (oppositeBand band) e v m p hE]
   cases band <;> simp [oppositeBand, bandSign]
   all_goals ring
@@ -77,7 +77,7 @@ theorem bastinYXBandBlockTrace_opposite_source_radial
     bastinBandBlockTrace .y .x (oppositeBand band) band e v m p 0 =
       -((((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I) := by
-  rw [bastinYXBandBlockTrace_opposite_source,
+  rw [bastinBandBlockTrace_swap_opposite_source .x .y band e v m p 0,
     interbandCurrentTrace_radial band e v m p hE]
   push_cast
   ring

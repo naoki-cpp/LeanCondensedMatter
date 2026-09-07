@@ -81,15 +81,15 @@ theorem tendsto_spectralDifferenceCoefficient_zero
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
     spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
 
-/-- A fixed ordered Bastin band-pair contribution tends to zero when the probe energy avoids both
-its source and target band energies. -/
+/-- A fixed direction-indexed ordered Bastin band-pair contribution tends to zero when the probe
+energy avoids both its source and target band energies. -/
 theorem tendsto_bastinBandPairContribution_zero
-    (source target : Band) (e v m px py probeEnergy : ℝ)
+    (μ ν : Direction2) (source target : Band) (e v m px py probeEnergy : ℝ)
     (hsource : probeEnergy ≠ bandEnergy source v m px py)
     (htarget : probeEnergy ≠ bandEnergy target v m px py) :
     Tendsto
       (fun broadening : ℝ =>
-        bastinBandPairContribution source target e v m px py probeEnergy broadening)
+        bastinBandPairContribution μ ν source target e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hret := tendsto_projectorResolventCoefficient_zero
     .retarded source v m px py probeEnergy hsource
@@ -99,18 +99,18 @@ theorem tendsto_bastinBandPairContribution_zero
     target v m px py probeEnergy htarget
   have hretTerm := (((hret.mul hret).mul hdiff).mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace .x .y source target e v m px py)
-      (nhds 0) (nhds (bastinBandBlockTrace .x .y source target e v m px py))))
+      (fun _ : ℝ => bastinBandBlockTrace μ ν source target e v m px py)
+      (nhds 0) (nhds (bastinBandBlockTrace μ ν source target e v m px py))))
   have hadvTerm := (((hadv.mul hadv).mul hdiff).mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace .y .x source target e v m px py)
-      (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py))))
+      (fun _ : ℝ => bastinBandBlockTrace ν μ source target e v m px py)
+      (nhds 0) (nhds (bastinBandBlockTrace ν μ source target e v m px py))))
   simpa only [bastinBandPairContribution, pow_two, retardedSpectralParameter,
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
     spectralParameter_advanced_ofRegulator, mul_zero, zero_mul, sub_self] using
     hretTerm.sub hadvTerm
 
-/-- The diagonal sector tends pointwise to zero away from both band energies. -/
+/-- The diagonal Hall sector tends pointwise to zero away from both band energies. -/
 theorem tendsto_diagonalBastinTraceContribution_zero
     (e v m px py probeEnergy : ℝ)
     (hlower : probeEnergy ≠ bandEnergy .lower v m px py)
@@ -120,12 +120,12 @@ theorem tendsto_diagonalBastinTraceContribution_zero
         diagonalBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hl := tendsto_bastinBandPairContribution_zero
-    .lower .lower e v m px py probeEnergy hlower hlower
+    .x .y .lower .lower e v m px py probeEnergy hlower hlower
   have hu := tendsto_bastinBandPairContribution_zero
-    .upper .upper e v m px py probeEnergy hupper hupper
+    .x .y .upper .upper e v m px py probeEnergy hupper hupper
   simpa [diagonalBastinTraceContribution] using hl.add hu
 
-/-- The interband sector also tends pointwise to zero away from both band energies.  Its nonzero
+/-- The interband Hall sector also tends pointwise to zero away from both band energies. Its nonzero
 clean Hall weight therefore cannot be recovered by taking the pointwise limit before energy
 integration. -/
 theorem tendsto_interbandBastinTraceContribution_zero
@@ -137,9 +137,9 @@ theorem tendsto_interbandBastinTraceContribution_zero
         interbandBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hlu := tendsto_bastinBandPairContribution_zero
-    .lower .upper e v m px py probeEnergy hlower hupper
+    .x .y .lower .upper e v m px py probeEnergy hlower hupper
   have hul := tendsto_bastinBandPairContribution_zero
-    .upper .lower e v m px py probeEnergy hupper hlower
+    .x .y .upper .lower e v m px py probeEnergy hupper hlower
   simpa [interbandBastinTraceContribution] using hlu.add hul
 
 /-- Away from the Dirac degeneracy and away from both band energies, the full projector-expanded

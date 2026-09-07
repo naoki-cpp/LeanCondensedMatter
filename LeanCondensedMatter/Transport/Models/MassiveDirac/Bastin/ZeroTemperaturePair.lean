@@ -33,14 +33,14 @@ noncomputable def targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleInte
         targetCenteredInterbandSpectatorCurrentFactor
           band e v m px py (offset, broadening))
 
-/-- Target-centered interband Bastin pair with the physical zero-temperature occupation inserted
-before the energy integration. -/
+/-- Target-centered interband Bastin Hall pair with the physical zero-temperature occupation
+inserted before the energy integration. -/
 noncomputable def targetCenteredZeroTemperatureInterbandBastinPairIntegral
     (band : Band) (e v m px py fermiEnergy radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-      bastinBandPairContribution (oppositeBand band) band e v m px py
+      bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
         (bandEnergy band v m px py + offset) broadening
 
 /-- For nonzero broadening, occupation weighting preserves the exact `-2 i` pole factorization. -/
@@ -60,7 +60,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   change
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-        bastinBandPairContribution (oppositeBand band) band e v m px py
+        bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
           (bandEnergy band v m px py + offset) broadening =
       (-2 * Complex.I) *
         (((zeroTemperatureOccupation fermiEnergy
@@ -69,7 +69,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (offset, broadening)))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
+    .x .y band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring
