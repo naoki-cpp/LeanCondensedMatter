@@ -7,10 +7,11 @@ See [the project roadmap](../roadmap.md) for cross-track status and
 
 Status: `proved`.
 
-`QuantumTheory/Postulates.lean` defines pure states as unit-vector representatives and observables as
-bounded self-adjoint operators. The public expectation API provides the canonical complex vector-state
-expectation, a lossless real observable expectation, reality, and global-phase invariance. Physical
-states are not quotiented by global phase.
+`QuantumTheory/Postulates.lean` defines normalized state-vector representatives, with
+`QuantumTheory.StateVector` as the canonical name and `QuantumTheory.State` as its compatibility name,
+together with bounded self-adjoint observables. The public expectation API provides the canonical
+complex vector-state expectation, a lossless real observable expectation, reality, and global-phase
+invariance.
 
 ## Bounded one-particle dynamics
 
@@ -34,14 +35,19 @@ evolution.
 Reusable unitary-conjugation facts for compact spectral trace-class operators live under
 `Analysis/Operator/TraceClass/` rather than in the physics layer.
 
-## Density operators, expectations, and purity
+## Density operators, physical pure states, expectations, and purity
 
-Status: `proved` for the current spectral trace-class model.
+Status: `proved` for the current spectral trace-class density model and density-backed physical pure
+states.
 
 `QuantumTheory.DensityOperator H` bundles a positive bounded operator with compact self-adjoint
-spectral trace-class data and spectral trace `1`. The API includes:
+spectral trace-class data and spectral trace `1`. `QuantumTheory.PureState H` is the subtype of density
+operators represented by some normalized state vector through `QuantumTheory.pure`. The API includes:
 
-- the pure-state rank-one embedding `QuantumTheory.pure`;
+- the rank-one embedding `QuantumTheory.pure` and `PureState.ofStateVector`;
+- existence of a normalized vector representative for every `PureState`;
+- invariance of the rank-one density operator, and therefore of `PureState.ofStateVector`, under a
+  unit-modulus global phase;
 - normalized complex and lossless real observable expectations;
 - positivity, reality, contractivity, and countable Hilbert-basis formulas;
 - a positive square root with Hilbert--Schmidt control and the corresponding `innerHS` expectation
@@ -50,7 +56,9 @@ spectral trace-class data and spectral trace `1`. The API includes:
 - spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the finite-dimensional
   `Tr(ρ²)` formula.
 
-A converse characterization of `purity ρ = 1` as rank one is not part of the current API.
+The converse statement that equal rank-one density operators have representatives differing by a unit
+complex phase, and the converse characterization `purity ρ = 1 → IsPureDensity ρ`, are not yet part of
+the current API. A projective/ray presentation is optional follow-up rather than the storage type.
 
 ## Discrete POVMs and Born probabilities
 
@@ -86,7 +94,9 @@ or semigroup/resolvent framework with explicit domains.
 
 ## Open work
 
-- characterize maximal purity by rank one if that theorem is needed downstream;
+- prove the converse global-phase classification for equal rank-one density operators;
+- connect `PureState` to density-state expectation and bounded unitary evolution APIs;
+- characterize maximal purity by `IsPureDensity` when the required spectral theorem is available;
 - extend the Hamiltonian interface to genuine infinite-dimensional Gibbs states;
 - reuse the canonical density expectation throughout completed Fock/KMS and response layers;
 - add continuous-outcome measurement theory after a measure-theoretic operator-valued API is fixed.
