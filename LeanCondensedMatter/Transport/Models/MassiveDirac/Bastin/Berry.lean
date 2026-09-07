@@ -19,8 +19,9 @@ Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,
 ```
 
 is transported back to the concrete `2 × 2` matrix trace. Its antisymmetrization under
-`μ ↔ ν` is the physical-current counterpart of the model-level force-matrix antisymmetrization,
-and the `(x,y)` component reproduces `e² Ω_n` after division by the squared interband gap.
+`μ ↔ ν` is the physical-current counterpart of the model-level force-matrix trace
+antisymmetrization, and the `(x,y)` component reproduces `e² Ω_n` after division by the squared
+interband gap.
 
 The projector-expanded finite-broadening Bastin kernel itself also remains direction-indexed.
 Concrete Hall consumers specialize it to `(x,y)` downstream.
@@ -143,21 +144,39 @@ theorem interbandCurrentTraceAntisymmetrization_swap
     interbandCurrentTrace_oppositeBand_eq_swap ν μ]
   ring
 
-/-- The physical-current antisymmetrization is `e²` times the force-matrix antisymmetrization. -/
-theorem interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixAntisymmetricNumerator
+/-- The physical-current antisymmetrization is `e²` times the force-matrix trace
+antisymmetrization. -/
+theorem interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixTraceNumeratorAntisymmetrization
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
     interbandCurrentTraceAntisymmetrization μ ν band e v m px py =
-      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixAntisymmetricNumerator μ ν band v m px py := by
-  unfold interbandCurrentTraceAntisymmetrization forceMatrixAntisymmetricNumerator
+      (((e ^ 2 : ℝ) : ℂ)) *
+        forceMatrixTraceNumeratorAntisymmetrization μ ν band v m px py := by
+  unfold interbandCurrentTraceAntisymmetrization forceMatrixTraceNumeratorAntisymmetrization
   rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator μ ν,
     interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator ν μ]
   ring
 
-/-- Berry-curvature weight formed from the antisymmetric physical-current interband trace. -/
+/-- Berry-curvature weight formed from the antisymmetrized physical-current interband trace. -/
 noncomputable def interbandCurrentBerryWeight
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℝ :=
   (interbandCurrentTraceAntisymmetrization μ ν band e v m px py).im /
     interbandEnergyGap band v m px py ^ 2
+
+/-- Exchanging current directions reverses the direction-indexed physical-current Berry weight. -/
+theorem interbandCurrentBerryWeight_swap
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentBerryWeight ν μ band e v m px py =
+      -interbandCurrentBerryWeight μ ν band e v m px py := by
+  unfold interbandCurrentBerryWeight
+  rw [interbandCurrentTraceAntisymmetrization_swap, Complex.neg_im]
+  ring
+
+/-- The direction-indexed physical-current Berry weight vanishes on equal directions. -/
+@[simp] theorem interbandCurrentBerryWeight_self
+    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentBerryWeight μ μ band e v m px py = 0 := by
+  rw [interbandCurrentBerryWeight, interbandCurrentTraceAntisymmetrization_self]
+  simp
 
 /-- The direction-indexed current-current Berry weight is `e²` times the corresponding force-matrix
 Berry-curvature component. -/
@@ -166,7 +185,7 @@ theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureCompone
     interbandCurrentBerryWeight μ ν band e v m px py =
       e ^ 2 * forceMatrixBerryCurvatureComponent μ ν band v m px py := by
   rw [interbandCurrentBerryWeight,
-    interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixAntisymmetricNumerator]
+    interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixTraceNumeratorAntisymmetrization]
   unfold forceMatrixBerryCurvatureComponent
   simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   ring
