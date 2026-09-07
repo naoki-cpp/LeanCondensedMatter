@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Radial reduction of the finite-broadening dressed Hall surface
 
-This module reduces the full polar-angle trace of the finite-cutoff finite-`η` Born-Dyson Hall
+This module reduces the source-`.y` specialization of the finite-cutoff finite-`η` Born-Dyson
 Středa surface response to the existing shared polar-Pauli rung coefficients. The measured channel
 is the physical `jₓ`, while the retarded-advanced source is the solved rotated `jᵧ` ladder vertex.
 The shared ladder-regularity hypothesis remains explicit throughout this reduction.
@@ -183,14 +183,14 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTrace
     .y .x v m p probeEnergy broadening disorderStrength hbar pMax
   (2 : ℂ) * q ^ 2 * (-(x * beta + y * alpha))
 
-/-- The full finite-`η` dressed Hall-surface angular trace is exactly the explicit radial
+/-- The source-`.y` finite-`η` dressed Středa angular trace is exactly the explicit radial Hall
 coefficient built from the direction-indexed rung entries and solved ladder coefficients. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral
-        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
+        .y e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
       finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         e v m p probeEnergy broadening disorderStrength hbar pMax hdet := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
@@ -223,12 +223,13 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     push_cast
     module
   have hsource :
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
-          e v m probeEnergy broadening disorderStrength hbar pMax hdet =
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+          .y e v m probeEnergy broadening disorderStrength hbar pMax hdet =
         (q * (-beta)) • matrixOperator sigmaX +
           (q * alpha) • matrixOperator sigmaY := by
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
       inPlaneCurrentOperator
+    simp only [inPlaneRotationCoefficient]
     rw [hjx, hjy]
     module
   let ra : ℝ → ℂ := fun θ =>
@@ -252,12 +253,12 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
         polarPauliOperator aA bA dA θ)
   have hbridge :
       (fun θ : ℝ =>
-        finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
-          e v m (p * Real.cos θ) (p * Real.sin θ)
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
+          .y e v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax hdet) =
         fun θ : ℝ => ra θ - (1 / 2 : ℂ) * (rr θ + aa θ) := by
     funext θ
-    unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceTraceBridge
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
       retardedAdvancedVertexTraceKernel sameSideVertexTraceRemainder twoGreenVertexTraceKernel
     rw [hjx, hjy, hsource]
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
@@ -296,7 +297,7 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     simpa [rr] using integral_polarPauli_sameSideXYTrace_eq_zero q aR bR dR
   have haa : (∫ θ in (0 : ℝ)..(2 * Real.pi), aa θ) = 0 := by
     simpa [aa] using integral_polarPauli_sameSideXYTrace_eq_zero q aA bA dA
-  unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
   rw [hbridge]
   rw [intervalIntegral.integral_sub hraIntegrable
     ((hrrIntegrable.add haaIntegrable).const_mul (1 / 2 : ℂ))]
@@ -309,18 +310,18 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
     inPlaneRotationCoefficient]
   ring
 
-/-- The finite-`η` radial integrand is the polar Jacobian `p` multiplying the explicit angularly
-reduced Hall-surface coefficient. -/
+/-- The source-`.y` finite-`η` radial integrand is the polar Jacobian `p` multiplying the explicit
+angularly reduced Hall-surface coefficient. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
-        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+        .y e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
       (p : ℂ) *
         finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
           e v m p probeEnergy broadening disorderStrength hbar pMax hdet := by
-  unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
   rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
 
 end
