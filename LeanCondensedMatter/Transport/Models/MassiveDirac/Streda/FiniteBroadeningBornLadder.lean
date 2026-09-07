@@ -45,10 +45,10 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourc
       v m probeEnergy broadening disorderStrength hbar pMax) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   inPlaneCurrentOperator e v
-    (-finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-      v m probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-      v m probeEnergy broadening disorderStrength hbar pMax)
+    (-finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .y v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .x v m probeEnergy broadening disorderStrength hbar pMax)
 
 /-- The physical retarded-advanced Hall source is electron charge times the Dirac velocity
 multiplying the rotated solved dimensionless coefficient pair. -/
@@ -60,10 +60,10 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOp
         e v m probeEnergy broadening disorderStrength hbar pMax hdet =
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
         inPlanePauliVertexOperator
-          (-finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-            v m probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-            v m probeEnergy broadening disorderStrength hbar pMax) := by
+          (-finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+            .y v m probeEnergy broadening disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+            .x v m probeEnergy broadening disorderStrength hbar pMax) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
 
@@ -75,7 +75,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOp
       (finiteCutoffContinuumBornDysonLadderRegular_zero_disorder
         v m probeEnergy broadening hbar pMax) = currentOperator .y e v := by
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedHallSourceCurrentOperator,
-    inPlaneCurrentOperator]
+    inPlaneCurrentOperator, inPlaneRotationCoefficient]
 
 /-- Pointwise finite-cutoff finite-`η` Hall bridge with the solved `Γᵧᴿᴬ` only in the RA block and
 bare `jᵧ` in the RR/AA same-side remainder. The shared regularity hypothesis is what licenses the

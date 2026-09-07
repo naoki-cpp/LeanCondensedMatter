@@ -28,12 +28,12 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumera
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
       .x .x v m probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-      v m probeEnergy broadening disorderStrength hbar pMax +
+    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .y v m probeEnergy broadening disorderStrength hbar pMax +
   finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
       .y .x v m probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-      v m probeEnergy broadening disorderStrength hbar pMax
+    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .x v m probeEnergy broadening disorderStrength hbar pMax
 
 /-- The finite-`η` dressed ordered `xy` Hall-surface angular coefficient has one explicit common RA
 Born-Dyson denominator. -/

@@ -73,6 +73,46 @@ def inPlaneLadderSolvedXCoefficient (x y : ℂ) : ℂ :=
 def inPlaneLadderSolvedYCoefficient (x y : ℂ) : ℂ :=
   y / inPlaneLadderDeterminant x y
 
+/-- Output coordinate of the bare-`σₓ` solved ladder fixed point. -/
+def inPlaneLadderSolvedCoefficient
+    (output : Direction2) (x y : ℂ) : ℂ :=
+  inPlaneRotationCoefficient
+    (inPlaneLadderSolvedXCoefficient x y)
+    (inPlaneLadderSolvedYCoefficient x y)
+    output .x
+
+/-- Convergence of the rung invariants propagates to every output coordinate of the solved ladder
+whenever the limiting shifted-ladder determinant is nonzero. -/
+theorem tendsto_inPlaneLadderSolvedCoefficient
+    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
+    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
+    (hdet : inPlaneLadderDeterminant x₀ y₀ ≠ 0)
+    (output : Direction2) :
+    Tendsto
+      (fun a => inPlaneLadderSolvedCoefficient output (x a) (y a))
+      l (nhds (inPlaneLadderSolvedCoefficient output x₀ y₀)) := by
+  have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
+  have hOneMinusX := hOne.sub hx
+  have hdetLimit :
+      Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
+        (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
+    simpa [inPlaneLadderDeterminant, pow_two] using
+      (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
+  have hAlpha :
+      Tendsto
+        (fun a => inPlaneLadderSolvedXCoefficient (x a) (y a)) l
+        (nhds (inPlaneLadderSolvedXCoefficient x₀ y₀)) := by
+    simpa [inPlaneLadderSolvedXCoefficient, div_eq_mul_inv] using
+      hOneMinusX.mul (hdetLimit.inv₀ hdet)
+  have hBeta :
+      Tendsto
+        (fun a => inPlaneLadderSolvedYCoefficient (x a) (y a)) l
+        (nhds (inPlaneLadderSolvedYCoefficient x₀ y₀)) := by
+    simpa [inPlaneLadderSolvedYCoefficient, div_eq_mul_inv] using
+      hy.mul (hdetLimit.inv₀ hdet)
+  simpa [inPlaneLadderSolvedCoefficient] using
+    tendsto_inPlaneRotationCoefficient hAlpha hBeta output .x
+
 /-- The solved longitudinal coefficient satisfies the first scalar fixed-point equation. -/
 theorem inPlaneLadderSolvedXCoefficient_fixedPoint
     (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0) :

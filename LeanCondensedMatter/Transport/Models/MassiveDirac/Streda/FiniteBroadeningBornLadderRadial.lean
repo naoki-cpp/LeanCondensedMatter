@@ -173,10 +173,10 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTrace
     (_hdet : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-  let alpha := finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let beta := finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-    v m probeEnergy broadening disorderStrength hbar pMax
+  let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+    .x v m probeEnergy broadening disorderStrength hbar pMax
+  let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+    .y v m probeEnergy broadening disorderStrength hbar pMax
   let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
     .x .x v m p probeEnergy broadening disorderStrength hbar pMax
   let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
@@ -194,10 +194,10 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularT
       finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         e v m p probeEnergy broadening disorderStrength hbar pMax hdet := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-  let alpha := finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let beta := finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-    v m probeEnergy broadening disorderStrength hbar pMax
+  let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+    .x v m probeEnergy broadening disorderStrength hbar pMax
+  let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+    .y v m probeEnergy broadening disorderStrength hbar pMax
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x

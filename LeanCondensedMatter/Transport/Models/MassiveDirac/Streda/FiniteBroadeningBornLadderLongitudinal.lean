@@ -43,10 +43,10 @@ noncomputable def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDres
       (finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
       (inPlaneCurrentOperator e v
-        (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-          v m probeEnergy broadening disorderStrength hbar pMax))
+        (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+          .x v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+          .y v m probeEnergy broadening disorderStrength hbar pMax))
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
     sameSideVertexTraceRemainder
@@ -70,10 +70,10 @@ theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurface
           (finiteCutoffContinuumBornDysonGreenOperator
             .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
           (inPlaneCurrentOperator e v
-            (finiteCutoffContinuumBornDysonLadderSolvedXCoefficient
-              v m probeEnergy broadening disorderStrength hbar pMax)
-            (finiteCutoffContinuumBornDysonLadderSolvedYCoefficient
-              v m probeEnergy broadening disorderStrength hbar pMax))
+            (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+              .x v m probeEnergy broadening disorderStrength hbar pMax)
+            (finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+              .y v m probeEnergy broadening disorderStrength hbar pMax))
           (finiteCutoffContinuumBornDysonGreenOperator
             .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
         sameSideVertexTraceRemainder
@@ -101,9 +101,8 @@ theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurface
         (currentOperator .x e v)
         probeEnergy broadening := by
   unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceTraceBridge
-  simp only [finiteCutoffContinuumBornDysonLadderSolvedXCoefficient_zero_disorder,
-    finiteCutoffContinuumBornDysonLadderSolvedYCoefficient_zero_disorder,
-    finiteCutoffContinuumBornDysonGreenOperator_zero_disorder]
+  simp only [finiteCutoffContinuumBornDysonLadderSolvedCoefficient_zero_disorder,
+    finiteCutoffContinuumBornDysonGreenOperator_zero_disorder, inPlaneRotationCoefficient]
   simp only [inPlaneCurrentOperator, one_smul, zero_smul, add_zero]
   have hret :
       retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
