@@ -17,10 +17,10 @@ Away from the band degeneracy,
 G(z) = (z - E₋)⁻¹ P₋ + (z - E₊)⁻¹ P₊
 ```
 
-is a left inverse of `z I - H₀`. The operator-projector algebra and scalar coefficient form of that
-spectral expansion, including its square and arbitrary nonzero signed-regulator realization, are
-therefore model-level spectral infrastructure. Kubo–Bastin, Středa, propagator, and disorder
-consumers remain downstream.
+is a left inverse of `z I - H₀`. The operator-projector algebra, direction-indexed current band
+blocks, and scalar coefficient form of that spectral expansion, including its square and arbitrary
+nonzero signed-regulator realization, are therefore model-level spectral infrastructure.
+Kubo–Bastin, Středa, propagator, and disorder consumers remain downstream.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -34,6 +34,13 @@ transport stack. -/
 noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (bandProjector band v m px py)
+
+/-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
+noncomputable def currentBandBlockTrace
+    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
+  finiteDimensionalOperatorTrace
+    (bandProjectorOperator target v m px py * currentOperator μ e v *
+      bandProjectorOperator source v m px py * currentOperator ν e v)
 
 /-- The two operator projectors resolve the identity. -/
 theorem bandProjectorOperator_lower_add_upper (v m px py : ℝ) :

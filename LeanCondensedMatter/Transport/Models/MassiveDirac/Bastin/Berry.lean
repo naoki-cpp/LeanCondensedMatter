@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
@@ -9,25 +8,22 @@ set_option linter.style.header false
 # Massive-Dirac Bastin projector blocks and Berry curvature
 
 The finite-broadening Kubo–Bastin layer and the clean Berry-curvature layer share the same
-massive-Dirac spectral projectors. This file makes that common block explicit without choosing an
-eigenvector gauge.
-
-First, the generic retarded/advanced resolvents in the Bastin integrand are replaced by the exact
-projector resolvents owned by `MassiveDirac/Model/OperatorSpectral`. Second, the direction-indexed
-interband operator trace
+massive-Dirac spectral projectors. The model layer owns the direction-indexed ordered current band
+block
 
 ```text
-Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,
+Tr(P_target j_μ P_source j_ν).
 ```
 
-is transported back to the concrete `2 × 2` matrix trace. For arbitrary in-plane directions, the
-current vertices are exactly `j_μ = -e v_μ`, so the trace is `e²` times the corresponding
-force-matrix numerator. For the Hall component `(μ,ν) = (x,y)`, the normalized imaginary trace is
-therefore directly `e²` times the clean Berry curvature.
+For an interband pair with `target = oppositeBand source`, the current vertices are exactly
+`j_μ = -e v_μ`, so that canonical block is `e²` times the force-matrix numerator. For the Hall
+component `(μ,ν) = (x,y)`, its normalized imaginary part is therefore directly `e²` times the clean
+Berry curvature.
 
-This is still a pointwise, finite-dimensional bridge. The next step is to expand the full Bastin
-projector expression into its diagonal/interband band blocks and then perform the occupation and
-zero-broadening analysis. No such limiting statement is made here.
+This file also replaces the generic retarded/advanced resolvents in the finite-broadening Bastin
+integrand by the exact projector resolvents owned by `MassiveDirac/Model/OperatorSpectral`. The
+subsequent band decomposition, occupation integration, and zero-broadening analysis remain
+downstream.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -36,80 +32,38 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Gauge-independent direction-indexed interband current block in the bounded-operator
-representation. -/
-noncomputable def interbandCurrentTrace
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
-    (bandProjectorOperator (oppositeBand band) v m px py * currentOperator μ e v *
-      bandProjectorOperator band v m px py * currentOperator ν e v)
-
-/-- Replacing the bounded current vertices by the canonical electron-charge velocity
-representatives leaves the interband current block unchanged. -/
-theorem interbandCurrentTrace_eq_canonicalChargeVelocityTrace
+/-- An opposite-band ordered current block is exactly `e²` times the gauge-independent force-matrix
+numerator. -/
+theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTrace μ ν band e v m px py =
-      finiteDimensionalOperatorTrace
-        (bandProjectorOperator (oppositeBand band) v m px py *
-          ((((-e : ℝ) : ℂ)) • velocityOperator μ v) *
-          bandProjectorOperator band v m px py *
-          ((((-e : ℝ) : ℂ)) • velocityOperator ν v)) := by
-  unfold interbandCurrentTrace
-  rw [currentOperator_eq_charge_smul_velocityOperator,
-    currentOperator_eq_charge_smul_velocityOperator]
-
-/-- The bounded-operator interband current trace is exactly the ordinary matrix trace of the same
-projector/current block. -/
-theorem interbandCurrentTrace_eq_matrixTrace
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTrace μ ν band e v m px py =
+    currentBandBlockTrace μ ν band (oppositeBand band) e v m px py =
+      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
+  unfold currentBandBlockTrace
+  calc
+    finiteDimensionalOperatorTrace
+        (bandProjectorOperator (oppositeBand band) v m px py * currentOperator μ e v *
+          bandProjectorOperator band v m px py * currentOperator ν e v) =
       Matrix.trace
         (bandProjector (oppositeBand band) v m px py * current μ e v *
           bandProjector band v m px py * current ν e v) := by
-  unfold interbandCurrentTrace
-  simpa [bandProjectorOperator, currentOperator, matrixOperator] using
-    finiteDimensionalOperatorTrace_toEuclideanCLM
-      (bandProjector (oppositeBand band) v m px py * current μ e v *
-        bandProjector band v m px py * current ν e v)
+      simpa [bandProjectorOperator, currentOperator, matrixOperator] using
+        finiteDimensionalOperatorTrace_toEuclideanCLM
+          (bandProjector (oppositeBand band) v m px py * current μ e v *
+            bandProjector band v m px py * current ν e v)
+    _ = (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
+      simp [current, forceMatrixTraceNumerator]
+      ring
 
-/-- Replacing direction-indexed charge currents by `-e` times the corresponding velocities pulls
-out `e²` from the interband projector trace. -/
-theorem matrixInterbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    Matrix.trace
-        (bandProjector (oppositeBand band) v m px py * current μ e v *
-          bandProjector band v m px py * current ν e v) =
-      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
-  simp [current, forceMatrixTraceNumerator]
-  ring
-
-/-- Operator form of the same direction-indexed `e²` factorization. -/
-theorem interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTrace μ ν band e v m px py =
-      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
-  rw [interbandCurrentTrace_eq_matrixTrace]
-  exact matrixInterbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    μ ν band e v m px py
-
-/-- Imaginary part of the physical-current interband Hall block. -/
-theorem interbandCurrentTrace_im
-    (band : Band) (e v m px py : ℝ) :
-    (interbandCurrentTrace .x .y band e v m px py).im =
-      e ^ 2 * (forceMatrixTraceNumerator .x .y band v m px py).im := by
-  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y]
-  push_cast
-  simp [Complex.mul_im, pow_two]
-
-/-- Normalizing the physical-current Hall interband trace by the squared interband gap directly
-reproduces `e²` times the clean Berry curvature away from the Dirac degeneracy. -/
-theorem two_mul_interbandCurrentTrace_im_div_gap_sq_eq_chargeSq_berryCurvature
+/-- Normalizing the Hall interband current block by the squared interband gap directly reproduces
+`e²` times the clean Berry curvature away from the Dirac degeneracy. -/
+theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    2 * (interbandCurrentTrace .x .y band e v m px py).im /
+    2 * (currentBandBlockTrace .x .y band (oppositeBand band) e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       e ^ 2 * berryCurvature band v m px py := by
-  rw [interbandCurrentTrace_im,
-    ← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
+  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator .x .y]
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
+  rw [← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
   unfold forceMatrixBerryCurvature
   ring
 

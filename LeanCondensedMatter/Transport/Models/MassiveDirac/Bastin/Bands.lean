@@ -6,18 +6,18 @@ set_option linter.style.header false
 # Massive-Dirac Bastin band-block decomposition
 
 The exact finite-broadening Bastin trace from `MassiveDiracBastinBerry` is already written with the
-gauge-free two-band projector resolvent. The projector/resolvent algebra itself is owned by
-`MassiveDirac/Model/OperatorSpectral`; this file starts from that spectral API and expands the Bastin
-expression into the four ordered band blocks
+gauge-free two-band projector resolvent. The projector/resolvent algebra and ordered current band
+blocks are owned by `MassiveDirac/Model/OperatorSpectral`; this file starts from that spectral API and
+expands the Bastin expression into the four ordered band blocks
 
 ```text
 (--), (-+), (+-), (++).
 ```
 
-The ordered current blocks and their band-pair contributions remain direction-indexed. The concrete
-Hall trace specializes them to `(x,y)` only when assembling the diagonal and interband sectors. In
-particular, no finite-broadening diagonal term is discarded. The two interband traces are exactly
-the current-current blocks connected to `e²` times the clean Berry curvature downstream.
+The Bastin band-pair contributions remain direction-indexed. The concrete Hall trace specializes
+them to `(x,y)` only when assembling the diagonal and interband sectors. In particular, no
+finite-broadening diagonal term is discarded. The two interband traces connect to `e²` times the
+clean Berry curvature downstream.
 
 This decomposition is pointwise in probe energy and broadening. Occupation integration and the
 zero-broadening limit remain downstream steps.
@@ -28,13 +28,6 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-/-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` used by the Berry bridge. -/
-noncomputable def currentBandBlockTrace
-    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
-    (bandProjectorOperator target v m px py * currentOperator μ e v *
-      bandProjectorOperator source v m px py * currentOperator ν e v)
 
 /-- Natural ordered trace `Tr(j_μ P_source j_ν P_target)` produced by the Bastin kernel. -/
 noncomputable def bastinBandBlockTrace
