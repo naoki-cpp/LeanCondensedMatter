@@ -168,8 +168,7 @@ theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureCompone
   rw [interbandCurrentBerryWeight,
     interbandCurrentTraceAntisymmetrization_eq_chargeSq_forceMatrixAntisymmetricNumerator]
   unfold forceMatrixBerryCurvatureComponent
-  push_cast
-  simp [Complex.mul_im]
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   ring
 
 /-- The current-current Berry weight changes sign under exchange of the two bands. -/
@@ -179,7 +178,7 @@ theorem interbandCurrentBerryWeight_eq_chargeSq_forceMatrixBerryCurvatureCompone
       -interbandCurrentBerryWeight μ ν band e v m px py := by
   unfold interbandCurrentBerryWeight
   rw [interbandCurrentTraceAntisymmetrization_oppositeBand, interbandEnergyGap_oppositeBand]
-  simp
+  ring
 
 /-- Away from the Dirac degeneracy, the positively oriented physical-current component reproduces
 `e²` times the clean two-dimensional Berry curvature. -/
