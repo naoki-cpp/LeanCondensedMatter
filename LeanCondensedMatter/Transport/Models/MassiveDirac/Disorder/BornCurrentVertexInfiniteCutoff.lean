@@ -41,34 +41,6 @@ private noncomputable def finiteCutoffContinuumBornRARadialIntegral
     p / continuumBornRADenominatorProduct
       v m p probeEnergy disorderStrength hbar
 
-/-- Exact finite-cutoff arctangent evaluation of the shared Born RA radial denominator integral. -/
-private theorem finiteCutoffContinuumBornRARadialIntegral_eq_arctan
-    (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0)
-    (hwidth : continuumBornRADenominatorWidth
-      v m probeEnergy disorderStrength hbar ≠ 0) :
-    finiteCutoffContinuumBornRARadialIntegral
-        v m probeEnergy disorderStrength hbar pMax =
-      (2 * v ^ 2 *
-          continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)⁻¹ *
-        (Real.arctan
-            ((v ^ 2 * pMax ^ 2 -
-                (1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
-                  (probeEnergy ^ 2 - m ^ 2)) /
-              continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar) +
-          Real.arctan
-            (((1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
-                (probeEnergy ^ 2 - m ^ 2)) /
-              continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)) := by
-  unfold finiteCutoffContinuumBornRARadialIntegral
-  simpa [continuumBornRADenominatorProduct, continuumBornRADenominatorCenter] using
-    integral_radialQuadraticLorentzian_eq_arctan
-      v
-      ((1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
-        (probeEnergy ^ 2 - m ^ 2))
-      (continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar)
-      pMax hvelocity hwidth
-
 /-- Infinite-cutoff value of the convergent Born RA radial denominator integral at positive width. -/
 private def continuumBornRARadialIntegralUVLimit
     (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
