@@ -9,8 +9,9 @@ set_option linter.style.header false
 
 At a target-band Bastin pole, the source band is the opposite band. The two current orderings are
 coordinates of one direction-indexed interband block, so this module keeps them generic in
-`Direction2` and exposes their antisymmetric difference as the canonical object. The Hall response
-specializes that object to `(x,y)` only where the Berry-curvature relation is used.
+`Direction2` and exposes their antisymmetric difference as the canonical Bastin object. The ordered
+projector-first current blocks themselves are model-level spectral data owned by
+`Model/OperatorSpectral`.
 
 The imaginary part of the Hall antisymmetric block, normalized by the squared interband energy gap,
 is exactly minus `e²` times the clean Berry curvature away from the Dirac degeneracy.
@@ -22,24 +23,6 @@ performed here.
 namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
-
-/-- With the source chosen as the opposite band, a direction-indexed Bastin block is the interband
-current trace whose target label is the opposite band. -/
-theorem bastinBandBlockTrace_opposite_source
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py =
-      interbandCurrentTrace μ ν (oppositeBand band) e v m px py := by
-  rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
-  cases band <;> rfl
-
-/-- Reversing the current ordering of an opposite-source Bastin block gives the interband current
-trace of the selected target band. -/
-theorem bastinBandBlockTrace_swap_opposite_source
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py =
-      interbandCurrentTrace μ ν band e v m px py := by
-  rw [bastinBandBlockTrace_swap_eq_currentBandBlockTrace]
-  cases band <;> rfl
 
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
@@ -62,29 +45,6 @@ theorem bastinInterbandBlockDifference_self
     bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
   simp [bastinInterbandBlockDifference]
 
-/-- The canonical antisymmetric Bastin block is the difference of the two opposite interband
-current traces for the same ordered direction pair. -/
-theorem bastinInterbandBlockDifference_eq_currentTraceDifference
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
-    bastinInterbandBlockDifference μ ν band e v m px py =
-      interbandCurrentTrace μ ν (oppositeBand band) e v m px py -
-        interbandCurrentTrace μ ν band e v m px py := by
-  unfold bastinInterbandBlockDifference
-  rw [bastinBandBlockTrace_opposite_source,
-    bastinBandBlockTrace_swap_opposite_source]
-
-/-- The imaginary parts of the two Hall interband current traces are opposite away from the band
-degeneracy. -/
-theorem interbandCurrentTrace_oppositeBand_im
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (interbandCurrentTrace .x .y (oppositeBand band) e v m px py).im =
-      -(interbandCurrentTrace .x .y band e v m px py).im := by
-  rw [interbandCurrentTrace_im (oppositeBand band) e v m px py,
-    interbandCurrentTrace_im band e v m px py,
-    forceMatrixTraceNumerator_im (oppositeBand band) v m px py hE,
-    forceMatrixTraceNumerator_im band v m px py hE]
-  cases band <;> simp [oppositeBand, bandSign] <;> ring
-
 /-- The normalized Hall antisymmetric Bastin block is the negative of `e²` times the clean Berry
 curvature. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
@@ -92,12 +52,21 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
     (bastinInterbandBlockDifference .x .y band e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       -(e ^ 2 * berryCurvature band v m px py) := by
-  rw [bastinInterbandBlockDifference_eq_currentTraceDifference,
-    Complex.sub_im,
-    interbandCurrentTrace_oppositeBand_im band e v m px py hE,
-    ← two_mul_interbandCurrentTrace_im_div_gap_sq_eq_chargeSq_berryCurvature
-      band e v m px py hE]
-  ring
+  have hband :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+      band e v m px py hE
+  have hopp :=
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+      (oppositeBand band) e v m px py hE
+  rw [interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
+  simp [pow_two] at hopp
+  unfold bastinInterbandBlockDifference
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace,
+    bastinBandBlockTrace_swap_eq_currentBandBlockTrace,
+    Complex.sub_im]
+  have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
+  field_simp [hgap] at hband hopp ⊢
+  nlinarith
 
 end
 
