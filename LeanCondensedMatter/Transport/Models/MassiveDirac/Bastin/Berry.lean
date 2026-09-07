@@ -120,7 +120,7 @@ noncomputable def interbandCurrentTraceAntisymmetrization
     interbandCurrentTrace ν μ band e v m px py
 
 /-- Exchanging the current directions reverses the physical-current antisymmetrization. -/
-@[simp] theorem interbandCurrentTraceAntisymmetrization_swap
+theorem interbandCurrentTraceAntisymmetrization_swap
     (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
     interbandCurrentTraceAntisymmetrization ν μ band e v m px py =
       -interbandCurrentTraceAntisymmetrization μ ν band e v m px py := by
