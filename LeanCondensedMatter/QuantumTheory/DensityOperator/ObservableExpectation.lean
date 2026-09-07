@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
+import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import Mathlib.LinearAlgebra.Complex.Module
 
 /-!
@@ -106,5 +106,21 @@ theorem DensityOperator.observableExpectation_pure
   apply Complex.ofReal_injective
   rw [← (pure ψ).expectation_observable A, coe_observableExpValue,
     DensityOperator.expectation_pure_observable]
+
+namespace PureState
+
+/-- Observable expectation of a physical pure state, evaluated by the canonical density-state API. -/
+noncomputable def observableExpectation (ρ : PureState H) (A : Observable H) : ℝ :=
+  ρ.1.observableExpectation A
+
+/-- The physical pure-state observable expectation agrees with the representative-level formula. -/
+@[simp]
+theorem observableExpectation_ofStateVector
+    (ψ : StateVector H) (A : Observable H) :
+    (ofStateVector ψ).observableExpectation A = observableExpValue A ψ := by
+  simpa [PureState.observableExpectation] using
+    DensityOperator.observableExpectation_pure ψ A
+
+end PureState
 
 end QuantumTheory
