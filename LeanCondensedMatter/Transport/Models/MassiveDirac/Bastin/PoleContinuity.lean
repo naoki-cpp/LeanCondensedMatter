@@ -30,17 +30,16 @@ noncomputable def targetCenteredInterbandSpectatorCurrentFactor
     (bandEnergy band v m px py + offsetBroadening.1) offsetBroadening.2
 
 /-- At zero offset and zero broadening, the regular factor is exactly the inverse-gap-squared
-antisymmetric current block. -/
+canonical antisymmetric Hall current block. -/
 theorem targetCenteredInterbandSpectatorCurrentFactor_zero
     (band : Band) (e v m px py : ℝ) :
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =
       (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
-        ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) := by
+        bastinInterbandBlockDifference .x .y band e v m px py) := by
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   simp [retardedSpectralParameter, advancedSpectralParameter, spectralParameterOfRegulator,
-    projectorResolventCoefficient_oppositeBand_at_bandEnergy]
+    projectorResolventCoefficient_oppositeBand_at_bandEnergy,
+    bastinInterbandBlockDifference, mul_sub]
 
 /-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
 spectator/current factor is jointly continuous there for arbitrary real broadening. -/
@@ -135,7 +134,7 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
   simpa using interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
 
 /-- Jointly sending both the target-centered energy offset and broadening to zero extracts the same
-inverse-gap-squared antisymmetric current block as the fixed-energy pole limit. -/
+inverse-gap-squared canonical antisymmetric Hall current block as the fixed-energy pole limit. -/
 theorem tendsto_targetCenteredInterbandSpectatorCurrentFactor_zero
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
@@ -143,9 +142,7 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentFactor_zero
       (nhds (0, 0))
       (nhds
         (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
-          ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
+          bastinInterbandBlockDifference .x .y band e v m px py)) := by
   have h := (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
     band e v m px py hE).tendsto
   rw [targetCenteredInterbandSpectatorCurrentFactor_zero band e v m px py] at h
