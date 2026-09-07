@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Core.SwapDifference
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral
 
 set_option linter.style.header false
@@ -60,22 +61,7 @@ def forceMatrixTraceNumerator
 /-- Raw antisymmetrization of the direction-indexed interband force-matrix trace numerator. -/
 def forceMatrixTraceNumeratorAntisymmetrization
     (μ ν : Direction2) (band : Band) (v m px py : ℝ) : ℂ :=
-  forceMatrixTraceNumerator μ ν band v m px py -
-    forceMatrixTraceNumerator ν μ band v m px py
-
-/-- Exchanging the two in-plane directions reverses the force-matrix trace antisymmetrization. -/
-theorem forceMatrixTraceNumeratorAntisymmetrization_swap
-    (μ ν : Direction2) (band : Band) (v m px py : ℝ) :
-    forceMatrixTraceNumeratorAntisymmetrization ν μ band v m px py =
-      -forceMatrixTraceNumeratorAntisymmetrization μ ν band v m px py := by
-  unfold forceMatrixTraceNumeratorAntisymmetrization
-  ring
-
-/-- The force-matrix trace antisymmetrization vanishes on equal directions. -/
-@[simp] theorem forceMatrixTraceNumeratorAntisymmetrization_self
-    (μ : Direction2) (band : Band) (v m px py : ℝ) :
-    forceMatrixTraceNumeratorAntisymmetrization μ μ band v m px py = 0 := by
-  simp [forceMatrixTraceNumeratorAntisymmetrization]
+  swapDifference (fun μ ν => forceMatrixTraceNumerator μ ν band v m px py) μ ν
 
 /-- The oriented `(x,y)` force-matrix trace antisymmetrization is `-2 s m v²/E` in imaginary part. -/
 theorem forceMatrixTraceNumeratorAntisymmetrization_xy_im
@@ -85,9 +71,9 @@ theorem forceMatrixTraceNumeratorAntisymmetrization_xy_im
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   cases band <;>
-    simp [forceMatrixTraceNumeratorAntisymmetrization, forceMatrixTraceNumerator, oppositeBand,
-      bandProjector, Matrix.trace, Matrix.mul_apply, velocity, directionPauli, hamiltonian,
-      sigmaX, sigmaY, sigmaZ] <;>
+    simp [forceMatrixTraceNumeratorAntisymmetrization, swapDifference, forceMatrixTraceNumerator,
+      oppositeBand, bandProjector, Matrix.trace, Matrix.mul_apply, velocity, directionPauli,
+      hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hEc] <;>
     ring_nf
 
