@@ -37,6 +37,7 @@ private theorem integral_radialQuadraticInverseSquare
   let c : ℂ := ((v ^ 2 : ℝ) : ℂ)
   let g : ℂ → ℂ := fun z => A - c * z ^ 2
   let F : ℂ → ℂ := fun z => ((2 : ℂ) * c)⁻¹ * A * (g z)⁻¹
+  have hvC : (v : ℂ) ≠ 0 := by exact_mod_cast hvelocity
   have hc : c ≠ 0 := by
     simp [c, hvelocity]
   have hg : ∀ p : ℝ, HasDerivAt g (-2 * c * (p : ℂ)) (p : ℂ) := by
@@ -53,7 +54,7 @@ private theorem integral_radialQuadraticInverseSquare
       (((hg p).inv hgp).const_mul (((2 : ℂ) * c)⁻¹ * A)).comp_ofReal
     convert hreal using 1 <;>
       simp [F, g, c, div_eq_mul_inv, pow_two] <;>
-      field_simp [hc, hgp] <;> ring
+      field_simp [hc, hgp, hvC] <;> ring_nf
   have hcontinuous : Continuous (fun p : ℝ =>
       A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) := by
     fun_prop
@@ -256,30 +257,18 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
         2 * q ^ 2 * pref⁻¹ * (alpha * rx p - beta * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (rr p + aa p) := by
     intro p
-    have hdenR :
-        finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
-      finiteCutoffContinuumBornDysonDenominator_ne_zero
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-        hbroadening hdisorder.le hpMax
-    have hdenA :
-        finiteCutoffContinuumBornDysonDenominator
-          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
-      finiteCutoffContinuumBornDysonDenominator_ne_zero
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-        hbroadening hdisorder.le hpMax
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand,
-      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient,
-      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_eq_denominatorForm]
-    dsimp [q, pref, alpha, beta, rx, ry, rr, aa]
+      finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient]
+    unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+    dsimp [q, alpha, beta, rx, ry, rr, aa]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
-      finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
-    simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      inPlaneRotationCoefficient,
-      finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct, mul_inv_rev]
-    field_simp [hpref, hdenR, hdenA] <;> ring_nf
+      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand]
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+      inPlaneRotationCoefficient pauliRungAngularXCoefficient pauliRungAngularYCoefficient
+      finiteCutoffContinuumBornDysonScalarCoefficient finiteCutoffContinuumBornDysonPauliCoefficient
+      pauliAxisComponent
+    dsimp
+    field_simp [hpref] <;> ring
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       intervalIntegrable_finiteBroadeningCurrentRungRadialIntegrand
@@ -385,7 +374,7 @@ private theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hM := tendsto_finiteCutoffContinuumBornEffectiveMass_broadening_zero
     side v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  have hA := (hE.mul hE).sub (hM.mul hM)
+  have hA := (hE.pow 2).sub (hM.pow 2)
   have hD0 := tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero
     side v m 0 probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hDMax := tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero
@@ -393,9 +382,8 @@ private theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
   have hconst : Tendsto (fun _ : ℝ => ((((2 * v ^ 2 : ℝ) : ℂ))⁻¹))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds ((((2 * v ^ 2 : ℝ) : ℂ))⁻¹)) := tendsto_const_nhds
   simpa [finiteBroadeningSameSideRadialEndpoint, zeroBroadeningSameSideRadialEndpoint,
-    radialQuadraticInverseSquareEndpoint,
-    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
-    pow_two, mul_assoc] using
+    radialQuadraticInverseSquareEndpoint, finiteCutoffContinuumBornDysonDenominator,
+    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary, mul_assoc] using
     (hconst.mul hA).mul ((hDMax.inv₀ hdenMax).sub (hD0.inv₀ hden0))
 
 /-- At fixed positive disorder and finite cutoff, the proof-independent reduced longitudinal Středa
@@ -447,15 +435,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have hAA := tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     .advanced v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
     (hden0 .advanced) (hdenMax .advanced)
-  simpa [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralReduced,
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary,
-    mul_assoc] using
+  have htotal :=
     (((hAlpha.mul hKx).sub (hBeta.mul hKy)).const_mul
       (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
         (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹)).sub
     ((hRR.add hAA).const_mul
       ((((2 * Real.pi : ℝ) : ℂ)) *
         ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
+  simpa only [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralReduced,
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary] using htotal
 
 end
 
