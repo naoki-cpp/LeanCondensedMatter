@@ -7,12 +7,13 @@ set_option linter.style.header false
 /-!
 # Denominator forms of finite-broadening dressed Středa surfaces
 
-This module rewrites the angularly reduced finite-`η` massive-Dirac Středa surface coefficients into
-explicit Born-Dyson denominator forms. The longitudinal source-`.x` form retains both the dressed RA
-term and the nonzero bare-source RR/AA same-side remainder. The ordered source-`.y` Hall form uses the
-shared retarded-advanced denominator product.
+This module specializes the source-indexed finite-`η` massive-Dirac Středa radial coefficient to
+explicit Born-Dyson denominator forms. Source `.x` is the longitudinal component and retains the
+bare RR/AA same-side remainder. Source `.y` is the ordered `xy` component and uses the shared
+retarded-advanced denominator product after its same-side contribution vanishes.
 
-The shared ladder-regularity proof is threaded through the dressed-response objects unchanged. No
+The algebraic radial coefficient itself is total and carries no ladder-regularity proof. Regularity
+enters only when an upstream dressed Středa response is identified with that coefficient. No
 disorder, external-broadening, or ultraviolet limit is taken, and the ordered `xy` component remains
 distinct from the antisymmetric Hall projection.
 -/
@@ -21,15 +22,13 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
-/-- The finite-`η` dressed longitudinal Středa angular coefficient in explicit denominator form.
+/-- The source-`.x` finite-`η` dressed Středa angular coefficient in explicit denominator form.
 The first term is the dressed RA contribution; the second retains the bare RR/AA same-side
 remainder with the retarded and advanced denominators kept separate. -/
-theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_eq_denominatorForm
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+        .x e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
         .x v m probeEnergy broadening disorderStrength hbar pMax;
@@ -54,8 +53,9 @@ theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurface
           (1 / 2 : ℂ) *
             (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) +
               dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2))) := by
-  unfold finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
+  simp only [inPlaneRotationCoefficient, mul_one, mul_zero, sub_zero]
   unfold pauliRungAngularXCoefficient pauliRungAngularYCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
@@ -66,13 +66,10 @@ theorem finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurface
   rw [hpi]
   ring
 
-/-- Numerator multiplying the common finite-`η` RA Born-Dyson denominator in the dressed ordered
-`xy` Hall-surface trace. The first term multiplies the solved transverse coefficient `β`; the
-orientation-sensitive second term multiplies the solved longitudinal coefficient `α`. -/
+/-- Numerator multiplying the common finite-`η` RA Born-Dyson denominator in the source-`.y`
+ordered transverse surface trace. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (_hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
       .x .x v m probeEnergy broadening disorderStrength hbar pMax *
     finiteCutoffContinuumBornDysonLadderSolvedCoefficient
@@ -82,21 +79,33 @@ def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumera
     finiteCutoffContinuumBornDysonLadderSolvedCoefficient
       .x v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- The finite-`η` dressed ordered `xy` Hall-surface angular coefficient has one explicit common RA
+/-- The source-`.y` finite-`η` dressed ordered `xy` angular coefficient has one explicit common RA
 Born-Dyson denominator. -/
-theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_eq_denominatorForm
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+        .y e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       -(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
         (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
         finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-          v m probeEnergy broadening disorderStrength hbar pMax hdet := by
-  unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+          v m probeEnergy broadening disorderStrength hbar pMax := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+  dsimp only
+  simp only [inPlaneRotationCoefficient, mul_one, mul_zero, sub_zero, zero_mul,
+    pauliRungAngularYCoefficient, sub_self, mul_zero, add_zero]
+  change
+    let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
+    let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .x v m probeEnergy broadening disorderStrength hbar pMax;
+    let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+      .y v m probeEnergy broadening disorderStrength hbar pMax;
+    let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+      .x .x v m p probeEnergy broadening disorderStrength hbar pMax;
+    let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+      .y .x v m p probeEnergy broadening disorderStrength hbar pMax;
+    (2 : ℂ) * q ^ 2 * (-(x * beta + y * alpha)) = _
   dsimp only
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
         .x .x v m p probeEnergy broadening disorderStrength hbar pMax,
@@ -124,9 +133,9 @@ theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIn
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
             v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
           finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-            v m probeEnergy broadening disorderStrength hbar pMax hdet) := by
-  rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq,
-    finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_eq_denominatorForm]
+            v m probeEnergy broadening disorderStrength hbar pMax) := by
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm]
 
 end
 
