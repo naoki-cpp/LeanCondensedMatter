@@ -33,7 +33,7 @@ instance : Fintype PauliAxis where
 private theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
-  simp
+  simp [add_assoc]
 
 /-- Pauli matrix `σₓ`. -/
 def pauliX : PauliMatrix :=
@@ -77,11 +77,14 @@ components. No complex conjugation is introduced. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =
       dotProduct u u • (1 : PauliMatrix) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
-      dotProduct, sum_pauliAxis, Complex.I_mul_I] <;>
-    ring
+      dotProduct, sum_pauliAxis] <;>
+    ring_nf <;>
+    simp [hI]
 
 /-- Multiplying opposite-sign Pauli shifts eliminates the Pauli part and leaves the quadratic
 bilinear invariant. -/
