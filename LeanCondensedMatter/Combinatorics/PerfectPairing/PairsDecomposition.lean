@@ -5,15 +5,13 @@ set_option linter.style.header false
 /-!
 # `Pairing.pairs`, decomposed into `firstPair` plus the smaller pairing's pairs
 
-This module exposes the finite-set decomposition underlying the first-pair recursion, so products
-over all pairs can be split into the first-pair factor and the transported smaller pairing.
+This module proves the finite-set decomposition underlying first-pair recursion internally and
+exposes the resulting product decomposition over `pairing.pairs`.
 -/
 
 namespace Combinatorics
 
-/-- `pairing.pairs` decomposes into `firstPair` plus the smaller pairing's pairs, pushed forward
-along `eraseZeroOrderIso`. -/
-theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
+private theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.pairs =
       insert pairing.firstPair
         (pairing.eraseZeroPair.pairs.image fun pr =>
