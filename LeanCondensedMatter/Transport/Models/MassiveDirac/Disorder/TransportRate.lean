@@ -173,11 +173,27 @@ private theorem upperBandProjectorOverlap_eq
       (((1 +
         (v ^ 2 * (px * qx + py * qy) + m ^ 2) /
           (energy v m px py * energy v m qx qy)) / 2 : ℝ) : ℂ) := by
-  simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian,
-    sigmaX, sigmaY, sigmaZ]
+  let pCoefficients : PauliAxis → ℂ :=
+    (((1 / energy v m px py : ℝ) : ℂ)) • diracPauliCoefficients v m px py
+  let qCoefficients : PauliAxis → ℂ :=
+    (((1 / energy v m qx qy : ℝ) : ℂ)) • diracPauliCoefficients v m qx qy
+  have hpProjector :
+      bandProjector .upper v m px py =
+        (1 / 2 : ℂ) •
+          ((1 : Matrix2) + InternalSpace.pauliCombination pCoefficients) := by
+    simp [bandProjector, pCoefficients, hamiltonian_eq_pauliCombination]
+  have hqProjector :
+      bandProjector .upper v m qx qy =
+        (1 / 2 : ℂ) •
+          ((1 : Matrix2) + InternalSpace.pauliCombination qCoefficients) := by
+    simp [bandProjector, qCoefficients, hamiltonian_eq_pauliCombination]
+  rw [hpProjector, hqProjector,
+    InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination]
+  rw [InternalSpace.dotProduct_pauliAxis]
+  simp [pCoefficients, qCoefficients, diracPauliCoefficients]
+  push_cast
   field_simp [hp, hq]
-  ring_nf
-  simp [pow_two]
+  ring
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
 positive `p_x` axis and a state at relative Fermi-circle angle `θ`. This is the canonical real
