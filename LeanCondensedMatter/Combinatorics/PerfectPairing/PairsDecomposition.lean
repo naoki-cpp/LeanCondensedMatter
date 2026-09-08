@@ -11,9 +11,7 @@ over all pairs can be split into the first-pair factor and the transported small
 
 namespace Combinatorics
 
-/-- `pairing.pairs` decomposes into `firstPair` plus the smaller pairing's pairs, pushed forward
-along `eraseZeroOrderIso`. -/
-theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
+private theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.pairs =
       insert pairing.firstPair
         (pairing.eraseZeroPair.pairs.image fun pr =>
