@@ -123,7 +123,6 @@ theorem diracPauliCoefficients_dot_self (v m px py : ℝ) :
       ((energySq v m px py : ℝ) : ℂ) := by
   rw [InternalSpace.dotProduct_pauliAxis]
   simp [diracPauliCoefficients, energySq]
-  push_cast
   ring
 
 /-- Positive Dirac energy `E = √(v²(pₓ²+pᵧ²)+m²)`. -/
