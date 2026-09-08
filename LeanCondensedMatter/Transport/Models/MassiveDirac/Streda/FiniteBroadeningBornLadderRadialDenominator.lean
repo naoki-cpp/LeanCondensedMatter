@@ -108,9 +108,10 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-      simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix_apply_zero_one,
-        inPlaneRotationMatrix_apply_one_one, mul_one, mul_zero, neg_zero,
-        pauliRungAngularYCoefficient, sub_self]
+      simp only [inPlaneRotationCoefficient,
+        inPlaneRotationMatrix_apply_zero_zero, inPlaneRotationMatrix_apply_zero_one,
+        inPlaneRotationMatrix_apply_one_zero, inPlaneRotationMatrix_apply_one_one,
+        mul_one, mul_zero, neg_zero, pauliRungAngularYCoefficient, sub_self]
       ring
     _ = _ := by
       dsimp only
