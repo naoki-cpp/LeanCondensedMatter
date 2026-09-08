@@ -41,7 +41,7 @@ abbrev inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
 
 /-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
 direction and `j` the input/source direction. -/
-def inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
+abbrev inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
   | .x, .x => inPlaneRotationMatrix x y 0 0
   | .x, .y => inPlaneRotationMatrix x y 0 1
   | .y, .x => inPlaneRotationMatrix x y 1 0
