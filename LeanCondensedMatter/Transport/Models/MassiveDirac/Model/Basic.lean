@@ -152,28 +152,6 @@ theorem pauliMatrixCombination_mul_self (coefficients : PauliVector ℂ) :
     ring_nf <;>
     simp [hI]
 
-/-- Pauli coefficient vector of the clean massive-Dirac Hamiltonian. -/
-def diracPauliVector (v m px py : ℝ) : PauliVector ℂ :=
-  pauliVector
-    (((v * px : ℝ) : ℂ))
-    (((v * py : ℝ) : ℂ))
-    (((m : ℝ) : ℂ))
-
-/-- Pauli representation of the clean massive-Dirac Hamiltonian. -/
-theorem hamiltonian_eq_pauliMatrixCombination (v m px py : ℝ) :
-    hamiltonian v m px py = pauliMatrixCombination (diracPauliVector v m px py) := by
-  simp [hamiltonian, diracPauliVector]
-
-/-- The Pauli-vector bilinear square is the complex embedding of the Dirac dispersion polynomial. -/
-theorem pauliBilinearSquare_diracPauliVector (v m px py : ℝ) :
-    pauliBilinearSquare (diracPauliVector v m px py) =
-      ((energySq v m px py : ℝ) : ℂ) := by
-  unfold diracPauliVector
-  rw [pauliBilinearSquare_pauliVector]
-  unfold energySq
-  push_cast
-  ring
-
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
   | .x => sigmaX
@@ -199,6 +177,28 @@ def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
 /-- Positive energy squared of the clean massive Dirac dispersion. -/
 def energySq (v m px py : ℝ) : ℝ :=
   v ^ 2 * (px ^ 2 + py ^ 2) + m ^ 2
+
+/-- Pauli coefficient vector of the clean massive-Dirac Hamiltonian. -/
+def diracPauliVector (v m px py : ℝ) : PauliVector ℂ :=
+  pauliVector
+    (((v * px : ℝ) : ℂ))
+    (((v * py : ℝ) : ℂ))
+    (((m : ℝ) : ℂ))
+
+/-- Pauli representation of the clean massive-Dirac Hamiltonian. -/
+theorem hamiltonian_eq_pauliMatrixCombination (v m px py : ℝ) :
+    hamiltonian v m px py = pauliMatrixCombination (diracPauliVector v m px py) := by
+  simp [hamiltonian, diracPauliVector]
+
+/-- The Pauli-vector bilinear square is the complex embedding of the Dirac dispersion polynomial. -/
+theorem pauliBilinearSquare_diracPauliVector (v m px py : ℝ) :
+    pauliBilinearSquare (diracPauliVector v m px py) =
+      ((energySq v m px py : ℝ) : ℂ) := by
+  unfold diracPauliVector
+  rw [pauliBilinearSquare_pauliVector]
+  unfold energySq
+  push_cast
+  ring
 
 /-- Simultaneous momentum inversion leaves the massive-Dirac dispersion polynomial unchanged. -/
 @[simp] theorem energySq_neg_momentum (v m px py : ℝ) :
