@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
-import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZeroSuccAbove
+import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
@@ -16,6 +16,34 @@ predicate stable under deletion.
 -/
 
 namespace Combinatorics
+
+open FiniteIndex
+
+private theorem Pairing.eraseZeroOrderIso_eq_succ_succAbove {n : ℕ} (pairing : Pairing (n + 1))
+    (i : Fin (2 * n)) :
+    (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))) =
+      (((pairing.partner 0).pred (pairing.partner_ne 0)).succAbove i).succ := by
+  let k := (pairing.partner 0).pred (pairing.partner_ne 0)
+  have hj : pairing.partner 0 = k.succ := (Fin.succ_pred _ _).symm
+  rw [Pairing.eraseZeroOrderIso]
+  have hmem : ∀ i : Fin (2 * n), ((k.succAbove i).succ : Fin (2 * (n + 1))) ∈
+      deletedPositions n (pairing.partner 0) := by
+    intro i
+    simp only [deletedPositions, Finset.mem_erase, Finset.mem_univ, and_true]
+    refine ⟨?_, Fin.succ_ne_zero _⟩
+    rw [hj]
+    exact fun h => Fin.succAbove_ne k i (Fin.succ_injective _ h)
+  have hmono : StrictMono (fun i : Fin (2 * n) =>
+      ((k.succAbove i).succ : Fin (2 * (n + 1)))) :=
+    Fin.strictMono_succ.comp (Fin.strictMono_succAbove k)
+  have huniq := Finset.orderEmbOfFin_unique
+    (card_deletedPositions n (pairing.partner 0) (pairing.partner_ne 0)) hmem hmono
+  have h1 : (deletedPositionsOrderIso n (pairing.partner 0) (pairing.partner_ne 0) i :
+      Fin (2 * (n + 1))) =
+      Finset.orderEmbOfFin (deletedPositions n (pairing.partner 0))
+        (card_deletedPositions n (pairing.partner 0) (pairing.partner_ne 0)) i :=
+    Finset.coe_orderIsoOfFin_apply _ _ i
+  rw [h1, ← huniq]
 
 /-- The abstract first-pair recursion. -/
 theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiring R] (ζ : R)
