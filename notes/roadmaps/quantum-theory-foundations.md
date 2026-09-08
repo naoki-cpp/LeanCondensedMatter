@@ -7,11 +7,10 @@ See [the project roadmap](../roadmap.md) for cross-track status and
 
 Status: `proved`.
 
-`QuantumTheory/Postulates.lean` defines normalized state-vector representatives, with
-`QuantumTheory.StateVector` as the canonical name and `QuantumTheory.State` as its compatibility name,
-together with bounded self-adjoint observables. The public expectation API provides the canonical
-complex vector-state expectation, a lossless real observable expectation, reality, and global-phase
-invariance.
+`QuantumTheory/Postulates.lean` defines normalized state-vector representatives as
+`QuantumTheory.StateVector`, together with bounded self-adjoint observables. The public expectation API
+provides the canonical complex vector-state expectation, a lossless real observable expectation,
+reality, and global-phase invariance.
 
 ## Bounded one-particle dynamics
 
