@@ -10,11 +10,10 @@ At fixed positive disorder and finite cutoff, this module propagates the solved 
 boundary into the source-indexed retarded-advanced dressed current consumed by the Středa response.
 The repository rotation convention remains `[[α,-β],[β,α]]`.
 
-The finite-broadening current is the total algebraic value built from the two solved ladder
-coefficients. The nonzero limiting ladder determinant remains explicit in the convergence theorem
-because it controls the solved-coefficient limit and its fixed-point interpretation. No Středa
-momentum integral, conductivity normalization, weak-disorder limit, or ultraviolet removal is
-introduced here.
+The finite-broadening current is the total algebraic value built from the solved ladder vector. The
+nonzero limiting ladder determinant remains explicit in the convergence theorem because it controls
+the solved-vector limit and its fixed-point interpretation. No Středa momentum integral,
+conductivity normalization, weak-disorder limit, or ultraviolet removal is introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -71,7 +70,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
   have hY := tendsto_inPlaneRotationCoefficient hAlpha hBeta .y source
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
-    inPlaneCurrentOperator] using
+    finiteCutoffContinuumBornDysonLadderSolvedCoefficient, inPlaneCurrentOperator] using
     (hX.smul_const (currentOperator .x e v)).add
       (hY.smul_const (currentOperator .y e v))
 
