@@ -55,8 +55,7 @@ theorem tendsto_inPlaneRotationCoefficient
     Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
       (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
   cases i <;> cases j <;>
-    simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.head_cons, Matrix.tail_cons]
+    simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix]
   all_goals first | exact hx | exact hy.neg | exact hy
 
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
@@ -89,7 +88,6 @@ theorem inPlaneLadderShiftedMatrix_det (x y : ℂ) :
     (inPlaneLadderShiftedMatrix x y).det = inPlaneLadderDeterminant x y := by
   simp [inPlaneLadderShiftedMatrix, inPlaneRotationMatrix, inPlaneLadderDeterminant,
     Matrix.det_fin_two, pow_two]
-  ring
 
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
