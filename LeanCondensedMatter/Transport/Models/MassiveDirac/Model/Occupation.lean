@@ -86,14 +86,6 @@ theorem energy_radial_eq_imp_eq_of_nonneg
   · exact hpq
   · nlinarith
 
-/-- Either massive-Dirac band energy is injective on the nonnegative radial axis when `v ≠ 0`. -/
-theorem bandEnergy_radial_eq_imp_eq_of_nonneg
-    (band : Band) (v m p q : ℝ) (hv : v ≠ 0) (hp : 0 ≤ p) (hq : 0 ≤ q)
-    (henergy : bandEnergy band v m p 0 = bandEnergy band v m q 0) :
-    p = q := by
-  apply energy_radial_eq_imp_eq_of_nonneg v m p q hv hp hq
-  cases band <;> simpa [bandEnergy] using henergy
-
 /-- Metallic upper-band Fermi radius for the massive-Dirac dispersion,
 `p_F = sqrt(ε_F² - m²) / |v|`. -/
 def metallicFermiRadius (v m fermiEnergy : ℝ) : ℝ :=
@@ -180,12 +172,6 @@ theorem radialEnergyDerivative_sq_metallicFermiRadius_pos
     exact (div_lt_one hfermiSq).2 hmSqLt
   positivity
 
-/-- The upper-band energy at the explicit metallic Fermi radius is exactly `ε_F`. -/
-theorem bandEnergy_upper_metallicFermiRadius
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0) (hmF : |m| ≤ fermiEnergy) :
-    bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy := by
-  simpa using energy_metallicFermiRadius v m fermiEnergy hv hmF
-
 /-- Positive radial energy is strictly increasing on the nonnegative axis when `v ≠ 0`. -/
 theorem energy_radial_lt_of_lt_of_nonneg
     (v m p q : ℝ) (hv : v ≠ 0) (hp : 0 ≤ p) (hpq : p < q) :
@@ -251,15 +237,16 @@ theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
   constructor
   · intro hfermi
     change bandEnergy .upper v m p 0 = fermiEnergy at hfermi
-    apply bandEnergy_radial_eq_imp_eq_of_nonneg
-      .upper v m p (metallicFermiRadius v m fermiEnergy) hv hp
+    rw [bandEnergy_upper] at hfermi
+    apply energy_radial_eq_imp_eq_of_nonneg
+      v m p (metallicFermiRadius v m fermiEnergy) hv hp
       (metallicFermiRadius_nonneg v m fermiEnergy)
     exact hfermi.trans
-      (bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hmF).symm
+      (energy_metallicFermiRadius v m fermiEnergy hv hmF).symm
   · intro hpF
     subst p
     change bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy
-    exact bandEnergy_upper_metallicFermiRadius v m fermiEnergy hv hmF
+    simpa using energy_metallicFermiRadius v m fermiEnergy hv hmF
 
 /-- Isotropic full-angle mean square of the `x` group-velocity component evaluated at the explicit
 upper-band Fermi radius. -/
