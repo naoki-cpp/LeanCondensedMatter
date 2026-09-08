@@ -140,11 +140,6 @@ theorem inPlaneLadderSolvedVector_apply_y (x y : ℂ) :
     inPlaneLadderSolvedVector x y .y = y / inPlaneLadderDeterminant x y := by
   rfl
 
-/-- Output coordinate of the bare-`σₓ` solved ladder fixed point. -/
-def inPlaneLadderSolvedCoefficient
-    (output : Direction2) (x y : ℂ) : ℂ :=
-  inPlaneLadderSolvedVector x y output
-
 /-- Convergence of the rung invariants propagates to the solved ladder vector whenever the limiting
 shifted-ladder determinant is nonzero. -/
 theorem tendsto_inPlaneLadderSolvedVector
@@ -168,18 +163,6 @@ theorem tendsto_inPlaneLadderSolvedVector
       hOneMinusX.mul (hdetLimit.inv₀ hdet)
   · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
       hy.mul (hdetLimit.inv₀ hdet)
-
-/-- Every output-coordinate convergence theorem is a projection of the solved-vector limit. -/
-theorem tendsto_inPlaneLadderSolvedCoefficient
-    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
-    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
-    (hdet : inPlaneLadderDeterminant x₀ y₀ ≠ 0)
-    (output : Direction2) :
-    Tendsto
-      (fun a => inPlaneLadderSolvedCoefficient output (x a) (y a))
-      l (nhds (inPlaneLadderSolvedCoefficient output x₀ y₀)) := by
-  simpa [inPlaneLadderSolvedCoefficient] using
-    (tendsto_pi_nhds.mp (tendsto_inPlaneLadderSolvedVector hx hy hdet) output)
 
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
