@@ -18,7 +18,7 @@ there unless it acquires a real cross-module consumer.
 namespace Combinatorics
 
 /-- A power of an involutive scalar (`ζ * ζ = 1`) only depends on the exponent's parity. -/
-theorem pow_eq_of_mod_two_eq {R : Type*} [CommSemiring R] {ζ : R} (hζ : ζ * ζ = 1) {a b : ℕ}
+theorem pow_eq_of_mod_two_eq {R : Type*} [Monoid R] {ζ : R} (hζ : ζ * ζ = 1) {a b : ℕ}
     (h : a % 2 = b % 2) : ζ ^ a = ζ ^ b := by
   conv_lhs => rw [← Nat.div_add_mod a 2]
   conv_rhs => rw [← Nat.div_add_mod b 2, ← h]
