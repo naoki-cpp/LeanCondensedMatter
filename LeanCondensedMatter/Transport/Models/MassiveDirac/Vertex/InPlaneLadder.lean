@@ -101,6 +101,16 @@ def inPlaneLadderSolvedVector (x y : ℂ) : InPlaneCoefficientVector :=
     ((1 - x) / inPlaneLadderDeterminant x y)
     (y / inPlaneLadderDeterminant x y)
 
+@[simp]
+theorem inPlaneLadderSolvedVector_apply_zero (x y : ℂ) :
+    inPlaneLadderSolvedVector x y 0 = (1 - x) / inPlaneLadderDeterminant x y := by
+  simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector]
+
+@[simp]
+theorem inPlaneLadderSolvedVector_apply_one (x y : ℂ) :
+    inPlaneLadderSolvedVector x y 1 = y / inPlaneLadderDeterminant x y := by
+  simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector]
+
 /-- Longitudinal coordinate projection of the canonical solved vector. -/
 def inPlaneLadderSolvedXCoefficient (x y : ℂ) : ℂ :=
   inPlaneLadderSolvedVector x y 0
@@ -153,11 +163,12 @@ theorem inPlaneLadderSolvedVector_fixedPoint
   funext i
   fin_cases i
   · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
-    field_simp [hdet] <;>
-      unfold inPlaneLadderDeterminant <;>
-      ring
+    field_simp [hdet]
+    unfold inPlaneLadderDeterminant
+    ring
   · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
-    field_simp [hdet] <;> ring
+    field_simp [hdet]
+    ring
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
 theorem inPlaneLadder_fixedPoint_unique
