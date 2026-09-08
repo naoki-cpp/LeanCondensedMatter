@@ -152,12 +152,10 @@ theorem inPlaneLadderSolvedVector_fixedPoint
     inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector]
   funext i
   fin_cases i
-  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderDeterminant]
-    field_simp [hdet]
-    ring
-  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderDeterminant]
-    field_simp [hdet]
-    ring
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
+    field_simp [hdet] <;> ring
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
+    field_simp [hdet] <;> ring
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
 theorem inPlaneLadder_fixedPoint_unique
@@ -166,16 +164,38 @@ theorem inPlaneLadder_fixedPoint_unique
     (hfixed : coefficients =
       inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) :
     coefficients = inPlaneLadderSolvedVector x y := by
+  have hfixedShift :
+      coefficients - inPlaneLadderAction x y coefficients = inPlaneLadderBareXSource := by
+    calc
+      coefficients - inPlaneLadderAction x y coefficients =
+          (inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) -
+            inPlaneLadderAction x y coefficients :=
+        congrArg (fun value => value - inPlaneLadderAction x y coefficients) hfixed
+      _ = inPlaneLadderBareXSource := by abel
+  have hsolvedFixed := inPlaneLadderSolvedVector_fixedPoint x y hdet
+  have hsolvedShift :
+      inPlaneLadderSolvedVector x y -
+          inPlaneLadderAction x y (inPlaneLadderSolvedVector x y) =
+        inPlaneLadderBareXSource := by
+    calc
+      inPlaneLadderSolvedVector x y -
+          inPlaneLadderAction x y (inPlaneLadderSolvedVector x y) =
+        (inPlaneLadderBareXSource +
+            inPlaneLadderAction x y (inPlaneLadderSolvedVector x y)) -
+          inPlaneLadderAction x y (inPlaneLadderSolvedVector x y) :=
+        congrArg
+          (fun value => value - inPlaneLadderAction x y (inPlaneLadderSolvedVector x y))
+          hsolvedFixed
+      _ = inPlaneLadderBareXSource := by abel
   have hshifted :
       (inPlaneLadderShiftedMatrix x y).mulVec coefficients = inPlaneLadderBareXSource := by
-    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec, hfixed]
-    simp [inPlaneLadderAction]
+    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec]
+    simpa [inPlaneLadderAction] using hfixedShift
   have hsolvedShifted :
       (inPlaneLadderShiftedMatrix x y).mulVec (inPlaneLadderSolvedVector x y) =
         inPlaneLadderBareXSource := by
-    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec,
-      inPlaneLadderSolvedVector_fixedPoint x y hdet]
-    simp [inPlaneLadderAction]
+    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec]
+    simpa [inPlaneLadderAction] using hsolvedShift
   have hunit : IsUnit (inPlaneLadderShiftedMatrix x y) :=
     (Matrix.isUnit_iff_isUnit_det _).2 <| by
       rw [inPlaneLadderShiftedMatrix_det]
