@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Core.ContinuumMeasure
+import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
@@ -20,7 +21,8 @@ j_μ = -e v_μ,  μ ∈ {x,y}.
 The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
 and `current` definitions are the public model-level owners used throughout the transport stack.
 The Pauli-vector basis is indexed separately by `PauliAxis`, since its `z` component is an internal
-mass/pseudospin channel rather than a third momentum direction.
+mass/pseudospin channel rather than a third momentum direction. Pauli coefficients are represented
+canonically as `PauliAxis`-indexed vectors, with a bilinear dot product for algebraic Pauli identities.
 The closed Berry-curvature benchmark is recorded directly here; its agreement with the
 model-specific force-matrix expression is proved downstream.
 
@@ -74,12 +76,103 @@ inductive PauliAxis where
   | z
   deriving DecidableEq
 
-/-- Select a component of a Pauli vector. -/
-def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
-  match axis with
+instance : Fintype PauliAxis where
+  elems := {.x, .y, .z}
+  complete := by
+    intro axis
+    cases axis <;> simp
+
+/-- Coefficients indexed by the semantic Pauli axes. -/
+abbrev PauliVector (R : Type*) := PauliAxis → R
+
+/-- A Pauli vector with components `(x,y,z)`. -/
+def pauliVector {R : Type*} (x y z : R) : PauliVector R
   | .x => x
   | .y => y
   | .z => z
+
+/-- A finite sum over Pauli axes is the sum of its three semantic components. -/
+theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
+    ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
+  change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
+  simp [add_assoc]
+
+/-- Select a component of a Pauli vector. -/
+def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
+  pauliVector x y z axis
+
+/-- Matrix associated with a semantic Pauli axis. -/
+def pauliMatrix : PauliAxis → Matrix2
+  | .x => sigmaX
+  | .y => sigmaY
+  | .z => sigmaZ
+
+/-- Matrix represented by a complex Pauli coefficient vector. -/
+def pauliMatrixCombination (coefficients : PauliVector ℂ) : Matrix2 :=
+  ∑ axis : PauliAxis, coefficients axis • pauliMatrix axis
+
+@[simp]
+theorem pauliMatrixCombination_pauliVector (x y z : ℂ) :
+    pauliMatrixCombination (pauliVector x y z) =
+      x • sigmaX + y • sigmaY + z • sigmaZ := by
+  unfold pauliMatrixCombination
+  rw [sum_pauliAxis]
+  rfl
+
+/-- Bilinear quadratic form carried by Pauli multiplication. This deliberately has no complex
+conjugation: `Tr(AB)` and `(c · σ)²` use the algebraic dot product rather than the Hermitian inner
+product. -/
+def pauliBilinearSquare (coefficients : PauliVector ℂ) : ℂ :=
+  Matrix.dotProduct coefficients coefficients
+
+@[simp]
+theorem pauliBilinearSquare_pauliVector (x y z : ℂ) :
+    pauliBilinearSquare (pauliVector x y z) = x ^ 2 + y ^ 2 + z ^ 2 := by
+  unfold pauliBilinearSquare Matrix.dotProduct
+  rw [sum_pauliAxis]
+  simp [pauliVector, pow_two]
+
+/-- The Pauli-vector square identity `(c · σ)² = (c · c) I`. -/
+theorem pauliMatrixCombination_mul_self (coefficients : PauliVector ℂ) :
+    pauliMatrixCombination coefficients * pauliMatrixCombination coefficients =
+      pauliBilinearSquare coefficients • (1 : Matrix2) := by
+  let x := coefficients .x
+  let y := coefficients .y
+  let z := coefficients .z
+  have hcoefficients : coefficients = pauliVector x y z := by
+    funext axis
+    cases axis <;> rfl
+  rw [hcoefficients, pauliMatrixCombination_pauliVector,
+    pauliBilinearSquare_pauliVector]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
+    ring_nf <;>
+    simp [hI]
+
+/-- Pauli coefficient vector of the clean massive-Dirac Hamiltonian. -/
+def diracPauliVector (v m px py : ℝ) : PauliVector ℂ :=
+  pauliVector
+    (((v * px : ℝ) : ℂ))
+    (((v * py : ℝ) : ℂ))
+    (((m : ℝ) : ℂ))
+
+/-- Pauli representation of the clean massive-Dirac Hamiltonian. -/
+theorem hamiltonian_eq_pauliMatrixCombination (v m px py : ℝ) :
+    hamiltonian v m px py = pauliMatrixCombination (diracPauliVector v m px py) := by
+  simp [hamiltonian, diracPauliVector]
+
+/-- The Pauli-vector bilinear square is the complex embedding of the Dirac dispersion polynomial. -/
+theorem pauliBilinearSquare_diracPauliVector (v m px py : ℝ) :
+    pauliBilinearSquare (diracPauliVector v m px py) =
+      ((energySq v m px py : ℝ) : ℂ) := by
+  unfold diracPauliVector
+  rw [pauliBilinearSquare_pauliVector]
+  unfold energySq
+  push_cast
+  ring
 
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
@@ -197,13 +290,8 @@ theorem pauliShiftMatrix_mul_closedInverse
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    rw [pow_two, Complex.I_mul_I]
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
-    ring_nf <;>
-    simp [hI]
+  rw [hamiltonian_eq_pauliMatrixCombination, hamiltonian_eq_pauliMatrixCombination,
+    pauliMatrixCombination_mul_self, pauliBilinearSquare_diracPauliVector]
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
