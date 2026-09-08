@@ -10,25 +10,25 @@ set_option linter.style.header false
 # Finite-broadening Born-Dyson RA-dressed Středa surface bridge
 
 This module inserts the solved finite-cutoff finite-external-broadening Born-Dyson current-vertex
-coefficients into the retarded-advanced block of the massive-Dirac Středa surface algebra. The
-measured current is fixed to the physical `jₓ`, while the bare source direction is indexed by
-`Direction2`.
+vector into the retarded-advanced block of the massive-Dirac Středa surface algebra. The measured
+current is fixed to the physical `jₓ`, while the bare source direction is indexed by `Direction2`.
 
-The canonical ladder solution is stored for a bare `σₓ` source as `(α, β)`. Rotational closure
-therefore supplies the source-indexed algebraic vertex
+The canonical ladder solution for a bare `σₓ` source is stored as one in-plane coefficient vector.
+Rotational closure supplies the source-indexed algebraic vertex
 
 ```text
 Γₓᴿᴬ =  α σₓ + β σᵧ,
-Γᵧᴿᴬ = -β σₓ + α σᵧ.
+Γᵧᴿᴬ = -β σₓ + α σᵧ,
 ```
 
-These computational values are total; ladder regularity is needed only when the solved coefficient
-pair is interpreted as the physical fixed point. Only the `Gᴿ Γ Gᴬ` ladder has been solved. The
-explicit same-side RR/AA remainder consequently retains the bare source current rather than reusing
-the RA-dressed vertex without a corresponding RR/AA Bethe–Salpeter derivation. The resulting object
-is an RA-dressed/bare-same-side bridge, not a claim that the full finite-disorder Středa surface
-primitive has been dressed. No momentum integral, conductivity prefactor, disorder/broadening limit,
-or exact disorder-average claim is introduced here.
+where `α` and `β` are the `.x` and `.y` projections of that vector. These computational values are
+total; ladder regularity is needed only when the solved vector is interpreted as the physical fixed
+point. Only the `Gᴿ Γ Gᴬ` ladder has been solved. The explicit same-side RR/AA remainder consequently
+retains the bare source current rather than reusing the RA-dressed vertex without a corresponding
+RR/AA Bethe–Salpeter derivation. The resulting object is an RA-dressed/bare-same-side bridge, not a
+claim that the full finite-disorder Středa surface primitive has been dressed. No momentum integral,
+conductivity prefactor, disorder/broadening limit, or exact disorder-average claim is introduced
+here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -38,22 +38,20 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- Retarded-advanced source current obtained by rotating the solved bare-`σₓ` ladder coefficient
-pair into the requested in-plane source direction. This is the total algebraic value; the separate
-ladder-regularity predicate governs when the coefficient pair is the physical fixed-point solution. -/
+vector into the requested in-plane source direction. This is the total algebraic value; the separate
+ladder-regularity predicate governs when the vector is the physical fixed-point solution. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     (source : Direction2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-    .x v m probeEnergy broadening disorderStrength hbar pMax
-  let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-    .y v m probeEnergy broadening disorderStrength hbar pMax
+  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+    v m probeEnergy broadening disorderStrength hbar pMax
   inPlaneCurrentOperator e v
-    (inPlaneRotationCoefficient alpha beta .x source)
-    (inPlaneRotationCoefficient alpha beta .y source)
+    (inPlaneRotationCoefficient (solved .x) (solved .y) .x source)
+    (inPlaneRotationCoefficient (solved .x) (solved .y) .y source)
 
 /-- The source-indexed retarded-advanced dressed current is electron charge times the Dirac
-velocity multiplying the correspondingly rotated solved dimensionless coefficient pair. -/
+velocity multiplying the correspondingly rotated `.x` and `.y` projections of the solved vector. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
     (source : Direction2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
@@ -69,6 +67,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
           (inPlaneRotationCoefficient alpha beta .y source) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
+  rfl
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
@@ -77,7 +76,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
       source e v m probeEnergy broadening 0 hbar pMax = currentOperator source e v := by
   cases source <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
-      inPlaneCurrentOperator, inPlaneRotationCoefficient]
+      inPlaneCurrentOperator, inPlaneRotationCoefficient,
+      inPlaneLadderBareXSource, inPlaneCoefficientVector]
 
 /-- Pointwise finite-cutoff finite-`η` Středa surface bridge with a bare measured `jₓ`, the solved
 source-indexed algebraic vertex only in the RA block, and the corresponding bare source current in
