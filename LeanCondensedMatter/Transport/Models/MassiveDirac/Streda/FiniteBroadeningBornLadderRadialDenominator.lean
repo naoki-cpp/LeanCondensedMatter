@@ -55,12 +55,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
               dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2))) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Matrix.cons_val_zero,
-    Matrix.cons_val_one, mul_one, mul_zero, sub_zero]
+  simp [inPlaneRotationCoefficient, inPlaneRotationMatrix]
   unfold pauliRungAngularXCoefficient pauliRungAngularYCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
-  ring_nf
+  push_cast
+  ring
 
 /-- Numerator multiplying the common finite-`η` RA Born-Dyson denominator in the source-`.y`
 ordered transverse surface trace. -/
@@ -103,9 +103,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-      simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Matrix.cons_val_zero,
-        Matrix.cons_val_one, mul_one, mul_zero, neg_zero, pauliRungAngularYCoefficient, sub_self]
-      ring_nf <;> simp
+      simp [inPlaneRotationCoefficient, inPlaneRotationMatrix, pauliRungAngularYCoefficient]
+      push_cast
+      ring
     _ = _ := by
       dsimp only
       rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
@@ -113,7 +113,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
             .y .x v m p probeEnergy broadening disorderStrength hbar pMax]
       unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-      ring_nf
+      push_cast
+      ring
 
 /-- The ordered `xy` radial Hall-surface integrand is the source-`.y` Středa radial response in
 explicit common RA Born-Dyson denominator form. -/
