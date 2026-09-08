@@ -36,33 +36,33 @@ theorem norm_freePropagator_apply (t : ℝ) (x : H) :
       (freePropagator system t)).2 hcomp) x
 
 /-- Multiplication of a normalized state representative by a unit complex phase. -/
-def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) : State H :=
+def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) : StateVector H :=
   ⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩
 
 omit [CompleteSpace H] in
 @[simp]
-theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) :
+theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) :
     (phaseState c hc ψ).1 = c • ψ.1 :=
   rfl
 
 /-- Schrödinger-picture evolution of a normalized pure state. -/
-noncomputable def evolveState (ψ : State H) (t : ℝ) : State H :=
+noncomputable def evolveState (ψ : StateVector H) (t : ℝ) : StateVector H :=
   ⟨freePropagator system t ψ.1, by simp [ψ.2]⟩
 
 @[simp]
-theorem evolveState_val (ψ : State H) (t : ℝ) :
+theorem evolveState_val (ψ : StateVector H) (t : ℝ) :
     (evolveState system ψ t).1 = freePropagator system t ψ.1 :=
   rfl
 
 /-- Pure-state evolution is the identity at time zero. -/
 @[simp]
-theorem evolveState_zero (ψ : State H) :
+theorem evolveState_zero (ψ : StateVector H) :
     evolveState system ψ 0 = ψ := by
   apply Subtype.ext
   simp [evolveState]
 
 /-- Pure-state evolution is an action of additive time. -/
-theorem evolveState_add (ψ : State H) (t s : ℝ) :
+theorem evolveState_add (ψ : StateVector H) (t s : ℝ) :
     evolveState system (evolveState system ψ s) t =
       evolveState system ψ (t + s) := by
   apply Subtype.ext
@@ -73,7 +73,7 @@ theorem evolveState_add (ψ : State H) (t s : ℝ) :
 
 /-- Negative-time evolution undoes positive-time evolution. -/
 @[simp]
-theorem evolveState_neg_after (ψ : State H) (t : ℝ) :
+theorem evolveState_neg_after (ψ : StateVector H) (t : ℝ) :
     evolveState system (evolveState system ψ t) (-t) = ψ := by
   apply Subtype.ext
   change freePropagator system (-t) (freePropagator system t ψ.1) = ψ.1
@@ -82,7 +82,7 @@ theorem evolveState_neg_after (ψ : State H) (t : ℝ) :
 
 /-- Positive-time evolution undoes negative-time evolution. -/
 @[simp]
-theorem evolveState_after_neg (ψ : State H) (t : ℝ) :
+theorem evolveState_after_neg (ψ : StateVector H) (t : ℝ) :
     evolveState system (evolveState system ψ (-t)) t = ψ := by
   apply Subtype.ext
   change freePropagator system t (freePropagator system (-t) ψ.1) = ψ.1
@@ -91,7 +91,7 @@ theorem evolveState_after_neg (ψ : State H) (t : ℝ) :
 
 /-- Schrödinger evolution commutes exactly with a change of global-phase representative. -/
 @[simp]
-theorem evolveState_phaseState (ψ : State H) (c : ℂ) (hc : ‖c‖ = 1) (t : ℝ) :
+theorem evolveState_phaseState (ψ : StateVector H) (c : ℂ) (hc : ‖c‖ = 1) (t : ℝ) :
     evolveState system (phaseState c hc ψ) t =
       phaseState c hc (evolveState system ψ t) := by
   apply Subtype.ext
