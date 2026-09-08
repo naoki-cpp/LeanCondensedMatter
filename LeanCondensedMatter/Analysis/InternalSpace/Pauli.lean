@@ -85,7 +85,6 @@ components. No complex conjugation is introduced. -/
 @[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
     pauliCombination (c • u) = c • pauliCombination u := by
   simp [pauliCombination, smul_add, smul_smul]
-  module
 
 /-- The identity on a two-dimensional internal space has trace two. -/
 @[simp] theorem trace_one_pauliMatrix : Matrix.trace (1 : PauliMatrix) = 2 := by
@@ -102,7 +101,7 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
       2 * dotProduct u v := by
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
-  simp [Matrix.trace, pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
+  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ,
     dotProduct, sum_pauliAxis]
   ring_nf
   simp [hI]
