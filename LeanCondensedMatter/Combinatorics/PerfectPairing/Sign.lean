@@ -348,8 +348,8 @@ private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pai
       pairing.crossingCount % 2 := by
   classical
   rw [crossingCount_eq_sum_Ioi_crossIndicator pairing e]
-  refine finset_sum_mod_two_congr _ _ _ fun k _ => ?_
-  refine finset_sum_mod_two_congr _ _ _ fun l hl => ?_
+  refine Nat.ModEq.sum (n := 2) fun k _ => ?_
+  refine Nat.ModEq.sum (n := 2) fun l hl => ?_
   have hkl : k < l := Finset.mem_Ioi.1 hl
   have hne : e k ≠ e l := fun h => (ne_of_lt hkl) (e.injective h)
   have hEnds := pairing.normalizedPair_endpoints_ne_of_ne _ _ hne
