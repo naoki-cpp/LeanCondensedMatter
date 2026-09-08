@@ -220,8 +220,10 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     set dAinv : ℂ :=
       (finiteCutoffContinuumBornDysonDenominator
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹
-    field_simp [hpref]
-    ring
+    field_simp [hpref] <;>
+      try push_cast <;>
+      try ring_nf <;>
+      try simp
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
@@ -265,7 +267,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteBroadeningLongitudinalMomentumEndpointForm, inPlaneLadderAction_apply_x,
     q, pref, solved, rx, ry] <;>
-    ring
+    try ring_nf <;>
+    try simp
 
 private theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     (side : SpectralSide)
