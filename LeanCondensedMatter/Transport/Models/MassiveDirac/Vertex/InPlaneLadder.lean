@@ -35,12 +35,29 @@ abbrev InPlaneCoefficientVector := Fin 2 → ℂ
 def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector :=
   ![x, y]
 
-/-- Repository-oriented isotropic in-plane matrix `[[x,-y],[y,x]]`. The `Fin.cases`
-representation keeps its four concrete entries definitionally reducible. -/
-abbrev inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
-  Fin.cases
-    (Fin.cases x (fun _ => -y))
-    (fun _ => Fin.cases y (fun _ => x))
+/-- Repository-oriented isotropic in-plane matrix `[[x,-y],[y,x]]`. -/
+def inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  !![x, -y; y, x]
+
+@[simp]
+theorem inPlaneRotationMatrix_apply_zero_zero (x y : ℂ) :
+    inPlaneRotationMatrix x y 0 0 = x := by
+  simp [inPlaneRotationMatrix]
+
+@[simp]
+theorem inPlaneRotationMatrix_apply_zero_one (x y : ℂ) :
+    inPlaneRotationMatrix x y 0 1 = -y := by
+  simp [inPlaneRotationMatrix]
+
+@[simp]
+theorem inPlaneRotationMatrix_apply_one_zero (x y : ℂ) :
+    inPlaneRotationMatrix x y 1 0 = y := by
+  simp [inPlaneRotationMatrix]
+
+@[simp]
+theorem inPlaneRotationMatrix_apply_one_one (x y : ℂ) :
+    inPlaneRotationMatrix x y 1 1 = x := by
+  simp [inPlaneRotationMatrix]
 
 /-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
 direction and `j` the input/source direction. -/
@@ -57,9 +74,11 @@ theorem tendsto_inPlaneRotationCoefficient
     (i j : Direction2) :
     Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
       (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
-  cases i <;> cases j <;>
-    simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Fin.cases_zero, Fin.cases_succ]
-  all_goals first | exact hx | exact hy.neg | exact hy
+  cases i <;> cases j
+  · simpa [inPlaneRotationCoefficient] using hx
+  · simpa [inPlaneRotationCoefficient] using hy.neg
+  · simpa [inPlaneRotationCoefficient] using hy
+  · simpa [inPlaneRotationCoefficient] using hx
 
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
