@@ -41,9 +41,10 @@ private theorem finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing
       (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n)
       (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
       (flatVertexLegCommutatorCoeff ε q τ)
-      (fun p => heisenbergEvolve_quarticLegOperatorForSequence ε β q τ p)
+      (fun p => heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
+        (q (flatVertexIndex n p)) (flatLocalLeg n p) (τ (flatVertexIndex n p)))
       (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
-      (fun i => one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero ε β q i)
+      (fun i => one_sub_zetaInt_fermion_mul_exp_ne_zero (flatVertexLegEnergyShift ε q i) β)
   rw [← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
   exact hgen
 

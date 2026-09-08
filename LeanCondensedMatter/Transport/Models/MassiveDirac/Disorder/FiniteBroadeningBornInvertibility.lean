@@ -33,14 +33,22 @@ private theorem im_inner_self_pauliGreenOperatorOfRegulator_apply
       (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator ψ)).im =
       -(regulator *
         ‖pauliGreenOperatorOfRegulator v m px py probeEnergy regulator ψ‖ ^ 2) := by
-  have h :=
-    im_inner_self_resolvent_spectralParameterOfRegulator_apply
+  have hcanonical :=
+    im_inner_resolvent_spectralParameterOfRegulator_apply_self
       (hamiltonianOperator v m px py)
       (hamiltonianOperator_isSelfAdjoint v m px py)
       probeEnergy regulator hregulator ψ
   rw [resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
-    v m px py probeEnergy regulator hregulator] at h
-  exact h
+    v m px py probeEnergy regulator hregulator] at hcanonical
+  have hsymm := inner_im_symm (𝕜 := ℂ)
+    (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator ψ) ψ
+  change
+    (inner ℂ
+      (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator ψ) ψ).im =
+      -(inner ℂ ψ
+        (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator ψ)).im at hsymm
+  rw [hcanonical] at hsymm
+  linarith
 
 private noncomputable def continuumBornRadialDissipationDensity
     (v m probeEnergy regulator : ℝ) (ψ : DiracHilbert) (p : ℝ) : ℝ :=
