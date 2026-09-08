@@ -142,12 +142,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
         (finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
           .y .x v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
     simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
-  rw [tendsto_pi_nhds]
-  intro output
   simpa [finiteCutoffContinuumBornDysonLadderSolvedVector,
-    finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
-    inPlaneLadderSolvedCoefficient] using
-    (tendsto_inPlaneLadderSolvedCoefficient hX hY hdet' output)
+    finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
+    (tendsto_inPlaneLadderSolvedVector hX hY hdet')
 
 /-- Every output component is the corresponding projection of the convergent solved ladder vector. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
