@@ -60,10 +60,9 @@ applies.
 ## State and measurement models
 
 - **`QuantumTheory.StateVector` stores a unit-vector representative, not a physical state.**
-  `QuantumTheory.State` is the compatibility name for the same type. Physical pure states are
-  represented by the density-backed subtype `QuantumTheory.PureState`; two normalized
-  representatives define the same physical pure state exactly when they differ by a unit-modulus
-  global phase. A separate projective/ray quotient presentation is not implemented.
+  Physical pure states are represented by the density-backed subtype `QuantumTheory.PureState`; two
+  normalized representatives define the same physical pure state exactly when they differ by a
+  unit-modulus global phase. A separate projective/ray quotient presentation is not implemented.
 
 - **POVMs are countable and discrete.** The current `QuantumTheory.POVM` does not model continuous
   outcomes, measurable operator-valued measures, or instruments/state update.
