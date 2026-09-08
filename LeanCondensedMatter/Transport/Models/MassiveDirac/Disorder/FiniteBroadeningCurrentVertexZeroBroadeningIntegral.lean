@@ -115,7 +115,7 @@ private theorem continuous_boundaryBornDysonDenominator_radial
   unfold finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary
   fun_prop
 
-private theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
+theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
     (i j : Direction2)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -496,7 +496,7 @@ private theorem continuumBornAngularMeasurePrefactor_pos
       (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)
   exact mul_pos (mul_pos (by norm_num) Real.pi_pos) (one_div_pos.mpr hden)
 
-private theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
+theorem finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero
     (side : SpectralSide)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)

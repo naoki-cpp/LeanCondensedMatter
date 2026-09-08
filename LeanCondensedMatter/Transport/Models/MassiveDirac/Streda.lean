@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
 
 set_option linter.style.header false
 
@@ -11,14 +12,13 @@ Public umbrella for the finite-`η` Born-Dyson RA-dressed/bare-same-side Středa
 bare measured current fixed along `x` and the source direction indexed by `Direction2`. The generic
 path is exposed from the pointwise trace bridge through finite-cutoff polar momentum integration;
 the ordered `xy` specialization additionally exposes the explicit Hall radial reduction and common
-denominator form. The fixed-cutoff zero-broadening boundary of the source-indexed dressed current is
-also exposed for downstream response limits.
+denominator form. Fixed-cutoff zero-broadening boundaries are exposed for the source-indexed dressed
+current and the integrated longitudinal response.
 
-All dressed source directions require the same nonzero in-plane ladder determinant owned upstream by
-`MassiveDirac.Disorder`, so the supplied algebraic coefficient pair is interpreted as a solved fixed
-point only under one shared regularity condition. Generic shared-provenance response matrices,
-pointwise trace identities, and finite-energy surface/sea integration are consumed directly from
-`Transport.Streda`.
+The supplied ladder coefficients are total algebraic values. The shared nonzero in-plane ladder
+determinant is required only when they are interpreted as the solved physical fixed point. Generic
+shared-provenance response matrices, pointwise trace identities, and finite-energy surface/sea
+integration are consumed directly from `Transport.Streda`.
 
 Physical conductivity remains downstream: only `MassiveDirac.Conductivity` attaches the common
 Bastin/Středa conductivity prefactor and physical continuum momentum normalization. Bounded-operator
