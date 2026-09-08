@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -6,18 +7,19 @@ set_option linter.style.header false
 /-!
 # In-plane massive-Dirac ladder coefficient algebra
 
-This module owns only the exact two-component algebra needed once a massive-Dirac retarded-advanced
-current rung has been reduced to the in-plane Pauli span.  For the repository orientation
-`Gᴿ Γ Gᴬ`, supplied complex rung coefficients `X` and `Y` act as
+This module owns the exact two-component algebra needed once a massive-Dirac retarded-advanced
+current rung has been reduced to the in-plane Pauli span. For the repository orientation
+`Gᴿ Γ Gᴬ`, supplied complex rung coefficients `X` and `Y` act through the matrix
 
 ```text
-L(α σₓ + β σᵧ)
-  = (X α - Y β) σₓ + (Y α + X β) σᵧ.
+[[X, -Y], [Y, X]].
 ```
 
-The bare-`σₓ` fixed point is solved explicitly under the visible nonzero-determinant hypothesis.
-This file does not define the Born-Dyson momentum integrals that supply `X` and `Y`, take any
-broadening/disorder limit, identify a transport lifetime, or insert the result into conductivity.
+The bare-`σₓ` fixed point is solved as one `Fin 2 → ℂ` coefficient vector. Coordinate projections
+remain available where downstream physics needs a concrete `x` or `y` component, but the fixed-point
+and uniqueness statements are vector equations. This file does not define the Born-Dyson momentum
+integrals that supply `X` and `Y`, take any broadening/disorder limit, identify a transport lifetime,
+or insert the result into conductivity.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -44,41 +46,68 @@ theorem tendsto_inPlaneRotationCoefficient
   cases i <;> cases j <;> simp only [inPlaneRotationCoefficient]
   all_goals first | exact hx | exact hy.neg | exact hy
 
-/-- `σₓ` coefficient of the repository-oriented in-plane ladder action. -/
-def inPlaneLadderXCoefficient
-    (x y alpha beta : ℂ) : ℂ :=
-  x * alpha - y * beta
+/-- Two complex coefficients in the ordered in-plane basis `(σₓ, σᵧ)`. -/
+abbrev InPlaneCoefficientVector := Fin 2 → ℂ
 
-/-- `σᵧ` coefficient of the repository-oriented in-plane ladder action. -/
-def inPlaneLadderYCoefficient
-    (x y alpha beta : ℂ) : ℂ :=
-  y * alpha + x * beta
+/-- In-plane coefficient vector with ordered entries `(x,y)`. -/
+def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector :=
+  ![x, y]
 
-/-- Bounded-operator realization of the in-plane ladder action with supplied rung coefficients.
-The sign of the transverse mixing is tied to the repository orientation `Gᴿ Γ Gᴬ`. -/
-noncomputable def inPlaneLadderOperatorAction
-    (x y alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  inPlaneLadderXCoefficient x y alpha beta • matrixOperator sigmaX +
-    inPlaneLadderYCoefficient x y alpha beta • matrixOperator sigmaY
+/-- Repository-oriented isotropic in-plane matrix `[[x,-y],[y,x]]`. -/
+def inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  !![x, -y; y, x]
+
+/-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
+theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
+    (x y alpha beta : ℂ) :
+    inPlaneRotationMatrix x y *ᵥ inPlaneCoefficientVector alpha beta =
+      inPlaneCoefficientVector (x * alpha - y * beta) (y * alpha + x * beta) := by
+  funext i
+  fin_cases i <;>
+    simp [inPlaneRotationMatrix, inPlaneCoefficientVector, Matrix.mulVec, Fin.sum_univ_two] <;>
+    ring
+
+/-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
+def inPlaneLadderAction
+    (x y : ℂ) (coefficients : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
+  inPlaneRotationMatrix x y *ᵥ coefficients
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
   (1 - x) ^ 2 + y ^ 2
 
-/-- Exact `σₓ` coefficient of the bare-`σₓ` ladder fixed point. -/
-def inPlaneLadderSolvedXCoefficient (x y : ℂ) : ℂ :=
-  (1 - x) / inPlaneLadderDeterminant x y
+/-- Shifted ladder matrix `I - L`. -/
+def inPlaneLadderShiftedMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  !![1 - x, y; -y, 1 - x]
 
-/-- Exact orientation-sensitive `σᵧ` coefficient of the bare-`σₓ` ladder fixed point. -/
-def inPlaneLadderSolvedYCoefficient (x y : ℂ) : ℂ :=
-  y / inPlaneLadderDeterminant x y
+@[simp]
+theorem inPlaneLadderShiftedMatrix_det (x y : ℂ) :
+    (inPlaneLadderShiftedMatrix x y).det = inPlaneLadderDeterminant x y := by
+  simp [inPlaneLadderShiftedMatrix, inPlaneLadderDeterminant, Matrix.det_fin_two, pow_two]
+  ring
+
+/-- The shifted ladder matrix is `I - L`. -/
+theorem inPlaneLadderShiftedMatrix_eq_one_sub (x y : ℂ) :
+    inPlaneLadderShiftedMatrix x y = 1 - inPlaneRotationMatrix x y := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [inPlaneLadderShiftedMatrix, inPlaneRotationMatrix]
+
+/-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
+def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
+  inPlaneCoefficientVector 1 0
+
+/-- Exact coefficient vector of the bare-`σₓ` ladder fixed point. -/
+def inPlaneLadderSolvedVector (x y : ℂ) : InPlaneCoefficientVector :=
+  inPlaneCoefficientVector
+    ((1 - x) / inPlaneLadderDeterminant x y)
+    (y / inPlaneLadderDeterminant x y)
 
 /-- Output coordinate of the bare-`σₓ` solved ladder fixed point. -/
 def inPlaneLadderSolvedCoefficient
     (output : Direction2) (x y : ℂ) : ℂ :=
   inPlaneRotationCoefficient
-    (inPlaneLadderSolvedXCoefficient x y)
-    (inPlaneLadderSolvedYCoefficient x y)
+    (inPlaneLadderSolvedVector x y 0)
+    (inPlaneLadderSolvedVector x y 1)
     output .x
 
 /-- Convergence of the rung invariants propagates to every output coordinate of the solved ladder
@@ -98,132 +127,65 @@ theorem tendsto_inPlaneLadderSolvedCoefficient
         (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
     simpa [inPlaneLadderDeterminant, pow_two] using
       (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
-  have hAlpha :
-      Tendsto
-        (fun a => inPlaneLadderSolvedXCoefficient (x a) (y a)) l
-        (nhds (inPlaneLadderSolvedXCoefficient x₀ y₀)) := by
-    simpa [inPlaneLadderSolvedXCoefficient, div_eq_mul_inv] using
+  cases output
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
+      inPlaneCoefficientVector, inPlaneRotationCoefficient, div_eq_mul_inv] using
       hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  have hBeta :
-      Tendsto
-        (fun a => inPlaneLadderSolvedYCoefficient (x a) (y a)) l
-        (nhds (inPlaneLadderSolvedYCoefficient x₀ y₀)) := by
-    simpa [inPlaneLadderSolvedYCoefficient, div_eq_mul_inv] using
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
+      inPlaneCoefficientVector, inPlaneRotationCoefficient, div_eq_mul_inv] using
       hy.mul (hdetLimit.inv₀ hdet)
-  simpa [inPlaneLadderSolvedCoefficient] using
-    tendsto_inPlaneRotationCoefficient hAlpha hBeta output .x
 
-/-- The solved longitudinal coefficient satisfies the first scalar fixed-point equation. -/
-theorem inPlaneLadderSolvedXCoefficient_fixedPoint
+/-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
+determinant. -/
+theorem inPlaneLadderSolvedVector_fixedPoint
     (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0) :
-    inPlaneLadderSolvedXCoefficient x y =
-      1 + inPlaneLadderXCoefficient x y
-        (inPlaneLadderSolvedXCoefficient x y)
-        (inPlaneLadderSolvedYCoefficient x y) := by
-  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderSolvedYCoefficient
-    inPlaneLadderXCoefficient
-  unfold inPlaneLadderDeterminant at hdet ⊢
-  field_simp [hdet]
-  ring
+    inPlaneLadderSolvedVector x y =
+      inPlaneLadderBareXSource + inPlaneLadderAction x y (inPlaneLadderSolvedVector x y) := by
+  rw [inPlaneLadderAction, inPlaneLadderSolvedVector,
+    inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector]
+  funext i
+  fin_cases i
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderDeterminant]
+    field_simp [hdet]
+    ring
+  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneLadderDeterminant]
+    field_simp [hdet]
+    ring
 
-/-- The solved transverse coefficient satisfies the second scalar fixed-point equation. -/
-theorem inPlaneLadderSolvedYCoefficient_fixedPoint
-    (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0) :
-    inPlaneLadderSolvedYCoefficient x y =
-      inPlaneLadderYCoefficient x y
-        (inPlaneLadderSolvedXCoefficient x y)
-        (inPlaneLadderSolvedYCoefficient x y) := by
-  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderSolvedYCoefficient
-    inPlaneLadderYCoefficient
-  unfold inPlaneLadderDeterminant at hdet ⊢
-  field_simp [hdet]
-  ring
+/-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
+theorem inPlaneLadder_fixedPoint_unique
+    (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0)
+    (coefficients : InPlaneCoefficientVector)
+    (hfixed : coefficients =
+      inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) :
+    coefficients = inPlaneLadderSolvedVector x y := by
+  have hshifted :
+      inPlaneLadderShiftedMatrix x y *ᵥ coefficients = inPlaneLadderBareXSource := by
+    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec, hfixed]
+    simp [inPlaneLadderAction]
+  have hsolvedShifted :
+      inPlaneLadderShiftedMatrix x y *ᵥ inPlaneLadderSolvedVector x y =
+        inPlaneLadderBareXSource := by
+    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec,
+      inPlaneLadderSolvedVector_fixedPoint x y hdet]
+    simp [inPlaneLadderAction]
+  have hunit : IsUnit (inPlaneLadderShiftedMatrix x y) :=
+    (Matrix.isUnit_iff_isUnit_det _).2 <| by
+      rw [inPlaneLadderShiftedMatrix_det]
+      exact isUnit_iff_ne_zero.2 hdet
+  exact Matrix.mulVec_injective_iff_isUnit.2 hunit (hshifted.trans hsolvedShifted.symm)
 
-/-- Bounded in-plane Pauli vertex corresponding to the exact solved coefficient pair. -/
-noncomputable def inPlaneLadderSolvedVertex
-    (x y : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  inPlaneLadderSolvedXCoefficient x y • matrixOperator sigmaX +
-    inPlaneLadderSolvedYCoefficient x y • matrixOperator sigmaY
-
-/-- The explicit in-plane vertex solves `Γ = σₓ + L(Γ)` exactly whenever `I - L` has nonzero
-coefficient determinant. -/
-theorem inPlaneLadderSolvedVertex_fixedPoint
-    (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0) :
-    inPlaneLadderSolvedVertex x y =
-      matrixOperator sigmaX +
-        inPlaneLadderOperatorAction x y
-          (inPlaneLadderSolvedXCoefficient x y)
-          (inPlaneLadderSolvedYCoefficient x y) := by
-  have hX := inPlaneLadderSolvedXCoefficient_fixedPoint x y hdet
-  have hY := inPlaneLadderSolvedYCoefficient_fixedPoint x y hdet
-  have hXsmul := congrArg
-    (fun coefficient : ℂ => coefficient • matrixOperator sigmaX) hX
-  have hYsmul := congrArg
-    (fun coefficient : ℂ => coefficient • matrixOperator sigmaY) hY
-  unfold inPlaneLadderSolvedVertex inPlaneLadderOperatorAction
-  calc
-    inPlaneLadderSolvedXCoefficient x y • matrixOperator sigmaX +
-        inPlaneLadderSolvedYCoefficient x y • matrixOperator sigmaY =
-      (1 + inPlaneLadderXCoefficient x y
-          (inPlaneLadderSolvedXCoefficient x y)
-          (inPlaneLadderSolvedYCoefficient x y)) • matrixOperator sigmaX +
-        inPlaneLadderYCoefficient x y
-          (inPlaneLadderSolvedXCoefficient x y)
-          (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaY := by
-      rw [hXsmul, hYsmul]
-    _ = matrixOperator sigmaX +
-        (inPlaneLadderXCoefficient x y
-            (inPlaneLadderSolvedXCoefficient x y)
-            (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaX +
-          inPlaneLadderYCoefficient x y
-            (inPlaneLadderSolvedXCoefficient x y)
-            (inPlaneLadderSolvedYCoefficient x y) • matrixOperator sigmaY) := by
-      module
-
-/-- The coefficient representation of the in-plane fixed point is unique under the same determinant
-hypothesis. -/
-theorem inPlaneLadder_fixedPoint_coefficients_unique
-    (x y alpha beta : ℂ)
-    (hdet : inPlaneLadderDeterminant x y ≠ 0)
-    (hX : alpha = 1 + inPlaneLadderXCoefficient x y alpha beta)
-    (hY : beta = inPlaneLadderYCoefficient x y alpha beta) :
-    alpha = inPlaneLadderSolvedXCoefficient x y ∧
-      beta = inPlaneLadderSolvedYCoefficient x y := by
-  unfold inPlaneLadderXCoefficient at hX
-  unfold inPlaneLadderYCoefficient at hY
-  have hxlin : (1 - x) * alpha + y * beta = 1 := by
-    linear_combination hX
-  have hylin : -y * alpha + (1 - x) * beta = 0 := by
-    linear_combination hY
-  have halphaRaw : ((1 - x) ^ 2 + y ^ 2) * alpha = 1 - x := by
-    linear_combination (1 - x) * hxlin - y * hylin
-  have hbetaRaw : ((1 - x) ^ 2 + y ^ 2) * beta = y := by
-    linear_combination y * hxlin + (1 - x) * hylin
-  have halpha : inPlaneLadderDeterminant x y * alpha = 1 - x := by
-    simpa [inPlaneLadderDeterminant] using halphaRaw
-  have hbeta : inPlaneLadderDeterminant x y * beta = y := by
-    simpa [inPlaneLadderDeterminant] using hbetaRaw
-  constructor
-  · unfold inPlaneLadderSolvedXCoefficient
-    apply (eq_div_iff hdet).2
-    simpa [mul_comm] using halpha
-  · unfold inPlaneLadderSolvedYCoefficient
-    apply (eq_div_iff hdet).2
-    simpa [mul_comm] using hbeta
-
-@[simp] theorem inPlaneLadderSolvedYCoefficient_zero
-    (x : ℂ) :
-    inPlaneLadderSolvedYCoefficient x 0 = 0 := by
-  simp [inPlaneLadderSolvedYCoefficient]
-
-/-- With no transverse rung mixing, the two-component solution reduces to the familiar scalar
-ladder factor `(1 - X)⁻¹`. -/
-theorem inPlaneLadderSolvedXCoefficient_zero
+/-- With no transverse rung mixing, the vector solution reduces to the scalar ladder factor in the
+longitudinal component and zero in the transverse component. -/
+theorem inPlaneLadderSolvedVector_zero_transverse
     (x : ℂ) (hx : 1 - x ≠ 0) :
-    inPlaneLadderSolvedXCoefficient x 0 = (1 - x)⁻¹ := by
-  unfold inPlaneLadderSolvedXCoefficient inPlaneLadderDeterminant
-  field_simp [hx]
-  ring
+    inPlaneLadderSolvedVector x 0 = inPlaneCoefficientVector (1 - x)⁻¹ 0 := by
+  funext i
+  fin_cases i
+  · simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneLadderDeterminant]
+    field_simp [hx]
+    ring
+  · simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector]
 
 end
 
