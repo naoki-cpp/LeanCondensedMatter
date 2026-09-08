@@ -145,8 +145,31 @@ def inPlaneLadderSolvedCoefficient
     (output : Direction2) (x y : ℂ) : ℂ :=
   inPlaneLadderSolvedVector x y output
 
-/-- Convergence of the rung invariants propagates to every output coordinate of the solved ladder
-whenever the limiting shifted-ladder determinant is nonzero. -/
+/-- Convergence of the rung invariants propagates to the solved ladder vector whenever the limiting
+shifted-ladder determinant is nonzero. -/
+theorem tendsto_inPlaneLadderSolvedVector
+    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
+    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
+    (hdet : inPlaneLadderDeterminant x₀ y₀ ≠ 0) :
+    Tendsto
+      (fun a => inPlaneLadderSolvedVector (x a) (y a))
+      l (nhds (inPlaneLadderSolvedVector x₀ y₀)) := by
+  have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
+  have hOneMinusX := hOne.sub hx
+  have hdetLimit :
+      Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
+        (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
+    simpa [inPlaneLadderDeterminant, pow_two] using
+      (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
+  rw [tendsto_pi_nhds]
+  intro output
+  cases output
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
+      hOneMinusX.mul (hdetLimit.inv₀ hdet)
+  · simpa [inPlaneLadderSolvedVector, inPlaneCoefficientVector, div_eq_mul_inv] using
+      hy.mul (hdetLimit.inv₀ hdet)
+
+/-- Every output-coordinate convergence theorem is a projection of the solved-vector limit. -/
 theorem tendsto_inPlaneLadderSolvedCoefficient
     {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
     (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
@@ -155,20 +178,8 @@ theorem tendsto_inPlaneLadderSolvedCoefficient
     Tendsto
       (fun a => inPlaneLadderSolvedCoefficient output (x a) (y a))
       l (nhds (inPlaneLadderSolvedCoefficient output x₀ y₀)) := by
-  have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
-  have hOneMinusX := hOne.sub hx
-  have hdetLimit :
-      Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
-        (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
-    simpa [inPlaneLadderDeterminant, pow_two] using
-      (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
-  cases output
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
-      inPlaneCoefficientVector, div_eq_mul_inv] using
-      hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
-      inPlaneCoefficientVector, div_eq_mul_inv] using
-      hy.mul (hdetLimit.inv₀ hdet)
+  simpa [inPlaneLadderSolvedCoefficient] using
+    (tendsto_pi_nhds.mp (tendsto_inPlaneLadderSolvedVector hx hy hdet) output)
 
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
