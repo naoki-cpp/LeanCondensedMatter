@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
 
 set_option linter.style.header false
 
