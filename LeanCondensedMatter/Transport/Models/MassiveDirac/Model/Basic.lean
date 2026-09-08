@@ -124,12 +124,12 @@ theorem pauliMatrixCombination_pauliVector (x y z : ℂ) :
 conjugation: `Tr(AB)` and `(c · σ)²` use the algebraic dot product rather than the Hermitian inner
 product. -/
 def pauliBilinearSquare (coefficients : PauliVector ℂ) : ℂ :=
-  Matrix.dotProduct coefficients coefficients
+  dotProduct coefficients coefficients
 
 @[simp]
 theorem pauliBilinearSquare_pauliVector (x y z : ℂ) :
     pauliBilinearSquare (pauliVector x y z) = x ^ 2 + y ^ 2 + z ^ 2 := by
-  unfold pauliBilinearSquare Matrix.dotProduct
+  unfold pauliBilinearSquare dotProduct
   rw [sum_pauliAxis]
   simp [pauliVector, pauliAxisComponent, pow_two]
 
