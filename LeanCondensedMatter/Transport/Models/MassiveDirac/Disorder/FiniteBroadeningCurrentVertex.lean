@@ -22,11 +22,11 @@ K = [[X,-Y],[Y,X]].
 Angular and radial rung coefficients are indexed by their output/input directions. Coordinate-
 specific consumers specialize those indices, while the ladder uses the canonical entries `Kxx`
 and `Kyx`. The solved bare-`σₓ` ladder is owned here as one `Direction2 → ℂ` coefficient vector;
-scalar consumers project the needed coordinate from that vector. Radial integration attaches the
-polar Jacobian `p dp`, one scalar-disorder line, and the physical momentum measure
-`momentumMeasurePrefactor hbar` exactly once. This module also owns the common RA denominator form
-and the determinant condition that licenses interpreting the algebraic vector as the actual ladder
-fixed point.
+downstream consumers preserve that vector until a concrete measured coordinate is required. Radial
+integration attaches the polar Jacobian `p dp`, one scalar-disorder line, and the physical momentum
+measure `momentumMeasurePrefactor hbar` exactly once. This module also owns the common RA denominator
+form and the determinant condition that licenses interpreting the algebraic vector as the actual
+ladder fixed point.
 
 This module does not insert the vertex into Kubo/Středa, take broadening or disorder limits, or
 identify the Born-Dyson approximation with an exact disorder average.
@@ -254,13 +254,6 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
     .y .x v m probeEnergy broadening disorderStrength hbar pMax
   inPlaneLadderSolvedVector x y
 
-/-- Output component of the canonical normalized finite-`η` Born-Dyson ladder fixed-point vector. -/
-noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-    (output : Direction2)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornDysonLadderSolvedVector
-    v m probeEnergy broadening disorderStrength hbar pMax output
-
 @[simp]
 theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
@@ -272,16 +265,6 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
     simp [finiteCutoffContinuumBornDysonLadderSolvedVector,
       inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
       inPlaneLadderDeterminant]
-
-@[simp]
-theorem finiteCutoffContinuumBornDysonLadderSolvedCoefficient_zero_disorder
-    (output : Direction2) (v m probeEnergy broadening hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-      output v m probeEnergy broadening 0 hbar pMax =
-      inPlaneRotationCoefficient 1 0 output .x := by
-  cases output <;>
-    simp [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
-      inPlaneLadderBareXSource, inPlaneCoefficientVector, inPlaneRotationCoefficient]
 
 end
 

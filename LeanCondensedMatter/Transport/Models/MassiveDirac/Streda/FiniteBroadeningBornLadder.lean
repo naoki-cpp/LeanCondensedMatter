@@ -46,28 +46,25 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  inPlaneCurrentOperator e v
-    (inPlaneRotationCoefficient (solved .x) (solved .y) .x source)
-    (inPlaneRotationCoefficient (solved .x) (solved .y) .y source)
+  let dressed : InPlaneCoefficientVector := fun output =>
+    inPlaneRotationCoefficient (solved .x) (solved .y) output source
+  inPlaneCurrentOperator e v (dressed .x) (dressed .y)
 
 /-- The source-indexed retarded-advanced dressed current is electron charge times the Dirac
-velocity multiplying the correspondingly rotated `.x` and `.y` projections of the solved vector. -/
+velocity multiplying the correspondingly rotated solved coefficient vector. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
     (source : Direction2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
         source e v m probeEnergy broadening disorderStrength hbar pMax =
-      let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-        .x v m probeEnergy broadening disorderStrength hbar pMax
-      let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-        .y v m probeEnergy broadening disorderStrength hbar pMax
+      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+        v m probeEnergy broadening disorderStrength hbar pMax
+      let dressed : InPlaneCoefficientVector := fun output =>
+        inPlaneRotationCoefficient (solved .x) (solved .y) output source
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
-        inPlanePauliVertexOperator
-          (inPlaneRotationCoefficient alpha beta .x source)
-          (inPlaneRotationCoefficient alpha beta .y source) := by
+        inPlanePauliVertexOperator (dressed .x) (dressed .y) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
-  rfl
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
