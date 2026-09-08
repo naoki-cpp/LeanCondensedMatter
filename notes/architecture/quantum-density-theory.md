@@ -7,9 +7,9 @@ proof text.
 
 ## Canonical state model
 
-`QuantumTheory.StateVector H` is the explicit name for normalized state-vector representatives;
-`QuantumTheory.State H` remains the existing compatibility name. Representatives are useful for
-wavefunction calculations and are not identified by equality under global phase.
+`QuantumTheory.StateVector H` is the canonical normalized state-vector representative type.
+Representatives are useful for wavefunction calculations and are not identified by equality under
+global phase.
 
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
 positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the

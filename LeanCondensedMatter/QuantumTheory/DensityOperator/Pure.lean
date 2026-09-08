@@ -106,7 +106,7 @@ theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
   rfl
 
 /-- A normalized pure state defines its rank-one density operator. -/
-noncomputable def pure (ψ : State H) : DensityOperator H := by
+noncomputable def pure (ψ : StateVector H) : DensityOperator H := by
   let htraceClass : SpectralTraceClass
       (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) :=
     SpectralTraceClass.ofPositive

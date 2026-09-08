@@ -58,7 +58,7 @@ private theorem inner_freePropagator_apply_eq_heisenbergEvolution
 
 /-- The complex pure-state expectation is identical in the Schrödinger and Heisenberg pictures. -/
 theorem expValue_evolveState_eq_heisenberg
-    (A : Observable H) (ψ : State H) (t : ℝ) :
+    (A : Observable H) (ψ : StateVector H) (t : ℝ) :
     expValue A (evolveState system ψ t) =
       expValue (heisenbergObservable system A t) ψ := by
   rw [expValue, expValue]
@@ -70,7 +70,7 @@ theorem expValue_evolveState_eq_heisenberg
 /-- The lossless real observable expectation is identical in the Schrödinger and Heisenberg
 pictures. -/
 theorem observableExpValue_evolveState_eq_heisenberg
-    (A : Observable H) (ψ : State H) (t : ℝ) :
+    (A : Observable H) (ψ : StateVector H) (t : ℝ) :
     observableExpValue A (evolveState system ψ t) =
       observableExpValue (heisenbergObservable system A t) ψ := by
   apply Complex.ofReal_injective

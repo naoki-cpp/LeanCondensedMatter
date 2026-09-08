@@ -54,7 +54,7 @@ theorem DensityOperator.expectation_observable
 /-- The complex expectation in the rank-one density operator of a pure state agrees with the
 canonical vector-state expectation. -/
 theorem DensityOperator.expectation_pure_observable
-    (ψ : State H) (A : Observable H) :
+    (ψ : StateVector H) (A : Observable H) :
     (pure ψ).expectation A.1 = expValue A ψ := by
   letI := uniqueEigenvectorIndexRankOne ψ.2
   rw [(pure ψ).expectation_apply A.1]
@@ -101,7 +101,7 @@ theorem DensityOperator.expectation_pure_observable
 vector-state expectation. -/
 @[simp]
 theorem DensityOperator.observableExpectation_pure
-    (ψ : State H) (A : Observable H) :
+    (ψ : StateVector H) (A : Observable H) :
     (pure ψ).observableExpectation A = observableExpValue A ψ := by
   apply Complex.ofReal_injective
   rw [← (pure ψ).expectation_observable A, coe_observableExpValue,

@@ -58,7 +58,7 @@ theorem schrodingerGenerator_commute_freePropagator (t : ℝ) :
 
 /-- Explicit bounded Schrödinger equation
 `dψ/dt = -(i/ℏ) H₀ ψ`. -/
-theorem schrodingerEquation (ψ : State H) (t : ℝ) :
+theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
       ((-(Complex.I / (system.hbar : ℂ))) •
         system.hamiltonian.1 ((evolveState system ψ t).1)) t := by

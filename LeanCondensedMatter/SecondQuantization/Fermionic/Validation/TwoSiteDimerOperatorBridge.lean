@@ -205,7 +205,7 @@ theorem twoSiteDimerTable_contact_from_operator :
 /-- For any normalized representative of the occupied lower eigenspace, the scalar coefficient
 stored in the conductivity table is exactly the quantum expectation of the model-derived contact. -/
 theorem twoSiteDimerTable_contact_eq_expValue_of_eigenstate
-    (ψ : QuantumTheory.State TwoSiteHilbertFock)
+    (ψ : QuantumTheory.StateVector TwoSiteHilbertFock)
     (hψ : twoSiteDimerContact 1 ψ.1 =
       twoSiteDimerGroundStateConductivityTable.contact • ψ.1) :
     QuantumTheory.expValue twoSiteDimerContactObservable ψ =

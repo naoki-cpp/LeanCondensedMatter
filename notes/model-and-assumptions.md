@@ -8,7 +8,6 @@ the current Lean APIs. Module ownership is described in the track roadmaps and a
 ### Pure states and observables
 
 - A normalized pure-state representative is `QuantumTheory.StateVector H` in a complex Hilbert space.
-  `QuantumTheory.State H` is the compatibility name for the same representative type.
 - A physical pure state is `QuantumTheory.PureState H`, a density operator known to equal
   `QuantumTheory.pure ψ` for some normalized representative `ψ`.
 - An observable is a bounded self-adjoint operator `QuantumTheory.Observable H`.
