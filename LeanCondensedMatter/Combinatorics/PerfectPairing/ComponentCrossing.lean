@@ -74,7 +74,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) % 2 := by
     rw [Pairing.componentGeometricCrossingCount]
     symm
-    simpa using
+    simpa [Nat.ModEq] using
       (Nat.ModEq.sum
         (n := 2)
         (s := (Finset.univ : Finset (F B × F C)))
