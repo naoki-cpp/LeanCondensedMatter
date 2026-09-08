@@ -93,8 +93,7 @@ theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
   funext direction
   cases direction <;>
     simp [Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix,
-      inPlaneCoefficientVector] <;>
-    ring
+      inPlaneCoefficientVector]
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
@@ -108,7 +107,6 @@ theorem inPlaneLadderAction_apply_x
       x * coefficients .x - y * coefficients .y := by
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
     inPlaneRotationMatrix]
-  ring
 
 @[simp]
 theorem inPlaneLadderAction_apply_y
@@ -117,7 +115,6 @@ theorem inPlaneLadderAction_apply_y
       y * coefficients .x + x * coefficients .y := by
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
     inPlaneRotationMatrix]
-  ring
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
@@ -221,16 +218,10 @@ theorem inPlaneLadder_fixedPoint_unique
   simp [inPlaneLadderBareXSource, inPlaneCoefficientVector] at hxFixed hyFixed
   have hxLinear :
       (1 - x) * coefficients .x + y * coefficients .y = 1 := by
-    calc
-      (1 - x) * coefficients .x + y * coefficients .y =
-          coefficients .x - (x * coefficients .x - y * coefficients .y) := by ring
-      _ = 1 := by rw [hxFixed]; ring
+    linear_combination hxFixed
   have hyLinear :
       -y * coefficients .x + (1 - x) * coefficients .y = 0 := by
-    calc
-      -y * coefficients .x + (1 - x) * coefficients .y =
-          coefficients .y - (y * coefficients .x + x * coefficients .y) := by ring
-      _ = 0 := by rw [hyFixed]; ring
+    linear_combination hyFixed
   have hxDet :
       inPlaneLadderDeterminant x y * coefficients .x = 1 - x := by
     calc
