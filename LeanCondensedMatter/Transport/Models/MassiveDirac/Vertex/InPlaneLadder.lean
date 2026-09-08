@@ -157,9 +157,7 @@ theorem inPlaneLadderSolvedVector_fixedPoint
       unfold inPlaneLadderDeterminant <;>
       ring
   · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
-    field_simp [hdet] <;>
-      unfold inPlaneLadderDeterminant <;>
-      ring
+    field_simp [hdet] <;> ring
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
 theorem inPlaneLadder_fixedPoint_unique
