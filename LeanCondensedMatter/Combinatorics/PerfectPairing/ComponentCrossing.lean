@@ -83,6 +83,9 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
             Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0)
         (fun x _ => by
+          change pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 % 2 =
+            (if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
+              Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0) % 2
           have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ := by
             intro h
             exact hBC (congrArg Sigma.fst (e.injective h))
