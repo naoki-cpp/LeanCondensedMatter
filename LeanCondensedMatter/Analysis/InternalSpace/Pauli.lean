@@ -86,10 +86,6 @@ components. No complex conjugation is introduced. -/
     pauliCombination (c • u) = c • pauliCombination u := by
   simp [pauliCombination, smul_add, smul_smul]
 
-/-- The identity on a two-dimensional internal space has trace two. -/
-@[simp] theorem trace_one_pauliMatrix : Matrix.trace (1 : PauliMatrix) = 2 := by
-  simp [Matrix.trace]
-
 /-- Every Pauli synthesis is traceless. -/
 @[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u) = 0 := by
