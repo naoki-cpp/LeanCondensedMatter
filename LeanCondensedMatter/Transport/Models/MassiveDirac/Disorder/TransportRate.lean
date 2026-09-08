@@ -190,9 +190,8 @@ private theorem upperBandProjectorOverlap_eq
   rw [hpProjector, hqProjector,
     InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination]
   rw [InternalSpace.dotProduct_pauliAxis]
-  simp [pCoefficients, qCoefficients, diracPauliCoefficients] <;>
-    field_simp [hp, hq] <;>
-    ring
+  simp [pCoefficients, qCoefficients, diracPauliCoefficients]
+  field_simp [hp, hq]
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
 positive `p_x` axis and a state at relative Fermi-circle angle `θ`. This is the canonical real
