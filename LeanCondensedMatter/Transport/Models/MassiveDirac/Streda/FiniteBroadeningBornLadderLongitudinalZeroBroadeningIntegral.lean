@@ -198,19 +198,18 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         2 * q ^ 2 * pref⁻¹ * (solved .x * rx p - solved .y * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (same .retarded p + same .advanced p) := by
     intro p
-    rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient]
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
+    rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm]
     dsimp [q, solved, rx, ry, same]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand]
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-      inPlaneRotationCoefficient pauliRungAngularXCoefficient pauliRungAngularYCoefficient
-      finiteCutoffContinuumBornDysonScalarCoefficient finiteCutoffContinuumBornDysonPauliCoefficient
-      pauliAxisComponent
-    dsimp
-    simp only [inPlaneLadderAction_apply_x,
-      inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
-    field_simp [hpref] <;> simp <;> ring
+      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
+    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      inPlaneRotationCoefficient, inPlaneRotationMatrix_apply_x_x,
+      inPlaneRotationMatrix_apply_y_x]
+    push_cast
+    field_simp [hpref] <;> ring
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
@@ -254,7 +253,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteBroadeningLongitudinalMomentumEndpointForm, inPlaneLadderAction_apply_x,
     q, pref, solved, rx, ry]
-  ring
+  ring_nf
 
 private theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     (side : SpectralSide)
