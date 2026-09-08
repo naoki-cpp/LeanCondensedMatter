@@ -36,7 +36,7 @@ def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector :=
   ![x, y]
 
 /-- Repository-oriented isotropic in-plane matrix `[[x,-y],[y,x]]`. -/
-def inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
+abbrev inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![x, -y; y, x]
 
 /-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
