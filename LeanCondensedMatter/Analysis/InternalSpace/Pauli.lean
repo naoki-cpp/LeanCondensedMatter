@@ -87,6 +87,10 @@ components. No complex conjugation is introduced. -/
   simp [pauliCombination, smul_add, smul_smul]
   module
 
+/-- The identity on a two-dimensional internal space has trace two. -/
+@[simp] theorem trace_one_pauliMatrix : Matrix.trace (1 : PauliMatrix) = 2 := by
+  simp [Matrix.trace]
+
 /-- Every Pauli synthesis is traceless. -/
 @[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u) = 0 := by
@@ -102,6 +106,19 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
     dotProduct, sum_pauliAxis]
   ring_nf
   simp [hI]
+
+/-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
+`(I + v·σ)/2`. -/
+theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination
+    (u v : PauliAxis → ℂ) :
+    Matrix.trace
+        (((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) *
+          ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination v))) =
+      (1 + dotProduct u v) / 2 := by
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  rw [add_mul, one_mul, mul_add, mul_one]
+  simp [trace_pauliCombination_mul_pauliCombination]
+  ring
 
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
