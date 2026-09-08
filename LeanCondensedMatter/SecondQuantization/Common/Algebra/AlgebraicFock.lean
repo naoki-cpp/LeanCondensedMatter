@@ -43,11 +43,6 @@ theorem basisState_injective {Config : Type*} :
     Function.Injective (basisState : Config → AlgebraicFock Config) :=
   fun _ _ h => Finsupp.single_left_injective one_ne_zero h
 
-/-- Basis vectors are injective on the full configuration type. -/
-theorem basisState_injOn {Config : Type*} :
-    Set.InjOn (basisState : Config → AlgebraicFock Config) Set.univ :=
-  fun _ _ _ _ h => basisState_injective h
-
 /-- The canonical basis states of an algebraic Fock space are linearly independent. -/
 theorem basisState_linearIndependent {Config : Type*} :
     LinearIndependent ℂ (basisState : Config → AlgebraicFock Config) := by
