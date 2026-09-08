@@ -55,7 +55,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
               dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2))) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, mul_one, mul_zero, sub_zero]
+  simp [inPlaneRotationCoefficient, inPlaneRotationMatrix]
   unfold pauliRungAngularXCoefficient pauliRungAngularYCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
@@ -107,8 +107,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-      simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, mul_one, mul_zero, neg_zero,
-        pauliRungAngularYCoefficient, sub_self]
+      simp [inPlaneRotationCoefficient, inPlaneRotationMatrix, pauliRungAngularYCoefficient]
       ring
     _ = _ := by
       dsimp only
