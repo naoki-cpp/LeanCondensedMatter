@@ -189,7 +189,7 @@ def main() -> int:
             description="massive-Dirac model implementation umbrella",
         )
 
-    canonical_propagator_path = massive_dirac_model_root / "Propagator.lean"
+    canonical_propagator_path = massive_dirac_model_root / "Propagator" / "Basic.lean"
     for module in lean_imports(canonical_propagator_path):
         if module_matches_prefix(module, MD_PUBLIC) and not module_matches_prefix(module, MD_MODEL):
             errors.append(

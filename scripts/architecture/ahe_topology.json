@@ -4,11 +4,13 @@
       "id": "massiveDiracFoundation",
       "sourceRoots": [
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Model",
+        "LeanCondensedMatter/Transport/Models/MassiveDirac/Propagator",
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Hall/Intrinsic",
         "LeanCondensedMatter/Transport/Models/MassiveDirac/Conductivity/Longitudinal"
       ],
       "coveragePrefixes": [
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic",
         "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime"
       ],
@@ -20,6 +22,9 @@
         {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral"]},
         {"id": "modelInterband", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband"]},
         {"id": "modelOperatorSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"]},
+        {"id": "propagatorBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic"]},
+        {"id": "propagatorSymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Symmetry"]},
+        {"id": "propagatorAngularReduction", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction"]},
         {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge"]},
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry"]},
         {"id": "occupiedBerryWeight", "modulePrefixes": ["LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation", "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry"]},
@@ -35,6 +40,10 @@
         {"upstream": "modelSpectral", "downstream": "modelInterband"},
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelOperatorSpectral"},
+        {"upstream": "modelOperatorSpectral", "downstream": "propagatorBasic"},
+        {"upstream": "propagatorBasic", "downstream": "propagatorSymmetry"},
+        {"upstream": "propagatorSymmetry", "downstream": "propagatorAngularReduction"},
+        {"upstream": "modelKinematics", "downstream": "propagatorAngularReduction"},
         {"upstream": "modelInterband", "downstream": "intrinsicBerryBridge"},
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
         {"upstream": "intrinsicBerrySymmetry", "downstream": "occupiedBerryWeight"},
