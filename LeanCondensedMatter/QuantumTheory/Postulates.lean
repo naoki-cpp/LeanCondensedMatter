@@ -23,10 +23,6 @@ vectors that differ by global phase. -/
 def StateVector (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
-/-- Compatibility name for normalized state-vector representatives. New representative-dependent
-APIs should use `StateVector`. -/
-abbrev State (H : Type*) [NormedAddCommGroup H] := StateVector H
-
 /-- **Observable (definition).** An observable is a self-adjoint bounded linear operator
 on the state space. Self-adjointness is what makes `expValue_im_eq_zero` below hold; it is
 not an independent postulate but the defining property that makes an operator eligible to
