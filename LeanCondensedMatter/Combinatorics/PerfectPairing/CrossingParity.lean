@@ -108,30 +108,6 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
     simp [hcross]
     omega
 
-/-- Pointwise natural-number congruence lifts to a finite sum. -/
-theorem finset_sum_modEq {α : Type*} (n : ℕ) (s : Finset α) (f g : α → ℕ)
-    (h : ∀ x ∈ s, Nat.ModEq n (f x) (g x)) :
-    Nat.ModEq n (∑ x ∈ s, f x) (∑ x ∈ s, g x) :=
-  Nat.ModEq.sum h
-
-/-- Pointwise natural-number congruence lifts to a sum over a finite type. -/
-theorem fintype_sum_modEq {α : Type*} [Fintype α] (n : ℕ) (f g : α → ℕ)
-    (h : ∀ x, Nat.ModEq n (f x) (g x)) :
-    Nat.ModEq n (∑ x, f x) (∑ x, g x) := by
-  simpa using finset_sum_modEq n (Finset.univ : Finset α) f g (fun x _ => h x)
-
-/-- Pointwise equality modulo two lifts to a finite sum. -/
-theorem finset_sum_mod_two_congr {α : Type*} (s : Finset α) (f g : α → ℕ)
-    (h : ∀ x ∈ s, f x % 2 = g x % 2) :
-    (∑ x ∈ s, f x) % 2 = (∑ x ∈ s, g x) % 2 := by
-  exact finset_sum_modEq 2 s f g h
-
-/-- Pointwise equality modulo two lifts to a sum over a finite type. -/
-theorem fintype_sum_mod_two_congr {α : Type*} [Fintype α] (f g : α → ℕ)
-    (h : ∀ x, f x % 2 = g x % 2) :
-    (∑ x, f x) % 2 = (∑ x, g x) % 2 := by
-  exact fintype_sum_modEq 2 f g h
-
 /-- An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. -/
 theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
     (n : ℕ) (s : Finset α) (f : α → α → ℕ)

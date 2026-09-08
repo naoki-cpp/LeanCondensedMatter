@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
@@ -20,14 +21,12 @@ variable {n : ℕ}
 def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
   (finCongr (by ring)).trans (finProdFinEquiv (m := n) (n := 2)).symm
 
-/-- Recover an ambient position from its block index and its slot inside the block. -/
-theorem pairSlotIndexEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * n)) :
+private theorem pairSlotIndexEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * n)) :
     p.val = (pairSlotIndexEquiv n p).2.val + 2 * (pairSlotIndexEquiv n p).1.val := by
   have h := congrArg (fun q => q.val) ((pairSlotIndexEquiv n).symm_apply_apply p)
   simpa [pairSlotIndexEquiv, finProdFinEquiv] using h.symm
 
-/-- Ambient positions are ordered by block index first, and by slot inside the block second. -/
-theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
+private theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
     p < q ↔
       (pairSlotIndexEquiv n p).1 < (pairSlotIndexEquiv n q).1 ∨
         ((pairSlotIndexEquiv n p).1 = (pairSlotIndexEquiv n q).1 ∧
@@ -58,53 +57,34 @@ theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
       change p.val < q.val
       omega
 
-/-- An enumeration of the normalized pairs of `pairing`. -/
-noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
+private noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
     Fin n ≃ pairing.NormalizedPair :=
   (Fintype.equivFinOfCardEq pairing.card_normalizedPair).symm
 
-/-- Ambient positions viewed as an enumerated pair together with an endpoint selector. -/
-noncomputable def Pairing.pairSlotEquiv (pairing : Pairing n) :
+private noncomputable def Pairing.pairSlotEquiv (pairing : Pairing n) :
     Fin n × Fin 2 ≃ Fin (2 * n) :=
   (pairing.pairIndexEquiv.prodCongr (Equiv.refl (Fin 2))).trans pairing.pairEndpointEquiv
 
-/-- Slot `0` of a block selects the first endpoint of its pair. -/
-theorem Pairing.pairSlotEquiv_zero (pairing : Pairing n) (k : Fin n) :
+private theorem Pairing.pairSlotEquiv_zero (pairing : Pairing n) (k : Fin n) :
     pairing.pairSlotEquiv (k, 0) = (pairing.pairIndexEquiv k).1.1 := by
   change pairing.pairEndpoint (pairing.pairIndexEquiv k, 0) = _
   simp
 
-/-- Slot `1` of a block selects the second endpoint of its pair. -/
-theorem Pairing.pairSlotEquiv_one (pairing : Pairing n) (k : Fin n) :
+private theorem Pairing.pairSlotEquiv_one (pairing : Pairing n) (k : Fin n) :
     pairing.pairSlotEquiv (k, 1) = (pairing.pairIndexEquiv k).1.2 := by
   change pairing.pairEndpoint (pairing.pairIndexEquiv k, 1) = _
   simp
-
-/-- The two slots of a block are ordered, since the enumerated pairs are normalized. -/
-theorem Pairing.pairSlotEquiv_zero_lt_one (pairing : Pairing n) (k : Fin n) :
-    pairing.pairSlotEquiv (k, 0) < pairing.pairSlotEquiv (k, 1) := by
-  rw [pairing.pairSlotEquiv_zero, pairing.pairSlotEquiv_one]
-  exact pairing.pairs_normalized (pairing.pairIndexEquiv k).2
-
-/-- The two slots of a block are partners: this is what makes the enumeration present the
-pairing. -/
-theorem Pairing.partner_pairSlotEquiv_zero (pairing : Pairing n) (k : Fin n) :
-    pairing.partner (pairing.pairSlotEquiv (k, 0)) = pairing.pairSlotEquiv (k, 1) := by
-  rw [pairing.pairSlotEquiv_zero, pairing.pairSlotEquiv_one]
-  exact ((pairing.mem_pairs_iff _ _).1 (pairing.pairIndexEquiv k).2).2
 
 /-- The permutation of ambient positions that lists the normalized pairs one after another. -/
 noncomputable def Pairing.pairPerm (pairing : Pairing n) : Equiv.Perm (Fin (2 * n)) :=
   (pairSlotIndexEquiv n).trans pairing.pairSlotEquiv
 
-theorem Pairing.pairPerm_apply (pairing : Pairing n) (p : Fin (2 * n)) :
+private theorem Pairing.pairPerm_apply (pairing : Pairing n) (p : Fin (2 * n)) :
     pairing.pairPerm p = pairing.pairSlotEquiv (pairSlotIndexEquiv n p) :=
   rfl
 
-/-- On the position with block index `k` and slot `s`, the pair-listing permutation returns the
-corresponding endpoint of the `k`-th pair. -/
-@[simp]
-theorem Pairing.pairPerm_pairSlotIndexEquiv_symm (pairing : Pairing n) (x : Fin n × Fin 2) :
+private theorem Pairing.pairPerm_pairSlotIndexEquiv_symm (pairing : Pairing n)
+    (x : Fin n × Fin 2) :
     pairing.pairPerm ((pairSlotIndexEquiv n).symm x) = pairing.pairSlotEquiv x := by
   rw [Pairing.pairPerm_apply, Equiv.apply_symm_apply]
 
@@ -116,9 +96,7 @@ private theorem prod_Ioi_eq_prod_ite {M : Type*} [CommMonoid M] {m : ℕ}
   ext j
   simp
 
-/-- The sign of a permutation of `Fin (2 * n)`, expanded over ordered pairs of positions indexed by
-their two-element block and their slot inside it. -/
-theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
+private theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
     Equiv.Perm.sign σ =
       ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2,
         (if (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y then
@@ -146,19 +124,11 @@ theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
       Finset.prod_congr rfl fun x _ =>
         (Equiv.prod_comp (pairSlotIndexEquiv n).symm _).symm
 
-/-- Positions compare through their block index first and their slot second. -/
-theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) :
+private theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) :
     (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y ↔
       x.1 < y.1 ∨ (x.1 = y.1 ∧ x.2 < y.2) := by
   rw [pairSlotIndexEquiv_lt_iff n]
   simp
-
-private theorem neg_one_pow_eq_of_mod_two_eq {a b : ℕ} (h : a % 2 = b % 2) :
-    (-1 : ℤˣ) ^ a = (-1) ^ b := by
-  have hsq : (-1 : ℤˣ) * (-1) = 1 := by decide
-  conv_lhs => rw [← Nat.div_add_mod a 2]
-  conv_rhs => rw [← Nat.div_add_mod b 2, ← h]
-  rw [pow_add, pow_add, pow_mul, pow_mul, sq, hsq, one_pow, one_pow]
 
 private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
     (if a < b then (1 : ℤˣ) else -1) = (-1) ^ (if b < a then 1 else 0) := by
@@ -167,7 +137,6 @@ private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
   · exact absurd h hab
   · rw [if_neg (asymm h), if_pos h, pow_one]
 
-/-- The ambient position carried by the slot `x` of a permutation. -/
 private def blockPos (τ : Equiv.Perm (Fin (2 * n))) (x : Fin n × Fin 2) : Fin (2 * n) :=
   τ ((pairSlotIndexEquiv n).symm x)
 
@@ -186,14 +155,11 @@ private theorem blockPos_ne (τ : Equiv.Perm (Fin (2 * n))) {x y : Fin n × Fin 
     blockPos τ x ≠ blockPos τ y := fun heq =>
   h ((pairSlotIndexEquiv n).symm.injective (τ.injective heq))
 
-/-- The sign contribution of the ordered pair of positions with block indices and slots `x` and
-`y`. -/
 private noncomputable def slotFactor (τ : Equiv.Perm (Fin (2 * n))) (x y : Fin n × Fin 2) : ℤˣ :=
   if (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y then
       (if blockPos τ x < blockPos τ y then (1 : ℤˣ) else -1)
     else 1
 
-/-- The sign contribution of an ordered pair of two-element blocks. -/
 private noncomputable def blockFactor (τ : Equiv.Perm (Fin (2 * n))) (k l : Fin n) : ℤˣ :=
   ∏ s : Fin 2, ∏ t : Fin 2, slotFactor τ (k, s) (l, t)
 
@@ -271,10 +237,7 @@ private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} 
   simp only [pairEndpointInversionCount, blockPair]
   ac_rfl
 
-/-- **Block form of a permutation sign.** Grouping the ambient positions into two-element blocks,
-the sign of any permutation is `-1` raised to the number of blocks it reverses plus the endpoint
-inversions between distinct blocks. -/
-theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
+private theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
     Equiv.Perm.sign τ =
       (-1) ^ (∑ k : Fin n, if (blockPair τ k).2 < (blockPair τ k).1 then 1 else 0) *
         (-1) ^ (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
@@ -339,7 +302,6 @@ private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m
   rw [hIio, hIci, hIci_sum] at hsplit
   omega
 
-/-- Indicator of a crossing between the pairs an equivalence assigns to `k` and `l`. -/
 private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pairing.NormalizedPair)
     (k l : Fin n) : ℕ :=
   if Crosses (e k).1 (e l).1 then 1 else 0
@@ -386,8 +348,10 @@ private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pai
       pairing.crossingCount % 2 := by
   classical
   rw [crossingCount_eq_sum_Ioi_crossIndicator pairing e]
-  refine finset_sum_mod_two_congr _ _ _ fun k _ => ?_
-  refine finset_sum_mod_two_congr _ _ _ fun l hl => ?_
+  refine Nat.ModEq.sum (n := 2) fun k _ => ?_
+  refine Nat.ModEq.sum (n := 2) fun l hl => ?_
+  change pairEndpointInversionCount (e k).1 (e l).1 % 2 =
+    (crossIndicator pairing e k l + crossIndicator pairing e l k) % 2
   have hkl : k < l := Finset.mem_Ioi.1 hl
   have hne : e k ≠ e l := fun h => (ne_of_lt hkl) (e.injective h)
   have hEnds := pairing.normalizedPair_endpoints_ne_of_ne _ _ hne
@@ -401,15 +365,12 @@ private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pai
     simp [hA, hB]
   · by_cases hB : Crosses (e l).1 (e k).1 <;> simp [hA, hB]
 
-/-- Swapping the endpoints of the first pair leaves the endpoint inversion count unchanged: the
-same four comparisons occur, only reordered. -/
 private theorem pairEndpointInversionCount_swap_left {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n)) :
     pairEndpointInversionCount left.swap right = pairEndpointInversionCount left right := by
   simp only [pairEndpointInversionCount, Prod.swap]
   ac_rfl
 
-/-- Swapping the endpoints of the second pair leaves the endpoint inversion count unchanged. -/
 private theorem pairEndpointInversionCount_swap_right {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n)) :
     pairEndpointInversionCount left right.swap = pairEndpointInversionCount left right := by
@@ -443,7 +404,7 @@ theorem Pairing.sign_eq_of_presentsPairs (pairing : Pairing n) (τ : Equiv.Perm 
   obtain ⟨e, hpres⟩ := h
   rw [sign_eq_pow_blockInversions τ]
   congr 1
-  refine neg_one_pow_eq_of_mod_two_eq ?_
+  refine pow_eq_of_mod_two_eq (ζ := (-1 : ℤˣ)) (by decide) ?_
   have heq : (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
       pairEndpointInversionCount (blockPair τ k) (blockPair τ l)) =
         ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (e k).1 (e l).1 :=
@@ -452,8 +413,7 @@ theorem Pairing.sign_eq_of_presentsPairs (pairing : Pairing n) (τ : Equiv.Perm 
   rw [heq]
   exact sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount pairing e
 
-/-- The pair-listing permutation presents its own pairing, with every block already in order. -/
-theorem Pairing.pairPerm_presentsPairs (pairing : Pairing n) :
+private theorem Pairing.pairPerm_presentsPairs (pairing : Pairing n) :
     pairing.PresentsPairs pairing.pairPerm :=
   ⟨pairing.pairIndexEquiv, fun k => Or.inl (blockPair_pairPerm pairing k)⟩
 
@@ -526,28 +486,5 @@ theorem Pairing.sign_pairPerm (pairing : Pairing n) :
       exact asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
   rw [pairing.sign_eq_of_presentsPairs pairing.pairPerm pairing.pairPerm_presentsPairs, hzero,
     pow_zero, one_mul]
-
-/-- **Transporting a sum permutation through a two-part presentation.** A permutation acting
-independently on the two parts contributes the product of its two signs; everything that depends on
-how the parts are interleaved is collected in the presentation-only permutation `u.trans v`.
-
-This is the algebraic half of a component factorization: the interleaving sign is separated from the
-component signs, and is then shown to be trivial by a block argument. -/
-theorem sign_trans_sumCongr_trans {α β γ : Type*} [DecidableEq α] [Fintype α]
-    [DecidableEq β] [Fintype β] [DecidableEq γ] [Fintype γ]
-    (u : α ≃ β ⊕ γ) (v : β ⊕ γ ≃ α) (σ : Equiv.Perm β) (ρ : Equiv.Perm γ) :
-    Equiv.Perm.sign (u.trans ((Equiv.sumCongr σ ρ).trans v)) =
-      Equiv.Perm.sign (u.trans v) * (Equiv.Perm.sign σ * Equiv.Perm.sign ρ) := by
-  have hsplit : u.trans ((Equiv.sumCongr σ ρ).trans v) =
-      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)).trans (u.trans v) := by
-    apply Equiv.ext
-    intro x
-    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
-  have htransported :
-      Equiv.Perm.sign (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) =
-        Equiv.Perm.sign (Equiv.sumCongr σ ρ) :=
-    (Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr σ ρ)
-      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) u.symm (fun _ => by simp)).symm
-  rw [hsplit, Equiv.Perm.sign_trans, htransported, Equiv.Perm.sign_sumCongr, mul_comm]
 
 end Combinatorics

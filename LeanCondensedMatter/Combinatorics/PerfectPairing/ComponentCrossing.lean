@@ -74,18 +74,29 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) % 2 := by
     rw [Pairing.componentGeometricCrossingCount]
     symm
-    exact fintype_sum_mod_two_congr _ _ fun x => by
-      have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ := by
-        intro h
-        exact hBC (congrArg Sigma.fst (e.injective h))
-      have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
-        (e ⟨B, x.1⟩) (e ⟨C, x.2⟩) hPairNe
-      have h := pairEndpointInversionCount_mod_two_eq_crossesIndicator
-        (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
-        (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
-        (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
-        hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-      split_ifs at h ⊢ <;> simpa using h
+    simpa [Nat.ModEq] using
+      (Nat.ModEq.sum
+        (n := 2)
+        (s := (Finset.univ : Finset (F B × F C)))
+        (f := fun x => pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1)
+        (g := fun x =>
+          if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
+            Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0)
+        (fun x _ => by
+          change pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 % 2 =
+            (if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
+              Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0) % 2
+          have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ := by
+            intro h
+            exact hBC (congrArg Sigma.fst (e.injective h))
+          have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
+            (e ⟨B, x.1⟩) (e ⟨C, x.2⟩) hPairNe
+          have h := pairEndpointInversionCount_mod_two_eq_crossesIndicator
+            (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
+            (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
+            (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
+            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
+          split_ifs at h ⊢ <;> simpa using h))
   have hsum :
       (∑ x : F B × F C,
         pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) =
