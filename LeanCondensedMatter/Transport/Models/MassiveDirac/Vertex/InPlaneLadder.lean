@@ -60,17 +60,17 @@ def inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
     (x y alpha beta : ℂ) :
-    inPlaneRotationMatrix x y *ᵥ inPlaneCoefficientVector alpha beta =
+    (inPlaneRotationMatrix x y).mulVec (inPlaneCoefficientVector alpha beta) =
       inPlaneCoefficientVector (x * alpha - y * beta) (y * alpha + x * beta) := by
   funext i
   fin_cases i <;>
-    simp [inPlaneRotationMatrix, inPlaneCoefficientVector, Matrix.mulVec, Fin.sum_univ_two] <;>
-    ring
+    simp [inPlaneRotationMatrix, inPlaneCoefficientVector] <;>
+    ring_nf
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
     (x y : ℂ) (coefficients : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
-  inPlaneRotationMatrix x y *ᵥ coefficients
+  (inPlaneRotationMatrix x y).mulVec coefficients
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
@@ -84,7 +84,6 @@ def inPlaneLadderShiftedMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
 theorem inPlaneLadderShiftedMatrix_det (x y : ℂ) :
     (inPlaneLadderShiftedMatrix x y).det = inPlaneLadderDeterminant x y := by
   simp [inPlaneLadderShiftedMatrix, inPlaneLadderDeterminant, Matrix.det_fin_two, pow_two]
-  ring
 
 /-- The shifted ladder matrix is `I - L`. -/
 theorem inPlaneLadderShiftedMatrix_eq_one_sub (x y : ℂ) :
@@ -168,11 +167,11 @@ theorem inPlaneLadder_fixedPoint_unique
       inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) :
     coefficients = inPlaneLadderSolvedVector x y := by
   have hshifted :
-      inPlaneLadderShiftedMatrix x y *ᵥ coefficients = inPlaneLadderBareXSource := by
+      (inPlaneLadderShiftedMatrix x y).mulVec coefficients = inPlaneLadderBareXSource := by
     rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec, hfixed]
     simp [inPlaneLadderAction]
   have hsolvedShifted :
-      inPlaneLadderShiftedMatrix x y *ᵥ inPlaneLadderSolvedVector x y =
+      (inPlaneLadderShiftedMatrix x y).mulVec (inPlaneLadderSolvedVector x y) =
         inPlaneLadderBareXSource := by
     rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec,
       inPlaneLadderSolvedVector_fixedPoint x y hdet]
@@ -192,7 +191,6 @@ theorem inPlaneLadderSolvedVector_zero_transverse
   fin_cases i
   · simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneLadderDeterminant]
     field_simp [hx]
-    ring
   · simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector]
 
 end
