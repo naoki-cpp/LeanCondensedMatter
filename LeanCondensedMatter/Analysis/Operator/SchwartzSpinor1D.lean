@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -32,7 +32,7 @@ abbrev Spatial := SchwartzKinetic1D.Space
 abbrev Spinor := Fin 2 → Spatial
 
 /-- Complex `2 × 2` matrices acting on the internal spin index. -/
-abbrev SpinMatrix := Matrix (Fin 2) (Fin 2) ℂ
+abbrev SpinMatrix := InternalSpace.PauliMatrix
 
 /-- Lift a scalar Schwartz operator componentwise to a two-component spinor. -/
 noncomputable def spatialLift (A : Spatial →ₗ[ℂ] Spatial) : Spinor →ₗ[ℂ] Spinor where
@@ -140,23 +140,11 @@ inductive SpinAxis
   | z
   deriving DecidableEq, Repr
 
-/-- Pauli matrix `σ_x`. -/
-noncomputable def pauliX : SpinMatrix :=
-  !![0, 1; 1, 0]
-
-/-- Pauli matrix `σ_y`. -/
-noncomputable def pauliY : SpinMatrix :=
-  !![0, -Complex.I; Complex.I, 0]
-
-/-- Pauli matrix `σ_z`. -/
-noncomputable def pauliZ : SpinMatrix :=
-  !![1, 0; 0, -1]
-
 /-- Pauli matrix associated with a Cartesian spin axis. -/
 noncomputable def pauli : SpinAxis → SpinMatrix
-  | .x => pauliX
-  | .y => pauliY
-  | .z => pauliZ
+  | .x => InternalSpace.pauliX
+  | .y => InternalSpace.pauliY
+  | .z => InternalSpace.pauliZ
 
 /-- Spin-1/2 matrix `S_a = ℏ σ_a / 2`. -/
 noncomputable def spinMatrix (ℏ : ℝ) (axis : SpinAxis) : SpinMatrix :=
