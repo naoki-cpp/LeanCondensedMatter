@@ -210,8 +210,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     dsimp
     simp only [inPlaneLadderAction_apply_x,
       inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
-    field_simp [hpref]
-    ring
+    field_simp [hpref] <;> simp <;> ring
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
@@ -333,14 +332,23 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
         (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹)).sub
     ((hRR.add hAA).const_mul
       ((((2 * Real.pi : ℝ) : ℂ)) * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
-  apply Tendsto.congr' ?_ (by
+  have hEndpoint :
+      Tendsto
+        (fun broadening : ℝ =>
+          finiteBroadeningLongitudinalMomentumEndpointForm
+            e v m probeEnergy broadening disorderStrength hbar pMax)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds
+          (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
+            e v m probeEnergy disorderStrength hbar pMax)) := by
     simpa [finiteBroadeningLongitudinalMomentumEndpointForm,
       finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary,
-      inPlaneLadderAction_apply_x] using htotal)
-  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
-    e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
-    (ne_of_gt hbroadening) hdisorder).symm
+      inPlaneLadderAction_apply_x] using htotal
+  exact Tendsto.congr' (by
+    filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm
+      e v m probeEnergy broadening disorderStrength hbar pMax hpMax hvelocity hhbar
+      (ne_of_gt hbroadening) hdisorder).symm) hEndpoint
 
 end
 
