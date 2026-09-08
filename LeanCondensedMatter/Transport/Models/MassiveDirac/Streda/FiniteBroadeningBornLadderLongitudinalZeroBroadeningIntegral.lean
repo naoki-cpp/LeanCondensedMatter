@@ -211,7 +211,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
     push_cast
-    field_simp [hpref] <;> simp <;> ring_nf
+    field_simp [hpref] <;> try simp <;> ring_nf
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
