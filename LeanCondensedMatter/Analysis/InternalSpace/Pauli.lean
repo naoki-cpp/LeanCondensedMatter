@@ -47,12 +47,6 @@ def pauliY : PauliMatrix :=
 def pauliZ : PauliMatrix :=
   !![1, 0; 0, -1]
 
-/-- Pauli matrix selected by its semantic internal-space axis. -/
-def pauli : PauliAxis → PauliMatrix
-  | .x => pauliX
-  | .y => pauliY
-  | .z => pauliZ
-
 /-- Bilinear Pauli synthesis `u · σ`. The coefficient family is kept as the canonical indexed
 function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
@@ -72,10 +66,6 @@ def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
 @[simp] theorem pauliZ_zero_one : pauliZ 0 1 = 0 := rfl
 @[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
 @[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
-
-@[simp] theorem pauli_apply_x : pauli .x = pauliX := rfl
-@[simp] theorem pauli_apply_y : pauli .y = pauliY := rfl
-@[simp] theorem pauli_apply_z : pauli .z = pauliZ := rfl
 
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
