@@ -1,6 +1,5 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -18,30 +17,30 @@ namespace InternalSpace
 abbrev PauliMatrix := Matrix (Fin 2) (Fin 2) ℂ
 
 /-- Pauli matrix `σₓ`. -/
-@[reducible] def pauliX : PauliMatrix :=
+def pauliX : PauliMatrix :=
   !![0, 1; 1, 0]
 
 /-- Pauli matrix `σᵧ`. -/
-@[reducible] def pauliY : PauliMatrix :=
+def pauliY : PauliMatrix :=
   !![0, -Complex.I; Complex.I, 0]
 
 /-- Pauli matrix `σ_z`. -/
-@[reducible] def pauliZ : PauliMatrix :=
+def pauliZ : PauliMatrix :=
   !![1, 0; 0, -1]
 
-@[simp] theorem matrix_eq_smul_pauliX (c : ℂ) :
-    !![0, c; c, 0] = c • pauliX := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [pauliX]
+@[simp] theorem pauliX_zero_zero : pauliX 0 0 = 0 := rfl
+@[simp] theorem pauliX_zero_one : pauliX 0 1 = 1 := rfl
+@[simp] theorem pauliX_one_zero : pauliX 1 0 = 1 := rfl
+@[simp] theorem pauliX_one_one : pauliX 1 1 = 0 := rfl
 
-@[simp] theorem matrix_eq_smul_pauliY (c : ℂ) :
-    !![0, -(c * Complex.I); c * Complex.I, 0] = c • pauliY := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [pauliY]
+@[simp] theorem pauliY_zero_zero : pauliY 0 0 = 0 := rfl
+@[simp] theorem pauliY_zero_one : pauliY 0 1 = -Complex.I := rfl
+@[simp] theorem pauliY_one_zero : pauliY 1 0 = Complex.I := rfl
+@[simp] theorem pauliY_one_one : pauliY 1 1 = 0 := rfl
 
-@[simp] theorem matrix_eq_smul_pauliZ (c : ℂ) :
-    !![c, 0; 0, -c] = c • pauliZ := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [pauliZ]
+@[simp] theorem pauliZ_zero_zero : pauliZ 0 0 = 1 := rfl
+@[simp] theorem pauliZ_zero_one : pauliZ 0 1 = 0 := rfl
+@[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
+@[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
 
 end InternalSpace
