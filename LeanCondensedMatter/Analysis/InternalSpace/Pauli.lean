@@ -81,6 +81,28 @@ components. No complex conjugation is introduced. -/
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
 
+/-- Pauli synthesis commutes with scalar multiplication of the indexed coefficient family. -/
+@[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
+    pauliCombination (c • u) = c • pauliCombination u := by
+  simp [pauliCombination, smul_add, smul_smul]
+  module
+
+/-- Every Pauli synthesis is traceless. -/
+@[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
+    Matrix.trace (pauliCombination u) = 0 := by
+  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ]
+
+/-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
+theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
+    Matrix.trace (pauliCombination u * pauliCombination v) =
+      2 * dotProduct u v := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
+    dotProduct, sum_pauliAxis]
+  ring_nf
+  simp [hI]
+
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =
