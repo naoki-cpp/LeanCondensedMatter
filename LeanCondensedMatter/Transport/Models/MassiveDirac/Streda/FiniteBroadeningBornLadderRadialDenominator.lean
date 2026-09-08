@@ -60,12 +60,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   unfold pauliRungAngularXCoefficient pauliRungAngularYCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
-  have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
-      (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
-    push_cast
-    ring
-  rw [hpi]
-  ring
+  ring_nf
 
 /-- Numerator multiplying the common finite-`η` RA Born-Dyson denominator in the source-`.y`
 ordered transverse surface trace. -/
@@ -110,7 +105,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Matrix.cons_val_zero,
         Matrix.cons_val_one, mul_one, mul_zero, neg_zero, pauliRungAngularYCoefficient, sub_self]
-      ring
+      ring_nf <;> simp
     _ = _ := by
       dsimp only
       rw [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
@@ -118,12 +113,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
             .y .x v m p probeEnergy broadening disorderStrength hbar pMax]
       unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
-      have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
-          (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
-        push_cast
-        ring
-      rw [hpi]
-      ring
+      ring_nf
 
 /-- The ordered `xy` radial Hall-surface integrand is the source-`.y` Středa radial response in
 explicit common RA Born-Dyson denominator form. -/
