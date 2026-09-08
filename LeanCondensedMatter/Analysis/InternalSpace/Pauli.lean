@@ -86,6 +86,16 @@ theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     ring_nf <;>
     simp [hI]
 
+/-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
+theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
+    Matrix.trace (pauliCombination u * pauliCombination v) = 2 * dotProduct u v := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
+    dotProduct, sum_pauliAxis]
+  ring_nf
+  simp [hI]
+
 /-- Multiplying opposite-sign Pauli shifts eliminates the Pauli part and leaves the quadratic
 bilinear invariant. -/
 theorem pauliShift_mul_companion (a : ℂ) (u : PauliAxis → ℂ) :
