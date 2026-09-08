@@ -28,16 +28,14 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     (source : Direction2)
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary
-    .x v m probeEnergy disorderStrength hbar pMax
-  let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary
-    .y v m probeEnergy disorderStrength hbar pMax
+  let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
+    v m probeEnergy disorderStrength hbar pMax
   inPlaneCurrentOperator e v
-    (inPlaneRotationCoefficient alpha beta .x source)
-    (inPlaneRotationCoefficient alpha beta .y source)
+    (inPlaneRotationCoefficient (solved .x) (solved .y) .x source)
+    (inPlaneRotationCoefficient (solved .x) (solved .y) .y source)
 
 /-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built
-from the solved zero-broadening ladder coefficients. -/
+from the solved zero-broadening ladder vector. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_broadening_zero_of_boundary_realRenormalization_lt_one
     (source : Direction2)
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
@@ -58,19 +56,17 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
       (nhds
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
           source e v m probeEnergy disorderStrength hbar pMax)) := by
-  have hAlpha :=
-    tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-      .x v m probeEnergy disorderStrength hbar pMax
+  have hSolved :=
+    tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
+      v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet
-  have hBeta :=
-    tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-      .y v m probeEnergy disorderStrength hbar pMax
-      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet
+  have hAlpha := tendsto_pi_nhds.mp hSolved .x
+  have hBeta := tendsto_pi_nhds.mp hSolved .y
   have hX := tendsto_inPlaneRotationCoefficient hAlpha hBeta .x source
   have hY := tendsto_inPlaneRotationCoefficient hAlpha hBeta .y source
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficient, inPlaneCurrentOperator] using
+    inPlaneCurrentOperator] using
     (hX.smul_const (currentOperator .x e v)).add
       (hY.smul_const (currentOperator .y e v))
 
