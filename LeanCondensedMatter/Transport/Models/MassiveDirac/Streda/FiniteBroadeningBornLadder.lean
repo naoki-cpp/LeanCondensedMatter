@@ -51,20 +51,23 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     (inPlaneRotationCoefficient (solved .x) (solved .y) .y source)
 
 /-- The source-indexed retarded-advanced dressed current is electron charge times the Dirac
-velocity multiplying the correspondingly rotated solved dimensionless coefficient vector. -/
+velocity multiplying the correspondingly rotated `.x` and `.y` projections of the solved vector. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
     (source : Direction2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
         source e v m probeEnergy broadening disorderStrength hbar pMax =
-      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
-        v m probeEnergy broadening disorderStrength hbar pMax
+      let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+        .x v m probeEnergy broadening disorderStrength hbar pMax
+      let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
+        .y v m probeEnergy broadening disorderStrength hbar pMax
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
         inPlanePauliVertexOperator
-          (inPlaneRotationCoefficient (solved .x) (solved .y) .x source)
-          (inPlaneRotationCoefficient (solved .x) (solved .y) .y source) := by
+          (inPlaneRotationCoefficient alpha beta .x source)
+          (inPlaneRotationCoefficient alpha beta .y source) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
   rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
+  rfl
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
