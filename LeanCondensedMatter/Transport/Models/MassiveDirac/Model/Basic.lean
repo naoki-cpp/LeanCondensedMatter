@@ -82,24 +82,25 @@ instance : Fintype PauliAxis where
     intro axis
     cases axis <;> simp
 
+/-- Select a component of a Pauli vector. -/
+def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
+  match axis with
+  | .x => x
+  | .y => y
+  | .z => z
+
 /-- Coefficients indexed by the semantic Pauli axes. -/
 abbrev PauliVector (R : Type*) := PauliAxis → R
 
 /-- A Pauli vector with components `(x,y,z)`. -/
-def pauliVector {R : Type*} (x y z : R) : PauliVector R
-  | .x => x
-  | .y => y
-  | .z => z
+def pauliVector {R : Type*} (x y z : R) : PauliVector R :=
+  fun axis => pauliAxisComponent axis x y z
 
 /-- A finite sum over Pauli axes is the sum of its three semantic components. -/
 theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
   simp [add_assoc]
-
-/-- Select a component of a Pauli vector. -/
-def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
-  pauliVector x y z axis
 
 /-- Matrix associated with a semantic Pauli axis. -/
 def pauliMatrix : PauliAxis → Matrix2
@@ -130,7 +131,7 @@ theorem pauliBilinearSquare_pauliVector (x y z : ℂ) :
     pauliBilinearSquare (pauliVector x y z) = x ^ 2 + y ^ 2 + z ^ 2 := by
   unfold pauliBilinearSquare Matrix.dotProduct
   rw [sum_pauliAxis]
-  simp [pauliVector, pow_two]
+  simp [pauliVector, pauliAxisComponent, pow_two]
 
 /-- The Pauli-vector square identity `(c · σ)² = (c · c) I`. -/
 theorem pauliMatrixCombination_mul_self (coefficients : PauliVector ℂ) :
