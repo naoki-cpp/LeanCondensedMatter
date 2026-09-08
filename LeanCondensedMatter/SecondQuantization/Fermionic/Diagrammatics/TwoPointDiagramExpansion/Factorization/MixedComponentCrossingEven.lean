@@ -144,7 +144,7 @@ private theorem
         (∑ x : d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C,
           pairEndpointInversionCount x.1.1.1 x.2.1.1) % 2 := by
           symm
-          simpa [Nat.ModEq] using
+          simpa [Nat.ModEq, Common.TwoPointDiagram.mixedComponentGeometricCrossingCount] using
             (Nat.ModEq.sum
               (n := 2)
               (s := (Finset.univ : Finset
