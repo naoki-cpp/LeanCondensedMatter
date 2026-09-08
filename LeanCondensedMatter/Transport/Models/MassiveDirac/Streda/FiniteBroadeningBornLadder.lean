@@ -107,32 +107,6 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTr
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax)
 
-/-- The finite-`η` source-indexed bridge is exactly its RA-dressed block minus the bare-source
-same-side RR/AA remainder. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_eq_ra_sub_sameSide
-    (source : Direction2)
-    (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
-        source e v m px py probeEnergy broadening disorderStrength hbar pMax hdet =
-      retardedAdvancedVertexTraceKernel
-          (currentOperator .x e v)
-          (finiteCutoffContinuumBornDysonGreenOperator
-            .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-            source e v m probeEnergy broadening disorderStrength hbar pMax hdet)
-          (finiteCutoffContinuumBornDysonGreenOperator
-            .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
-        sameSideVertexTraceRemainder
-          (currentOperator .x e v)
-          (currentOperator source e v)
-          (finiteCutoffContinuumBornDysonGreenOperator
-            .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonGreenOperator
-            .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) := by
-  rfl
-
 /-- At zero disorder and positive external broadening, the source-indexed RA-dressed/bare-same-side
 bridge reduces exactly to the clean massive-Dirac `jₓ-j_source` Středa surface primitive. -/
 @[simp]
