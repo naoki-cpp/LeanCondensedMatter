@@ -15,7 +15,17 @@ wavefunction calculations and are not identified by equality under global phase.
 positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
 spectral trace to `1`. `QuantumTheory.PureState H` is the subtype of density operators represented by
 some normalized state vector through the rank-one constructor `pure`, so equality of physical pure
-states is ordinary equality of their density operators.
+states is ordinary equality of their density operators. For this density model, the existential
+rank-one criterion is equivalent to maximal spectral purity:
+
+```lean
+IsPureDensity ρ ↔ purity ρ = 1
+```
+
+The converse is dimension-independent within the current compact self-adjoint spectral trace-class
+model: spectral positivity and trace normalization force the nonzero spectrum to a single eigenvalue
+`1`, and the existing spectral reconstruction recovers the corresponding rank-one density operator.
+No separate finite-dimensional assumption or parallel pure-state representation is required.
 
 The types are dimension-independent. Finite dimensionality is introduced only at theorem boundaries
 that actually require an ordinary finite matrix trace or another genuinely finite construction.
@@ -35,7 +45,7 @@ Canonical ownership is feature-based:
 Finite-dimensional specializations remain with the feature they specialize rather than forming a
 parallel finite-dimensional state hierarchy.
 
-## Pure-state expectations
+## Pure-state expectations and dynamics
 
 The Lean API defines the canonical complex vector-representative expectation
 
@@ -57,6 +67,12 @@ converse: two normalized representatives define the same rank-one density operat
 they differ by a unit-modulus global phase. The same equivalence is exposed for
 `PureState.ofStateVector`. A projective/ray presentation remains optional because the density-backed
 `PureState` already has the desired physical equality semantics.
+
+`PureState.observableExpectation` delegates to the canonical density-state observable expectation and
+agrees with `observableExpValue` on `PureState.ofStateVector`. Bounded unitary density evolution
+preserves `IsPureDensity`; its restriction to `PureState` agrees with evolving a normalized vector
+representative first. Schrödinger/Heisenberg expectation equivalence therefore remains a single
+density-backed theory rather than a second pure-state implementation.
 
 ## Mixed-state expectations
 
@@ -187,6 +203,8 @@ not naturally expressed by merely compiling the library.
 
 The current API does not yet provide a projective/ray pure-state presentation, a general
 continuous-outcome POVM theory, a full Schatten-ideal hierarchy, arbitrary non-self-adjoint
-trace-class operators, unbounded observables in the bounded core, or thermodynamic limits. Those
-extensions should build on the canonical state and expectation APIs rather than introduce parallel
-public state types.
+trace-class operators, unbounded observables in the bounded core, or thermodynamic limits. An
+explicit one-dimensional-range predicate for pure density operators is likewise unnecessary for the
+current maximal-purity characterization and should be introduced only if it becomes a useful public
+formulation. These extensions should build on the canonical state and expectation APIs rather than
+introduce parallel public state types.
