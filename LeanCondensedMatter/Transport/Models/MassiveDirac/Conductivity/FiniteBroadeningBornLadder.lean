@@ -13,10 +13,11 @@ integration; this layer attaches the common static Bastin/Středa conductivity p
 two-dimensional momentum-measure normalization exactly once.
 
 Source `.x` is the longitudinal `xx` component and source `.y` is the ordered `xy` component. The
-latter is not identified here with the antisymmetric Hall projection `(σxy - σyx) / 2`. The shared
-nonzero ladder determinant remains an explicit hypothesis. No disorder, broadening, ultraviolet,
-thermodynamic, or simultaneous limit is taken, and the Born-Dyson candidate is not identified with
-an exact disorder average.
+latter is not identified here with the antisymmetric Hall projection `(σxy - σyx) / 2`. The value is
+a total Born-Dyson candidate; ladder regularity is a separate condition for interpreting the solved
+vertex coefficients as the physical fixed point. No disorder, broadening, ultraviolet,
+thermodynamic, or simultaneous limit is taken, and the candidate is not identified with an exact
+disorder average.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -31,22 +32,18 @@ supplies the angular measure, so `momentumMeasurePrefactor hbar` is attached wit
 `2π` factor. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
     (source : Direction2)
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-      source e v m probeEnergy broadening disorderStrength hbar pMax hdet
+      source e v m probeEnergy broadening disorderStrength hbar pMax
 
 /-- With zero radial cutoff, every source component of the physically normalized finite-`η` surface
-conductivity bridge vanishes whenever the in-plane ladder is regular. -/
+conductivity bridge vanishes. -/
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_zero_cutoff
-    (source : Direction2) (e v m probeEnergy broadening disorderStrength hbar : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar 0) :
+    (source : Direction2) (e v m probeEnergy broadening disorderStrength hbar : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-      source e v m probeEnergy broadening disorderStrength hbar 0 hdet = 0 := by
+      source e v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral]
 

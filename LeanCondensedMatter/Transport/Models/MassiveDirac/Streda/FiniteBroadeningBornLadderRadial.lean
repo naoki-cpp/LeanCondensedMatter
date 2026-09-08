@@ -13,9 +13,9 @@ source direction remains indexed through the angular reduction and radial integr
 
 The source-indexed coefficient keeps the RA dressed contribution and the bare-source RR/AA
 same-side remainder in one canonical expression. For source `.y` the same-side contribution
-vanishes algebraically; for source `.x` it remains. Ladder regularity is required only when the
-explicit coefficient is identified with the dressed Středa response, not to form the algebraic
-coefficient itself.
+vanishes algebraically; for source `.x` it remains. Both the Středa values and the explicit
+coefficient are total algebraic candidates; ladder regularity separately governs the fixed-point
+interpretation of the solved vertex coefficients.
 
 No radial antiderivative, conductivity normalization, disorder/broadening limit, ultraviolet
 removal, Hall antisymmetrization, mechanism label, or exact-disorder-average claim is introduced
@@ -185,15 +185,12 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
             pauliRungAngularYCoefficient aA aA dA dA * bareY)))
 
 /-- Every source-indexed finite-`η` dressed Středa angular trace equals the same canonical radial
-coefficient. Ladder regularity is used here to identify the solved algebraic coefficient pair with
-the physical ladder fixed point. -/
+coefficient as an unconditional algebraic identity. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient
     (source : Direction2)
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
-        source e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+        source e v m p probeEnergy broadening disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         source e v m p probeEnergy broadening disorderStrength hbar pMax := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
@@ -225,12 +222,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-          source e v m probeEnergy broadening disorderStrength hbar pMax hdet =
+          source e v m probeEnergy broadening disorderStrength hbar pMax =
         (q * dressedX) • matrixOperator sigmaX +
           (q * dressedY) • matrixOperator sigmaY := by
     simpa [q, dressedX, dressedY, inPlanePauliVertexOperator, smul_add, smul_smul] using
       (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
-        source e v m probeEnergy broadening disorderStrength hbar pMax hdet)
+        source e v m probeEnergy broadening disorderStrength hbar pMax)
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bareX bareY := by
     cases source <;>
@@ -264,7 +261,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       (fun θ : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
           source e v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax hdet) =
+          probeEnergy broadening disorderStrength hbar pMax) =
         fun θ : ℝ => ra θ - (1 / 2 : ℂ) * (rr θ + aa θ) := by
     funext θ
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
@@ -321,11 +318,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 canonical angularly reduced coefficient. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient
     (source : Direction2)
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        source e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+        source e v m p probeEnergy broadening disorderStrength hbar pMax =
       (p : ℂ) *
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
           source e v m p probeEnergy broadening disorderStrength hbar pMax := by
