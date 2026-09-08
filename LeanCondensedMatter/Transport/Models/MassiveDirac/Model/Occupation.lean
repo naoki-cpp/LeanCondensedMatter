@@ -229,14 +229,6 @@ theorem bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius
     rw [hfermi] at hmono
     exact hmono
 
-/-- At positive Fermi energy, the lower band is occupied at every radial momentum. -/
-theorem bandEnergy_lower_lt_fermi
-    (v m fermiEnergy p : ℝ) (hfermi : 0 < fermiEnergy) :
-    bandEnergy .lower v m p 0 < fermiEnergy := by
-  rw [bandEnergy_lower]
-  have henergy : 0 ≤ energy v m p 0 := Real.sqrt_nonneg _
-  linarith
-
 /-- On the nonnegative radial axis in `|m| ≤ ε_F`, generic upper-band occupation is exactly
 `p < p_F`; at the band edge `ε_F = |m|` this set is empty. -/
 theorem mem_upperBand_radialOccupiedRegion_iff_lt_metallicFermiRadius
