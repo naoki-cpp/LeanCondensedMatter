@@ -260,9 +260,8 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficient
       inPlaneRotationCoefficient 1 0 output .x := by
   cases output <;>
     simp [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
-      inPlaneLadderSolvedCoefficient, inPlaneRotationCoefficient,
-      inPlaneLadderSolvedXCoefficient, inPlaneLadderSolvedYCoefficient,
-      inPlaneLadderDeterminant]
+      inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector, inPlaneCoefficientVector,
+      inPlaneRotationCoefficient, inPlaneLadderDeterminant]
 
 end
 
