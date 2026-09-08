@@ -49,6 +49,6 @@ def pauliZ : PauliMatrix :=
 
 @[simp] theorem pauliX_mul_inPlane_one_one (x y : ℂ) :
     (pauliX * (x • pauliX + y • pauliY)) 1 1 = x - y * Complex.I := by
-  simp [Matrix.mul_apply, pauliX, pauliY]
+  simp [Matrix.mul_apply, pauliX, pauliY, sub_eq_add_neg]
 
 end InternalSpace
