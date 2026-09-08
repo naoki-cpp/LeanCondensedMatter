@@ -138,7 +138,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening
           .y .x v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
     simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
   simpa [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornDysonLadderSolvedVector,
+    finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary,
+    inPlaneLadderSolvedCoefficient] using
     (tendsto_inPlaneLadderSolvedCoefficient hX hY hdet' output)
 
 end
