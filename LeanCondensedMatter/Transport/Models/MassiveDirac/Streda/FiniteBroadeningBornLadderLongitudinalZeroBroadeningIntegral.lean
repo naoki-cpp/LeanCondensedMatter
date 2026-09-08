@@ -49,13 +49,11 @@ private theorem integral_radialQuadraticInverseSquare
     intro p
     have hgp : g (p : ℂ) ≠ 0 := by
       simpa [g, c] using hden p
-    have hcomplex := ((hg p).inv hgp).const_mul (((2 : ℂ) * c)⁻¹ * A)
-    have hreal := hcomplex.comp_ofReal
-    convert! hreal using 1
-    · simp [F]
-    · field_simp [hc, hgp]
-      simp [g, c]
-      ring
+    have hreal :=
+      (((hg p).inv hgp).const_mul (((2 : ℂ) * c)⁻¹ * A)).comp_ofReal
+    convert hreal using 1 <;>
+      simp [F, g, c, div_eq_mul_inv, pow_two] <;>
+      field_simp [hc, hgp] <;> ring
   have hcontinuous : Continuous (fun p : ℝ =>
       A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) := by
     fun_prop
@@ -70,7 +68,8 @@ private theorem integral_radialQuadraticInverseSquare
     exact ((Complex.continuous_ofReal.comp continuous_id).mul continuous_const).mul (hinv.pow 2)
   have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
     (fun p _ => hF p) hint
-  simpa [F, g, c, radialQuadraticInverseSquareEndpoint, sub_eq_add_neg, mul_assoc] using hftc
+  rw [hftc]
+  simp [F, g, c, radialQuadraticInverseSquareEndpoint, sub_eq_add_neg, mul_assoc] <;> ring
 
 private def finiteBroadeningSameSideRadialEndpoint
     (side : SpectralSide)
@@ -257,6 +256,18 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
         2 * q ^ 2 * pref⁻¹ * (alpha * rx p - beta * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (rr p + aa p) := by
     intro p
+    have hdenR :
+        finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
+      finiteCutoffContinuumBornDysonDenominator_ne_zero
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder.le hpMax
+    have hdenA :
+        finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
+      finiteCutoffContinuumBornDysonDenominator_ne_zero
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder.le hpMax
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand,
       finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient,
       finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_eq_denominatorForm]
@@ -266,9 +277,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      inPlaneRotationCoefficient]
-    field_simp [hpref]
-    ring
+      inPlaneRotationCoefficient,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct, mul_inv_rev]
+    field_simp [hpref, hdenR, hdenA] <;> ring_nf
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       intervalIntegrable_finiteBroadeningCurrentRungRadialIntegrand
@@ -286,14 +297,17 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
       finiteCutoffContinuumBornDysonDenominator_ne_zero
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder.le hpMax
+    have hD : Continuous (fun p : ℝ =>
+        finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
+      unfold finiteCutoffContinuumBornDysonDenominator
+      fun_prop
+    have hInv : Continuous (fun p : ℝ =>
+        (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) :=
+      hD.inv₀ hden
     apply Continuous.intervalIntegrable
-    exact ((Complex.continuous_ofReal.comp continuous_id).mul
-      ((by
-        unfold finiteCutoffContinuumBornDysonDenominator
-        fun_prop : Continuous (fun p : ℝ =>
-          finiteCutoffContinuumBornDysonDenominator
-            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)).inv₀ hden).pow 2).mul
-      continuous_const
+    exact (((Complex.continuous_ofReal.comp continuous_id).mul (hInv.pow 2)).mul continuous_const)
   have haa : IntervalIntegrable aa volume 0 pMax := by
     have hden : ∀ p : ℝ,
         finiteCutoffContinuumBornDysonDenominator
@@ -301,16 +315,29 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
       finiteCutoffContinuumBornDysonDenominator_ne_zero
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder.le hpMax
+    have hD : Continuous (fun p : ℝ =>
+        finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
+      unfold finiteCutoffContinuumBornDysonDenominator
+      fun_prop
+    have hInv : Continuous (fun p : ℝ =>
+        (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) :=
+      hD.inv₀ hden
     apply Continuous.intervalIntegrable
-    exact ((Complex.continuous_ofReal.comp continuous_id).mul
-      ((by
-        unfold finiteCutoffContinuumBornDysonDenominator
-        fun_prop : Continuous (fun p : ℝ =>
-          finiteCutoffContinuumBornDysonDenominator
-            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)).inv₀ hden).pow 2).mul
-      continuous_const
+    exact (((Complex.continuous_ofReal.comp continuous_id).mul (hInv.pow 2)).mul continuous_const)
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-  rw [intervalIntegral.integral_congr hpointwise]
+  have hintegral :
+      (∫ p in (0 : ℝ)..pMax,
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
+          .x e v m p probeEnergy broadening disorderStrength hbar pMax hdet) =
+      ∫ p in (0 : ℝ)..pMax,
+        2 * q ^ 2 * pref⁻¹ * (alpha * rx p - beta * ry p) -
+          (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (rr p + aa p) := by
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact hpointwise p
+  rw [hintegral]
   rw [intervalIntegral.integral_sub
     (((hrx.const_mul alpha).sub (hry.const_mul beta)).const_mul (2 * q ^ 2 * pref⁻¹))
     ((hrr.add haa).const_mul ((((2 * Real.pi : ℝ) : ℂ)) * q ^ 2))]
@@ -367,7 +394,8 @@ private theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
       (nhdsWithin 0 (Set.Ioi 0)) (nhds ((((2 * v ^ 2 : ℝ) : ℂ))⁻¹)) := tendsto_const_nhds
   simpa [finiteBroadeningSameSideRadialEndpoint, zeroBroadeningSameSideRadialEndpoint,
     radialQuadraticInverseSquareEndpoint,
-    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary] using
+    finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary,
+    pow_two, mul_assoc] using
     (hconst.mul hA).mul ((hDMax.inv₀ hdenMax).sub (hD0.inv₀ hden0))
 
 /-- At fixed positive disorder and finite cutoff, the proof-independent reduced longitudinal Středa
@@ -419,16 +447,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have hAA := tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     .advanced v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
     (hden0 .advanced) (hdenMax .advanced)
-  exact
+  simpa [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralReduced,
+    finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary,
+    mul_assoc] using
     (((hAlpha.mul hKx).sub (hBeta.mul hKy)).const_mul
-        (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
-          (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹)).sub
-      ((hRR.add hAA).const_mul
-        ((((2 * Real.pi : ℝ) : ℂ)) *
-          ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2)) |>.simpa
-        [finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralReduced,
-          finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary,
-          mul_assoc]
+      (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
+        (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))⁻¹)).sub
+    ((hRR.add hAA).const_mul
+      ((((2 * Real.pi : ℝ) : ℂ)) *
+        ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
 
 end
 
