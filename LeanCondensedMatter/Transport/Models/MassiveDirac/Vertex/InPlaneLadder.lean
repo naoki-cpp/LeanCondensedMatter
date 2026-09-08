@@ -28,24 +28,6 @@ noncomputable section
 
 open Filter
 
-/-- Entry `(i,j)` of the repository-oriented isotropic in-plane map `[[x,-y],[y,x]]`, with `i`
-the output direction and `j` the input/source direction. -/
-def inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
-  | .x, .x => x
-  | .x, .y => -y
-  | .y, .x => y
-  | .y, .y => x
-
-/-- Convergence of the two independent isotropic coefficients propagates to every matrix entry. -/
-theorem tendsto_inPlaneRotationCoefficient
-    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
-    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
-    (i j : Direction2) :
-    Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
-      (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
-  cases i <;> cases j <;> simp only [inPlaneRotationCoefficient]
-  all_goals first | exact hx | exact hy.neg | exact hy
-
 /-- Two complex coefficients in the ordered in-plane basis `(σₓ, σᵧ)`. -/
 abbrev InPlaneCoefficientVector := Fin 2 → ℂ
 
@@ -57,14 +39,36 @@ def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector :=
 def inPlaneRotationMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![x, -y; y, x]
 
+/-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
+direction and `j` the input/source direction. -/
+def inPlaneRotationCoefficient (x y : ℂ) : Direction2 → Direction2 → ℂ
+  | .x, .x => inPlaneRotationMatrix x y 0 0
+  | .x, .y => inPlaneRotationMatrix x y 0 1
+  | .y, .x => inPlaneRotationMatrix x y 1 0
+  | .y, .y => inPlaneRotationMatrix x y 1 1
+
+/-- Convergence of the two independent isotropic coefficients propagates to every matrix entry. -/
+theorem tendsto_inPlaneRotationCoefficient
+    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
+    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
+    (i j : Direction2) :
+    Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
+      (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
+  cases i <;> cases j <;>
+    simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix, Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.tail_cons]
+  all_goals first | exact hx | exact hy.neg | exact hy
+
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
     (x y alpha beta : ℂ) :
     (inPlaneRotationMatrix x y).mulVec (inPlaneCoefficientVector alpha beta) =
       inPlaneCoefficientVector (x * alpha - y * beta) (y * alpha + x * beta) := by
   funext i
-  fin_cases i <;>
-    simp [inPlaneRotationMatrix, inPlaneCoefficientVector] <;>
+  fin_cases i
+  · simp [inPlaneRotationMatrix, inPlaneCoefficientVector]
+    ring_nf
+  · simp [inPlaneRotationMatrix, inPlaneCoefficientVector]
     ring_nf
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
@@ -76,20 +80,16 @@ def inPlaneLadderAction
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
   (1 - x) ^ 2 + y ^ 2
 
-/-- Shifted ladder matrix `I - L`. -/
+/-- Shifted ladder matrix `I - L`, derived directly from the canonical in-plane action. -/
 def inPlaneLadderShiftedMatrix (x y : ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
-  !![1 - x, y; -y, 1 - x]
+  1 - inPlaneRotationMatrix x y
 
 @[simp]
 theorem inPlaneLadderShiftedMatrix_det (x y : ℂ) :
     (inPlaneLadderShiftedMatrix x y).det = inPlaneLadderDeterminant x y := by
-  simp [inPlaneLadderShiftedMatrix, inPlaneLadderDeterminant, Matrix.det_fin_two, pow_two]
-
-/-- The shifted ladder matrix is `I - L`. -/
-theorem inPlaneLadderShiftedMatrix_eq_one_sub (x y : ℂ) :
-    inPlaneLadderShiftedMatrix x y = 1 - inPlaneRotationMatrix x y := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [inPlaneLadderShiftedMatrix, inPlaneRotationMatrix]
+  simp [inPlaneLadderShiftedMatrix, inPlaneRotationMatrix, inPlaneLadderDeterminant,
+    Matrix.det_fin_two, pow_two]
+  ring
 
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
@@ -144,13 +144,20 @@ theorem tendsto_inPlaneLadderSolvedCoefficient
         (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
     simpa [inPlaneLadderDeterminant, pow_two] using
       (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
-  cases output
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedXCoefficient,
-      inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneRotationCoefficient,
-      div_eq_mul_inv] using hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedYCoefficient,
-      inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneRotationCoefficient,
-      div_eq_mul_inv] using hy.mul (hdetLimit.inv₀ hdet)
+  have hAlpha :
+      Tendsto
+        (fun a => inPlaneLadderSolvedXCoefficient (x a) (y a)) l
+        (nhds (inPlaneLadderSolvedXCoefficient x₀ y₀)) := by
+    simpa [inPlaneLadderSolvedXCoefficient, div_eq_mul_inv] using
+      hOneMinusX.mul (hdetLimit.inv₀ hdet)
+  have hBeta :
+      Tendsto
+        (fun a => inPlaneLadderSolvedYCoefficient (x a) (y a)) l
+        (nhds (inPlaneLadderSolvedYCoefficient x₀ y₀)) := by
+    simpa [inPlaneLadderSolvedYCoefficient, div_eq_mul_inv] using
+      hy.mul (hdetLimit.inv₀ hdet)
+  simpa [inPlaneLadderSolvedCoefficient] using
+    tendsto_inPlaneRotationCoefficient hAlpha hBeta output .x
 
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
@@ -202,12 +209,12 @@ theorem inPlaneLadder_fixedPoint_unique
       _ = inPlaneLadderBareXSource := by abel
   have hshifted :
       (inPlaneLadderShiftedMatrix x y).mulVec coefficients = inPlaneLadderBareXSource := by
-    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec]
+    rw [inPlaneLadderShiftedMatrix, Matrix.sub_mulVec, Matrix.one_mulVec]
     simpa [inPlaneLadderAction] using hfixedShift
   have hsolvedShifted :
       (inPlaneLadderShiftedMatrix x y).mulVec (inPlaneLadderSolvedVector x y) =
         inPlaneLadderBareXSource := by
-    rw [inPlaneLadderShiftedMatrix_eq_one_sub, Matrix.sub_mulVec, Matrix.one_mulVec]
+    rw [inPlaneLadderShiftedMatrix, Matrix.sub_mulVec, Matrix.one_mulVec]
     simpa [inPlaneLadderAction] using hsolvedShift
   have hunit : IsUnit (inPlaneLadderShiftedMatrix x y) :=
     (Matrix.isUnit_iff_isUnit_det _).2 <| by
