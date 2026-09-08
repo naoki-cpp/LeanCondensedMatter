@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Pauli
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
@@ -17,7 +18,7 @@ set_option linter.style.header false
 
 Public entry point for concrete first-quantized quantum mechanics. The current public realization is
 the one-particle continuum Schrödinger stack under `QuantumMechanics.SingleParticle.Continuum`, along
-with the stable generic one-particle current representation endpoints.
+with the stable generic one-particle current representation endpoints and Pauli coefficient indexing.
 
 This umbrella imports the stable semantic endpoints of the probability, continuity, `L²`, Hamiltonian,
 and evolution layers. Their lower implementation stages remain available transitively and directly
