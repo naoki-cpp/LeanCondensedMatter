@@ -93,7 +93,7 @@ theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
   funext direction
   cases direction <;>
     simp [Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix,
-      inPlaneCoefficientVector]
+      inPlaneCoefficientVector, sub_eq_add_neg]
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
@@ -106,7 +106,7 @@ theorem inPlaneLadderAction_apply_x
     inPlaneLadderAction x y coefficients .x =
       x * coefficients .x - y * coefficients .y := by
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
-    inPlaneRotationMatrix]
+    inPlaneRotationMatrix, sub_eq_add_neg]
 
 @[simp]
 theorem inPlaneLadderAction_apply_y
@@ -213,9 +213,14 @@ theorem inPlaneLadder_fixedPoint_unique
     (hfixed : coefficients =
       inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) :
     coefficients = inPlaneLadderSolvedVector x y := by
-  have hxFixed := congrArg (fun values : InPlaneCoefficientVector => values .x) hfixed
-  have hyFixed := congrArg (fun values : InPlaneCoefficientVector => values .y) hfixed
-  simp [inPlaneLadderBareXSource, inPlaneCoefficientVector] at hxFixed hyFixed
+  have hxFixed :
+      coefficients .x = 1 + (x * coefficients .x - y * coefficients .y) := by
+    simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
+      congrArg (fun values : InPlaneCoefficientVector => values .x) hfixed
+  have hyFixed :
+      coefficients .y = y * coefficients .x + x * coefficients .y := by
+    simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
+      congrArg (fun values : InPlaneCoefficientVector => values .y) hfixed
   have hxLinear :
       (1 - x) * coefficients .x + y * coefficients .y = 1 := by
     linear_combination hxFixed
