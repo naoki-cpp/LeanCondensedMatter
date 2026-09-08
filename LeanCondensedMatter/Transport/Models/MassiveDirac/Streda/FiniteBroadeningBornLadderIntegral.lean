@@ -11,10 +11,12 @@ bridge over the two-dimensional momentum domain in polar coordinates. The measur
 fixed to `jₓ`, while the source direction is carried explicitly by `Direction2` from the pointwise
 response through the angular integral, radial Jacobian, and finite-cutoff momentum integral.
 
-No Bastin/Středa conductivity prefactor, physical momentum-measure prefactor, Hall
-antisymmetrization, disorder/broadening limit, ultraviolet removal, mechanism label, or exact
-disorder-average claim is introduced here. Physical conductivity normalization remains downstream
-under `MassiveDirac.Conductivity`.
+The values are algebraic candidates built from the total solved ladder coefficients; ladder
+regularity is a separate condition for their fixed-point interpretation. No Bastin/Středa
+conductivity prefactor, physical momentum-measure prefactor, Hall antisymmetrization,
+disorder/broadening limit, ultraviolet removal, mechanism label, or exact disorder-average claim is
+introduced here. Physical conductivity normalization remains downstream under
+`MassiveDirac.Conductivity`.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -28,35 +30,29 @@ open scoped Interval
 radial momentum for the requested source direction. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
     (source : Direction2)
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
       source e v m (p * Real.cos θ) (p * Real.sin θ)
-      probeEnergy broadening disorderStrength hbar pMax hdet
+      probeEnergy broadening disorderStrength hbar pMax
 
 /-- Radial integrand for the finite-`η` source-indexed Středa surface response after the full
 polar-angle integral, including exactly one polar Jacobian factor `p`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
     (source : Direction2)
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
-      source e v m p probeEnergy broadening disorderStrength hbar pMax hdet
+      source e v m p probeEnergy broadening disorderStrength hbar pMax
 
 /-- Finite-cutoff polar momentum integral of the finite-`η` source-indexed Středa surface response
 before the Bastin/Středa trace prefactor and physical momentum-measure prefactor are attached. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
     (source : Direction2)
-    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) : ℂ :=
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-      source e v m p probeEnergy broadening disorderStrength hbar pMax hdet
+      source e v m p probeEnergy broadening disorderStrength hbar pMax
 
 end
 

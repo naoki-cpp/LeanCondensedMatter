@@ -12,10 +12,10 @@ explicit Born-Dyson denominator forms. Source `.x` is the longitudinal component
 bare RR/AA same-side remainder. Source `.y` is the ordered `xy` component and uses the shared
 retarded-advanced denominator product after its same-side contribution vanishes.
 
-The algebraic radial coefficient itself is total and carries no ladder-regularity proof. Regularity
-enters only when an upstream dressed Středa response is identified with that coefficient. No
-disorder, external-broadening, or ultraviolet limit is taken, and the ordered `xy` component remains
-distinct from the antisymmetric Hall projection.
+The algebraic radial coefficient and Středa values are total and carry no ladder-regularity proof.
+Regularity remains a separate condition for interpreting the solved coefficients as the physical
+ladder fixed point. No disorder, external-broadening, or ultraviolet limit is taken, and the ordered
+`xy` component remains distinct from the antisymmetric Hall projection.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -127,11 +127,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 /-- The ordered `xy` radial Hall-surface integrand is the source-`.y` Středa radial response in
 explicit common RA Born-Dyson denominator form. -/
 theorem finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm
-    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hdet : finiteCutoffContinuumBornDysonLadderRegular
-      v m probeEnergy broadening disorderStrength hbar pMax) :
+    (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .y e v m p probeEnergy broadening disorderStrength hbar pMax hdet =
+        .y e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
       (p : ℂ) *
         (-(((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
