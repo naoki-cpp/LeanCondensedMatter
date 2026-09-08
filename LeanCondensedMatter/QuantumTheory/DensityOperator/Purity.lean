@@ -77,7 +77,7 @@ theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
   exact hexpect.unique hpurity
 
 /-- A rank-one density operator has purity one. -/
-theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
+theorem purity_pure (ψ : StateVector H) : purity (pure ψ) = 1 := by
   letI := uniqueEigenvectorIndexRankOne ψ.2
   change (∑' a : EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H), a.1.1 ^ 2) = 1
