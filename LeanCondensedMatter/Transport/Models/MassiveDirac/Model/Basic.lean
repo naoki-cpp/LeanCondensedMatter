@@ -288,7 +288,7 @@ theorem pauliShiftMatrix_mul_closedInverse
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
-  rw [hamiltonian_eq_pauliMatrixCombination, hamiltonian_eq_pauliMatrixCombination,
+  rw [hamiltonian_eq_pauliMatrixCombination,
     pauliMatrixCombination_mul_self, dotProduct_diracPauliVector_self]
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
