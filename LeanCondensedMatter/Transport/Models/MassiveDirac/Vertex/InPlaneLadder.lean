@@ -102,12 +102,20 @@ def inPlaneLadderSolvedVector (x y : ℂ) : InPlaneCoefficientVector :=
     ((1 - x) / inPlaneLadderDeterminant x y)
     (y / inPlaneLadderDeterminant x y)
 
+/-- Longitudinal coordinate projection of the canonical solved vector. -/
+def inPlaneLadderSolvedXCoefficient (x y : ℂ) : ℂ :=
+  inPlaneLadderSolvedVector x y 0
+
+/-- Transverse coordinate projection of the canonical solved vector. -/
+def inPlaneLadderSolvedYCoefficient (x y : ℂ) : ℂ :=
+  inPlaneLadderSolvedVector x y 1
+
 /-- Output coordinate of the bare-`σₓ` solved ladder fixed point. -/
 def inPlaneLadderSolvedCoefficient
     (output : Direction2) (x y : ℂ) : ℂ :=
   inPlaneRotationCoefficient
-    (inPlaneLadderSolvedVector x y 0)
-    (inPlaneLadderSolvedVector x y 1)
+    (inPlaneLadderSolvedXCoefficient x y)
+    (inPlaneLadderSolvedYCoefficient x y)
     output .x
 
 /-- Convergence of the rung invariants propagates to every output coordinate of the solved ladder
@@ -128,12 +136,12 @@ theorem tendsto_inPlaneLadderSolvedCoefficient
     simpa [inPlaneLadderDeterminant, pow_two] using
       (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
   cases output
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
-      inPlaneCoefficientVector, inPlaneRotationCoefficient, div_eq_mul_inv] using
-      hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
-      inPlaneCoefficientVector, inPlaneRotationCoefficient, div_eq_mul_inv] using
-      hy.mul (hdetLimit.inv₀ hdet)
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedXCoefficient,
+      inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneRotationCoefficient,
+      div_eq_mul_inv] using hOneMinusX.mul (hdetLimit.inv₀ hdet)
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedYCoefficient,
+      inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneRotationCoefficient,
+      div_eq_mul_inv] using hy.mul (hdetLimit.inv₀ hdet)
 
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
