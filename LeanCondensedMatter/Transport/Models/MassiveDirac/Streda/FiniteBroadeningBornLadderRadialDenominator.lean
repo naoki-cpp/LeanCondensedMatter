@@ -93,8 +93,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
           v m probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [inPlaneRotationCoefficient, mul_one, mul_zero, sub_zero, zero_mul,
-    pauliRungAngularYCoefficient, sub_self, mul_zero, add_zero]
+  simp [inPlaneRotationCoefficient, pauliRungAngularYCoefficient]
   change
     let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
     let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
