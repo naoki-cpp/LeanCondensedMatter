@@ -144,10 +144,18 @@ private theorem
         (∑ x : d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C,
           pairEndpointInversionCount x.1.1.1 x.2.1.1) % 2 := by
           symm
-          exact fintype_sum_mod_two_congr _ _ fun x => by
-            have h := d.mixedComponentPairEndpointInversionCount_mod_two_eq_indicator
-              τ τ' σ B C hBC x.1 x.2
-            split_ifs at h ⊢ <;> simpa using h
+          simpa using
+            (Nat.ModEq.sum
+              (n := 2)
+              (s := (Finset.univ : Finset
+                (d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C)))
+              (f := fun x => pairEndpointInversionCount x.1.1.1 x.2.1.1)
+              (g := fun x =>
+                if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0)
+              (fun x _ => by
+                have h := d.mixedComponentPairEndpointInversionCount_mod_two_eq_indicator
+                  τ τ' σ B C hBC x.1 x.2
+                split_ifs at h ⊢ <;> simpa using h))
     _ = d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by rw [hpositions]
 
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv
