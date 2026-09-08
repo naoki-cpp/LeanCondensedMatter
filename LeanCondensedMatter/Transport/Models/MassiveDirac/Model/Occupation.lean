@@ -236,7 +236,8 @@ theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
       p = metallicFermiRadius v m fermiEnergy := by
   constructor
   · intro hfermi
-    change energy v m p 0 = fermiEnergy at hfermi
+    change bandEnergy .upper v m p 0 = fermiEnergy at hfermi
+    rw [bandEnergy_upper] at hfermi
     apply energy_radial_eq_imp_eq_of_nonneg
       v m p (metallicFermiRadius v m fermiEnergy) hv hp
       (metallicFermiRadius_nonneg v m fermiEnergy)
@@ -244,8 +245,8 @@ theorem mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius
       (energy_metallicFermiRadius v m fermiEnergy hv hmF).symm
   · intro hpF
     subst p
-    change energy v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy
-    exact energy_metallicFermiRadius v m fermiEnergy hv hmF
+    change bandEnergy .upper v m (metallicFermiRadius v m fermiEnergy) 0 = fermiEnergy
+    simpa using energy_metallicFermiRadius v m fermiEnergy hv hmF
 
 /-- Isotropic full-angle mean square of the `x` group-velocity component evaluated at the explicit
 upper-band Fermi radius. -/
