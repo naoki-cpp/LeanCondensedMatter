@@ -48,22 +48,22 @@ def inPlaneRotationMatrix (x y : ℂ) : Matrix Direction2 Direction2 ℂ
   | .y, .y => x
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_zero_zero (x y : ℂ) :
+theorem inPlaneRotationMatrix_apply_x_x (x y : ℂ) :
     inPlaneRotationMatrix x y .x .x = x := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_zero_one (x y : ℂ) :
+theorem inPlaneRotationMatrix_apply_x_y (x y : ℂ) :
     inPlaneRotationMatrix x y .x .y = -y := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_one_zero (x y : ℂ) :
+theorem inPlaneRotationMatrix_apply_y_x (x y : ℂ) :
     inPlaneRotationMatrix x y .y .x = y := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_one_one (x y : ℂ) :
+theorem inPlaneRotationMatrix_apply_y_y (x y : ℂ) :
     inPlaneRotationMatrix x y .y .y = x := by
   rfl
 
@@ -131,30 +131,19 @@ def inPlaneLadderSolvedVector (x y : ℂ) : InPlaneCoefficientVector :=
     (y / inPlaneLadderDeterminant x y)
 
 @[simp]
-theorem inPlaneLadderSolvedVector_apply_zero (x y : ℂ) :
+theorem inPlaneLadderSolvedVector_apply_x (x y : ℂ) :
     inPlaneLadderSolvedVector x y .x = (1 - x) / inPlaneLadderDeterminant x y := by
   rfl
 
 @[simp]
-theorem inPlaneLadderSolvedVector_apply_one (x y : ℂ) :
+theorem inPlaneLadderSolvedVector_apply_y (x y : ℂ) :
     inPlaneLadderSolvedVector x y .y = y / inPlaneLadderDeterminant x y := by
   rfl
-
-/-- Longitudinal coordinate projection of the canonical solved vector. -/
-def inPlaneLadderSolvedXCoefficient (x y : ℂ) : ℂ :=
-  inPlaneLadderSolvedVector x y .x
-
-/-- Transverse coordinate projection of the canonical solved vector. -/
-def inPlaneLadderSolvedYCoefficient (x y : ℂ) : ℂ :=
-  inPlaneLadderSolvedVector x y .y
 
 /-- Output coordinate of the bare-`σₓ` solved ladder fixed point. -/
 def inPlaneLadderSolvedCoefficient
     (output : Direction2) (x y : ℂ) : ℂ :=
-  inPlaneRotationCoefficient
-    (inPlaneLadderSolvedXCoefficient x y)
-    (inPlaneLadderSolvedYCoefficient x y)
-    output .x
+  inPlaneLadderSolvedVector x y output
 
 /-- Convergence of the rung invariants propagates to every output coordinate of the solved ladder
 whenever the limiting shifted-ladder determinant is nonzero. -/
@@ -173,20 +162,13 @@ theorem tendsto_inPlaneLadderSolvedCoefficient
         (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
     simpa [inPlaneLadderDeterminant, pow_two] using
       (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
-  have hAlpha :
-      Tendsto
-        (fun a => inPlaneLadderSolvedXCoefficient (x a) (y a)) l
-        (nhds (inPlaneLadderSolvedXCoefficient x₀ y₀)) := by
-    simpa [inPlaneLadderSolvedXCoefficient, div_eq_mul_inv] using
+  cases output
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
+      inPlaneCoefficientVector, div_eq_mul_inv] using
       hOneMinusX.mul (hdetLimit.inv₀ hdet)
-  have hBeta :
-      Tendsto
-        (fun a => inPlaneLadderSolvedYCoefficient (x a) (y a)) l
-        (nhds (inPlaneLadderSolvedYCoefficient x₀ y₀)) := by
-    simpa [inPlaneLadderSolvedYCoefficient, div_eq_mul_inv] using
+  · simpa [inPlaneLadderSolvedCoefficient, inPlaneLadderSolvedVector,
+      inPlaneCoefficientVector, div_eq_mul_inv] using
       hy.mul (hdetLimit.inv₀ hdet)
-  simpa [inPlaneLadderSolvedCoefficient] using
-    tendsto_inPlaneRotationCoefficient hAlpha hBeta output .x
 
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
@@ -247,10 +229,10 @@ theorem inPlaneLadder_fixedPoint_unique
       _ = y := by rw [hxLinear, hyLinear]; ring
   funext direction
   cases direction
-  · rw [inPlaneLadderSolvedVector_apply_zero]
+  · rw [inPlaneLadderSolvedVector_apply_x]
     apply (eq_div_iff hdet).2
     simpa [mul_comm] using hxDet
-  · rw [inPlaneLadderSolvedVector_apply_one]
+  · rw [inPlaneLadderSolvedVector_apply_y]
     apply (eq_div_iff hdet).2
     simpa [mul_comm] using hyDet
 
