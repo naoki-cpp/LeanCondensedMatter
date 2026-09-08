@@ -236,8 +236,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
           source e v m probeEnergy broadening disorderStrength hbar pMax =
-        (q * dressed .x) • matrixOperator sigmaX +
-          (q * dressed .y) • matrixOperator sigmaY := by
+        (q • dressed) .x • matrixOperator sigmaX +
+          (q • dressed) .y • matrixOperator sigmaY := by
     simpa [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul] using
       (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
         source e v m probeEnergy broadening disorderStrength hbar pMax)
@@ -247,28 +247,28 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       simp [bare, inPlaneRotationCoefficient, inPlaneCurrentOperator]
   have hbare :
       currentOperator source e v =
-        (q * bare .x) • matrixOperator sigmaX +
-          (q * bare .y) • matrixOperator sigmaY := by
+        (q • bare) .x • matrixOperator sigmaX +
+          (q • bare) .y • matrixOperator sigmaY := by
     rw [hbareInPlane,
       inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, inPlanePauliVertexOperator, smul_add, smul_smul]
   let ra : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator sigmaX) * polarPauliOperator aR bR dR θ *
-        ((q * dressed .x) • matrixOperator sigmaX +
-          (q * dressed .y) • matrixOperator sigmaY) *
+        ((q • dressed) .x • matrixOperator sigmaX +
+          (q • dressed) .y • matrixOperator sigmaY) *
         polarPauliOperator aA bA dA θ)
   let rr : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator sigmaX) * polarPauliOperator aR bR dR θ *
-        ((q * bare .x) • matrixOperator sigmaX +
-          (q * bare .y) • matrixOperator sigmaY) *
+        ((q • bare) .x • matrixOperator sigmaX +
+          (q • bare) .y • matrixOperator sigmaY) *
         polarPauliOperator aR bR dR θ)
   let aa : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator sigmaX) * polarPauliOperator aA bA dA θ *
-        ((q * bare .x) • matrixOperator sigmaX +
-          (q * bare .y) • matrixOperator sigmaY) *
+        ((q • bare) .x • matrixOperator sigmaX +
+          (q • bare) .y • matrixOperator sigmaY) *
         polarPauliOperator aA bA dA θ)
   have hbridge :
       (fun θ : ℝ =>
@@ -284,21 +284,21 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
     have hcyclic :
         finiteDimensionalOperatorTrace
-          (((q * bare .x) • matrixOperator sigmaX +
-              (q * bare .y) • matrixOperator sigmaY) *
+          (((q • bare) .x • matrixOperator sigmaX +
+              (q • bare) .y • matrixOperator sigmaY) *
             polarPauliOperator aA bA dA θ *
             (q • matrixOperator sigmaX) *
             polarPauliOperator aA bA dA θ) =
           finiteDimensionalOperatorTrace
             ((q • matrixOperator sigmaX) *
               polarPauliOperator aA bA dA θ *
-              ((q * bare .x) • matrixOperator sigmaX +
-                (q * bare .y) • matrixOperator sigmaY) *
+              ((q • bare) .x • matrixOperator sigmaX +
+                (q • bare) .y • matrixOperator sigmaY) *
               polarPauliOperator aA bA dA θ) := by
       simpa [mul_assoc] using
         (finiteDimensionalOperatorTrace_mul_comm
-          (((q * bare .x) • matrixOperator sigmaX +
-              (q * bare .y) • matrixOperator sigmaY) *
+          (((q • bare) .x • matrixOperator sigmaX +
+              (q • bare) .y • matrixOperator sigmaY) *
             polarPauliOperator aA bA dA θ)
           ((q • matrixOperator sigmaX) * polarPauliOperator aA bA dA θ))
     rw [hcyclic]
