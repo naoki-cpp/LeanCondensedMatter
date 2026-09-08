@@ -37,16 +37,6 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCo
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
       source e v m probeEnergy broadening disorderStrength hbar pMax
 
-/-- With zero radial cutoff, every source component of the physically normalized finite-`η` surface
-conductivity bridge vanishes. -/
-@[simp]
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_zero_cutoff
-    (source : Direction2) (e v m probeEnergy broadening disorderStrength hbar : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-      source e v m probeEnergy broadening disorderStrength hbar 0 = 0 := by
-  simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral]
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
