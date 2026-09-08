@@ -198,6 +198,12 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         2 * q ^ 2 * pref⁻¹ * (solved .x * rx p - solved .y * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (same .retarded p + same .advanced p) := by
     intro p
+    have hdenR := finiteCutoffContinuumBornDysonDenominator_ne_zero
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder.le hpMax
+    have hdenA := finiteCutoffContinuumBornDysonDenominator_ne_zero
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder.le hpMax
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm]
     dsimp [q, solved, rx, ry, same]
@@ -211,7 +217,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
     push_cast
-    field_simp [hpref] <;> try simp <;> ring_nf
+    field_simp [hpref, hdenR, hdenA] <;> ring_nf
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
