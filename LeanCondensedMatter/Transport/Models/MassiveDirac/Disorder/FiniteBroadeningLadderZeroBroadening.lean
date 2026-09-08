@@ -41,7 +41,7 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadening
   inPlaneLadderSolvedVector x y
 
 /-- The finite-`η` ladder determinant converges to its fixed-disorder zero-broadening boundary. -/
-theorem finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
+theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
@@ -94,7 +94,7 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderRegular_broadening_zero_o
       finiteCutoffContinuumBornDysonLadderRegular
         v m probeEnergy broadening disorderStrength hbar pMax := by
   have hdetLimit :=
-    finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
+    tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
       v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
   filter_upwards [hdetLimit.eventually_ne hdet] with broadening hbroadening
