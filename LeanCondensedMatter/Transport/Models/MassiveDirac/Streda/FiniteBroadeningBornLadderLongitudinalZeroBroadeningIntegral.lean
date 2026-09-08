@@ -214,6 +214,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       finiteCutoffContinuumBornDysonScalarCoefficient finiteCutoffContinuumBornDysonPauliCoefficient
       pauliAxisComponent
     dsimp
+    simp only [inPlaneRotationMatrix_apply_zero_zero, inPlaneRotationMatrix_apply_one_zero]
     field_simp [hpref]
     ring
   have hrx : IntervalIntegrable rx volume 0 pMax := by
