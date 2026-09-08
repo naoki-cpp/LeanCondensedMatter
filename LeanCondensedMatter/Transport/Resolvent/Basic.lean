@@ -240,26 +240,6 @@ theorem im_inner_resolvent_spectralParameterOfRegulator_apply_self
   simp only [Complex.sub_im, Complex.mul_im, himHamiltonian, himSelf, hreSelf,
     spectralParameterOfRegulator_im, sub_zero, mul_zero, zero_add]
 
-/-- Reversing the inner-product orientation reverses the signed imaginary part of the same
-resolvent quadratic form. -/
-theorem im_inner_self_resolvent_spectralParameterOfRegulator_apply
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (v : H) :
-    (inner ℂ v
-      (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v)).im =
-      -(regulator *
-        ‖resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v‖ ^ 2) := by
-  have hsymm := inner_im_symm (𝕜 := ℂ)
-    (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v) v
-  change
-    (inner ℂ
-      (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v) v).im =
-      -(inner ℂ v
-        (resolvent hamiltonian (spectralParameterOfRegulator energy regulator) v)).im at hsymm
-  rw [im_inner_resolvent_spectralParameterOfRegulator_apply_self
-    hamiltonian hself energy regulator hregulator v] at hsymm
-  linarith
-
 /-- For a self-adjoint Hamiltonian, taking the adjoint of a resolvent reverses the arbitrary signed
 imaginary regulator. -/
 theorem star_resolvent_spectralParameterOfRegulator

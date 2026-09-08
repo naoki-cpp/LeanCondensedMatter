@@ -74,11 +74,13 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
   have hbound : ∃ C : ℝ, 0 ≤ C ∧
       ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
         ‖factor p - factor (0, 0)‖ ≤ C := by
-    rcases exists_nonneg_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
-        band e v m px py radius 1 hradius with ⟨C, hCnonneg, hC⟩
-    refine ⟨C, hCnonneg, ?_⟩
+    rcases exists_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
+        band e v m px py radius 1 hradius with ⟨C, hC⟩
+    refine ⟨max C 0, le_max_right _ _, ?_⟩
     intro p hp
-    simpa [factor, targetCenteredBastinPoleRectangle] using hC p hp
+    have hCp : ‖factor p - factor (0, 0)‖ ≤ C := by
+      simpa [factor, targetCenteredBastinPoleRectangle] using hC p hp
+    exact le_trans hCp (le_max_left _ _)
   have hgeneric := tendsto_lorentzianRegularFactorIntegral
     factor radius hradiusPos hcontinuous hslice hbound
   simpa [factor, lorentzianRegularFactorIntegral,

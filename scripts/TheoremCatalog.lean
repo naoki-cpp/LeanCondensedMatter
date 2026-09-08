@@ -28,6 +28,7 @@ structure CatalogEntry where
   compiledConsumers : Array String
   terminal : Bool
   completedMention : Bool
+  singleConsumerRetainedMention : Bool
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -127,6 +128,9 @@ private def mentionedInCompleted (completed declName : String) : Bool :=
   containsSubstring completed declName ||
     containsSubstring completed s!"`{declarationBaseName declName}`"
 
+private def mentionedInSingleConsumerRetained (retained declName : String) : Bool :=
+  containsSubstring retained s!"`{declName}`"
+
 private def sortedConsumers
     (consumers : NameMap (Array String)) (declName : Name) : Array String :=
   ((consumers.find? declName).getD #[]).qsort fun left right => left < right
@@ -134,7 +138,7 @@ private def sortedConsumers
 private def annotateEntries
     (entries : Array Entry)
     (theoremDependents compiledConsumers : NameMap (Array String))
-    (completed : String) : Array CatalogEntry :=
+    (completed singleConsumerRetained : String) : Array CatalogEntry :=
   entries.map fun entry =>
     let dependents := sortedConsumers theoremDependents entry.declName
     let compiledConsumers := sortedConsumers compiledConsumers entry.declName
@@ -149,6 +153,9 @@ private def annotateEntries
       compiledConsumers
       terminal
       completedMention := terminal && mentionedInCompleted completed entry.name
+      singleConsumerRetainedMention :=
+        compiledConsumers.size == 1 &&
+          mentionedInSingleConsumerRetained singleConsumerRetained entry.name
     }
 
 private def dependencyEdgeCount (entries : Array CatalogEntry) : Nat :=
@@ -263,7 +270,11 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   let completedTerminals := terminals.filter fun entry => entry.completedMention
   let reviewQueue := terminals.filter fun entry => !entry.completedMention
   let priorityReviewQueue := compiledConsumerFreeEntries reviewQueue
-  let singleConsumerReviewQueue := singleCompiledConsumerEntries entries
+  let singleConsumerEntries := singleCompiledConsumerEntries entries
+  let retainedSingleConsumers :=
+    singleConsumerEntries.filter fun entry => entry.singleConsumerRetainedMention
+  let singleConsumerReviewQueue :=
+    singleConsumerEntries.filter fun entry => !entry.singleConsumerRetainedMention
   let terminalsWithCompiledConsumers :=
     terminals.filter fun entry => !entry.compiledConsumers.isEmpty
   let mut output := "# LeanCondensedMatter theorem catalog\n\n"
@@ -276,18 +287,20 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Terminal theorems with compiled project consumers: {terminalsWithCompiledConsumers.size}\n\n"
   output := output ++ s!"Terminal theorem review queue: {reviewQueue.size}\n\n"
   output := output ++ s!"Priority terminal review queue with no compiled project consumers: {priorityReviewQueue.size}\n\n"
+  output := output ++ s!"Single-consumer theorems documented as retained: {retainedSingleConsumers.size}\n\n"
   output := output ++ s!"Single-consumer theorem review queue: {singleConsumerReviewQueue.size}\n\n"
   output := output ++ s!"Multi-step single-consumer chains: {chains.size}\n\n"
   output := output ++ "Here a terminal theorem means a theorem with no direct project-theorem dependents: no other source-declared project theorem in the catalog retains it in its compiled proof term. This is the endpoint side of the theorem proof graph, not the prerequisite-free side.\n\n"
   output := output ++ "`compiledConsumers` is broader: it records source-declared project theorems, definitions, and opaque declarations whose compiled values retain a reference to the theorem. This catches uses such as theorem proofs stored inside definition fields. It is still not a source-level use analysis: simplification, unfolding, and definitional reduction can erase an explicit source reference before compilation. Therefore a theorem with no compiled consumer is only a higher-priority review candidate, never automatic evidence that the theorem is unused.\n\n"
   output := output ++ "A single-consumer theorem has exactly one distinct compiled project-declaration consumer. Multi-step chains follow that unique edge through theorem consumers until the chain reaches a theorem without exactly one compiled consumer, or a non-theorem definition/opaque endpoint. Only chains with at least two single-consumer edges are listed separately. These highlight public wrappers and proof-routing stages that may be candidates for inlining, privatization, or deletion; source search and semantic review remain required before changing the API.\n\n"
+  output := output ++ "Semantically reviewed single-consumer theorems that remain canonical public results are recorded in `notes/theorem-catalog-retained.md` and excluded from the single-consumer review queue. They can still appear in multi-step chains because those chains describe graph structure rather than review status.\n\n"
   output := output ++ "A mention in `notes/completed.md` is evidence that the endpoint is an intentional completed result. Every other terminal theorem remains a semantic review candidate: compare its statement and module with `notes/roadmap.md` and the detailed roadmaps to decide whether it is a roadmap intermediate that still needs a consumer, an intentional local endpoint, or an unnecessary public theorem.\n\n"
   output := output ++ "## Multi-step single-consumer chains\n\n"
   output := output ++ "Each chain is maximal from a theorem with no single-consumer theorem predecessor. The final declaration may be a theorem, definition, or opaque declaration.\n\n"
   for chain in chains do
     output := output ++ s!"- {chainText chain}\n"
   output := output ++ "\n## Single-consumer theorem review queue\n\n"
-  output := output ++ "Each row is `theorem → sole compiled consumer`. A consumer may be a theorem, definition, or opaque declaration.\n\n"
+  output := output ++ "Each row is `theorem → sole compiled consumer`. A consumer may be a theorem, definition, or opaque declaration. Declarations recorded in `notes/theorem-catalog-retained.md` are omitted from this queue.\n\n"
   for entry in singleConsumerReviewQueue do
     for consumer in entry.compiledConsumers do
       output := output ++ s!"- `{entry.name}` → `{consumer}` — module `{entry.moduleName}`; theorem dependents: {entry.dependents.size}; direct prerequisites: {entry.dependencies.size}\n"
@@ -318,19 +331,26 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("dependents", .arr <| entry.dependents.map Json.str),
       ("compiledConsumers", .arr <| entry.compiledConsumers.map Json.str),
       ("terminal", .bool entry.terminal),
-      ("completedMention", .bool entry.completedMention)
+      ("completedMention", .bool entry.completedMention),
+      ("singleConsumerRetainedMention", .bool entry.singleConsumerRetainedMention)
     ]
 
 run_cmd do
   let (entries, projectTheorems, theoremDependents) ← collectEntries
   let compiledConsumers ← collectCompiledConsumers projectTheorems
   let completed ← liftIO <| IO.FS.readFile ("notes" / "completed.md")
-  let catalog := annotateEntries entries theoremDependents compiledConsumers completed
+  let singleConsumerRetained ←
+    liftIO <| IO.FS.readFile ("notes" / "theorem-catalog-retained.md")
+  let catalog := annotateEntries entries theoremDependents compiledConsumers completed singleConsumerRetained
   let terminals := terminalEntries catalog
   let completedTerminals := terminals.filter fun entry => entry.completedMention
   let reviewQueue := terminals.filter fun entry => !entry.completedMention
   let priorityReviewQueue := compiledConsumerFreeEntries reviewQueue
-  let singleConsumerReviewQueue := singleCompiledConsumerEntries catalog
+  let singleConsumerEntries := singleCompiledConsumerEntries catalog
+  let retainedSingleConsumers :=
+    singleConsumerEntries.filter fun entry => entry.singleConsumerRetainedMention
+  let singleConsumerReviewQueue :=
+    singleConsumerEntries.filter fun entry => !entry.singleConsumerRetainedMention
   let chains := singleConsumerChains catalog
   let terminalsWithCompiledConsumers :=
     terminals.filter fun entry => !entry.compiledConsumers.isEmpty
@@ -338,6 +358,6 @@ run_cmd do
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
-  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({completedTerminals.size} mentioned in completed.md; {terminalsWithCompiledConsumers.size} with compiled project consumers; {priorityReviewQueue.size} priority review candidates; {singleConsumerReviewQueue.size} single-consumer review candidates; {chains.size} multi-step single-consumer chains)"
+  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({completedTerminals.size} mentioned in completed.md; {terminalsWithCompiledConsumers.size} with compiled project consumers; {priorityReviewQueue.size} priority review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {chains.size} multi-step single-consumer chains)"
 
 end LeanCondensedMatter.TheoremCatalog
