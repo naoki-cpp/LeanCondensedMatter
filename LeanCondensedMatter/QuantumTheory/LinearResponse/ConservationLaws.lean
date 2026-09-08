@@ -62,7 +62,7 @@ theorem heisenbergObservable_eq_self_of_commute_hamiltonian
 /-- Complex pure-state expectations of observables commuting with the Hamiltonian are conserved. -/
 theorem expValue_evolveState_eq_of_commute_hamiltonian
     (A : Observable H) (hA : Commute system.hamiltonian.1 A.1)
-    (ψ : State H) (t : ℝ) :
+    (ψ : StateVector H) (t : ℝ) :
     expValue A (evolveState system ψ t) = expValue A ψ := by
   rw [expValue_evolveState_eq_heisenberg system,
     heisenbergObservable_eq_self_of_commute_hamiltonian system A hA t]
@@ -70,7 +70,7 @@ theorem expValue_evolveState_eq_of_commute_hamiltonian
 /-- Real pure-state expectations of observables commuting with the Hamiltonian are conserved. -/
 theorem observableExpValue_evolveState_eq_of_commute_hamiltonian
     (A : Observable H) (hA : Commute system.hamiltonian.1 A.1)
-    (ψ : State H) (t : ℝ) :
+    (ψ : StateVector H) (t : ℝ) :
     observableExpValue A (evolveState system ψ t) = observableExpValue A ψ := by
   rw [observableExpValue_evolveState_eq_heisenberg system,
     heisenbergObservable_eq_self_of_commute_hamiltonian system A hA t]
@@ -94,14 +94,14 @@ theorem observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian
     heisenbergObservable_eq_self_of_commute_hamiltonian system A hA t]
 
 /-- The Hamiltonian expectation is conserved in every pure state. -/
-theorem expValue_hamiltonian_evolveState (ψ : State H) (t : ℝ) :
+theorem expValue_hamiltonian_evolveState (ψ : StateVector H) (t : ℝ) :
     expValue system.hamiltonian (evolveState system ψ t) =
       expValue system.hamiltonian ψ :=
   expValue_evolveState_eq_of_commute_hamiltonian system
     system.hamiltonian (Commute.refl system.hamiltonian.1) ψ t
 
 /-- The lossless real Hamiltonian expectation is conserved in every pure state. -/
-theorem observableExpValue_hamiltonian_evolveState (ψ : State H) (t : ℝ) :
+theorem observableExpValue_hamiltonian_evolveState (ψ : StateVector H) (t : ℝ) :
     observableExpValue system.hamiltonian (evolveState system ψ t) =
       observableExpValue system.hamiltonian ψ :=
   observableExpValue_evolveState_eq_of_commute_hamiltonian system
