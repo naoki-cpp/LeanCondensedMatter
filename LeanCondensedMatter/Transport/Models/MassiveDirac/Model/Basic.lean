@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Transport.Core.ContinuumMeasure
-import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -41,19 +41,16 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- Complex two-band matrices. -/
-abbrev Matrix2 := Matrix (Fin 2) (Fin 2) ℂ
+abbrev Matrix2 := InternalSpace.PauliMatrix
 
-/-- Pauli matrix `σₓ`. -/
-def sigmaX : Matrix2 :=
-  !![0, 1; 1, 0]
+/-- Massive-Dirac notation for the common Pauli matrix `σₓ`. -/
+abbrev sigmaX : Matrix2 := InternalSpace.pauliX
 
-/-- Pauli matrix `σᵧ`. -/
-def sigmaY : Matrix2 :=
-  !![0, -Complex.I; Complex.I, 0]
+/-- Massive-Dirac notation for the common Pauli matrix `σᵧ`. -/
+abbrev sigmaY : Matrix2 := InternalSpace.pauliY
 
-/-- Pauli matrix `σ_z`. -/
-def sigmaZ : Matrix2 :=
-  !![1, 0; 0, -1]
+/-- Massive-Dirac notation for the common Pauli matrix `σ_z`. -/
+abbrev sigmaZ : Matrix2 := InternalSpace.pauliZ
 
 /-- Cartesian directions in the two-dimensional Dirac plane. -/
 inductive Direction2 where
@@ -187,7 +184,8 @@ theorem pauliShiftMatrix_mul_closedInverse
       simpa [pow_two] using Complex.I_mul_I
     ext i j
     fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
+      simp [Matrix.mul_apply, sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX,
+        InternalSpace.pauliY, InternalSpace.pauliZ] <;>
       ring_nf <;>
       simp [hI]; ring
   rw [hquadratic, smul_smul]
@@ -201,7 +199,8 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
     rw [pow_two, Complex.I_mul_I]
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
+    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX,
+      InternalSpace.pauliY, InternalSpace.pauliZ, energySq] <;>
     ring_nf <;>
     simp [hI]
 
