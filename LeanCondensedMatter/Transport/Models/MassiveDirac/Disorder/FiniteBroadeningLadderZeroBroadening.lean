@@ -40,14 +40,8 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadening
       .y .x v m probeEnergy disorderStrength hbar pMax
   inPlaneLadderSolvedVector x y
 
-/-- One output component of the canonical zero-broadening solved ladder vector. -/
-noncomputable def finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary
-    (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-    v m probeEnergy disorderStrength hbar pMax output
-
 /-- The finite-`η` ladder determinant converges to its fixed-disorder zero-broadening boundary. -/
-theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
+theorem finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
@@ -100,7 +94,7 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderRegular_broadening_zero_o
       finiteCutoffContinuumBornDysonLadderRegular
         v m probeEnergy broadening disorderStrength hbar pMax := by
   have hdetLimit :=
-    tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
+    finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
       v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
   filter_upwards [hdetLimit.eventually_ne hdet] with broadening hbroadening
@@ -145,33 +139,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
   simpa [finiteCutoffContinuumBornDysonLadderSolvedVector,
     finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
     (tendsto_inPlaneLadderSolvedVector hX hY hdet')
-
-/-- Every output component is the corresponding projection of the convergent solved ladder vector. -/
-theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-    (output : Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ)
-    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
-    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
-    (hrenorm :
-      finiteCutoffContinuumBornBoundaryRealRenormalization
-        v m probeEnergy disorderStrength hbar pMax < 1)
-    (hdet :
-      finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
-        v m probeEnergy disorderStrength hbar pMax ≠ 0) :
-    Tendsto
-      (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-          output v m probeEnergy broadening disorderStrength hbar pMax)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary
-          output v m probeEnergy disorderStrength hbar pMax)) := by
-  simpa [finiteCutoffContinuumBornDysonLadderSolvedCoefficient,
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficientZeroBroadeningBoundary] using
-    (tendsto_pi_nhds.mp
-      (tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
-        v m probeEnergy disorderStrength hbar pMax
-        hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet) output)
 
 end
 
