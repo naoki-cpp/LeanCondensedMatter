@@ -106,8 +106,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
        (2 : ℂ) * q ^ 2 * (-(x * beta + y * alpha))) := by
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
       dsimp only
-      simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
-        inPlaneRotationCoefficient, pauliRungAngularYCoefficient]
+      unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
+      simp only [inPlaneRotationCoefficient, mul_one, mul_zero, sub_zero, neg_zero, zero_mul,
+        pauliRungAngularYCoefficient, sub_self]
       ring
     _ = _ := by
       dsimp only
