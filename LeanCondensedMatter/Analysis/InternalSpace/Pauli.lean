@@ -43,4 +43,12 @@ def pauliZ : PauliMatrix :=
 @[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
 @[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
 
+@[simp] theorem pauliX_mul_inPlane_zero_zero (x y : ℂ) :
+    (pauliX * (x • pauliX + y • pauliY)) 0 0 = x + y * Complex.I := by
+  simp [Matrix.mul_apply, pauliX, pauliY]
+
+@[simp] theorem pauliX_mul_inPlane_one_one (x y : ℂ) :
+    (pauliX * (x • pauliX + y • pauliY)) 1 1 = x - y * Complex.I := by
+  simp [Matrix.mul_apply, pauliX, pauliY]
+
 end InternalSpace
