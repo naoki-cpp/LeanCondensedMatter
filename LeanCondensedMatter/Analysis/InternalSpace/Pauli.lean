@@ -67,6 +67,14 @@ def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
 @[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
 @[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
 
+@[simp] private theorem pauliX_mul_inPlane_zero_zero (x y : ℂ) :
+    (pauliX * (x • pauliX + y • pauliY)) 0 0 = x + y * Complex.I := by
+  simp [Matrix.mul_apply, pauliX, pauliY]
+
+@[simp] private theorem pauliX_mul_inPlane_one_one (x y : ℂ) :
+    (pauliX * (x • pauliX + y • pauliY)) 1 1 = x - y * Complex.I := by
+  simp [Matrix.mul_apply, pauliX, pauliY, sub_eq_add_neg]
+
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
 @[simp] theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
@@ -85,16 +93,6 @@ theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
       dotProduct, sum_pauliAxis] <;>
     ring_nf <;>
     simp [hI]
-
-/-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
-theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
-    Matrix.trace (pauliCombination u * pauliCombination v) = 2 * dotProduct u v := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  simp [Matrix.trace, pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
-    dotProduct, sum_pauliAxis]
-  ring_nf
-  simp [hI]
 
 /-- Multiplying opposite-sign Pauli shifts eliminates the Pauli part and leaves the quadratic
 bilinear invariant. -/
