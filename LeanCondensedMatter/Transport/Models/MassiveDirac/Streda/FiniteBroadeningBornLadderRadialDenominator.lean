@@ -13,9 +13,9 @@ bare RR/AA same-side remainder. Source `.y` is the ordered `xy` component and us
 retarded-advanced denominator product after its same-side contribution vanishes.
 
 The algebraic radial coefficient and Středa values are total and carry no ladder-regularity proof.
-Regularity remains a separate condition for interpreting the solved coefficients as the physical
-ladder fixed point. No disorder, external-broadening, or ultraviolet limit is taken, and the ordered
-`xy` component remains distinct from the antisymmetric Hall projection.
+Regularity remains a separate condition for interpreting the solved vector as the physical ladder
+fixed point. No disorder, external-broadening, or ultraviolet limit is taken, and the ordered `xy`
+component remains distinct from the antisymmetric Hall projection.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -30,10 +30,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         .x e v m p probeEnergy broadening disorderStrength hbar pMax =
       let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-      let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-        .x v m probeEnergy broadening disorderStrength hbar pMax;
-      let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-        .y v m probeEnergy broadening disorderStrength hbar pMax;
+      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+        v m probeEnergy broadening disorderStrength hbar pMax;
       let eR := finiteCutoffContinuumBornEffectiveEnergy
         .retarded v m probeEnergy broadening disorderStrength hbar pMax;
       let massR := finiteCutoffContinuumBornEffectiveMass
@@ -48,15 +46,16 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;
       (((4 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
         (dR⁻¹ * dA⁻¹ *
-            ((eR * eA - massR * massA) * alpha -
-              Complex.I * (eA * massR - eR * massA) * beta) -
+            ((eR * eA - massR * massA) * solved .x -
+              Complex.I * (eA * massR - eR * massA) * solved .y) -
           (1 / 2 : ℂ) *
             (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) +
               dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2))) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [inPlaneRotationCoefficient, inPlaneRotationMatrix_apply_x_x,
-    inPlaneRotationMatrix_apply_y_x, mul_one, mul_zero, sub_zero]
+  simp only [inPlaneLadderAction_apply_x, inPlaneRotationCoefficient,
+    inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x,
+    mul_one, mul_zero, sub_zero]
   unfold pauliRungAngularXCoefficient pauliRungAngularYCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
@@ -71,14 +70,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 ordered transverse surface trace. -/
 def finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
+  let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+    v m probeEnergy broadening disorderStrength hbar pMax
   finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-      .x .x v m probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-      .y v m probeEnergy broadening disorderStrength hbar pMax +
-  finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-      .y .x v m probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-      .x v m probeEnergy broadening disorderStrength hbar pMax
+      .x .x v m probeEnergy broadening disorderStrength hbar pMax * solved .y +
+    finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+      .y .x v m probeEnergy broadening disorderStrength hbar pMax * solved .x
 
 /-- The source-`.y` finite-`η` dressed ordered `xy` angular coefficient has one explicit common RA
 Born-Dyson denominator. -/
@@ -96,19 +93,17 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
         .y e v m p probeEnergy broadening disorderStrength hbar pMax =
       (let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ));
-       let alpha := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-         .x v m probeEnergy broadening disorderStrength hbar pMax;
-       let beta := finiteCutoffContinuumBornDysonLadderSolvedCoefficient
-         .y v m probeEnergy broadening disorderStrength hbar pMax;
+       let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+         v m probeEnergy broadening disorderStrength hbar pMax;
        let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
          .x .x v m p probeEnergy broadening disorderStrength hbar pMax;
        let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
          .y .x v m p probeEnergy broadening disorderStrength hbar pMax;
-       (2 : ℂ) * q ^ 2 * (-(x * beta + y * alpha))) := by
+       (2 : ℂ) * q ^ 2 * (-(x * solved .y + y * solved .x))) := by
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-      simp only [inPlaneRotationCoefficient,
+      simp only [inPlaneLadderAction_apply_x, inPlaneRotationCoefficient,
         inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
         inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y,
         mul_one, mul_zero, neg_zero, pauliRungAngularYCoefficient, sub_self]
@@ -120,6 +115,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm
             .y .x v m p probeEnergy broadening disorderStrength hbar pMax]
       unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
+      dsimp only
       have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
           (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
         push_cast
