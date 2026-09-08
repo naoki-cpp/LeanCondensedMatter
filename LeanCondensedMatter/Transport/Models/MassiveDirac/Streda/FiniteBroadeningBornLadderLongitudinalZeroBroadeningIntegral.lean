@@ -216,8 +216,11 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       inPlaneRotationMatrix_apply_y_x]
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
-    push_cast
-    field_simp [hpref, hdenR, hdenA] <;> ring_nf
+    dsimp [pref] at hpref ⊢
+    push_cast at hpref ⊢
+    field_simp [hpref, hdenR, hdenA]
+    all_goals try exact Or.inl trivial
+    all_goals ring_nf
   have hrx : IntervalIntegrable rx volume 0 pMax := by
     simpa [rx] using
       (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
