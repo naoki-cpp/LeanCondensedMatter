@@ -17,15 +17,15 @@ namespace InternalSpace
 abbrev PauliMatrix := Matrix (Fin 2) (Fin 2) ℂ
 
 /-- Pauli matrix `σₓ`. -/
-def pauliX : PauliMatrix :=
+@[reducible] def pauliX : PauliMatrix :=
   !![0, 1; 1, 0]
 
 /-- Pauli matrix `σᵧ`. -/
-def pauliY : PauliMatrix :=
+@[reducible] def pauliY : PauliMatrix :=
   !![0, -Complex.I; Complex.I, 0]
 
 /-- Pauli matrix `σ_z`. -/
-def pauliZ : PauliMatrix :=
+@[reducible] def pauliZ : PauliMatrix :=
   !![1, 0; 0, -1]
 
 end InternalSpace
