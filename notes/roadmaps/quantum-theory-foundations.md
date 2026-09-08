@@ -24,8 +24,8 @@ U₀(t) = exp (-(i t / ℏ) H₀),
 ```
 
 with unitarity, norm preservation, Schrödinger-picture state evolution, Heisenberg observable
-evolution, density-operator evolution, and exact pure/density expectation equivalence between
-pictures.
+evolution, density-operator evolution, exact pure/density expectation equivalence between pictures,
+and restriction of density evolution to physical `PureState` values.
 
 The equations-of-motion layer proves bounded Schrödinger, Heisenberg, and von Neumann equations in
 operator/norm differentiable form. Conservation results show that observables commuting with `H₀`
@@ -49,16 +49,23 @@ operators represented by some normalized state vector through `QuantumTheory.pur
 - equivalence between equality of normalized rank-one density operators and unit-modulus global-phase
   equivalence of their representatives, together with the corresponding `PureState.ofStateVector`
   equality theorem;
+- physical-pure-state observable expectations defined through the canonical density expectation and
+  agreement with representative-level `observableExpValue`;
+- bounded unitary evolution of `PureState`, preservation of the pure-density predicate, and exact
+  agreement with representative evolution;
 - normalized complex and lossless real observable expectations;
 - positivity, reality, contractivity, and countable Hilbert-basis formulas;
 - a positive square root with Hilbert--Schmidt control and the corresponding `innerHS` expectation
   identity;
 - finite-dimensional matrix-trace specializations;
-- spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the finite-dimensional
-  `Tr(ρ²)` formula.
+- spectral purity with `0 ≤ purity ρ ≤ 1`, `purity (pure ψ) = 1`, and the dimension-independent
+  characterization `IsPureDensity ρ ↔ purity ρ = 1`;
+- the finite-dimensional `Tr(ρ²)` formula as a specialization of the same purity API.
 
-The converse characterization `purity ρ = 1 → IsPureDensity ρ` is not yet part of the current API. A
-projective/ray presentation is optional follow-up rather than the storage type.
+The maximal-purity converse uses the existing compact self-adjoint spectral reconstruction and does
+not require an additional finite-dimensional assumption. An explicit one-dimensional-range predicate
+is not needed for this characterization and should be added only if it has independent downstream
+use. A projective/ray presentation remains optional rather than the storage type.
 
 ## Discrete POVMs and Born probabilities
 
@@ -94,8 +101,10 @@ or semigroup/resolvent framework with explicit domains.
 
 ## Open work
 
-- connect `PureState` to density-state expectation and bounded unitary evolution APIs;
-- characterize maximal purity by `IsPureDensity` when the required spectral theorem is available;
+- add an explicit one-dimensional-range characterization of physical pure states only if downstream
+  proofs need that formulation;
+- add a projective/ray presentation only if it materially improves public use without duplicating
+  expectation or dynamics theory;
 - extend the Hamiltonian interface to genuine infinite-dimensional Gibbs states;
 - reuse the canonical density expectation throughout completed Fock/KMS and response layers;
 - add continuous-outcome measurement theory after a measure-theoretic operator-valued API is fixed.
