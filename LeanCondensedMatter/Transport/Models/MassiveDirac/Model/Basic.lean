@@ -22,7 +22,8 @@ The in-plane direction is represented explicitly by `Direction2`; the direction-
 and `current` definitions are the public model-level owners used throughout the transport stack.
 The Pauli-vector basis is indexed separately by `PauliAxis`, since its `z` component is an internal
 mass/pseudospin channel rather than a third momentum direction. Pauli coefficients are represented
-canonically as `PauliAxis`-indexed vectors, with a bilinear dot product for algebraic Pauli identities.
+canonically as `PauliAxis`-indexed vectors, with the bilinear `dotProduct` used for algebraic Pauli
+identities.
 The closed Berry-curvature benchmark is recorded directly here; its agreement with the
 model-specific force-matrix expression is proved downstream.
 
@@ -96,8 +97,7 @@ abbrev PauliVector (R : Type*) := PauliAxis → R
 def pauliVector {R : Type*} (x y z : R) : PauliVector R :=
   fun axis => pauliAxisComponent axis x y z
 
-/-- A finite sum over Pauli axes is the sum of its three semantic components. -/
-theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
+private theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
   simp [add_assoc]
@@ -120,31 +120,27 @@ theorem pauliMatrixCombination_pauliVector (x y z : ℂ) :
   rw [sum_pauliAxis]
   rfl
 
-/-- Bilinear quadratic form carried by Pauli multiplication. This deliberately has no complex
-conjugation: `Tr(AB)` and `(c · σ)²` use the algebraic dot product rather than the Hermitian inner
-product. -/
-def pauliBilinearSquare (coefficients : PauliVector ℂ) : ℂ :=
-  dotProduct coefficients coefficients
-
+/-- The algebraic self-dot-product of a three-component Pauli vector. This deliberately has no
+complex conjugation: `Tr(AB)` and `(c · σ)²` use the bilinear dot product rather than the Hermitian
+inner product. -/
 @[simp]
-theorem pauliBilinearSquare_pauliVector (x y z : ℂ) :
-    pauliBilinearSquare (pauliVector x y z) = x ^ 2 + y ^ 2 + z ^ 2 := by
-  unfold pauliBilinearSquare dotProduct
+theorem dotProduct_pauliVector_self (x y z : ℂ) :
+    dotProduct (pauliVector x y z) (pauliVector x y z) = x ^ 2 + y ^ 2 + z ^ 2 := by
+  unfold dotProduct
   rw [sum_pauliAxis]
   simp [pauliVector, pauliAxisComponent, pow_two]
 
 /-- The Pauli-vector square identity `(c · σ)² = (c · c) I`. -/
 theorem pauliMatrixCombination_mul_self (coefficients : PauliVector ℂ) :
     pauliMatrixCombination coefficients * pauliMatrixCombination coefficients =
-      pauliBilinearSquare coefficients • (1 : Matrix2) := by
+      dotProduct coefficients coefficients • (1 : Matrix2) := by
   let x := coefficients .x
   let y := coefficients .y
   let z := coefficients .z
   have hcoefficients : coefficients = pauliVector x y z := by
     funext axis
     cases axis <;> rfl
-  rw [hcoefficients, pauliMatrixCombination_pauliVector,
-    pauliBilinearSquare_pauliVector]
+  rw [hcoefficients, pauliMatrixCombination_pauliVector, dotProduct_pauliVector_self]
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     rw [pow_two, Complex.I_mul_I]
   ext i j
@@ -191,12 +187,13 @@ theorem hamiltonian_eq_pauliMatrixCombination (v m px py : ℝ) :
     hamiltonian v m px py = pauliMatrixCombination (diracPauliVector v m px py) := by
   simp [hamiltonian, diracPauliVector]
 
-/-- The Pauli-vector bilinear square is the complex embedding of the Dirac dispersion polynomial. -/
-theorem pauliBilinearSquare_diracPauliVector (v m px py : ℝ) :
-    pauliBilinearSquare (diracPauliVector v m px py) =
+/-- The self-dot-product of the Dirac Pauli vector is the complex embedding of the dispersion
+polynomial. -/
+theorem dotProduct_diracPauliVector_self (v m px py : ℝ) :
+    dotProduct (diracPauliVector v m px py) (diracPauliVector v m px py) =
       ((energySq v m px py : ℝ) : ℂ) := by
   unfold diracPauliVector
-  rw [pauliBilinearSquare_pauliVector]
+  rw [dotProduct_pauliVector_self]
   unfold energySq
   push_cast
   ring
@@ -292,7 +289,7 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
   rw [hamiltonian_eq_pauliMatrixCombination, hamiltonian_eq_pauliMatrixCombination,
-    pauliMatrixCombination_mul_self, pauliBilinearSquare_diracPauliVector]
+    pauliMatrixCombination_mul_self, dotProduct_diracPauliVector_self]
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
