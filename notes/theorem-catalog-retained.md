@@ -37,3 +37,9 @@ structure changes.
 - `SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq` — structural invariant
   of the fixed-external fiber equivalence: reassembly preserves the standardized connected external
   piece independently of the vacuum component.
+- `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
+  representation theorem identifying one Wick diagram's fixed-order ordered-simplex contribution
+  with the flattened pairing evaluator after transport to a chosen vertex order.
+- `SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation`
+  — canonical reindexing theorem converting the full fixed-order Wick-diagram sum into the
+  vertex-label/pairing double sum used by the Dyson-to-Wick expansion.

@@ -37,20 +37,6 @@ theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (F
   rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
     orderedQuarticLegOperator]
 
-/-- A diagram's coupling weight times fixed-order contribution in canonical evaluator form. -/
-theorem couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
-    {N : ℕ} {S : Finset (Fin N)}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
-    d.couplingWeight g * d.orderedSimplexContribution ε β order =
-      (∏ i : Fin S.card, g (d.vertexLabel (order i))) *
-        intervalIntegral.orderedSimplexIntegral S.card β
-          (fun τ => flatVertexLegPairingEvaluation ε β
-            (fun i => d.vertexLabel (order i)) τ (d.pairingInOrder order)) := by
-  rw [QuarticWickDiagram.couplingWeight,
-    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order,
-    orderedSimplexContribution_eq_pairingEvaluation]
-
 /-- Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical
 evaluator form. -/
 theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
@@ -74,7 +60,10 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
           (Common.quarticDiagramEquivOrderedData order d) :=
         Finset.sum_congr rfl fun d _ => by
           simp only [Common.quarticDiagramEquivOrderedData]
-          exact couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation ε β g d order
+          rw [QuarticWickDiagram.couplingWeight,
+            Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order,
+            orderedSimplexContribution_eq_pairingEvaluation]
+          rfl
     _ = ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card,
         (∏ i, g (x.1 i)) *
           intervalIntegral.orderedSimplexIntegral S.card β
