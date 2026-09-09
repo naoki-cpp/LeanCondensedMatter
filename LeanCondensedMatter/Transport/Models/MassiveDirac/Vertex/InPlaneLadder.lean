@@ -67,11 +67,6 @@ theorem inPlaneRotationMatrix_apply_y_y (x y : ℂ) :
     inPlaneRotationMatrix x y .y .y = x := by
   rfl
 
-/-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
-direction and `j` the input/source direction. -/
-def inPlaneRotationCoefficient (x y : ℂ) (i j : Direction2) : ℂ :=
-  inPlaneRotationMatrix x y i j
-
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
     (x y alpha beta : ℂ) :
