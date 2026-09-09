@@ -175,3 +175,8 @@ or consumer structure changes.
   for an annihilation-labelled external field under free imaginary-time evolution.
 - `SecondQuantization.Fermionic.externalFieldOperator_creation_eq_smul` — physical evaluation rule for
   a creation-labelled external field under free imaginary-time evolution.
+- `MeasureTheory.integral_orientedIntervalIntegrand` — canonical full-line localization theorem for an
+  oriented interval integral: the indicator-difference integrand on `ℝ` integrates to Mathlib's
+  oriented `intervalIntegral`. This representation is the reusable bridge that lets downstream
+  energy-kernel constructions place transition-localized contributions on one common integration
+  domain.
