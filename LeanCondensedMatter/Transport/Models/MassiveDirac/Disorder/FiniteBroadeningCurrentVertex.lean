@@ -60,12 +60,12 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
 /-- Full polar-angle finite-`η` Born-Dyson action on an arbitrary in-plane Pauli vertex. -/
 noncomputable def finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+    (coefficients : InPlaneCoefficientVector) : DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
     finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax *
-      matrixOperator (alpha • sigmaX + beta • sigmaY) *
+      matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
       finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax
@@ -73,18 +73,18 @@ noncomputable def finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRu
 /-- The finite-`η` Born-Dyson full-angle rung acts by its direction-indexed in-plane matrix. -/
 theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (alpha beta : ℂ) :
+    (coefficients : InPlaneCoefficientVector) :
     finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
-        v m p probeEnergy broadening disorderStrength hbar pMax alpha beta =
+        v m p probeEnergy broadening disorderStrength hbar pMax coefficients =
       (finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          .x .x v m p probeEnergy broadening disorderStrength hbar pMax * alpha +
+          .x .x v m p probeEnergy broadening disorderStrength hbar pMax * coefficients .x +
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          .x .y v m p probeEnergy broadening disorderStrength hbar pMax * beta) •
+          .x .y v m p probeEnergy broadening disorderStrength hbar pMax * coefficients .y) •
           matrixOperator sigmaX +
         (finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-            .y .x v m p probeEnergy broadening disorderStrength hbar pMax * alpha +
+            .y .x v m p probeEnergy broadening disorderStrength hbar pMax * coefficients .x +
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-            .y .y v m p probeEnergy broadening disorderStrength hbar pMax * beta) •
+            .y .y v m p probeEnergy broadening disorderStrength hbar pMax * coefficients .y) •
           matrixOperator sigmaY := by
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -104,13 +104,13 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         finiteCutoffContinuumBornDysonGreenOperator
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax *
-          matrixOperator (alpha • sigmaX + beta • sigmaY) *
+          matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
           finiteCutoffContinuumBornDysonGreenOperator
             .advanced v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) =
         fun θ : ℝ =>
           polarPauliOperator aR bR dR θ *
-            matrixOperator (alpha • sigmaX + beta • sigmaY) *
+            matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
             polarPauliOperator aA bA dA θ := by
     funext θ
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
@@ -118,7 +118,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
   rw [hpolar]
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
     inPlaneRotationMatrix, aR, aA, bR, bA, dR, dA, sub_eq_add_neg] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA alpha beta)
+    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA coefficients)
 
 /-! ## Common denominator form -/
 
