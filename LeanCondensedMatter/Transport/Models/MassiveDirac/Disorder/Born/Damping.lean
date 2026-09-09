@@ -152,14 +152,20 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
         (((m / fermiEnergy : ℝ) : ℂ) *
           finiteCutoffContinuumBornSelfEnergyCoefficient .z .retarded
             v m fermiEnergy broadening disorderStrength hbar pMax) := by
+  have htraceOne :
+      finiteDimensionalOperatorTrace
+          (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0) = 1 := by
+    rw [bandProjectorOperator, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM,
+      bandProjector_eq_pauliCombination]
+    simp [Matrix.trace]
   have htraceZ :
       finiteDimensionalOperatorTrace
           (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
             matrixOperator sigmaZ) =
         ((m / energy v m (metallicFermiRadius v m fermiEnergy) 0 : ℝ) : ℂ) := by
-    rw [bandProjectorOperator, matrixOperator, ← map_mul,
-      finiteDimensionalOperatorTrace_toEuclideanCLM, bandProjector_eq_pauliCombination,
-      smul_mul_assoc, add_mul, one_mul]
+    unfold bandProjectorOperator matrixOperator
+    rw [← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM,
+      bandProjector_eq_pauliCombination, smul_mul_assoc, add_mul, one_mul]
     rw [show sigmaZ = InternalSpace.pauliCombination
       (fun | .x => 0 | .y => 0 | .z => 1) by simp [InternalSpace.pauliCombination]]
     simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
@@ -171,9 +177,7 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     v m fermiEnergy broadening disorderStrength hbar pMax hbroadening]
   rw [mul_add, mul_smul_comm, mul_smul_comm]
   simp only [mul_one]
-  rw [map_add, map_smul, map_smul, htraceZ]
-  simp [bandProjectorOperator, matrixOperator,
-    finiteDimensionalOperatorTrace_toEuclideanCLM, bandProjector_eq_pauliCombination, Matrix.trace]
+  rw [map_add, map_smul, map_smul, htraceOne, htraceZ]
   rw [henergy]
   ring
 
