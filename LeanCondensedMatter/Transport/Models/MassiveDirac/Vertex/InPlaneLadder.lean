@@ -120,6 +120,17 @@ theorem inPlaneLadderAction_apply_y
 def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
   (1 - x) ^ 2 + y ^ 2
 
+/-- Convergence of the two rung invariants propagates to the shifted-ladder determinant. -/
+theorem tendsto_inPlaneLadderDeterminant
+    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
+    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀)) :
+    Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
+      (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
+  have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
+  have hOneMinusX := hOne.sub hx
+  simpa [inPlaneLadderDeterminant, pow_two] using
+    (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
+
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
   inPlaneCoefficientVector 1 0
@@ -151,11 +162,7 @@ theorem tendsto_inPlaneLadderSolvedVector
       l (nhds (inPlaneLadderSolvedVector x₀ y₀)) := by
   have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
   have hOneMinusX := hOne.sub hx
-  have hdetLimit :
-      Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
-        (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
-    simpa [inPlaneLadderDeterminant, pow_two] using
-      (hOneMinusX.mul hOneMinusX).add (hy.mul hy)
+  have hdetLimit := tendsto_inPlaneLadderDeterminant hx hy
   rw [tendsto_pi_nhds]
   intro output
   cases output
