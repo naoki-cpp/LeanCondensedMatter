@@ -17,6 +17,15 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+private theorem fin_univ_ne_empty {n : ℕ} (hn : n ≠ 0) :
+    (Finset.univ : Finset (Fin n)) ≠ ∅ := by
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+  intro h
+  have hx : (⟨0, hnpos⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
+    Finset.mem_univ _
+  rw [h] at hx
+  simpa using hx
+
 omit [LinearOrder Mode] in
 /-- The factorial-normalized coefficient of the formal logarithm of the normalized Dyson partition
 series is its finite-set Dyson vertex cumulant. -/
@@ -44,9 +53,11 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumula
           (S.card.factorial : ℂ) *
             PowerSeries.coeff S.card
               (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)))
-        Finset.univ :=
-      Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment_fin
-        (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V) n hn
+        Finset.univ := by
+      simpa using
+        (Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment
+          (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V)
+          (s := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))
     _ = Finpartition.cumulantFromMoment (dysonVertexMoment ε β V)
         (Finset.univ : Finset (Fin n)) := by
       congr 1
@@ -63,13 +74,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmpl
           (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
       ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
         quarticWickDiagramAmplitude ε β g d.1 := by
-  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
-  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := by
-    intro h
-    have hx : (⟨0, hnpos⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
-      Finset.mem_univ _
-    rw [h] at hx
-    simpa using hx
+  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := fin_univ_ne_empty hn
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n

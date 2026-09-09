@@ -156,24 +156,4 @@ theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment
   rw [hm]
   exact (Finpartition.cumulantFromMoment_momentFromCumulant κ hs).symm
 
-/-- Cardinality-indexed form of the formal-log/finite-set-cumulant bridge. -/
-theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment_fin
-    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1)
-    (n : ℕ) (hn : n ≠ 0) :
-    (n.factorial : ℂ) * PowerSeries.coeff n (PowerSeries.logOf Z) =
-      Finpartition.cumulantFromMoment
-        (fun S : Finset (Fin n) =>
-          (S.card.factorial : ℂ) * PowerSeries.coeff S.card Z)
-        Finset.univ := by
-  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
-  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := by
-    intro h
-    have hx : (⟨0, hnpos⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
-      Finset.mem_univ _
-    rw [h] at hx
-    simpa using hx
-  simpa using
-    (factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ
-      (s := (Finset.univ : Finset (Fin n))) huniv)
-
 end Combinatorics
