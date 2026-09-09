@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
 
 set_option linter.style.header false
 
@@ -13,7 +14,8 @@ bare measured current fixed along `x` and the source direction indexed by `Direc
 path is exposed from the pointwise trace bridge through finite-cutoff polar momentum integration;
 the ordered `xy` specialization additionally exposes the explicit Hall radial reduction and common
 denominator form. Fixed-cutoff zero-broadening boundaries are exposed for the source-indexed dressed
-current and the integrated longitudinal response.
+current and the integrated longitudinal response, together with the separate weak-disorder limit of
+the disorder-scaled longitudinal momentum boundary.
 
 The supplied ladder coefficients are total algebraic values. The shared nonzero in-plane ladder
 determinant is required only when they are interpreted as the solved physical fixed point. Generic
