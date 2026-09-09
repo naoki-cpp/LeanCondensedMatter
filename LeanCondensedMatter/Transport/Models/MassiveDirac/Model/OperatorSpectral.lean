@@ -35,44 +35,6 @@ noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (bandProjector band v m px py)
 
-/-- Every massive-Dirac band projector has unit finite-dimensional operator trace. -/
-@[simp] theorem finiteDimensionalOperatorTrace_bandProjectorOperator
-    (band : Band) (v m px py : ℝ) :
-    finiteDimensionalOperatorTrace (bandProjectorOperator band v m px py) = 1 := by
-  calc
-    finiteDimensionalOperatorTrace (bandProjectorOperator band v m px py) =
-        Matrix.trace (bandProjector band v m px py) := by
-      simpa [bandProjectorOperator, matrixOperator] using
-        finiteDimensionalOperatorTrace_toEuclideanCLM (bandProjector band v m px py)
-    _ = 1 := by
-      rw [bandProjector_eq_pauliCombination]
-      simp [Matrix.trace]
-
-/-- Tracing a band projector against `σ_z` selects its Bloch-vector mass component. -/
-theorem finiteDimensionalOperatorTrace_bandProjectorOperator_mul_sigmaZ
-    (band : Band) (v m px py : ℝ) :
-    finiteDimensionalOperatorTrace
-        (bandProjectorOperator band v m px py * matrixOperator sigmaZ) =
-      (((bandSign band * m / energy v m px py : ℝ) : ℂ)) := by
-  let z : PauliAxis → ℂ
-    | .x => 0
-    | .y => 0
-    | .z => 1
-  have hz : sigmaZ = InternalSpace.pauliCombination z := by
-    simp [z, InternalSpace.pauliCombination]
-  calc
-    finiteDimensionalOperatorTrace
-        (bandProjectorOperator band v m px py * matrixOperator sigmaZ) =
-        Matrix.trace (bandProjector band v m px py * sigmaZ) := by
-      simpa [bandProjectorOperator, matrixOperator] using
-        finiteDimensionalOperatorTrace_toEuclideanCLM
-          (bandProjector band v m px py * sigmaZ)
-    _ = (((bandSign band * m / energy v m px py : ℝ) : ℂ)) := by
-      rw [bandProjector_eq_pauliCombination, hz, smul_mul_assoc, add_mul, one_mul]
-      simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
-        InternalSpace.dotProduct_pauliAxis, diracPauliCoefficients, z]
-      ring
-
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
     (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
