@@ -57,9 +57,6 @@ or consumer structure changes.
 - `SecondQuantization.Bosonic.numberOperator_basisState` — canonical number-operator eigenvalue
   equation `N_i |n⟩ = n_i |n⟩`; this is a physical statement about the named number operator rather
   than proof-routing around `create_annihilate_basisState_same`.
-- `SecondQuantization.Common.TwoPointDiagram.relabelForComponentShuffle_externalLabel` — deliberate
-  `[simp]` structural invariant stating that component-shuffle relabeling preserves the external
-  label, even though its proof specializes the generic relabeling theorem.
 - `SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea`
   — named physical endpoint identifying the finite static Kubo–Bastin conductivity with the Středa
   surface-plus-sea split under the explicit analytic and Ward assumptions.
