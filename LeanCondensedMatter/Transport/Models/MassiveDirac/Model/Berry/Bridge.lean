@@ -32,7 +32,7 @@ from the band degeneracy. -/
 theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     forceMatrixBerryCurvature band v m px py = berryCurvature band v m px py := by
-  rw [forceMatrixBerryCurvature, forceMatrixTraceNumerator_im band v m px py hE,
+  rw [forceMatrixBerryCurvature, forceMatrixTraceNumerator_xy_eq band v m px py hE,
     interbandEnergyGap_eq]
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower] <;>
