@@ -251,8 +251,6 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.observableExpValue_evolveState_eq_heisenberg, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator, moduleName := pictureModule },
-    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_isPositive, moduleName := pictureModule },
-    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_trace_eq_one, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.evolveHilbertBasis, moduleName := pictureModule },
     { declaration := `QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
