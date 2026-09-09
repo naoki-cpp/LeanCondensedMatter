@@ -81,11 +81,28 @@ theorem inPlaneLadderAction_apply_y
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
     inPlaneRotationMatrix]
 
+/-- Convergence of rung and coefficient vectors propagates to the complete ladder action. -/
+theorem tendsto_inPlaneLadderAction
+    {ι : Type*} {l : Filter ι} {rung coefficients : ι → InPlaneCoefficientVector}
+    {rung₀ coefficients₀ : InPlaneCoefficientVector} (hrung : Tendsto rung l (nhds rung₀))
+    (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
+    Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
+      (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
+  have hrx := tendsto_pi_nhds.mp hrung .x
+  have hry := tendsto_pi_nhds.mp hrung .y
+  have hcx := tendsto_pi_nhds.mp hcoefficients .x
+  have hcy := tendsto_pi_nhds.mp hcoefficients .y
+  rw [tendsto_pi_nhds]
+  intro output
+  cases output
+  · simpa only [inPlaneLadderAction_apply_x] using (hrx.mul hcx).sub (hry.mul hcy)
+  · simpa only [inPlaneLadderAction_apply_y] using (hry.mul hcx).add (hrx.mul hcy)
+
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
   (1 - rung .x) ^ 2 + (rung .y) ^ 2
 
-/-- Convergence of a rung vector propagates to the shifted-ladder determinant. -/
+/-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
     {ι : Type*} {l : Filter ι}
     {rung : ι → InPlaneCoefficientVector} {rung₀ : InPlaneCoefficientVector}

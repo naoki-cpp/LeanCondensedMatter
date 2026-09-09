@@ -42,50 +42,51 @@ open scoped Interval
 
 /-! ## Angular reduction -/
 
+/-- Complete full-angle finite-`η` Born-Dyson retarded-advanced in-plane rung vector. -/
+def finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
+  pauliRungAngularCoefficient
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+
 /-- Entry `(i,j)` of the full-angle finite-`η` Born-Dyson retarded-advanced in-plane rung. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
     (i j : Direction2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  let rung := pauliRungAngularCoefficient
-    (finiteCutoffContinuumBornDysonScalarCoefficient
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonScalarCoefficient
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonPauliCoefficient .z
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornDysonPauliCoefficient .z
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-  inPlaneRotationMatrix rung i j
+  inPlaneRotationMatrix
+    (finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector
+      v m p probeEnergy broadening disorderStrength hbar pMax) i j
 
 /-- Full polar-angle finite-`η` Born-Dyson action on an arbitrary in-plane Pauli vertex. -/
 noncomputable def finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+    (coefficients : InPlaneCoefficientVector) : DiracHilbert →L[ℂ] DiracHilbert :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
     finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax *
-      matrixOperator (alpha • sigmaX + beta • sigmaY) *
+      inPlanePauliVertexOperator coefficients *
       finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax
 
-/-- The finite-`η` Born-Dyson full-angle rung acts by its direction-indexed in-plane matrix. -/
+/-- The finite-`η` Born-Dyson full-angle rung acts through the canonical in-plane ladder action. -/
 theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (alpha beta : ℂ) :
+    (coefficients : InPlaneCoefficientVector) :
     finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
-        v m p probeEnergy broadening disorderStrength hbar pMax alpha beta =
-      (finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          .x .x v m p probeEnergy broadening disorderStrength hbar pMax * alpha +
-        finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-          .x .y v m p probeEnergy broadening disorderStrength hbar pMax * beta) •
-          matrixOperator sigmaX +
-        (finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-            .y .x v m p probeEnergy broadening disorderStrength hbar pMax * alpha +
-          finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
-            .y .y v m p probeEnergy broadening disorderStrength hbar pMax * beta) •
-          matrixOperator sigmaY := by
+        v m p probeEnergy broadening disorderStrength hbar pMax coefficients =
+      inPlanePauliVertexOperator
+        (inPlaneLadderAction
+          (finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector
+            v m p probeEnergy broadening disorderStrength hbar pMax)
+          coefficients) := by
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let aA := finiteCutoffContinuumBornDysonScalarCoefficient
@@ -104,21 +105,21 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         finiteCutoffContinuumBornDysonGreenOperator
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax *
-          matrixOperator (alpha • sigmaX + beta • sigmaY) *
+          inPlanePauliVertexOperator coefficients *
           finiteCutoffContinuumBornDysonGreenOperator
             .advanced v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) =
         fun θ : ℝ =>
           polarPauliOperator aR bR dR θ *
-            matrixOperator (alpha • sigmaX + beta • sigmaY) *
+            inPlanePauliVertexOperator coefficients *
             polarPauliOperator aA bA dA θ := by
     funext θ
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
   rw [hpolar]
-  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
-    inPlaneRotationMatrix, aR, aA, bR, bA, dR, dA, sub_eq_add_neg] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA alpha beta)
+  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
+    aR, aA, bR, bA, dR, dA] using
+    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA coefficients)
 
 /-! ## Common denominator form -/
 
@@ -178,6 +179,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
           i j v m probeEnergy broadening disorderStrength hbar pMax := by
   cases i <;> cases j <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
       inPlaneRotationMatrix, inPlaneCoefficientVector,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       pauliRungAngularCoefficient,

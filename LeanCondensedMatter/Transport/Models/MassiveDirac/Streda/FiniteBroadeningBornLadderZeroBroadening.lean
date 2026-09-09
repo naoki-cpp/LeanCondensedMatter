@@ -31,7 +31,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
   let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
-  inPlaneCurrentOperator e v (dressed .x) (dressed .y)
+  inPlaneCurrentOperator e v dressed
 
 /-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built
 from the solved zero-broadening ladder vector. -/

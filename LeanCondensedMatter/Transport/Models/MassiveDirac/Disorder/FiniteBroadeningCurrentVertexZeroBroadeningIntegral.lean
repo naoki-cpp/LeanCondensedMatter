@@ -32,6 +32,13 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
       i j v m p probeEnergy disorderStrength hbar pMax
 
+/-- Canonical zero-broadening boundary of the source-`σₓ` current rung. -/
+noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
+  fun output =>
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+      output .x v m probeEnergy disorderStrength hbar pMax
+
 /-- Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry
 once one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA
 denominator on the compact radial interval are supplied. -/
@@ -603,6 +610,32 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero
       v m p probeEnergy disorderStrength hbar pMax
       hvelocity hhbar hdisorder hmetal hrenorm
+
+/-- The finite-`η` canonical current-rung vector converges to its fixed-disorder zero-broadening
+boundary. -/
+theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
+    (v m probeEnergy disorderStrength hbar pMax : ℝ)
+    (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
+    (hrenorm :
+      finiteCutoffContinuumBornBoundaryRealRenormalization
+        v m probeEnergy disorderStrength hbar pMax < 1) :
+    Tendsto
+      (fun broadening : ℝ =>
+        finiteCutoffContinuumBornDysonCurrentRungVector
+          v m probeEnergy broadening disorderStrength hbar pMax)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+          v m probeEnergy disorderStrength hbar pMax)) := by
+  rw [tendsto_pi_nhds]
+  intro output
+  simpa [finiteCutoffContinuumBornDysonCurrentRungVector,
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
+    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
+      output .x v m probeEnergy disorderStrength hbar pMax
+      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
 
 end
 

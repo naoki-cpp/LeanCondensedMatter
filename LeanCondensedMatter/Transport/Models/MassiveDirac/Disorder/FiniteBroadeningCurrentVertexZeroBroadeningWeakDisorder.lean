@@ -158,9 +158,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
-      (fun disorderStrength output =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-          output .x v m probeEnergy disorderStrength hbar pMax)
+      (fun disorderStrength =>
+        finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+          v m probeEnergy disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (inPlaneCoefficientVector
@@ -321,7 +321,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
   filter_upwards with disorderStrength
-  simpa [center, width, scale] using
+  simpa [finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
+    center, width, scale] using
     (currentRungBoundary_eq_lorentzianIntegral
       output v m probeEnergy disorderStrength hbar pMax hvelocity hhbar).symm
 

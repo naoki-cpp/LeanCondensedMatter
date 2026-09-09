@@ -87,23 +87,22 @@ theorem currentOperator_eq_charge_smul_velocityOperator
   unfold currentOperator velocityOperator current matrixOperator
   rw [map_smul]
 
-/-- Dimensionless in-plane Pauli vertex `α σₓ + β σᵧ` as a bounded operator. -/
+/-- Dimensionless in-plane Pauli vertex with direction-indexed coefficients. -/
 noncomputable def inPlanePauliVertexOperator
-    (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  alpha • matrixOperator sigmaX + beta • matrixOperator sigmaY
+    (coefficients : Direction2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+  coefficients .x • matrixOperator sigmaX + coefficients .y • matrixOperator sigmaY
 
-/-- Physical in-plane current vertex `α jₓ + β jᵧ`. -/
+/-- Physical in-plane current vertex with direction-indexed coefficients. -/
 noncomputable def inPlaneCurrentOperator
-    (e v : ℝ) (alpha beta : ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  alpha • currentOperator .x e v + beta • currentOperator .y e v
+    (e v : ℝ) (coefficients : Direction2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+  coefficients .x • currentOperator .x e v + coefficients .y • currentOperator .y e v
 
 /-- The physical in-plane current is the charge-velocity scale multiplying the corresponding
 in-plane Pauli vertex. -/
 theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
-    (e v : ℝ) (alpha beta : ℂ) :
-    inPlaneCurrentOperator e v alpha beta =
-      ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) •
-        inPlanePauliVertexOperator alpha beta := by
+    (e v : ℝ) (coefficients : Direction2 → ℂ) :
+    inPlaneCurrentOperator e v coefficients =
+      ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) • inPlanePauliVertexOperator coefficients := by
   rw [inPlaneCurrentOperator,
     currentOperator_eq_charge_smul_velocityOperator,
     currentOperator_eq_charge_smul_velocityOperator]

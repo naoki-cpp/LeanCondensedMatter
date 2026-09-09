@@ -47,7 +47,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
   let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
-  inPlaneCurrentOperator e v (dressed .x) (dressed .y)
+  inPlaneCurrentOperator e v dressed
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
