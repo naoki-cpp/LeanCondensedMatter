@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
-import LeanCondensedMatter.Combinatorics.Common.FinsetProduct
 
 set_option linter.style.header false
 
@@ -111,11 +110,5 @@ theorem not_crosses_firstPair {n : ℕ} (pairing : Pairing (n + 1))
 theorem not_crosses_self {n : ℕ} (p : Fin (2 * n) × Fin (2 * n)) : ¬ Crosses p p := by
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
-
-/-- A product-filter crossing count decomposes into a sum over the left endpoint. -/
-theorem card_filter_crosses_product_eq_sum {n : ℕ} (T : Finset (Fin (2 * n) × Fin (2 * n))) :
-    ((T.product T).filter (fun pp => Crosses pp.1 pp.2)).card =
-      ∑ p ∈ T, (T.filter (fun q => Crosses p q)).card :=
-  Finset.card_filter_product_eq_sum_card_filter T Crosses
 
 end Combinatorics

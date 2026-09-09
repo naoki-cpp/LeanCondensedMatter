@@ -8,10 +8,8 @@ set_option linter.style.header false
 
 For a finite set `T` and a binary relation `R`, the number of pairs `(p, q) ∈ T × T` satisfying
 `R p q` equals the sum, over `p ∈ T`, of the number of `q ∈ T` with `R p q` — a `Finset.card`
-counterpart of `Finset.sum_boole`-style double counting. General-purpose (no dependency on
-`Pairing`/`Crosses` or any other project-specific structure); originally proved inline in
-`Combinatorics/PerfectPairing/Crossing.lean`'s `card_filter_crosses_product_eq_sum` for the
-specific relation `Crosses`, which now specializes this lemma instead.
+counterpart of `Finset.sum_boole`-style double counting. This statement is general-purpose and
+independent of project-specific pairing or crossing structures.
 -/
 
 theorem Finset.card_filter_product_eq_sum_card_filter {α : Type*}

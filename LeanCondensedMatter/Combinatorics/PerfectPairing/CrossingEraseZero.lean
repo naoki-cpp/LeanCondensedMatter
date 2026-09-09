@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
+import LeanCondensedMatter.Combinatorics.Common.FinsetProduct
 
 set_option linter.style.header false
 
@@ -82,7 +83,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
   have hsplit : S = insert F A := (Finset.insert_erase hFmem).symm
   have hsum : pairing.crossingCount =
       (S.filter (fun q => Crosses F q)).card + ∑ p ∈ A, (S.filter (fun q => Crosses p q)).card := by
-    rw [Pairing.crossingCount, ← hS, card_filter_crosses_product_eq_sum, hsplit,
+    rw [Pairing.crossingCount, ← hS, Finset.card_filter_product_eq_sum_card_filter, hsplit,
       Finset.sum_insert hFnotA, ← hsplit]
   have hFterm : (S.filter (fun q => Crosses F q)).card = pairing.crossingsWithFirstPair := rfl
   have hAterm : ∀ p ∈ A, S.filter (fun q => Crosses p q) = A.filter (fun q => Crosses p q) := by
@@ -95,7 +96,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
     exact Finset.sum_congr rfl fun p hp => by rw [hAterm p hp]
   have hAcross : ((A.product A).filter (fun pp => Crosses pp.1 pp.2)).card =
       ∑ p ∈ A, (A.filter (fun q => Crosses p q)).card :=
-    card_filter_crosses_product_eq_sum A
+    Finset.card_filter_product_eq_sum_card_filter A Crosses
   have hbij :
       ((pairing.eraseZeroPair.pairs.product pairing.eraseZeroPair.pairs).filter
         (fun pp => Crosses pp.1 pp.2)).card =
