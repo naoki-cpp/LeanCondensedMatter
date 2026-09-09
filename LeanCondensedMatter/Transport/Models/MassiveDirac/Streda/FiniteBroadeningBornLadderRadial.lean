@@ -93,8 +93,8 @@ private theorem integral_polarPauli_xyTrace_eq
           polarPauliOperator aR bR dR θ)) =
       2 * q *
         inPlaneLadderAction
-          (pauliRungAngularXCoefficient aL aR dL dR)
-          (pauliRungAngularYCoefficient aL aR dL dR)
+          (pauliRungAngularCoefficient aL aR dL dR .x)
+          (pauliRungAngularCoefficient aL aR dL dR .y)
           coefficients .x := by
   let rung : ℝ → DiracOperator := fun θ =>
     polarPauliOperator aL bL dL θ *
@@ -126,18 +126,13 @@ private theorem integral_polarPauli_xyTrace_eq
     simp [L, rung, mul_assoc]
   rw [hfun]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
-  let x : ℂ :=
-    inPlaneLadderAction
-      (pauliRungAngularXCoefficient aL aR dL dR)
-      (pauliRungAngularYCoefficient aL aR dL dR) coefficients .x
-  let y : ℂ :=
-    inPlaneLadderAction
-      (pauliRungAngularXCoefficient aL aR dL dR)
-      (pauliRungAngularYCoefficient aL aR dL dR) coefficients .y
+  let coefficientsRung := pauliRungAngularCoefficient aL aR dL dR
+  let x : ℂ := inPlaneLadderAction (coefficientsRung .x) (coefficientsRung .y) coefficients .x
+  let y : ℂ := inPlaneLadderAction (coefficientsRung .x) (coefficientsRung .y) coefficients .y
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
-    simpa [x, y, rung, hsource] using
+    simpa [x, y, coefficientsRung, rung, hsource] using
       (integral_polarPauliOperator_inPlane_eq
         aL aR bL bR dL dR (coefficients .x) (coefficients .y))
   rw [hrungIntegral]
@@ -183,17 +178,14 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let raRung := pauliRungAngularCoefficient aR aA dR dA
+  let rrRung := pauliRungAngularCoefficient aR aR dR dR
+  let aaRung := pauliRungAngularCoefficient aA aA dA dA
   2 * q ^ 2 *
-    (inPlaneLadderAction
-        (pauliRungAngularXCoefficient aR aA dR dA)
-        (pauliRungAngularYCoefficient aR aA dR dA) dressed .x -
+    (inPlaneLadderAction (raRung .x) (raRung .y) dressed .x -
       (1 / 2 : ℂ) *
-        (inPlaneLadderAction
-            (pauliRungAngularXCoefficient aR aR dR dR)
-            (pauliRungAngularYCoefficient aR aR dR dR) bare .x +
-          inPlaneLadderAction
-            (pauliRungAngularXCoefficient aA aA dA dA)
-            (pauliRungAngularYCoefficient aA aA dA dA) bare .x))
+        (inPlaneLadderAction (rrRung .x) (rrRung .y) bare .x +
+          inPlaneLadderAction (aaRung .x) (aaRung .y) bare .x))
 
 /-- Every source-indexed finite-`η` dressed Středa angular trace equals the same canonical radial
 coefficient as an unconditional algebraic identity. -/
