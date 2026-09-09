@@ -145,17 +145,18 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
             (p * Real.cos θ) (p * Real.sin θ) probeEnergy disorderStrength hbar) =
         fun θ : ℝ =>
           polarPauliOperator aR bR dR θ *
-            matrixOperator ((1 : ℂ) • sigmaX + (0 : ℂ) • sigmaY) *
+            inPlanePauliVertexOperator inPlaneLadderBareXSource *
             polarPauliOperator aA bA dA θ := by
     funext θ
     rw [continuumBornPauliGreenOperator_polar_eq,
       continuumBornPauliGreenOperator_polar_eq]
-    simp [aR, aA, bR, bA, dR, dA]
+    simp [aR, aA, bR, bA, dR, dA, inPlanePauliVertexOperator,
+      inPlaneLadderBareXSource, inPlaneCoefficientVector]
   rw [hpolar]
   simpa [continuumBornRetardedAdvancedPauliXAngularCoefficient,
+    inPlanePauliVertexOperator, inPlaneLadderBareXSource, inPlaneCoefficientVector,
     aR, aA, bR, bA, dR, dA] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA
-      (fun | .x => (1 : ℂ) | .y => 0))
+    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA inPlaneLadderBareXSource)
 
 /-- Real numerator multiplying the common retarded-advanced denominator product in the selected
 output direction. -/
