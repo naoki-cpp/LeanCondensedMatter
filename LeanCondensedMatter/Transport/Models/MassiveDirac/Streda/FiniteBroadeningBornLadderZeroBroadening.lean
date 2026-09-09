@@ -30,7 +30,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
   inPlaneCurrentOperator e v (dressed .x) (dressed .y)
 
 /-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built

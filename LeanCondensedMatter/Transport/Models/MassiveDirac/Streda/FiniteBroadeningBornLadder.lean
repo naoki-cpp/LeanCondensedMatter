@@ -46,7 +46,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
   inPlaneCurrentOperator e v (dressed .x) (dressed .y)
 
 @[simp]
