@@ -145,33 +145,6 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
   rw [sourceCoupled_responseIntegral_eq system expectation f B A t] at hgeneral
   exact hgeneral
 
-/-- Density-operator specialization of the scalar-source Kubo formula. -/
-theorem hasDerivAt_densityOperatorSourceCoupledExpectation_zero_of_bound_kubo
-    (ρ : DensityOperator H)
-    (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
-    (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
-    (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B) s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β)
-    (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
-    HasDerivAt
-      (fun lam : ℝ => ρ.expectation
-        (timeDependentPerturbedObservable system
-          (sourceCoupledPerturbation f B) A lam t))
-      ((Complex.I / (system.hbar : ℂ)) •
-        ∫ s in (0 : ℝ)..t,
-          (f s : ℂ) *
-            ρ.expectation
-              (heisenbergEvolution system A t * heisenbergEvolution system B s -
-                heisenbergEvolution system B s * heisenbergEvolution system A t))
-      0 := by
-  simpa using
-    (hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
-      system ρ.toNormalizedExpectation f hB A hM hV ht hInt)
-
 end
 end LinearResponse
 end QuantumTheory
