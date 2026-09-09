@@ -97,7 +97,7 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
 /-- The `σₓ` trace selects the `x` coefficient of an in-plane Pauli combination. -/
 theorem trace_scaledPauliX_mul_inPlane (q x y : ℂ) :
     Matrix.trace ((q • pauliX) * (x • pauliX + y • pauliY)) = 2 * q * x := by
-  simpa [pauliCombination] using
+  simpa [pauliCombination, mul_assoc] using
     (trace_pauliCombination_mul_pauliCombination
       (fun | .x => q | .y => 0 | .z => 0)
       (fun | .x => x | .y => y | .z => 0))
