@@ -40,13 +40,9 @@ private theorem forceMatrixTraceNumerator_radial
     (band : Band) (v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
     forceMatrixTraceNumerator .x .y band v m p 0 =
       (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
-  have hEc : (((energy v m p 0 : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  cases band <;>
-    simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace,
-      Matrix.mul_apply, velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
-    field_simp [hEc] <;>
-    ring_nf
+  rw [forceMatrixTraceNumerator_xy_eq band v m p 0 hE]
+  simp
+  ring
 
 private theorem currentBandBlockTrace_interband_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
