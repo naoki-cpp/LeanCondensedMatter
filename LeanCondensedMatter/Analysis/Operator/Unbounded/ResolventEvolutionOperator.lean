@@ -62,13 +62,6 @@ noncomputable def resolventEvolutionStrongLimitLinearMap
   map_add' := resolventEvolutionStrongLimit_add A hA t
   map_smul' := resolventEvolutionStrongLimit_smul A hA t
 
-@[simp]
-theorem resolventEvolutionStrongLimitLinearMap_apply
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
-    resolventEvolutionStrongLimitLinearMap A hA t x =
-      resolventEvolutionStrongLimit A hA t x := by
-  rfl
-
 /-- The strong-limit Stone evolution preserves vector norms. -/
 theorem resolventEvolutionStrongLimit_apply_norm
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
