@@ -41,7 +41,9 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadening
     (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
       v m probeEnergy disorderStrength hbar pMax)
 
-private theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
+/-- The finite-`η` canonical current-rung vector converges to its fixed-disorder zero-broadening
+boundary. -/
+theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
