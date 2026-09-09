@@ -81,6 +81,40 @@ components. No complex conjugation is introduced. -/
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
 
+/-- Pauli synthesis commutes with scalar multiplication of the indexed coefficient family. -/
+@[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
+    pauliCombination (c • u) = c • pauliCombination u := by
+  simp [pauliCombination, smul_add, smul_smul]
+
+/-- Every Pauli synthesis is traceless. -/
+@[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
+    Matrix.trace (pauliCombination u) = 0 := by
+  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ]
+
+/-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
+theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
+    Matrix.trace (pauliCombination u * pauliCombination v) =
+      2 * dotProduct u v := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ,
+    dotProduct, sum_pauliAxis]
+  ring_nf
+  simp [hI]
+
+/-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
+`(I + v·σ)/2`. -/
+theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination
+    (u v : PauliAxis → ℂ) :
+    Matrix.trace
+        (((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) *
+          ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination v))) =
+      (1 + dotProduct u v) / 2 := by
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  rw [add_mul, one_mul, mul_add, mul_one]
+  simp [trace_pauliCombination_mul_pauliCombination]
+  ring
+
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =
