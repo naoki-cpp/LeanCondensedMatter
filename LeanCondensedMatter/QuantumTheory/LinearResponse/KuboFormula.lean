@@ -303,31 +303,6 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     system expectation V A t hInt] at h
   exact h
 
-/-- Density-operator specialization of the general bounded Kubo formula. -/
-theorem hasDerivAt_densityOperatorExpectation_zero_of_bound_kubo
-    (ρ : DensityOperator H)
-    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
-    (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
-    (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β)
-    (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system V) MeasureTheory.volume 0 t) :
-    HasDerivAt
-      (fun lam : ℝ => ρ.expectation
-        (timeDependentPerturbedObservable system V A lam t))
-      ((-(Complex.I / (system.hbar : ℂ))) •
-        ∫ s in (0 : ℝ)..t,
-          ρ.expectation
-            (heisenbergEvolution system A t *
-                timeDependentInteractionPerturbation system V s -
-              timeDependentInteractionPerturbation system V s *
-                heisenbergEvolution system A t))
-      0 := by
-  simpa using
-    (hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
-      system ρ.toNormalizedExpectation hVself A hM hV ht hInt)
-
 end
 end LinearResponse
 end QuantumTheory
