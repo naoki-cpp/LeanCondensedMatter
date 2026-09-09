@@ -95,11 +95,10 @@ private def finiteBroadeningLongitudinalMomentumEndpointForm
   let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let kx := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-    .x .x v m probeEnergy broadening disorderStrength hbar pMax
-  let ky := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-    .y .x v m probeEnergy broadening disorderStrength hbar pMax
-  2 * q ^ 2 * pref⁻¹ * inPlaneLadderAction kx ky solved .x -
+  let rung : InPlaneCoefficientVector := fun output =>
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+      output .x v m probeEnergy broadening disorderStrength hbar pMax
+  2 * q ^ 2 * pref⁻¹ * inPlaneLadderAction rung solved .x -
     (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
       (finiteBroadeningSameSideRadialEndpoint
           .retarded v m probeEnergy broadening disorderStrength hbar pMax +
@@ -113,11 +112,10 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMome
   let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
-  let kx := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    .x .x v m probeEnergy disorderStrength hbar pMax
-  let ky := finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    .y .x v m probeEnergy disorderStrength hbar pMax
-  2 * q ^ 2 * pref⁻¹ * inPlaneLadderAction kx ky solved .x -
+  let rung : InPlaneCoefficientVector := fun output =>
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+      output .x v m probeEnergy disorderStrength hbar pMax
+  2 * q ^ 2 * pref⁻¹ * inPlaneLadderAction rung solved .x -
     (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
       (zeroBroadeningSameSideRadialEndpoint
           .retarded v m probeEnergy disorderStrength hbar pMax +
@@ -206,7 +204,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
+      inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x,
+      inPlaneCoefficientVector]
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
     have hprefEq :
