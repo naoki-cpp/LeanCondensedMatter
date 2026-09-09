@@ -38,63 +38,6 @@ rung. -/
 def pauliRungAngularYCoefficient (aR aA dR dA : ℂ) : ℂ :=
   (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)
 
-private def polarRaInPlaneScalarCoefficient
-    (aR aA bR bA dR dA alpha beta : ℂ) (θ : ℝ) : ℂ :=
-  let c := ((Real.cos θ : ℝ) : ℂ)
-  let s := ((Real.sin θ : ℝ) : ℂ)
-  let common := aA * bR + aR * bA
-  let skew := bA * dR - bR * dA
-  alpha * (c * common + Complex.I * s * skew) +
-    beta * (s * common - Complex.I * c * skew)
-
-private def polarRaInPlaneXCoefficient
-    (aR aA bR bA dR dA alpha beta : ℂ) (θ : ℝ) : ℂ :=
-  let c := ((Real.cos θ : ℝ) : ℂ)
-  let s := ((Real.sin θ : ℝ) : ℂ)
-  let core := aR * aA - dR * dA
-  let delta := aA * dR - aR * dA
-  let quad := bR * bA * (c ^ 2 - s ^ 2)
-  let mix := 2 * bR * bA * c * s
-  alpha * (core + quad) + beta * ((-Complex.I) * delta + mix)
-
-private def polarRaInPlaneYCoefficient
-    (aR aA bR bA dR dA alpha beta : ℂ) (θ : ℝ) : ℂ :=
-  let c := ((Real.cos θ : ℝ) : ℂ)
-  let s := ((Real.sin θ : ℝ) : ℂ)
-  let core := aR * aA - dR * dA
-  let delta := aA * dR - aR * dA
-  let quad := bR * bA * (c ^ 2 - s ^ 2)
-  let mix := 2 * bR * bA * c * s
-  alpha * (Complex.I * delta + mix) + beta * (core - quad)
-
-private def polarRaInPlaneZCoefficient
-    (aR aA bR bA dR dA alpha beta : ℂ) (θ : ℝ) : ℂ :=
-  let c := ((Real.cos θ : ℝ) : ℂ)
-  let s := ((Real.sin θ : ℝ) : ℂ)
-  let sum := bA * dR + bR * dA
-  let skew := aR * bA - aA * bR
-  alpha * (c * sum + Complex.I * s * skew) +
-    beta * (s * sum - Complex.I * c * skew)
-
-private theorem polarPauliMatrix_mul_inPlane_mul_polarPauliMatrix
-    (aR aA bR bA dR dA alpha beta : ℂ) (θ : ℝ) :
-    polarPauliMatrix aR bR dR θ * (alpha • sigmaX + beta • sigmaY) *
-        polarPauliMatrix aA bA dA θ =
-      polarRaInPlaneScalarCoefficient aR aA bR bA dR dA alpha beta θ • (1 : Matrix2) +
-        polarRaInPlaneXCoefficient aR aA bR bA dR dA alpha beta θ • sigmaX +
-        polarRaInPlaneYCoefficient aR aA bR bA dR dA alpha beta θ • sigmaY +
-        polarRaInPlaneZCoefficient aR aA bR bA dR dA alpha beta θ • sigmaZ := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    rw [pow_two, Complex.I_mul_I]
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [polarPauliMatrix, polarRaInPlaneScalarCoefficient,
-      polarRaInPlaneXCoefficient, polarRaInPlaneYCoefficient,
-      polarRaInPlaneZCoefficient, Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
-    ring_nf <;>
-    simp [hI] <;>
-    ring
-
 private theorem integral_polar_cos_sin_linear_zero (cCos cSin : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
@@ -138,50 +81,6 @@ private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
     integral_complex_cos_mul_sin_zero_two_pi]
   simp
 
-private theorem integral_polar_pauli_decomposition
-    (scalarCoefficient xCoefficient yCoefficient zCoefficient : ℝ → ℂ)
-    (hscalarContinuous : Continuous scalarCoefficient)
-    (hxContinuous : Continuous xCoefficient)
-    (hyContinuous : Continuous yCoefficient)
-    (hzContinuous : Continuous zCoefficient)
-    (scalarIntegral xIntegral yIntegral zIntegral : ℂ)
-    (hScalarIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = scalarIntegral)
-    (hXIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) = xIntegral)
-    (hYIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), yCoefficient θ) = yIntegral)
-    (hZIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), zCoefficient θ) = zIntegral) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-        xCoefficient θ • matrixOperator sigmaX +
-        yCoefficient θ • matrixOperator sigmaY +
-        zCoefficient θ • matrixOperator sigmaZ) =
-      scalarIntegral • (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-        xIntegral • matrixOperator sigmaX +
-        yIntegral • matrixOperator sigmaY +
-        zIntegral • matrixOperator sigmaZ := by
-  have hscalar : IntervalIntegrable
-      (fun θ : ℝ => scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert))
-      volume 0 (2 * Real.pi) := by
-    exact (hscalarContinuous.smul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hx : IntervalIntegrable
-      (fun θ : ℝ => xCoefficient θ • matrixOperator sigmaX) volume 0 (2 * Real.pi) := by
-    exact (hxContinuous.smul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hy : IntervalIntegrable
-      (fun θ : ℝ => yCoefficient θ • matrixOperator sigmaY) volume 0 (2 * Real.pi) := by
-    exact (hyContinuous.smul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hz : IntervalIntegrable
-      (fun θ : ℝ => zCoefficient θ • matrixOperator sigmaZ) volume 0 (2 * Real.pi) := by
-    exact (hzContinuous.smul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  rw [intervalIntegral.integral_add ((hscalar.add hx).add hy) hz,
-    intervalIntegral.integral_add (hscalar.add hx) hy,
-    intervalIntegral.integral_add hscalar hx]
-  rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const,
-    intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
-
 /-- The full-angle retarded-advanced polar Pauli rung acts on in-plane coefficients by the
 repository-oriented rotation matrix `[[X,-Y],[Y,X]]`. -/
 theorem integral_polarPauliOperator_inPlane_eq
@@ -195,13 +94,25 @@ theorem integral_polarPauliOperator_inPlane_eq
         (pauliRungAngularYCoefficient aR aA dR dA * alpha +
           pauliRungAngularXCoefficient aR aA dR dA * beta) • matrixOperator sigmaY := by
   let scalarCoefficient : ℝ → ℂ := fun θ =>
-    polarRaInPlaneScalarCoefficient aR aA bR bA dR dA alpha beta θ
+    let c := ((Real.cos θ : ℝ) : ℂ)
+    let s := ((Real.sin θ : ℝ) : ℂ)
+    alpha * (c * (aA * bR + aR * bA) + Complex.I * s * (bA * dR - bR * dA)) +
+      beta * (s * (aA * bR + aR * bA) - Complex.I * c * (bA * dR - bR * dA))
   let xCoefficient : ℝ → ℂ := fun θ =>
-    polarRaInPlaneXCoefficient aR aA bR bA dR dA alpha beta θ
+    let c := ((Real.cos θ : ℝ) : ℂ)
+    let s := ((Real.sin θ : ℝ) : ℂ)
+    alpha * (aR * aA - dR * dA + bR * bA * (c ^ 2 - s ^ 2)) +
+      beta * ((-Complex.I) * (aA * dR - aR * dA) + 2 * bR * bA * c * s)
   let yCoefficient : ℝ → ℂ := fun θ =>
-    polarRaInPlaneYCoefficient aR aA bR bA dR dA alpha beta θ
+    let c := ((Real.cos θ : ℝ) : ℂ)
+    let s := ((Real.sin θ : ℝ) : ℂ)
+    alpha * (Complex.I * (aA * dR - aR * dA) + 2 * bR * bA * c * s) +
+      beta * (aR * aA - dR * dA - bR * bA * (c ^ 2 - s ^ 2))
   let zCoefficient : ℝ → ℂ := fun θ =>
-    polarRaInPlaneZCoefficient aR aA bR bA dR dA alpha beta θ
+    let c := ((Real.cos θ : ℝ) : ℂ)
+    let s := ((Real.sin θ : ℝ) : ℂ)
+    alpha * (c * (bA * dR + bR * dA) + Complex.I * s * (aR * bA - aA * bR)) +
+      beta * (s * (bA * dR + bR * dA) - Complex.I * c * (aR * bA - aA * bR))
   have hpointwise :
       (fun θ : ℝ =>
         polarPauliOperator aR bR dR θ *
@@ -213,6 +124,49 @@ theorem integral_polarPauliOperator_inPlane_eq
           yCoefficient θ • matrixOperator sigmaY +
           zCoefficient θ • matrixOperator sigmaZ := by
     funext θ
+    let uR : PauliAxis → ℂ
+      | .x => ((Real.cos θ : ℝ) : ℂ) * bR
+      | .y => ((Real.sin θ : ℝ) : ℂ) * bR
+      | .z => dR
+    let uA : PauliAxis → ℂ
+      | .x => ((Real.cos θ : ℝ) : ℂ) * bA
+      | .y => ((Real.sin θ : ℝ) : ℂ) * bA
+      | .z => dA
+    let vertex : PauliAxis → ℂ
+      | .x => alpha
+      | .y => beta
+      | .z => 0
+    have hR :
+        polarPauliMatrix aR bR dR θ =
+          aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
+      simp [polarPauliMatrix, uR, InternalSpace.pauliCombination]
+      module
+    have hA :
+        polarPauliMatrix aA bA dA θ =
+          aA • (1 : Matrix2) + InternalSpace.pauliCombination uA := by
+      simp [polarPauliMatrix, uA, InternalSpace.pauliCombination]
+      module
+    have hVertex :
+        alpha • sigmaX + beta • sigmaY =
+          (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
+      simp [vertex, InternalSpace.pauliCombination]
+    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+      simpa [pow_two] using Complex.I_mul_I
+    have hmatrix :
+        polarPauliMatrix aR bR dR θ * (alpha • sigmaX + beta • sigmaY) *
+            polarPauliMatrix aA bA dA θ =
+          scalarCoefficient θ • (1 : Matrix2) +
+            xCoefficient θ • sigmaX +
+            yCoefficient θ • sigmaY +
+            zCoefficient θ • sigmaZ := by
+      rw [hR, hVertex, hA,
+        InternalSpace.pauliAffine_mul_pauliAffine,
+        InternalSpace.pauliAffine_mul_pauliAffine]
+      simp [uR, uA, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
+        InternalSpace.pauliCombination, scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
+      ring_nf
+      simp [hI]
+      module
     unfold polarPauliOperator
     change
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
@@ -221,10 +175,8 @@ theorem integral_polarPauliOperator_inPlane_eq
           (alpha • sigmaX + beta • sigmaY) *
         (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
           (polarPauliMatrix aA bA dA θ) = _
-    rw [← map_mul, ← map_mul,
-      polarPauliMatrix_mul_inPlane_mul_polarPauliMatrix]
-    simp [scalarCoefficient, xCoefficient, yCoefficient, zCoefficient,
-      matrixOperator, map_add, map_smul]
+    rw [← map_mul, ← map_mul, hmatrix]
+    simp [matrixOperator, map_add, map_smul]
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
     convert integral_polar_cos_sin_linear_zero
@@ -234,7 +186,7 @@ theorem integral_polarPauliOperator_inPlane_eq
         beta * (aA * bR + aR * bA)) using 1
     apply intervalIntegral.integral_congr
     intro θ _
-    simp [scalarCoefficient, polarRaInPlaneScalarCoefficient]
+    simp [scalarCoefficient]
     ring
   have hXIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) =
@@ -247,7 +199,7 @@ theorem integral_polarPauliOperator_inPlane_eq
       (2 * bR * bA * beta) using 1
     · apply intervalIntegral.integral_congr
       intro θ _
-      simp [xCoefficient, polarRaInPlaneXCoefficient]
+      simp [xCoefficient]
       ring
     · simp [pauliRungAngularXCoefficient, pauliRungAngularYCoefficient]
       ring
@@ -262,7 +214,7 @@ theorem integral_polarPauliOperator_inPlane_eq
       (2 * bR * bA * alpha) using 1
     · apply intervalIntegral.integral_congr
       intro θ _
-      simp [yCoefficient, polarRaInPlaneYCoefficient]
+      simp [yCoefficient]
       ring
     · simp [pauliRungAngularXCoefficient, pauliRungAngularYCoefficient]
       ring
@@ -275,30 +227,36 @@ theorem integral_polarPauliOperator_inPlane_eq
         beta * (bA * dR + bR * dA)) using 1
     apply intervalIntegral.integral_congr
     intro θ _
-    simp [zCoefficient, polarRaInPlaneZCoefficient]
+    simp [zCoefficient]
     ring
-  have hscalarContinuous : Continuous scalarCoefficient := by
-    dsimp [scalarCoefficient, polarRaInPlaneScalarCoefficient]
+  have hscalar : IntervalIntegrable
+      (fun θ : ℝ => scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert))
+      volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    dsimp [scalarCoefficient]
     fun_prop
-  have hxContinuous : Continuous xCoefficient := by
-    dsimp [xCoefficient, polarRaInPlaneXCoefficient]
+  have hx : IntervalIntegrable
+      (fun θ : ℝ => xCoefficient θ • matrixOperator sigmaX) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    dsimp [xCoefficient]
     fun_prop
-  have hyContinuous : Continuous yCoefficient := by
-    dsimp [yCoefficient, polarRaInPlaneYCoefficient]
+  have hy : IntervalIntegrable
+      (fun θ : ℝ => yCoefficient θ • matrixOperator sigmaY) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    dsimp [yCoefficient]
     fun_prop
-  have hzContinuous : Continuous zCoefficient := by
-    dsimp [zCoefficient, polarRaInPlaneZCoefficient]
+  have hz : IntervalIntegrable
+      (fun θ : ℝ => zCoefficient θ • matrixOperator sigmaZ) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    dsimp [zCoefficient]
     fun_prop
   rw [hpointwise]
-  rw [integral_polar_pauli_decomposition
-    scalarCoefficient xCoefficient yCoefficient zCoefficient
-    hscalarContinuous hxContinuous hyContinuous hzContinuous
-    0
-    (pauliRungAngularXCoefficient aR aA dR dA * alpha -
-      pauliRungAngularYCoefficient aR aA dR dA * beta)
-    (pauliRungAngularYCoefficient aR aA dR dA * alpha +
-      pauliRungAngularXCoefficient aR aA dR dA * beta)
-    0 hScalarIntegral hXIntegral hYIntegral hZIntegral]
+  rw [intervalIntegral.integral_add ((hscalar.add hx).add hy) hz,
+    intervalIntegral.integral_add (hscalar.add hx) hy,
+    intervalIntegral.integral_add hscalar hx]
+  rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const,
+    intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
+  rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
   simp
 
 end

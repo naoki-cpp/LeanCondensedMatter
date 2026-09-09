@@ -52,6 +52,12 @@ function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
   u .x • pauliX + u .y • pauliY + u .z • pauliZ
 
+/-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families. -/
+def pauliCross (u v : PauliAxis → ℂ) : PauliAxis → ℂ
+  | .x => u .y * v .z - u .z * v .y
+  | .y => u .z * v .x - u .x * v .z
+  | .z => u .x * v .y - u .y * v .x
+
 @[simp] theorem pauliX_zero_zero : pauliX 0 0 = 0 := rfl
 @[simp] theorem pauliX_zero_one : pauliX 0 1 = 1 := rfl
 @[simp] theorem pauliX_one_zero : pauliX 1 0 = 1 := rfl
@@ -73,10 +79,44 @@ components. No complex conjugation is introduced. -/
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
 
+/-- Pauli synthesis commutes with addition of indexed coefficient families. -/
+@[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
+    pauliCombination (u + v) = pauliCombination u + pauliCombination v := by
+  simp [pauliCombination, add_smul]
+  module
+
 /-- Pauli synthesis commutes with scalar multiplication of the indexed coefficient family. -/
 @[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
     pauliCombination (c • u) = c • pauliCombination u := by
   simp [pauliCombination, smul_add, smul_smul]
+
+/-- Product of two synthesized Pauli vectors:
+`(u·σ)(v·σ) = (u·v) I + i (u×v)·σ`. -/
+theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
+    pauliCombination u * pauliCombination v =
+      dotProduct u v • (1 : PauliMatrix) +
+        Complex.I • pauliCombination (pauliCross u v) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliCombination, pauliCross, Matrix.mul_apply, pauliX, pauliY, pauliZ,
+      dotProduct, sum_pauliAxis] <;>
+    ring_nf <;>
+    simp [hI] <;>
+    ring
+
+/-- Product of two scalar-plus-Pauli forms. -/
+theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
+    (a • (1 : PauliMatrix) + pauliCombination u) *
+        (b • (1 : PauliMatrix) + pauliCombination v) =
+      (a * b + dotProduct u v) • (1 : PauliMatrix) +
+        pauliCombination (a • v + b • u + Complex.I • pauliCross u v) := by
+  rw [add_mul, mul_add, mul_add, pauliCombination_mul_pauliCombination]
+  simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul]
+  rw [pauliCombination_add, pauliCombination_add,
+    pauliCombination_smul, pauliCombination_smul, pauliCombination_smul]
+  module
 
 /-- Every Pauli synthesis is traceless. -/
 @[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
@@ -129,14 +169,12 @@ theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentit
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =
       dotProduct u u • (1 : PauliMatrix) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [pauliCombination, Matrix.mul_apply, pauliX, pauliY, pauliZ,
-      dotProduct, sum_pauliAxis] <;>
-    ring_nf <;>
-    simp [hI]
+  rw [pauliCombination_mul_pauliCombination]
+  have hcross : pauliCross u u = 0 := by
+    funext axis
+    cases axis <;> simp [pauliCross] <;> ring
+  rw [hcross]
+  simp [pauliCombination]
 
 /-- Multiplying opposite-sign Pauli shifts eliminates the Pauli part and leaves the quadratic
 bilinear invariant. -/
