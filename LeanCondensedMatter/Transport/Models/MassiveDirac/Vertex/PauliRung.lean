@@ -84,16 +84,44 @@ private theorem polarPauliMatrix_mul_inPlane_mul_polarPauliMatrix
         polarRaInPlaneXCoefficient aR aA bR bA dR dA alpha beta θ • sigmaX +
         polarRaInPlaneYCoefficient aR aA bR bA dR dA alpha beta θ • sigmaY +
         polarRaInPlaneZCoefficient aR aA bR bA dR dA alpha beta θ • sigmaZ := by
+  let uR : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bR
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bR
+    | .z => dR
+  let uA : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bA
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bA
+    | .z => dA
+  let vertex : PauliAxis → ℂ
+    | .x => alpha
+    | .y => beta
+    | .z => 0
+  have hR :
+      polarPauliMatrix aR bR dR θ =
+        aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
+    simp [polarPauliMatrix, uR, InternalSpace.pauliCombination]
+    module
+  have hA :
+      polarPauliMatrix aA bA dA θ =
+        aA • (1 : Matrix2) + InternalSpace.pauliCombination uA := by
+    simp [polarPauliMatrix, uA, InternalSpace.pauliCombination]
+    module
+  have hVertex :
+      alpha • sigmaX + beta • sigmaY =
+        (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
+    simp [vertex, InternalSpace.pauliCombination]
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    rw [pow_two, Complex.I_mul_I]
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [polarPauliMatrix, polarRaInPlaneScalarCoefficient,
-      polarRaInPlaneXCoefficient, polarRaInPlaneYCoefficient,
-      polarRaInPlaneZCoefficient, Matrix.mul_apply, sigmaX, sigmaY, sigmaZ] <;>
-    ring_nf <;>
-    simp [hI] <;>
-    ring
+    simpa [pow_two] using Complex.I_mul_I
+  rw [hR, hVertex, hA,
+    InternalSpace.pauliAffine_mul_pauliAffine,
+    InternalSpace.pauliAffine_mul_pauliAffine]
+  simp [uR, uA, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
+    InternalSpace.pauliCombination, polarRaInPlaneScalarCoefficient,
+    polarRaInPlaneXCoefficient, polarRaInPlaneYCoefficient,
+    polarRaInPlaneZCoefficient]
+  ring_nf
+  simp [hI]
+  module
 
 private theorem integral_polar_cos_sin_linear_zero (cCos cSin : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
