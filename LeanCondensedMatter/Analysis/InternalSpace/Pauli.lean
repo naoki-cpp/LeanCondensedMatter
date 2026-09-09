@@ -1,3 +1,4 @@
+import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
@@ -51,6 +52,14 @@ def pauliZ : PauliMatrix :=
 function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
   u .x • pauliX + u .y • pauliY + u .z • pauliZ
+
+/-- A Pauli synthesis with real axis coefficients is Hermitian. -/
+theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
+    (pauliCombination (fun axis => (u axis : ℂ))).IsHermitian := by
+  apply Matrix.IsHermitian.ext
+  intro i j
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliCombination, pauliX, pauliY, pauliZ]
 
 /-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families. -/
 def pauliCross (u v : PauliAxis → ℂ) : PauliAxis → ℂ

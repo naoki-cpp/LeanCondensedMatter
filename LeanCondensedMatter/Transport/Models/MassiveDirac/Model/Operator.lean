@@ -115,19 +115,40 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
 theorem hamiltonian_isHermitian (v m px py : ℝ) :
     (hamiltonian v m px py).IsHermitian := by
-  apply Matrix.IsHermitian.ext
-  intro i j
-  fin_cases i <;> fin_cases j <;>
-    simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
+  rw [hamiltonian_eq_pauliCombination]
+  let u : PauliAxis → ℝ
+    | .x => v * px
+    | .y => v * py
+    | .z => m
+  simpa [InternalSpace.pauliCombination, diracPauliCoefficients, u] using
+    InternalSpace.pauliCombination_ofReal_isHermitian u
 
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
-  cases direction <;>
-    apply Matrix.IsHermitian.ext <;>
-    intro i j <;>
-    fin_cases i <;> fin_cases j <;>
-    simp [current, velocity, directionPauli, sigmaX, sigmaY]
+  cases direction
+  · let u : PauliAxis → ℝ
+      | .x => -e * v
+      | .y => 0
+      | .z => 0
+    have hcurrent :
+        current .x e v =
+          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      module
+    rw [hcurrent]
+    exact InternalSpace.pauliCombination_ofReal_isHermitian u
+  · let u : PauliAxis → ℝ
+      | .x => 0
+      | .y => -e * v
+      | .z => 0
+    have hcurrent :
+        current .y e v =
+          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      module
+    rw [hcurrent]
+    exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator, as required by the generic free-system API. -/
