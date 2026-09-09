@@ -36,27 +36,6 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
   exact lt_of_lt_of_le hradius
     (two_mul_abs_mass_le_abs_interbandEnergyGap band v m px py)
 
-private theorem forceMatrixTraceNumerator_radial
-    (band : Band) (v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    forceMatrixTraceNumerator .x .y band v m p 0 =
-      (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
-  have hEc : (((energy v m p 0 : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  cases band <;>
-    simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace,
-      Matrix.mul_apply, velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
-    field_simp [hEc] <;>
-    ring_nf
-
-private theorem currentBandBlockTrace_interband_radial
-    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    currentBandBlockTrace .x .y band (oppositeBand band) e v m p 0 =
-      (((e ^ 2 : ℝ) : ℂ)) *
-        (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
-  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator .x .y,
-    forceMatrixTraceNumerator_radial band v m p hE]
-  ring
-
 /-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
@@ -64,10 +43,12 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
   rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
-  have h := currentBandBlockTrace_interband_radial (oppositeBand band) e v m p hE
-  simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at h
-  rw [h]
-  push_cast
+  have hblock :=
+    currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
+      .x .y (oppositeBand band) e v m p 0
+  simp only [oppositeBand_oppositeBand] at hblock
+  rw [hblock, forceMatrixTraceNumerator_xy_eq (oppositeBand band) v m p 0 hE]
+  simp [bandSign_oppositeBand]
   ring
 
 end

@@ -51,23 +51,6 @@ private theorem continuous_polarPauliOperator (a b d : ℂ) :
   unfold polarPauliMatrix
   fun_prop
 
-private theorem finiteTrace_smul_sigmaX_mul_inPlane
-    (q x y : ℂ) :
-    finiteDimensionalOperatorTrace
-        ((q • matrixOperator sigmaX) *
-          (x • matrixOperator sigmaX + y • matrixOperator sigmaY)) =
-      2 * q * x := by
-  have hop :
-      (q • matrixOperator sigmaX) *
-          (x • matrixOperator sigmaX + y • matrixOperator sigmaY) =
-        matrixOperator ((q • sigmaX) * (x • sigmaX + y • sigmaY)) := by
-    simp [matrixOperator]
-  rw [hop]
-  unfold matrixOperator
-  rw [finiteDimensionalOperatorTrace_toEuclideanCLM]
-  simp [Matrix.trace, sigmaX, sigmaY]
-  ring
-
 private theorem intervalIntegrable_polarPauli_rung
     (aL aR bL bR dL dR : ℂ) (coefficients : InPlaneCoefficientVector) :
     IntervalIntegrable
@@ -143,28 +126,43 @@ private theorem integral_polarPauli_xyTrace_eq
     simp [L, rung, mul_assoc]
   rw [hfun]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
+  let x : ℂ :=
+    inPlaneLadderAction
+      (pauliRungAngularXCoefficient aL aR dL dR)
+      (pauliRungAngularYCoefficient aL aR dL dR) coefficients .x
+  let y : ℂ :=
+    inPlaneLadderAction
+      (pauliRungAngularXCoefficient aL aR dL dR)
+      (pauliRungAngularYCoefficient aL aR dL dR) coefficients .y
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
-        inPlaneLadderAction
-            (pauliRungAngularXCoefficient aL aR dL dR)
-            (pauliRungAngularYCoefficient aL aR dL dR)
-            coefficients .x • matrixOperator sigmaX +
-          inPlaneLadderAction
-            (pauliRungAngularXCoefficient aL aR dL dR)
-            (pauliRungAngularYCoefficient aL aR dL dR)
-            coefficients .y • matrixOperator sigmaY := by
-    simpa [rung, hsource] using
+        x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
+    simpa [x, y, rung, hsource] using
       (integral_polarPauliOperator_inPlane_eq
         aL aR bL bR dL dR (coefficients .x) (coefficients .y))
   rw [hrungIntegral]
-  simpa [L] using
-    (finiteTrace_smul_sigmaX_mul_inPlane q
-      (inPlaneLadderAction
-        (pauliRungAngularXCoefficient aL aR dL dR)
-        (pauliRungAngularYCoefficient aL aR dL dR) coefficients .x)
-      (inPlaneLadderAction
-        (pauliRungAngularXCoefficient aL aR dL dR)
-        (pauliRungAngularYCoefficient aL aR dL dR) coefficients .y))
+  change L (x • matrixOperator sigmaX + y • matrixOperator sigmaY) = 2 * q * x
+  have hop :
+      (q • matrixOperator sigmaX) *
+          (x • matrixOperator sigmaX + y • matrixOperator sigmaY) =
+        matrixOperator ((q • sigmaX) * (x • sigmaX + y • sigmaY)) := by
+    simp [matrixOperator]
+  calc
+    L (x • matrixOperator sigmaX + y • matrixOperator sigmaY) =
+        finiteDimensionalOperatorTrace
+          ((q • matrixOperator sigmaX) *
+            (x • matrixOperator sigmaX + y • matrixOperator sigmaY)) := by
+      simp [L]
+    _ = finiteDimensionalOperatorTrace
+          (matrixOperator ((q • sigmaX) * (x • sigmaX + y • sigmaY))) := by
+      rw [hop]
+    _ = Matrix.trace ((q • sigmaX) * (x • sigmaX + y • sigmaY)) := by
+      rw [matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
+    _ = 2 * q * x := by
+      simpa [InternalSpace.pauliCombination, sigmaX, sigmaY, mul_assoc] using
+        (InternalSpace.trace_pauliCombination_mul_pauliCombination
+          (fun | .x => q | .y => 0 | .z => 0)
+          (fun | .x => x | .y => y | .z => 0))
 
 /-- Explicit source-indexed radial coefficient of the finite-`η` RA-dressed Středa angular trace.
 The RA and same-side rungs act on complete dressed and bare in-plane source vectors; the measured

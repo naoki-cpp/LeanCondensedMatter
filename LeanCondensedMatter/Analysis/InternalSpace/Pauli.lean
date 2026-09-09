@@ -67,14 +67,6 @@ def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
 @[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
 @[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
 
-@[simp] private theorem pauliX_mul_inPlane_zero_zero (x y : ℂ) :
-    (pauliX * (x • pauliX + y • pauliY)) 0 0 = x + y * Complex.I := by
-  simp [Matrix.mul_apply, pauliX, pauliY]
-
-@[simp] private theorem pauliX_mul_inPlane_one_one (x y : ℂ) :
-    (pauliX * (x • pauliX + y • pauliY)) 1 1 = x - y * Complex.I := by
-  simp [Matrix.mul_apply, pauliX, pauliY, sub_eq_add_neg]
-
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
 @[simp] theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
@@ -114,6 +106,24 @@ theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombin
   rw [add_mul, one_mul, mul_add, mul_one]
   simp [trace_pauliCombination_mul_pauliCombination]
   ring
+
+/-- The `x-y` Pauli trace through opposite two-level halves depends only on the indexed
+coefficients: the symmetric part is `-uₓuᵧ` and the antisymmetric part is `-i u_z`.
+Scalar vertex factors are included so downstream models do not need to reopen matrix entries. -/
+theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY
+    (u : PauliAxis → ℂ) (a b : ℂ) :
+    Matrix.trace
+        (((1 / 2 : ℂ) • ((1 : PauliMatrix) - pauliCombination u)) *
+          (a • pauliX) *
+          ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) *
+          (b • pauliY)) =
+      a * b * (-(u .x * u .y) - Complex.I * u .z) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination, pauliX, pauliY, pauliZ,
+    sub_eq_add_neg]
+  ring_nf
+  simp [hI]
 
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
