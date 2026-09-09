@@ -213,16 +213,21 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand]
 
+/-- Canonical finite-`η` source-`σₓ` current rung as one in-plane coefficient vector. -/
+noncomputable def finiteCutoffContinuumBornDysonCurrentRungVector
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
+  fun output => finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
+    output .x v m probeEnergy broadening disorderStrength hbar pMax
+
 /-! ## Ladder specialization -/
 
 /-- Regularity condition under which the finite-cutoff Born-Dyson in-plane ladder coefficient vector
 represents the actual fixed-point solution. -/
 def finiteCutoffContinuumBornDysonLadderRegular
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : Prop :=
-  let rung : InPlaneCoefficientVector := fun output =>
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      output .x v m probeEnergy broadening disorderStrength hbar pMax
-  inPlaneLadderDeterminant rung ≠ 0
+  inPlaneLadderDeterminant
+    (finiteCutoffContinuumBornDysonCurrentRungVector
+      v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
 
 /-- At zero disorder the finite-cutoff Born-Dyson ladder determinant is one. -/
 @[simp]
@@ -230,17 +235,17 @@ theorem finiteCutoffContinuumBornDysonLadderRegular_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening 0 hbar pMax := by
-  simp [finiteCutoffContinuumBornDysonLadderRegular, inPlaneLadderDeterminant]
+  simp [finiteCutoffContinuumBornDysonLadderRegular,
+    finiteCutoffContinuumBornDysonCurrentRungVector, inPlaneLadderDeterminant]
 
 /-- Canonical normalized finite-`η` Born-Dyson ladder fixed-point vector for a bare `σₓ` source.
 The interpretation as the actual fixed-point solution requires
 `finiteCutoffContinuumBornDysonLadderRegular`. -/
 noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
-  let rung : InPlaneCoefficientVector := fun output =>
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-      output .x v m probeEnergy broadening disorderStrength hbar pMax
-  inPlaneLadderSolvedVector rung
+  inPlaneLadderSolvedVector
+    (finiteCutoffContinuumBornDysonCurrentRungVector
+      v m probeEnergy broadening disorderStrength hbar pMax)
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
@@ -251,6 +256,7 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
   funext output
   cases output <;>
     simp [finiteCutoffContinuumBornDysonLadderSolvedVector,
+      finiteCutoffContinuumBornDysonCurrentRungVector,
       inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
       inPlaneLadderDeterminant]
 
