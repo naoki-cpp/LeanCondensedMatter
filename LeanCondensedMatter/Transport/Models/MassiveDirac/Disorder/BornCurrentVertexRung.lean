@@ -154,7 +154,8 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
   rw [hpolar]
   simpa [continuumBornRetardedAdvancedPauliXAngularCoefficient,
     aR, aA, bR, bA, dR, dA] using
-    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA (1 : ℂ) 0)
+    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA
+      (fun | .x => (1 : ℂ) | .y => 0))
 
 /-- Real numerator multiplying the common retarded-advanced denominator product in the selected
 output direction. -/
