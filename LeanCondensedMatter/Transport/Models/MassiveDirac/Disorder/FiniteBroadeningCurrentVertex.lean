@@ -71,7 +71,7 @@ noncomputable def finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRu
     finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax *
-      matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
+      inPlanePauliVertexOperator coefficients *
       finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m (p * Real.cos θ) (p * Real.sin θ)
         probeEnergy broadening disorderStrength hbar pMax
@@ -105,13 +105,13 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
         finiteCutoffContinuumBornDysonGreenOperator
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax *
-          matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
+          inPlanePauliVertexOperator coefficients *
           finiteCutoffContinuumBornDysonGreenOperator
             .advanced v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) =
         fun θ : ℝ =>
           polarPauliOperator aR bR dR θ *
-            matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
+            inPlanePauliVertexOperator coefficients *
             polarPauliOperator aA bA dA θ := by
     funext θ
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
