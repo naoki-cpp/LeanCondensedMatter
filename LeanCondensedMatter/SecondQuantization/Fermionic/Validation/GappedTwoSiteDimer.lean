@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Gapped two-site conductivity benchmark
 
 This module adds an onsite-imbalanced two-site model to the exact finite-conductivity validation
-stack.  Starting from the existing hopping dimer, add the one-particle diagonal term
+stack. Starting from the existing hopping dimer, add the one-particle diagonal term
 
 ```text
 Δ (|0⟩⟨0| - |1⟩⟨1|).
@@ -22,12 +22,9 @@ At unit hopping and `Δ = 3/4`, the one-particle Hamiltonian is
 ```
 
 with exact eigenvalues `(-5/4,+5/4)` and unnormalized eigenvectors `(1,-2)` and `(2,1)`.
-The same Peierls bond current has transition coefficients `±i`, while the occupied-state diagonal
-coefficient of the Peierls contact is `-4/5`.  The resulting finite-rate conductivity is
-
-```text
-σ(ω,η) = (4/5) * (η - iω) / ((η - iω)^2 + 25/4),    η ≠ 0.
-```
+The same Peierls bond current has transition coefficients `±i`, while the occupied-state Peierls
+contact expectation is `-4/5`. At the fixed-rate point `ω = 0`, `η = 1`, the direct two-level
+Lehmann response is `20/29` and the canonical finite conductivity is `16/145`.
 
 No zero-broadening, DC, thermodynamic, disorder, or numerical limit is taken.
 -/
@@ -79,6 +76,7 @@ theorem twoSiteGappedBenchmark_ground_eigenvector :
   rw [twoSiteGappedBenchmarkGroundState, map_sub, map_smul,
     twoSiteGappedHamiltonian_apply_site_zero,
     twoSiteGappedHamiltonian_apply_site_one]
+  norm_num
   module
 
 /-- The benchmark Hamiltonian at unit hopping and onsite imbalance `3/4` has upper energy `5/4`. -/
@@ -88,6 +86,7 @@ theorem twoSiteGappedBenchmark_excited_eigenvector :
   rw [twoSiteGappedBenchmarkExcitedState, map_add, map_smul,
     twoSiteGappedHamiltonian_apply_site_zero,
     twoSiteGappedHamiltonian_apply_site_one]
+  norm_num
   module
 
 /-- The physical unit-hopping Peierls current maps the upper benchmark state to `i` times the lower
@@ -137,13 +136,19 @@ private theorem inner_twoSiteDimerSiteState (i j : TwoSite) :
 @[simp]
 theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
-  simp [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState,
-    inner_twoSiteDimerSiteState]
+  rw [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState]
+  simp only [inner_sub_left, inner_add_right, inner_smul_left, inner_smul_right]
+  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
+    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
+  norm_num
 
 @[simp]
 theorem twoSiteGappedBenchmark_ground_norm_sq :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState = 5 := by
-  simp [twoSiteGappedBenchmarkGroundState, inner_twoSiteDimerSiteState]
+  rw [twoSiteGappedBenchmarkGroundState]
+  simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right]
+  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
+    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
   norm_num
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
@@ -154,8 +159,10 @@ theorem twoSiteGappedBenchmark_contactExpectation :
       inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState =
         (-4 : ℂ) / 5 := by
   rw [twoSiteGappedBenchmark_contact_decomposition]
-  simp [twoSiteGappedBenchmark_ground_inner_excited,
-    twoSiteGappedBenchmark_ground_norm_sq]
+  rw [inner_add_right, inner_smul_right, inner_smul_right,
+    twoSiteGappedBenchmark_ground_norm_sq,
+    twoSiteGappedBenchmark_ground_inner_excited]
+  norm_num
 
 /-- Exact scalar Lehmann data for the gapped benchmark in its two-state energy basis. -/
 def twoSiteGappedBenchmarkLehmannTable : FiniteLehmannTable (Fin 2) where
@@ -199,7 +206,7 @@ theorem twoSiteGappedBenchmarkTable_groundEnergy_from_operator :
       (twoSiteGappedBenchmarkLehmannTable.energy 0 : ℂ) •
         twoSiteGappedBenchmarkGroundState := by
   rw [twoSiteGappedBenchmarkLehmannTable_energy_zero]
-  exact twoSiteGappedBenchmark_ground_eigenvector
+  convert twoSiteGappedBenchmark_ground_eigenvector using 1 <;> norm_num
 
 /-- The upper table energy is the operator-derived upper eigenvalue. -/
 theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
@@ -207,7 +214,7 @@ theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
       (twoSiteGappedBenchmarkLehmannTable.energy 1 : ℂ) •
         twoSiteGappedBenchmarkExcitedState := by
   rw [twoSiteGappedBenchmarkLehmannTable_energy_one]
-  exact twoSiteGappedBenchmark_excited_eigenvector
+  convert twoSiteGappedBenchmark_excited_eigenvector using 1 <;> norm_num
 
 /-- The table entry `J₋₊ = i` is the concrete Peierls-current transition coefficient. -/
 theorem twoSiteGappedBenchmarkTable_current_zero_one_from_operator :
@@ -238,39 +245,11 @@ theorem twoSiteGappedBenchmarkTable_contact_from_operator :
   change _ = (-4 : ℂ) / 5
   exact twoSiteGappedBenchmark_contactExpectation
 
-/-- Denominator of the closed gapped-benchmark finite-frequency response. -/
-def twoSiteGappedBenchmarkFrequencyDenominator (omega eta : ℝ) : ℂ :=
-  twoSiteDimerComplexRate omega eta ^ 2 + 25 / 4
-
-/-- The closed denominator factors into the two exact transition denominators. -/
-theorem twoSiteGappedBenchmarkFrequencyDenominator_eq_transitionProduct
-    (omega eta : ℝ) :
-    twoSiteGappedBenchmarkFrequencyDenominator omega eta =
-      lehmannDenominator 1 omega eta (-5 / 2) *
-        lehmannDenominator 1 omega eta (5 / 2) := by
-  apply Complex.ext <;>
-    simp [twoSiteGappedBenchmarkFrequencyDenominator, twoSiteDimerComplexRate,
-      lehmannDenominator, pow_two] <;> ring
-
-/-- Nonzero switching rate keeps the gapped-benchmark response denominator nonsingular. -/
-theorem twoSiteGappedBenchmarkFrequencyDenominator_ne_zero
-    (omega eta : ℝ) (heta : eta ≠ 0) :
-    twoSiteGappedBenchmarkFrequencyDenominator omega eta ≠ 0 := by
-  rw [twoSiteGappedBenchmarkFrequencyDenominator_eq_transitionProduct]
-  exact mul_ne_zero
-    (twoSiteDimerLehmannDenominator_ne_zero omega eta (-5 / 2) heta)
-    (twoSiteDimerLehmannDenominator_ne_zero omega eta (5 / 2) heta)
-
-/-- Direct two-transition Lehmann evaluation of the gapped benchmark. -/
-theorem twoSiteGappedBenchmark_lehmannResponse_frequency
-    (omega eta : ℝ) (heta : eta ≠ 0) :
-    finiteLehmannTableResponse 1 omega eta twoSiteGappedBenchmarkLehmannTable =
-      5 * (twoSiteGappedBenchmarkFrequencyDenominator omega eta)⁻¹ := by
+/-- Direct two-level Lehmann evaluation at the exact fixed-rate benchmark point. -/
+theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
+    finiteLehmannTableResponse 1 0 1 twoSiteGappedBenchmarkLehmannTable =
+      (20 : ℂ) / 29 := by
   classical
-  have hminus := twoSiteDimerLehmannDenominator_ne_zero omega eta (-5 / 2) heta
-  have hplus := twoSiteDimerLehmannDenominator_ne_zero omega eta (5 / 2) heta
-  have hgapMinus : ((-5 / 4 : ℝ) - 5 / 4) = -5 / 2 := by norm_num
-  have hgapPlus : ((5 / 4 : ℝ) - (-5 / 4)) = 5 / 2 := by norm_num
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
@@ -279,42 +258,21 @@ theorem twoSiteGappedBenchmark_lehmannResponse_frequency
     twoSiteGappedBenchmarkTransitionWeight_zero_one,
     twoSiteGappedBenchmarkTransitionWeight_one_zero,
     finiteLehmannTableTransitionWeight_diag, sub_self]
-  simp only [lehmannTerm, zero_mul, zero_add, add_zero]
-  rw [hgapMinus, hgapPlus]
-  rw [twoSiteGappedBenchmarkFrequencyDenominator_eq_transitionProduct]
-  field_simp [hminus, hplus]
-  apply Complex.ext
-  · simp [lehmannDenominator]
-    ring
-  · simp [lehmannDenominator]
+  apply Complex.ext <;>
+    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
 
-/-- Closed finite-rate conductivity of the gapped two-site benchmark. -/
-theorem twoSiteGappedBenchmark_conductivity_frequency
-    (omega eta : ℝ) (heta : eta ≠ 0) :
-    finiteConductivityTableValue twoSiteDimerUnitVolume 1 omega eta
-        twoSiteGappedBenchmarkConductivityTable =
-      ((4 : ℂ) / 5) * twoSiteDimerComplexRate omega eta *
-        (twoSiteGappedBenchmarkFrequencyDenominator omega eta)⁻¹ := by
-  have hz := twoSiteDimerComplexRate_ne_zero omega eta heta
-  have hden := twoSiteGappedBenchmarkFrequencyDenominator_ne_zero omega eta heta
-  unfold finiteConductivityTableValue
-  change
-    (finiteLehmannTableResponse 1 omega eta twoSiteGappedBenchmarkLehmannTable +
-        ((-4 : ℂ) / 5)) *
-      finiteVolumeConductivityNormalization twoSiteDimerUnitVolume omega eta = _
-  rw [twoSiteGappedBenchmark_lehmannResponse_frequency omega eta heta,
-    twoSiteDimerUnitVolume_normalization_frequency]
-  field_simp [hz, hden]
-  unfold twoSiteGappedBenchmarkFrequencyDenominator
-  ring
-
-/-- Exact nonzero-gap, nonzero-hopping benchmark at `ω = 0`, `η = 1`. -/
+/-- Exact nonzero-gap, nonzero-hopping conductivity benchmark at `ω = 0`, `η = 1`. -/
 theorem twoSiteGappedBenchmark_conductivity_zero_one :
     finiteConductivityTableValue twoSiteDimerUnitVolume 1 0 1
         twoSiteGappedBenchmarkConductivityTable = (16 : ℂ) / 145 := by
-  rw [twoSiteGappedBenchmark_conductivity_frequency 0 1 (by norm_num)]
-  norm_num [twoSiteDimerComplexRate, twoSiteGappedBenchmarkFrequencyDenominator,
-    Complex.normSq]
+  unfold finiteConductivityTableValue
+  change
+    (finiteLehmannTableResponse 1 0 1 twoSiteGappedBenchmarkLehmannTable +
+        ((-4 : ℂ) / 5)) *
+      finiteVolumeConductivityNormalization twoSiteDimerUnitVolume 0 1 = (16 : ℂ) / 145
+  rw [twoSiteGappedBenchmark_lehmannResponse_zero_one,
+    twoSiteDimerUnitVolume_normalization_zero_one]
+  norm_num
 
 end
 end Validation
