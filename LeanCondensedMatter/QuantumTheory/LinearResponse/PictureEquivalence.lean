@@ -171,8 +171,8 @@ theorem evolveHilbertBasis_apply {ι : Type*}
   rw [b.repr_symm_single]
   rfl
 
-/-- The complex density-state expectation is identical in the Schrödinger and Heisenberg pictures
-for every bounded operator. -/
+/-- The complex density-state expectation is identical in the Schrödinger and Heisenberg
+pictures for every bounded operator. -/
 theorem expectation_evolveDensityOperator_eq_heisenberg
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation A =
