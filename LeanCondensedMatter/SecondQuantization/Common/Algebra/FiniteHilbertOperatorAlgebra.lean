@@ -52,12 +52,6 @@ noncomputable def finiteHilbertOperatorAlgHom :
         (finiteHilbertOperator A).comp (finiteHilbertOperator B)
       exact finiteHilbertOperator_comp A B)
 
-@[simp]
-theorem finiteHilbertOperatorAlgHom_apply
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteHilbertOperatorAlgHom A = finiteHilbertOperator A :=
-  rfl
-
 end
 end Common
 end SecondQuantization
