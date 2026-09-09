@@ -88,14 +88,6 @@ noncomputable def TwoPointDiagram.relabelForComponentShuffle
   d.relabelInteractionVertices (d.componentShuffleSlotPermutation shuffle).symm
 
 @[simp]
-theorem TwoPointDiagram.relabelForComponentShuffle_externalLabel
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (shuffle : d.ComponentInteractionShuffle) :
-    (d.relabelForComponentShuffle shuffle).externalLabel = d.externalLabel :=
-  d.relabelInteractionVertices_externalLabel _
-
-@[simp]
 theorem TwoPointDiagram.relabelForComponentShuffle_vertexLabel
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
