@@ -14,8 +14,8 @@ This module applies the finite-temperature Bloch--de Dominicis theorem to the `4
 operator list constructed by `TwoPointDiagramExpansion.Flattening` and exposes its physical result
 through the shared pairing evaluator with a canonical free Gibbs density-state pair kernel.
 
-Finite-Gibbs product formulas remain private coordinate proof infrastructure. Reindexing the pairing
-sum into `TwoPointWickDiagram` is intentionally left to the next layer.
+Finite-Gibbs product formulas stay local to the physical endpoint proof. Reindexing the pairing sum
+into `TwoPointWickDiagram` is intentionally left to the next layer.
 -/
 
 namespace SecondQuantization
@@ -309,34 +309,6 @@ private theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
   rw [List.ofFn_comp', ofFn_mixedTimeOrderedAtomicFieldFamily_eq,
     map_timedFieldOperator_mixedTimeOrderedAtomicFields]
 
-/-- Every member of the mixed atomic family satisfies the general theorem's eigenoperator
-hypothesis. -/
-private theorem heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n + 1))) :
-    Common.heisenbergEvolve (fermionEnergy ε) (-β)
-        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p) =
-      Complex.exp (((mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p * (-β) : ℝ) : ℂ)) •
-        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p :=
-  heisenbergEvolve_timedFieldOperator ε β
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)
-
-/-- Every pair of members of the mixed atomic family satisfies the scalar zeta-commutator
-hypothesis. -/
-private theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (a b : Fin (2 * (2 * n + 1))) :
-    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
-        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a)
-        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b) =
-      mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ a b •
-        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
-  zetaCommutator_timedFieldOperator ε
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
-
 variable [Fintype Mode]
 
 /-- Canonical free Gibbs density-state contraction of two mixed-time atomic positions. -/
@@ -357,47 +329,6 @@ noncomputable def orderedTwoPointPairingValue {n : ℕ}
   pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
 
-private theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
-        (Common.prodComp (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ)) =
-      ∑ pairing : Pairing (2 * n + 1),
-        pairing.weight Common.Statistics.fermion *
-          ∏ pr ∈ pairing.pairs,
-            Common.finiteGibbsExpectation (fermionEnergy ε) β
-              ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
-                (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2)) := by
-  have hgen :=
-    Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
-      Common.Statistics.fermion (fermionEnergy ε) β
-      (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n + 1)
-      (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ)
-      (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
-      (mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ)
-      (fun p => heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily ε β i j τ τ' q σ p)
-      (fun a b _ => zetaCommutator_mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a b)
-      (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
-        (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p) β)
-  rw [← ofFn_mixedTimeOrderedAtomicOperatorFamily_eq]
-  exact hgen
-
-private theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
-        (mixedTimeOrderedVertexComp ε i j τ τ' q σ) =
-      twoPointExternalOrderSign τ τ' *
-        ∑ pairing : Pairing (2 * n + 1),
-          pairing.weight Common.Statistics.fermion *
-            ∏ pr ∈ pairing.pairs,
-              Common.finiteGibbsExpectation (fermionEnergy ε) β
-                ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
-                  (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2)) := by
-  rw [mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators,
-    Common.finiteGibbsExpectation_smul,
-    finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing]
-
 /-- The mixed event-level density-state expectation is the external-order sign times the sum of
 canonical pairing evaluations. -/
 theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
@@ -408,11 +339,28 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
-  simpa only [orderedTwoPointPairingValue, Combinatorics.Pairing.evaluation,
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators,
+    Common.finiteGibbsExpectation_smul]
+  have hgen :=
+    Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+      Common.Statistics.fermion (fermionEnergy ε) β
+      (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n + 1)
+      (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ)
+      (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
+      (mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ)
+      (fun p => heisenbergEvolve_timedFieldOperator ε β
+        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p))
+      (fun a b _ => zetaCommutator_timedFieldOperator ε
+        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
+        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b))
+      (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
+        (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p) β)
+  rw [ofFn_mixedTimeOrderedAtomicOperatorFamily_eq] at hgen
+  rw [hgen]
+  simp only [orderedTwoPointPairingValue, Combinatorics.Pairing.evaluation,
     mixedTimeOrderedAtomicPairValue,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-      finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
-        ε β i j τ τ' q σ
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 end Fermionic
 end SecondQuantization
