@@ -163,7 +163,12 @@ theorem integral_polarPauliOperator_inPlane_eq
       ring_nf
       simp [hI]
       module
+    have hVertexOperator :
+        coefficients .x • matrixOperator sigmaX + coefficients .y • matrixOperator sigmaY =
+          matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) := by
+      simp [matrixOperator]
     unfold polarPauliOperator
+    rw [hVertexOperator]
     change
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
           (polarPauliMatrix aR bR dR θ) *
