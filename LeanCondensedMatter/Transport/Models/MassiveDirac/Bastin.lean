@@ -6,7 +6,6 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PairBerry
