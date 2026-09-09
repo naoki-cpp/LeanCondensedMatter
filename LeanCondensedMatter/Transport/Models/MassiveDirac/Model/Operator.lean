@@ -88,6 +88,7 @@ theorem currentOperator_eq_charge_smul_velocityOperator
   rw [map_smul]
 
 /-- Dimensionless in-plane Pauli vertex with direction-indexed coefficients. -/
+@[simp]
 noncomputable def inPlanePauliVertexOperator
     (coefficients : Direction2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   coefficients .x • matrixOperator sigmaX + coefficients .y • matrixOperator sigmaY
