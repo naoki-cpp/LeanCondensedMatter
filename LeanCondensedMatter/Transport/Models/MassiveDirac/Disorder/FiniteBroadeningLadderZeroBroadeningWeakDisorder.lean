@@ -133,19 +133,22 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
       inPlaneLadderSolvedVector_zero_transverse κ
         (by simpa [κ] using weakDisorderTargetOneMinusRung_ne_zero m probeEnergy hmetal)]
     simp [inPlaneCoefficientVector]
-    have hinv :=
-      inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-        m probeEnergy hden
-    have hinvCast := congrArg Complex.ofReal hinv
-    push_cast at hinvCast
-    dsimp [κ]
-    rw [hinvCast]
-    unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-    push_cast
-    field_simp [hsum, hden]
-    ring
+    have hreal :
+        continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient m probeEnergy *
+            (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+              m probeEnergy)⁻¹ =
+          (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) := by
+      rw [inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+        m probeEnergy hden]
+      unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+      field_simp [hsum, hden]
+      ring
+    have hrealCast := congrArg Complex.ofReal hreal
+    push_cast at hrealCast
+    simpa [κ] using hrealCast
   have htarget' :
-      κ * (inPlaneLadderSolvedVector κ 0).x - 0 * (inPlaneLadderSolvedVector κ 0).y =
+      κ * (inPlaneLadderSolvedVector κ 0) Direction2.x -
+          0 * (inPlaneLadderSolvedVector κ 0) Direction2.y =
         (((probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
     simpa [inPlaneLadderAction_apply_x] using htarget
