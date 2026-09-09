@@ -198,7 +198,7 @@ private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_inverse
     simp [hI]
 
 /-- Closed real-denominator form of either in-plane angular coefficient. -/
-theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed
+private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXAngularCoefficient
         v m p probeEnergy disorderStrength hbar output =
@@ -219,7 +219,7 @@ def continuumBornRetardedAdvancedPauliXRadialIntegrand
     v m p probeEnergy disorderStrength hbar output
 
 /-- Closed real-denominator form of the direction-indexed radial Green-product integrand. -/
-theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_eq_closed
+private theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_eq_closed
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXRadialIntegrand output
         v m p probeEnergy disorderStrength hbar =
@@ -241,14 +241,14 @@ def continuumBornRetardedAdvancedCurrentRungPrefactor
 
 /-- Full continuum radial current-rung integrand in the selected output direction, including the
 external disorder line and physical momentum measure but not the radial integral. -/
-def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand
+private def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) : ℂ :=
   (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
     continuumBornRetardedAdvancedPauliXRadialIntegrand output
       v m p probeEnergy disorderStrength hbar
 
 /-- Closed real-denominator form of the direction-indexed full radial current-rung integrand. -/
-theorem continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed
+private theorem continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq_closed
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand output
         v m p probeEnergy disorderStrength hbar =
@@ -272,7 +272,7 @@ def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
       v m p probeEnergy disorderStrength hbar)⁻¹
 
 /-- The indexed real current-rung kernel embeds exactly into the complex radial API. -/
-theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
+private theorem coe_continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
     (continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output
         v m p probeEnergy disorderStrength hbar : ℂ) =
