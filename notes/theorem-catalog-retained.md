@@ -1,16 +1,18 @@
-# Retained single-consumer theorems
+# Retained theorem audit declarations
 
-The theorem catalog reports declarations with exactly one distinct compiled project-declaration
-consumer as review candidates. A low consumer count is only a structural signal: a theorem remains
-public when it is the canonical statement of an independently useful mathematical or physical fact.
+The theorem catalog exposes structural review signals such as low compiled-consumer count,
+direct-wrapper status, and terminal status. None of these signals is automatic evidence that a
+public theorem should be removed. A declaration remains public when it is the canonical statement
+of an independently useful mathematical or physical fact, a deliberate simplification boundary, or
+a stable domain-level API.
 
-Declarations listed here have been semantically reviewed and are intentionally retained even while
-they have one compiled project consumer. `scripts/TheoremCatalog.lean` uses this document to keep
-such declarations out of the single-consumer review queue. They may still appear inside a
-multi-step chain because the chain is a structural view of the dependency graph.
+Declarations listed here have been semantically reviewed and are intentionally retained despite one
+or more audit signals. `scripts/TheoremCatalog.lean` uses exact mentions from this document to keep
+reviewed single-consumer declarations out of that queue; this document is also the canonical review
+record for retained declarations surfaced by other catalog attributes.
 
-This list is not a compatibility promise. Reassess an entry if its statement, ownership, or consumer
-structure changes.
+This list is not a compatibility promise. Reassess an entry if its statement, ownership, attributes,
+or consumer structure changes.
 
 ## Retained declarations
 
@@ -46,3 +48,18 @@ structure changes.
 - `Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog` — canonical
   statistics-independent trace-log identity for a finite kernel at nonzero exchange weight; the
   remaining diagonal-kernel consumer is a specialization of this reusable formal-series boundary.
+- `QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply` — deliberate `[simp]`
+  boundary for the continuum-domain multiplication-operator vocabulary. The proof delegates to the
+  analysis-level operator theorem, but the specialization is the normalization rule for this API.
+- `SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self` — canonical bosonic CCR
+  statement at the bosonic algebra layer. Its generic exchange-algebra proof does not make the
+  named bosonic commutator identity redundant as a physical API result.
+- `SecondQuantization.Bosonic.numberOperator_basisState` — canonical number-operator eigenvalue
+  equation `N_i |n⟩ = n_i |n⟩`; this is a physical statement about the named number operator rather
+  than proof-routing around `create_annihilate_basisState_same`.
+- `SecondQuantization.Common.TwoPointDiagram.relabelForComponentShuffle_externalLabel` — deliberate
+  `[simp]` structural invariant stating that component-shuffle relabeling preserves the external
+  label, even though its proof specializes the generic relabeling theorem.
+- `SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea`
+  — named physical endpoint identifying the finite static Kubo–Bastin conductivity with the Středa
+  surface-plus-sea split under the explicit analytic and Ward assumptions.
