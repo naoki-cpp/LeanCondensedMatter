@@ -93,9 +93,7 @@ private theorem integral_polarPauli_xyTrace_eq
           polarPauliOperator aR bR dR θ)) =
       2 * q *
         inPlaneLadderAction
-          (pauliRungAngularCoefficient aL aR dL dR .x)
-          (pauliRungAngularCoefficient aL aR dL dR .y)
-          coefficients .x := by
+          (pauliRungAngularCoefficient aL aR dL dR) coefficients .x := by
   let rung : ℝ → DiracOperator := fun θ =>
     polarPauliOperator aL bL dL θ *
       (coefficients .x • matrixOperator sigmaX +
@@ -127,8 +125,8 @@ private theorem integral_polarPauli_xyTrace_eq
   rw [hfun]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
   let coefficientsRung := pauliRungAngularCoefficient aL aR dL dR
-  let x : ℂ := inPlaneLadderAction (coefficientsRung .x) (coefficientsRung .y) coefficients .x
-  let y : ℂ := inPlaneLadderAction (coefficientsRung .x) (coefficientsRung .y) coefficients .y
+  let x : ℂ := inPlaneLadderAction coefficientsRung coefficients .x
+  let y : ℂ := inPlaneLadderAction coefficientsRung coefficients .y
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
@@ -168,8 +166,8 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
-  let bare := Matrix.transpose (inPlaneRotationMatrix 1 0) source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
+  let bare := Matrix.transpose (inPlaneRotationMatrix inPlaneLadderBareXSource) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
@@ -182,10 +180,10 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
   let rrRung := pauliRungAngularCoefficient aR aR dR dR
   let aaRung := pauliRungAngularCoefficient aA aA dA dA
   2 * q ^ 2 *
-    (inPlaneLadderAction (raRung .x) (raRung .y) dressed .x -
+    (inPlaneLadderAction raRung dressed .x -
       (1 / 2 : ℂ) *
-        (inPlaneLadderAction (rrRung .x) (rrRung .y) bare .x +
-          inPlaneLadderAction (aaRung .x) (aaRung .y) bare .x))
+        (inPlaneLadderAction rrRung bare .x +
+          inPlaneLadderAction aaRung bare .x))
 
 /-- Every source-indexed finite-`η` dressed Středa angular trace equals the same canonical radial
 coefficient as an unconditional algebraic identity. -/
@@ -199,8 +197,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
-  let bare := Matrix.transpose (inPlaneRotationMatrix 1 0) source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
+  let bare := Matrix.transpose (inPlaneRotationMatrix inPlaneLadderBareXSource) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
@@ -230,7 +228,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v (bare .x) (bare .y) := by
     cases source <;>
-      simp [bare, Matrix.transpose, inPlaneRotationMatrix, inPlaneCurrentOperator]
+      simp [bare, inPlaneLadderBareXSource, Matrix.transpose, inPlaneRotationMatrix,
+        inPlaneCoefficientVector, inPlaneCurrentOperator]
   have hbare :
       currentOperator source e v =
         (q • bare) .x • matrixOperator sigmaX +
@@ -310,7 +309,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  simp [q, solved, dressed, bare, aR, aA, dR, dA]
+  simp [q, solved, dressed, bare, aR, aA, dR, dA,
+    inPlaneLadderBareXSource, inPlaneCoefficientVector]
   ring
 
 /-- The source-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the
