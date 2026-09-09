@@ -66,10 +66,6 @@ noncomputable def finiteOperatorLeftComp (L : FiniteContinuousOperator Config) :
         exact (L.opNorm_comp_le A).trans
           (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg A)) }
 
-@[simp]
-theorem finiteOperatorLeftComp_apply (L A : FiniteContinuousOperator Config) :
-    finiteOperatorLeftComp L A = L.comp A := rfl
-
 /-- Trace after left composition by a fixed operator. -/
 noncomputable def finiteOperatorTraceLeft (L : FiniteContinuousOperator Config) :
     FiniteContinuousOperator Config →L[ℂ] ℂ :=
