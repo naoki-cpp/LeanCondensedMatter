@@ -55,7 +55,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   dsimp only
   simp only [inPlaneLadderAction_apply_x, Matrix.transpose_apply,
     inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x,
-    mul_one, mul_zero, sub_zero]
+    inPlaneLadderBareXSource, inPlaneCoefficientVector, mul_one, mul_zero, sub_zero]
   unfold pauliRungAngularCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
@@ -106,6 +106,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       simp only [inPlaneLadderAction_apply_x, Matrix.transpose_apply,
         inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
         inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y,
+        inPlaneLadderBareXSource, inPlaneCoefficientVector,
         mul_one, mul_zero, neg_zero, pauliRungAngularCoefficient, sub_self]
       ring
     _ = _ := by
