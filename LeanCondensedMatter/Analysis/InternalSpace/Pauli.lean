@@ -67,14 +67,6 @@ def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
 @[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
 @[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
 
-@[simp] private theorem pauliX_mul_inPlane_zero_zero (x y : ℂ) :
-    (pauliX * (x • pauliX + y • pauliY)) 0 0 = x + y * Complex.I := by
-  simp [Matrix.mul_apply, pauliX, pauliY]
-
-@[simp] private theorem pauliX_mul_inPlane_one_one (x y : ℂ) :
-    (pauliX * (x • pauliX + y • pauliY)) 1 1 = x - y * Complex.I := by
-  simp [Matrix.mul_apply, pauliX, pauliY, sub_eq_add_neg]
-
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
 @[simp] theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
