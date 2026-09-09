@@ -106,11 +106,9 @@ private theorem integral_polarPauli_xyTrace_eq
     finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
         (q • matrixOperator sigmaX) 1)
-  have hsource :
-      matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) =
-        coefficients .x • matrixOperator sigmaX +
-          coefficients .y • matrixOperator sigmaY := by
-    simp [matrixOperator]
+  have hoperator (c : InPlaneCoefficientVector) :
+      inPlanePauliVertexOperator c =
+        c .x • matrixOperator sigmaX + c .y • matrixOperator sigmaY := rfl
   have hfun :
       (fun θ : ℝ =>
         finiteDimensionalOperatorTrace
@@ -130,7 +128,7 @@ private theorem integral_polarPauli_xyTrace_eq
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
-    simpa [x, y, coefficientsRung, rung, hsource] using
+    simpa [x, y, coefficientsRung, rung, hoperator] using
       (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
   change L (x • matrixOperator sigmaX + y • matrixOperator sigmaY) = 2 * q * x
