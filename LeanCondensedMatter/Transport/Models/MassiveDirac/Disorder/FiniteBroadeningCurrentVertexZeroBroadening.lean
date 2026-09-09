@@ -27,7 +27,7 @@ open QuantumTheory.Transport
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
     (i j : Direction2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneRotationCoefficient
+  inPlaneRotationMatrix
     (finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
         .retarded v m probeEnergy disorderStrength hbar pMax *
       finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
@@ -74,16 +74,16 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
   cases i <;> cases j
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hX
+      inPlaneRotationMatrix] using hX
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hY.neg
+      inPlaneRotationMatrix] using hY.neg
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hY
+      inPlaneRotationMatrix] using hY
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hX
+      inPlaneRotationMatrix] using hX
 
 /-- Fixed-`p` zero-broadening boundary of normalized output/input current-rung entry `(i,j)`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
