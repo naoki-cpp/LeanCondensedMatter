@@ -46,10 +46,6 @@ theorem BoundedFreeSystem.hamiltonian_selfAdjoint :
     IsSelfAdjoint system.hamiltonian.1 :=
   system.hamiltonian.2
 
-/-- Positivity of `ℏ` implies that it is nonzero. -/
-theorem BoundedFreeSystem.hbar_ne_zero : system.hbar ≠ 0 :=
-  ne_of_gt system.hbar_pos
-
 /-- The bounded Schrödinger generator `-(i/ℏ) H₀`. -/
 noncomputable def schrodingerGenerator : H →L[ℂ] H :=
   (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian.1
