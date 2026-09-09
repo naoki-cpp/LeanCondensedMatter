@@ -71,9 +71,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
     .advanced v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hX := (hER.mul hEA).sub (hMR.mul hMA)
   have hY := ((hEA.mul hMR).sub (hER.mul hMA)).const_mul Complex.I
-  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-    finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary] using
-    tendsto_inPlaneRotationCoefficient hX hY i j
+  cases i <;> cases j
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
+      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hX
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
+      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hY.neg
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
+      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hY
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
+      inPlaneRotationCoefficient, inPlaneRotationMatrix] using hX
 
 /-- Fixed-`p` zero-broadening boundary of normalized output/input current-rung entry `(i,j)`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
