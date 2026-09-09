@@ -106,16 +106,6 @@ theorem evolveDensityOperator_op (ρ : DensityOperator H) (t : ℝ) :
       unitaryConjugate (freePropagator system t) ρ.op :=
   rfl
 
-/-- Evolved density operators remain positive. -/
-theorem evolveDensityOperator_isPositive (ρ : DensityOperator H) (t : ℝ) :
-    (evolveDensityOperator system ρ t).op.IsPositive :=
-  (evolveDensityOperator system ρ t).pos
-
-/-- Evolved density operators retain spectral trace one. -/
-theorem evolveDensityOperator_trace_eq_one (ρ : DensityOperator H) (t : ℝ) :
-    (evolveDensityOperator system ρ t).spectralTraceClass.trace = 1 :=
-  (evolveDensityOperator system ρ t).spectralTrace_eq_one
-
 /-- Density-operator evolution of a rank-one state agrees exactly with evolution of its normalized
 state-vector representative. -/
 @[simp]
@@ -181,8 +171,8 @@ theorem evolveHilbertBasis_apply {ι : Type*}
   rw [b.repr_symm_single]
   rfl
 
-/-- The complex density-state expectation is identical in the Schrödinger and Heisenberg
-pictures for every bounded operator. -/
+/-- The complex density-state expectation is identical in the Schrödinger and Heisenberg pictures
+for every bounded operator. -/
 theorem expectation_evolveDensityOperator_eq_heisenberg
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation A =
