@@ -134,22 +134,6 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
   ring_nf
   simp [hI]
 
-/-- A normalized two-level projector form `(I + u·σ)/2` has unit trace. -/
-@[simp] theorem trace_halfIdentity_add_pauliCombination (u : PauliAxis → ℂ) :
-    Matrix.trace ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) = 1 := by
-  simp [Matrix.trace]
-
-/-- Pairing a normalized two-level projector form with `v·σ` selects the bilinear coefficient
-`u·v`. -/
-theorem trace_halfIdentity_add_pauliCombination_mul_pauliCombination
-    (u v : PauliAxis → ℂ) :
-    Matrix.trace
-        (((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) * pauliCombination v) =
-      dotProduct u v := by
-  rw [smul_mul_assoc, add_mul, one_mul]
-  simp [trace_pauliCombination_mul_pauliCombination]
-  ring
-
 /-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
 `(I + v·σ)/2`. -/
 theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination
