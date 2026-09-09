@@ -172,7 +172,7 @@ theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
   rw [pauliCombination_mul_pauliCombination]
   have hcross : pauliCross u u = 0 := by
     funext axis
-    cases axis <;> simp [pauliCross]
+    cases axis <;> simp [pauliCross] <;> ring
   rw [hcross]
   simp [pauliCombination]
 
