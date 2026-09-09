@@ -41,33 +41,12 @@ theorem bandProjector_eq_pauliCombination
               diracPauliCoefficients v m px py)) := by
   simp [bandProjector, hamiltonian_eq_pauliCombination]
 
-/-- Every massive-Dirac band projector has unit trace. -/
-@[simp] theorem trace_bandProjector (band : Band) (v m px py : ℝ) :
-    Matrix.trace (bandProjector band v m px py) = 1 := by
-  rw [bandProjector_eq_pauliCombination]
-  simp [Matrix.trace]
-
-/-- The `σ_z` expectation in band `s` is the Bloch-vector mass component `s m / E`. -/
-theorem trace_bandProjector_mul_pauliZ (band : Band) (v m px py : ℝ) :
-    Matrix.trace (bandProjector band v m px py * sigmaZ) =
-      (((bandSign band / energy v m px py * m : ℝ) : ℂ)) := by
-  let z : PauliAxis → ℂ
-    | .x => 0
-    | .y => 0
-    | .z => 1
-  have hz : sigmaZ = InternalSpace.pauliCombination z := by
-    simp [z, InternalSpace.pauliCombination]
-  rw [bandProjector_eq_pauliCombination, hz, smul_mul_assoc, add_mul, one_mul]
-  simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
-    InternalSpace.dotProduct_pauliAxis, diracPauliCoefficients, z]
-  ring
-
 /-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
 involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
   (((energy v m px py : ℝ) : ℂ)⁻¹) • hamiltonian v m px py
 
-/-- Away from the band degeneracy, the normalized Hamiltonian squares to the identity. -/
+/-- Away from the degeneracy, the normalized Hamiltonian squares to the identity. -/
 private theorem normalizedHamiltonian_mul_self
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
