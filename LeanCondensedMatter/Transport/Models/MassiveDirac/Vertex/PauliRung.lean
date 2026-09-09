@@ -83,7 +83,7 @@ theorem integral_polarPauliOperator_inPlane_eq
     (aR aA bR bA dR dA : ℂ) (coefficients : InPlaneCoefficientVector) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       polarPauliOperator aR bR dR θ *
-        matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
+        inPlanePauliVertexOperator coefficients *
         polarPauliOperator aA bA dA θ) =
       inPlanePauliVertexOperator
         (inPlaneLadderAction (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
@@ -110,7 +110,7 @@ theorem integral_polarPauliOperator_inPlane_eq
   have hpointwise :
       (fun θ : ℝ =>
         polarPauliOperator aR bR dR θ *
-          matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
+          inPlanePauliVertexOperator coefficients *
           polarPauliOperator aA bA dA θ) =
       fun θ : ℝ =>
         scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert) +
@@ -118,6 +118,7 @@ theorem integral_polarPauliOperator_inPlane_eq
           yCoefficient θ • matrixOperator sigmaY +
           zCoefficient θ • matrixOperator sigmaZ := by
     funext θ
+    unfold inPlanePauliVertexOperator
     let uR : PauliAxis → ℂ
       | .x => ((Real.cos θ : ℝ) : ℂ) * bR
       | .y => ((Real.sin θ : ℝ) : ℂ) * bR
