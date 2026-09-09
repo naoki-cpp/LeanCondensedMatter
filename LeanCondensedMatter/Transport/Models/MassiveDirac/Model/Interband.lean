@@ -86,8 +86,7 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
   rw [InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
   cases band <;>
     simp [u, diracPauliCoefficients, bandSign] <;>
-    field_simp [hEc] <;>
-    ring
+    field_simp [hEc]
 
 end
 
