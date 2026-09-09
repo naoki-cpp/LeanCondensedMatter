@@ -79,7 +79,8 @@ noncomputable def resolventEvolutionStrongLimitOperator
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) : H →L[ℂ] H :=
   (resolventEvolutionStrongLimitLinearMap A hA t).mkContinuous 1 (by
     intro x
-    simp [resolventEvolutionStrongLimit_apply_norm])
+    change ‖resolventEvolutionStrongLimit A hA t x‖ ≤ 1 * ‖x‖
+    rw [resolventEvolutionStrongLimit_apply_norm, one_mul])
 
 @[simp]
 theorem resolventEvolutionStrongLimitOperator_apply
