@@ -8,17 +8,18 @@ set_option linter.style.header false
 
 This module owns the exact two-component algebra needed once a massive-Dirac retarded-advanced
 current rung has been reduced to the in-plane Pauli span. For the repository orientation
-`Gᴿ Γ Gᴬ`, supplied complex rung coefficients `X` and `Y` act through the matrix
+`Gᴿ Γ Gᴬ`, a rung vector `r = (X,Y)` acts through the matrix
 
 ```text
 [[X, -Y], [Y, X]].
 ```
 
-The bare-`σₓ` fixed point is solved as one `Direction2 → ℂ` coefficient vector. Coordinate
-projections remain available where downstream physics needs a concrete `x` or `y` component, but
-the fixed-point and uniqueness statements are vector equations. This file does not define the
-Born-Dyson momentum integrals that supply `X` and `Y`, take any broadening/disorder limit, identify a
-transport lifetime, or insert the result into conductivity.
+The rung, bare-`σₓ` source, and solved fixed point are all represented as `Direction2 → ℂ` vectors.
+Coordinate projections remain available where downstream physics needs a concrete `x` or `y`
+component, but the canonical action, determinant, fixed-point, and convergence statements consume
+the complete rung vector. This file does not define the Born-Dyson momentum integrals that supply
+the rung, take any broadening/disorder limit, identify a transport lifetime, or insert the result
+into conductivity.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -40,38 +41,40 @@ def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector
   | .x => x
   | .y => y
 
-/-- Repository-oriented isotropic in-plane matrix `[[x,-y],[y,x]]`. -/
-def inPlaneRotationMatrix (x y : ℂ) : Matrix Direction2 Direction2 ℂ
-  | .x, .x => x
-  | .x, .y => -y
-  | .y, .x => y
-  | .y, .y => x
+/-- Repository-oriented isotropic in-plane matrix derived from a rung vector `(X,Y)`. -/
+def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix Direction2 Direction2 ℂ
+  | .x, .x => rung .x
+  | .x, .y => -(rung .y)
+  | .y, .x => rung .y
+  | .y, .y => rung .x
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_x_x (x y : ℂ) :
-    inPlaneRotationMatrix x y .x .x = x := by
+theorem inPlaneRotationMatrix_apply_x_x (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .x .x = rung .x := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_x_y (x y : ℂ) :
-    inPlaneRotationMatrix x y .x .y = -y := by
+theorem inPlaneRotationMatrix_apply_x_y (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .x .y = -(rung .y) := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_y_x (x y : ℂ) :
-    inPlaneRotationMatrix x y .y .x = y := by
+theorem inPlaneRotationMatrix_apply_y_x (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .y .x = rung .y := by
   rfl
 
 @[simp]
-theorem inPlaneRotationMatrix_apply_y_y (x y : ℂ) :
-    inPlaneRotationMatrix x y .y .y = x := by
+theorem inPlaneRotationMatrix_apply_y_y (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .y .y = rung .x := by
   rfl
 
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
-    (x y alpha beta : ℂ) :
-    (inPlaneRotationMatrix x y).mulVec (inPlaneCoefficientVector alpha beta) =
-      inPlaneCoefficientVector (x * alpha - y * beta) (y * alpha + x * beta) := by
+    (rung : InPlaneCoefficientVector) (alpha beta : ℂ) :
+    (inPlaneRotationMatrix rung).mulVec (inPlaneCoefficientVector alpha beta) =
+      inPlaneCoefficientVector
+        (rung .x * alpha - rung .y * beta)
+        (rung .y * alpha + rung .x * beta) := by
   funext direction
   cases direction <;>
     simp [Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix,
@@ -79,35 +82,38 @@ theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
-    (x y : ℂ) (coefficients : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
-  (inPlaneRotationMatrix x y).mulVec coefficients
+    (rung coefficients : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
+  (inPlaneRotationMatrix rung).mulVec coefficients
 
 @[simp]
 theorem inPlaneLadderAction_apply_x
-    (x y : ℂ) (coefficients : InPlaneCoefficientVector) :
-    inPlaneLadderAction x y coefficients .x =
-      x * coefficients .x - y * coefficients .y := by
+    (rung coefficients : InPlaneCoefficientVector) :
+    inPlaneLadderAction rung coefficients .x =
+      rung .x * coefficients .x - rung .y * coefficients .y := by
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
     inPlaneRotationMatrix, sub_eq_add_neg]
 
 @[simp]
 theorem inPlaneLadderAction_apply_y
-    (x y : ℂ) (coefficients : InPlaneCoefficientVector) :
-    inPlaneLadderAction x y coefficients .y =
-      y * coefficients .x + x * coefficients .y := by
+    (rung coefficients : InPlaneCoefficientVector) :
+    inPlaneLadderAction rung coefficients .y =
+      rung .y * coefficients .x + rung .x * coefficients .y := by
   simp [inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2,
     inPlaneRotationMatrix]
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
-def inPlaneLadderDeterminant (x y : ℂ) : ℂ :=
-  (1 - x) ^ 2 + y ^ 2
+def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
+  (1 - rung .x) ^ 2 + (rung .y) ^ 2
 
-/-- Convergence of the two rung invariants propagates to the shifted-ladder determinant. -/
+/-- Convergence of a rung vector propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
-    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
-    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀)) :
-    Tendsto (fun a => inPlaneLadderDeterminant (x a) (y a)) l
-      (nhds (inPlaneLadderDeterminant x₀ y₀)) := by
+    {ι : Type*} {l : Filter ι}
+    {rung : ι → InPlaneCoefficientVector} {rung₀ : InPlaneCoefficientVector}
+    (hrung : Tendsto rung l (nhds rung₀)) :
+    Tendsto (fun a => inPlaneLadderDeterminant (rung a)) l
+      (nhds (inPlaneLadderDeterminant rung₀)) := by
+  have hx := (tendsto_pi_nhds.mp hrung) .x
+  have hy := (tendsto_pi_nhds.mp hrung) .y
   have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
   have hOneMinusX := hOne.sub hx
   simpa [inPlaneLadderDeterminant, pow_two] using
@@ -118,33 +124,37 @@ def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
   inPlaneCoefficientVector 1 0
 
 /-- Exact coefficient vector of the bare-`σₓ` ladder fixed point. -/
-def inPlaneLadderSolvedVector (x y : ℂ) : InPlaneCoefficientVector :=
+def inPlaneLadderSolvedVector (rung : InPlaneCoefficientVector) : InPlaneCoefficientVector :=
   inPlaneCoefficientVector
-    ((1 - x) / inPlaneLadderDeterminant x y)
-    (y / inPlaneLadderDeterminant x y)
+    ((1 - rung .x) / inPlaneLadderDeterminant rung)
+    (rung .y / inPlaneLadderDeterminant rung)
 
 @[simp]
-theorem inPlaneLadderSolvedVector_apply_x (x y : ℂ) :
-    inPlaneLadderSolvedVector x y .x = (1 - x) / inPlaneLadderDeterminant x y := by
+theorem inPlaneLadderSolvedVector_apply_x (rung : InPlaneCoefficientVector) :
+    inPlaneLadderSolvedVector rung .x =
+      (1 - rung .x) / inPlaneLadderDeterminant rung := by
   rfl
 
 @[simp]
-theorem inPlaneLadderSolvedVector_apply_y (x y : ℂ) :
-    inPlaneLadderSolvedVector x y .y = y / inPlaneLadderDeterminant x y := by
+theorem inPlaneLadderSolvedVector_apply_y (rung : InPlaneCoefficientVector) :
+    inPlaneLadderSolvedVector rung .y = rung .y / inPlaneLadderDeterminant rung := by
   rfl
 
-/-- Convergence of the rung invariants propagates to the solved ladder vector whenever the limiting
+/-- Convergence of rung vectors propagates to the solved ladder vector whenever the limiting
 shifted-ladder determinant is nonzero. -/
 theorem tendsto_inPlaneLadderSolvedVector
-    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
-    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
-    (hdet : inPlaneLadderDeterminant x₀ y₀ ≠ 0) :
+    {ι : Type*} {l : Filter ι}
+    {rung : ι → InPlaneCoefficientVector} {rung₀ : InPlaneCoefficientVector}
+    (hrung : Tendsto rung l (nhds rung₀))
+    (hdet : inPlaneLadderDeterminant rung₀ ≠ 0) :
     Tendsto
-      (fun a => inPlaneLadderSolvedVector (x a) (y a))
-      l (nhds (inPlaneLadderSolvedVector x₀ y₀)) := by
+      (fun a => inPlaneLadderSolvedVector (rung a))
+      l (nhds (inPlaneLadderSolvedVector rung₀)) := by
+  have hx := (tendsto_pi_nhds.mp hrung) .x
+  have hy := (tendsto_pi_nhds.mp hrung) .y
   have hOne : Tendsto (fun _ : ι => (1 : ℂ)) l (nhds 1) := tendsto_const_nhds
   have hOneMinusX := hOne.sub hx
-  have hdetLimit := tendsto_inPlaneLadderDeterminant hx hy
+  have hdetLimit := tendsto_inPlaneLadderDeterminant hrung
   rw [tendsto_pi_nhds]
   intro output
   cases output
@@ -156,9 +166,9 @@ theorem tendsto_inPlaneLadderSolvedVector
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero
 determinant. -/
 theorem inPlaneLadderSolvedVector_fixedPoint
-    (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0) :
-    inPlaneLadderSolvedVector x y =
-      inPlaneLadderBareXSource + inPlaneLadderAction x y (inPlaneLadderSolvedVector x y) := by
+    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
+    inPlaneLadderSolvedVector rung =
+      inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
   rw [inPlaneLadderAction, inPlaneLadderSolvedVector,
     inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector]
   funext direction
@@ -173,43 +183,47 @@ theorem inPlaneLadderSolvedVector_fixedPoint
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
 theorem inPlaneLadder_fixedPoint_unique
-    (x y : ℂ) (hdet : inPlaneLadderDeterminant x y ≠ 0)
+    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0)
     (coefficients : InPlaneCoefficientVector)
     (hfixed : coefficients =
-      inPlaneLadderBareXSource + inPlaneLadderAction x y coefficients) :
-    coefficients = inPlaneLadderSolvedVector x y := by
+      inPlaneLadderBareXSource + inPlaneLadderAction rung coefficients) :
+    coefficients = inPlaneLadderSolvedVector rung := by
   have hxFixed :
-      coefficients .x = 1 + (x * coefficients .x - y * coefficients .y) := by
+      coefficients .x =
+        1 + (rung .x * coefficients .x - rung .y * coefficients .y) := by
     simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
       congrArg (fun values : InPlaneCoefficientVector => values .x) hfixed
   have hyFixed :
-      coefficients .y = y * coefficients .x + x * coefficients .y := by
+      coefficients .y = rung .y * coefficients .x + rung .x * coefficients .y := by
     simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
       congrArg (fun values : InPlaneCoefficientVector => values .y) hfixed
   have hxLinear :
-      (1 - x) * coefficients .x + y * coefficients .y = 1 := by
+      (1 - rung .x) * coefficients .x + rung .y * coefficients .y = 1 := by
     linear_combination hxFixed
   have hyLinear :
-      -y * coefficients .x + (1 - x) * coefficients .y = 0 := by
+      -(rung .y) * coefficients .x + (1 - rung .x) * coefficients .y = 0 := by
     linear_combination hyFixed
   have hxDet :
-      inPlaneLadderDeterminant x y * coefficients .x = 1 - x := by
+      inPlaneLadderDeterminant rung * coefficients .x = 1 - rung .x := by
     calc
-      inPlaneLadderDeterminant x y * coefficients .x =
-          (1 - x) * ((1 - x) * coefficients .x + y * coefficients .y) -
-            y * (-y * coefficients .x + (1 - x) * coefficients .y) := by
+      inPlaneLadderDeterminant rung * coefficients .x =
+          (1 - rung .x) *
+              ((1 - rung .x) * coefficients .x + rung .y * coefficients .y) -
+            rung .y *
+              (-(rung .y) * coefficients .x + (1 - rung .x) * coefficients .y) := by
               unfold inPlaneLadderDeterminant
               ring
-      _ = 1 - x := by rw [hxLinear, hyLinear]; ring
+      _ = 1 - rung .x := by rw [hxLinear, hyLinear]; ring
   have hyDet :
-      inPlaneLadderDeterminant x y * coefficients .y = y := by
+      inPlaneLadderDeterminant rung * coefficients .y = rung .y := by
     calc
-      inPlaneLadderDeterminant x y * coefficients .y =
-          y * ((1 - x) * coefficients .x + y * coefficients .y) +
-            (1 - x) * (-y * coefficients .x + (1 - x) * coefficients .y) := by
+      inPlaneLadderDeterminant rung * coefficients .y =
+          rung .y * ((1 - rung .x) * coefficients .x + rung .y * coefficients .y) +
+            (1 - rung .x) *
+              (-(rung .y) * coefficients .x + (1 - rung .x) * coefficients .y) := by
               unfold inPlaneLadderDeterminant
               ring
-      _ = y := by rw [hxLinear, hyLinear]; ring
+      _ = rung .y := by rw [hxLinear, hyLinear]; ring
   funext direction
   cases direction
   · rw [inPlaneLadderSolvedVector_apply_x]
@@ -223,7 +237,8 @@ theorem inPlaneLadder_fixedPoint_unique
 longitudinal component and zero in the transverse component. -/
 theorem inPlaneLadderSolvedVector_zero_transverse
     (x : ℂ) (hx : 1 - x ≠ 0) :
-    inPlaneLadderSolvedVector x 0 = inPlaneCoefficientVector (1 - x)⁻¹ 0 := by
+    inPlaneLadderSolvedVector (inPlaneCoefficientVector x 0) =
+      inPlaneCoefficientVector (1 - x)⁻¹ 0 := by
   funext direction
   cases direction
   · simp [inPlaneLadderSolvedVector, inPlaneCoefficientVector, inPlaneLadderDeterminant]
