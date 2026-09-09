@@ -49,6 +49,9 @@ or consumer structure changes.
 - `Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog` — canonical
   statistics-independent trace-log identity for a finite kernel at nonzero exchange weight; the
   remaining diagonal-kernel consumer is a specialization of this reusable formal-series boundary.
+- `Finset.card_filter_product_eq_sum_card_filter` — canonical generic double-counting identity for a
+  filtered finite self-product. Its remaining crossing-count consumer is a domain specialization,
+  while the theorem itself is independent of pairing or crossing structure.
 - `QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply` — deliberate `[simp]`
   boundary for the continuum-domain multiplication-operator vocabulary. The proof delegates to the
   analysis-level operator theorem, but the specialization is the normalization rule for this API.
