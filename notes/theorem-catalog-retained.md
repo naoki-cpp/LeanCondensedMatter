@@ -110,3 +110,32 @@ or consumer structure changes.
   rather than the lower-level raw-`ζ` presentation.
 - `SecondQuantization.Fermionic.annihilate_fockVacuum` — canonical `[simp]` CAR vacuum identity that
   every fermionic annihilation operator kills the Fock vacuum.
+- `ContinuousLinearMap.unitaryConjugate_rankOne` — canonical rank-one covariance identity under
+  bounded unitary conjugation. The current single consumer is a density-operator specialization,
+  while the statement itself is general operator infrastructure.
+- `ContinuousLinearMap.eigenspace_unitaryConjugate` — canonical eigenspace transport theorem under
+  unitary conjugation. It identifies the full eigenspace submodule, not merely the finite-dimensional
+  rank consequence used downstream.
+- `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate` — independently useful invariance
+  of absolute summability of real eigenvalues with multiplicity under unitary conjugation; it is the
+  analytic input for bundled spectral trace-class transport.
+- `ContinuousLinearMap.spectralTrace_unitaryConjugate` — canonical unbundled trace-invariance theorem
+  `Tr(U T U†) = Tr(T)` for the project's spectral trace under explicit summability hypotheses.
+- `ContinuousLinearMap.isCompactOperator_unitaryConjugate` — standard operator-theory fact that
+  compactness is preserved by bounded conjugation; the current bundled trace-class consumer does not
+  make this general result proof-routing.
+- `ContinuousLinearMap.IsPositive.unitaryConjugate` — standard positivity-preservation theorem for
+  conjugation by an arbitrary bounded operator. It is independently meaningful even when no compiled
+  project declaration currently retains it.
+- `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate` — canonical closure theorem transporting
+  bundled spectral trace-class data through unitary conjugation; it is the stable construction used
+  by trace invariance and density-operator evolution.
+- `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate` — bundled trace-invariance endpoint
+  for spectral trace-class operators. It is the caller-facing theorem corresponding to the unbundled
+  spectral-trace identity and remains useful despite being terminal in the compiled theorem graph.
+- `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
+  theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
+  The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
+- `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate` — canonical multiplicity-preservation
+  theorem under unitary conjugation. Although its current project consumer is the summability proof,
+  equality of eigenspace dimensions is independently useful operator-theory API.
