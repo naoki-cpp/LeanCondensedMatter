@@ -44,7 +44,7 @@ noncomputable def NormalizedExpectation.pullback
     (hΦ : Φ 1 = 1) : NormalizedExpectation H where
   toContinuousLinearMap := expectation.toContinuousLinearMap.comp Φ
   map_one := by
-    simp [hΦ]
+    simpa [hΦ] using expectation.map_one
 
 @[simp]
 theorem NormalizedExpectation.pullback_apply
