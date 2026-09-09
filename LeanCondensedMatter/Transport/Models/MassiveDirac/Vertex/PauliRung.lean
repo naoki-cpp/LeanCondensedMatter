@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -77,18 +77,16 @@ private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
     integral_complex_cos_mul_sin_zero_two_pi]
   simp
 
-/-- The full-angle retarded-advanced polar Pauli rung acts on a complete in-plane coefficient
-vector by the repository-oriented rotation matrix `[[X,-Y],[Y,X]]`. -/
+/-- The full-angle retarded-advanced polar Pauli rung acts through the canonical in-plane ladder
+action, preserving the complete coefficient vector until the operator boundary. -/
 theorem integral_polarPauliOperator_inPlane_eq
-    (aR aA bR bA dR dA : ℂ) (coefficients : Direction2 → ℂ) :
+    (aR aA bR bA dR dA : ℂ) (coefficients : InPlaneCoefficientVector) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       polarPauliOperator aR bR dR θ *
         matrixOperator (coefficients .x • sigmaX + coefficients .y • sigmaY) *
         polarPauliOperator aA bA dA θ) =
-      (pauliRungAngularCoefficient aR aA dR dA .x * coefficients .x -
-        pauliRungAngularCoefficient aR aA dR dA .y * coefficients .y) • matrixOperator sigmaX +
-        (pauliRungAngularCoefficient aR aA dR dA .y * coefficients .x +
-          pauliRungAngularCoefficient aR aA dR dA .x * coefficients .y) • matrixOperator sigmaY := by
+      inPlanePauliVertexOperator
+        (inPlaneLadderAction (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
   let scalarCoefficient : ℝ → ℂ := fun θ =>
     let c := ((Real.cos θ : ℝ) : ℂ)
     let s := ((Real.sin θ : ℝ) : ℂ)
@@ -254,7 +252,7 @@ theorem integral_polarPauliOperator_inPlane_eq
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const,
     intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
   rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
-  simp
+  simp [inPlanePauliVertexOperator]
 
 end
 
