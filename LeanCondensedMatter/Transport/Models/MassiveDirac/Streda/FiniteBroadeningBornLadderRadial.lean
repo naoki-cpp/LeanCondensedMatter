@@ -173,10 +173,8 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed : InPlaneCoefficientVector := fun output =>
-    inPlaneRotationCoefficient (solved .x) (solved .y) output source
-  let bare : InPlaneCoefficientVector := fun output =>
-    inPlaneRotationCoefficient 1 0 output source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
+  let bare := Matrix.transpose (inPlaneRotationMatrix 1 0) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
@@ -209,10 +207,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed : InPlaneCoefficientVector := fun output =>
-    inPlaneRotationCoefficient (solved .x) (solved .y) output source
-  let bare : InPlaneCoefficientVector := fun output =>
-    inPlaneRotationCoefficient 1 0 output source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
+  let bare := Matrix.transpose (inPlaneRotationMatrix 1 0) source
   let aR := finiteCutoffContinuumBornDysonScalarCoefficient
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
@@ -242,7 +238,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v (bare .x) (bare .y) := by
     cases source <;>
-      simp [bare, inPlaneRotationCoefficient, inPlaneCurrentOperator]
+      simp [bare, Matrix.transpose, inPlaneRotationMatrix, inPlaneCurrentOperator]
   have hbare :
       currentOperator source e v =
         (q • bare) .x • matrixOperator sigmaX +
