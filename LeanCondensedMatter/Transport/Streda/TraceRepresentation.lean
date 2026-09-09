@@ -174,25 +174,6 @@ noncomputable def TracedStredaAnalyticData.toRegularizedStredaRepresentation
     response_eq_tracedBastin.trans
       data.regularizedBastinEnergyIntegral_eq_traced.symm
 
-/-- The explicit response-identification hypothesis and the stored analytic assumptions imply the
-named regularized surface-plus-sea identity. -/
-theorem TracedStredaAnalyticData.response_eq_surface_add_sea
-    {hamiltonian current₁ current₂ : H →L[ℂ] H}
-    {broadening lowerEnergy upperEnergy : ℝ}
-    {occupation occupationDerivative : ℝ → ℂ}
-    (data : TracedStredaAnalyticData hamiltonian current₁ current₂
-      broadening lowerEnergy upperEnergy occupation occupationDerivative)
-    (response : ℂ)
-    (response_eq_tracedBastin :
-      response = regularizedTracedBastinEnergyIntegral
-        hamiltonian current₁ current₂ broadening
-          lowerEnergy upperEnergy occupation) :
-    response =
-      regularizedStredaFermiSurface data.toRegularizedStredaIntegralData +
-        regularizedStredaFermiSea data.toRegularizedStredaIntegralData :=
-  (data.toRegularizedStredaRepresentation
-    response response_eq_tracedBastin).response_eq_surface_add_sea
-
 end
 end Transport
 end QuantumTheory

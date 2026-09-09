@@ -38,20 +38,6 @@ theorem l2MultiplicationOperator1D_apply
     l2MultiplicationOperator1D f ψ = (f • ψ : ContinuumL2Wavefunction1D) := by
   exact L2MultiplicationRealLine.multiplicationOperator_apply f ψ
 
-/-- The multiplication operator has operator norm at most the `L∞` norm of its multiplier. -/
-theorem l2MultiplicationOperator1D_norm_le
-    (f : ContinuumLInfMultiplier1D) :
-    ‖l2MultiplicationOperator1D f‖ ≤ ‖f‖ := by
-  exact L2MultiplicationRealLine.multiplicationOperator_norm_le f
-
-/-- The bounded `L²` multiplication operator agrees almost everywhere with pointwise
-multiplication of representatives. -/
-theorem l2MultiplicationOperator1D_coeFn
-    (f : ContinuumLInfMultiplier1D) (ψ : ContinuumL2Wavefunction1D) :
-    (l2MultiplicationOperator1D f ψ : ℝ → ℂ) =ᵐ[volume]
-      fun x => f x * ψ x := by
-  exact L2MultiplicationRealLine.multiplicationOperator_coeFn f ψ
-
 /-- The `L²` expectation of a bounded multiplication operator is the Lebesgue integral of the
 pointwise inner-product density. -/
 theorem inner_l2MultiplicationOperator1D_eq_integral
@@ -86,15 +72,6 @@ theorem l2RealMultiplicationOperator1D_symmetric
       inner ℂ ψ
         (l2MultiplicationOperator1D (realLInfMultiplier1D f hf) φ) := by
   exact L2MultiplicationRealLine.realMultiplicationOperator_symmetric f hf ψ φ
-
-/-- A bounded real multiplication operator, viewed as a partial operator with full domain, is a
-formal adjoint of itself. -/
-theorem l2RealMultiplicationOperator1D_isFormalAdjoint
-    (f : ℝ → ℝ)
-    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
-    let M := l2MultiplicationOperator1D (realLInfMultiplier1D f hf)
-    (M.toPMap ⊤).IsFormalAdjoint (M.toPMap ⊤) := by
-  exact L2MultiplicationRealLine.realMultiplicationOperator_isFormalAdjoint f hf
 
 end
 end Continuum
