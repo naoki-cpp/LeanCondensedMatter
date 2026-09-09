@@ -64,7 +64,7 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
       -(((v ^ 4 * px * py / energy v m px py ^ 2 : ℝ) : ℂ)) -
         (((bandSign band * m * v ^ 2 / energy v m px py : ℝ) : ℂ)) * Complex.I := by
   let u : PauliAxis → ℂ :=
-    (((bandSign band / energy v m px py : ℝ) : ℂ)) •
+    ((((bandSign band : ℝ) : ℂ) / ((energy v m px py : ℝ) : ℂ))) •
       diracPauliCoefficients v m px py
   have hProjector :
       bandProjector band v m px py =
@@ -91,7 +91,9 @@ theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     (forceMatrixTraceNumerator .x .y band v m px py).im =
       -(bandSign band) * m * v ^ 2 / energy v m px py := by
   rw [forceMatrixTraceNumerator_xy_eq band v m px py hE]
-  simp
+  simp only [Complex.sub_im, Complex.neg_im, Complex.ofReal_im, Complex.mul_im,
+    Complex.ofReal_re, Complex.I_im, Complex.I_re]
+  ring
 
 end
 
