@@ -142,7 +142,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
         m probeEnergy hden]
       unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
       field_simp [hsum, hden]
-      ring
     have hrealCast := congrArg Complex.ofReal hreal
     push_cast at hrealCast
     simpa [κ] using hrealCast
