@@ -131,14 +131,26 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
       | .x => -e * v
       | .y => 0
       | .z => 0
-    simpa [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul] using
-      InternalSpace.pauliCombination_ofReal_isHermitian u
+    have hcurrent :
+        current .x e v =
+          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      push_cast
+      module
+    rw [hcurrent]
+    exact InternalSpace.pauliCombination_ofReal_isHermitian u
   · let u : PauliAxis → ℝ
       | .x => 0
       | .y => -e * v
       | .z => 0
-    simpa [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul] using
-      InternalSpace.pauliCombination_ofReal_isHermitian u
+    have hcurrent :
+        current .y e v =
+          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      push_cast
+      module
+    rw [hcurrent]
+    exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator, as required by the generic free-system API. -/
