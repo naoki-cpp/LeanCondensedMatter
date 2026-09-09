@@ -22,7 +22,7 @@ open scoped Interval
 
 private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
     (v pMax : ℝ) (A : ℂ) (hvelocity : v ≠ 0)
-    (hden : ∀ p : ℝ, A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) ≠ 0) :
+    (hden : ∀ p : ℝ, A - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0) :
     IntervalIntegrable
         (fun p : ℝ => (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)
         volume 0 pMax ∧
