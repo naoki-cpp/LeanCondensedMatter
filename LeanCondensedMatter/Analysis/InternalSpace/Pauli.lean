@@ -115,6 +115,24 @@ theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombin
   simp [trace_pauliCombination_mul_pauliCombination]
   ring
 
+/-- The `x-y` Pauli trace through opposite two-level halves depends only on the indexed
+coefficients: the symmetric part is `-uₓuᵧ` and the antisymmetric part is `-i u_z`.
+Scalar vertex factors are included so downstream models do not need to reopen matrix entries. -/
+theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY
+    (u : PauliAxis → ℂ) (a b : ℂ) :
+    Matrix.trace
+        (((1 / 2 : ℂ) • ((1 : PauliMatrix) - pauliCombination u)) *
+          (a • pauliX) *
+          ((1 / 2 : ℂ) • ((1 : PauliMatrix) + pauliCombination u)) *
+          (b • pauliY)) =
+      a * b * (-(u .x * u .y) - Complex.I * u .z) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination, pauliX, pauliY, pauliZ,
+    sub_eq_add_neg]
+  ring_nf
+  simp [hI]
+
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination u =
