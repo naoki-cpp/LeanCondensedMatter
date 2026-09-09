@@ -107,14 +107,6 @@ theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm
   ext y
   simpa using resolventEvolutionStrongLimitOperator_nonrealResolvent_apply A hA t z hz y
 
-/-- `Commute`-packaged form of resolvent commutation for the limiting Stone evolution. -/
-theorem resolventEvolutionStrongLimitOperator_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (t : ℝ) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (resolventEvolutionStrongLimitOperator A hA t)
-      (nonrealResolvent A hA z hz) := by
-  exact resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm A hA t z hz
-
 /-- The limiting Stone evolution preserves the original self-adjoint operator domain. -/
 theorem resolventEvolutionStrongLimitOperator_mem_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : A.domain) :

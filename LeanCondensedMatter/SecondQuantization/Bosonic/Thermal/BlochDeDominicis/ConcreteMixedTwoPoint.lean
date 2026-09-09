@@ -132,12 +132,6 @@ theorem create_comp_annihilate_mem_freeGibbsDomain
     rw [hop]
     exact hA
 
-/-- Summability form for the reverse mixed product. -/
-theorem freeGibbsSummable_create_comp_annihilate
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    freeGibbsSummable ε β ((create j).comp (annihilate i)) :=
-  create_comp_annihilate_mem_freeGibbsDomain ε β hpos i j
-
 omit [Fintype Mode] in
 /-- The Bose denominator is nonzero under the same positivity hypothesis that makes the partition
 series converge. -/
