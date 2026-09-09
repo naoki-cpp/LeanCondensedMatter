@@ -43,18 +43,6 @@ theorem freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel
     · simp [hij]
   rw [hdiag, Matrix.det_diagonal]
 
-/-- For the shared free Boltzmann kernel, the fermionic connected-cycle series is the sum of the
-formal single-mode logarithms `log(1 + t exp(-β εᵢ))`. -/
-theorem permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
-    [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
-    Combinatorics.permutationConnectedCycleSeries (-1)
-        (Common.freeBoltzmannModeKernel ε β) =
-      ∑ i : Mode,
-        PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
-  simpa using
-    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
-      (-1 : ℂ) (by norm_num) ε β)
-
 /-- Formal finite-mode free-fermion grand-partition series
 `𝒵_F(t) = ∏ᵢ (1 + exp(-β εᵢ) t)`. -/
 noncomputable def freeGrandPartitionSeries [Fintype Mode]
@@ -88,8 +76,10 @@ theorem logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries
     PowerSeries.logOf (freeGrandPartitionSeries ε β) =
       Combinatorics.permutationConnectedCycleSeries (-1)
         (Common.freeBoltzmannModeKernel ε β) := by
-  rw [logOf_freeGrandPartitionSeries_eq_sum_log,
-    permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log]
+  rw [logOf_freeGrandPartitionSeries_eq_sum_log]
+  simpa using
+    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
+      (-1 : ℂ) (by norm_num) ε β).symm
 
 end Fermionic
 end SecondQuantization
