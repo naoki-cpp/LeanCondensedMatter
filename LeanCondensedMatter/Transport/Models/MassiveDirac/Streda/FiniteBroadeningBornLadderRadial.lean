@@ -131,8 +131,7 @@ private theorem integral_polarPauli_xyTrace_eq
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
     simpa [x, y, coefficientsRung, rung, hsource] using
-      (integral_polarPauliOperator_inPlane_eq
-        aL aR bL bR dL dR (coefficients .x) (coefficients .y))
+      (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
   change L (x • matrixOperator sigmaX + y • matrixOperator sigmaY) = 2 * q * x
   have hop :
@@ -226,7 +225,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
   have hbareInPlane :
-      currentOperator source e v = inPlaneCurrentOperator e v (bare .x) (bare .y) := by
+      currentOperator source e v = inPlaneCurrentOperator e v bare := by
     cases source <;>
       simp [bare, inPlaneLadderBareXSource, Matrix.transpose, inPlaneRotationMatrix,
         inPlaneCoefficientVector, inPlaneCurrentOperator]
