@@ -25,12 +25,13 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
-/-- A single ordered bosonic quartic vertex has a summable free-Gibbs numerator under the usual
+/-- A single ordered quartic vertex belongs to the explicit free-Gibbs domain under the usual
 positive one-mode Boltzmann exponents. -/
-theorem freeGibbsSummable_quarticVertexOperator
+theorem quarticVertexOperator_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (q : QuarticVertexLabel Mode) :
-    freeGibbsSummable ε β (quarticVertexOperator q) := by
+    quarticVertexOperator q ∈ freeGibbsDomain ε β := by
+  change freeGibbsSummable ε β (quarticVertexOperator q)
   unfold freeGibbsSummable
   have hN2 := summable_particleNumber_total_sq_boltzmannWeight ε β hpos
   have hW := summable_boltzmannWeight ε β hpos
@@ -56,13 +57,6 @@ theorem freeGibbsSummable_quarticVertexOperator
       mul_le_mul_of_nonneg_left hpoly hw
     _ = 2 * ((particleNumber n : ℝ) ^ 2 * boltzmannWeight ε β n) +
         8 * boltzmannWeight ε β n := by ring
-
-/-- A single ordered quartic vertex belongs to the explicit free-Gibbs domain. -/
-theorem quarticVertexOperator_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    (q : QuarticVertexLabel Mode) :
-    quarticVertexOperator q ∈ freeGibbsDomain ε β :=
-  freeGibbsSummable_quarticVertexOperator ε β hpos q
 
 /-- Every finitely supported bosonic quartic interaction belongs to the free-Gibbs domain. -/
 theorem quarticInteractionOn_mem_freeGibbsDomain

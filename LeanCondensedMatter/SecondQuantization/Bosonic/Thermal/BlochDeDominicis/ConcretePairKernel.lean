@@ -66,34 +66,24 @@ theorem matrixCoeff_annihilate_comp_annihilate_self (i j : Mode) (n : Occupation
       change (_ • Common.basisState (removeOccupation i n1)) n = 0
       exact Common.smul_basisState_apply_of_ne _ hne
 
-/-- Two creators have a summable, identically zero free-Gibbs diagonal numerator. -/
-theorem freeGibbsSummable_create_comp_create
+/-- Domain form for the two-creator product. -/
+theorem create_comp_create_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeGibbsSummable ε β ((create i).comp (create j)) := by
+    (create i).comp (create j) ∈ freeGibbsDomain ε β := by
+  change freeGibbsSummable ε β ((create i).comp (create j))
   unfold freeGibbsSummable imaginaryTimeEvolveFree
   exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
     rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create_self, mul_zero]
 
-/-- Two annihilators have a summable, identically zero free-Gibbs diagonal numerator. -/
-theorem freeGibbsSummable_annihilate_comp_annihilate
+/-- Domain form for the two-annihilator product. -/
+theorem annihilate_comp_annihilate_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeGibbsSummable ε β ((annihilate i).comp (annihilate j)) := by
+    (annihilate i).comp (annihilate j) ∈ freeGibbsDomain ε β := by
+  change freeGibbsSummable ε β ((annihilate i).comp (annihilate j))
   unfold freeGibbsSummable imaginaryTimeEvolveFree
   exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
     rw [Common.matrixCoeff_diagonalEvolution_comp,
       matrixCoeff_annihilate_comp_annihilate_self, mul_zero]
-
-/-- Domain form for the two-creator product. -/
-theorem create_comp_create_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    (create i).comp (create j) ∈ freeGibbsDomain ε β :=
-  freeGibbsSummable_create_comp_create ε β i j
-
-/-- Domain form for the two-annihilator product. -/
-theorem annihilate_comp_annihilate_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    (annihilate i).comp (annihilate j) ∈ freeGibbsDomain ε β :=
-  freeGibbsSummable_annihilate_comp_annihilate ε β i j
 
 /-- The normalized free-Gibbs expectation of two creators vanishes. -/
 theorem freeGibbsExpectation_create_comp_create
