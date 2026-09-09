@@ -59,15 +59,11 @@ private theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadeni
           v m probeEnergy disorderStrength hbar pMax)) := by
   rw [tendsto_pi_nhds]
   intro output
-  cases output
-  · exact
-      tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-        .x .x v m probeEnergy disorderStrength hbar pMax
-        hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
-  · exact
-      tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-        .y .x v m probeEnergy disorderStrength hbar pMax
-        hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
+  simpa [finiteCutoffContinuumBornDysonCurrentRungVector,
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
+    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
+      output .x v m probeEnergy disorderStrength hbar pMax
+      hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
 
 /-- The finite-`η` ladder determinant converges to its fixed-disorder zero-broadening boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one
