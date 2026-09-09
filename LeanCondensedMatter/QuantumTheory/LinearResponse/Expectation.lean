@@ -33,11 +33,6 @@ structure NormalizedExpectation (H : Type*) [NormedAddCommGroup H]
 instance : CoeFun (NormalizedExpectation H) fun _ => (H →L[ℂ] H) → ℂ :=
   ⟨fun expectation => expectation.toContinuousLinearMap⟩
 
-@[simp]
-theorem NormalizedExpectation.apply_one (expectation : NormalizedExpectation H) :
-    expectation (1 : H →L[ℂ] H) = 1 :=
-  expectation.map_one
-
 variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
 /-- Pull a normalized expectation back along a continuous linear operator map that preserves the
@@ -49,7 +44,7 @@ noncomputable def NormalizedExpectation.pullback
     (hΦ : Φ 1 = 1) : NormalizedExpectation H where
   toContinuousLinearMap := expectation.toContinuousLinearMap.comp Φ
   map_one := by
-    simp [hΦ]
+    simpa [hΦ] using expectation.map_one
 
 @[simp]
 theorem NormalizedExpectation.pullback_apply
