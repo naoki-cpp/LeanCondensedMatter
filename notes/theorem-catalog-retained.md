@@ -139,3 +139,39 @@ or consumer structure changes.
 - `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate` — canonical multiplicity-preservation
   theorem under unitary conjugation. Although its current project consumer is the summability proof,
   equality of eigenspace dimensions is independently useful operator-theory API.
+- `Combinatorics.BinaryShuffle.toSlotShuffle_injective` — canonical injectivity property of the public
+  forgetful map from recursive binary shuffles to ambient slot shuffles. It participates in both the
+  cardinality argument and the final equivalence construction, so it is not merely one-use routing.
+- `Combinatorics.permutationSum_eq_momentFromCumulant` — semantic connected-decomposition endpoint
+  identifying the project-local permutation sum with the moment transform of the single-cycle
+  contribution; the module explicitly reserves public declarations for this moment characterization.
+- `LinearPMap.resolventApproximationEvolution_add` — one-parameter-group law for the named bounded
+  resolvent-approximation evolution; it is part of the construction API, not just a specialization of
+  the generic bounded exponential theorem.
+- `LinearPMap.resolventApproximationEvolution_apply_hasDerivAt` — vectorwise bounded-generator
+  differential equation for the named resolvent approximation, forming the strong-evolution bridge
+  used by the Stone construction.
+- `QuantumMechanics.SingleParticle.Continuum.inner_l2MultiplicationOperator1D_eq_integral` —
+  continuum-quantum-mechanics expectation-value formula identifying a named multiplication-operator
+  matrix element with its pointwise Lebesgue integral.
+- `QuantumMechanics.SingleParticle.Continuum.realLInfMultiplier1D_coeFn` — continuum-vocabulary
+  normalization theorem exposing the almost-everywhere representative of a bounded real multiplier;
+  it is the bridge used by the probability-density layer.
+- `QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
+  physical endpoint that every state of a filled band has unit zero-temperature occupation, paired
+  with the retained empty-band theorem.
+- `SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder` — canonical
+  reassembly identity for the quartic-diagram-facing component-order API; the module deliberately
+  specializes the generic partition-order machinery into this domain vocabulary.
+- `SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem` — semantic normalization
+  rule for the named flattened-leg component predicate, identifying it with membership of the
+  incident vertex in the corresponding component part.
+- `SecondQuantization.Common.TwoPointDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum` —
+  domain-level factorization of mixed-time component weights into the distinguished external
+  component and vacuum components, used by the fixed-external Wick factorization endpoint.
+- `SecondQuantization.Common.interactionPicture_zero` — canonical `[simp]` normalization that the named
+  interaction-picture operator equals the original operator at zero imaginary time.
+- `SecondQuantization.Fermionic.externalFieldOperator_annihilation_eq_smul` — physical evaluation rule
+  for an annihilation-labelled external field under free imaginary-time evolution.
+- `SecondQuantization.Fermionic.externalFieldOperator_creation_eq_smul` — physical evaluation rule for
+  a creation-labelled external field under free imaginary-time evolution.
