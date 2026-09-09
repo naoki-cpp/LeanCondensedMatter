@@ -19,6 +19,7 @@ notes/
   roadmap.md                — repository-wide target/status index
   completed.md              — major targets that have reached `proved`
   conventions.md            — project-wide coding, refactoring, proof, workflow, and commit rules
+  theorem-catalog-retained.md — semantic dispositions for retained theorem-audit candidates
   model-and-assumptions.md  — physical models and physics-to-Lean dictionary
   caveats.md                — known pitfalls and boundaries
   references.md             — annotated external references
@@ -43,5 +44,7 @@ notes/
     transport.md
     impurity-vertex-correction.md
 ```
+
+The theorem catalog keeps structural audit attributes on every declaration; entries listed in `notes/theorem-catalog-retained.md` remain in the full catalog but are omitted from unresolved review queues.
 
 Project-wide implementation, documentation, refactoring, proof, dependency, workflow, and commit rules live in [`notes/conventions.md`](notes/conventions.md). Topic-specific details belong in `notes/`; do not add long content sections to this file.

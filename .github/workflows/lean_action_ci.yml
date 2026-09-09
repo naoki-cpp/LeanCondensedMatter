@@ -144,11 +144,11 @@ jobs:
           test "$BUILD_RESULT" = success
           test "$COMPILED_CHECKS_RESULT" = success
 
-  # Generated developer artifacts and advisory audits run only on pushes to main. They consume
-  # the compiled Lean environment but are not part of the pull-request correctness gate.
+  # Generated developer artifacts and advisory audits run on pushes to main and explicit manual
+  # dispatches. They consume the compiled Lean environment but are not part of the PR gate.
   docs:
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
 
@@ -205,9 +205,10 @@ jobs:
 
       - name: Add theorem catalog summary
         if: success()
+        shell: bash
         run: |
           echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
-          grep '^Theorems:' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Retained audit declarations|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
 
