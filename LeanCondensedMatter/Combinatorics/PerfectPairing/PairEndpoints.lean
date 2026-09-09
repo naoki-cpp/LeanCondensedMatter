@@ -90,13 +90,6 @@ theorem Pairing.card_pairs {n : ℕ} (pairing : Pairing n) :
     Fintype.card_coe pairing.pairs
   rw [← h, pairing.card_normalizedPair]
 
-/-- Recovering the normalized pair from either of its selected endpoints returns that pair. -/
-@[simp]
-theorem Pairing.positionToPairEndpoint_fst_pairEndpoint {n : ℕ}
-    (pairing : Pairing n) (pr : pairing.NormalizedPair) (k : Fin 2) :
-    (pairing.positionToPairEndpoint (pairing.pairEndpoint (pr, k))).1 = pr :=
-  congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, k))
-
 /-- Normalize endpoint zero after transporting an abstract two-endpoint fiber into `pairing`. -/
 noncomputable def Pairing.normalizedPairOfEndpointEquiv
     {A P : Type*} {n : ℕ} (pairing : Pairing n)
@@ -123,6 +116,9 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
     refine ⟨x.1, ?_⟩
     have hx : endpointEquiv x = p := endpointEquiv.apply_symm_apply p
     rcases x with ⟨a, k⟩
+    have hrecover (j : Fin 2) :
+        (pairing.positionToPairEndpoint (pairing.pairEndpoint (localPr, j))).1 = localPr :=
+      congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (localPr, j))
     fin_cases k
     · have hfirst : e (endpointEquiv (a, 0)) = localPr.1.1 := by
         calc
@@ -130,7 +126,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
           _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
       unfold Pairing.normalizedPairOfEndpointEquiv
       rw [hfirst]
-      simpa using pairing.positionToPairEndpoint_fst_pairEndpoint localPr 0
+      simpa using hrecover (0 : Fin 2)
     · have hsecond : e (endpointEquiv (a, 1)) = localPr.1.1 := by
         calc
           e (endpointEquiv (a, 1)) = e p := congrArg e (by simpa using hx)
@@ -147,7 +143,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
           _ = localPr.1.2 := hpair.2
       unfold Pairing.normalizedPairOfEndpointEquiv
       rw [hfirst]
-      simpa using pairing.positionToPairEndpoint_fst_pairEndpoint localPr 1
+      simpa using hrecover (1 : Fin 2)
   have hcard : Fintype.card A = Fintype.card pairing.NormalizedPair := by
     letI : Fintype P := Fintype.ofFinite P
     have h : Fintype.card (A × Fin 2) =
