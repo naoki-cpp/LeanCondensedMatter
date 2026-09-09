@@ -61,13 +61,17 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet
   have hAlpha := tendsto_pi_nhds.mp hSolved .x
   have hBeta := tendsto_pi_nhds.mp hSolved .y
-  have hX := tendsto_inPlaneRotationCoefficient hAlpha hBeta .x source
-  have hY := tendsto_inPlaneRotationCoefficient hAlpha hBeta .y source
-  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
-    inPlaneCurrentOperator, inPlaneRotationCoefficient, Matrix.transpose] using
-    (hX.smul_const (currentOperator .x e v)).add
-      (hY.smul_const (currentOperator .y e v))
+  cases source
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
+      inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
+      (hAlpha.smul_const (currentOperator .x e v)).add
+        (hBeta.smul_const (currentOperator .y e v))
+  · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
+      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
+      inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
+      (hBeta.neg.smul_const (currentOperator .x e v)).add
+        (hAlpha.smul_const (currentOperator .y e v))
 
 end
 
