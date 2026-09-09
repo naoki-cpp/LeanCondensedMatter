@@ -65,8 +65,7 @@ private theorem finiteTrace_smul_sigmaX_mul_inPlane
   rw [hop]
   unfold matrixOperator
   rw [finiteDimensionalOperatorTrace_toEuclideanCLM]
-  simp [Matrix.trace, sigmaX, sigmaY]
-  ring
+  exact InternalSpace.trace_scaledPauliX_mul_inPlane q x y
 
 private theorem intervalIntegrable_polarPauli_rung
     (aL aR bL bR dL dR : ℂ) (coefficients : InPlaneCoefficientVector) :
