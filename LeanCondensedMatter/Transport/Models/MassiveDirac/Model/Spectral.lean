@@ -46,7 +46,7 @@ involution, and the two spectral projectors are its `±1` eigenspace projectors.
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
   (((energy v m px py : ℝ) : ℂ)⁻¹) • hamiltonian v m px py
 
-/-- Away from the degeneracy, the normalized Hamiltonian squares to the identity. -/
+/-- Away from the band degeneracy, the normalized Hamiltonian squares to the identity. -/
 private theorem normalizedHamiltonian_mul_self
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
@@ -167,6 +167,7 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
           1 + s • Q + s • Q + (s • Q) * (s • Q) := by
         rw [add_mul, one_mul, mul_add, mul_one]
         abel
+      _ = 1 + s • Q + s • Q + (s * s) • (Q * Q) := by rw [hsqmul]
       _ = 1 + s • Q + s • Q + 1 := by
         rw [hQ, show s * s = 1 by simpa [pow_two] using hs, one_smul]
       _ = (2 : ℂ) • ((1 : Matrix2) + s • Q) := by module
