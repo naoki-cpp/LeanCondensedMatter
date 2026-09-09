@@ -301,10 +301,10 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     cases output
     · simpa [n0,
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-        inPlaneRotationCoefficient, inPlaneRotationMatrix, pow_two] using hX
+        inPlaneRotationMatrix, pow_two] using hX
     · simpa [n0,
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-        inPlaneRotationCoefficient, inPlaneRotationMatrix, pow_two] using hY
+        inPlaneRotationMatrix, pow_two] using hY
   have hclosed := hnum'.mul hkernel.ofReal
   have htarget :
       n0 * ((((2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))⁻¹ * Real.pi : ℝ) : ℂ)) =
