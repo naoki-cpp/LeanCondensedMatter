@@ -109,13 +109,6 @@ noncomputable def occupationOperatorAlgHom :
     occupationOperator_id
     occupationOperator_comp
 
-@[simp]
-theorem occupationOperatorAlgHom_apply
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    occupationOperatorAlgHom A = occupationOperator A :=
-  rfl
-
 section FiniteLattice
 
 variable [Fintype Site]
@@ -144,13 +137,6 @@ noncomputable def boundedLatticeOperator
       AlgebraicFock (LatticeState Site)) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperatorLinearMap A
-
-@[simp]
-theorem boundedLatticeOperatorAlgHom_apply
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    boundedLatticeOperatorAlgHom A = boundedLatticeOperator A :=
-  rfl
 
 @[simp]
 theorem boundedLatticeOperator_add
