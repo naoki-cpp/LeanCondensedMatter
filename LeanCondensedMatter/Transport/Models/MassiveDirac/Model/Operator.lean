@@ -134,9 +134,7 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     have hcurrent :
         current .x e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul] <;>
-        push_cast <;>
-        module
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
   · let u : PauliAxis → ℝ
@@ -146,9 +144,7 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     have hcurrent :
         current .y e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul] <;>
-        push_cast <;>
-        module
+      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
