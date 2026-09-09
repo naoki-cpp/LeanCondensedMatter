@@ -80,15 +80,6 @@ theorem TwoPointDiagram.relabelInteractionVertices_symm {n : ℕ}
     rw [interactionVertexPositionRelabel_symm]
     exact Pairing.relabel_symm_relabel d.pairing (interactionVertexPositionRelabel π)
 
-/-- Relabeling by the inverse permutation and then the original permutation also recovers the
-original two-point diagram. -/
-@[simp]
-theorem TwoPointDiagram.relabelInteractionVertices_symm_relabel {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (π : Equiv.Perm (Fin n)) :
-    (d.relabelInteractionVertices π.symm).relabelInteractionVertices π = d := by
-  simpa using d.relabelInteractionVertices_symm π.symm
-
 /-- Interaction-slot relabeling as an automorphism of standard two-point diagrams. -/
 noncomputable def twoPointDiagramInteractionRelabelEquiv {n : ℕ}
     (ExternalLabel InternalLabel : Type*) (π : Equiv.Perm (Fin n)) :
@@ -97,7 +88,7 @@ noncomputable def twoPointDiagramInteractionRelabelEquiv {n : ℕ}
   toFun d := d.relabelInteractionVertices π
   invFun d := d.relabelInteractionVertices π.symm
   left_inv d := d.relabelInteractionVertices_symm π
-  right_inv d := d.relabelInteractionVertices_symm_relabel π
+  right_inv d := by simpa using d.relabelInteractionVertices_symm π.symm
 
 /-- A finite sum over all standard two-point diagrams is invariant under interaction-slot
 relabeling. -/
