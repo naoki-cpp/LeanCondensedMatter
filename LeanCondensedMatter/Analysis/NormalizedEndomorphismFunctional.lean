@@ -28,10 +28,6 @@ instance : CoeFun (NormalizedEndomorphismFunctional 𝕜 V)
     (fun _ => Module.End 𝕜 V → 𝕜) :=
   ⟨fun F => F.toLinearMap⟩
 
-@[simp]
-theorem toLinearMap_apply (F : NormalizedEndomorphismFunctional 𝕜 V)
-    (A : Module.End 𝕜 V) : F.toLinearMap A = F A := rfl
-
 theorem map_add (F : NormalizedEndomorphismFunctional 𝕜 V) (A B : Module.End 𝕜 V) :
     F (A + B) = F A + F B :=
   F.toLinearMap.map_add A B
