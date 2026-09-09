@@ -217,21 +217,6 @@ theorem transportFunctional_smul_id
   intro f
   simp [transportFunctional, localizationCommutatorFunctional]
 
-/-- Differential factorization of bare localization transport lifts to any symmetrically localized
-one-body quantity. -/
-theorem factorsThroughDifferential_transport
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V)
-    (d : Test →ₗ[ℂ] OneForm)
-    (J : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hJ : FactorsThroughDifferential d
-      (localizationCommutatorFunctional V h M) J) :
-    FactorsThroughDifferential d
-      (transportFunctional V h M m)
-      ((symmetrizedProductRightLinear V m).comp J) := by
-  exact FactorsThroughDifferential.postcomp hJ (symmetrizedProductRightLinear V m)
-
 /-- The symmetric-localization commutator decomposition becomes an abstract balance law whenever
 the transport term has a differential current representation. -/
 noncomputable def symmetricLocalizationBalanceLaw

@@ -67,3 +67,23 @@ or consumer structure changes.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
   evaluation rule identifying the bundled retarded-advanced ladder action with the physical
   covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
+- `QuantumMechanics.SingleParticle.currentEquivalent_correctedSymmetrizedVelocity` — canonical
+  corrected-current equivalence theorem: any full current representing the intrinsic transport is
+  equivalent on exact differentials to the symmetrized current plus localization correction.
+- `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
+  physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
+  differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
+- `SecondQuantization.Common.TwoPointDiagram.isSplit_ofSlotSplit` — canonical constructor invariant
+  stating that a diagram rebuilt from slot-split pieces is split by that same slot decomposition;
+  it is the evidence used to place reconstructed diagrams in the split-diagram subtype.
+- `SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace` — canonical interpretation of the
+  named Dyson trace coefficient as the Boltzmann-weighted diagonal functional of the corresponding
+  bare Dyson coefficient.
+- `SecondQuantization.Fermionic.completedFreeHamiltonian_denseDomain` — standard analytic property of
+  the named completed free Hamiltonian; the common diagonal-operator proof does not make the
+  fermionic physical endpoint redundant.
+- `SecondQuantization.Fermionic.completedFreeHamiltonian_isClosed` — standard analytic property of
+  the named completed free Hamiltonian, retained alongside its self-adjointness endpoint.
+- `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
+  for the named time-ordered external-field construction: swapping both fields and times produces
+  the fermionic statistics sign.
