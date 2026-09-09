@@ -133,14 +133,17 @@ private theorem inner_twoSiteDimerSiteState (i j : TwoSite) :
         (Config := Occupation TwoSite)).orthonormal
       ({i} : Occupation TwoSite) ({j} : Occupation TwoSite))
 
+private theorem star_two : (starRingEnd ℂ) (2 : ℂ) = 2 := by
+  change (starRingEnd ℂ) ((2 : ℝ) : ℂ) = ((2 : ℝ) : ℂ)
+  exact Complex.conj_ofReal 2
+
 @[simp]
 theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
   rw [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState]
   simp only [inner_sub_left, inner_add_right, inner_smul_left, inner_smul_right]
   rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
-    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
-  rw [show (starRingEnd ℂ) (2 : ℂ) = 2 by simp]
+    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
   norm_num
 
 @[simp]
@@ -149,8 +152,7 @@ theorem twoSiteGappedBenchmark_ground_norm_sq :
   rw [twoSiteGappedBenchmarkGroundState]
   simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right]
   rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
-    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
-  rw [show (starRingEnd ℂ) (2 : ℂ) = 2 by simp]
+    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
   norm_num
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
