@@ -46,8 +46,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
-  let dressed : InPlaneCoefficientVector := fun output =>
-    inPlaneRotationCoefficient (solved .x) (solved .y) output source
+  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
   inPlaneCurrentOperator e v (dressed .x) (dressed .y)
 
 @[simp]
@@ -57,7 +56,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
       source e v m probeEnergy broadening 0 hbar pMax = currentOperator source e v := by
   cases source <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
-      inPlaneCurrentOperator, inPlaneRotationCoefficient,
+      inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix,
       inPlaneLadderBareXSource, inPlaneCoefficientVector]
 
 /-- Pointwise finite-cutoff finite-`η` Středa surface bridge with a bare measured `jₓ`, the solved
