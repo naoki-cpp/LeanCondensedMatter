@@ -50,16 +50,21 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
   let factor : ℝ × ℝ → ℂ :=
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py
   have hcontinuous : ContinuousAt factor (0, 0) := by
+    have hgap : interbandEnergyGap band v m px py ≠ 0 :=
+      interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
     simpa [factor] using
-      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
-        band e v m px py hE
+      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
+        band e v m px py (0, 0) (by simpa using hgap)
   have hslice : ∀ broadening : ℝ, broadening ≠ 0 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius) := by
     intro broadening _ offset hoffset
+    have hshift : interbandEnergyGap band v m px py + offset ≠ 0 :=
+      interbandEnergyGap_add_offset_ne_zero_on_targetWindow
+        band v m px py offset radius hradius (abs_le.mpr hoffset)
     have hfactor :=
-      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
-        band e v m px py radius (offset, broadening) hradius (abs_le.mpr hoffset)
+      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
+        band e v m px py (offset, broadening) (by simpa using hshift)
     have hpair : ContinuousAt (fun x : ℝ => (x, broadening)) offset := by
       fun_prop
     have hcomp : ContinuousAt (fun x : ℝ => factor (x, broadening)) offset := by
@@ -80,8 +85,11 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
     have hfactorContinuous : ContinuousOn factor
         (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) := by
       intro p hp
-      exact (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
-        band e v m px py radius p hradius (abs_le.mpr hp.1)).continuousWithinAt
+      have hshift : interbandEnergyGap band v m px py + p.1 ≠ 0 :=
+        interbandEnergyGap_add_offset_ne_zero_on_targetWindow
+          band v m px py p.1 radius hradius (abs_le.mpr hp.1)
+      exact (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
+        band e v m px py p hshift).continuousWithinAt
     have hconstant : ContinuousOn (fun _ : ℝ × ℝ => factor (0, 0))
         (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
       continuousOn_const
