@@ -46,26 +46,16 @@ open scoped Interval
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
     (i j : Direction2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneRotationMatrix
-    (pauliRungAngularXCoefficient
-      (finiteCutoffContinuumBornDysonScalarCoefficient
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonScalarCoefficient
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonPauliCoefficient .z
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonPauliCoefficient .z
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax))
-    (pauliRungAngularYCoefficient
-      (finiteCutoffContinuumBornDysonScalarCoefficient
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonScalarCoefficient
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonPauliCoefficient .z
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornDysonPauliCoefficient .z
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax))
-    i j
+  let rung := pauliRungAngularCoefficient
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  inPlaneRotationMatrix (rung .x) (rung .y) i j
 
 /-- Full polar-angle finite-`η` Born-Dyson action on an arbitrary in-plane Pauli vertex. -/
 noncomputable def finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction
@@ -190,7 +180,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
       inPlaneRotationMatrix,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      pauliRungAngularXCoefficient, pauliRungAngularYCoefficient,
+      pauliRungAngularCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,
       finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent,
       finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,

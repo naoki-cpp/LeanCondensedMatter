@@ -91,25 +91,16 @@ private theorem continuumBornPauliGreenOperator_polar_eq
 /-- Direction-indexed coefficient vector after the full polar-angle integral of the Born-dressed
 `Gᴿ σₓ Gᴬ` rung. The `.y` sign is specific to this retarded/advanced ordering. -/
 def continuumBornRetardedAdvancedPauliXAngularCoefficient
-    (v m p probeEnergy disorderStrength hbar : ℝ) : Direction2 → ℂ
-  | .x => pauliRungAngularXCoefficient
-      (continuumBornPauliGreenScalarCoefficient
-        .retarded v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenScalarCoefficient
-        .advanced v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenPauliCoefficient .z
-        .retarded v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenPauliCoefficient .z
-        .advanced v m p 0 probeEnergy disorderStrength hbar)
-  | .y => pauliRungAngularYCoefficient
-      (continuumBornPauliGreenScalarCoefficient
-        .retarded v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenScalarCoefficient
-        .advanced v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenPauliCoefficient .z
-        .retarded v m p 0 probeEnergy disorderStrength hbar)
-      (continuumBornPauliGreenPauliCoefficient .z
-        .advanced v m p 0 probeEnergy disorderStrength hbar)
+    (v m p probeEnergy disorderStrength hbar : ℝ) : Direction2 → ℂ :=
+  pauliRungAngularCoefficient
+    (continuumBornPauliGreenScalarCoefficient
+      .retarded v m p 0 probeEnergy disorderStrength hbar)
+    (continuumBornPauliGreenScalarCoefficient
+      .advanced v m p 0 probeEnergy disorderStrength hbar)
+    (continuumBornPauliGreenPauliCoefficient .z
+      .retarded v m p 0 probeEnergy disorderStrength hbar)
+    (continuumBornPauliGreenPauliCoefficient .z
+      .advanced v m p 0 probeEnergy disorderStrength hbar)
 
 /-- Full polar-angle Born-dressed Green-product rung at fixed radial momentum, defined from the
 Cartesian Born propagator before reducing to the shared polar form. -/
@@ -192,14 +183,14 @@ private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_inverse
     rw [pow_two, Complex.I_mul_I]
   cases output
   · unfold continuumBornRetardedAdvancedPauliXAngularCoefficient
-      continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularXCoefficient
+      continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularCoefficient
     unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
     simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
     ring_nf
     simp [hI]
     ring
   · unfold continuumBornRetardedAdvancedPauliXAngularCoefficient
-      continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularYCoefficient
+      continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularCoefficient
     unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
     simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
     ring_nf
