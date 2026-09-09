@@ -161,7 +161,6 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
         m probeEnergy := by
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     field_simp [Real.pi_ne_zero, hsumNe]
-    ring
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
