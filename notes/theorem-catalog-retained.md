@@ -7,9 +7,10 @@ of an independently useful mathematical or physical fact, a deliberate simplific
 a stable domain-level API.
 
 Declarations listed here have been semantically reviewed and are intentionally retained despite one
-or more audit signals. `scripts/TheoremCatalog.lean` uses exact mentions from this document to keep
-reviewed single-consumer declarations out of that queue; this document is also the canonical review
-record for retained declarations surfaced by other catalog attributes.
+or more audit signals. `scripts/TheoremCatalog.lean` records exact mentions from this document as the
+`retainedMention` attribute. Retained declarations keep their structural attributes in the full
+catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
+queues represent unresolved audit work.
 
 This list is not a compatibility promise. Reassess an entry if its statement, ownership, attributes,
 or consumer structure changes.
