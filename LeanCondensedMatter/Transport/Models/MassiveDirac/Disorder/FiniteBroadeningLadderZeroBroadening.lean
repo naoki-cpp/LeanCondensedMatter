@@ -20,21 +20,26 @@ noncomputable section
 
 open Filter
 
+/-- Canonical zero-broadening boundary of the source-`σₓ` current rung. -/
+noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
+  fun output =>
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+      output .x v m probeEnergy disorderStrength hbar pMax
+
 /-- Zero-broadening boundary of the determinant of the normalized in-plane Born-Dyson ladder. -/
 noncomputable def finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  let rung : InPlaneCoefficientVector := fun output =>
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-      output .x v m probeEnergy disorderStrength hbar pMax
-  inPlaneLadderDeterminant rung
+  inPlaneLadderDeterminant
+    (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+      v m probeEnergy disorderStrength hbar pMax)
 
 /-- Canonical zero-broadening boundary of the solved in-plane ladder for a bare `σₓ` source. -/
 noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
-  let rung : InPlaneCoefficientVector := fun output =>
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-      output .x v m probeEnergy disorderStrength hbar pMax
-  inPlaneLadderSolvedVector rung
+  inPlaneLadderSolvedVector
+    (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+      v m probeEnergy disorderStrength hbar pMax)
 
 private theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
@@ -45,13 +50,13 @@ private theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadeni
       finiteCutoffContinuumBornBoundaryRealRenormalization
         v m probeEnergy disorderStrength hbar pMax < 1) :
     Tendsto
-      (fun broadening : ℝ => fun output =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-          output .x v m probeEnergy broadening disorderStrength hbar pMax)
+      (fun broadening : ℝ =>
+        finiteCutoffContinuumBornDysonCurrentRungVector
+          v m probeEnergy broadening disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (fun output =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-          output .x v m probeEnergy disorderStrength hbar pMax)) := by
+      (nhds
+        (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+          v m probeEnergy disorderStrength hbar pMax)) := by
   rw [tendsto_pi_nhds]
   intro output
   cases output
@@ -75,10 +80,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_
         v m probeEnergy disorderStrength hbar pMax < 1) :
     Tendsto
       (fun broadening : ℝ =>
-        let rung : InPlaneCoefficientVector := fun output =>
-          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
-            output .x v m probeEnergy broadening disorderStrength hbar pMax
-        inPlaneLadderDeterminant rung)
+        inPlaneLadderDeterminant
+          (finiteCutoffContinuumBornDysonCurrentRungVector
+            v m probeEnergy broadening disorderStrength hbar pMax))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
@@ -140,9 +144,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
   have hdet' :
       inPlaneLadderDeterminant
-        (fun output =>
-          finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-            output .x v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
+        (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+          v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
     simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
   simpa [finiteCutoffContinuumBornDysonLadderSolvedVector,
     finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
