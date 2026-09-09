@@ -11,9 +11,8 @@ broadening. The opposite-band spectator/current factor is regular wherever the s
 gap stays nonzero.
 
 This file specializes the generic spectator factor to the Hall direction pair `(x,y)`, packages it
-in target-centered coordinates, evaluates it at the pole, proves joint continuity under the general
-shifted-gap condition, and derives both target-pole and target-window continuity as corollaries. No
-compactness bound, energy integration, or momentum integration is performed here.
+in target-centered coordinates, evaluates it at the pole, and proves the general shifted-gap
+continuity theorem. Concrete pole/window specializations remain at their consumers.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -122,44 +121,6 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
   simpa [pow_two] using hsub
-
-/-- Away from the Dirac degeneracy, the target-centered spectator/current factor is jointly
-continuous in energy offset and broadening at the target pole. -/
-theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    ContinuousAt
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      (0, 0) := by
-  apply continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
-  simpa using interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
-
-/-- Jointly sending both the target-centered energy offset and broadening to zero extracts the same
-inverse-gap-squared canonical antisymmetric Hall current block as the fixed-energy pole limit. -/
-theorem tendsto_targetCenteredInterbandSpectatorCurrentFactor_zero
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Tendsto
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      (nhds (0, 0))
-      (nhds
-        (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinInterbandBlockDifference .x .y band e v m px py)) := by
-  have h := (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
-    band e v m px py hE).tendsto
-  rw [targetCenteredInterbandSpectatorCurrentFactor_zero band e v m px py] at h
-  exact h
-
-/-- A target-centered energy window narrower than the interband gap is a continuity region for the
-regular spectator/current factor, independently of the broadening coordinate. -/
-theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
-    (band : Band) (e v m px py radius : ℝ) (p : ℝ × ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hoffset : |p.1| ≤ radius) :
-    ContinuousAt
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      p := by
-  apply continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap_ne_zero
-  exact interbandEnergyGap_add_offset_ne_zero_on_targetWindow
-    band v m px py p.1 radius hradius hoffset
 
 end
 
