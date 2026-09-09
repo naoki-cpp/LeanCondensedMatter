@@ -146,11 +146,15 @@ theorem inPlaneLadderSolvedVector_fixedPoint
     inPlaneLadderSolvedVector rung =
       inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
   funext direction
-  cases direction <;>
-    simp [inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
-      inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix] <;>
-    field_simp [hdet] <;>
-    unfold inPlaneLadderDeterminant <;>
+  cases direction
+  · simp [inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+      inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix]
+    field_simp [hdet]
+    unfold inPlaneLadderDeterminant
+    ring
+  · simp [inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+      inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix]
+    field_simp [hdet]
     ring
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
