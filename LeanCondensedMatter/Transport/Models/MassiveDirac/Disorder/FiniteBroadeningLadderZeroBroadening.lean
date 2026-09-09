@@ -20,13 +20,6 @@ noncomputable section
 
 open Filter
 
-/-- Canonical zero-broadening boundary of the source-`σₓ` current rung. -/
-noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-    (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
-  fun output =>
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-      output .x v m probeEnergy disorderStrength hbar pMax
-
 /-- Zero-broadening boundary of the determinant of the normalized in-plane Born-Dyson ladder. -/
 noncomputable def finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
