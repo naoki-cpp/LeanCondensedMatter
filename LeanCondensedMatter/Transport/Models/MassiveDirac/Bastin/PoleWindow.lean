@@ -73,20 +73,6 @@ theorem interbandEnergyGap_add_offset_ne_zero_on_targetWindow
     exact lt_of_lt_of_le hpositive hlower
   exact abs_pos.mp hshiftAbs
 
-/-- On either spectral side, the complex spectator denominator is nonzero throughout a
-sufficiently narrow target-centered window, for every real broadening. -/
-theorem spectralSideSpectatorDenominator_ne_zero_on_targetWindow
-    (side : SpectralSide) (band : Band) (v m px py offset radius broadening : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hoffset : |offset| ≤ radius) :
-    ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
-        ((side.regulator broadening : ℝ) : ℂ) * Complex.I ≠ 0 := by
-  have hreal := interbandEnergyGap_add_offset_ne_zero_on_targetWindow
-    band v m px py offset radius hradius hoffset
-  intro hzero
-  apply hreal
-  simpa using congrArg Complex.re hzero
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
