@@ -158,8 +158,10 @@ private theorem finiteGibbsExpectation_fintype_sum {ι : Type*} [Fintype ι]
     (ε : Mode → ℝ) (β : ℝ) (F : ι → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (∑ i, F i) =
       ∑ i, Common.finiteGibbsExpectation (fermionEnergy ε) β (F i) := by
-  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (∑ i, F i) = _
-  simpa using map_sum (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) F Finset.univ
+  change
+    (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (∑ i, F i) =
+      ∑ i, (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (F i)
+  exact map_sum (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) F Finset.univ
 
 /-- **The key induction: `dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary
 fixed prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over vertex-label sequences of an
