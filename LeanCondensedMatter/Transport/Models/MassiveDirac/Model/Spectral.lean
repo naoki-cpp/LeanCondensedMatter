@@ -29,6 +29,18 @@ def bandProjector (band : Band) (v m px py : ℝ) : Matrix2 :=
     ((1 : Matrix2) +
       (((bandSign band / energy v m px py : ℝ) : ℂ)) • hamiltonian v m px py)
 
+/-- Pauli/Bloch form of the massive-Dirac band projector. This is the canonical spectral-layer
+bridge from the model Hamiltonian to the shared internal-space Pauli algebra. -/
+theorem bandProjector_eq_pauliCombination
+    (band : Band) (v m px py : ℝ) :
+    bandProjector band v m px py =
+      (1 / 2 : ℂ) •
+        ((1 : Matrix2) +
+          InternalSpace.pauliCombination
+            ((((bandSign band / energy v m px py : ℝ) : ℂ)) •
+              diracPauliCoefficients v m px py)) := by
+  simp [bandProjector, hamiltonian_eq_pauliCombination]
+
 /-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
 involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=

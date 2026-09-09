@@ -158,7 +158,11 @@ private theorem integral_polarPauli_xyTrace_eq
       rw [hop]
     _ = Matrix.trace ((q • sigmaX) * (x • sigmaX + y • sigmaY)) := by
       rw [matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
-    _ = 2 * q * x := InternalSpace.trace_scaledPauliX_mul_inPlane q x y
+    _ = 2 * q * x := by
+      simpa [InternalSpace.pauliCombination] using
+        (InternalSpace.trace_pauliCombination_mul_pauliCombination
+          (fun | .x => q | .y => 0 | .z => 0)
+          (fun | .x => x | .y => y | .z => 0))
 
 /-- Explicit source-indexed radial coefficient of the finite-`η` RA-dressed Středa angular trace.
 The RA and same-side rungs act on complete dressed and bare in-plane source vectors; the measured

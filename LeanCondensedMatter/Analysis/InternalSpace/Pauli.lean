@@ -94,14 +94,6 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
   ring_nf
   simp [hI]
 
-/-- The `σₓ` trace selects the `x` coefficient of an in-plane Pauli combination. -/
-theorem trace_scaledPauliX_mul_inPlane (q x y : ℂ) :
-    Matrix.trace ((q • pauliX) * (x • pauliX + y • pauliY)) = 2 * q * x := by
-  simpa [pauliCombination, mul_assoc] using
-    (trace_pauliCombination_mul_pauliCombination
-      (fun | .x => q | .y => 0 | .z => 0)
-      (fun | .x => x | .y => y | .z => 0))
-
 /-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
 `(I + v·σ)/2`. -/
 theorem trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination

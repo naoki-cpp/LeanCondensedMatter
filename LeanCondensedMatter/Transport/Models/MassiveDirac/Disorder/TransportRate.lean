@@ -173,24 +173,10 @@ private theorem upperBandProjectorOverlap_eq
       (((1 +
         (v ^ 2 * (px * qx + py * qy) + m ^ 2) /
           (energy v m px py * energy v m qx qy)) / 2 : ℝ) : ℂ) := by
-  let pCoefficients : PauliAxis → ℂ :=
-    (((energy v m px py : ℝ) : ℂ)⁻¹) • diracPauliCoefficients v m px py
-  let qCoefficients : PauliAxis → ℂ :=
-    (((energy v m qx qy : ℝ) : ℂ)⁻¹) • diracPauliCoefficients v m qx qy
-  have hpProjector :
-      bandProjector .upper v m px py =
-        (1 / 2 : ℂ) •
-          ((1 : Matrix2) + InternalSpace.pauliCombination pCoefficients) := by
-    simp [bandProjector, pCoefficients, hamiltonian_eq_pauliCombination]
-  have hqProjector :
-      bandProjector .upper v m qx qy =
-        (1 / 2 : ℂ) •
-          ((1 : Matrix2) + InternalSpace.pauliCombination qCoefficients) := by
-    simp [bandProjector, qCoefficients, hamiltonian_eq_pauliCombination]
-  rw [hpProjector, hqProjector,
+  rw [bandProjector_eq_pauliCombination, bandProjector_eq_pauliCombination,
     InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination]
   rw [InternalSpace.dotProduct_pauliAxis]
-  simp [pCoefficients, qCoefficients, diracPauliCoefficients]
+  simp [diracPauliCoefficients]
   field_simp [hp, hq]
 
 /-- Gauge-independent scalar-disorder overlap weight between an upper-band state chosen on the
