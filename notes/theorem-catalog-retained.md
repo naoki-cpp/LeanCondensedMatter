@@ -87,3 +87,26 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.
+- `ConservationLaw.linearCommutator_orbitalAngularMomentumZ_continuum_sign` — physics-facing continuum
+  specialization fixing the derivative-localizer coefficient to `iℏ`; it records the expected
+  orbital-angular-momentum localization commutator rather than a proof-routing alias.
+- `LinearPMap.resolventApproximationEvolution_continuous` — canonical operator-norm continuity
+  property of the named bounded resolvent-approximation evolution used in the Stone construction.
+- `LinearPMap.resolventApproximationEvolution_hasDerivAt` — canonical differential equation for the
+  named bounded resolvent-approximation evolution, exposing its generator at the construction API.
+- `QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isClosed`
+  — physical real-scalar-potential closedness theorem for the named continuum Hamiltonian; the
+  generic complex-multiplier proof does not make the real-potential endpoint redundant.
+- `QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_isEmptyBand` — canonical
+  zero-temperature occupation statement that every state in an empty band has zero occupation.
+- `SecondQuantization.Bosonic.annihilate_fockVacuum` — canonical `[simp]` vacuum identity stating that
+  every bosonic annihilation operator kills the Fock vacuum.
+- `SecondQuantization.Bosonic.freeGibbsDysonCoeff_succ` — canonical recursive scalar-integral equation
+  for the named Gibbs-evaluated Dyson coefficient under its explicit analytic boundary.
+- `SecondQuantization.Bosonic.particleNumber_vacuum` — canonical `[simp]` statement that the bosonic
+  vacuum has zero total occupation number.
+- `SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator` — deliberate
+  `Statistics`-indexed Gibbs two-point API for callers that already work with `exchangeCommutator`,
+  rather than the lower-level raw-`ζ` presentation.
+- `SecondQuantization.Fermionic.annihilate_fockVacuum` — canonical `[simp]` CAR vacuum identity that
+  every fermionic annihilation operator kills the Fock vacuum.
