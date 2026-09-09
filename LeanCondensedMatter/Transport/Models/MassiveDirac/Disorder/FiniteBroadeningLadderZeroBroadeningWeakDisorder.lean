@@ -132,7 +132,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     rw [inPlaneLadderAction_apply_x,
       inPlaneLadderSolvedVector_zero_transverse κ
         (by simpa [κ] using weakDisorderTargetOneMinusRung_ne_zero m probeEnergy hmetal)]
-    simp [inPlaneCoefficientVector]
+    simp only [zero_mul, sub_zero, Complex.ofReal_div, Complex.ofReal_sub,
+      Complex.ofReal_pow, Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_ofNat]
     have hreal :
         continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient m probeEnergy *
             (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
