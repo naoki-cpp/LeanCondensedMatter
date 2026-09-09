@@ -34,6 +34,8 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : â
     forceMatrixBerryCurvature band v m px py = berryCurvature band v m px py := by
   rw [forceMatrixBerryCurvature, forceMatrixTraceNumerator_xy_eq band v m px py hE,
     interbandEnergyGap_eq]
+  simp only [Complex.sub_im, Complex.neg_im, Complex.mul_im,
+    Complex.ofReal_re, Complex.ofReal_im]
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower] <;>
     field_simp [hE]
