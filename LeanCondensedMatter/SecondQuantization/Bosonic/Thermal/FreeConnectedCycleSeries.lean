@@ -22,19 +22,6 @@ open scoped BigOperators
 
 variable {Mode : Type*}
 
-/-- For the shared free Boltzmann kernel, the bosonic connected-cycle series is
-`-Σᵢ log(1 - t exp(-β εᵢ))` as a formal power series. -/
-theorem permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_neg_sum_log
-    [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
-    Combinatorics.permutationConnectedCycleSeries 1
-        (Common.freeBoltzmannModeKernel ε β) =
-      -∑ i : Mode,
-        PowerSeries.rescale
-          (-Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
-  simpa using
-    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
-      (1 : ℂ) (by norm_num) ε β)
-
 /-- Formal finite-mode free-boson grand-partition series
 `𝒵_B(t) = ∏ᵢ (1 - exp(-β εᵢ) t)⁻¹`. -/
 noncomputable def freeGrandPartitionSeries [Fintype Mode]
@@ -85,8 +72,10 @@ theorem logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries
     PowerSeries.logOf (freeGrandPartitionSeries ε β) =
       Combinatorics.permutationConnectedCycleSeries 1
         (Common.freeBoltzmannModeKernel ε β) := by
-  rw [logOf_freeGrandPartitionSeries_eq_neg_sum_log,
-    permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_neg_sum_log]
+  rw [logOf_freeGrandPartitionSeries_eq_neg_sum_log]
+  simpa using
+    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
+      (1 : ℂ) (by norm_num) ε β).symm
 
 end Bosonic
 end SecondQuantization
