@@ -59,7 +59,8 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadening
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hdet := tendsto_inPlaneLadderDeterminant hrung
-  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using
+  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
     hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
 
 /-- The longitudinal action of the canonical zero-broadening solved ladder has the explicit
@@ -96,7 +97,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds (inPlaneLadderSolvedVector targetRung)) := by
     simpa [κ, targetRung,
-      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
+      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
+      finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
       tendsto_inPlaneLadderSolvedVector hrung hdet
   have hx := tendsto_pi_nhds.mp hrung .x
   have hy := tendsto_pi_nhds.mp hrung .y
