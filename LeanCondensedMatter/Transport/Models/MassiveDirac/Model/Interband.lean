@@ -56,18 +56,42 @@ def forceMatrixTraceNumerator
     (bandProjector (oppositeBand band) v m px py * velocity μ v *
       bandProjector band v m px py * velocity ν v)
 
+/-- Exact complex `x-y` interband force numerator. The symmetric term is the in-plane product,
+while the antisymmetric imaginary term is the mass component of the normalized Pauli vector. -/
+theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
+    (hE : energy v m px py ≠ 0) :
+    forceMatrixTraceNumerator .x .y band v m px py =
+      -(((v ^ 4 * px * py / energy v m px py ^ 2 : ℝ) : ℂ)) -
+        (((bandSign band * m * v ^ 2 / energy v m px py : ℝ) : ℂ)) * Complex.I := by
+  let u : PauliAxis → ℂ :=
+    (((bandSign band / energy v m px py : ℝ) : ℂ)) •
+      diracPauliCoefficients v m px py
+  have hProjector :
+      bandProjector band v m px py =
+        (1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u) := by
+    simp [bandProjector, u, hamiltonian_eq_pauliCombination]
+  have hOppositeProjector :
+      bandProjector (oppositeBand band) v m px py =
+        (1 / 2 : ℂ) • ((1 : Matrix2) - InternalSpace.pauliCombination u) := by
+    simp [bandProjector, u, hamiltonian_eq_pauliCombination, bandSign_oppositeBand]
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
+  unfold forceMatrixTraceNumerator
+  rw [hOppositeProjector, hProjector]
+  simp only [velocity, directionPauli]
+  rw [InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
+  cases band <;>
+    simp [u, diracPauliCoefficients, bandSign] <;>
+    field_simp [hEc] <;>
+    ring
+
 /-- The imaginary part of the massive-Dirac Hall force numerator is `-s m v²/E`. -/
 theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     (forceMatrixTraceNumerator .x .y band v m px py).im =
       -(bandSign band) * m * v ^ 2 / energy v m px py := by
-  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  cases band <;>
-    simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace, Matrix.mul_apply,
-      velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
-    field_simp [hEc] <;>
-    ring_nf
+  rw [forceMatrixTraceNumerator_xy_eq band v m px py hE]
+  simp
 
 end
 
