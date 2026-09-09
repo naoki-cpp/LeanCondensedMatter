@@ -170,19 +170,4 @@ theorem permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log
   rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog ζ (Matrix.diagonal w) hζ]
   rw [formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log]
 
-/-- Fermionic endpoint: at `ζ = -1`, the connected series is the formal trace of `log(1 + tK)`. -/
-theorem permutationConnectedCycleSeries_neg_one_eq_traceLog
-    (K : Matrix ι ι ℂ) :
-    permutationConnectedCycleSeries (-1) K = formalTraceLogOneSubSeries (-1) K := by
-  rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog (-1) K (by norm_num)]
-  norm_num
-
-/-- Bosonic endpoint: at `ζ = 1`, the connected series is minus the formal trace of
-`log(1 - tK)`. -/
-theorem permutationConnectedCycleSeries_one_eq_neg_traceLog
-    (K : Matrix ι ι ℂ) :
-    permutationConnectedCycleSeries 1 K = -formalTraceLogOneSubSeries 1 K := by
-  rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog 1 K (by norm_num)]
-  norm_num
-
 end Combinatorics
