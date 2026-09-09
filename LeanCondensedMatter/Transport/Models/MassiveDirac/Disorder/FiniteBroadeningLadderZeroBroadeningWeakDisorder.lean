@@ -59,8 +59,7 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadening
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hdet := tendsto_inPlaneLadderDeterminant hrung
-  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
-    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
+  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using
     hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
 
 /-- The longitudinal action of the canonical zero-broadening solved ladder has the explicit
@@ -73,8 +72,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     Tendsto
       (fun disorderStrength : ℝ =>
         inPlaneLadderAction
-          (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax)
+          (fun output =>
+            finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+              output .x v m probeEnergy disorderStrength hbar pMax)
           (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax) .x)
       (nhdsWithin 0 (Set.Ioi 0))
@@ -96,8 +96,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds (inPlaneLadderSolvedVector targetRung)) := by
     simpa [κ, targetRung,
-      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
-      finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
+      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary] using
       tendsto_inPlaneLadderSolvedVector hrung hdet
   have hx := tendsto_pi_nhds.mp hrung .x
   have hy := tendsto_pi_nhds.mp hrung .y
@@ -138,8 +137,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
     simpa [inPlaneLadderAction_apply_x] using htarget
   rw [htarget'] at haction
-  simpa [inPlaneLadderAction_apply_x,
-    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using haction
+  simpa [inPlaneLadderAction_apply_x] using haction
 
 end
 
