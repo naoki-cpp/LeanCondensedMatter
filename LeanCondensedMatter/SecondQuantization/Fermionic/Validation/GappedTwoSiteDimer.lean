@@ -140,6 +140,7 @@ theorem twoSiteGappedBenchmark_ground_inner_excited :
   simp only [inner_sub_left, inner_add_right, inner_smul_left, inner_smul_right]
   rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
     inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
+  rw [show (starRingEnd ℂ) (2 : ℂ) = 2 by simp]
   norm_num
 
 @[simp]
@@ -149,6 +150,7 @@ theorem twoSiteGappedBenchmark_ground_norm_sq :
   simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right]
   rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
     inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1]
+  rw [show (starRingEnd ℂ) (2 : ℂ) = 2 by simp]
   norm_num
 
 /-- The normalized ground-state contact expectation is exactly `-4/5`, derived from the concrete
@@ -206,7 +208,8 @@ theorem twoSiteGappedBenchmarkTable_groundEnergy_from_operator :
       (twoSiteGappedBenchmarkLehmannTable.energy 0 : ℂ) •
         twoSiteGappedBenchmarkGroundState := by
   rw [twoSiteGappedBenchmarkLehmannTable_energy_zero]
-  convert twoSiteGappedBenchmark_ground_eigenvector using 1 <;> norm_num
+  convert twoSiteGappedBenchmark_ground_eigenvector using 1
+  norm_num
 
 /-- The upper table energy is the operator-derived upper eigenvalue. -/
 theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
@@ -214,7 +217,8 @@ theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
       (twoSiteGappedBenchmarkLehmannTable.energy 1 : ℂ) •
         twoSiteGappedBenchmarkExcitedState := by
   rw [twoSiteGappedBenchmarkLehmannTable_energy_one]
-  convert twoSiteGappedBenchmark_excited_eigenvector using 1 <;> norm_num
+  convert twoSiteGappedBenchmark_excited_eigenvector using 1
+  norm_num
 
 /-- The table entry `J₋₊ = i` is the concrete Peierls-current transition coefficient. -/
 theorem twoSiteGappedBenchmarkTable_current_zero_one_from_operator :
