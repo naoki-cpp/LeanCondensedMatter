@@ -48,37 +48,17 @@ def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix Direction2 
   | .y, .x => rung .y
   | .y, .y => rung .x
 
-@[simp]
-theorem inPlaneRotationMatrix_apply_x_x (rung : InPlaneCoefficientVector) :
-    inPlaneRotationMatrix rung .x .x = rung .x := by
-  rfl
+@[simp] theorem inPlaneRotationMatrix_apply_x_x (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .x .x = rung .x := rfl
 
-@[simp]
-theorem inPlaneRotationMatrix_apply_x_y (rung : InPlaneCoefficientVector) :
-    inPlaneRotationMatrix rung .x .y = -(rung .y) := by
-  rfl
+@[simp] theorem inPlaneRotationMatrix_apply_x_y (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .x .y = -(rung .y) := rfl
 
-@[simp]
-theorem inPlaneRotationMatrix_apply_y_x (rung : InPlaneCoefficientVector) :
-    inPlaneRotationMatrix rung .y .x = rung .y := by
-  rfl
+@[simp] theorem inPlaneRotationMatrix_apply_y_x (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .y .x = rung .y := rfl
 
-@[simp]
-theorem inPlaneRotationMatrix_apply_y_y (rung : InPlaneCoefficientVector) :
-    inPlaneRotationMatrix rung .y .y = rung .x := by
-  rfl
-
-/-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
-theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
-    (rung : InPlaneCoefficientVector) (alpha beta : ℂ) :
-    (inPlaneRotationMatrix rung).mulVec (inPlaneCoefficientVector alpha beta) =
-      inPlaneCoefficientVector
-        (rung .x * alpha - rung .y * beta)
-        (rung .y * alpha + rung .x * beta) := by
-  funext direction
-  cases direction <;>
-    simp [Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix,
-      inPlaneCoefficientVector, sub_eq_add_neg]
+@[simp] theorem inPlaneRotationMatrix_apply_y_y (rung : InPlaneCoefficientVector) :
+    inPlaneRotationMatrix rung .y .y = rung .x := rfl
 
 /-- Repository-oriented in-plane ladder action on the complete coefficient vector. -/
 def inPlaneLadderAction
@@ -129,16 +109,12 @@ def inPlaneLadderSolvedVector (rung : InPlaneCoefficientVector) : InPlaneCoeffic
     ((1 - rung .x) / inPlaneLadderDeterminant rung)
     (rung .y / inPlaneLadderDeterminant rung)
 
-@[simp]
-theorem inPlaneLadderSolvedVector_apply_x (rung : InPlaneCoefficientVector) :
+@[simp] theorem inPlaneLadderSolvedVector_apply_x (rung : InPlaneCoefficientVector) :
     inPlaneLadderSolvedVector rung .x =
-      (1 - rung .x) / inPlaneLadderDeterminant rung := by
-  rfl
+      (1 - rung .x) / inPlaneLadderDeterminant rung := rfl
 
-@[simp]
-theorem inPlaneLadderSolvedVector_apply_y (rung : InPlaneCoefficientVector) :
-    inPlaneLadderSolvedVector rung .y = rung .y / inPlaneLadderDeterminant rung := by
-  rfl
+@[simp] theorem inPlaneLadderSolvedVector_apply_y (rung : InPlaneCoefficientVector) :
+    inPlaneLadderSolvedVector rung .y = rung .y / inPlaneLadderDeterminant rung := rfl
 
 /-- Convergence of rung vectors propagates to the solved ladder vector whenever the limiting
 shifted-ladder determinant is nonzero. -/
@@ -169,16 +145,12 @@ theorem inPlaneLadderSolvedVector_fixedPoint
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     inPlaneLadderSolvedVector rung =
       inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
-  rw [inPlaneLadderAction, inPlaneLadderSolvedVector,
-    inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector]
   funext direction
-  cases direction
-  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
-    field_simp [hdet]
-    unfold inPlaneLadderDeterminant
-    ring
-  · simp [inPlaneLadderBareXSource, inPlaneCoefficientVector]
-    field_simp [hdet]
+  cases direction <;>
+    simp [inPlaneLadderSolvedVector, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+      inPlaneLadderAction, Matrix.mulVec, dotProduct, sum_direction2, inPlaneRotationMatrix] <;>
+    field_simp [hdet] <;>
+    unfold inPlaneLadderDeterminant <;>
     ring
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis. -/
