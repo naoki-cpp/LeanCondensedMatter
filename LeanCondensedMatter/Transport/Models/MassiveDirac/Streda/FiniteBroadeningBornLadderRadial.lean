@@ -309,8 +309,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  simp [q, solved, dressed, bare, aR, aA, dR, dA,
-    inPlaneLadderBareXSource, inPlaneCoefficientVector]
+  simp [q, solved, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource]
   ring
 
 /-- The source-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the
