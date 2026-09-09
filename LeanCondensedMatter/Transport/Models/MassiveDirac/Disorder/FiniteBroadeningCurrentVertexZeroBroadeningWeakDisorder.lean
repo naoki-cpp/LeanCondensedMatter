@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral
 import Mathlib.Tactic
 
 set_option linter.style.header false
