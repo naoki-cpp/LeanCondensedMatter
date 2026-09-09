@@ -61,3 +61,6 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea`
   — named physical endpoint identifying the finite static Kubo–Bastin conductivity with the Středa
   surface-plus-sea split under the explicit analytic and Ward assumptions.
+- `QuantumTheory.Transport.FiniteDisorderEnsemble.retardedAdvancedLadderCLM_apply` — canonical
+  evaluation rule identifying the bundled retarded-advanced ladder action with the physical
+  covariance insertion `C₂(Gᴿ Γ Gᴬ)`; it is the stable simplification boundary for the ladder API.
