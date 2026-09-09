@@ -67,24 +67,6 @@ theorem inPlaneRotationMatrix_apply_y_y (x y : ℂ) :
     inPlaneRotationMatrix x y .y .y = x := by
   rfl
 
-/-- Entry `(i,j)` of the canonical repository-oriented in-plane matrix, with `i` the output
-direction and `j` the input/source direction. -/
-def inPlaneRotationCoefficient (x y : ℂ) (i j : Direction2) : ℂ :=
-  inPlaneRotationMatrix x y i j
-
-/-- Convergence of the two independent isotropic coefficients propagates to every matrix entry. -/
-theorem tendsto_inPlaneRotationCoefficient
-    {ι : Type*} {l : Filter ι} {x y : ι → ℂ} {x₀ y₀ : ℂ}
-    (hx : Tendsto x l (nhds x₀)) (hy : Tendsto y l (nhds y₀))
-    (i j : Direction2) :
-    Tendsto (fun a => inPlaneRotationCoefficient (x a) (y a) i j) l
-      (nhds (inPlaneRotationCoefficient x₀ y₀ i j)) := by
-  cases i <;> cases j
-  · simpa [inPlaneRotationCoefficient, inPlaneRotationMatrix] using hx
-  · simpa [inPlaneRotationCoefficient, inPlaneRotationMatrix] using hy.neg
-  · simpa [inPlaneRotationCoefficient, inPlaneRotationMatrix] using hy
-  · simpa [inPlaneRotationCoefficient, inPlaneRotationMatrix] using hx
-
 /-- The isotropic in-plane matrix acts simultaneously on both coefficient components. -/
 theorem inPlaneRotationMatrix_mulVec_inPlaneCoefficientVector
     (x y alpha beta : ℂ) :

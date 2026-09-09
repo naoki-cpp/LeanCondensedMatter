@@ -46,7 +46,7 @@ open scoped Interval
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
     (i j : Direction2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneRotationCoefficient
+  inPlaneRotationMatrix
     (pauliRungAngularXCoefficient
       (finiteCutoffContinuumBornDysonScalarCoefficient
         .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
@@ -127,7 +127,7 @@ theorem finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_e
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
   rw [hpolar]
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
-    inPlaneRotationCoefficient, aR, aA, bR, bA, dR, dA, sub_eq_add_neg] using
+    inPlaneRotationMatrix, aR, aA, bR, bA, dR, dA, sub_eq_add_neg] using
     (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA alpha beta)
 
 /-! ## Common denominator form -/
@@ -137,7 +137,7 @@ denominator is attached. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
     (i j : Direction2)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  inPlaneRotationCoefficient
+  inPlaneRotationMatrix
     (finiteCutoffContinuumBornEffectiveEnergy
         .retarded v m probeEnergy broadening disorderStrength hbar pMax *
       finiteCutoffContinuumBornEffectiveEnergy
@@ -188,7 +188,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
           i j v m probeEnergy broadening disorderStrength hbar pMax := by
   cases i <;> cases j <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
-      inPlaneRotationCoefficient,
+      inPlaneRotationMatrix,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       pauliRungAngularXCoefficient, pauliRungAngularYCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,

@@ -104,10 +104,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       simp only [inPlaneLadderAction_apply_x, Matrix.transpose_apply,
-        inPlaneRotationCoefficient, inPlaneRotationMatrix_apply_x_x,
-        inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
-        inPlaneRotationMatrix_apply_y_y, mul_one, mul_zero, neg_zero,
-        pauliRungAngularYCoefficient, sub_self]
+        inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
+        inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y,
+        mul_one, mul_zero, neg_zero, pauliRungAngularYCoefficient, sub_self]
       ring
     _ = _ := by
       dsimp only

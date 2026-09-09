@@ -206,8 +206,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
-      inPlaneRotationCoefficient, inPlaneRotationMatrix_apply_x_x,
-      inPlaneRotationMatrix_apply_y_x]
+      inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x]
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
     have hprefEq :
