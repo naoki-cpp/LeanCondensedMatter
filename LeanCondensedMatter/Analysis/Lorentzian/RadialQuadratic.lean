@@ -15,8 +15,10 @@ This module owns the model-independent real analysis for radial integrals of the
 ```
 
 For nonzero radial scale `v` and nonzero width `B`, the finite-interval integral is evaluated by an
-arctangent primitive.  For positive width, the same formula gives the convergent `pMax → +∞`
-limit.  No Hamiltonian, disorder model, current vertex, or transport normalization appears here.
+arctangent primitive. For positive width, the same formula gives the convergent `pMax → +∞` limit.
+The one-sided zero-width crossing limit of the endpoint arctangent phase is also exposed for
+transport models whose resonance center moves continuously. No Hamiltonian, disorder model, current
+vertex, or transport normalization appears here.
 -/
 
 namespace QuantumTheory
@@ -83,6 +85,32 @@ theorem integral_radialQuadraticLorentzian_eq_arctan
     ring
   rw [hzero, Real.arctan_neg]
   ring
+
+/-- If two continuously moving endpoints approach opposite sides of a resonance while a common
+positive width tends to zero, their arctangent phase difference tends to `π`. -/
+theorem tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
+    {ι : Type*} {l : Filter ι} {f g width : ι → ℝ} {a b : ℝ}
+    (hf : Tendsto f l (nhds a)) (ha : 0 < a)
+    (hg : Tendsto g l (nhds b)) (hb : b < 0)
+    (hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0))) :
+    Tendsto
+      (fun x => Real.arctan (f x / width x) - Real.arctan (g x / width x))
+      l (nhds Real.pi) := by
+  have hpos :
+      Tendsto (fun x => Real.arctan (f x / width x)) l (nhds (Real.pi / 2)) := by
+    change Tendsto (Real.arctan ∘ fun x => f x / width x) l (nhds (Real.pi / 2))
+    simpa only [div_eq_mul_inv, Function.comp_apply] using
+      tendsto_nhds_of_tendsto_nhdsWithin
+        (Real.tendsto_arctan_atTop.comp
+          (hf.pos_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hwidth)))
+  have hneg :
+      Tendsto (fun x => Real.arctan (g x / width x)) l (nhds (-(Real.pi / 2))) := by
+    change Tendsto (Real.arctan ∘ fun x => g x / width x) l (nhds (-(Real.pi / 2)))
+    simpa only [div_eq_mul_inv, Function.comp_apply] using
+      tendsto_nhds_of_tendsto_nhdsWithin
+        (Real.tendsto_arctan_atBot.comp
+          (hg.neg_mul_atTop hb (tendsto_inv_nhdsGT_zero.comp hwidth)))
+  simpa only [show Real.pi / 2 - (-(Real.pi / 2)) = Real.pi by ring] using hpos.sub hneg
 
 private theorem tendsto_radialQuadraticLorentzianArctanArgument_atTop
     (v A B : ℝ) (hvelocity : v ≠ 0) (hB : 0 < B) :

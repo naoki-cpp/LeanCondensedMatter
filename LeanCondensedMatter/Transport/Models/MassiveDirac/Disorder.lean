@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff
 
@@ -27,11 +27,12 @@ fixed-radial-momentum positive-broadening boundary is exposed separately, under 
 boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses
 dominated convergence. At fixed positive disorder, an explicit real-renormalization bound below one
 makes the boundary RA denominator nonzero and discharges the compact radial regularity needed for the
-integrated limit. The resulting integrated-rung boundary is then propagated through the canonical
-two-component ladder under an explicit nonzero boundary determinant. For the zero-external-
-broadening Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal
-rung, while the fixed-cutoff weak-disorder and infinite-cutoff limits remain separate downstream
-routes.
+integrated limit. The resulting integrated-rung boundary is propagated through the canonical
+two-component ladder under an explicit nonzero boundary determinant. The subsequent fixed-cutoff
+weak-disorder limit is taken only after this zero-broadening boundary is formed, with the finite real
+self-energy shift retained until the limit. For the zero-external-broadening Born route,
+`BornCurrentVertexRung` owns the exact normalized finite-cutoff longitudinal rung, while its
+fixed-cutoff weak-disorder and infinite-cutoff limits remain separate downstream routes.
 
 Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
 crossed diagrams, and simultaneous thermodynamic, UV, disorder, and zero-broadening limits are not
