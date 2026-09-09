@@ -59,9 +59,12 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadening
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hdet := tendsto_inPlaneLadderDeterminant hrung
-  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary,
-    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
-    hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
+  change ∀ᶠ disorderStrength : ℝ in nhdsWithin 0 (Set.Ioi 0),
+    inPlaneLadderDeterminant
+      (fun output =>
+        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+          output .x v m probeEnergy disorderStrength hbar pMax) ≠ 0
+  exact hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
 
 /-- The longitudinal action of the canonical zero-broadening solved ladder has the explicit
 weak-disorder coefficient needed by the downstream scaled Středa conductivity limit. -/
@@ -96,10 +99,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
             v m probeEnergy disorderStrength hbar pMax)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds (inPlaneLadderSolvedVector targetRung)) := by
-    simpa [κ, targetRung,
-      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
-      finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
-      tendsto_inPlaneLadderSolvedVector hrung hdet
+    change Tendsto
+      (fun disorderStrength : ℝ =>
+        inPlaneLadderSolvedVector
+          (fun output =>
+            finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+              output .x v m probeEnergy disorderStrength hbar pMax))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (inPlaneLadderSolvedVector targetRung))
+    simpa [targetRung] using tendsto_inPlaneLadderSolvedVector hrung hdet
   have hx := tendsto_pi_nhds.mp hrung .x
   have hy := tendsto_pi_nhds.mp hrung .y
   have haction :=
