@@ -9,11 +9,8 @@ set_option linter.style.header false
 
 The target-centered spectator/current factor is continuous throughout any energy strip whose
 radius is smaller than the interband gap. Restricting that strip to a compact rectangle in energy
-offset and broadening therefore gives a uniform norm bound.
-
-This file records both the bound on the regular factor itself and the bound on its deviation from
-the target-pole value. These are the compactness inputs used by the generic Lorentzian
-pole-extraction theorem.
+offset and broadening therefore gives a uniform norm bound on its deviation from the target-pole
+value. This is the compactness input used by the generic Lorentzian pole-extraction theorem.
 
 No energy integration, zero-broadening limit exchange, or momentum integration is performed here.
 -/
@@ -42,23 +39,7 @@ theorem targetCenteredBastinPoleRectangle_subset_targetStrip
   rcases hp with ⟨hpOffset, _⟩
   exact abs_le.mpr hpOffset
 
-/-- On a target-centered compact rectangle narrower than the interband gap, the regular
-spectator/current factor has a uniform norm bound. -/
-theorem exists_norm_targetCenteredInterbandSpectatorCurrentFactor_le_on_rectangle
-    (band : Band) (e v m px py radius broadeningMax : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|) :
-    ∃ C : ℝ, ∀ p ∈ targetCenteredBastinPoleRectangle radius broadeningMax,
-      ‖targetCenteredInterbandSpectatorCurrentFactor band e v m px py p‖ ≤ C := by
-  have hcompact := isCompact_targetCenteredBastinPoleRectangle radius broadeningMax
-  have hcontinuous : ContinuousOn
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      (targetCenteredBastinPoleRectangle radius broadeningMax) :=
-    (continuousOn_targetCenteredInterbandSpectatorCurrentFactor_targetStrip
-      band e v m px py radius hradius).mono
-      (targetCenteredBastinPoleRectangle_subset_targetStrip radius broadeningMax)
-  exact hcompact.exists_bound_of_continuousOn hcontinuous
-
-/-- The deviation of the regular spectator/current factor from its pole value is also uniformly
+/-- The deviation of the regular spectator/current factor from its pole value is uniformly
 bounded on the compact target-centered rectangle. -/
 theorem exists_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
     (band : Band) (e v m px py radius broadeningMax : ℝ)
