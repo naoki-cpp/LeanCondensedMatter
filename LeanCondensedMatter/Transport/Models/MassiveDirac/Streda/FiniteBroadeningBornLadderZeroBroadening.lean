@@ -30,9 +30,8 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
-  inPlaneCurrentOperator e v
-    (inPlaneRotationCoefficient (solved .x) (solved .y) .x source)
-    (inPlaneRotationCoefficient (solved .x) (solved .y) .y source)
+  let dressed := Matrix.transpose (inPlaneRotationMatrix (solved .x) (solved .y)) source
+  inPlaneCurrentOperator e v (dressed .x) (dressed .y)
 
 /-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built
 from the solved zero-broadening ladder vector. -/
@@ -66,7 +65,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
   have hY := tendsto_inPlaneRotationCoefficient hAlpha hBeta .y source
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
-    inPlaneCurrentOperator] using
+    inPlaneCurrentOperator, inPlaneRotationCoefficient, Matrix.transpose] using
     (hX.smul_const (currentOperator .x e v)).add
       (hY.smul_const (currentOperator .y e v))
 
