@@ -159,7 +159,7 @@ private theorem integral_polarPauli_xyTrace_eq
     _ = Matrix.trace ((q • sigmaX) * (x • sigmaX + y • sigmaY)) := by
       rw [matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
     _ = 2 * q * x := by
-      simpa [InternalSpace.pauliCombination] using
+      simpa [InternalSpace.pauliCombination, sigmaX, sigmaY, mul_assoc] using
         (InternalSpace.trace_pauliCombination_mul_pauliCombination
           (fun | .x => q | .y => 0 | .z => 0)
           (fun | .x => x | .y => y | .z => 0))

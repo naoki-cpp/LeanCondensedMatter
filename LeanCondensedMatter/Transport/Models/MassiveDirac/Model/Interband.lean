@@ -69,12 +69,12 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
   have hProjector :
       bandProjector band v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u) := by
-    simpa [u] using bandProjector_eq_pauliCombination band v m px py
+    simpa only [u] using bandProjector_eq_pauliCombination band v m px py
   have hOppositeProjector :
       bandProjector (oppositeBand band) v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) - InternalSpace.pauliCombination u) := by
-    rw [bandProjector_eq_pauliCombination]
-    simp [u, bandSign_oppositeBand, InternalSpace.pauliCombination_smul]
+    have hresolve := bandProjector_add_oppositeBand band v m px py
+    rw [hProjector] at hresolve
     module
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
