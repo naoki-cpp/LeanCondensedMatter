@@ -164,7 +164,6 @@
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleFactor",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindow",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleContinuity",
-            "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleWindowBound",
             "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction"
           ]
         },
