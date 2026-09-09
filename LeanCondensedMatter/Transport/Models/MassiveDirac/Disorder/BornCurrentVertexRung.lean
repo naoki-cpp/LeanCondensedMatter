@@ -119,10 +119,9 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornAngularRetardedAdvancedPauliXIntegral
         v m p probeEnergy disorderStrength hbar =
-      continuumBornRetardedAdvancedPauliXAngularCoefficient
-          v m p probeEnergy disorderStrength hbar .x • matrixOperator sigmaX +
-        continuumBornRetardedAdvancedPauliXAngularCoefficient
-          v m p probeEnergy disorderStrength hbar .y • matrixOperator sigmaY := by
+      inPlanePauliVertexOperator
+        (continuumBornRetardedAdvancedPauliXAngularCoefficient
+          v m p probeEnergy disorderStrength hbar) := by
   let aR := continuumBornPauliGreenScalarCoefficient
     .retarded v m p 0 probeEnergy disorderStrength hbar
   let aA := continuumBornPauliGreenScalarCoefficient
