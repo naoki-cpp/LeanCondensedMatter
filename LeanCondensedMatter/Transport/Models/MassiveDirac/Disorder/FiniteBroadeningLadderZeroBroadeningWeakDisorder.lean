@@ -59,12 +59,8 @@ theorem eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadening
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hdet := tendsto_inPlaneLadderDeterminant hrung
-  change ∀ᶠ disorderStrength : ℝ in nhdsWithin 0 (Set.Ioi 0),
-    inPlaneLadderDeterminant
-      (fun output =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-          output .x v m probeEnergy disorderStrength hbar pMax) ≠ 0
-  exact hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
+  simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using
+    hdet.eventually_ne (weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal)
 
 /-- The longitudinal action of the canonical zero-broadening solved ladder has the explicit
 weak-disorder coefficient needed by the downstream scaled Středa conductivity limit. -/
@@ -76,9 +72,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     Tendsto
       (fun disorderStrength : ℝ =>
         inPlaneLadderAction
-          (fun output =>
-            finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              output .x v m probeEnergy disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+            v m probeEnergy disorderStrength hbar pMax)
           (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax) .x)
       (nhdsWithin 0 (Set.Ioi 0))
@@ -99,15 +94,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
             v m probeEnergy disorderStrength hbar pMax)
         (nhdsWithin 0 (Set.Ioi 0))
         (nhds (inPlaneLadderSolvedVector targetRung)) := by
-    change Tendsto
-      (fun disorderStrength : ℝ =>
-        inPlaneLadderSolvedVector
-          (fun output =>
-            finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-              output .x v m probeEnergy disorderStrength hbar pMax))
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (inPlaneLadderSolvedVector targetRung))
-    simpa [targetRung] using tendsto_inPlaneLadderSolvedVector hrung hdet
+    simpa [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
+      targetRung] using tendsto_inPlaneLadderSolvedVector hrung hdet
   have hx := tendsto_pi_nhds.mp hrung .x
   have hy := tendsto_pi_nhds.mp hrung .y
   have haction :=
@@ -147,7 +135,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
     simpa [inPlaneLadderAction_apply_x] using htarget
   rw [htarget'] at haction
-  simpa [inPlaneLadderAction_apply_x] using haction
+  simpa [finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
+    inPlaneLadderAction_apply_x] using haction
 
 end
 
