@@ -88,12 +88,10 @@ private theorem continuumBornPauliGreenOperator_polar_eq
       (continuumBornEffectiveMass side v m disorderStrength hbar)
       v p θ)
 
-/-- Output-direction coefficient after the full polar-angle integral of the Born-dressed
+/-- Direction-indexed coefficient vector after the full polar-angle integral of the Born-dressed
 `Gᴿ σₓ Gᴬ` rung. The `.y` sign is specific to this retarded/advanced ordering. -/
 def continuumBornRetardedAdvancedPauliXAngularCoefficient
-    (output : Direction2)
-    (v m p probeEnergy disorderStrength hbar : ℝ) : ℂ :=
-  match output with
+    (v m p probeEnergy disorderStrength hbar : ℝ) : Direction2 → ℂ
   | .x => pauliRungAngularXCoefficient
       (continuumBornPauliGreenScalarCoefficient
         .retarded v m p 0 probeEnergy disorderStrength hbar)
@@ -130,10 +128,10 @@ theorem continuumBornAngularRetardedAdvancedPauliXIntegral_eq
     (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornAngularRetardedAdvancedPauliXIntegral
         v m p probeEnergy disorderStrength hbar =
-      continuumBornRetardedAdvancedPauliXAngularCoefficient .x
-          v m p probeEnergy disorderStrength hbar • matrixOperator sigmaX +
-        continuumBornRetardedAdvancedPauliXAngularCoefficient .y
-          v m p probeEnergy disorderStrength hbar • matrixOperator sigmaY := by
+      continuumBornRetardedAdvancedPauliXAngularCoefficient
+          v m p probeEnergy disorderStrength hbar .x • matrixOperator sigmaX +
+        continuumBornRetardedAdvancedPauliXAngularCoefficient
+          v m p probeEnergy disorderStrength hbar .y • matrixOperator sigmaY := by
   let aR := continuumBornPauliGreenScalarCoefficient
     .retarded v m p 0 probeEnergy disorderStrength hbar
   let aA := continuumBornPauliGreenScalarCoefficient
@@ -182,8 +180,8 @@ def continuumBornRetardedAdvancedPauliXAngularNumerator
 product. -/
 private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_inverseFactors
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornRetardedAdvancedPauliXAngularCoefficient output
-        v m p probeEnergy disorderStrength hbar =
+    continuumBornRetardedAdvancedPauliXAngularCoefficient
+        v m p probeEnergy disorderStrength hbar output =
       (continuumBornRetardedAdvancedPauliXAngularNumerator output
           v m probeEnergy disorderStrength hbar : ℂ) *
         (continuumBornPauliGreenDenominator
@@ -210,8 +208,8 @@ private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_inverse
 /-- Closed real-denominator form of either in-plane angular coefficient. -/
 theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) :
-    continuumBornRetardedAdvancedPauliXAngularCoefficient output
-        v m p probeEnergy disorderStrength hbar =
+    continuumBornRetardedAdvancedPauliXAngularCoefficient
+        v m p probeEnergy disorderStrength hbar output =
       (continuumBornRetardedAdvancedPauliXAngularNumerator output
           v m probeEnergy disorderStrength hbar : ℂ) *
         (continuumBornRADenominatorProduct
@@ -225,8 +223,8 @@ theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed
 including only the polar Jacobian `p dp`. -/
 def continuumBornRetardedAdvancedPauliXRadialIntegrand
     (output : Direction2) (v m p probeEnergy disorderStrength hbar : ℝ) : ℂ :=
-  (p : ℂ) * continuumBornRetardedAdvancedPauliXAngularCoefficient output
-    v m p probeEnergy disorderStrength hbar
+  (p : ℂ) * continuumBornRetardedAdvancedPauliXAngularCoefficient
+    v m p probeEnergy disorderStrength hbar output
 
 /-- Closed real-denominator form of the direction-indexed radial Green-product integrand. -/
 theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_eq_closed
