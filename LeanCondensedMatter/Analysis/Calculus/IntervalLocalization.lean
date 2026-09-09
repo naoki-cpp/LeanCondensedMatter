@@ -12,10 +12,9 @@ constructions: the integrand on `(a, b]` minus the integrand on `(b, a]`.
 The construction is representation-independent and contains no transport assumptions.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace MeasureTheory
 
-open MeasureTheory Set
+open Set
 
 noncomputable section
 
@@ -44,5 +43,4 @@ theorem integral_orientedIntervalIntegrand
   rfl
 
 end
-end Transport
-end QuantumTheory
+end MeasureTheory
