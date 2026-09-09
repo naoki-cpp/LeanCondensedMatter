@@ -22,14 +22,14 @@ open scoped Interval
 
 private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
     (v pMax : ℝ) (A : ℂ) (hvelocity : v ≠ 0)
-    (hden : ∀ p : ℝ, A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)) ≠ 0) :
+    (hden : ∀ p : ℝ, A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) ≠ 0) :
     IntervalIntegrable
-        (fun p : ℝ => (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2)
+        (fun p : ℝ => (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)
         volume 0 pMax ∧
       (∫ p in (0 : ℝ)..pMax,
-        (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2) =
+        (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2) =
         ((((2 * v ^ 2 : ℝ) : ℂ))⁻¹ * A) *
-          ((A - (((v ^ 2 * pMax ^ 2 : ℝ) : ℂ))⁻¹ - A⁻¹) := by
+          ((A - (((v ^ 2 * pMax ^ 2 : ℝ) : ℂ)))⁻¹ - A⁻¹) := by
   let c : ℂ := ((v ^ 2 : ℝ) : ℂ)
   let g : ℂ → ℂ := fun z => A - c * z ^ 2
   let F : ℂ → ℂ := fun z => ((2 : ℂ) * c)⁻¹ * A * (g z)⁻¹
@@ -41,7 +41,7 @@ private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
     all_goals ring
   have hF : ∀ p : ℝ,
       HasDerivAt (fun x : ℝ => F (x : ℂ))
-        ((p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2) p := by
+        ((p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2) p := by
     intro p
     have hgp : g (p : ℂ) ≠ 0 := by simpa [g, c] using hden p
     have hreal := (((hg p).inv hgp).const_mul (((2 : ℂ) * c)⁻¹ * A)).comp_ofReal
@@ -51,10 +51,10 @@ private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
       simp only [Complex.ofReal_mul, Complex.ofReal_pow]
       field_simp [hgp, hvC]
   have hinv : Continuous (fun p : ℝ =>
-      (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) :=
-    (show Continuous (fun p : ℝ => A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)) by fun_prop).inv₀ hden
+      (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
+    (show Continuous (fun p : ℝ => A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))) by fun_prop).inv₀ hden
   have hint : IntervalIntegrable
-      (fun p : ℝ => (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2)
+      (fun p : ℝ => (p : ℂ) * A * (A - (((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)
       volume 0 pMax := by
     apply Continuous.intervalIntegrable
     exact ((Complex.continuous_ofReal.comp continuous_id).mul continuous_const).mul (hinv.pow 2)
