@@ -43,3 +43,6 @@ structure changes.
 - `SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation`
   — canonical reindexing theorem converting the full fixed-order Wick-diagram sum into the
   vertex-label/pairing double sum used by the Dyson-to-Wick expansion.
+- `Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog` — canonical
+  statistics-independent trace-log identity for a finite kernel at nonzero exchange weight; the
+  remaining diagonal-kernel consumer is a specialization of this reusable formal-series boundary.
