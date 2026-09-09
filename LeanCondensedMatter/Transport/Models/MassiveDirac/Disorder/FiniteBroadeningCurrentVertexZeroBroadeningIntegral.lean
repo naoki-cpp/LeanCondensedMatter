@@ -32,6 +32,13 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
       i j v m p probeEnergy disorderStrength hbar pMax
 
+/-- Canonical zero-broadening boundary of the source-`σₓ` current rung. -/
+noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+    (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
+  fun output =>
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+      output .x v m probeEnergy disorderStrength hbar pMax
+
 /-- Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry
 once one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA
 denominator on the compact radial interval are supplied. -/
