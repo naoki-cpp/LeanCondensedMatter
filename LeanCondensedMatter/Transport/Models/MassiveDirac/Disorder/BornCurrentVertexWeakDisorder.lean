@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
@@ -27,28 +28,6 @@ open MeasureTheory
 open Filter
 open QuantumTheory.Transport
 open scoped Interval
-
-private theorem tendsto_arctan_div_nhdsGT_zero_of_pos
-    {l : Filter ℝ} {f g : ℝ → ℝ} {a : ℝ}
-    (hf : Tendsto f l (nhds a)) (ha : 0 < a)
-    (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
-    Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (Real.pi / 2)) := by
-  change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (Real.pi / 2))
-  simpa only [div_eq_mul_inv, Function.comp_apply] using
-    tendsto_nhds_of_tendsto_nhdsWithin
-      (Real.tendsto_arctan_atTop.comp
-        (hf.pos_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
-
-private theorem tendsto_arctan_div_nhdsGT_zero_of_neg
-    {l : Filter ℝ} {f g : ℝ → ℝ} {a : ℝ}
-    (hf : Tendsto f l (nhds a)) (ha : a < 0)
-    (hg : Tendsto g l (nhdsWithin 0 (Set.Ioi 0))) :
-    Tendsto (fun x => Real.arctan (f x / g x)) l (nhds (-(Real.pi / 2))) := by
-  change Tendsto (Real.arctan ∘ fun x => f x / g x) l (nhds (-(Real.pi / 2)))
-  simpa only [div_eq_mul_inv, Function.comp_apply] using
-    tendsto_nhds_of_tendsto_nhdsWithin
-      (Real.tendsto_arctan_atBot.comp
-        (hf.neg_mul_atTop ha (tendsto_inv_nhdsGT_zero.comp hg)))
 
 private theorem tendsto_continuumBornRADenominatorCenter_disorder_zero
     (v m p probeEnergy hbar : ℝ) :
@@ -155,43 +134,33 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
     simpa using
       (tendsto_continuumBornRADenominatorCenter_disorder_zero
         v m 0 probeEnergy hbar)
-  have hphase0 : Tendsto
-      (fun disorderStrength : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungArctanPhase
-          v m 0 probeEnergy disorderStrength hbar)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (Real.pi / 2)) := by
-    simpa [continuumBornRetardedAdvancedCurrentRungArctanPhase] using
-      (tendsto_arctan_div_nhdsGT_zero_of_pos hcenter0 hdelta hwidth)
   have hcenterMax :=
     tendsto_continuumBornRADenominatorCenter_disorder_zero
       v m pMax probeEnergy hbar
   have hcenterMaxNeg :
       probeEnergy ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2 < 0 := by
     linarith
-  have hphaseMax : Tendsto
+  have hphaseDiff : Tendsto
       (fun disorderStrength : ℝ =>
         continuumBornRetardedAdvancedCurrentRungArctanPhase
-          v m pMax probeEnergy disorderStrength hbar)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (-(Real.pi / 2))) := by
+            v m 0 probeEnergy disorderStrength hbar -
+          continuumBornRetardedAdvancedCurrentRungArctanPhase
+            v m pMax probeEnergy disorderStrength hbar)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi) := by
     simpa [continuumBornRetardedAdvancedCurrentRungArctanPhase] using
-      (tendsto_arctan_div_nhdsGT_zero_of_neg
-        hcenterMax hcenterMaxNeg hwidth)
-  have hphaseDiff := hphase0.sub hphaseMax
+      (tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
+        hcenter0 hdelta hcenterMax hcenterMaxNeg hwidth)
   have hpref :=
     tendsto_continuumBornRetardedAdvancedCurrentRungPrefactorFactor_disorder_zero
       v m probeEnergy hbar
   have hclosed := hpref.mul hphaseDiff
   have htarget :
       ((probeEnergy ^ 2 - m ^ 2) /
-          (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) *
-        (Real.pi / 2 - (-(Real.pi / 2))) =
+          (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))) * Real.pi =
       continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
         m probeEnergy := by
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     field_simp [Real.pi_ne_zero, hsumNe]
-    ring
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
