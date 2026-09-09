@@ -139,29 +139,6 @@ noncomputable def finiteCutoffContinuumBornRetardedUpperBandFermiProjection
       finiteCutoffContinuumBornSelfEnergy .retarded
         v m fermiEnergy broadening disorderStrength hbar pMax)
 
-private theorem finiteDimensionalOperatorTrace_upperBandProjector_eq_one
-    (v m px py : ℝ) :
-    finiteDimensionalOperatorTrace
-        (bandProjectorOperator .upper v m px py) = (1 : ℂ) := by
-  rw [bandProjectorOperator, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
-  simp [bandProjector, Matrix.trace, hamiltonian, sigmaX, sigmaY, sigmaZ]
-  ring
-
-private theorem finiteDimensionalOperatorTrace_upperBandProjector_mul_sigmaZ
-    (v m px py : ℝ) :
-    finiteDimensionalOperatorTrace
-        (bandProjectorOperator .upper v m px py * matrixOperator sigmaZ) =
-      ((m / energy v m px py : ℝ) : ℂ) := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change finiteDimensionalOperatorTrace
-      (φ (bandProjector .upper v m px py) * φ sigmaZ) = _
-  rw [← map_mul]
-  change finiteDimensionalOperatorTrace
-      (matrixOperator (bandProjector .upper v m px py * sigmaZ)) = _
-  rw [matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
-  simp [bandProjector, Matrix.trace, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ]
-  ring
-
 /-- At nonzero broadening, the actual upper-band projector trace of the retarded Born self-energy
 reduces to the scalar Pauli coefficient plus `m / ε_F` times the `σ_z` coefficient. -/
 theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
@@ -175,15 +152,33 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
         (((m / fermiEnergy : ℝ) : ℂ) *
           finiteCutoffContinuumBornSelfEnergyCoefficient .z .retarded
             v m fermiEnergy broadening disorderStrength hbar pMax) := by
+  have htraceOne :
+      finiteDimensionalOperatorTrace
+          (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0) = 1 := by
+    rw [bandProjectorOperator, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM,
+      bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
+      InternalSpace.trace_pauliCombination]
+    norm_num [Matrix.trace]
+  have htraceZ :
+      finiteDimensionalOperatorTrace
+          (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
+            matrixOperator sigmaZ) =
+        ((m / energy v m (metallicFermiRadius v m fermiEnergy) 0 : ℝ) : ℂ) := by
+    unfold bandProjectorOperator matrixOperator
+    rw [← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM,
+      bandProjector_eq_pauliCombination, smul_mul_assoc, add_mul, one_mul]
+    rw [show sigmaZ = InternalSpace.pauliCombination
+      (fun | .x => 0 | .y => 0 | .z => 1) by simp [InternalSpace.pauliCombination]]
+    simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
+      InternalSpace.dotProduct_pauliAxis, diracPauliCoefficients]
+    ring
   have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
   rw [finiteCutoffContinuumBornSelfEnergy_eq .retarded
     v m fermiEnergy broadening disorderStrength hbar pMax hbroadening]
   rw [mul_add, mul_smul_comm, mul_smul_comm]
   simp only [mul_one]
-  rw [map_add, map_smul, map_smul]
-  rw [finiteDimensionalOperatorTrace_upperBandProjector_eq_one]
-  rw [finiteDimensionalOperatorTrace_upperBandProjector_mul_sigmaZ]
+  rw [map_add, map_smul, map_smul, htraceOne, htraceZ]
   rw [henergy]
   ring
 
