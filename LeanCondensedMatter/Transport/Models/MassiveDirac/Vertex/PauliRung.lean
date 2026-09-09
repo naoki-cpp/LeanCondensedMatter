@@ -29,14 +29,10 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-/-- Full-angle longitudinal coefficient of a retarded-advanced polar Pauli rung. -/
-def pauliRungAngularXCoefficient (aR aA dR dA : ℂ) : ℂ :=
-  (((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA)
-
-/-- Full-angle orientation-sensitive transverse coefficient of a retarded-advanced polar Pauli
-rung. -/
-def pauliRungAngularYCoefficient (aR aA dR dA : ℂ) : ℂ :=
-  (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)
+/-- Direction-indexed full-angle coefficient vector of a retarded-advanced polar Pauli rung. -/
+def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Direction2 → ℂ
+  | .x => (((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA)
+  | .y => (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)
 
 private theorem integral_polar_cos_sin_linear_zero (cCos cSin : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
@@ -89,10 +85,10 @@ theorem integral_polarPauliOperator_inPlane_eq
       polarPauliOperator aR bR dR θ *
         matrixOperator (alpha • sigmaX + beta • sigmaY) *
         polarPauliOperator aA bA dA θ) =
-      (pauliRungAngularXCoefficient aR aA dR dA * alpha -
-        pauliRungAngularYCoefficient aR aA dR dA * beta) • matrixOperator sigmaX +
-        (pauliRungAngularYCoefficient aR aA dR dA * alpha +
-          pauliRungAngularXCoefficient aR aA dR dA * beta) • matrixOperator sigmaY := by
+      (pauliRungAngularCoefficient aR aA dR dA .x * alpha -
+        pauliRungAngularCoefficient aR aA dR dA .y * beta) • matrixOperator sigmaX +
+        (pauliRungAngularCoefficient aR aA dR dA .y * alpha +
+          pauliRungAngularCoefficient aR aA dR dA .x * beta) • matrixOperator sigmaY := by
   let scalarCoefficient : ℝ → ℂ := fun θ =>
     let c := ((Real.cos θ : ℝ) : ℂ)
     let s := ((Real.sin θ : ℝ) : ℂ)
@@ -190,8 +186,8 @@ theorem integral_polarPauliOperator_inPlane_eq
     ring
   have hXIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) =
-        pauliRungAngularXCoefficient aR aA dR dA * alpha -
-          pauliRungAngularYCoefficient aR aA dR dA * beta := by
+        pauliRungAngularCoefficient aR aA dR dA .x * alpha -
+          pauliRungAngularCoefficient aR aA dR dA .y * beta := by
     convert integral_polar_inPlane_modes
       ((aR * aA - dR * dA) * alpha -
         Complex.I * (aA * dR - aR * dA) * beta)
@@ -201,12 +197,12 @@ theorem integral_polarPauliOperator_inPlane_eq
       intro θ _
       simp [xCoefficient]
       ring
-    · simp [pauliRungAngularXCoefficient, pauliRungAngularYCoefficient]
+    · simp [pauliRungAngularCoefficient]
       ring
   have hYIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), yCoefficient θ) =
-        pauliRungAngularYCoefficient aR aA dR dA * alpha +
-          pauliRungAngularXCoefficient aR aA dR dA * beta := by
+        pauliRungAngularCoefficient aR aA dR dA .y * alpha +
+          pauliRungAngularCoefficient aR aA dR dA .x * beta := by
     convert integral_polar_inPlane_modes
       (Complex.I * (aA * dR - aR * dA) * alpha +
         (aR * aA - dR * dA) * beta)
@@ -216,7 +212,7 @@ theorem integral_polarPauliOperator_inPlane_eq
       intro θ _
       simp [yCoefficient]
       ring
-    · simp [pauliRungAngularXCoefficient, pauliRungAngularYCoefficient]
+    · simp [pauliRungAngularCoefficient]
       ring
   have hZIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), zCoefficient θ) = 0 := by
