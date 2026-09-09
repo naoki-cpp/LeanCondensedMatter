@@ -41,6 +41,27 @@ theorem bandProjector_eq_pauliCombination
               diracPauliCoefficients v m px py)) := by
   simp [bandProjector, hamiltonian_eq_pauliCombination]
 
+/-- Every massive-Dirac band projector has unit trace. -/
+@[simp] theorem trace_bandProjector (band : Band) (v m px py : ℝ) :
+    Matrix.trace (bandProjector band v m px py) = 1 := by
+  rw [bandProjector_eq_pauliCombination]
+  simp [Matrix.trace]
+
+/-- The `σ_z` expectation in band `s` is the Bloch-vector mass component `s m / E`. -/
+theorem trace_bandProjector_mul_pauliZ (band : Band) (v m px py : ℝ) :
+    Matrix.trace (bandProjector band v m px py * sigmaZ) =
+      (((bandSign band / energy v m px py * m : ℝ) : ℂ)) := by
+  let z : PauliAxis → ℂ
+    | .x => 0
+    | .y => 0
+    | .z => 1
+  have hz : sigmaZ = InternalSpace.pauliCombination z := by
+    simp [z, InternalSpace.pauliCombination]
+  rw [bandProjector_eq_pauliCombination, hz, smul_mul_assoc, add_mul, one_mul]
+  simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
+    InternalSpace.dotProduct_pauliAxis, diracPauliCoefficients, z]
+  ring
+
 /-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
 involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
@@ -167,7 +188,6 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
           1 + s • Q + s • Q + (s • Q) * (s • Q) := by
         rw [add_mul, one_mul, mul_add, mul_one]
         abel
-      _ = 1 + s • Q + s • Q + (s * s) • (Q * Q) := by rw [hsqmul]
       _ = 1 + s • Q + s • Q + 1 := by
         rw [hQ, show s * s = 1 by simpa [pow_two] using hs, one_smul]
       _ = (2 : ℂ) • ((1 : Matrix2) + s • Q) := by module
