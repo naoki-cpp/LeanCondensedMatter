@@ -156,8 +156,9 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
       finiteDimensionalOperatorTrace
           (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0) = 1 := by
     rw [bandProjectorOperator, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM,
-      bandProjector_eq_pauliCombination]
-    simp [Matrix.trace]
+      bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
+      InternalSpace.trace_pauliCombination]
+    norm_num [Matrix.trace]
   have htraceZ :
       finiteDimensionalOperatorTrace
           (bandProjectorOperator .upper v m (metallicFermiRadius v m fermiEnergy) 0 *
