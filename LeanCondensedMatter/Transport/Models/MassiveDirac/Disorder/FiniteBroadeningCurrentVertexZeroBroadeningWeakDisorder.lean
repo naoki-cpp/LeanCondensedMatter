@@ -292,17 +292,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   have hX := (hE .retarded).mul (hE .advanced) |>.sub ((hM .retarded).mul (hM .advanced))
   have hY := (((hE .advanced).mul (hM .retarded)).sub
     ((hE .retarded).mul (hM .advanced))).const_mul Complex.I
-  have hnum := tendsto_inPlaneRotationCoefficient hX hY output .x
   have hnum' :
       Tendsto
         (fun disorderStrength : ℝ =>
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
             output .x v m probeEnergy disorderStrength hbar pMax)
         l (nhds n0) := by
-    cases output <;>
-      simpa [n0,
+    cases output
+    · simpa [n0,
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
-        inPlaneRotationCoefficient, inPlaneRotationMatrix, pow_two] using hnum
+        inPlaneRotationCoefficient, inPlaneRotationMatrix, pow_two] using hX
+    · simpa [n0,
+        finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
+        inPlaneRotationCoefficient, inPlaneRotationMatrix, pow_two] using hY
   have hclosed := hnum'.mul hkernel.ofReal
   have htarget :
       n0 * ((((2 * Real.pi * (probeEnergy ^ 2 + m ^ 2))⁻¹ * Real.pi : ℝ) : ℂ)) =
