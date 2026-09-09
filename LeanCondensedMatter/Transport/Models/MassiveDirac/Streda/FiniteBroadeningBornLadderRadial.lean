@@ -236,9 +236,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
           source e v m probeEnergy broadening disorderStrength hbar pMax =
         (q • dressed) .x • matrixOperator sigmaX +
           (q • dressed) .y • matrixOperator sigmaY := by
-    simpa [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul] using
-      (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_eq_chargeVelocity_smul
-        source e v m probeEnergy broadening disorderStrength hbar pMax)
+    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+    rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
+    simp [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v (bare .x) (bare .y) := by
     cases source <;>
