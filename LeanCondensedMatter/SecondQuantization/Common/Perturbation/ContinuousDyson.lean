@@ -249,14 +249,6 @@ theorem continuousDysonCoeff_toLinearMap (energy : Config → ℝ)
     (continuousDysonCoeff energy V n τ).toLinearMap =
       transportedFiniteOperatorLinearMap (dysonCoeff energy V n τ) := rfl
 
-@[simp]
-theorem continuousDysonCoeff_basis_apply_apply (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ)
-    (m n' : Config) :
-    continuousDysonCoeff energy V n τ (finiteAnalyticBasis n') m =
-      matrixCoeff (dysonCoeff energy V n τ) m n' :=
-  finiteContinuousOperator_basis_apply _ _ _
-
 /-- Each continuous Dyson coefficient is a continuous operator-valued function of imaginary
  time. -/
 theorem continuous_continuousDysonCoeff (energy : Config → ℝ)
