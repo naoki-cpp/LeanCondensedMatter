@@ -77,6 +77,7 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
     simp only [bandProjector, u, hamiltonian_eq_pauliCombination]
     rw [InternalSpace.pauliCombination_smul]
     simp [bandSign_oppositeBand]
+    module
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
   unfold forceMatrixTraceNumerator
