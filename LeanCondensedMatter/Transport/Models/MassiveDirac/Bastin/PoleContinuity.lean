@@ -161,18 +161,6 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWind
   exact interbandEnergyGap_add_offset_ne_zero_on_targetWindow
     band v m px py p.1 radius hradius hoffset
 
-/-- On the full broadening-unrestricted strip cut out by a target-centered energy window narrower
-than the interband gap, the regular spectator/current factor is continuous. -/
-theorem continuousOn_targetCenteredInterbandSpectatorCurrentFactor_targetStrip
-    (band : Band) (e v m px py radius : ℝ)
-    (hradius : radius < |interbandEnergyGap band v m px py|) :
-    ContinuousOn
-      (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-      {p : ℝ × ℝ | |p.1| ≤ radius} := by
-  intro p hp
-  exact (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
-    band e v m px py radius p hradius hp).continuousWithinAt
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
