@@ -54,12 +54,13 @@ jobs:
 
           run_cmd do
             let env ← getEnv
-            let mut output := ""
+            let mut names : Array String := #[]
             for (declName, info) in env.constants.toList do
               let .thmInfo _ := info | continue
               let some moduleName := declarationModule? env declName | continue
               unless moduleName.toString.startsWith "LeanCondensedMatter" do continue
-              output := output ++ declName.toString ++ "\n"
+              names := names.push declName.toString
+            let output := String.intercalate "\n" names.toList ++ "\n"
             liftIO <| IO.FS.writeFile "project-theorem-names.txt" output
           EOF
           lake env lean ProjectTheoremNames.lean
