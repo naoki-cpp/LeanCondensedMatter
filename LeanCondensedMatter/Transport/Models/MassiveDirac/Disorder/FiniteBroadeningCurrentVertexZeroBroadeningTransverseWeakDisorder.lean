@@ -195,7 +195,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
       finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
       inPlaneRotationMatrix, inPlaneCoefficientVector]
-    push_cast
     ring
   have hx0 : (((probeEnergy ^ 2 - m ^ 2 : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast ne_of_gt hgap
