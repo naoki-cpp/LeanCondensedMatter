@@ -158,7 +158,7 @@ theorem stronglyMeasurable_radialInterbandPoleIntegrand
     ring
   rw [hfun]
   apply Measurable.stronglyMeasurable
-  unfold lorentzianSpectralKernel QuantumTheory.Transport.lorentzianSpectralKernel
+  unfold QuantumTheory.Transport.lorentzianSpectralKernel
     radialInterbandCurrentAmplitude interbandEnergyGap bandEnergy energy energySq
   measurability
 
