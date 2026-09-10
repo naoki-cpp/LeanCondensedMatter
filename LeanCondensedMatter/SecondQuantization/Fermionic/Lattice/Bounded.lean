@@ -52,52 +52,22 @@ noncomputable def occupationOperator
   (latticeOccupationEquiv (Site := Site)).symm.toLinearMap.comp
     (A.comp (latticeOccupationEquiv (Site := Site)).toLinearMap)
 
-@[simp]
-theorem occupationOperator_add
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    occupationOperator (A + B) = occupationOperator A + occupationOperator B := by
-  apply LinearMap.ext
-  intro Ψ
-  simp [occupationOperator, LinearMap.comp_apply]
-
-@[simp]
-theorem occupationOperator_smul (c : ℂ)
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    occupationOperator (c • A) = c • occupationOperator A := by
-  apply LinearMap.ext
-  intro Ψ
-  simp [occupationOperator, LinearMap.comp_apply]
-
-@[simp]
-theorem occupationOperator_id :
-    occupationOperator
-        (LinearMap.id : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-          AlgebraicFock (LatticeState Site)) =
-      (LinearMap.id : OccupationFock Site →ₗ[ℂ] OccupationFock Site) := by
-  apply LinearMap.ext
-  intro Ψ
-  simp [occupationOperator]
-
-@[simp]
-theorem occupationOperator_comp
-    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    occupationOperator (A.comp B) =
-      (occupationOperator A).comp (occupationOperator B) := by
-  apply LinearMap.ext
-  intro Ψ
-  simp [occupationOperator, LinearMap.comp_apply]
-
 /-- Occupation-representation transport bundled as a complex-linear map. -/
 noncomputable def occupationOperatorLinearMap :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
       (OccupationFock Site →ₗ[ℂ] OccupationFock Site) where
   toFun := occupationOperator
-  map_add' := occupationOperator_add
-  map_smul' := occupationOperator_smul
+  map_add' := by
+    intro A B
+    apply LinearMap.ext
+    intro Ψ
+    simp [occupationOperator, LinearMap.comp_apply]
+  map_smul' := by
+    intro c A
+    apply LinearMap.ext
+    intro Ψ
+    simp [occupationOperator, LinearMap.comp_apply]
 
 /-- Occupation-representation transport bundled as a complex algebra homomorphism. -/
 noncomputable def occupationOperatorAlgHom :
@@ -106,8 +76,19 @@ noncomputable def occupationOperatorAlgHom :
       (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
   AlgHom.ofLinearMap
     (occupationOperatorLinearMap (Site := Site))
-    occupationOperator_id
-    occupationOperator_comp
+    (by
+      apply LinearMap.ext
+      intro Ψ
+      change occupationOperator
+          (LinearMap.id : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+            AlgebraicFock (LatticeState Site)) Ψ = Ψ
+      simp [occupationOperator])
+    (fun A B => by
+      apply LinearMap.ext
+      intro Ψ
+      change occupationOperator (A.comp B) Ψ =
+        occupationOperator A (occupationOperator B Ψ)
+      simp [occupationOperator, LinearMap.comp_apply])
 
 section FiniteLattice
 
