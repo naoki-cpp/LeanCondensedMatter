@@ -6,20 +6,8 @@ set_option linter.style.header false
 /-!
 # Generic operator peel identity
 
-The first algebraic step in a Bloch–de Dominicis recursion is independent of the Gibbs state: move
-the leading operator through a finite tail using a scalar exchange relation. This file packages that
-step for linear endomorphisms of an arbitrary complex module.
-
-If
-
-`C D = contraction(C,D) I + ζ D C`,
-
-then repeated exchange gives
-
-`C (D₁⋯Dₖ) = peel(C; D₁,…,Dₖ) + ζ^k (D₁⋯Dₖ) C`.
-
-The subsequent KMS rotation and analytic summability belong to the statistics-specific thermal
-implementation.
+Repeatedly applies `C D = contraction(C,D) I + ζ D C` through a finite operator tail. Gibbs/KMS
+structure belongs downstream.
 -/
 
 namespace SecondQuantization
