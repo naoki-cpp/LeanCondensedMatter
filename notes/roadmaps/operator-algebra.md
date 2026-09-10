@@ -3,6 +3,20 @@
 Track C owns dimension-independent analytic infrastructure used by quantum theory, transport, and
 second quantization.
 
+## Fixed-sign commutator algebra
+
+On the pinned Mathlib v4.33.1 (`0df444a360eaa60ab8c11dca51a86af692955474`), the ordinary
+associative commutator is available through the Lie bracket,
+`⁅A, B⁆ = A * B - B * A` (`LieRing.of_associative_ring_bracket`), with `Module.End` multiplication
+identified with composition by `Module.End.mul_eq_comp`. The pinned API survey found no
+`zetaCommutator`, q-commutator, or fixed-scalar twisted-commutator family matching
+`A ∘ B - ζ • (B ∘ A)`.
+
+Accordingly, `Analysis/Operator/ZetaCommutator.lean` owns the minimal representation-independent
+`LinearMap.zetaCommutator` extension. Ordinary commutator APIs remain semantic `ζ = 1`
+specializations, while second-quantization code selects `ζ` through `Statistics.zetaInt`. Re-check
+this ownership after Mathlib upgrades.
+
 ## Infinite sums and spectral analysis
 
 `Analysis/InfiniteSum/` provides reusable reindexing, fiberwise sum, and justified countable-sum

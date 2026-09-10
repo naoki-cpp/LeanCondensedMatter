@@ -23,7 +23,7 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
@@ -69,7 +69,7 @@ theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : �
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :

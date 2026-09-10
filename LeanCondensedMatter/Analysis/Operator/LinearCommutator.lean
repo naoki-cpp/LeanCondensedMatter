@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -12,9 +13,9 @@ particular quantum representation or second-quantization construction.
 [S,T] = S ∘ T - T ∘ S.
 ```
 
-It also packages commutation with a fixed left operator as a linear endomorphism of the operator
-space. Second-quantization and quantum layers may specialize this algebraic evolution without
-redefining it.
+The raw fixed-sign bracket algebra is owned by `Analysis.Operator.ZetaCommutator`; this module keeps
+the ordinary commutator as the semantic API used by conservation-law and current code. It also
+packages commutation with a fixed left operator as a linear endomorphism of the operator space.
 -/
 
 namespace ConservationLaw
@@ -29,6 +30,33 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) (v : V) :
     linearCommutator S T v = S (T v) - T (S v) :=
   rfl
+
+/-- The ordinary commutator is the `ζ = 1` specialization of the generic `ζ`-commutator. -/
+theorem linearCommutator_eq_zetaCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    linearCommutator S T = LinearMap.zetaCommutator 1 S T := by
+  simp [linearCommutator, LinearMap.zetaCommutator]
+
+/-- Leibniz rule for a commutator with a composition on the right:
+`[M, A B] = [M,A] B + A [M,B]`. -/
+theorem linearCommutator_comp_right
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (M A B : V →ₗ[ℂ] V) :
+    linearCommutator M (A.comp B) =
+      (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
+  simp only [linearCommutator_eq_zetaCommutator]
+  simpa using (LinearMap.zetaCommutator_comp_right (1 : ℂ) 1 M A B)
+
+/-- A commutator is additive over subtraction in its second argument. -/
+theorem linearCommutator_sub_right
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (M A B : V →ₗ[ℂ] V) :
+    linearCommutator M (A - B) =
+      linearCommutator M A - linearCommutator M B := by
+  apply LinearMap.ext
+  intro v
+  simp [linearCommutator]
+  abel
 
 /-- The ordinary commutator is linear in its right argument. -/
 theorem linearCommutator_smul_right {V : Type*} [AddCommGroup V] [Module ℂ V]

@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
-import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -27,32 +26,13 @@ continuum specialization `Pᵢ = -i ℏ ∂ᵢ`, one has schematically
 `[M_f, Pᵢ] = i ℏ M_(∂ᵢ f)`, so continuum orbital angular momentum is not an internal quantity that
 may automatically be fed through a localizer-commuting conventional-current theorem.
 
-No unbounded-operator or second-quantization structure is used here.
+No unbounded-operator or second-quantization structure is used here. Generic commutator product and
+additivity rules are owned upstream by `Analysis.Operator.LinearCommutator`.
 -/
 
 namespace ConservationLaw
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
-
-/-- Leibniz rule for a commutator with a composition on the right:
-`[M, A B] = [M,A] B + A [M,B]`. -/
-theorem linearCommutator_comp_right
-    (M A B : V →ₗ[ℂ] V) :
-    linearCommutator M (A.comp B) =
-      (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
-  apply LinearMap.ext
-  intro v
-  simp [linearCommutator]
-
-/-- A commutator is additive over subtraction in its second argument. -/
-theorem linearCommutator_sub_right
-    (M A B : V →ₗ[ℂ] V) :
-    linearCommutator M (A - B) =
-      linearCommutator M A - linearCommutator M B := by
-  apply LinearMap.ext
-  intro v
-  simp [linearCommutator]
-  abel
 
 /-- Algebraic `z` component of orbital angular momentum, `L_z = X Pᵧ - Y Pₓ`.
 

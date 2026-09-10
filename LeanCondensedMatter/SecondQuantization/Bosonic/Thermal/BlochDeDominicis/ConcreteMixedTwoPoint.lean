@@ -106,29 +106,20 @@ theorem create_comp_annihilate_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     (create j).comp (annihilate i) ∈ freeGibbsDomain ε β := by
   have hA := annihilate_comp_create_mem_freeGibbsDomain ε β hpos i j
+  have hreorder := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
+    (comm_annihilate_create i j)
   by_cases hij : i = j
   · subst j
     have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
-    have hc := comm_annihilate_create i i
-    rw [comm, if_pos rfl] at hc
     have hop : (create i).comp (annihilate i) =
         (annihilate i).comp (create i) -
           (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-      calc
-        (create i).comp (annihilate i) =
-            (annihilate i).comp (create i) -
-              ((annihilate i).comp (create i) - (create i).comp (annihilate i)) := by abel
-        _ = (annihilate i).comp (create i) - LinearMap.id := by rw [hc]
+      apply (eq_sub_iff_add_eq).2
+      simpa [add_comm] using hreorder.symm
     rw [hop]
     exact (freeGibbsDomain ε β).sub_mem hA hId
-  · have hc := comm_annihilate_create i j
-    rw [comm, if_neg hij] at hc
-    have hop : (create j).comp (annihilate i) = (annihilate i).comp (create j) := by
-      calc
-        (create j).comp (annihilate i) =
-            (annihilate i).comp (create j) -
-              ((annihilate i).comp (create j) - (create j).comp (annihilate i)) := by abel
-        _ = (annihilate i).comp (create j) := by rw [hc, sub_zero]
+  · have hop : (create j).comp (annihilate i) = (annihilate i).comp (create j) := by
+      simpa [hij] using hreorder.symm
     rw [hop]
     exact hA
 
@@ -167,20 +158,17 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
         Complex.exp (((-(ε j) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
+  have hreorder := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
+    (comm_annihilate_create j i)
   by_cases hij : i = j
   · subst j
     have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i i
     have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
-    have hc := comm_annihilate_create i i
-    rw [comm, if_pos rfl] at hc
     have hop : (create i).comp (annihilate i) =
         (annihilate i).comp (create i) -
           (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-      calc
-        (create i).comp (annihilate i) =
-            (annihilate i).comp (create i) -
-              ((annihilate i).comp (create i) - (create i).comp (annihilate i)) := by abel
-        _ = (annihilate i).comp (create i) - LinearMap.id := by rw [hc]
+      apply (eq_sub_iff_add_eq).2
+      simpa [add_comm] using hreorder.symm
     rw [if_pos rfl, hop, sub_eq_add_neg]
     have hnegId : -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) ∈
         freeGibbsDomain ε β := (freeGibbsDomain ε β).neg_mem hId
@@ -200,14 +188,8 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
     rw [harg] at hden
     field_simp [hden]
     ring
-  · have hc := comm_annihilate_create j i
-    rw [comm, if_neg (Ne.symm hij)] at hc
-    have hop : (create i).comp (annihilate j) = (annihilate j).comp (create i) := by
-      calc
-        (create i).comp (annihilate j) =
-            (annihilate j).comp (create i) -
-              ((annihilate j).comp (create i) - (create i).comp (annihilate j)) := by abel
-        _ = (annihilate j).comp (create i) := by rw [hc, sub_zero]
+  · have hop : (create i).comp (annihilate j) = (annihilate j).comp (create i) := by
+      simpa [Ne.symm hij] using hreorder.symm
     rw [if_neg hij, hop,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos j i]
     simp [Ne.symm hij]

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
@@ -84,16 +85,16 @@ theorem externalFieldOperator_eq_smul_bare (ε : Mode → ℝ) (τ : ℝ)
 /-- The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. -/
 theorem zetaCommutator_bareExternalFieldOperator
     (A B : ExternalFieldLabel Mode) :
-    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
       (if externalFieldLabelIsCreate A = externalFieldLabelIsCreate B then (0 : ℂ)
        else if externalFieldLabelMode A = externalFieldLabelMode B then 1 else 0) •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   have hbridge :
-      Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+      LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
           (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
-        anticomm (bareExternalFieldOperator A) (bareExternalFieldOperator B) :=
-    exchangeCommutator_fermion_eq_anticomm _ _
+        anticomm (bareExternalFieldOperator A) (bareExternalFieldOperator B) := by
+    simp [Common.Statistics.zetaInt_fermion, LinearMap.zetaCommutator, anticomm]
   rw [hbridge]
   cases A <;> cases B <;>
     simp [bareExternalFieldOperator, externalFieldLabelIsCreate, externalFieldLabelMode,
@@ -119,12 +120,12 @@ theorem timedFieldOperator_eq_smul (ε : Mode → ℝ) (field : TimedField Mode)
 /-- Two evolved fields satisfy the scalar zeta-commutator hypothesis. -/
 theorem zetaCommutator_timedFieldOperator (ε : Mode → ℝ)
     (A B : TimedField Mode) :
-    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (timedFieldOperator ε A) (timedFieldOperator ε B) =
       timedFieldCommutatorCoeff ε A B •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    Common.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
+    LinearMap.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
     timedFieldCommutatorCoeff]
 
 /-- A time-labelled field remains an eigenoperator after a further evolution by `-β`. -/
