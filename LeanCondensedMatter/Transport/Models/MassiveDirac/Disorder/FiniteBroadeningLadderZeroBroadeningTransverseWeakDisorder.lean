@@ -83,7 +83,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
         (((((probeEnergy ^ 2 + 3 * m ^ 2) /
           (2 * (probeEnergy ^ 2 + m ^ 2))) ^ 2 : ℝ) : ℂ)) := by
     dsimp [targetRung]
-    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector, add_zero]
+    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector]
     have hOneMinusC :
         (1 : ℂ) - (κ : ℂ) =
           ((((probeEnergy ^ 2 + 3 * m ^ 2) /
