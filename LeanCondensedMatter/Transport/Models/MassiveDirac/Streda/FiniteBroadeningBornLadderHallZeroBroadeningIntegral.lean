@@ -115,17 +115,14 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     intro p _
     exact hpointwise p
   rw [hintegral]
-  have hinner : IntervalIntegrable
-      (fun p : ℝ => solved .y * rx p + solved .x * ry p) volume 0 pMax :=
-    (hrx.const_mul (solved .y)).add (hry.const_mul (solved .x))
   change
     (∫ p in (0 : ℝ)..pMax,
-      (((-2 : ℂ) * q ^ 2 * pref⁻¹) * (solved .y * rx p + solved .x * ry p))) =
+      (((-2 : ℂ) * q ^ 2 * pref⁻¹) • (solved .y * rx p + solved .x * ry p))) =
       finiteBroadeningOrderedXYMomentumEndpointForm
         e v m probeEnergy broadening disorderStrength hbar pMax
-  rw [intervalIntegral.integral_const_mul hinner,
-    intervalIntegral.integral_add
-      (hrx.const_mul (solved .y)) (hry.const_mul (solved .x)),
+  rw [intervalIntegral.integral_smul]
+  rw [intervalIntegral.integral_add
+    (hrx.const_mul (solved .y)) (hry.const_mul (solved .x)),
     intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteCutoffContinuumBornDysonCurrentRungVector,
@@ -171,7 +168,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
         (nhds
           (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
             e v m probeEnergy disorderStrength hbar pMax)) := by
-    simpa [finiteBroadeningOrderedXYMomentumEndpointForm,
+    simpa only [finiteBroadeningOrderedXYMomentumEndpointForm,
       finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary] using
       (tendsto_pi_nhds.mp hAction .y).const_mul
         (((-2 : ℂ) * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
