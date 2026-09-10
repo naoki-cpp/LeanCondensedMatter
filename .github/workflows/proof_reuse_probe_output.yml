@@ -44,7 +44,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           p = Path('ProofReusePositive.lean').read_text()
-          p = p.replace('  unfold coeff\n  rfl\n', '  set_option pp.width 100000 in exact?\n')
+          p = p.replace('  unfold coeff\n  rfl\n', '  exact?\n')
           Path('ProofReusePositiveExact.lean').write_text(p)
           PY
           lake env lean ProofReusePositiveExact.lean 2>&1 | tee positive-exact.log || true
