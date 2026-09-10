@@ -176,7 +176,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
     norm_cast
     unfold nonCrossingHallConductivity planckFromReduced
     field_simp [ne_of_gt hhbar, hden, Real.pi_ne_zero]
-    norm_num <;> ring
+    norm_num
+    ring
   rw [htarget] at h
   exact h
 
