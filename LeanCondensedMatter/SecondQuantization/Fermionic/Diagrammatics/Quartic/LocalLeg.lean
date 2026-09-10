@@ -53,7 +53,8 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
       Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
       Common.Statistics.zetaInt_fermion, anticomm_create_create,
       anticomm_annihilate_annihilate, anticomm_annihilate_create,
-      anticomm_create_annihilate] <;> rfl
+      anticomm_create_annihilate] <;>
+    split_ifs <;> simp_all
 
 end Fermionic
 end SecondQuantization
