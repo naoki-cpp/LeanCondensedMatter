@@ -66,14 +66,8 @@ theorem logOf_freeGrandPartitionSeries_eq_sum_log [Fintype Mode]
         PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
   classical
   unfold freeGrandPartitionSeries
-  have hprod :
-      PowerSeries.logOf
-          (∏ i : Mode, 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) =
-        ∑ i : Mode,
-          PowerSeries.logOf (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) := by
-    simpa using PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode)
-      (fun i => 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) (fun i => by simp)
-  rw [hprod]
+  rw [PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode)
+    (fun i => 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) (fun i => by simp)]
   simp_rw [PowerSeries.logOf_one_add_smul_X]
 
 /-- Free-fermion formal linked-cluster identity: the logarithm of the finite grand product equals the
