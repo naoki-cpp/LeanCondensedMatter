@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Zero-broadening longitudinal Born-Dyson Středa conductivity
 
 This module attaches the physical Bastin/Středa conductivity prefactor and continuum momentum
-normalization to the fixed-cutoff source-`.x` Středa momentum-integral zero-broadening boundary.
+normalization to the fixed-cutoff ordered `xx` Středa momentum-integral zero-broadening boundary.
 The response analysis and radial integration remain owned upstream by `MassiveDirac.Streda`.
 
 The disorder strength and cutoff remain fixed. No weak-disorder, ultraviolet, thermodynamic, or
@@ -20,7 +20,7 @@ noncomputable section
 
 open Filter QuantumTheory.Transport
 
-/-- Physically normalized fixed-cutoff zero-broadening boundary of the longitudinal source-`.x`
+/-- Physically normalized fixed-cutoff zero-broadening boundary of the longitudinal ordered `xx`
 Born-Dyson Středa surface conductivity. -/
 def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
@@ -28,8 +28,8 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceCond
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
       e v m probeEnergy disorderStrength hbar pMax
 
-/-- At fixed positive disorder and finite cutoff, the physically normalized longitudinal source-`.x`
-Born-Dyson Středa surface conductivity converges to its zero-broadening boundary. -/
+/-- At fixed positive disorder and finite cutoff, the physically normalized longitudinal ordered
+`xx` Born-Dyson Středa surface conductivity converges to its zero-broadening boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -42,7 +42,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
     Tendsto
       (fun broadening : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-          .x e v m probeEnergy broadening disorderStrength hbar pMax)
+          .x .x e v m probeEnergy broadening disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
