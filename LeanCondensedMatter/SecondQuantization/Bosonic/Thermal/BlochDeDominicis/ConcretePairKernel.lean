@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 
@@ -25,47 +26,6 @@ variable {Mode : Type*}
 /-- File-local classical decidable equality used by the concrete pair kernel. -/
 local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical.decEq Mode
 
-/-- A pair of creation operators has zero diagonal occupation-basis coefficient. -/
-theorem matrixCoeff_create_comp_create_self (i j : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff ((create i).comp (create j)) n n = 0 := by
-  unfold Common.matrixCoeff
-  rw [LinearMap.comp_apply]
-  change (create i (create j (basisState n))) n = 0
-  rw [create_basisState_eq, map_smul, create_basisState_eq, smul_smul]
-  have hne : createOccupation i (createOccupation j n) ≠ n := by
-    intro h
-    have hp := congrArg particleNumber h
-    simp only [particleNumber_createOccupation] at hp
-    omega
-  change (_ • Common.basisState (createOccupation i (createOccupation j n))) n = 0
-  exact Common.smul_basisState_apply_of_ne _ hne
-
-/-- A pair of annihilation operators has zero diagonal occupation-basis coefficient. -/
-theorem matrixCoeff_annihilate_comp_annihilate_self (i j : Mode) (n : Occupation Mode) :
-    Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 := by
-  unfold Common.matrixCoeff
-  rw [LinearMap.comp_apply]
-  change (annihilate i (annihilate j (basisState n))) n = 0
-  by_cases hj : n j = 0
-  · rw [annihilate_basisState_of_zero hj, map_zero]
-    rfl
-  · let n1 := removeOccupation j n
-    rw [annihilate_basisState_of_pos hj, map_smul]
-    by_cases hi : n1 i = 0
-    · rw [annihilate_basisState_of_zero hi, smul_zero]
-      rfl
-    · rw [annihilate_basisState_of_pos hi, smul_smul]
-      have hN1 : particleNumber n1 + 1 = particleNumber n := by
-        simpa [n1] using particleNumber_removeOccupation_of_pos hj
-      have hN2 : particleNumber (removeOccupation i n1) + 1 = particleNumber n1 :=
-        particleNumber_removeOccupation_of_pos hi
-      have hne : removeOccupation i n1 ≠ n := by
-        intro h
-        have hp := congrArg particleNumber h
-        omega
-      change (_ • Common.basisState (removeOccupation i n1)) n = 0
-      exact Common.smul_basisState_apply_of_ne _ hne
-
 /-- Domain form for the two-creator product. -/
 theorem create_comp_create_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
@@ -73,7 +33,7 @@ theorem create_comp_create_mem_freeGibbsDomain
   change freeGibbsSummable ε β ((create i).comp (create j))
   unfold freeGibbsSummable imaginaryTimeEvolveFree
   exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
-    rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create_self, mul_zero]
+    rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create, mul_zero]
 
 /-- Domain form for the two-annihilator product. -/
 theorem annihilate_comp_annihilate_mem_freeGibbsDomain
@@ -83,14 +43,14 @@ theorem annihilate_comp_annihilate_mem_freeGibbsDomain
   unfold freeGibbsSummable imaginaryTimeEvolveFree
   exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
     rw [Common.matrixCoeff_diagonalEvolution_comp,
-      matrixCoeff_annihilate_comp_annihilate_self, mul_zero]
+      matrixCoeff_annihilate_comp_annihilate, mul_zero]
 
 /-- The normalized free-Gibbs expectation of two creators vanishes. -/
 theorem freeGibbsExpectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     freeGibbsExpectation ε β ((create i).comp (create j)) = 0 := by
   unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
-  simp_rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create_self, mul_zero]
+  simp_rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create, mul_zero]
   simp
 
 /-- The normalized free-Gibbs expectation of two annihilators vanishes. -/
@@ -99,7 +59,7 @@ theorem freeGibbsExpectation_annihilate_comp_annihilate
     freeGibbsExpectation ε β ((annihilate i).comp (annihilate j)) = 0 := by
   unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
   simp_rw [Common.matrixCoeff_diagonalEvolution_comp,
-    matrixCoeff_annihilate_comp_annihilate_self, mul_zero]
+    matrixCoeff_annihilate_comp_annihilate, mul_zero]
   simp
 
 variable [Fintype Mode]
