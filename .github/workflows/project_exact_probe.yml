@@ -93,8 +93,8 @@ jobs:
                 unless plausibleHead target theoremInfo.type do continue
                 let saved ← saveState
                 try
-                  let theorem ← mkConstWithFreshMVarLevels declName
-                  let subgoals ← goal.apply theorem
+                  let thm ← mkConstWithFreshMVarLevels declName
+                  let subgoals ← goal.apply thm
                   if subgoals.isEmpty then
                     logInfo m!"Try this:\n  [exact] exact {declName}"
                     return []
