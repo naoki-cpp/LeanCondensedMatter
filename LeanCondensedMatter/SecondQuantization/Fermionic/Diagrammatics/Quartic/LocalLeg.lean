@@ -7,7 +7,8 @@ set_option linter.style.header false
 # Local legs of a quartic fermionic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
-specialized to fermionic ladder operators here. Exchange algebra is owned by the Common quartic layer.
+specialized to fermionic ladder operators here. Generic exchange algebra lives in `Common.Algebra`;
+its quartic local-leg specialization is supplied separately by the Common interaction layer.
 -/
 
 namespace SecondQuantization
