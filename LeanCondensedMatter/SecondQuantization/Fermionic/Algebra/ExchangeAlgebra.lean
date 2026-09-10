@@ -16,14 +16,14 @@ noncomputable instance exchangeAlgebra :
   annihilate := annihilate
   create := create
   annihilate_create i j := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
-      LinearMap.zetaCommutator, anticomm] using anticomm_annihilate_create i j
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_annihilate_create i j
   annihilate_annihilate i j := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
-      LinearMap.zetaCommutator, anticomm] using anticomm_annihilate_annihilate i j
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_annihilate_annihilate i j
   create_create i j := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
-      LinearMap.zetaCommutator, anticomm] using anticomm_create_create i j
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      anticomm_create_create i j
 
 end Fermionic
 end SecondQuantization
