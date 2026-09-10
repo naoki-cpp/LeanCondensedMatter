@@ -90,10 +90,9 @@ private theorem TwoPointDiagram.externalSlotLegSplitting_external_externalPart
     d.externalSlotLegSplitting
         (Sum.inl ((twoPointLegEquiv d.externalInteractionPart).symm (Sum.inl e))) =
       (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm (Sum.inl e) := by
-  convert d.externalSlotLegSplitting_external e using 1
-  · simp only [TwoPointDiagram.externalInteractionPart]
-    apply Fin.ext
-    rfl
+  simpa only [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.externalSlotLegSplitting] using
+    (slotLegSplitting_external
+      (TwoPointDiagram.interactionPart_subset (d.externalComponent 0)) e)
 
 private theorem TwoPointDiagram.externalSlotLegSplitting_interaction_externalPart
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -103,10 +102,9 @@ private theorem TwoPointDiagram.externalSlotLegSplitting_interaction_externalPar
           (Sum.inr (v, l)))) =
       (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
         (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
-  convert d.externalSlotLegSplitting_interaction v l using 1
-  · simp only [TwoPointDiagram.externalInteractionPart]
-    apply Fin.ext
-    rfl
+  simpa only [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.externalSlotLegSplitting] using
+    (slotLegSplitting_left_interaction
+      (TwoPointDiagram.interactionPart_subset (d.externalComponent 0)) v l)
 
 private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
