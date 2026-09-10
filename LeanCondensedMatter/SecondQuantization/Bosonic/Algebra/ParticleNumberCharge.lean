@@ -21,13 +21,14 @@ nothing here uses that modes commute rather than anticommute.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- **`annihilate i` carries particle-number charge `-1`**: it only ever connects a basis state
 `m` to a basis state `n` with one fewer particle. -/
 theorem carriesParticleNumberCharge_annihilate (i : Mode) :
     Common.CarriesGradingDegree
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (annihilate i) (-1) := by
+  classical
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
   by_cases hi : n i = 0
@@ -46,6 +47,7 @@ a basis state `n` with one more particle. -/
 theorem carriesParticleNumberCharge_create (i : Mode) :
     Common.CarriesGradingDegree
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (create i) 1 := by
+  classical
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
   rw [create_basisState_eq] at hmn
