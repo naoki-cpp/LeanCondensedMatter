@@ -53,8 +53,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
         band e v m px py hE
 
 /-- The real part of the extracted interband Bastin pair converges pointwise to
-`-2π e² Ω_n(p)`. This is the local response density that the next momentum-integration slice will
-compare with the existing occupied-state Berry integral. -/
+`-2π e² Ω_n(p)`, providing the local clean-limit response density used by the radial momentum
+integration and comparison with the occupied-state Berry integral. -/
 theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
     (band : Band) (e v m px py radius : ℝ)
     (hE : energy v m px py ≠ 0)
