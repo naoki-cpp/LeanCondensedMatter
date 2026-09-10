@@ -95,7 +95,6 @@ theorem zetaCommutator_comp_right
         ζ • B.comp (zetaCommutator η A C) := by
   ext v
   simp [zetaCommutator, smul_sub, smul_smul]
-  module
 
 /-- Product rule when the composition occurs in the left argument. -/
 theorem zetaCommutator_comp_left
@@ -106,6 +105,5 @@ theorem zetaCommutator_comp_left
         η • (zetaCommutator ζ A C).comp B := by
   ext v
   simp [zetaCommutator, smul_sub, smul_smul]
-  module
 
 end LinearMap
