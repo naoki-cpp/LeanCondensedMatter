@@ -26,10 +26,6 @@ noncomputable section
 
 open Filter QuantumTheory.Transport
 
-/-- Model-local shorthand for the generic Lorentzian spectral kernel used throughout the Bastin
-pole chain. -/
-abbrev lorentzianSpectralKernel := QuantumTheory.Transport.lorentzianSpectralKernel
-
 /-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
 centered at the selected band energy. -/
 theorem spectralDifferenceCoefficient_eq_lorentzian
