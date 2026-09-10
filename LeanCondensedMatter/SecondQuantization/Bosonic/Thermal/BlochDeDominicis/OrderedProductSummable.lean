@@ -231,13 +231,6 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
     _ = (∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length) *
         boltzmannWeight ε β n := by ring
 
-/-- Domain form of fixed-length free thermal ordered-product summability. -/
-theorem FreeThermalField.orderedProduct_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    (fields : List (FreeThermalField Mode)) :
-    FreeThermalField.orderedProduct fields ∈ freeGibbsDomain ε β :=
-  FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos fields
-
 end
 end Bosonic
 end SecondQuantization

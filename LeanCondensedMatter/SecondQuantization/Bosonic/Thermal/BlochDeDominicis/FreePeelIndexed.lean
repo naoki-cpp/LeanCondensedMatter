@@ -95,7 +95,7 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     List.sum_ofFn]
   exact Submodule.sum_mem (freeGibbsDomain ε β) fun j _ =>
     (freeGibbsDomain ε β).smul_mem _
-      (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))
+      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j))
 
 /-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
 theorem freeGibbsExpectation_operatorPeelSum_eq_sum
@@ -110,7 +110,7 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
   let terms : Fin l.length → freeGibbsDomain ε β := fun j =>
     ⟨C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j),
       (freeGibbsDomain ε β).smul_mem _
-        (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))⟩
+        (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j))⟩
   have hcoe :
       ((↑(∑ j, terms j) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) =
         ∑ j : Fin l.length,
