@@ -37,21 +37,23 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε 
       (Common.timeOrderedProduct Common.Statistics.fermion
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (annihilate j)) τ τ')
       = 0 := by
-  have hdiag :
-      Common.normalizedWeightedDiagonal w ((annihilate i).comp (annihilate j)) = 0 :=
+  have hdiag (a b : Mode) :
+      Common.normalizedWeightedDiagonal w ((annihilate a).comp (annihilate b)) = 0 :=
     Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero w _
-      (matrixCoeff_annihilate_comp_annihilate i j)
+      (matrixCoeff_annihilate_comp_annihilate a b)
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate]
   rcases lt_trichotomy τ' τ with h | h | h
   · rw [Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul, hdiag]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
+      hdiag i j]
   · subst h
     rw [Common.timeOrderedProduct_self_time Common.Statistics.fermion]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg, hdiag]
+      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
+      hdiag i j, hdiag j i]
   · rw [Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_neg, hdiag]
+      Common.normalizedWeightedDiagonal_neg, hdiag j i]
 
 /-- **`⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`**, the creation-side counterpart of
 `normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`. -/
@@ -61,21 +63,23 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_create_create (ε : Mode �
       (Common.timeOrderedProduct Common.Statistics.fermion
         (imaginaryTimeEvolve ε τ (create i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
       = 0 := by
-  have hdiag :
-      Common.normalizedWeightedDiagonal w ((create i).comp (create j)) = 0 :=
+  have hdiag (a b : Mode) :
+      Common.normalizedWeightedDiagonal w ((create a).comp (create b)) = 0 :=
     Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero w _
-      (matrixCoeff_create_comp_create i j)
+      (matrixCoeff_create_comp_create a b)
   rw [imaginaryTimeEvolve_create, imaginaryTimeEvolve_create]
   rcases lt_trichotomy τ' τ with h | h | h
   · rw [Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul, hdiag]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
+      hdiag i j]
   · subst h
     rw [Common.timeOrderedProduct_self_time Common.Statistics.fermion]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg, hdiag]
+      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
+      hdiag i j, hdiag j i]
   · rw [Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_neg, hdiag]
+      Common.normalizedWeightedDiagonal_neg, hdiag j i]
 
 end Fermionic
 end SecondQuantization
