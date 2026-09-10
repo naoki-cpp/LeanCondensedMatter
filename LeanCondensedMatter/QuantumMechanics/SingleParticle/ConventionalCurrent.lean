@@ -36,7 +36,8 @@ noncomputable def conventionalCurrent
 theorem conventionalCurrent_smul_id
     (velocity : V →ₗ[ℂ] V) (q : ℂ) :
     conventionalCurrent V velocity (q • LinearMap.id) = q • velocity := by
-  exact symmetrizedVelocityCurrent_smul_id V velocity q
+  simpa [conventionalCurrent, symmetrizedVelocityCurrent] using
+    (_root_.ConservationLaw.symmetrizedProduct_smul_id velocity q)
 
 @[simp]
 theorem conventionalCurrent_id

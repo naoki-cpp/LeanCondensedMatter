@@ -41,9 +41,9 @@ theorem symmetrizedVelocityCurrentFlux_smul_id
     symmetrizedVelocityCurrentFlux V velocity (q • LinearMap.id) N =
       operatorLocalCurrentPairing V N (q • velocity) := by
   change operatorLocalCurrentPairing V N
-      (symmetrizedVelocityCurrent V velocity (q • LinearMap.id)) =
+      (_root_.ConservationLaw.symmetrizedProduct velocity (q • LinearMap.id)) =
     operatorLocalCurrentPairing V N (q • velocity)
-  rw [symmetrizedVelocityCurrent_smul_id]
+  rw [_root_.ConservationLaw.symmetrizedProduct_smul_id]
 
 /-- The canonical corrected current functional for a charge-like quantity has no correction and is
 represented by the conventional density `q v`. -/
