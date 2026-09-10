@@ -122,7 +122,6 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivity
         e v m probeEnergy disorderStrength hbar pMax := by
   simp [ConductivityTensor.hallComponent,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary]
-  ring
 
 /-- The fixed-cutoff Hall projection has the same one-sided weak-disorder limit as the ordered `xy`
 endpoint, now interpreted as the antisymmetric part of a completed conductivity tensor. -/
@@ -177,7 +176,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
     norm_cast
     unfold nonCrossingHallConductivity planckFromReduced
     field_simp [ne_of_gt hhbar, hden, Real.pi_ne_zero]
-    ring
+    ring_nf
   rw [htarget] at h
   exact h
 
