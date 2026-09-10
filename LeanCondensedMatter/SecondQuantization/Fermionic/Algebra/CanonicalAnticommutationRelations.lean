@@ -226,9 +226,7 @@ theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
   have h := anticomm_create_create (Mode := Mode) i i
   rw [LinearMap.zetaCommutator_self] at h
   norm_num at h
-  rcases smul_eq_zero.mp h with h0 | h0
-  · exact absurd h0 (by norm_num)
-  · exact h0
+  exact h
 
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
@@ -253,9 +251,7 @@ theorem annihilate_comp_self (i : Mode) : (annihilate i).comp (annihilate i) = 0
   have h := anticomm_annihilate_annihilate (Mode := Mode) i i
   rw [LinearMap.zetaCommutator_self] at h
   norm_num at h
-  rcases smul_eq_zero.mp h with h0 | h0
-  · exact absurd h0 (by norm_num)
-  · exact h0
+  exact h
 
 /-! ## `{aᵢ, aⱼ†} = δᵢⱼ` -/
 
