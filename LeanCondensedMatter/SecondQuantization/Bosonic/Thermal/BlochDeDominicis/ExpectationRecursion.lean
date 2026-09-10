@@ -79,17 +79,6 @@ noncomputable def toExpectationPairingRecursion
   admissible_erase := data.admissible_erase
   expectation_succ := data.expectation_succ
 
-/-- The complete weighted pairing expansion inherited from the Common combinatorial induction. -/
-theorem expectation_eq_sum_pairing
-    (data : ConvergenceAwarePairingRecursion Observable Operator s)
-    (n : ℕ) (C : Fin (2 * n) → Operator) (hC : data.admissible n C) :
-    data.functional.value (data.orderedProduct (List.ofFn C)) =
-      ∑ pairing : Pairing n,
-        pairing.weight s *
-          ∏ pr ∈ pairing.pairs, data.pairValue (C pr.1) (C pr.2) := by
-  simpa [toExpectationPairingRecursion] using
-    (data.toExpectationPairingRecursion.expectation_eq_sum_pairing n C hC)
-
 end ConvergenceAwarePairingRecursion
 
 end Bosonic
