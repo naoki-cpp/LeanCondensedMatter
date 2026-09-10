@@ -94,18 +94,12 @@ theorem freeGibbsSummable_annihilate_comp_create
       mul_le_mul_of_nonneg_left hA hw
     _ = (n i : ℝ) * boltzmannWeight ε β n + boltzmannWeight ε β n := by ring
 
-/-- Domain form of `freeGibbsSummable_annihilate_comp_create`. -/
-theorem annihilate_comp_create_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    (annihilate i).comp (create j) ∈ freeGibbsDomain ε β :=
-  freeGibbsSummable_annihilate_comp_create ε β hpos i j
-
 /-- The reverse mixed product `aⱼ† aᵢ` is also in the free-Gibbs domain.  This follows from the CCR
 and linear closure, so no second occupation-space convergence proof is needed. -/
 theorem create_comp_annihilate_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     (create j).comp (annihilate i) ∈ freeGibbsDomain ε β := by
-  have hA := annihilate_comp_create_mem_freeGibbsDomain ε β hpos i j
+  have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i j
   have hreorder := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
     (comm_annihilate_create i j)
   by_cases hij : i = j
