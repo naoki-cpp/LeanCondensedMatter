@@ -1,0 +1,159 @@
+name: Project Exact Probe
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: project-exact-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+
+      - name: Restore project build cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .lake/build
+          key: project-exact-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: |
+            project-build-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Set up Lean and Mathlib cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Build target modules
+        run: |
+          lake build LeanCondensedMatter.Analysis.Dyson.Basic
+          lake build LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+          lake build LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
+          lake build LeanCondensedMatter.Permutation.TraceLog
+
+      - name: Define project-only exact search tactic
+        shell: bash
+        run: |
+          cat > ProjectProofSearch.lean <<'EOF'
+          import Lean
+          import Mathlib.Tactic
+          import LeanCondensedMatter
+
+          open Lean Meta Elab Tactic
+
+          private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
+            let moduleIdx ← env.const2ModIdx.get? declName
+            env.header.moduleNames[moduleIdx]?
+
+          private partial def conclusionBody : Expr → Expr
+            | .forallE _ _ body _ => conclusionBody body
+            | .mdata _ body => conclusionBody body
+            | e => e
+
+          private def relationArgHead? (e : Expr) : Option Name :=
+            let body := conclusionBody e
+            let args := body.getAppArgs
+            match body.getAppFn.constName? with
+            | some ``Eq =>
+                if h : 1 < args.size then args[1].getAppFn.constName? else none
+            | some ``Iff =>
+                if h : 0 < args.size then args[0].getAppFn.constName? else none
+            | _ => none
+
+          private def plausibleHead (target theoremType : Expr) : Bool :=
+            let targetBody := conclusionBody target
+            let theoremBody := conclusionBody theoremType
+            if targetBody.getAppFn.constName? != theoremBody.getAppFn.constName? then
+              false
+            else
+              match relationArgHead? target, relationArgHead? theoremType with
+              | some left, some right => left == right
+              | _, _ => true
+
+          elab "project_exact?" : tactic => do
+            liftMetaTactic fun goal => goal.withContext do
+              let env ← getEnv
+              let target ← goal.getType
+              for (declName, info) in env.constants.toList do
+                let .thmInfo theoremInfo := info | continue
+                let some moduleName := declarationModule? env declName | continue
+                unless moduleName.toString.startsWith "LeanCondensedMatter" do continue
+                unless plausibleHead target theoremInfo.type do continue
+                let saved ← saveState
+                try
+                  let theorem ← mkConstWithFreshMVarLevels declName
+                  let subgoals ← goal.apply theorem
+                  if subgoals.isEmpty then
+                    logInfo m!"Try this:\n  [exact] exact {declName}"
+                    return []
+                  restoreState saved
+                catch _ =>
+                  restoreState saved
+              throwError "project_exact? could not close the goal"
+          EOF
+          lake env lean ProjectProofSearch.lean
+
+      - name: Run project-only proof reuse probe
+        shell: bash
+        run: |
+          cat > ProjectAudit.py <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          spec = importlib.util.spec_from_file_location('audit', 'scripts/proof_reuse_audit.py')
+          audit = importlib.util.module_from_spec(spec)
+          assert spec.loader is not None
+          spec.loader.exec_module(audit)
+
+          original_run_probe = audit.run_probe
+          def run_probe(source, label, timeout):
+              return original_run_probe('import ProjectProofSearch\n' + source, label, timeout)
+          audit.run_probe = run_probe
+          audit.PROBES['exact'] = 'project_exact?'
+
+          index = audit.ProjectTheoremIndex(frozenset(), {}, 'project-meta', False)
+          targets = [
+              'LeanCondensedMatter/Analysis/Dyson/Basic.lean',
+              'LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean',
+              'LeanCondensedMatter/Analysis/Operator/OrbitalAngularMomentum.lean',
+              'LeanCondensedMatter/Permutation/TraceLog.lean',
+          ]
+          total = 0
+          for raw in targets:
+              path = Path(raw).resolve()
+              findings, diagnostics = audit.audit_file(
+                  path,
+                  modes=('exact',),
+                  theorem_index=index,
+                  min_body_lines=2,
+                  max_blocks=12,
+                  timeout=30,
+                  baseline=False,
+                  scan_intervals=True,
+                  min_tactics=2,
+                  max_span_tactics=6,
+                  max_intervals_per_block=4,
+                  max_findings=10,
+                  max_suggestions_per_search=4,
+              )
+              print(f'===== {raw} =====')
+              for item in diagnostics:
+                  print('DIAG', item)
+              for item in findings:
+                  print(item)
+              total += len(findings)
+          print('TOTAL_PROJECT_EXACT_FINDINGS', total)
+          PY
+          python3 ProjectAudit.py
