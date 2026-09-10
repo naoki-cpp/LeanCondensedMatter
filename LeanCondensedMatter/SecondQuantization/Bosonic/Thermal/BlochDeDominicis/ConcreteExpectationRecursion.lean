@@ -106,11 +106,11 @@ noncomputable def concreteFreeGibbsPairingRecursion
   freeGibbsPairingRecursion ε β hpos
     (fun _ _ => True)
     (fun _ C _ =>
-      FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (List.ofFn C))
+      FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (List.ofFn C))
     (fun _ _ _ _ => trivial)
     (by
       intro n C _
-      have hfull := FreeThermalField.orderedProduct_mem_freeGibbsDomain
+      have hfull := FreeThermalField.freeGibbsSummable_orderedProduct
         ε β hpos (List.ofFn C)
       rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hfull]
       have hrec := FreeThermalField.freeGibbsExpectation_firstPair_recursion
@@ -129,7 +129,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
                     (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
           apply Finset.sum_congr rfl
           intro j _
-          have htail := FreeThermalField.orderedProduct_mem_freeGibbsDomain
+          have htail := FreeThermalField.freeGibbsSummable_orderedProduct
             ε β hpos
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))
           rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos htail])
@@ -151,7 +151,7 @@ theorem freeGibbsExpectation_eq_sum_pairing_concrete
       ∑ pairing : Pairing n,
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) at h
-  have hmem := FreeThermalField.orderedProduct_mem_freeGibbsDomain
+  have hmem := FreeThermalField.freeGibbsSummable_orderedProduct
     ε β hpos (List.ofFn C)
   rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hmem] at h
   exact h
