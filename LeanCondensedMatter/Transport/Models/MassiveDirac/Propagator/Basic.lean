@@ -172,7 +172,7 @@ private theorem spectralShift_mul_pauliGreenOperatorOfRegulator
     exact pauliGreenDenominatorOfRegulator_ne_zero
       v m px py probeEnergy regulator hregulator
   have hmatrix := congrArg matrixOperator
-    (pauliShiftMatrix_mul_closedInverse
+    (InternalSpace.pauliShiftMatrix_mul_closedInverse
       (spectralParameterOfRegulator probeEnergy regulator)
       (((v * px : ℝ) : ℂ)) (((v * py : ℝ) : ℂ)) (((m : ℝ) : ℂ)) hden)
   rw [pauliGreenOperatorOfRegulator_eq_closedForm, ← hdenEq, hamiltonianOperator_eq_pauli,
