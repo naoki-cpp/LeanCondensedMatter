@@ -38,7 +38,8 @@ private theorem denominatorBoundaryValue_retarded_sub_advanced
       pauliGreenDenominator, pauliGreenDenominatorOfRegulator, energySq,
       spectralParameterOfRegulator, SpectralSide.regulator]
   · simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue]
-    field_simp [hvelocity] <;> norm_num
+    field_simp [hvelocity]
+    norm_num
 
 private theorem transverseAngularNumeratorBoundary_eq_disorder_mul
     (v m probeEnergy disorderStrength hbar pMax : ℝ) (hvelocity : v ≠ 0) :
@@ -211,7 +212,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     push_cast
     field_simp [hvC, hgapC, hsumC, hquarticC]
-    ring
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
   filter_upwards [self_mem_nhdsWithin, hxNe] with disorderStrength hdisorder hxNonzero
@@ -238,7 +238,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       rw [hcross']
     _ = c * (rx disorderStrength * (x disorderStrength)⁻¹) := by
       field_simp [hdisorderC, hxNonzero]
-      ring
 
 end
 
