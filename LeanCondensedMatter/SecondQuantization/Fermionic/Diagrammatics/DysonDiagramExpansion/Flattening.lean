@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.LocalLegExchange
+import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily
@@ -166,7 +166,7 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
 The bare local-leg exchange coefficient and bracket theorem live in
-`Common.Diagrammatics.Quartic.Core.LocalLegExchange`. -/
+`Common.Interaction.Quartic.LocalLegExchange`. -/
 
 omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
@@ -192,19 +192,18 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     LinearMap.zetaCommutator_smul_smul]
-  have hlocal :
-      LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
-          (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
-          (quarticLocalLegOperator (q (flatVertexIndex n p')) (flatLocalLeg n p')) =
-        Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
-            (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
-            (flatLocalLeg n p) (flatLocalLeg n p') •
-          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, quarticLocalLegOperator, exchangeAlgebra] using
-      (Common.exchangeCommutator_quarticLocalLegOperator
-        (Mode := Mode) (Config := Occupation Mode) Common.Statistics.fermion
-        (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
-        (flatLocalLeg n p) (flatLocalLeg n p'))
+  have hlocal := Common.exchangeCommutator_quarticLocalLegOperator
+    (Mode := Mode) (Config := Occupation Mode) Common.Statistics.fermion
+    (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
+    (flatLocalLeg n p) (flatLocalLeg n p')
+  change
+    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
+        (quarticLocalLegOperator (q (flatVertexIndex n p')) (flatLocalLeg n p')) =
+      Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
+          (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
+          (flatLocalLeg n p) (flatLocalLeg n p') •
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) at hlocal
   rw [hlocal, smul_smul, flatVertexLegCommutatorCoeff]
 
 /-! ## The general theorem's non-resonance hypothesis -/
