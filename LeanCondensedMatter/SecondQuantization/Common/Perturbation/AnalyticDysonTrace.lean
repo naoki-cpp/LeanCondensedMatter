@@ -66,10 +66,6 @@ noncomputable def finiteOperatorTraceLeft (L : FiniteContinuousOperator Config) 
     FiniteContinuousOperator Config →L[ℂ] ℂ :=
   finiteOperatorTrace.comp (finiteOperatorLeftComp L)
 
-@[simp]
-theorem finiteOperatorTraceLeft_apply (L A : FiniteContinuousOperator Config) :
-    finiteOperatorTraceLeft L A = finiteOperatorTrace (L.comp A) := rfl
-
 /-- Tracing the free evolution composed with a continuous Dyson coefficient gives the existing
 algebraic Dyson trace coefficient. -/
 theorem finiteOperatorTraceLeft_continuousDysonCoeff (energy : Config → ℝ) (β : ℝ)
@@ -77,7 +73,6 @@ theorem finiteOperatorTraceLeft_continuousDysonCoeff (energy : Config → ℝ) (
     finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β))
         (continuousDysonCoeff energy V n β) =
       dysonTraceCoeff energy β V n := by
-  rw [finiteOperatorTraceLeft_apply]
   change finiteOperatorTrace
       ((finiteContinuousOperator (diagonalEvolution energy (-β))).comp
         (finiteContinuousOperator (dysonCoeff energy V n β))) = _
