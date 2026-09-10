@@ -29,6 +29,11 @@ private theorem denominatorBoundaryValue_retarded_sub_advanced
       finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
         .advanced v m probeEnergy pMax =
       -Complex.I * (((Real.pi / v ^ 2 : ℝ) : ℂ)) := by
+  have hrhs :
+      -Complex.I * (((Real.pi / v ^ 2 : ℝ) : ℂ)) =
+        (⟨0, -(Real.pi / v ^ 2)⟩ : ℂ) := by
+    apply Complex.ext <;> simp
+  rw [hrhs]
   apply Complex.ext
   · simp [finiteCutoffContinuumBornDenominatorIntegralBoundaryValue,
       pauliGreenDenominator, pauliGreenDenominatorOfRegulator, energySq,
@@ -67,9 +72,12 @@ private theorem transverseAngularNumeratorBoundary_eq_disorder_mul
           ((m : ℂ) + a * ((m : ℂ) * jA))) =
       2 * Complex.I * a * (probeEnergy : ℂ) * (m : ℂ) * (jR - jA) by ring]
   rw [hj]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
   dsimp [a]
   push_cast
   field_simp [hvelocity]
+  rw [hI]
   ring
 
 private theorem currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator
@@ -156,18 +164,23 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     nlinarith [abs_nonneg m]
   have hsum : 0 < probeEnergy ^ 2 + m ^ 2 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have hquartic : probeEnergy ^ 4 - m ^ 4 ≠ 0 := by
+    rw [show probeEnergy ^ 4 - m ^ 4 =
+      (probeEnergy ^ 2 - m ^ 2) * (probeEnergy ^ 2 + m ^ 2) by ring]
+    exact mul_ne_zero (ne_of_gt hgap) (ne_of_gt hsum)
   have hrung :=
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hrx : Tendsto rx l
       (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
         m probeEnergy : ℂ)) := by
-    simpa [rx, l] using tendsto_pi_nhds.mp hrung .x
+    simpa [rx, l, inPlaneCoefficientVector] using tendsto_pi_nhds.mp hrung .x
   have hx : Tendsto x l (nhds (((probeEnergy ^ 2 - m ^ 2 : ℝ) : ℂ))) := by
     have hcont : ContinuousAt x 0 := by
       dsimp [x]
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-        finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
+      simp only [inPlaneRotationMatrix_apply_x_x, inPlaneCoefficientVector]
+      unfold finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
         finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary
       fun_prop
     convert hcont.tendsto.mono_left hl using 1
@@ -191,7 +204,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     dsimp [c]
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
     push_cast
-    field_simp [hvelocity, ne_of_gt hgap, ne_of_gt hsum]
+    field_simp [hvelocity, ne_of_gt hgap, ne_of_gt hsum, hquartic]
     ring
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
@@ -203,10 +216,22 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       v m probeEnergy disorderStrength hbar pMax
   have hy := transverseAngularNumeratorBoundary_eq_disorder_mul
     v m probeEnergy disorderStrength hbar pMax hvelocity
-  dsimp [rx, ry, x, c] at hcross ⊢
   rw [hy] at hcross
-  field_simp [hdisorderC, hxNonzero]
-  linear_combination hcross
+  have hcross' :
+      ry disorderStrength * x disorderStrength =
+        rx disorderStrength * ((disorderStrength : ℂ) * c) := by
+    simpa [rx, ry, x, c] using hcross
+  calc
+    ry disorderStrength / (disorderStrength : ℂ) =
+        (ry disorderStrength * x disorderStrength) /
+          ((disorderStrength : ℂ) * x disorderStrength) := by
+      field_simp [hdisorderC, hxNonzero]
+    _ = (rx disorderStrength * ((disorderStrength : ℂ) * c)) /
+          ((disorderStrength : ℂ) * x disorderStrength) := by
+      rw [hcross']
+    _ = c * (rx disorderStrength * (x disorderStrength)⁻¹) := by
+      field_simp [hdisorderC, hxNonzero]
+      ring
 
 end
 
