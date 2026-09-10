@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.LocalLegExchange
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.LocalLegExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily
@@ -166,7 +166,7 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
 The bare local-leg exchange coefficient and bracket theorem live in
-`Common.Diagrammatics.Quartic.LocalLegExchange`. -/
+`Common.Diagrammatics.Quartic.Core.LocalLegExchange`. -/
 
 omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
