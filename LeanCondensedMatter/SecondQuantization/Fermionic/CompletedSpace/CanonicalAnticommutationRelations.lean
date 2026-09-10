@@ -65,7 +65,7 @@ theorem completedAnticomm_create_create (i j : Mode) :
   have hcar : create i (create j x) + create j (create i x) = 0 := by
     have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_create_create i j)
-    simpa [anticomm_apply] using h
+    simpa [LinearMap.zetaCommutator_apply] using h
   rw [hcar, map_zero]
   rfl
 
@@ -82,7 +82,7 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
   have hcar : annihilate i (annihilate j x) + annihilate j (annihilate i x) = 0 := by
     have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_annihilate_annihilate i j)
-    simpa [anticomm_apply] using h
+    simpa [LinearMap.zetaCommutator_apply] using h
   rw [hcar, map_zero]
   rfl
 
@@ -102,8 +102,8 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
     have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_annihilate_create i j)
     by_cases hij : i = j
-    · simpa [anticomm_apply, hij] using h
-    · simpa [anticomm_apply, hij] using h
+    · simpa [LinearMap.zetaCommutator_apply, hij] using h
+    · simpa [LinearMap.zetaCommutator_apply, hij] using h
   rw [hcar]
   by_cases hij : i = j <;> simp [hij]
 

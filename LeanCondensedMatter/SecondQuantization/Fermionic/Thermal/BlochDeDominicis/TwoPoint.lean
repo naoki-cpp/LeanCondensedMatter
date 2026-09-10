@@ -44,12 +44,8 @@ theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
       (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) • ((create j).comp (annihilate i)) =
         (if i = j then (1 : ℂ) else 0) •
           (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    rw [Common.Statistics.zetaInt_fermion]
-    have h := anticomm_annihilate_create i j
-    rw [anticomm] at h
-    push_cast
-    rw [neg_one_smul, sub_neg_eq_add, h]
-    split_ifs <;> simp
+    simpa [Common.Statistics.zetaInt_fermion, LinearMap.zetaCommutator] using
+      (anticomm_annihilate_create i j)
   have h := Common.traceFock_diagonalEvolution_comp_two_point (fermionEnergy ε) β (-(ε i))
     (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) (if i = j then (1 : ℂ) else 0)
     (annihilate i) (create j) hC1 hcomm
