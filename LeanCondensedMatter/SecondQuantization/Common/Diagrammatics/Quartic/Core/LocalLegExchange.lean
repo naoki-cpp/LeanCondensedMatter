@@ -19,9 +19,11 @@ variable {Mode Config : Type*} [DecidableEq Mode]
 /-- Scalar coefficient in the exchange bracket of two local quartic legs. -/
 def quarticLocalLegExchangeCoeff (s : Statistics) (q q' : QuarticVertexLabel Mode)
     (l l' : Fin 4) : ℂ :=
-  if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then 0
+  if quarticLocalLegKind l = quarticLocalLegKind l' then 0
   else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then
-    if quarticLocalLegIsCreate l = true then -(s.zetaInt : ℂ) else 1
+    match quarticLocalLegKind l with
+    | .create => -(s.zetaInt : ℂ)
+    | .annihilate => 1
   else 0
 
 /-- Two local quartic legs have a scalar exchange bracket determined by statistics, kind, and mode. -/
@@ -37,7 +39,7 @@ theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlg
       quarticLocalLegExchangeCoeff s q q' l l' •
         (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
   fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, quarticLocalLegExchangeCoeff, quarticLocalLegIsCreate,
+    simp [quarticLocalLegOperator, quarticLocalLegExchangeCoeff, quarticLocalLegKind,
       quarticLocalLegMode, ExchangeAlgebra.create_create, ExchangeAlgebra.annihilate_annihilate,
       ExchangeAlgebra.annihilate_create, exchangeCommutator_create_annihilate]
 
