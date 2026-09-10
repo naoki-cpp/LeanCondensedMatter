@@ -14,7 +14,9 @@ namespace Common
 
 /-- Creation/annihilation operators satisfying the exchange statistics `s`. -/
 class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] where
+  /-- Annihilation operator for a mode. -/
   annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
+  /-- Creation operator for a mode. -/
   create : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
   /-- `a_i a_j† - ζ a_j† a_i = δᵢⱼ`. -/
   annihilate_create :
