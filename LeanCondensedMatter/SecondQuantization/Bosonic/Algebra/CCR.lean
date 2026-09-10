@@ -136,7 +136,10 @@ theorem comm_create_annihilate (i j : Mode) :
         (annihilate j) (create i)
     _ = if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
       rw [comm_annihilate_create]
-      by_cases h : i = j <;> simp [h, Ne.symm h]
+      by_cases h : i = j
+      · subst j
+        simp
+      · simp [h, Ne.symm h]
 
 end
 
