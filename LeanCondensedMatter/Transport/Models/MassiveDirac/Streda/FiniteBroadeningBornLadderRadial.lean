@@ -385,7 +385,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
 
-/-- After radial integration, the finite-`η` ordered `yx` Střda response is the negative of `xy`. -/
+/-- After radial integration, the finite-`η` ordered `yx` Středa response is the negative of `xy`. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
