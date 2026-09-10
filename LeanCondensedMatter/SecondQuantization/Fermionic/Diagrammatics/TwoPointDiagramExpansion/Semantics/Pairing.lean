@@ -90,16 +90,10 @@ theorem zetaCommutator_bareExternalFieldOperator
       (if externalFieldLabelIsCreate A = externalFieldLabelIsCreate B then (0 : ℂ)
        else if externalFieldLabelMode A = externalFieldLabelMode B then 1 else 0) •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-  have hbridge :
-      LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
-          (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
-        anticomm (bareExternalFieldOperator A) (bareExternalFieldOperator B) := by
-    simp [Common.Statistics.zetaInt_fermion, LinearMap.zetaCommutator, anticomm]
-  rw [hbridge]
   cases A <;> cases B <;>
     simp [bareExternalFieldOperator, externalFieldLabelIsCreate, externalFieldLabelMode,
-      anticomm_annihilate_annihilate, anticomm_annihilate_create,
-      anticomm_create_annihilate, anticomm_create_create] <;>
+      Common.Statistics.zetaInt_fermion, anticomm_annihilate_annihilate,
+      anticomm_annihilate_create, anticomm_create_annihilate, anticomm_create_create] <;>
     split <;> simp_all
 
 /-- The scalar coefficient in the zeta-commutator of two evolved fields. -/
