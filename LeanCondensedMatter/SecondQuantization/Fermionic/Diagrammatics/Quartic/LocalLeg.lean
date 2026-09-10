@@ -39,19 +39,7 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
-/-! ## The bare anticommutator/zeta-commutator of two local legs -/
-
-/-- The bare anticommutator of two local-leg operators. -/
-theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then
-        (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
-      else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
-  fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
-      Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
-      anticomm_create_create, anticomm_annihilate_annihilate,
-      anticomm_annihilate_create, anticomm_create_annihilate] <;> rfl
+/-! ## The statistics-sign bracket of two local legs -/
 
 /-- The statistics-sign form of the fermionic quartic local-leg CAR. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
@@ -60,12 +48,12 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
       (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
        else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-  have hbridge : LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
-      (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') := by
-    simp [Common.Statistics.zetaInt_fermion, LinearMap.zetaCommutator, anticomm]
-  rw [hbridge, anticomm_quarticLocalLegOperator]
-  split_ifs <;> simp
+  fin_cases l <;> fin_cases l' <;>
+    simp [quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
+      Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
+      Common.Statistics.zetaInt_fermion, anticomm_create_create,
+      anticomm_annihilate_annihilate, anticomm_annihilate_create,
+      anticomm_create_annihilate] <;> rfl
 
 end Fermionic
 end SecondQuantization
