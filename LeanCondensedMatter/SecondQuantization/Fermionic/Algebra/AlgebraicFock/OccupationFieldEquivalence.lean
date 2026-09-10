@@ -220,7 +220,7 @@ private theorem eq_annihilate_of_vacuum_of_mixedCAR
       congr 1
       have hB := hCAR j n
       have hA := anticomm_annihilate_create_basisState i j n
-      rw [anticomm_apply] at hA
+      simp only [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add] at hA
       calc
         B (SecondQuantization.Fermionic.create j (basisState n)) =
             (if i = j then basisState n else 0) -
