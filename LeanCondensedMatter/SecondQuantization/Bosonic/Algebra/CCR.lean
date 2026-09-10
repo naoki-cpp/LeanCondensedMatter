@@ -130,9 +130,13 @@ theorem comm_annihilate_create (i j : Mode) :
 theorem comm_create_annihilate (i j : Mode) :
     comm (create i) (annihilate j) =
       if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
-  rw [LinearMap.zetaCommutator_swap_of_sq_eq_one (1 : ℂ) (by norm_num)
-    (annihilate j) (create i), comm_annihilate_create]
-  by_cases h : i = j <;> simp [h, Ne.symm h]
+  calc
+    comm (create i) (annihilate j) = (-1 : ℂ) • comm (annihilate j) (create i) := by
+      exact LinearMap.zetaCommutator_swap_of_sq_eq_one (1 : ℂ) (by norm_num)
+        (annihilate j) (create i)
+    _ = if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
+      rw [comm_annihilate_create]
+      by_cases h : i = j <;> simp [h, Ne.symm h]
 
 end
 
