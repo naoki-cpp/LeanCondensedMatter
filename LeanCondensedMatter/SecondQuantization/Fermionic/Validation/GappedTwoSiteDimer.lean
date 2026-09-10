@@ -189,6 +189,22 @@ private theorem twoSiteGappedBenchmarkLehmannTable_energy_one :
     twoSiteGappedBenchmarkLehmannTable.energy 1 = 5 / 4 := by
   norm_num [twoSiteGappedBenchmarkLehmannTable]
 
+private theorem twoSiteGappedBenchmarkTable_groundEnergy_from_operator :
+    twoSiteGappedHamiltonian 1 (3 / 4) twoSiteGappedBenchmarkGroundState =
+      (twoSiteGappedBenchmarkLehmannTable.energy 0 : ℂ) •
+        twoSiteGappedBenchmarkGroundState := by
+  rw [twoSiteGappedBenchmarkLehmannTable_energy_zero]
+  convert twoSiteGappedBenchmark_ground_eigenvector using 1
+  norm_num
+
+private theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
+    twoSiteGappedHamiltonian 1 (3 / 4) twoSiteGappedBenchmarkExcitedState =
+      (twoSiteGappedBenchmarkLehmannTable.energy 1 : ℂ) •
+        twoSiteGappedBenchmarkExcitedState := by
+  rw [twoSiteGappedBenchmarkLehmannTable_energy_one]
+  convert twoSiteGappedBenchmark_excited_eigenvector using 1
+  norm_num
+
 private theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteGappedBenchmarkLehmannTable (0, 1) = Complex.I := by
