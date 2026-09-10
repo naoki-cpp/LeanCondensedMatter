@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -13,9 +14,9 @@ through an arbitrary-length list by induction rather than maintaining separately
 fixed-length identities.
 
 Given `C₁` and a list `l` of `(operator Bⱼ, scalar ζ-commutator coefficient cⱼ)` pairs satisfying
-`[C₁, Bⱼ]_ζ = cⱼ•id` (`Common.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as `cⱼ • id + ζ•(BⱼC₁)`
-and pushing `C₁` rightward through the whole list picks up one factor of `ζ` per operator it
-passes, landing `C₁` at the very end:
+`[C₁, Bⱼ]_ζ = cⱼ•id` (`LinearMap.zetaCommutator`), repeatedly rewriting `C₁Bⱼ` as
+`cⱼ • id + ζ•(BⱼC₁)` and pushing `C₁` rightward through the whole list picks up one factor of `ζ`
+per operator it passes, landing `C₁` at the very end:
 
 `C₁(B₁B₂⋯Bₖ) = peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)] + ζᵏ•((B₁⋯Bₖ)C₁)`
 
@@ -40,7 +41,6 @@ the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Pr
 
 namespace SecondQuantization
 namespace Common
-
 
 variable {Config : Type*}
 
@@ -111,7 +111,7 @@ picked up `ζ^{l.length}`. -/
 theorem comp_prodComp_eq_of_zetaCommutator (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
-    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     C1.comp (prodComp (l.map Prod.fst)) =
       peelSum ζ l + ζ ^ l.length • ((prodComp (l.map Prod.fst)).comp C1) := by
