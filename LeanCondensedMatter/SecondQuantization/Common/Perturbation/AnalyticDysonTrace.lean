@@ -25,11 +25,6 @@ noncomputable def finiteOperatorMatrixCoeff (m n : Config) :
   (finiteAnalyticCoordinate m).comp
     (ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis n))
 
-@[simp]
-theorem finiteOperatorMatrixCoeff_apply (m n : Config)
-    (A : FiniteContinuousOperator Config) :
-    finiteOperatorMatrixCoeff m n A = A (finiteAnalyticBasis n) m := rfl
-
 /-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
 continuous-operator algebra. -/
 noncomputable def finiteOperatorTrace :
@@ -39,7 +34,7 @@ noncomputable def finiteOperatorTrace :
 @[simp]
 theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
     finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
-  simp [finiteOperatorTrace]
+  simp [finiteOperatorTrace, finiteOperatorMatrixCoeff]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
 theorem finiteOperatorTrace_finiteContinuousOperator
