@@ -26,6 +26,27 @@ jobs:
         run: lake build LeanCondensedMatter.Analysis.Dyson.Basic
       - name: Check audit Python syntax
         run: python3 -m py_compile scripts/proof_reuse_audit.py
+      - name: Check known positive replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > ProofReusePositive.lean <<'EOF'
+          import LeanCondensedMatter.Analysis.Dyson.Basic
+
+          open Dyson
+
+          variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
+
+          example (V : ℝ → A) (τ : ℝ) : coeff V 0 τ = 1 := by
+            unfold coeff
+            rfl
+          EOF
+          python3 scripts/proof_reuse_audit.py ProofReusePositive.lean \
+            --max-blocks 1 \
+            --max-findings 1 \
+            --timeout 30 | tee proof-reuse-positive.log
+          grep -F 'verified by replay: yes' proof-reuse-positive.log
+          grep -F 'coeff_zero' proof-reuse-positive.log
       - name: Run replay-verified audit on real project file
         shell: bash
         run: |
