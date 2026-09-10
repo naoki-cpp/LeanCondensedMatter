@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Find proof regions that Lean can replace with a shorter existing proof.
+"""Find proof regions replaceable by concrete, replay-verified Lean suggestions.
 
-The audit scans theorem/lemma/example proof bodies and explicitly typed
-`have ... : T := by` / `haveI ... : T := by` blocks. It probes both complete
-`have` bodies and contiguous top-level tactic intervals. For every candidate,
-only the selected source range is replaced in a temporary copy, and the whole
-file is recompiled with `lake env lean`.
+For each candidate source region, the audit first runs a search tactic (`exact?`,
+`apply?`, or `simp?`) in a temporary copy. It extracts the concrete `Try this:`
+replacement emitted by Lean, substitutes that replacement into a fresh copy,
+and recompiles the whole file.
 
-Reported replacements are therefore kernel-checked in the original local
-context. The conservative probes are `exact?`, `apply? <;> assumption`, and
-`simp?`. Source files are never modified.
+Only the second compilation decides whether a finding is reported. In
+particular, `apply?` itself is never treated as proof: its suggested `refine` or
+`exact` tactic must replay successfully without search/admission scaffolding.
+Source files are never modified.
 """
 
 from __future__ import annotations
@@ -39,21 +39,23 @@ DECL_START_RE = re.compile(
     r"^(?P<indent>[ \t]*)(?:(?:private|protected|noncomputable)\s+)*"
     r"(?P<kind>theorem|lemma|example)\b"
 )
-TRY_THIS_RE = re.compile(r"Try this:\s*(?P<suggestion>.+?)\s*$")
+ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+SUGGESTION_LABEL_RE = re.compile(r"^\[(?:apply|exact|simp)\]\s*")
+
+# A wide pretty-printer keeps code-action suggestions on one line when possible.
+# The concrete emitted replacement is replayed without this wrapper.
 PROBES = {
-    "exact": "exact?",
-    "apply": "apply? <;> assumption",
-    "simp": "simp?",
+    "exact": "set_option pp.width 100000 in exact?",
+    "apply": "set_option pp.width 100000 in apply?",
+    "simp": "set_option pp.width 100000 in simp?",
 }
 
 
 @dataclass(frozen=True)
 class ProofBlock:
     kind: str
-    header_start_line: int
     body_start_line: int
     end_line: int
-    header_start_index: int
     body_start_index: int
     end_index: int
     base_indent: int
@@ -94,7 +96,8 @@ class Finding:
     original_lines: int
     tactic_count: int
     mode: str
-    suggestion: str
+    replacement: str
+    verified: bool = True
 
 
 def indent_width(text: str) -> int:
@@ -134,9 +137,7 @@ def block_end(lines: list[str], body_start: int, base_indent: int) -> int:
 def body_metadata(
     lines: list[str], body_start: int, end_index: int, min_body_lines: int
 ) -> tuple[str, int] | None:
-    body_indices = [
-        i for i in range(body_start, end_index) if significant(lines[i])
-    ]
+    body_indices = [i for i in range(body_start, end_index) if significant(lines[i])]
     if len(body_indices) < min_body_lines:
         return None
     min_index = min(body_indices, key=lambda i: indent_width(lines[i]))
@@ -144,15 +145,12 @@ def body_metadata(
 
 
 def find_typed_have_blocks(source: str, min_body_lines: int) -> list[ProofBlock]:
-    """Find single-line, explicitly typed `have`/`haveI` proof headers."""
     lines = source.splitlines(keepends=True)
     blocks: list[ProofBlock] = []
-
     for i, line in enumerate(lines):
         match = HAVE_BY_RE.match(line.rstrip("\r\n"))
         if match is None or ":" not in match.group("header"):
             continue
-
         base_indent = indent_width(match.group("indent"))
         body_start = i + 1
         end_index = block_end(lines, body_start, base_indent)
@@ -163,10 +161,8 @@ def find_typed_have_blocks(source: str, min_body_lines: int) -> list[ProofBlock]
         blocks.append(
             ProofBlock(
                 kind=match.group("kind"),
-                header_start_line=i + 1,
                 body_start_line=body_start + 1,
                 end_line=end_index,
-                header_start_index=i,
                 body_start_index=body_start,
                 end_index=end_index,
                 base_indent=base_indent,
@@ -174,7 +170,6 @@ def find_typed_have_blocks(source: str, min_body_lines: int) -> list[ProofBlock]
                 body_lines=body_lines,
             )
         )
-
     return blocks
 
 
@@ -192,11 +187,9 @@ def declaration_start(
 
 
 def find_declaration_blocks(source: str, min_body_lines: int) -> list[ProofBlock]:
-    """Find theorem/lemma/example `:= by` bodies, including multiline headers."""
     lines = source.splitlines(keepends=True)
     blocks: list[ProofBlock] = []
     seen_headers: set[int] = set()
-
     for i, line in enumerate(lines):
         text = line.rstrip("\r\n")
         if not BY_END_RE.search(text) or HAVE_BY_RE.match(text) is not None:
@@ -208,7 +201,6 @@ def find_declaration_blocks(source: str, min_body_lines: int) -> list[ProofBlock
         if header_start in seen_headers:
             continue
         seen_headers.add(header_start)
-
         body_start = i + 1
         end_index = block_end(lines, body_start, base_indent)
         metadata = body_metadata(lines, body_start, end_index, min_body_lines)
@@ -218,10 +210,8 @@ def find_declaration_blocks(source: str, min_body_lines: int) -> list[ProofBlock
         blocks.append(
             ProofBlock(
                 kind=kind,
-                header_start_line=header_start + 1,
                 body_start_line=body_start + 1,
                 end_line=end_index,
-                header_start_index=header_start,
                 body_start_index=body_start,
                 end_index=end_index,
                 base_indent=base_indent,
@@ -229,7 +219,6 @@ def find_declaration_blocks(source: str, min_body_lines: int) -> list[ProofBlock
                 body_lines=body_lines,
             )
         )
-
     return blocks
 
 
@@ -239,27 +228,22 @@ def find_proof_blocks(source: str, min_body_lines: int) -> list[ProofBlock]:
         *find_declaration_blocks(source, min_body_lines),
     ]
     return sorted(
-        blocks,
-        key=lambda block: (block.body_start_index, block.end_index, block.kind),
+        blocks, key=lambda block: (block.body_start_index, block.end_index, block.kind)
     )
 
 
 def top_level_tactic_chunks(source: str, block: ProofBlock) -> list[TacticChunk]:
     lines = source.splitlines(keepends=True)
     body_indices = [
-        i
-        for i in range(block.body_start_index, block.end_index)
-        if significant(lines[i])
+        i for i in range(block.body_start_index, block.end_index) if significant(lines[i])
     ]
     if not body_indices:
         return []
-
     top_indent = min(indent_width(lines[i]) for i in body_indices)
     starts = [i for i in body_indices if indent_width(lines[i]) == top_indent]
     chunks: list[TacticChunk] = []
     for position, start in enumerate(starts):
         end = starts[position + 1] if position + 1 < len(starts) else block.end_index
-        significant_lines = sum(1 for i in range(start, end) if significant(lines[i]))
         chunks.append(
             TacticChunk(
                 start_line=start + 1,
@@ -267,7 +251,9 @@ def top_level_tactic_chunks(source: str, block: ProofBlock) -> list[TacticChunk]
                 start_index=start,
                 end_index=end,
                 indent=leading_indent(lines[start]),
-                significant_lines=significant_lines,
+                significant_lines=sum(
+                    1 for i in range(start, end) if significant(lines[i])
+                ),
             )
         )
     return chunks
@@ -300,18 +286,18 @@ def interval_regions(
     chunks = top_level_tactic_chunks(source, block)
     if len(chunks) < min_tactics:
         return []
-
     regions: list[Region] = []
     for start in range(len(chunks)):
         for stop in range(start + min_tactics, len(chunks) + 1):
             tactic_count = stop - start
             if max_span_tactics is not None and tactic_count > max_span_tactics:
                 break
-            if start == 0 and stop == len(chunks):
-                # Complete typed-have bodies are already covered by block probes.
-                # Declaration bodies have no separate block probe, so keep them.
-                if block.kind in {"have", "haveI"}:
-                    continue
+            if (
+                start == 0
+                and stop == len(chunks)
+                and block.kind in {"have", "haveI"}
+            ):
+                continue
             first = chunks[start]
             last = chunks[stop - 1]
             regions.append(
@@ -329,30 +315,91 @@ def interval_regions(
                     tactic_count=tactic_count,
                 )
             )
-
-    # Prefer the largest compressions first; ties prefer earlier source ranges.
     regions.sort(key=lambda item: (-item.tactic_count, item.start_index, item.end_index))
-    if max_intervals is not None:
-        regions = regions[:max_intervals]
+    return regions if max_intervals is None else regions[:max_intervals]
+
+
+def candidate_regions(
+    source: str,
+    blocks: Sequence[ProofBlock],
+    *,
+    scan_intervals: bool,
+    min_tactics: int,
+    max_span_tactics: int | None,
+    max_intervals_per_block: int | None,
+) -> list[Region]:
+    regions: list[Region] = []
+    seen: set[tuple[int, int]] = set()
+    for block in blocks:
+        whole = whole_have_region(block)
+        if whole is not None:
+            key = (whole.start_index, whole.end_index)
+            if key not in seen:
+                regions.append(whole)
+                seen.add(key)
+        if not scan_intervals:
+            continue
+        for region in interval_regions(
+            source,
+            block,
+            min_tactics=min_tactics,
+            max_span_tactics=max_span_tactics,
+            max_intervals=max_intervals_per_block,
+        ):
+            key = (region.start_index, region.end_index)
+            if key not in seen:
+                regions.append(region)
+                seen.add(key)
     return regions
 
 
 def replace_region(source: str, region: Region, tactic: str) -> str:
     lines = source.splitlines(keepends=True)
-    if region.start_index >= len(lines):
-        return source
     newline = "\r\n" if lines[region.start_index].endswith("\r\n") else "\n"
     replacement = f"{region.indent}{tactic}{newline}"
     return "".join(lines[: region.start_index] + [replacement] + lines[region.end_index :])
 
 
-def parse_suggestion(output: str) -> str | None:
-    found = [
-        match.group("suggestion").strip()
-        for line in output.splitlines()
-        if (match := TRY_THIS_RE.search(line))
-    ]
-    return found[-1] if found else None
+def parse_suggestions(output: str) -> list[str]:
+    """Extract concrete `Try this:` tactics from Lean terminal output.
+
+    `exact?`/`simp?` may render the replacement on the header line, while
+    `apply?` in Lean 4.33 renders
+
+        Try this:
+          [apply] refine someLemma ?_
+          -- Remaining subgoals: ...
+
+    The bracketed label and post-info are UI text, not Lean syntax.
+    """
+    output = ANSI_RE.sub("", output)
+    lines = output.splitlines()
+    suggestions: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        marker = line.find("Try this:")
+        if marker < 0:
+            i += 1
+            continue
+
+        rest = line[marker + len("Try this:") :].strip()
+        if rest:
+            candidate = rest
+        else:
+            i += 1
+            while i < len(lines) and not lines[i].strip():
+                i += 1
+            if i >= len(lines):
+                break
+            candidate = lines[i].strip()
+
+        candidate = SUGGESTION_LABEL_RE.sub("", candidate).strip()
+        candidate = candidate.split("-- Remaining subgoals:", 1)[0].strip()
+        if candidate and not candidate.startswith("--") and candidate not in suggestions:
+            suggestions.append(candidate)
+        i += 1
+    return suggestions
 
 
 def run_lean(path: Path, timeout: float) -> tuple[int, str, bool]:
@@ -392,41 +439,6 @@ def first_error(output: str) -> str:
             tail = [item for item in lines[i + 1 : i + 5] if not item.startswith("trace:")]
             return "\n".join([line, *tail]).strip()
     return "\n".join(lines[:5]).strip()
-
-
-def candidate_regions(
-    source: str,
-    blocks: Sequence[ProofBlock],
-    *,
-    scan_intervals: bool,
-    min_tactics: int,
-    max_span_tactics: int | None,
-    max_intervals_per_block: int | None,
-) -> list[Region]:
-    regions: list[Region] = []
-    seen: set[tuple[int, int]] = set()
-    for block in blocks:
-        whole = whole_have_region(block)
-        if whole is not None:
-            key = (whole.start_index, whole.end_index)
-            if key not in seen:
-                regions.append(whole)
-                seen.add(key)
-        if not scan_intervals:
-            continue
-        for region in interval_regions(
-            source,
-            block,
-            min_tactics=min_tactics,
-            max_span_tactics=max_span_tactics,
-            max_intervals=max_intervals_per_block,
-        ):
-            key = (region.start_index, region.end_index)
-            if key in seen:
-                continue
-            regions.append(region)
-            seen.add(key)
-    return regions
 
 
 def audit_file(
@@ -475,16 +487,41 @@ def audit_file(
         if max_findings is not None and len(findings) >= max_findings:
             break
         for mode in modes:
-            tactic = PROBES[mode]
-            modified = replace_region(source, region, tactic)
-            label = f"line-{region.start_line}-{region.end_line}-{mode}"
-            code, output, timed_out = run_probe(modified, label, timeout)
+            search_tactic = PROBES[mode]
+            search_source = replace_region(source, region, search_tactic)
+            label = f"line-{region.start_line}-{region.end_line}-{mode}-search"
+            code, output, timed_out = run_probe(search_source, label, timeout)
             if timed_out:
                 diagnostics.append(
-                    f"{relative}:{region.start_line}-{region.end_line}: {mode} probe timed out"
+                    f"{relative}:{region.start_line}-{region.end_line}: "
+                    f"{mode} search timed out"
                 )
                 continue
             if code != 0:
+                continue
+
+            suggestions = parse_suggestions(output)
+            if not suggestions:
+                continue
+
+            verified_replacement: str | None = None
+            for suggestion in suggestions:
+                replay_source = replace_region(source, region, suggestion)
+                replay_label = f"line-{region.start_line}-{region.end_line}-{mode}-replay"
+                replay_code, _, replay_timed_out = run_probe(
+                    replay_source, replay_label, timeout
+                )
+                if replay_timed_out:
+                    diagnostics.append(
+                        f"{relative}:{region.start_line}-{region.end_line}: "
+                        f"{mode} replay timed out"
+                    )
+                    continue
+                if replay_code == 0:
+                    verified_replacement = suggestion
+                    break
+
+            if verified_replacement is None:
                 continue
 
             findings.append(
@@ -497,7 +534,7 @@ def audit_file(
                     original_lines=region.original_lines,
                     tactic_count=region.tactic_count,
                     mode=mode,
-                    suggestion=parse_suggestion(output) or tactic,
+                    replacement=verified_replacement,
                 )
             )
             break
@@ -538,66 +575,25 @@ def parse_modes(value: str) -> tuple[str, ...]:
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
-        description="Kernel-check shorter replacements for proof blocks and tactic intervals."
+        description="Find concrete, replay-verified shorter Lean proof replacements."
     )
     result.add_argument("files", nargs="+", help="repo-relative .lean files")
     result.add_argument(
         "--modes",
         type=parse_modes,
         default=tuple(PROBES),
-        help="comma-separated probes in priority order (default: exact,apply,simp)",
+        help="comma-separated search modes (default: exact,apply,simp)",
     )
-    result.add_argument(
-        "--min-body-lines",
-        type=int,
-        default=2,
-        help="minimum significant lines in a proof body (default: 2)",
-    )
-    result.add_argument(
-        "--max-blocks",
-        type=int,
-        help="inspect at most this many proof blocks in each file",
-    )
-    result.add_argument(
-        "--no-intervals",
-        action="store_true",
-        help="probe only complete typed-have bodies, not tactic intervals",
-    )
-    result.add_argument(
-        "--min-tactics",
-        type=int,
-        default=2,
-        help="minimum top-level tactics in an interval (default: 2)",
-    )
-    result.add_argument(
-        "--max-span-tactics",
-        type=int,
-        default=6,
-        help="maximum top-level tactics in an interval (default: 6)",
-    )
-    result.add_argument(
-        "--max-intervals-per-block",
-        type=int,
-        default=12,
-        help="maximum interval probes per proof block before tactic modes (default: 12)",
-    )
-    result.add_argument(
-        "--max-findings",
-        type=int,
-        help="stop after this many successful replacements in each file",
-    )
-    result.add_argument(
-        "--timeout",
-        type=float,
-        default=30.0,
-        help="per-compilation timeout in seconds (default: 30)",
-    )
-    result.add_argument(
-        "--no-baseline",
-        action="store_true",
-        help="skip compiling the unmodified file first",
-    )
-    result.add_argument("--json", action="store_true", help="emit JSON")
+    result.add_argument("--min-body-lines", type=int, default=2)
+    result.add_argument("--max-blocks", type=int)
+    result.add_argument("--no-intervals", action="store_true")
+    result.add_argument("--min-tactics", type=int, default=2)
+    result.add_argument("--max-span-tactics", type=int, default=6)
+    result.add_argument("--max-intervals-per-block", type=int, default=12)
+    result.add_argument("--max-findings", type=int)
+    result.add_argument("--timeout", type=float, default=30.0)
+    result.add_argument("--no-baseline", action="store_true")
+    result.add_argument("--json", action="store_true")
     return result
 
 
@@ -660,14 +656,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(item, file=sys.stderr)
         for item in findings:
             if item.scope == "interval":
-                size = f"{item.tactic_count} top-level tactic(s), {item.original_lines} line(s)"
+                size = (
+                    f"{item.tactic_count} top-level tactic(s), "
+                    f"{item.original_lines} line(s)"
+                )
             else:
                 size = f"{item.original_lines} proof line(s)"
             print(
                 f"{item.file}:{item.start_line}-{item.end_line}: "
                 f"{item.scope}/{item.block_kind} {item.mode} can replace {size}"
             )
-            print(f"  {item.suggestion}")
+            print(f"  {item.replacement}")
+            print("  verified by replay: yes")
         if not findings and not diagnostics:
             print("No proof-reuse candidates found.")
 
