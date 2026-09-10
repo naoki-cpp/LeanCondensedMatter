@@ -42,12 +42,12 @@ theorem traceFock_diagonalEvolution_comp_two_point [Fintype Config]
     (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         traceFock ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * traceFock (diagonalEvolution energy (-β)) := by
-  rw [zetaCommutator, sub_eq_iff_eq_add] at hcomm
+  have hcomm' := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq ζ hcomm
   have hrot := traceFock_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1
   have hstep : traceFock ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * traceFock (diagonalEvolution energy (-β)) +
         ζ * traceFock ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) := by
-    conv_lhs => rw [hcomm]
+    conv_lhs => rw [hcomm']
     rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
       traceFock_add, traceFock_smul, traceFock_smul]
   rw [hrot, smul_eq_mul] at hstep
@@ -72,7 +72,7 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
     (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         tsumTrace ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * tsumTrace (diagonalEvolution energy (-β)) := by
-  rw [zetaCommutator, sub_eq_iff_eq_add] at hcomm
+  have hcomm' := LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq ζ hcomm
   have hrot := tsumTrace_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1 h
   have hSummDCjC1 : Summable
       (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n) := by
@@ -83,7 +83,7 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
       fun n => c1j * matrixCoeff (diagonalEvolution energy (-β)) n n +
         ζ * matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n := by
     funext n
-    conv_lhs => rw [hcomm]
+    conv_lhs => rw [hcomm']
     rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
       matrixCoeff_add, matrixCoeff_smul, matrixCoeff_smul]
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
