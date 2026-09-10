@@ -222,6 +222,7 @@ theorem twoSiteGappedBenchmarkTable_current_one_zero_from_operator :
   rw [twoSiteGappedBenchmark_current_apply_ground, inner_smul_right,
     twoSiteGappedBenchmark_excited_inner_self, twoSiteDimerEnergyBasisCurrent_one_zero]
   norm_num
+  ring
 
 /-- The scalar-table contact is the normalized expectation derived from the concrete Peierls contact. -/
 theorem twoSiteGappedBenchmarkTable_contact_from_operator :
