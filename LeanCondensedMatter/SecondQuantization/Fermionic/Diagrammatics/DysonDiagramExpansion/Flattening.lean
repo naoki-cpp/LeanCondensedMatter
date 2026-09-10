@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.LocalLegExchange
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
@@ -163,39 +165,25 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
-The bare single-vertex-four-legs case (`quarticLocalLegMode`, `quarticLocalLegIsCreate`, and
-`zetaCommutator_quarticLocalLegOperator`) lives in `QuarticLocalLeg.lean`. -/
+The bare local-leg exchange coefficient and bracket theorem live in
+`Common.Diagrammatics.Quartic.LocalLegExchange`. -/
 
 omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
-family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and the bare
-single-vertex commutator indicator (`quarticLocalLegIsCreate`/`quarticLocalLegMode`-based), exactly
-what `zetaCommutator_quarticLegOperatorForSequence` computes `LinearMap.zetaCommutator` to equal.
-Naming this family is what lets the eventual
-`Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing`
-application read as passing three named families (`quarticLegOperatorForSequence ε q τ`,
-`flatVertexLegEnergyShift ε q`, `flatVertexLegCommutatorCoeff ε q τ`) rather than three copies of
-the same inlined case analysis. -/
+family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and the Common bare
+local-leg exchange coefficient. -/
 noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) : ℂ :=
   Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) *
     Complex.exp ((τ (flatVertexIndex n p') * flatVertexLegEnergyShift ε q p' : ℝ) : ℂ) *
-    (if quarticLocalLegIsCreate (flatLocalLeg n p) = quarticLocalLegIsCreate (flatLocalLeg n p')
-      then (0 : ℂ)
-     else if quarticLocalLegMode (q (flatVertexIndex n p)) (flatLocalLeg n p) =
-        quarticLocalLegMode (q (flatVertexIndex n p')) (flatLocalLeg n p') then 1
-     else 0)
+    Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
+      (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
+      (flatLocalLeg n p) (flatLocalLeg n p')
 
 omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for two arbitrary evolved/flattened leg
-positions** — combines `quarticLegOperatorForSequence_eq_smul` (reducing each evolved leg to a
-bare `quarticLocalLegOperator` times its own `Complex.exp` eigenvalue-shift scalar),
-`LinearMap.zetaCommutator_smul_smul` (pulling both scalars out of the commutator as a product), and
-`zetaCommutator_quarticLocalLegOperator` (the bare single-vertex commutator constant) into
-`flatVertexLegCommutatorCoeff`, now valid for *any* pair of flattened positions `p, p'` —
-same-vertex or cross-vertex alike, since the underlying
-`quarticLocalLegOperator`/`quarticLocalLegMode`/`quarticLocalLegIsCreate` machinery never assumed a
-shared vertex. -/
+positions** — pulls out both imaginary-time evolution scalars and uses the Common quartic local-leg
+exchange theorem for the remaining bare operators. -/
 theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) :
     LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
@@ -203,8 +191,21 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
       flatVertexLegCommutatorCoeff ε q τ p p' •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
-    LinearMap.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
-    flatVertexLegCommutatorCoeff]
+    LinearMap.zetaCommutator_smul_smul]
+  have hlocal :
+      LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+          (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
+          (quarticLocalLegOperator (q (flatVertexIndex n p')) (flatLocalLeg n p')) =
+        Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
+            (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
+            (flatLocalLeg n p) (flatLocalLeg n p') •
+          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
+    simpa [Common.exchangeCommutator, quarticLocalLegOperator, exchangeAlgebra] using
+      (Common.exchangeCommutator_quarticLocalLegOperator
+        (Mode := Mode) (Config := Occupation Mode) Common.Statistics.fermion
+        (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
+        (flatLocalLeg n p) (flatLocalLeg n p'))
+  rw [hlocal, smul_smul, flatVertexLegCommutatorCoeff]
 
 /-! ## The general theorem's non-resonance hypothesis -/
 
