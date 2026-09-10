@@ -67,7 +67,9 @@ theorem logOf_freeGrandPartitionSeries_eq_sum_log [Fintype Mode]
   classical
   unfold freeGrandPartitionSeries
   simpa [PowerSeries.logOf_one_add_smul_X] using
-    PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode) _ (fun i => by simp)
+    PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode)
+      (fun i => 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X)
+      (fun i => by simp)
 
 /-- Free-fermion formal linked-cluster identity: the logarithm of the finite grand product equals the
 `ζ = -1` connected-cycle series. -/
