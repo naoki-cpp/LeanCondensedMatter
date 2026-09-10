@@ -18,6 +18,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality for mode comparisons in the CCR proofs. -/
 local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
 
 /-- The ordinary commutator, i.e. the `ζ = 1` bracket. -/
