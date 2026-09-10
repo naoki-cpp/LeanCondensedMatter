@@ -6,6 +6,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: proof-reuse-ranked-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-24.04
@@ -32,11 +36,45 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: auto
 
-      - name: Build library for theorem catalog
+      - name: Build library for theorem index
         run: lake build LeanCondensedMatter
 
-      - name: Generate theorem catalog
-        run: lake env lean scripts/TheoremCatalog.lean
+      - name: Generate lightweight project theorem index
+        shell: bash
+        run: |
+          cat > ProjectTheoremNames.lean <<'EOF'
+          import Lean
+          import LeanCondensedMatter
+
+          open Lean Elab Command
+
+          private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
+            let moduleIdx ← env.const2ModIdx.get? declName
+            env.header.moduleNames[moduleIdx]?
+
+          run_cmd do
+            let env ← getEnv
+            let mut output := ""
+            for (declName, info) in env.constants.toList do
+              let .thmInfo _ := info | continue
+              let some moduleName := declarationModule? env declName | continue
+              unless moduleName.toString.startsWith "LeanCondensedMatter" do continue
+              output := output ++ declName.toString ++ "\n"
+            liftIO <| IO.FS.writeFile "project-theorem-names.txt" output
+          EOF
+          lake env lean ProjectTheoremNames.lean
+          mkdir -p docs/generated
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          names = sorted(set(Path('project-theorem-names.txt').read_text(encoding='utf-8').splitlines()))
+          Path('docs/generated/theorems.json').write_text(
+              json.dumps([{'name': name} for name in names], ensure_ascii=False),
+              encoding='utf-8',
+          )
+          print(f'project theorem names: {len(names)}')
+          PY
+          rm ProjectTheoremNames.lean project-theorem-names.txt
 
       - name: Check audit script syntax
         run: python3 -m py_compile scripts/proof_reuse_audit.py
@@ -79,7 +117,7 @@ jobs:
           assert finding['candidate_name'].endswith('Dyson.coeff_zero'), finding
           assert finding['admission_free'] is True, finding
           PY
-          rm ProofReusePositive.lean
+          rm ProofReusePositive.lean proof-reuse-positive.json
 
       - name: Audit current repository proof regions
         shell: bash
