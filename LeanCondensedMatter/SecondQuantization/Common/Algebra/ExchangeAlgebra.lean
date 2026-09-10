@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 
 set_option linter.style.header false
@@ -42,9 +43,9 @@ theorem annihilate_comp_create_self (i : Mode) :
         (ExchangeAlgebra.create (s := s) (Config := Config) i) =
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
         (s.zetaInt : ℂ) • ((ExchangeAlgebra.create (s := s) (Config := Config) i).comp
-          (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)) :=
-  comp_eq_id_add_of_zetaCommutator_eq_id (s.zetaInt : ℂ)
-    (exchangeCommutator_annihilate_create_self i)
+          (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)) := by
+  apply LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (s.zetaInt : ℂ)
+  simpa [exchangeCommutator] using (exchangeCommutator_annihilate_create_self i)
 
 end Common
 end SecondQuantization
