@@ -9,8 +9,9 @@ set_option linter.style.header false
 /-!
 # Zero-broadening longitudinal Středa radial integral
 
-The source-`.x` response is reduced to the integrated RA current rung plus elementary RR/AA endpoint
-terms. This gives its fixed-disorder `η → 0⁺` boundary without a second Středa DCT layer.
+The ordered measured-`.x`, source-`.x` response is reduced to the integrated RA current rung plus
+elementary RR/AA endpoint terms. This gives its fixed-disorder `η → 0⁺` boundary without a second
+Středa DCT layer.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -165,7 +166,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 < disorderStrength) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .x e v m probeEnergy broadening disorderStrength hbar pMax =
+        .x .x e v m probeEnergy broadening disorderStrength hbar pMax =
       finiteBroadeningLongitudinalMomentumEndpointForm
         e v m probeEnergy broadening disorderStrength hbar pMax := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
@@ -190,7 +191,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)))
   have hpointwise : ∀ p : ℝ,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          .x e v m p probeEnergy broadening disorderStrength hbar pMax =
+          .x .x e v m p probeEnergy broadening disorderStrength hbar pMax =
         2 * q ^ 2 * pref⁻¹ * (solved .x * rx p - solved .y * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (same .retarded p + same .advanced p) := by
     intro p
@@ -239,7 +240,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
   have hintegral :
       (∫ p in (0 : ℝ)..pMax,
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          .x e v m p probeEnergy broadening disorderStrength hbar pMax) =
+          .x .x e v m p probeEnergy broadening disorderStrength hbar pMax) =
       ∫ p in (0 : ℝ)..pMax,
         2 * q ^ 2 * pref⁻¹ * (solved .x * rx p - solved .y * ry p) -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 * (same .retarded p + same .advanced p) := by
@@ -310,7 +311,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
       v m probeEnergy disorderStrength hbar pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ => finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .x e v m probeEnergy broadening disorderStrength hbar pMax)
+        .x .x e v m probeEnergy broadening disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
         e v m probeEnergy disorderStrength hbar pMax)) := by
