@@ -53,7 +53,11 @@ theorem logOf_freeGrandPartitionSeries_eq_neg_sum_log [Fintype Mode]
         ∑ i : Mode,
           PowerSeries.logOf
             ((1 + (-Complex.exp (-(β : ℂ) * (ε i : ℂ))) • PowerSeries.X)⁻¹) := by
-      exact PowerSeries.logOf_fintype_prod _ (fun i => by simp)
+      simpa using
+        PowerSeries.logOf_finset_prod (Finset.univ : Finset Mode)
+          (fun i =>
+            (1 + (-Complex.exp (-(β : ℂ) * (ε i : ℂ))) • PowerSeries.X)⁻¹)
+          (fun i => by simp)
     _ = ∑ i : Mode,
         -PowerSeries.rescale
           (-Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
