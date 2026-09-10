@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 
 set_option linter.style.header false
@@ -5,15 +6,9 @@ set_option linter.style.header false
 /-!
 # Canonical commutation relations
 
-The bosonic creation and annihilation operators satisfy
-
-* `[a_i, a_j] = 0`,
-* `[a_i†, a_j†] = 0`,
-* `[a_i, a_j†] = δ_ij`.
-
-The basis-state proofs account explicitly for the square-root normalization of the ladder
-operators. `Bosonic.ExchangeAlgebra` packages these relations through the statistics-independent
-`Common.exchangeCommutator` interface.
+The bosonic creation and annihilation operators satisfy `[a_i,a_j]=0`, `[a_i†,a_j†]=0`, and
+`[a_i,a_j†]=δ_ij`. The representation-specific basis proofs remain here; generic commutator algebra
+is delegated to `Analysis.Operator.ZetaCommutator`.
 -/
 
 namespace SecondQuantization
@@ -23,17 +18,16 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
 
-/-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
-noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+/-- The ordinary commutator, i.e. the `ζ = 1` bracket. -/
+noncomputable abbrev comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  A.comp B - B.comp A
+  LinearMap.zetaCommutator 1 A B
 
 theorem comm_apply (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (x : FockSpace Mode) : comm A B x = A (B x) - B (A x) :=
-  rfl
+    (x : FockSpace Mode) : comm A B x = A (B x) - B (A x) := by
+  simpa using LinearMap.zetaCommutator_apply (1 : ℂ) A B x
 
 /-- The square-root normalization factor squares to its natural-number argument. -/
 theorem sqrt_natCast_mul_self (k : ℕ) :
@@ -136,14 +130,9 @@ theorem comm_annihilate_create (i j : Mode) :
 theorem comm_create_annihilate (i j : Mode) :
     comm (create i) (annihilate j) =
       if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
-  rw [show comm (create i) (annihilate j) = -comm (annihilate j) (create i) by
-    simp only [comm]
-    abel]
-  rw [comm_annihilate_create]
-  by_cases h : i = j
-  · subst j
-    simp
-  · simp [h, Ne.symm h]
+  rw [LinearMap.zetaCommutator_swap_of_sq_eq_one (1 : ℂ) (by norm_num)
+    (annihilate j) (create i), comm_annihilate_create]
+  by_cases h : i = j <;> simp [h, Ne.symm h]
 
 end
 
