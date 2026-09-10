@@ -163,9 +163,8 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
-The bare single-vertex-four-legs case (`quarticLocalLegMode`, `quarticLocalLegIsCreate`,
-`anticomm_quarticLocalLegOperator`, `zetaCommutator_quarticLocalLegOperator`) now lives in
-`QuarticLocalLeg.lean`. -/
+The bare single-vertex-four-legs case (`quarticLocalLegMode`, `quarticLocalLegIsCreate`, and
+`zetaCommutator_quarticLocalLegOperator`) lives in `QuarticLocalLeg.lean`. -/
 
 omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
