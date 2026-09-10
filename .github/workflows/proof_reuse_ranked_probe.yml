@@ -1,0 +1,109 @@
+name: Proof Reuse Ranked Probe
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+
+      - name: Restore project build cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .lake/build
+          key: proof-reuse-probe-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: |
+            project-build-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Set up Lean and Mathlib cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Build library for theorem catalog
+        run: lake build LeanCondensedMatter
+
+      - name: Generate theorem catalog
+        run: lake env lean scripts/TheoremCatalog.lean
+
+      - name: Check audit script syntax
+        run: python3 -m py_compile scripts/proof_reuse_audit.py
+
+      - name: Verify project theorem classification on positive example
+        shell: bash
+        run: |
+          cat > ProofReusePositive.lean <<'EOF'
+          import LeanCondensedMatter.Analysis.Dyson.Basic
+
+          namespace Dyson
+          noncomputable section
+          variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
+
+          omit [CompleteSpace A] in
+          example (V : ℝ → A) (τ : ℝ) : coeff V 0 τ = 1 := by
+            unfold coeff
+            rfl
+
+          end
+          end Dyson
+          EOF
+          python3 scripts/proof_reuse_audit.py ProofReusePositive.lean \
+            --modes exact,apply \
+            --max-blocks 1 \
+            --max-intervals-per-block 2 \
+            --max-span-tactics 3 \
+            --max-findings 1 \
+            --timeout 30 \
+            --json | tee proof-reuse-positive.json
+          python3 - <<'PY'
+          import json
+          data = json.load(open('proof-reuse-positive.json', encoding='utf-8'))
+          assert data['catalog']['loaded'] is True
+          assert data['catalog']['project_theorems'] > 0
+          assert data['findings'], data
+          finding = data['findings'][0]
+          assert finding['kind'] == 'theorem_reuse', finding
+          assert finding['candidate_origin'] == 'project', finding
+          assert finding['candidate_name'].endswith('Dyson.coeff_zero'), finding
+          assert finding['admission_free'] is True, finding
+          PY
+          rm ProofReusePositive.lean
+
+      - name: Audit current repository proof regions
+        shell: bash
+        run: |
+          set -u
+          targets=(
+            LeanCondensedMatter/Analysis/Operator/OrbitalAngularMomentum.lean
+            LeanCondensedMatter/Permutation/TraceLog.lean
+            LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterTheorem.lean
+            LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Flattening.lean
+            LeanCondensedMatter/Combinatorics/BinaryShuffleSlots.lean
+            LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder/FiniteBroadeningCurrentVertexZeroBroadeningIntegral.lean
+            LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean
+          )
+          : > proof-reuse-real.log
+          for target in "${targets[@]}"; do
+            echo "===== $target =====" | tee -a proof-reuse-real.log
+            python3 scripts/proof_reuse_audit.py "$target" \
+              --modes exact,apply \
+              --max-blocks 8 \
+              --max-intervals-per-block 2 \
+              --max-span-tactics 5 \
+              --max-findings 5 \
+              --max-suggestions-per-search 3 \
+              --timeout 20 \
+              --no-baseline 2>&1 | tee -a proof-reuse-real.log || true
+          done
