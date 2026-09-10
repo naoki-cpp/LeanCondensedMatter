@@ -107,5 +107,6 @@ theorem zetaCommutator_comp_left
   simp only [zetaCommutator_apply, coe_comp, Function.comp_apply, add_apply,
     map_sub, map_smul, smul_apply]
   rw [mul_comm ζ η]
+  module
 
 end LinearMap
