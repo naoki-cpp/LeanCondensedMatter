@@ -117,8 +117,11 @@ theorem freeGibbsExpectation_eq_sum_pairing
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by
   let data := freeGibbsPairingRecursion ε β hpos admissible hmem herase hrec
-  simpa [ConvergenceAwarePairingRecursion.toExpectationPairingRecursion] using
-    (data.toExpectationPairingRecursion.expectation_eq_sum_pairing n C hC)
+  change data.functional.value (data.orderedProduct (List.ofFn C)) =
+    ∑ pairing : Pairing n,
+      pairing.weight .boson *
+        ∏ pr ∈ pairing.pairs, data.pairValue (C pr.1) (C pr.2)
+  exact data.toExpectationPairingRecursion.expectation_eq_sum_pairing n C hC
 
 end
 end Bosonic
