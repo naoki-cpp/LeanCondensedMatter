@@ -117,7 +117,7 @@ theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
             annihilate_comp_annihilate_mem_freeGibbsDomain ε β i j
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator] using
-            annihilate_comp_create_mem_freeGibbsDomain ε β hpos i j
+            freeGibbsSummable_annihilate_comp_create ε β hpos i j
   | create i =>
       cases g with
       | annihilate j =>
