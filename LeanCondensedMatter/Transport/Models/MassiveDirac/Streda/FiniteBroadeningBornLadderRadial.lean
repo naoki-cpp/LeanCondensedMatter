@@ -217,7 +217,11 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   have hmeasured : currentOperator measured e v =
       q • matrixOperator (directionPauli measured) := by
     cases measured <;>
-      simp [q, currentOperator, current, velocity, directionPauli, matrixOperator, smul_smul]
+      dsimp [q]
+    all_goals unfold currentOperator current velocity directionPauli matrixOperator
+    all_goals rw [map_smul, map_smul]
+    all_goals push_cast
+    all_goals module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
           source e v m probeEnergy broadening disorderStrength hbar pMax =
@@ -310,8 +314,10 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  simp [q, solved, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource]
-  ring
+  cases measured <;>
+    simp [q, solved, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource,
+      inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y] <;>
+    ring
 
 /-- The pair-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the canonical
 angularly reduced coefficient. -/
@@ -379,7 +385,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
 
-/-- After radial integration, the finite-`η` ordered `yx` Středa response is the negative of `xy`. -/
+/-- After radial integration, the finite-`η` ordered `yx` Střda response is the negative of `xy`. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
@@ -401,11 +407,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumInte
     _ = -∫ p in (0 : ℝ)..pMax,
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
           .x .y e v m p probeEnergy broadening disorderStrength hbar pMax := by
-        change (∫ p in (0 : ℝ)..pMax,
-          (-1 : ℂ) * finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-            .x .y e v m p probeEnergy broadening disorderStrength hbar pMax) = _
-        rw [intervalIntegral.integral_const_mul]
-        ring
+        rw [intervalIntegral.integral_neg]
 
 /-- After radial integration, the two finite-`η` diagonal Středa responses are equal. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx
