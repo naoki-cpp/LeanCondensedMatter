@@ -10,25 +10,20 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-omit [LinearOrder Mode] in
-/-- The fermionic exchange bracket is the anticommutator. -/
-theorem exchangeCommutator_fermion_eq_anticomm
-    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.exchangeCommutator Common.Statistics.fermion A B = anticomm A B := by
-  simp [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
-    LinearMap.zetaCommutator, anticomm]
-
 /-- The fermionic exchange algebra. -/
 noncomputable instance exchangeAlgebra :
     Common.ExchangeAlgebra Common.Statistics.fermion Mode (Occupation Mode) where
   annihilate := annihilate
   create := create
   annihilate_create i j := by
-    rw [exchangeCommutator_fermion_eq_anticomm, anticomm_annihilate_create]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
+      LinearMap.zetaCommutator, anticomm] using anticomm_annihilate_create i j
   annihilate_annihilate i j := by
-    rw [exchangeCommutator_fermion_eq_anticomm, anticomm_annihilate_annihilate]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
+      LinearMap.zetaCommutator, anticomm] using anticomm_annihilate_annihilate i j
   create_create i j := by
-    rw [exchangeCommutator_fermion_eq_anticomm, anticomm_create_create]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
+      LinearMap.zetaCommutator, anticomm] using anticomm_create_create i j
 
 end Fermionic
 end SecondQuantization
