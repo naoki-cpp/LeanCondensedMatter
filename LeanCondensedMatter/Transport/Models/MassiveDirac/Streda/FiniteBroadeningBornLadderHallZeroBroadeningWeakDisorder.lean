@@ -77,7 +77,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   dsimp [q, measure]
   push_cast
   field_simp [hdisorderC, hmeasure]
-  ring
 
 end
 
