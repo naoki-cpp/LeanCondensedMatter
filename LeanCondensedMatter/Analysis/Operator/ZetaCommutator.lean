@@ -104,7 +104,8 @@ theorem zetaCommutator_comp_left
       A.comp (zetaCommutator η B C) +
         η • (zetaCommutator ζ A C).comp B := by
   ext v
-  simp [zetaCommutator, smul_sub, smul_smul]
+  simp only [zetaCommutator_apply, coe_comp, Function.comp_apply, add_apply,
+    map_sub, map_smul, smul_apply]
   rw [mul_comm ζ η]
 
 end LinearMap
