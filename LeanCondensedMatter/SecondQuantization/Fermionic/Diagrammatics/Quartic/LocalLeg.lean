@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 
 set_option linter.style.header false
 
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Local legs of a quartic fermionic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
-specialized to fermionic ladder operators here.  CAR relations and their physical consequences
+specialized to fermionic ladder operators here. CAR relations and their physical consequences
 remain owned by the fermionic layer.
 -/
 
@@ -52,17 +52,17 @@ theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' 
       anticomm_create_create, anticomm_annihilate_annihilate,
       anticomm_annihilate_create, anticomm_create_annihilate] <;> rfl
 
-/-- The Common `ζ`-commutator form of the fermionic quartic local-leg CAR. -/
+/-- The statistics-sign form of the fermionic quartic local-leg CAR. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
        else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-  have hbridge : Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+  have hbridge : LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
       (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=
-    exchangeCommutator_fermion_eq_anticomm _ _
+      anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') := by
+    simp [Common.Statistics.zetaInt_fermion, LinearMap.zetaCommutator, anticomm]
   rw [hbridge, anticomm_quarticLocalLegOperator]
   split_ifs <;> simp
 
