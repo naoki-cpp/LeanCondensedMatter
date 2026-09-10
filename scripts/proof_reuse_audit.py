@@ -2,14 +2,16 @@
 """Find proof regions replaceable by concrete, replay-verified Lean suggestions.
 
 For each candidate source region, the audit first runs a search tactic (`exact?`,
-`simp?`, or `apply?`) in a temporary copy. It extracts the concrete `Try this:`
+`apply?`, or `simp?`) in a temporary copy. It extracts the concrete `Try this:`
 replacement emitted by Lean, substitutes that replacement into a fresh copy,
 and recompiles the whole file.
 
-Only the second compilation decides whether a finding is reported. In
-particular, `apply?` itself is never treated as proof: its suggested `refine` or
-`exact` tactic must replay successfully without search/admission scaffolding.
-Source files are never modified.
+Only an admission-free second compilation decides whether a finding is
+reported. In particular, search tactics are never treated as proof, and
+suggestions containing holes, `sorry`, or search scaffolding are rejected.
+When the generated theorem catalog is available, project-theorem reuse is
+identified and preferred over generic theorem reuse and automation-only
+compression. Source files are never modified.
 """
 
 from __future__ import annotations
@@ -30,6 +32,7 @@ for _stream in (sys.stdout, sys.stderr):
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROBE_ROOT = REPO_ROOT / ".lake" / "proof-reuse-audit"
+DEFAULT_CATALOG = REPO_ROOT / "docs" / "generated" / "theorems.json"
 
 HAVE_BY_RE = re.compile(
     r"^(?P<indent>[ \t]*)(?P<kind>haveI|have)\b(?P<header>.*):=\s*by\s*(?:--.*)?$"
@@ -42,14 +45,28 @@ DECL_START_RE = re.compile(
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 SUGGESTION_LABEL_RE = re.compile(r"^\[(?:apply|exact|simp)\]\s*")
 DIAGNOSTIC_RE = re.compile(r"^.*\.lean:\d+:\d+(?::\s|$)")
+FORBIDDEN_SUGGESTION_RE = re.compile(
+    r"(?<![\w'])\?_\b|(?<![\w'])sorry\b|(?<![\w'])admit\b|"
+    r"\bby\?|\bexact\?|\bapply\?|\bsimp\?"
+)
+SORRY_WARNING_RE = re.compile(
+    r"declaration\s+uses\s+['`]?sorry['`]?|declaration\s+contains\s+['`]?sorry['`]?",
+    re.IGNORECASE,
+)
+DECL_TOKEN_RE = re.compile(
+    r"^(?:exact|apply|refine)\s+\(?@?(?P<name>[^\s()\[\]{},]+)"
+)
+USING_TOKEN_RE = re.compile(
+    r"\busing\s+\(?@?(?P<name>[^\s()\[\]{},]+)"
+)
+MODE_PRIORITY = {"exact": 0, "apply": 1, "simp": 2}
 
-# Keep search separate from verification. In particular, `apply?` may admit
-# remaining goals after printing candidates, so only a replayed concrete
-# suggestion is accepted as a finding.
+# Search is separate from verification. `apply?` may print candidates with
+# remaining goals, so only a concrete, admission-free replay is accepted.
 PROBES = {
     "exact": "exact?",
-    "simp": "simp?",
     "apply": "apply?",
+    "simp": "simp?",
 }
 
 
@@ -89,6 +106,31 @@ class Region:
 
 
 @dataclass(frozen=True)
+class ProjectTheoremIndex:
+    names: frozenset[str]
+    unique_suffixes: dict[str, str]
+    path: str
+    loaded: bool
+
+    def resolve(self, candidate: str | None) -> str | None:
+        if candidate is None:
+            return None
+        candidate = candidate.strip()
+        if candidate in self.names:
+            return candidate
+        return self.unique_suffixes.get(candidate)
+
+
+@dataclass(frozen=True)
+class VerifiedCandidate:
+    mode: str
+    replacement: str
+    kind: str
+    candidate_origin: str
+    candidate_name: str | None
+
+
+@dataclass(frozen=True)
 class Finding:
     file: str
     scope: str
@@ -99,7 +141,11 @@ class Finding:
     tactic_count: int
     mode: str
     replacement: str
+    kind: str
+    candidate_origin: str
+    candidate_name: str | None
     verified: bool = True
+    admission_free: bool = True
 
 
 def indent_width(text: str) -> int:
@@ -363,13 +409,7 @@ def replace_region(source: str, region: Region, tactic: str) -> str:
 
 
 def parse_suggestions(output: str) -> list[str]:
-    """Extract concrete `Try this:` tactics from Lean terminal output.
-
-    Lean may place the suggestion on the `Try this:` line or on following
-    indented lines. `apply?` also prefixes candidates with `[apply]` and then
-    prints `-- Remaining subgoals`; those annotations are UI text, not Lean
-    syntax. Wrapped code lines are joined with spaces before replay.
-    """
+    """Extract concrete `Try this:` tactics from Lean terminal output."""
     lines = ANSI_RE.sub("", output).splitlines()
     suggestions: list[str] = []
     i = 0
@@ -397,7 +437,6 @@ def parse_suggestions(output: str) -> list[str]:
                 break
             if stripped.startswith("--"):
                 break
-            # Continuation lines emitted by the pretty-printer are indented.
             if current[:1].isspace():
                 pieces.append(stripped)
                 i += 1
@@ -413,6 +452,90 @@ def parse_suggestions(output: str) -> list[str]:
             i += 1
 
     return suggestions
+
+
+def suggestion_is_admission_free(suggestion: str) -> bool:
+    return FORBIDDEN_SUGGESTION_RE.search(suggestion) is None
+
+
+def replay_is_admission_free(output: str) -> bool:
+    return SORRY_WARNING_RE.search(ANSI_RE.sub("", output)) is None
+
+
+def suggested_decl_name(replacement: str) -> str | None:
+    replacement = replacement.strip()
+    match = DECL_TOKEN_RE.search(replacement)
+    if match is None:
+        match = USING_TOKEN_RE.search(replacement)
+    if match is None:
+        return None
+    return match.group("name").rstrip(".;:")
+
+
+def _unique_suffixes(names: Sequence[str]) -> dict[str, str]:
+    owners: dict[str, set[str]] = {}
+    for name in names:
+        parts = name.split(".")
+        for i in range(len(parts)):
+            suffix = ".".join(parts[i:])
+            owners.setdefault(suffix, set()).add(name)
+    return {
+        suffix: next(iter(matches))
+        for suffix, matches in owners.items()
+        if len(matches) == 1
+    }
+
+
+def load_project_theorem_index(path: Path) -> ProjectTheoremIndex:
+    display_path = str(path.relative_to(REPO_ROOT)) if path.is_relative_to(REPO_ROOT) else str(path)
+    if not path.is_file():
+        return ProjectTheoremIndex(frozenset(), {}, display_path, False)
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"could not read theorem catalog {display_path}: {exc}") from exc
+    if not isinstance(payload, list):
+        raise ValueError(f"theorem catalog {display_path} must contain a JSON array")
+    names = sorted(
+        {
+            entry["name"]
+            for entry in payload
+            if isinstance(entry, dict) and isinstance(entry.get("name"), str)
+        }
+    )
+    return ProjectTheoremIndex(
+        frozenset(names), _unique_suffixes(names), display_path, True
+    )
+
+
+def classify_candidate(
+    mode: str, replacement: str, theorem_index: ProjectTheoremIndex
+) -> VerifiedCandidate:
+    raw_name = suggested_decl_name(replacement)
+    project_name = theorem_index.resolve(raw_name)
+    if mode == "simp":
+        return VerifiedCandidate(
+            mode=mode,
+            replacement=replacement,
+            kind="automation_compression",
+            candidate_origin="automation",
+            candidate_name=None,
+        )
+    return VerifiedCandidate(
+        mode=mode,
+        replacement=replacement,
+        kind="theorem_reuse",
+        candidate_origin="project" if project_name is not None else "unknown",
+        candidate_name=project_name if project_name is not None else raw_name,
+    )
+
+
+def candidate_rank(candidate: VerifiedCandidate) -> tuple[int, int]:
+    if candidate.kind == "theorem_reuse" and candidate.candidate_origin == "project":
+        return (0, MODE_PRIORITY[candidate.mode])
+    if candidate.kind == "theorem_reuse":
+        return (1, MODE_PRIORITY[candidate.mode])
+    return (2, MODE_PRIORITY[candidate.mode])
 
 
 def run_lean(path: Path, timeout: float) -> tuple[int, str, bool]:
@@ -454,10 +577,15 @@ def first_error(output: str) -> str:
     return "\n".join(lines[:5]).strip()
 
 
+def ordered_modes(modes: Sequence[str]) -> tuple[str, ...]:
+    return tuple(sorted(modes, key=lambda mode: MODE_PRIORITY[mode]))
+
+
 def audit_file(
     path: Path,
     *,
     modes: Sequence[str],
+    theorem_index: ProjectTheoremIndex,
     min_body_lines: int,
     max_blocks: int | None,
     timeout: float,
@@ -500,7 +628,13 @@ def audit_file(
     for region in regions:
         if max_findings is not None and len(findings) >= max_findings:
             break
-        for mode in modes:
+
+        verified: list[VerifiedCandidate] = []
+        for mode in ordered_modes(modes):
+            # Once theorem reuse exists, automation cannot outrank it.
+            if mode == "simp" and any(item.kind == "theorem_reuse" for item in verified):
+                break
+
             search_source = replace_region(source, region, PROBES[mode])
             label = f"line-{region.start_line}-{region.end_line}-{mode}-search"
             code, output, timed_out = run_probe(search_source, label, timeout)
@@ -514,14 +648,12 @@ def audit_file(
                 continue
 
             suggestions = parse_suggestions(output)[:max_suggestions_per_search]
-            if not suggestions:
-                continue
-
-            verified_replacement: str | None = None
             for suggestion in suggestions:
+                if not suggestion_is_admission_free(suggestion):
+                    continue
                 replay_source = replace_region(source, region, suggestion)
                 replay_label = f"line-{region.start_line}-{region.end_line}-{mode}-replay"
-                replay_code, _, replay_timed_out = run_probe(
+                replay_code, replay_output, replay_timed_out = run_probe(
                     replay_source, replay_label, timeout
                 )
                 if replay_timed_out:
@@ -530,27 +662,38 @@ def audit_file(
                         f"{mode} replay timed out"
                     )
                     continue
-                if replay_code == 0:
-                    verified_replacement = suggestion
-                    break
+                if replay_code != 0 or not replay_is_admission_free(replay_output):
+                    continue
 
-            if verified_replacement is None:
-                continue
+                candidate = classify_candidate(mode, suggestion, theorem_index)
+                verified.append(candidate)
+                break
 
-            findings.append(
-                Finding(
-                    file=relative,
-                    scope=region.scope,
-                    block_kind=region.block_kind,
-                    start_line=region.start_line,
-                    end_line=region.end_line,
-                    original_lines=region.original_lines,
-                    tactic_count=region.tactic_count,
-                    mode=mode,
-                    replacement=verified_replacement,
-                )
+            if any(
+                item.kind == "theorem_reuse" and item.candidate_origin == "project"
+                for item in verified
+            ):
+                break
+
+        if not verified:
+            continue
+        best = min(verified, key=candidate_rank)
+        findings.append(
+            Finding(
+                file=relative,
+                scope=region.scope,
+                block_kind=region.block_kind,
+                start_line=region.start_line,
+                end_line=region.end_line,
+                original_lines=region.original_lines,
+                tactic_count=region.tactic_count,
+                mode=best.mode,
+                replacement=best.replacement,
+                kind=best.kind,
+                candidate_origin=best.candidate_origin,
+                candidate_name=best.candidate_name,
             )
-            break
+        )
 
     return findings, diagnostics
 
@@ -574,6 +717,13 @@ def resolve_files(values: Sequence[str]) -> list[Path]:
     return files
 
 
+def resolve_catalog(value: str) -> Path:
+    path = Path(value)
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path.resolve()
+
+
 def parse_modes(value: str) -> tuple[str, ...]:
     modes = tuple(item.strip() for item in value.split(",") if item.strip())
     unknown = [mode for mode in modes if mode not in PROBES]
@@ -588,14 +738,19 @@ def parse_modes(value: str) -> tuple[str, ...]:
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
-        description="Find concrete, replay-verified shorter Lean proof replacements."
+        description="Find concrete, admission-free, replay-verified Lean proof replacements."
     )
     result.add_argument("files", nargs="+", help="repo-relative .lean files")
     result.add_argument(
         "--modes",
         type=parse_modes,
         default=tuple(PROBES),
-        help="comma-separated search modes (default: exact,simp,apply)",
+        help="comma-separated search modes (default: exact,apply,simp)",
+    )
+    result.add_argument(
+        "--catalog",
+        default=str(DEFAULT_CATALOG.relative_to(REPO_ROOT)),
+        help="generated theorem catalog used to identify project theorem reuse",
     )
     result.add_argument("--min-body-lines", type=int, default=2)
     result.add_argument("--max-blocks", type=int)
@@ -639,6 +794,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         files = resolve_files(args.files)
+        theorem_index = load_project_theorem_index(resolve_catalog(args.catalog))
     except ValueError as exc:
         args_parser.error(str(exc))
 
@@ -648,6 +804,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         file_findings, file_diagnostics = audit_file(
             path,
             modes=args.modes,
+            theorem_index=theorem_index,
             min_body_lines=args.min_body_lines,
             max_blocks=args.max_blocks,
             timeout=args.timeout,
@@ -666,6 +823,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(
             json.dumps(
                 {
+                    "catalog": {
+                        "path": theorem_index.path,
+                        "loaded": theorem_index.loaded,
+                        "project_theorems": len(theorem_index.names),
+                    },
                     "findings": [asdict(item) for item in findings],
                     "diagnostics": diagnostics,
                 },
@@ -686,10 +848,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 size = f"{item.original_lines} proof line(s)"
             print(
                 f"{item.file}:{item.start_line}-{item.end_line}: "
+                f"{item.kind}/{item.candidate_origin} "
                 f"{item.scope}/{item.block_kind} {item.mode} can replace {size}"
             )
+            if item.candidate_name is not None:
+                print(f"  candidate: {item.candidate_name}")
             print(f"  {item.replacement}")
-            print("  verified by replay: yes")
+            print("  verified by replay: yes (admission-free)")
         if not findings and not diagnostics:
             print("No proof-reuse candidates found.")
 
