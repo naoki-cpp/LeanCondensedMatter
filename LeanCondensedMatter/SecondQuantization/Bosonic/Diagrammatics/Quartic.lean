@@ -14,7 +14,7 @@ set_option linter.style.header false
 This umbrella module exposes the bosonic quartic-diagram layer:
 
 - quartic interaction labels and ordered vertex operators;
-- local-leg operators, mode labels, free-energy shifts, and CCR constants;
+- local-leg operators, mode labels, and free-energy shifts;
 - labelled quartic diagrams, vertex orders, and ordered pairing data;
 - connected-component restriction, reassembly, and decomposition equivalence;
 - convergence-aware free Gibbs Wick expansion for the flattened local legs of any finite list of

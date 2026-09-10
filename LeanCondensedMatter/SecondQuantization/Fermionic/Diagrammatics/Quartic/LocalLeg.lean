@@ -1,7 +1,5 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 
 set_option linter.style.header false
 
@@ -9,8 +7,8 @@ set_option linter.style.header false
 # Local legs of a quartic fermionic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
-specialized to fermionic ladder operators here. CAR relations and their physical consequences
-remain owned by the fermionic layer.
+specialized to fermionic ladder operators here. Generic exchange algebra lives in `Common.Algebra`;
+its quartic local-leg specialization is supplied separately by the Common interaction layer.
 -/
 
 namespace SecondQuantization
@@ -38,23 +36,6 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
       (fermionEnergy ε) ε create annihilate q l τ
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
-
-/-! ## The statistics-sign bracket of two local legs -/
-
-/-- The statistics-sign form of the fermionic quartic local-leg CAR. -/
-theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
-        (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
-       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
-        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-  fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
-      Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
-      Common.Statistics.zetaInt_fermion, anticomm_create_create,
-      anticomm_annihilate_annihilate, anticomm_annihilate_create,
-      anticomm_create_annihilate] <;>
-    split_ifs <;> simp_all
 
 end Fermionic
 end SecondQuantization
