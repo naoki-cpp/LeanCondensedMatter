@@ -238,26 +238,15 @@ theorem isotropicUpperBandSingleParticleAngularWeight_eq
       (fun θ : ℝ => upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ) =
         fun θ : ℝ =>
           (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
-            ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ := by
+            ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ +
+              0 * Real.cos θ ^ 2 := by
     funext θ
     unfold upperBandFermiSurfaceScalarOverlapWeight
     ring
-  rw [hrewrite]
-  have hconst :
-      IntervalIntegrable
-        (fun _θ : ℝ => (1 + m ^ 2 / fermiEnergy ^ 2) / 2) volume 0 (2 * Real.pi) :=
-    continuous_const.intervalIntegrable 0 (2 * Real.pi)
-  have hcos :
-      IntervalIntegrable
-        (fun θ : ℝ => ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ)
-        volume 0 (2 * Real.pi) :=
-    (continuous_const.mul Real.continuous_cos).intervalIntegrable 0 (2 * Real.pi)
-  rw [intervalIntegral.integral_add hconst hcos]
-  rw [intervalIntegral.integral_const_mul]
-  rw [integral_cos]
-  simp
+  rw [hrewrite, integral_quadratic_cos_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hpi]
+  ring
 
 /-- Full-circle transport angular weight. The factor `1 - cos θ` suppresses forward scattering
 because it does not relax the current direction. -/
@@ -279,32 +268,13 @@ theorem isotropicUpperBandTransportAngularWeight_eq
         upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ *
           (1 - Real.cos θ)) =
         fun θ : ℝ =>
-          (1 + m ^ 2 / fermiEnergy ^ 2) / 2 -
-            (m ^ 2 / fermiEnergy ^ 2) * Real.cos θ -
-              ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ ^ 2 := by
+          (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
+            (-(m ^ 2 / fermiEnergy ^ 2)) * Real.cos θ +
+              (-((1 - m ^ 2 / fermiEnergy ^ 2) / 2)) * Real.cos θ ^ 2 := by
     funext θ
     unfold upperBandFermiSurfaceScalarOverlapWeight
     ring
-  rw [hrewrite]
-  have hconst :
-      IntervalIntegrable
-        (fun _θ : ℝ => (1 + m ^ 2 / fermiEnergy ^ 2) / 2) volume 0 (2 * Real.pi) :=
-    continuous_const.intervalIntegrable 0 (2 * Real.pi)
-  have hcos :
-      IntervalIntegrable
-        (fun θ : ℝ => (m ^ 2 / fermiEnergy ^ 2) * Real.cos θ)
-        volume 0 (2 * Real.pi) :=
-    (continuous_const.mul Real.continuous_cos).intervalIntegrable 0 (2 * Real.pi)
-  have hcosSq :
-      IntervalIntegrable
-        (fun θ : ℝ => ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ ^ 2)
-        volume 0 (2 * Real.pi) :=
-    (continuous_const.mul (Real.continuous_cos.pow 2)).intervalIntegrable 0 (2 * Real.pi)
-  rw [intervalIntegral.integral_sub (hconst.sub hcos) hcosSq,
-    intervalIntegral.integral_sub hconst hcos]
-  rw [intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
-  rw [integral_cos, integral_cos_sq_zero_two_pi]
-  simp
+  rw [hrewrite, integral_quadratic_cos_zero_two_pi]
   have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
   field_simp [hpi]
   ring
