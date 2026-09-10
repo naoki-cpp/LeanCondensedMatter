@@ -31,10 +31,10 @@ lake build
 
 ## Proof reuse audit
 
-To look for multi-line, explicitly typed `have ... : T := by` proofs that can be replaced by a shorter existing proof, run:
+To look for proof regions that can be replaced by a shorter existing proof, run:
 
 ```sh
 python scripts/proof_reuse_audit.py LeanCondensedMatter/Path/To/File.lean
 ```
 
-The audit tries `exact?`, `apply? <;> assumption`, and `simp?` one block at a time in temporary copies of the file. It reports a candidate only when the modified file compiles, so each suggested replacement is checked by Lean in the original local context. Use `--json` for machine-readable output.
+The audit scans complete explicitly typed `have ... : T := by` bodies and contiguous top-level tactic intervals inside theorem, lemma, example, `have`, and `haveI` proofs. It tries `exact?`, `apply? <;> assumption`, and `simp?` in temporary copies of the source and reports a candidate only when the modified file compiles, so each replacement is checked by Lean in the original local context. Interval search is bounded by default; use `--max-span-tactics`, `--max-intervals-per-block`, or `--no-intervals` to tune it, and `--json` for machine-readable output.
