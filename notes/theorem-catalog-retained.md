@@ -180,3 +180,22 @@ or consumer structure changes.
   oriented `intervalIntegral`. This representation is the reusable bridge that lets downstream
   energy-kernel constructions place transition-localized contributions on one common integration
   domain.
+- `Combinatorics.Pairing.partner_partner` — canonical pointwise involution law for a pairing's partner
+  map. The theorem is a high-use `[simp]` interface to the structure invariant, not a historical alias.
+- `LinearPMap.nonrealResolvent_commute` — canonical `Commute`-packaged form of pairwise nonreal
+  resolvent commutation; downstream proofs use the `Commute` combinator API directly.
+- `LinearPMap.resolventApproximationEvolution_zero` — standard zero-time normalization of the named
+  bounded resolvent-approximation evolution and part of its one-parameter evolution API.
+- `QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint` — physical
+  self-adjointness endpoint for the named interaction-picture perturbation under pointwise
+  self-adjoint input.
+- `SecondQuantization.Bosonic.create_basisState_eq` — canonical occupation-basis creation law
+  `a†ᵢ|n⟩ = √(nᵢ+1)|n+eᵢ⟩`; its direct proof routing does not make this textbook-level API redundant.
+- `SecondQuantization.Fermionic.timedFieldOperator_eq_smul` — canonical normal form expressing a
+  time-labelled external field as its scalar imaginary-time factor times the bare field operator.
+- `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt` — canonical later-first branch of
+  the named fermionic two-point time-ordering operator, including the statistics convention.
+- `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt` — canonical exchanged branch of the
+  named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
+- `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
+  the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
