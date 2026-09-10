@@ -22,9 +22,11 @@ At unit hopping and `Δ = 3/4`, the one-particle Hamiltonian is
 ```
 
 with exact eigenvalues `(-5/4,+5/4)` and unnormalized eigenvectors `(1,-2)` and `(2,1)`.
-The same Peierls bond current has transition coefficients `±i`, while the occupied-state Peierls
-contact expectation is `-4/5`. At the fixed-rate point `ω = 0`, `η = 1`, the direct two-level
-Lehmann response is `20/29` and the canonical finite conductivity is `16/145`.
+Both eigenvectors have squared norm `5`, so the normalized Peierls-current matrix elements are
+`±i`. The occupied-state Peierls-contact expectation is `-4/5`. At the fixed-rate point
+`ω = 0`, `η = 1`, the two-level Lehmann response is `20/29` and the canonical finite conductivity
+is `16/145`. The same conductivity is evaluated independently from the explicit two-transition
+Kubo/Lehmann expression.
 
 No zero-broadening, DC, thermodynamic, disorder, or numerical limit is taken.
 -/
@@ -47,15 +49,13 @@ noncomputable def twoSiteGappedHamiltonian (t : ℂ) (gap : ℝ) :
       (boundedDgammaMatrixUnit (0 : TwoSite) 0 -
         boundedDgammaMatrixUnit (1 : TwoSite) 1)
 
-@[simp]
-theorem twoSiteGappedHamiltonian_apply_site_zero (t : ℂ) (gap : ℝ) :
+private theorem twoSiteGappedHamiltonian_apply_site_zero (t : ℂ) (gap : ℝ) :
     twoSiteGappedHamiltonian t gap (twoSiteDimerSiteState 0) =
       (gap : ℂ) • twoSiteDimerSiteState 0 + t • twoSiteDimerSiteState 1 := by
   simp [twoSiteGappedHamiltonian, twoSiteDimerHamiltonian, twoSiteDimerSiteState,
     add_comm]
 
-@[simp]
-theorem twoSiteGappedHamiltonian_apply_site_one (t : ℂ) (gap : ℝ) :
+private theorem twoSiteGappedHamiltonian_apply_site_one (t : ℂ) (gap : ℝ) :
     twoSiteGappedHamiltonian t gap (twoSiteDimerSiteState 1) =
       star t • twoSiteDimerSiteState 0 - (gap : ℂ) • twoSiteDimerSiteState 1 := by
   simp [twoSiteGappedHamiltonian, twoSiteDimerHamiltonian, twoSiteDimerSiteState,
@@ -89,9 +89,7 @@ theorem twoSiteGappedBenchmark_excited_eigenvector :
   norm_num
   module
 
-/-- The physical unit-hopping Peierls current maps the upper benchmark state to `i` times the lower
-state despite the onsite imbalance. -/
-theorem twoSiteGappedBenchmark_current_apply_excited :
+private theorem twoSiteGappedBenchmark_current_apply_excited :
     twoSiteDimerCurrent 1 twoSiteGappedBenchmarkExcitedState =
       Complex.I • twoSiteGappedBenchmarkGroundState := by
   rw [twoSiteGappedBenchmarkExcitedState, map_add, map_smul,
@@ -100,8 +98,7 @@ theorem twoSiteGappedBenchmark_current_apply_excited :
     twoSiteGappedBenchmarkGroundState]
   module
 
-/-- The reverse current transition has coefficient `-i`. -/
-theorem twoSiteGappedBenchmark_current_apply_ground :
+private theorem twoSiteGappedBenchmark_current_apply_ground :
     twoSiteDimerCurrent 1 twoSiteGappedBenchmarkGroundState =
       (-Complex.I) • twoSiteGappedBenchmarkExcitedState := by
   rw [twoSiteGappedBenchmarkGroundState, map_sub, map_smul,
@@ -110,9 +107,7 @@ theorem twoSiteGappedBenchmark_current_apply_ground :
     twoSiteGappedBenchmarkExcitedState]
   module
 
-/-- In the benchmark energy basis the Peierls contact has occupied-state diagonal coefficient
-`-4/5`; the remaining `-3/5` coefficient mixes into the upper state. -/
-theorem twoSiteGappedBenchmark_contact_decomposition :
+private theorem twoSiteGappedBenchmark_contact_decomposition :
     twoSiteDimerContact 1 twoSiteGappedBenchmarkGroundState =
       ((-4 : ℂ) / 5) • twoSiteGappedBenchmarkGroundState +
         ((-3 : ℂ) / 5) • twoSiteGappedBenchmarkExcitedState := by
@@ -137,8 +132,7 @@ private theorem star_two : (starRingEnd ℂ) (2 : ℂ) = 2 := by
   change (starRingEnd ℂ) ((2 : ℝ) : ℂ) = ((2 : ℝ) : ℂ)
   exact Complex.conj_ofReal 2
 
-@[simp]
-theorem twoSiteGappedBenchmark_ground_inner_excited :
+private theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkExcitedState = 0 := by
   rw [twoSiteGappedBenchmarkGroundState, twoSiteGappedBenchmarkExcitedState]
   simp only [inner_sub_left, inner_add_right, inner_smul_left, inner_smul_right]
@@ -146,11 +140,18 @@ theorem twoSiteGappedBenchmark_ground_inner_excited :
     inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
   norm_num
 
-@[simp]
-theorem twoSiteGappedBenchmark_ground_norm_sq :
+private theorem twoSiteGappedBenchmark_ground_inner_self :
     inner ℂ twoSiteGappedBenchmarkGroundState twoSiteGappedBenchmarkGroundState = 5 := by
   rw [twoSiteGappedBenchmarkGroundState]
   simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right]
+  rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
+    inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
+  norm_num
+
+private theorem twoSiteGappedBenchmark_excited_inner_self :
+    inner ℂ twoSiteGappedBenchmarkExcitedState twoSiteGappedBenchmarkExcitedState = 5 := by
+  rw [twoSiteGappedBenchmarkExcitedState]
+  simp only [inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]
   rw [inner_twoSiteDimerSiteState 0 0, inner_twoSiteDimerSiteState 0 1,
     inner_twoSiteDimerSiteState 1 0, inner_twoSiteDimerSiteState 1 1, star_two]
   norm_num
@@ -164,7 +165,7 @@ theorem twoSiteGappedBenchmark_contactExpectation :
         (-4 : ℂ) / 5 := by
   rw [twoSiteGappedBenchmark_contact_decomposition]
   rw [inner_add_right, inner_smul_right, inner_smul_right,
-    twoSiteGappedBenchmark_ground_norm_sq,
+    twoSiteGappedBenchmark_ground_inner_self,
     twoSiteGappedBenchmark_ground_inner_excited]
   norm_num
 
@@ -180,67 +181,47 @@ def twoSiteGappedBenchmarkConductivityTable : FiniteConductivityTable (Fin 2) wh
   lehmann := twoSiteGappedBenchmarkLehmannTable
   contact := (-4 : ℂ) / 5
 
-@[simp]
-theorem twoSiteGappedBenchmarkLehmannTable_energy_zero :
+private theorem twoSiteGappedBenchmarkLehmannTable_energy_zero :
     twoSiteGappedBenchmarkLehmannTable.energy 0 = -5 / 4 := by
   norm_num [twoSiteGappedBenchmarkLehmannTable]
 
-@[simp]
-theorem twoSiteGappedBenchmarkLehmannTable_energy_one :
+private theorem twoSiteGappedBenchmarkLehmannTable_energy_one :
     twoSiteGappedBenchmarkLehmannTable.energy 1 = 5 / 4 := by
   norm_num [twoSiteGappedBenchmarkLehmannTable]
 
-@[simp]
-theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
+private theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteGappedBenchmarkLehmannTable (0, 1) = Complex.I := by
   norm_num [finiteLehmannTableTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
-@[simp]
-theorem twoSiteGappedBenchmarkTransitionWeight_one_zero :
+private theorem twoSiteGappedBenchmarkTransitionWeight_one_zero :
     finiteLehmannTableTransitionWeight 1
         twoSiteGappedBenchmarkLehmannTable (1, 0) = -Complex.I := by
   norm_num [finiteLehmannTableTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
-/-- The lower table energy is the operator-derived lower eigenvalue. -/
-theorem twoSiteGappedBenchmarkTable_groundEnergy_from_operator :
-    twoSiteGappedHamiltonian 1 (3 / 4) twoSiteGappedBenchmarkGroundState =
-      (twoSiteGappedBenchmarkLehmannTable.energy 0 : ℂ) •
-        twoSiteGappedBenchmarkGroundState := by
-  rw [twoSiteGappedBenchmarkLehmannTable_energy_zero]
-  convert twoSiteGappedBenchmark_ground_eigenvector using 1
-  norm_num
-
-/-- The upper table energy is the operator-derived upper eigenvalue. -/
-theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
-    twoSiteGappedHamiltonian 1 (3 / 4) twoSiteGappedBenchmarkExcitedState =
-      (twoSiteGappedBenchmarkLehmannTable.energy 1 : ℂ) •
-        twoSiteGappedBenchmarkExcitedState := by
-  rw [twoSiteGappedBenchmarkLehmannTable_energy_one]
-  convert twoSiteGappedBenchmark_excited_eigenvector using 1
-  norm_num
-
-/-- The table entry `J₋₊ = i` is the concrete Peierls-current transition coefficient. -/
+/-- The table entry `J₋₊ = i` is the normalized Peierls-current matrix element. Both supplied
+operator eigenvectors have squared norm `5`, so division by `5` exactly accounts for normalizing
+both bra and ket. -/
 theorem twoSiteGappedBenchmarkTable_current_zero_one_from_operator :
-    twoSiteDimerCurrent 1 twoSiteGappedBenchmarkExcitedState =
-      twoSiteGappedBenchmarkLehmannTable.matrixA 0 1 •
-        twoSiteGappedBenchmarkGroundState := by
-  change twoSiteDimerCurrent 1 twoSiteGappedBenchmarkExcitedState =
-    twoSiteDimerEnergyBasisCurrent 0 1 • twoSiteGappedBenchmarkGroundState
-  rw [twoSiteDimerEnergyBasisCurrent_zero_one]
-  exact twoSiteGappedBenchmark_current_apply_excited
+    inner ℂ twoSiteGappedBenchmarkGroundState
+        (twoSiteDimerCurrent 1 twoSiteGappedBenchmarkExcitedState) / 5 =
+      twoSiteGappedBenchmarkLehmannTable.matrixA 0 1 := by
+  change _ = twoSiteDimerEnergyBasisCurrent 0 1
+  rw [twoSiteGappedBenchmark_current_apply_excited, inner_smul_right,
+    twoSiteGappedBenchmark_ground_inner_self, twoSiteDimerEnergyBasisCurrent_zero_one]
+  norm_num
 
-/-- The reverse table current entry is likewise operator-derived. -/
+/-- The reverse table entry `J₊₋ = -i` is likewise the normalized operator matrix element. -/
 theorem twoSiteGappedBenchmarkTable_current_one_zero_from_operator :
-    twoSiteDimerCurrent 1 twoSiteGappedBenchmarkGroundState =
-      twoSiteGappedBenchmarkLehmannTable.matrixA 1 0 •
-        twoSiteGappedBenchmarkExcitedState := by
-  change twoSiteDimerCurrent 1 twoSiteGappedBenchmarkGroundState =
-    twoSiteDimerEnergyBasisCurrent 1 0 • twoSiteGappedBenchmarkExcitedState
-  rw [twoSiteDimerEnergyBasisCurrent_one_zero]
-  exact twoSiteGappedBenchmark_current_apply_ground
+    inner ℂ twoSiteGappedBenchmarkExcitedState
+        (twoSiteDimerCurrent 1 twoSiteGappedBenchmarkGroundState) / 5 =
+      twoSiteGappedBenchmarkLehmannTable.matrixA 1 0 := by
+  change _ = twoSiteDimerEnergyBasisCurrent 1 0
+  rw [twoSiteGappedBenchmark_current_apply_ground, inner_smul_right,
+    twoSiteGappedBenchmark_excited_inner_self, twoSiteDimerEnergyBasisCurrent_one_zero]
+  norm_num
 
 /-- The scalar-table contact is the normalized expectation derived from the concrete Peierls contact. -/
 theorem twoSiteGappedBenchmarkTable_contact_from_operator :
@@ -264,6 +245,18 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
     twoSiteGappedBenchmarkTransitionWeight_zero_one,
     twoSiteGappedBenchmarkTransitionWeight_one_zero,
     finiteLehmannTableTransitionWeight_diag, sub_self]
+  apply Complex.ext <;>
+    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
+
+/-- Independent direct Kubo/Lehmann cross-check at `ω = 0`, `η = 1`, written from the two explicit
+nonzero transitions and the operator-derived contact rather than through `FiniteConductivityTable`. -/
+theorem twoSiteGappedBenchmark_directKuboLehmann_zero_one :
+    (lehmannTerm 1 0 1 ((-5 / 4 : ℝ) - 5 / 4) Complex.I +
+        lehmannTerm 1 0 1 ((5 / 4 : ℝ) - (-5 / 4)) (-Complex.I) +
+        ((-4 : ℂ) / 5)) *
+      finiteVolumeConductivityNormalization twoSiteDimerUnitVolume 0 1 =
+        (16 : ℂ) / 145 := by
+  rw [twoSiteDimerUnitVolume_normalization_zero_one]
   apply Complex.ext <;>
     norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
 
