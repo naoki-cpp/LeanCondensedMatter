@@ -121,9 +121,8 @@ theorem comp_prodComp_eq_of_zetaCommutator (ζ : ℂ)
     have hp : ∀ x, C1 (p.1 x) = p.2 • x + ζ • p.1 (C1 x) := by
       intro x
       have h := DFunLike.congr_fun (hcomm p (List.mem_cons_self ..)) x
-      simp only [zetaCommutator, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply,
-        LinearMap.id_apply] at h
-      rwa [sub_eq_iff_eq_add] at h
+      change C1 (p.1 x) - ζ • p.1 (C1 x) = p.2 • x at h
+      exact (sub_eq_iff_eq_add).mp h
     have ihp := ih (fun q hq => hcomm q (List.mem_cons_of_mem p hq))
     apply LinearMap.ext
     intro x
