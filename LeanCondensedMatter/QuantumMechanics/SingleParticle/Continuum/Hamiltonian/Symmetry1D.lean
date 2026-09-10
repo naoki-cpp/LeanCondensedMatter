@@ -69,7 +69,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_symmetric
       congr 1
       · rw [inner_smul_left, inner_smul_right, continuumH2Laplacian1D_symmetric]
         simp
-      · exact l2RealMultiplicationOperator1D_symmetric potential hpotential
+      · exact L2MultiplicationRealLine.realMultiplicationOperator_symmetric potential hpotential
           (ψ : ContinuumL2Wavefunction1D) (φ : ContinuumL2Wavefunction1D)
     _ = inner ℂ
         (ψ : ContinuumL2Wavefunction1D)
