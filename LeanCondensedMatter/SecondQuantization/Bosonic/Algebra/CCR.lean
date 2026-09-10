@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 
 set_option linter.style.header false
@@ -5,15 +6,9 @@ set_option linter.style.header false
 /-!
 # Canonical commutation relations
 
-The bosonic creation and annihilation operators satisfy
-
-* `[a_i, a_j] = 0`,
-* `[a_i†, a_j†] = 0`,
-* `[a_i, a_j†] = δ_ij`.
-
-The basis-state proofs account explicitly for the square-root normalization of the ladder
-operators. `Bosonic.ExchangeAlgebra` packages these relations through the statistics-independent
-`Common.exchangeCommutator` interface.
+The bosonic creation and annihilation operators satisfy `[a_i,a_j]=0`, `[a_i†,a_j†]=0`, and
+`[a_i,a_j†]=δ_ij`. The representation-specific basis proofs remain here; generic commutator algebra
+is delegated to `Analysis.Operator.ZetaCommutator`.
 -/
 
 namespace SecondQuantization
@@ -23,17 +18,8 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+/-- File-local classical decidable equality for mode comparisons in the CCR proofs. -/
 local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
-
-/-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
-noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  A.comp B - B.comp A
-
-theorem comm_apply (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (x : FockSpace Mode) : comm A B x = A (B x) - B (A x) :=
-  rfl
 
 /-- The square-root normalization factor squares to its natural-number argument. -/
 theorem sqrt_natCast_mul_self (k : ℕ) :
@@ -45,24 +31,25 @@ theorem sqrt_natCast_mul_self (k : ℕ) :
 /-! ## `[a_i†, a_j†] = 0` -/
 
 theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
-    comm (create i) (create j) (basisState n) = 0 := by
-  rw [comm_apply]
+    LinearMap.zetaCommutator (1 : ℂ) (create i) (create j) (basisState n) = 0 := by
+  rw [LinearMap.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
   · exact sub_self _
   rw [create_basisState_eq, map_smul, create_basisState_eq, create_basisState_eq, map_smul,
     create_basisState_eq, createOccupation_apply_ne hij, createOccupation_apply_ne hij.symm,
     smul_smul, smul_smul, createOccupation_comm i j n, mul_comm, sub_self]
 
-theorem comm_create_create (i j : Mode) : comm (create i) (create j) = 0 :=
+theorem comm_create_create (i j : Mode) :
+    LinearMap.zetaCommutator (1 : ℂ) (create i) (create j) = 0 :=
   Common.linearMap_ext_basisState fun n => by
-    change comm (create i) (create j) (basisState n) = 0
+    change LinearMap.zetaCommutator (1 : ℂ) (create i) (create j) (basisState n) = 0
     rw [comm_create_create_basisState]
 
 /-! ## `[a_i, a_j] = 0` -/
 
 theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
-    comm (annihilate i) (annihilate j) (basisState n) = 0 := by
-  rw [comm_apply]
+    LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (annihilate j) (basisState n) = 0 := by
+  rw [LinearMap.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
   · exact sub_self _
   rw [annihilate_basisState_eq, map_smul, annihilate_basisState_eq,
@@ -70,9 +57,10 @@ theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode)
     removeOccupation_apply_ne hij, removeOccupation_apply_ne hij.symm,
     smul_smul, smul_smul, removeOccupation_comm hij, mul_comm, sub_self]
 
-theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilate j) = 0 :=
+theorem comm_annihilate_annihilate (i j : Mode) :
+    LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (annihilate j) = 0 :=
   Common.linearMap_ext_basisState fun n => by
-    change comm (annihilate i) (annihilate j) (basisState n) = 0
+    change LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (annihilate j) (basisState n) = 0
     rw [comm_annihilate_annihilate_basisState]
 
 /-! ## `[a_i, a_j†] = δ_ij` -/
@@ -105,8 +93,9 @@ theorem create_annihilate_basisState_same (i : Mode) (n : Occupation Mode) :
       createOccupation_removeOccupation_of_pos h, smul_smul, sqrt_natCast_mul_self]
 
 theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
-    comm (annihilate i) (create j) (basisState n) = if i = j then basisState n else 0 := by
-  rw [comm_apply]
+    LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create j) (basisState n) =
+      if i = j then basisState n else 0 := by
+  rw [LinearMap.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl, annihilate_create_basisState_same, create_annihilate_basisState_same,
       ← sub_smul]
@@ -118,32 +107,35 @@ theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
       smul_smul, smul_smul, mul_comm, sub_self]
 
 theorem comm_annihilate_create (i j : Mode) :
-    comm (annihilate i) (create j) =
+    LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
       if i = j then
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
     exact Common.linearMap_ext_basisState fun n => by
-      change comm (annihilate i) (create i) (basisState n) = basisState n
+      change LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create i) (basisState n) = basisState n
       rw [comm_annihilate_create_basisState, if_pos rfl]
   · rw [if_neg hij]
     exact Common.linearMap_ext_basisState fun n => by
-      change comm (annihilate i) (create j) (basisState n) = 0
+      change LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create j) (basisState n) = 0
       rw [comm_annihilate_create_basisState, if_neg hij]
 
 /-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
 theorem comm_create_annihilate (i j : Mode) :
-    comm (create i) (annihilate j) =
+    LinearMap.zetaCommutator (1 : ℂ) (create i) (annihilate j) =
       if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
-  rw [show comm (create i) (annihilate j) = -comm (annihilate j) (create i) by
-    simp only [comm]
-    abel]
-  rw [comm_annihilate_create]
-  by_cases h : i = j
-  · subst j
-    simp
-  · simp [h, Ne.symm h]
+  calc
+    LinearMap.zetaCommutator (1 : ℂ) (create i) (annihilate j) =
+        (-1 : ℂ) • LinearMap.zetaCommutator (1 : ℂ) (annihilate j) (create i) := by
+      exact LinearMap.zetaCommutator_swap_of_sq_eq_one (1 : ℂ) (by norm_num)
+        (annihilate j) (create i)
+    _ = if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
+      rw [comm_annihilate_create]
+      by_cases h : i = j
+      · subst j
+        simp
+      · simp [h, Ne.symm h]
 
 end
 

@@ -10,8 +10,8 @@ The arbitrary-length pairing induction now depends only on
 erasing a pair, and the KMS/exchange first-pair recurrence.
 
 The canonical finite Gibbs density-state implementation is provided separately by
-`GibbsExpectation/Recursion.lean`.  Consequently, the induction in this file has no direct knowledge
-of occupation-basis sums, trace ratios, or the proof of KMS rotation.  A future summability-aware
+`GibbsExpectation/Recursion.lean`. Consequently, the induction in this file has no direct knowledge
+of occupation-basis sums, trace ratios, or the proof of KMS rotation. A future summability-aware
 bosonic expectation can instantiate the same recursion contract without a false finite-configuration
 assumption.
 -/
@@ -31,7 +31,7 @@ theorem finiteGibbsExpectation_prodComp_eq_sum_pairing (s : Statistics)
     ∀ (n : ℕ) (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
       (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
       (∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) →
-      (∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+      (∀ i j, i ≠ j → LinearMap.zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
         c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) →
       (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0) →
       finiteGibbsExpectation energy β (prodComp (List.ofFn C)) =

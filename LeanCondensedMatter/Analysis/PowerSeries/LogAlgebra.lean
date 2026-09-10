@@ -123,11 +123,4 @@ theorem logOf_finset_prod {ι : Type*} (s : Finset ι) (F : ι → PowerSeries �
       rw [PowerSeries.logOf_mul (hF a) (by simp [hF])]
       rw [ih]
 
-/-- Fintype form of `logOf_finset_prod`. -/
-theorem logOf_fintype_prod {ι : Type*} [Fintype ι] (F : ι → PowerSeries ℂ)
-    (hF : ∀ i, PowerSeries.constantCoeff (F i) = 1) :
-    PowerSeries.logOf (∏ i, F i) = ∑ i, PowerSeries.logOf (F i) := by
-  classical
-  simpa using PowerSeries.logOf_finset_prod (Finset.univ : Finset ι) F hF
-
 end PowerSeries

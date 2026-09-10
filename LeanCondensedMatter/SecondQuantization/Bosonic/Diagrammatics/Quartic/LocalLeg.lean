@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Local legs of a bosonic quartic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
-specialized to bosonic ladder operators here.  CCR coefficients and their physical consequences
+specialized to bosonic ladder operators here. CCR coefficients and their physical consequences
 remain owned by the bosonic layer.
 -/
 
@@ -52,7 +52,8 @@ def quarticLocalLegCommutatorCoeff (q q' : QuarticVertexLabel Mode) (l l' : Fin 
 
 /-- The ordinary commutator of two bosonic quartic local-leg operators is a scalar identity. -/
 theorem comm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    comm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
+    LinearMap.zetaCommutator (1 : ℂ)
+        (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       quarticLocalLegCommutatorCoeff q q' l l' •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   fin_cases l <;> fin_cases l' <;>
@@ -61,15 +62,14 @@ theorem comm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fi
       Common.quarticLocalLegMode, comm_create_create, comm_annihilate_annihilate,
       comm_annihilate_create, comm_create_annihilate]
 
-/-- The Common `ζ`-commutator form of the bosonic quartic local-leg CCR. -/
+/-- The statistics-sign form of the bosonic quartic local-leg CCR. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode)
     (l l' : Fin 4) :
-    Common.zetaCommutator ((Common.Statistics.boson.zetaInt : ℤ) : ℂ)
+    LinearMap.zetaCommutator ((Common.Statistics.boson.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       quarticLocalLegCommutatorCoeff q q' l l' •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-  simpa [Common.zetaCommutator, Common.Statistics.zetaInt_boson, comm] using
-    comm_quarticLocalLegOperator q q' l l'
+  simpa [Common.Statistics.zetaInt_boson] using comm_quarticLocalLegOperator q q' l l'
 
 end
 end Bosonic

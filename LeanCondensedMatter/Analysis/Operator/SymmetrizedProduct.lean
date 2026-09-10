@@ -29,6 +29,17 @@ theorem symmetrizedProduct_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     symmetrizedProduct A B v = (1 / 2 : ℂ) • (A (B v) + B (A v)) := by
   rfl
 
+/-- The symmetric product is one half of the `ζ = -1` commutator algebraically.
+
+This is only an operator-algebra identity; it does not attach fermionic statistics to
+`symmetrizedProduct`. -/
+theorem symmetrizedProduct_eq_smul_zetaCommutator_neg_one
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A B : W →ₗ[ℂ] W) :
+    symmetrizedProduct A B =
+      (1 / 2 : ℂ) • LinearMap.zetaCommutator (-1) A B := by
+  simp [symmetrizedProduct, LinearMap.zetaCommutator]
+
 /-- The symmetrized product is symmetric in its two arguments. -/
 theorem symmetrizedProduct_comm {W : Type*} [AddCommGroup W] [Module ℂ W]
     (A B : W →ₗ[ℂ] W) :

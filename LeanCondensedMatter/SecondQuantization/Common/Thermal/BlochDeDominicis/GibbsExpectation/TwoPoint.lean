@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
@@ -25,7 +26,7 @@ leaving it as an un-divided trace equation. -/
 theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config → ℝ) (β q1 : ℝ)
     (ζ c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : zetaCommutator ζ C1 Cj =
+    (hcomm : LinearMap.zetaCommutator ζ C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
@@ -36,8 +37,7 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
   linear_combination h
 
 /-- **The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a
-raw `ζ : ℂ`/`zetaCommutator` pair — the form callers already holding a `Statistics` value (as
-opposed to `Induction.lean`'s general induction, which stays generic over `ζ`) should reach for. -/
+raw `ζ : ℂ` bracket — the form callers already holding a `Statistics` value should reach for. -/
 theorem finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator (energy : Config → ℝ) (β q1 : ℝ)
     (s : Statistics) (c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)

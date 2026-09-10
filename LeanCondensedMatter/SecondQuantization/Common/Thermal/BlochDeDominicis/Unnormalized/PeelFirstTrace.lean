@@ -35,7 +35,6 @@ form used when the general induction needs term-by-term matching against
 namespace SecondQuantization
 namespace Common
 
-
 variable {Config : Type*}
 
 /-- **The trace-level peel-first identity**: `Common.traceFock_diagonalEvolution_comp_rotate`
@@ -47,7 +46,7 @@ theorem traceFock_diagonalEvolution_comp_peel [Fintype Config]
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         traceFock ((diagonalEvolution energy (-β)).comp
@@ -78,7 +77,7 @@ theorem tsumTrace_diagonalEvolution_comp_peel
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+    (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hPeel : Summable (fun n =>
       matrixCoeff ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) n n))

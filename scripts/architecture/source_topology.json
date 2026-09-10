@@ -45,6 +45,7 @@
         "LeanCondensedMatter/Analysis/Calculus"
       ],
       "layers": [
+        {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.ZetaCommutator"]},
         {"id": "linearCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.LinearCommutator"]},
         {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
         {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]},
@@ -52,6 +53,7 @@
         {"id": "symmetricLocalization", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]}
       ],
       "edges": [
+        {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
         {"upstream": "linearCommutator", "downstream": "symmetrizedProduct"},
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
         {"upstream": "balanceLaw", "downstream": "symmetricLocalization"},
@@ -67,6 +69,7 @@
       ],
       "layers": [
         {"id": "analysisCurrent", "modulePrefixes": [
+          "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
           "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
           "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
           "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",

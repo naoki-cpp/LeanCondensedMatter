@@ -32,7 +32,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
   admissible := fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
     (∀ i, heisenbergEvolve energy (-β) (C i) =
       Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) ∧
-    (∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+    (∀ i j, i ≠ j → LinearMap.zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
       c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) ∧
     (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0)
   expectation_nil := by
@@ -59,7 +59,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     have hlen : l.length = 2 * m + 1 := by
       rw [hl]
       simp
-    have hcommL : ∀ p ∈ l, zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
+    have hcommL : ∀ p ∈ l, LinearMap.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
         p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
       intro p hp
       rw [hl, List.mem_ofFn] at hp

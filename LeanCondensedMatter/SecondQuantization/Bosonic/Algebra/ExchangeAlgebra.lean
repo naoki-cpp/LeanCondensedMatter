@@ -3,13 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 
-/-!
-# Bosonic exchange algebra
-
-The canonical commutation relations provide the `Common.Statistics.boson` instance of
-`Common.ExchangeAlgebra`. The local bridge identifies the concrete ordinary commutator used in the
-basis-state proofs with the Common statistics-indexed exchange commutator.
--/
+/-! # Bosonic exchange-algebra instance -/
 
 namespace SecondQuantization
 namespace Bosonic
@@ -18,29 +12,23 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+/-- File-local classical decidable equality for the bosonic exchange-algebra instance. -/
 local instance instDecidableEqExchangeAlgebra : DecidableEq Mode := Classical.decEq Mode
-
-/-- The bosonic exchange commutator is the ordinary commutator. -/
-theorem exchangeCommutator_boson_eq_comm
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    Common.exchangeCommutator Common.Statistics.boson A B = comm A B := by
-  rw [Common.exchangeCommutator, Common.Statistics.zetaInt_boson, Int.cast_one, Common.zetaCommutator,
-    one_smul]
-  rfl
 
 noncomputable instance exchangeAlgebra :
     Common.ExchangeAlgebra Common.Statistics.boson Mode (Occupation Mode) where
   annihilate := annihilate
   create := create
   annihilate_create i j := by
-    rw [exchangeCommutator_boson_eq_comm, comm_annihilate_create]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_annihilate_create i j
   annihilate_annihilate i j := by
-    rw [exchangeCommutator_boson_eq_comm, comm_annihilate_annihilate]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_annihilate_annihilate i j
   create_create i j := by
-    rw [exchangeCommutator_boson_eq_comm, comm_create_create]
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_boson] using
+      comm_create_create i j
 
 end
-
 end Bosonic
 end SecondQuantization

@@ -41,6 +41,8 @@ import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct

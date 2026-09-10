@@ -45,14 +45,6 @@ theorem singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum
     ζ ^ (S.card - 1) * (1 ^ (S.card - 1) * _)
   simp
 
-/-- Fixed-cardinality form of the connected single-cycle kernel theorem. -/
-theorem singleCycleContribution_of_card_eq
-    {R : Type*} [CommSemiring R] (ζ : R) (K : α → α → R) (S : Finset α)
-    (m : ℕ) (hcard : S.card = m) :
-    singleCycleContribution ζ K S =
-      ζ ^ (m - 1) * singleCycleKernelSum K S := by
-  rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum, hcard]
-
 /-- Finiteness of full-cycle permutations for the semantic W3 endpoint. -/
 noncomputable local instance singleCycleKernelFullCycleFintype :
     Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=

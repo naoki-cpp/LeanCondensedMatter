@@ -34,13 +34,14 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
           ζ * c13 * finiteGibbsExpectation energy β (C2.comp C4) +
           ζ ^ 2 * c14 * finiteGibbsExpectation energy β (C2.comp C3)) /
         (1 - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
-  have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)], zetaCommutator ζ C1 p.1 =
-      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+  have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)],
+      LinearMap.zetaCommutator ζ C1 p.1 =
+        p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
     intro p hp
     fin_cases hp
-    · exact hcomm12
-    · exact hcomm13
-    · exact hcomm14
+    · simpa [LinearMap.zetaCommutator] using hcomm12
+    · simpa [LinearMap.zetaCommutator] using hcomm13
+    · simpa [LinearMap.zetaCommutator] using hcomm14
   have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
     simp [traceFock, matrixCoeff]
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
