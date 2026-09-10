@@ -28,3 +28,13 @@ Lean declarations and CI-enforced architecture checks are the source of truth wh
 ```sh
 lake build
 ```
+
+## Proof reuse audit
+
+To look for multi-line, explicitly typed `have ... : T := by` proofs that can be replaced by a shorter existing proof, run:
+
+```sh
+python scripts/proof_reuse_audit.py LeanCondensedMatter/Path/To/File.lean
+```
+
+The audit tries `exact?`, `apply? <;> assumption`, and `simp?` one block at a time in temporary copies of the file. It reports a candidate only when the modified file compiles, so each suggested replacement is checked by Lean in the original local context. Use `--json` for machine-readable output.
