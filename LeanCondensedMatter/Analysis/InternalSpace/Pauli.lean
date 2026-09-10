@@ -196,4 +196,14 @@ theorem pauliShift_mul_companion (a : ℂ) (u : PauliAxis → ℂ) :
   rw [pauliCombination_mul_self, pow_two]
   module
 
+/-- If the quadratic Pauli-shift invariant is nonzero, the inverse-scaled companion is a right
+inverse of the shift. -/
+theorem pauliShift_mul_closedInverse
+    (a : ℂ) (u : PauliAxis → ℂ) (hden : a ^ 2 - dotProduct u u ≠ 0) :
+    (a • (1 : PauliMatrix) - pauliCombination u) *
+      ((a ^ 2 - dotProduct u u)⁻¹ •
+        (a • (1 : PauliMatrix) + pauliCombination u)) = 1 := by
+  rw [mul_smul_comm, pauliShift_mul_companion, smul_smul]
+  simp [hden]
+
 end InternalSpace
