@@ -66,10 +66,13 @@ omit [Fintype Mode] in
 private theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
     (n : Occupation Mode) :
     Common.matrixCoeff ((create j).comp (annihilate i)) n n = 0 := by
-  have hanticomm := anticomm_annihilate_create i j
-  rw [if_neg hij, anticomm] at hanticomm
+  have hcar := anticomm_annihilate_create i j
+  rw [if_neg hij] at hcar
   have hzero : ((annihilate i).comp (create j) + (create j).comp (annihilate i))
-      (basisState n) = 0 := by rw [hanticomm]; simp
+      (basisState n) = 0 := by
+    have h := congrArg
+      (fun A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => A (basisState n)) hcar
+    simpa [LinearMap.zetaCommutator_apply] using h
   rw [LinearMap.add_apply] at hzero
   have hcoeff := DFunLike.congr_fun hzero n
   simp only [Finsupp.add_apply, Finsupp.zero_apply] at hcoeff
