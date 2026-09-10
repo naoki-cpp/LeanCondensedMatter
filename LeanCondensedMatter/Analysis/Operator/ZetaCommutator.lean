@@ -1,20 +1,6 @@
-import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic
 
 set_option linter.style.header false
-
-section MathlibCommutatorSurvey
-
-#check LieRing.of_associative_ring_bracket
-#check Ring.lie_def
-#check Module.End.mul_eq_comp
-
-variable {V : Type*} [AddCommGroup V] [Module ℂ V]
-
-example (A B : Module.End ℂ V) : ⁅A, B⁆ = A * B - B * A :=
-  LieRing.of_associative_ring_bracket A B
-
-end MathlibCommutatorSurvey
 
 /-!
 # ζ-commutators of linear endomorphisms
