@@ -183,13 +183,10 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
       Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
     have h := imaginaryTimeEvolve_annihilate ε (-β) i
     rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
-  have hcomm : Common.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
+  have hcomm : LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
       (if i = j then (1 : ℂ) else 0) •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-    by_cases hij : i = j
-    · subst j
-      simpa [Common.zetaCommutator, comm] using comm_annihilate_create i i
-    · simpa [Common.zetaCommutator, comm, hij] using comm_annihilate_create i j
+    simpa using comm_annihilate_create i j
   have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
   by_cases hij : i = j
   · subst hij
