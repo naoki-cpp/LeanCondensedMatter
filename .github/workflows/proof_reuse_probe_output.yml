@@ -1,4 +1,4 @@
-name: Proof Reuse Probe Output
+name: Proof Reuse Replay Smoke
 
 on:
   pull_request:
@@ -7,9 +7,9 @@ permissions:
   contents: read
 
 jobs:
-  probe-output:
+  proof-reuse-replay:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -22,21 +22,18 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-      - name: Show exact and apply suggestion output
+      - name: Build representative module
+        run: lake build LeanCondensedMatter.Analysis.Dyson.Basic
+      - name: Check audit Python syntax
+        run: python3 -m py_compile scripts/proof_reuse_audit.py
+      - name: Run replay-verified audit on real project file
         shell: bash
         run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          src = Path('LeanCondensedMatter/Analysis/Dyson/Basic.lean').read_text()
-          old = '''theorem coeff_one (V : ℝ → A) (τ : ℝ) :\n    coeff V 1 τ = -∫ σ in (0 : ℝ)..τ, V σ := by\n  rw [show (1 : ℕ) = 0 + 1 by rfl, coeff_succ]\n  simp\n'''
-          if old not in src:
-              raise SystemExit('target proof not found')
-          for name, tactic in [('ExactProbe', 'exact?'), ('ApplyProbe', 'apply?')]:
-              text = src.replace(old, old.split(':= by')[0] + ':= by\n  ' + tactic + '\n', 1)
-              Path(f'/tmp/{name}.lean').write_text(text)
-          PY
-          echo '=== exact? ==='
-          lake env lean /tmp/ExactProbe.lean 2>&1 || true
-          echo '=== apply? ==='
-          lake env lean /tmp/ApplyProbe.lean 2>&1 || true
+          set -o pipefail
+          python3 scripts/proof_reuse_audit.py \
+            LeanCondensedMatter/Analysis/Dyson/Basic.lean \
+            --max-blocks 4 \
+            --max-span-tactics 4 \
+            --max-intervals-per-block 4 \
+            --max-findings 3 \
+            --timeout 30 | tee proof-reuse-replay.log
