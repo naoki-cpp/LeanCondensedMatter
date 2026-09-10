@@ -186,7 +186,7 @@ or consumer structure changes.
   resolvent commutation; downstream proofs use the `Commute` combinator API directly.
 - `LinearPMap.resolventApproximationEvolution_zero` — standard zero-time normalization of the named
   bounded resolvent-approximation evolution and part of its one-parameter evolution API.
-- `QuantumTheory.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint` — physical
+- `QuantumTheory.LinearResponse.isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint` — physical
   self-adjointness endpoint for the named interaction-picture perturbation under pointwise
   self-adjoint input.
 - `SecondQuantization.Bosonic.create_basisState_eq` — canonical occupation-basis creation law
