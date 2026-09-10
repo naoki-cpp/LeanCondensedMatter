@@ -14,22 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: linked-cluster
+          - label: linked-cluster-long-exact
             path: LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterTheorem.lean
-          - label: diagram-flattening
+          - label: diagram-flattening-long-exact
             path: LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Flattening.lean
-          - label: orbital-angular-momentum
-            path: LeanCondensedMatter/Analysis/Operator/OrbitalAngularMomentum.lean
-          - label: massive-dirac-rung
-            path: LeanCondensedMatter/Transport/Models/MassiveDirac/Disorder/BornCurrentVertexRung.lean
-          - label: binary-shuffle-slots
+          - label: binary-shuffle-slots-long-exact
             path: LeanCondensedMatter/Combinatorics/BinaryShuffleSlots.lean
-          - label: trace-log
-            path: LeanCondensedMatter/Permutation/TraceLog.lean
-          - label: quantum-postulates
-            path: LeanCondensedMatter/QuantumTheory/Postulates.lean
-          - label: gibbs-pure-point
-            path: LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -51,18 +41,18 @@ jobs:
           MODULE="${TARGET%.lean}"
           MODULE="${MODULE//\//.}"
           lake build "$MODULE"
-      - name: Audit bounded proof regions
+      - name: Audit narrow exact regions with longer timeout
         shell: bash
         env:
           TARGET: ${{ matrix.path }}
         run: |
           set -o pipefail
           python3 scripts/proof_reuse_audit.py "$TARGET" \
-            --modes exact,simp \
+            --modes exact \
             --max-blocks 8 \
             --max-span-tactics 5 \
-            --max-intervals-per-block 3 \
-            --max-findings 5 \
-            --max-suggestions-per-search 2 \
-            --timeout 20 \
-            --no-baseline 2>&1 | tee proof-reuse-batch.log || true
+            --max-intervals-per-block 1 \
+            --max-findings 3 \
+            --max-suggestions-per-search 1 \
+            --timeout 60 \
+            --no-baseline 2>&1 | tee proof-reuse-long-exact.log || true
