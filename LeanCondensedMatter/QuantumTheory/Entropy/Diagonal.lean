@@ -41,18 +41,4 @@ theorem entropyOpSpectralTraceClass_trace_eq_tsum_diagonal (ρ : DensityOperator
       ∑' i, Real.negMulLog (w i) :=
   (entropyOpSpectralTraceClass_hasSum_diagonal ρ b w happly hsummable).tsum_eq.symm
 
-/-- Entropy trace formula specialized to `diagonalDensityOperator`. -/
-theorem entropyOpSpectralTraceClass_trace_diagonalDensityOperator
-    (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
-    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
-    (hZ : 0 < ∑' i, a i)
-    (hsummable : HasSummableRealEigenvalues
-      (entropyOp (diagonalDensityOperator b a ha ha_nonneg hZ))) :
-    (entropyOpSpectralTraceClass (diagonalDensityOperator b a ha ha_nonneg hZ)
-      hsummable).trace =
-      ∑' i, Real.negMulLog (normalizedDiagonalWeight a i) :=
-  entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
-    (diagonalDensityOperator b a ha ha_nonneg hZ) b (normalizedDiagonalWeight a)
-    (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ) hsummable
-
 end QuantumTheory
