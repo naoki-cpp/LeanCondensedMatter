@@ -53,6 +53,14 @@ theorem normalizedWeightedDiagonal_sub (w : Config → ℂ)
     normalizedWeightedDiagonal w A + -normalizedWeightedDiagonal w B
   rw [normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg]
 
+/-- A normalized weighted diagonal vanishes when every diagonal matrix coefficient vanishes. -/
+theorem normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero
+    (w : Config → ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hdiag : ∀ n, matrixCoeff A n n = 0) :
+    normalizedWeightedDiagonal w A = 0 := by
+  rw [normalizedWeightedDiagonal]
+  simp [weightedTrace, hdiag]
+
 /-! ## Identity and diagonal operators -/
 
 /-- The normalized weighted diagonal of the identity is one when the total weight is nonzero. -/
