@@ -58,10 +58,14 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
     simpa [rung, l, targetRung, κ] using
       tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
         v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hκ : 1 - κ ≠ 0 := by
+  have hOneMinus :
+      1 - κ = (probeEnergy ^ 2 + 3 * m ^ 2) /
+        (2 * (probeEnergy ^ 2 + m ^ 2)) := by
     dsimp [κ]
-    rw [one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-      m probeEnergy (ne_of_gt hsum)]
+    exact one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+      m probeEnergy (ne_of_gt hsum)
+  have hκ : 1 - κ ≠ 0 := by
+    rw [hOneMinus]
     exact div_ne_zero (ne_of_gt hden)
       (mul_ne_zero (by norm_num) (ne_of_gt hsum))
   have hκC : (1 : ℂ) - (κ : ℂ) ≠ 0 := by
@@ -74,6 +78,29 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
     tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   have hclosed := hslope.mul (hdet.inv₀ hdet0)
+  have hdetEq :
+      inPlaneLadderDeterminant targetRung =
+        (((((probeEnergy ^ 2 + 3 * m ^ 2) /
+          (2 * (probeEnergy ^ 2 + m ^ 2))) ^ 2 : ℝ) : ℂ)) := by
+    dsimp [targetRung]
+    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector, add_zero]
+    have hOneMinusC :
+        (1 : ℂ) - (κ : ℂ) =
+          ((((probeEnergy ^ 2 + 3 * m ^ 2) /
+            (2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) := by
+      exact_mod_cast hOneMinus
+    rw [hOneMinusC]
+    norm_num
+  have htargetReal :
+      (Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+          (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))) *
+          (((probeEnergy ^ 2 + 3 * m ^ 2) /
+            (2 * (probeEnergy ^ 2 + m ^ 2))) ^ 2)⁻¹ =
+        4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+          (probeEnergy ^ 2 + m ^ 2) /
+          (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
+    field_simp [hvelocity, ne_of_gt hsum, ne_of_gt hden]
+    ring
   have htarget :
       (((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
           (v ^ 2 * (probeEnergy ^ 2 + m ^ 2)) : ℝ) : ℂ)) *
@@ -81,12 +108,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
         (((4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
           (probeEnergy ^ 2 + m ^ 2) /
           (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
-    dsimp [targetRung, κ]
-    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector]
-    unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-    push_cast
-    field_simp [hvelocity, ne_of_gt hsum, ne_of_gt hden]
-    ring
+    rw [hdetEq]
+    exact_mod_cast htargetReal
   rw [htarget] at hclosed
   apply Tendsto.congr' ?_ hclosed
   filter_upwards with disorderStrength
