@@ -143,8 +143,8 @@ theorem freeGibbsExpectation_eq_sum_pairing_concrete
       ∑ pairing : Pairing n,
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by
-  have h := (concreteFreeGibbsPairingRecursion ε β hpos).expectation_eq_sum_pairing
-    n C trivial
+  let data := concreteFreeGibbsPairingRecursion ε β hpos
+  have h := data.toExpectationPairingRecursion.expectation_eq_sum_pairing n C trivial
   change
     (freeGibbsFunctional ε β hpos).value
         (FreeThermalField.orderedProduct (List.ofFn C)) =
