@@ -2,7 +2,7 @@
 """Find proof regions replaceable by concrete, replay-verified Lean suggestions.
 
 For each candidate source region, the audit first runs a search tactic (`exact?`,
-`apply?`, or `simp?`) in a temporary copy. It extracts the concrete `Try this:`
+`simp?`, or `apply?`) in a temporary copy. It extracts the concrete `Try this:`
 replacement emitted by Lean, substitutes that replacement into a fresh copy,
 and recompiles the whole file.
 
@@ -41,13 +41,15 @@ DECL_START_RE = re.compile(
 )
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 SUGGESTION_LABEL_RE = re.compile(r"^\[(?:apply|exact|simp)\]\s*")
+DIAGNOSTIC_RE = re.compile(r"^.*\.lean:\d+:\d+(?::\s|$)")
 
-# A wide pretty-printer keeps code-action suggestions on one line when possible.
-# The concrete emitted replacement is replayed without this wrapper.
+# Keep search separate from verification. In particular, `apply?` may admit
+# remaining goals after printing candidates, so only a replayed concrete
+# suggestion is accepted as a finding.
 PROBES = {
-    "exact": "set_option pp.width 100000 in exact?",
-    "apply": "set_option pp.width 100000 in apply?",
-    "simp": "set_option pp.width 100000 in simp?",
+    "exact": "exact?",
+    "simp": "simp?",
+    "apply": "apply?",
 }
 
 
@@ -363,17 +365,12 @@ def replace_region(source: str, region: Region, tactic: str) -> str:
 def parse_suggestions(output: str) -> list[str]:
     """Extract concrete `Try this:` tactics from Lean terminal output.
 
-    `exact?`/`simp?` may render the replacement on the header line, while
-    `apply?` in Lean 4.33 renders
-
-        Try this:
-          [apply] refine someLemma ?_
-          -- Remaining subgoals: ...
-
-    The bracketed label and post-info are UI text, not Lean syntax.
+    Lean may place the suggestion on the `Try this:` line or on following
+    indented lines. `apply?` also prefixes candidates with `[apply]` and then
+    prints `-- Remaining subgoals`; those annotations are UI text, not Lean
+    syntax. Wrapped code lines are joined with spaces before replay.
     """
-    output = ANSI_RE.sub("", output)
-    lines = output.splitlines()
+    lines = ANSI_RE.sub("", output).splitlines()
     suggestions: list[str] = []
     i = 0
     while i < len(lines):
@@ -383,22 +380,38 @@ def parse_suggestions(output: str) -> list[str]:
             i += 1
             continue
 
+        pieces: list[str] = []
         rest = line[marker + len("Try this:") :].strip()
         if rest:
-            candidate = rest
-        else:
-            i += 1
-            while i < len(lines) and not lines[i].strip():
-                i += 1
-            if i >= len(lines):
-                break
-            candidate = lines[i].strip()
-
-        candidate = SUGGESTION_LABEL_RE.sub("", candidate).strip()
-        candidate = candidate.split("-- Remaining subgoals:", 1)[0].strip()
-        if candidate and not candidate.startswith("--") and candidate not in suggestions:
-            suggestions.append(candidate)
+            pieces.append(rest)
         i += 1
+
+        while i < len(lines):
+            current = lines[i]
+            stripped = current.strip()
+            if not stripped:
+                break
+            if "Try this:" in current or DIAGNOSTIC_RE.match(current):
+                break
+            if stripped.startswith("-- Remaining subgoals:") or stripped.startswith("-- ⊢"):
+                break
+            if stripped.startswith("--"):
+                break
+            # Continuation lines emitted by the pretty-printer are indented.
+            if current[:1].isspace():
+                pieces.append(stripped)
+                i += 1
+                continue
+            break
+
+        if pieces:
+            pieces[0] = SUGGESTION_LABEL_RE.sub("", pieces[0]).strip()
+            candidate = " ".join(piece for piece in pieces if piece).strip()
+            if candidate and candidate not in suggestions:
+                suggestions.append(candidate)
+        if i < len(lines) and not lines[i].strip():
+            i += 1
+
     return suggestions
 
 
@@ -454,6 +467,7 @@ def audit_file(
     max_span_tactics: int | None,
     max_intervals_per_block: int | None,
     max_findings: int | None,
+    max_suggestions_per_search: int,
 ) -> tuple[list[Finding], list[str]]:
     relative = str(path.relative_to(REPO_ROOT))
     source = path.read_text(encoding="utf-8")
@@ -487,8 +501,7 @@ def audit_file(
         if max_findings is not None and len(findings) >= max_findings:
             break
         for mode in modes:
-            search_tactic = PROBES[mode]
-            search_source = replace_region(source, region, search_tactic)
+            search_source = replace_region(source, region, PROBES[mode])
             label = f"line-{region.start_line}-{region.end_line}-{mode}-search"
             code, output, timed_out = run_probe(search_source, label, timeout)
             if timed_out:
@@ -500,7 +513,7 @@ def audit_file(
             if code != 0:
                 continue
 
-            suggestions = parse_suggestions(output)
+            suggestions = parse_suggestions(output)[:max_suggestions_per_search]
             if not suggestions:
                 continue
 
@@ -582,7 +595,7 @@ def parser() -> argparse.ArgumentParser:
         "--modes",
         type=parse_modes,
         default=tuple(PROBES),
-        help="comma-separated search modes (default: exact,apply,simp)",
+        help="comma-separated search modes (default: exact,simp,apply)",
     )
     result.add_argument("--min-body-lines", type=int, default=2)
     result.add_argument("--max-blocks", type=int)
@@ -591,6 +604,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--max-span-tactics", type=int, default=6)
     result.add_argument("--max-intervals-per-block", type=int, default=12)
     result.add_argument("--max-findings", type=int)
+    result.add_argument(
+        "--max-suggestions-per-search",
+        type=int,
+        default=4,
+        help="maximum concrete suggestions replayed for each search (default: 4)",
+    )
     result.add_argument("--timeout", type=float, default=30.0)
     result.add_argument("--no-baseline", action="store_true")
     result.add_argument("--json", action="store_true")
@@ -613,6 +632,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         args_parser.error("--max-intervals-per-block must be at least 1")
     if args.max_findings is not None and args.max_findings < 1:
         args_parser.error("--max-findings must be at least 1")
+    if args.max_suggestions_per_search < 1:
+        args_parser.error("--max-suggestions-per-search must be at least 1")
     if args.timeout <= 0:
         args_parser.error("--timeout must be positive")
 
@@ -636,6 +657,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             max_span_tactics=args.max_span_tactics,
             max_intervals_per_block=args.max_intervals_per_block,
             max_findings=args.max_findings,
+            max_suggestions_per_search=args.max_suggestions_per_search,
         )
         findings.extend(file_findings)
         diagnostics.extend(file_diagnostics)
