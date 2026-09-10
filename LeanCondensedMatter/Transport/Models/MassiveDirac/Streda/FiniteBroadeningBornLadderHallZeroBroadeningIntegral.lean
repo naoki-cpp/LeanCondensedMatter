@@ -12,9 +12,10 @@ remaining finite-cutoff Středa momentum integral can therefore be reduced direc
 component of the canonical integrated Born current rung acting on the solved in-plane ladder vector.
 This avoids introducing a second dominated-convergence argument at the Středa layer.
 
-The disorder strength and cutoff remain fixed. The result is the ordered `xy` conductivity component
-with measured current fixed along `x`; it is not yet identified with the antisymmetric Hall projection.
-No weak-disorder, ultraviolet, thermodynamic, or simultaneous limit is taken here.
+The disorder strength and cutoff remain fixed. The result is the ordered `xy` Středa momentum-integral
+response component with measured current fixed along `x`; physical conductivity normalization and
+identification with the antisymmetric Hall projection remain downstream. No weak-disorder,
+ultraviolet, thermodynamic, or simultaneous limit is taken here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
