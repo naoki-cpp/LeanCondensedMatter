@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerL
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerFrequency
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerOperatorBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLimits
+import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.GappedTwoSiteDimer
 
 set_option linter.style.header false
 
