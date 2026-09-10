@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Topology.Algebra.Order.Field
 
@@ -38,10 +39,6 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open Filter QuantumTheory.Transport
-
-/-- Planck's constant expressed through the reduced Planck constant, `h = 2πℏ`. -/
-def planckFromReduced (hbar : ℝ) : ℝ :=
-  2 * Real.pi * hbar
 
 /-- Metallic occupied-state Berry weight after removing the continuum ultraviolet cutoff. -/
 def metallicBerryWeightUV (m εF : ℝ) : ℝ :=

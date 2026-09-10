@@ -62,17 +62,6 @@ theorem realLInfMultiplier1D_coeFn
       fun x => (f x : ℂ) := by
   exact L2MultiplicationRealLine.realMultiplier_coeFn f hf
 
-/-- Multiplication by a bounded real function is symmetric on `L²(ℝ, ℂ)`. -/
-theorem l2RealMultiplicationOperator1D_symmetric
-    (f : ℝ → ℝ)
-    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ))
-    (ψ φ : ContinuumL2Wavefunction1D) :
-    inner ℂ
-        (l2MultiplicationOperator1D (realLInfMultiplier1D f hf) ψ) φ =
-      inner ℂ ψ
-        (l2MultiplicationOperator1D (realLInfMultiplier1D f hf) φ) := by
-  exact L2MultiplicationRealLine.realMultiplicationOperator_symmetric f hf ψ φ
-
 end
 end Continuum
 end SingleParticle

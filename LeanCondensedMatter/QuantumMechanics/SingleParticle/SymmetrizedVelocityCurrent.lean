@@ -35,16 +35,11 @@ noncomputable def symmetrizedVelocityCurrent
   _root_.ConservationLaw.symmetrizedProduct velocity m
 
 @[simp]
-theorem symmetrizedVelocityCurrent_smul_id
-    (velocity : V →ₗ[ℂ] V) (q : ℂ) :
-    symmetrizedVelocityCurrent V velocity (q • LinearMap.id) = q • velocity := by
-  exact _root_.ConservationLaw.symmetrizedProduct_smul_id velocity q
-
-@[simp]
 theorem symmetrizedVelocityCurrent_id
     (velocity : V →ₗ[ℂ] V) :
     symmetrizedVelocityCurrent V velocity LinearMap.id = velocity := by
-  simpa using symmetrizedVelocityCurrent_smul_id V velocity (1 : ℂ)
+  simpa [symmetrizedVelocityCurrent] using
+    (_root_.ConservationLaw.symmetrizedProduct_smul_id velocity (1 : ℂ))
 
 /-- General localized-transport decomposition. The second term measures the failure of the
 localized one-form operator to commute with the transported quantity. -/

@@ -75,15 +75,6 @@ theorem freeGibbsSummable_dysonCoeff_one
   have h := hV.mul_left (-(t : ℂ))
   exact h.congr fun n => (matrixCoeff_freeGibbs_dysonCoeff_one_self ε β V t n).symm
 
-omit [Fintype Mode] in
-/-- Domain form of `freeGibbsSummable_dysonCoeff_one`. -/
-theorem dysonCoeff_one_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (t : ℝ) (hV : V ∈ freeGibbsDomain ε β) :
-    Common.dysonCoeff (freeEigenvalue ε) V 1 t ∈ freeGibbsDomain ε β :=
-  freeGibbsSummable_dysonCoeff_one ε β V t hV
-
 /-- The first Dyson coefficient of a finitely supported quartic interaction belongs to the free-Gibbs
 domain under positive one-mode Boltzmann exponents. -/
 theorem dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain
@@ -92,7 +83,7 @@ theorem dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteractionOn support g) 1 t ∈
       freeGibbsDomain ε β :=
-  dysonCoeff_one_mem_freeGibbsDomain ε β (quarticInteractionOn support g) t
+  freeGibbsSummable_dysonCoeff_one ε β (quarticInteractionOn support g) t
     (quarticInteractionOn_mem_freeGibbsDomain support ε β hpos g)
 
 /-- On a finite mode type, the first Dyson coefficient of the all-label bosonic quartic interaction
@@ -102,7 +93,7 @@ theorem dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) 1 t ∈
       freeGibbsDomain ε β :=
-  dysonCoeff_one_mem_freeGibbsDomain ε β (quarticInteraction g) t
+  freeGibbsSummable_dysonCoeff_one ε β (quarticInteraction g) t
     (quarticInteraction_mem_freeGibbsDomain ε β hpos g)
 
 end

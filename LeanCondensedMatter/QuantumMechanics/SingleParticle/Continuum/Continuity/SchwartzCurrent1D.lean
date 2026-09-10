@@ -116,9 +116,9 @@ theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).currentDensity =
       q • SchwartzKinetic1D.velocityOperator ℏ κ := by
-  change symmetrizedVelocityCurrent SchwartzOneParticle1D
+  change _root_.ConservationLaw.symmetrizedProduct
       (SchwartzKinetic1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
-  exact symmetrizedVelocityCurrent_smul_id SchwartzOneParticle1D
+  exact _root_.ConservationLaw.symmetrizedProduct_smul_id
     (SchwartzKinetic1D.velocityOperator ℏ κ) q
 
 end

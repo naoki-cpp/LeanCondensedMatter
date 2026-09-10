@@ -32,24 +32,6 @@ noncomputable def TwoPointDiagram.externalSlotLegSplitting {S : Finset (Fin N)}
       (2 * S.card + 1) :=
   slotLegSplitting (TwoPointDiagram.interactionPart_subset (d.externalComponent 0))
 
-/-- An external leg of the piece is the corresponding ambient external leg. -/
-theorem TwoPointDiagram.externalSlotLegSplitting_external {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
-    d.externalSlotLegSplitting (Sum.inl ((twoPointLegEquiv
-        (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm (Sum.inl e))) =
-      (twoPointLegEquiv S).symm (Sum.inl e) :=
-  slotLegSplitting_external _ e
-
-/-- An interaction leg of the piece is the corresponding ambient interaction leg. -/
-theorem TwoPointDiagram.externalSlotLegSplitting_interaction {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0))) (l : Fin 4) :
-    d.externalSlotLegSplitting (Sum.inl ((twoPointLegEquiv
-        (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm (Sum.inr (v, l)))) =
-      (twoPointLegEquiv S).symm
-        (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset (d.externalComponent 0) v.2⟩, l)) :=
-  slotLegSplitting_left_interaction _ v l
-
 /-- The left part consists of external-component legs. -/
 private theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl
     {S : Finset (Fin N)}
@@ -62,11 +44,13 @@ private theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl
   refine (d.legInComponent_iff_unflattened d.externalComponentPart _).2 ?_
   cases x with
   | inl e =>
-      rw [d.externalSlotLegSplitting_external, Equiv.apply_symm_apply]
+      rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_external,
+        Equiv.apply_symm_apply]
       exact d.externalVertex_mem_externalComponentPart e
   | inr p =>
       obtain ⟨v, l⟩ := p
-      rw [d.externalSlotLegSplitting_interaction, Equiv.apply_symm_apply]
+      rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_left_interaction,
+        Equiv.apply_symm_apply]
       exact (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0)
         ⟨v.1, TwoPointDiagram.interactionPart_subset (d.externalComponent 0) v.2⟩).1 v.2
 
@@ -80,13 +64,14 @@ private theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset 
   rw [d.legInComponent_iff_unflattened d.externalComponentPart, Equiv.apply_symm_apply] at hleg
   cases x with
   | inl e =>
-      exact ⟨(twoPointLegEquiv _).symm (Sum.inl e), d.externalSlotLegSplitting_external e⟩
+      refine ⟨(twoPointLegEquiv _).symm (Sum.inl e), ?_⟩
+      rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_external]
   | inr p =>
       obtain ⟨v, l⟩ := p
       have hv : (v : Fin N) ∈ TwoPointDiagram.interactionPart (d.externalComponent 0) :=
         (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2 hleg
       refine ⟨(twoPointLegEquiv _).symm (Sum.inr (⟨v.1, hv⟩, l)), ?_⟩
-      rw [d.externalSlotLegSplitting_interaction]
+      rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_left_interaction]
 
 /-- The canonical left split positions are exactly the ambient legs of the external component. -/
 noncomputable def TwoPointDiagram.externalComponentLegEquiv {S : Finset (Fin N)}

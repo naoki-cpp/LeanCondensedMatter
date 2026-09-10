@@ -83,7 +83,7 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
   set R : ℂ := freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
   have hRmem : (orderedProduct l).comp C.operator ∈ freeGibbsDomain ε β := by
     rw [← orderedProduct_append_singleton]
-    exact orderedProduct_mem_freeGibbsDomain ε β hpos (l ++ [C])
+    exact freeGibbsSummable_orderedProduct ε β hpos (l ++ [C])
   have hPmem : C.operatorPeelSum l ∈ freeGibbsDomain ε β :=
     operatorPeelSum_mem_freeGibbsDomain ε β hpos C l
   have hpeel : E = P + R := by

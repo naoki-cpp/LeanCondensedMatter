@@ -10,8 +10,8 @@ set_option linter.style.header false
 # Finite-broadening Born-Dyson RA-dressed Středa surface bridge
 
 This module inserts the solved finite-cutoff finite-external-broadening Born-Dyson current-vertex
-vector into the retarded-advanced block of the massive-Dirac Středa surface algebra. The measured
-current is fixed to the physical `jₓ`, while the bare source direction is indexed by `Direction2`.
+vector into the retarded-advanced block of the massive-Dirac Středa surface algebra. Both the bare
+measured-current direction and the source direction are indexed by `Direction2`.
 
 The canonical ladder solution for a bare `σₓ` source is stored as one in-plane coefficient vector.
 Rotational closure supplies the source-indexed algebraic vertex
@@ -59,14 +59,14 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix,
       inPlaneLadderBareXSource, inPlaneCoefficientVector]
 
-/-- Pointwise finite-cutoff finite-`η` Středa surface bridge with a bare measured `jₓ`, the solved
-source-indexed algebraic vertex only in the RA block, and the corresponding bare source current in
-the RR/AA same-side remainder. -/
+/-- Pointwise finite-cutoff finite-`η` Středa surface bridge with the requested bare measured current,
+the solved source-indexed algebraic vertex only in the RA block, and the corresponding bare source
+current in the RR/AA same-side remainder. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
-    (source : Direction2)
+    (measured source : Direction2)
     (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   retardedAdvancedVertexTraceKernel
-      (currentOperator .x e v)
+      (currentOperator measured e v)
       (finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
       (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
@@ -74,25 +74,26 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTr
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax) -
     sameSideVertexTraceRemainder
-      (currentOperator .x e v)
+      (currentOperator measured e v)
       (currentOperator source e v)
       (finiteCutoffContinuumBornDysonGreenOperator
         .retarded v m px py probeEnergy broadening disorderStrength hbar pMax)
       (finiteCutoffContinuumBornDysonGreenOperator
         .advanced v m px py probeEnergy broadening disorderStrength hbar pMax)
 
-/-- At zero disorder and positive external broadening, the source-indexed RA-dressed/bare-same-side
-bridge reduces exactly to the clean massive-Dirac `jₓ-j_source` Středa surface primitive. -/
+/-- At zero disorder and positive external broadening, the pair-indexed RA-dressed/bare-same-side
+bridge reduces exactly to the clean massive-Dirac Středa surface primitive for the same measured and
+source directions. -/
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder
-    (source : Direction2)
+    (measured source : Direction2)
     (e v m px py probeEnergy broadening hbar pMax : ℝ)
     (hbroadening : 0 < broadening) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
-        source e v m px py probeEnergy broadening 0 hbar pMax =
+        measured source e v m px py probeEnergy broadening 0 hbar pMax =
       regularizedStredaSurfacePrimitiveTrace
         (hamiltonianOperator v m px py)
-        (currentOperator .x e v)
+        (currentOperator measured e v)
         (currentOperator source e v)
         probeEnergy broadening := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
@@ -117,7 +118,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_
   simpa [suppliedGreenStredaSurfacePrimitiveTraceKernel] using
     (regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen
       (hamiltonianOperator v m px py)
-      (currentOperator .x e v)
+      (currentOperator measured e v)
       (currentOperator source e v)
       probeEnergy broadening)
 
