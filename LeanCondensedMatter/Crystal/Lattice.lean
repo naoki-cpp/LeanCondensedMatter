@@ -58,7 +58,7 @@ theorem mem_reciprocalLattice {L : Submodule ℤ V} {G : V} :
   · intro h R hR
     obtain ⟨n, hn⟩ := Submodule.mem_one.mp (h R hR)
     refine ⟨n, ?_⟩
-    rw [reciprocalPairing_apply] at hn
+    rw [reciprocalPairing_apply, map_intCast] at hn
     calc
       inner ℝ G R = (2 * Real.pi) * ((2 * Real.pi)⁻¹ * inner ℝ G R) := by
         field_simp [hpi]
@@ -67,7 +67,7 @@ theorem mem_reciprocalLattice {L : Submodule ℤ V} {G : V} :
     obtain ⟨n, hn⟩ := h R hR
     apply Submodule.mem_one.mpr
     refine ⟨n, ?_⟩
-    rw [reciprocalPairing_apply, hn]
+    rw [reciprocalPairing_apply, hn, map_intCast]
     field_simp [hpi]
 
 end LeanCondensedMatter.Crystal
