@@ -157,6 +157,61 @@ theorem species_eq_of_mem_site_orbit (X : AtomicConfiguration E Species) {x y : 
   rcases MulAction.mem_orbit_iff.1 hy with ⟨g, rfl⟩
   exact X.species_smul g x
 
+/-- Configuration symmetries act canonically on unordered bonds. -/
+instance bondMulAction (X : AtomicConfiguration E Species) : MulAction X.symmetryGroup X.Bond where
+  smul g b :=
+    ⟨Sym2.map (fun x : X.Site => g • x) b.1, by
+      have hinj : Function.Injective (fun x : X.Site => g • x) := by
+        intro x y hxy
+        have h := congrArg (fun z : X.Site => (g⁻¹ : X.symmetryGroup) • z) hxy
+        simpa using h
+      simpa only [Sym2.isDiag_map hinj] using b.2⟩
+  one_smul b := by
+    apply Subtype.ext
+    refine Sym2.inductionOn (b : Sym2 X.Site) ?_
+    intro x y
+    simp
+  mul_smul g h b := by
+    apply Subtype.ext
+    refine Sym2.inductionOn (b : Sym2 X.Site) ?_
+    intro x y
+    simp [mul_smul]
+
+@[simp]
+theorem coe_smul_bond (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (b : X.Bond) :
+    ((g • b : X.Bond) : Sym2 X.Site) =
+      Sym2.map (fun x : X.Site => g • x) (b : Sym2 X.Site) :=
+  rfl
+
+/-- Fixing a bond under the canonical action is exactly fixing its underlying unordered pair. -/
+@[simp]
+theorem smul_bond_eq_self_iff (X : AtomicConfiguration E Species) (g : X.symmetryGroup)
+    (b : X.Bond) :
+    g • b = b ↔
+      Sym2.map (fun x : X.Site => g • x) (b : Sym2 X.Site) = (b : Sym2 X.Site) := by
+  constructor
+  · intro h
+    simpa using congrArg (fun c : X.Bond => (c : Sym2 X.Site)) h
+  · intro h
+    apply Subtype.ext
+    exact h
+
+/-- Membership in a bond orbit is exactly reachability of the underlying unordered pair. -/
+@[simp]
+theorem mem_bond_orbit_iff (X : AtomicConfiguration E Species) (b c : X.Bond) :
+    c ∈ MulAction.orbit X.symmetryGroup b ↔
+      ∃ g : X.symmetryGroup,
+        Sym2.map (fun x : X.Site => g • x) (b : Sym2 X.Site) = (c : Sym2 X.Site) := by
+  rw [MulAction.mem_orbit_iff]
+  constructor
+  · rintro ⟨g, h⟩
+    refine ⟨g, ?_⟩
+    simpa using congrArg (fun d : X.Bond => (d : Sym2 X.Site)) h
+  · rintro ⟨g, h⟩
+    refine ⟨g, ?_⟩
+    apply Subtype.ext
+    exact h
+
 end Symmetry
 
 end AtomicConfiguration

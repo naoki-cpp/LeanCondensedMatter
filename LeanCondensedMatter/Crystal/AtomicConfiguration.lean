@@ -3,6 +3,7 @@ Copyright (c) 2026 Naoki Yano. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
+import Mathlib.Data.Sym.Sym2
 import Mathlib.Topology.MetricSpace.MetricSeparated
 
 /-!
@@ -35,6 +36,17 @@ variable {E Species : Type*}
 
 /-- The subtype of sites occupied by a configuration. -/
 abbrev Site (X : AtomicConfiguration E Species) := X.occupied
+
+/-- An unordered pair of distinct occupied sites.
+
+This is only the geometric two-site object. It does not assert that the two sites are physically
+bonded; a model-specific bond network can be represented later as a subset of this type. -/
+abbrev Bond (X : AtomicConfiguration E Species) :=
+  {b : Sym2 X.Site // ¬ b.IsDiag}
+
+/-- Construct the unordered bond determined by two distinct occupied sites. -/
+def bond (X : AtomicConfiguration E Species) (x y : X.Site) (hxy : x ≠ y) : X.Bond :=
+  ⟨Sym2.mk x y, by simpa using hxy⟩
 
 section Metric
 
