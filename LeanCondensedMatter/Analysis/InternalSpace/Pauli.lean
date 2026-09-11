@@ -31,6 +31,13 @@ instance : Fintype PauliAxis where
     intro axis
     cases axis <;> simp
 
+/-- Select one semantic Pauli-axis component from explicit `x`, `y`, and `z` values. -/
+def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
+  match axis with
+  | .x => x
+  | .y => y
+  | .z => z
+
 private theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _

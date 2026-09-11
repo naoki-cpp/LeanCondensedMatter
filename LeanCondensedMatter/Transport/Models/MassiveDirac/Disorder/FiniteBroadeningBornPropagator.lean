@@ -87,7 +87,7 @@ noncomputable def finiteCutoffContinuumBornDysonPauliCoefficient
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   (finiteCutoffContinuumBornDysonDenominator
       side v m px py probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-    pauliAxisComponent axis
+    InternalSpace.pauliAxisComponent axis
       (((v * px : ℝ) : ℂ))
       (((v * py : ℝ) : ℂ))
       (finiteCutoffContinuumBornEffectiveMass
@@ -149,7 +149,7 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
   simpa [finiteCutoffContinuumBornDysonGreenOperator,
     finiteCutoffContinuumBornDysonGreenMatrix,
     finiteCutoffContinuumBornDysonScalarCoefficient,
-    finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent, hden] using
+    finiteCutoffContinuumBornDysonPauliCoefficient, InternalSpace.pauliAxisComponent, hden] using
     (commonDenominatorPauliOperator_polar_eq
       (finiteCutoffContinuumBornDysonDenominator
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
@@ -230,7 +230,7 @@ theorem finiteCutoffContinuumBornDysonShiftMatrix_mul_greenMatrix
               side v m probeEnergy broadening disorderStrength hbar pMax • sigmaZ) := by
     simp [finiteCutoffContinuumBornDysonGreenMatrix,
       finiteCutoffContinuumBornDysonScalarCoefficient,
-      finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent,
+      finiteCutoffContinuumBornDysonPauliCoefficient, InternalSpace.pauliAxisComponent,
       smul_add, smul_smul]
   have hshift :
       finiteCutoffContinuumBornDysonShiftMatrix
@@ -477,7 +477,7 @@ massive-Dirac Pauli Green operator. -/
     pauliGreenDenominatorOfRegulator
   simp [finiteCutoffContinuumBornEffectiveEnergy,
     finiteCutoffContinuumBornEffectiveMass, spectralParameter,
-    pauliGreenDenominator, pauliGreenDenominatorOfRegulator, pauliAxisComponent,
+    pauliGreenDenominator, pauliGreenDenominatorOfRegulator, InternalSpace.pauliAxisComponent,
     matrixOperator, map_add, map_smul]
 
 end

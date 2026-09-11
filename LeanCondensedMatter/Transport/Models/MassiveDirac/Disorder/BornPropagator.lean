@@ -88,7 +88,7 @@ def continuumBornPauliGreenPauliCoefficient
     (v m px py probeEnergy disorderStrength hbar : ℝ) : ℂ :=
   (continuumBornPauliGreenDenominator
       side v m px py probeEnergy disorderStrength hbar)⁻¹ *
-    pauliAxisComponent axis
+    InternalSpace.pauliAxisComponent axis
       (((v * px : ℝ) : ℂ))
       (((v * py : ℝ) : ℂ))
       (continuumBornEffectiveMass side v m disorderStrength hbar)

@@ -104,7 +104,7 @@ theorem continuous_continuumBornRadialIntegrandOfRegulator
           v m probeEnergy regulator hregulator).mul continuous_const)
   | z =>
       unfold continuumBornRadialIntegrandOfRegulator pauliGreenPauliCoefficientOfRegulator
-      simp only [pauliAxisComponent]
+      simp only [InternalSpace.pauliAxisComponent]
       exact (Complex.continuous_ofReal.comp continuous_id).mul
         ((continuous_inv_pauliGreenDenominatorOfRegulator_radial
           v m probeEnergy regulator hregulator).mul continuous_const)
@@ -442,7 +442,7 @@ theorem continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegra
       bornSelfEnergyChannelWeightOfRegulator,
       continuumBornRadialDenominatorIntegrandOfRegulator,
       pauliGreenScalarCoefficientOfRegulator,
-      pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent] <;>
+      pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent] <;>
     ring
 
 /-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary

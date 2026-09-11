@@ -184,7 +184,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       pauliRungAngularCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,
-      finiteCutoffContinuumBornDysonPauliCoefficient, pauliAxisComponent,
+      finiteCutoffContinuumBornDysonPauliCoefficient, InternalSpace.pauliAxisComponent,
       finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
       mul_inv_rev] <;>
     ring
