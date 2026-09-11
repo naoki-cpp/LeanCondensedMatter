@@ -35,7 +35,7 @@ jobs:
         run: |
           lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
           lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-      - name: Diagnose forwarding compression
+      - name: Verify forwarding compression
         shell: bash
         run: |
           cat > ForwardingProbe.py <<'PY'
@@ -52,22 +52,17 @@ jobs:
           def run(path):
               source = path.read_text(encoding='utf-8')
               lines = source.splitlines(keepends=True)
-              blocks = audit.find_proof_blocks(source, 2)
-              print('BLOCKS', [(b.kind,b.body_start_line,b.end_line) for b in blocks])
               generated = verified = 0
-              for block in blocks:
+              for block in audit.find_proof_blocks(source, 2):
                   chunks = audit.top_level_tactic_chunks(source, block)
                   for first, second in zip(chunks, chunks[1:]):
-                      first_text = ''.join(lines[first.start_index:first.end_index])
-                      second_text = ''.join(lines[second.start_index:second.end_index])
-                      have = HAVE_RE.match(first_text)
-                      rwa = RWA_RE.match(second_text)
+                      have = HAVE_RE.match(''.join(lines[first.start_index:first.end_index]))
+                      rwa = RWA_RE.match(''.join(lines[second.start_index:second.end_index]))
                       if have is None or rwa is None or have.group('name') != rwa.group('name'):
                           continue
                       term, rules = compact(have.group('term')), compact(rwa.group('rules'))
-                      candidate = f"simpa [{rules}] using ({term})"
+                      candidate = f"simpa [{rules}, exchangeAlgebra, numberOperator] using ({term})"
                       generated += 1
-                      print('GENERATED', first.start_line, second.end_line, candidate)
                       region = audit.Region(scope='interval', block_kind=block.kind,
                           start_line=first.start_line, end_line=second.end_line,
                           start_index=first.start_index, end_index=second.end_index,
@@ -77,23 +72,22 @@ jobs:
                       code, output, timed_out = audit.run_probe(
                           audit.replace_region(source, region, candidate),
                           f"forward-{first.start_line}-{second.end_line}", 30)
-                      print('REPLAY', code, 'timeout=', timed_out)
-                      if code != 0:
-                          print('ERROR', audit.first_error(output))
-                      elif audit.replay_is_admission_free(output):
+                      print('CANDIDATE', path, first.start_line, second.end_line, candidate)
+                      if code == 0 and not timed_out and audit.replay_is_admission_free(output):
                           verified += 1
                           print('VERIFIED', candidate)
+                      else:
+                          print('ERROR', audit.first_error(output))
               return generated, verified
 
           totals = [0,0]
           for raw in [
               'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean',
               'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean']:
-              print('=====', raw, '=====')
               g,v = run(Path(raw).resolve()); totals[0] += g; totals[1] += v
           print('TOTAL_GENERATED', totals[0])
           print('TOTAL_VERIFIED', totals[1])
-          if totals[1] == 0:
-              raise SystemExit('expected a verified forwarding compression')
+          if totals[1] != 2:
+              raise SystemExit(f'expected two verified forwarding compressions, got {totals[1]}')
           PY
           python3 ForwardingProbe.py
