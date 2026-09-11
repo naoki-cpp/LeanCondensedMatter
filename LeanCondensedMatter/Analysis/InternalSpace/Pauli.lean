@@ -196,4 +196,30 @@ theorem pauliShift_mul_companion (a : ℂ) (u : PauliAxis → ℂ) :
   rw [pauliCombination_mul_self, pow_two]
   module
 
+/-- A coordinate Pauli shift `a I - (x σₓ + y σᵧ + z σ_z)` has the inverse-scaled companion as a
+right inverse whenever its quadratic denominator is nonzero. -/
+theorem pauliShiftMatrix_mul_closedInverse
+    (a x y z : ℂ) (hden : a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 ≠ 0) :
+    (a • (1 : PauliMatrix) - (x • pauliX + y • pauliY + z • pauliZ)) *
+      ((a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2)⁻¹ •
+        (a • (1 : PauliMatrix) + (x • pauliX + y • pauliY + z • pauliZ))) = 1 := by
+  let u : PauliAxis → ℂ
+    | .x => x
+    | .y => y
+    | .z => z
+  have hcombination :
+      pauliCombination u = x • pauliX + y • pauliY + z • pauliZ := by
+    rfl
+  have hdot : dotProduct u u = x ^ 2 + y ^ 2 + z ^ 2 := by
+    rw [dotProduct_pauliAxis]
+    simp [u, pow_two]
+  have hquadratic := pauliShift_mul_companion a u
+  rw [hcombination, hdot] at hquadratic
+  have hdenEq :
+      a ^ 2 - (x ^ 2 + y ^ 2 + z ^ 2) = a ^ 2 - x ^ 2 - y ^ 2 - z ^ 2 := by
+    ring
+  rw [hdenEq] at hquadratic
+  rw [mul_smul_comm, hquadratic, smul_smul]
+  simp [hden]
+
 end InternalSpace
