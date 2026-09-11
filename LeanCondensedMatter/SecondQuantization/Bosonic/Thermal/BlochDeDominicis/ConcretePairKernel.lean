@@ -26,42 +26,6 @@ variable {Mode : Type*}
 /-- File-local classical decidable equality used by the concrete pair kernel. -/
 local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical.decEq Mode
 
-/-- Domain form for the two-creator product. -/
-theorem create_comp_create_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    (create i).comp (create j) ∈ freeGibbsDomain ε β := by
-  change freeGibbsSummable ε β ((create i).comp (create j))
-  unfold freeGibbsSummable imaginaryTimeEvolveFree
-  exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
-    rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create, mul_zero]
-
-/-- Domain form for the two-annihilator product. -/
-theorem annihilate_comp_annihilate_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    (annihilate i).comp (annihilate j) ∈ freeGibbsDomain ε β := by
-  change freeGibbsSummable ε β ((annihilate i).comp (annihilate j))
-  unfold freeGibbsSummable imaginaryTimeEvolveFree
-  exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
-    rw [Common.matrixCoeff_diagonalEvolution_comp,
-      matrixCoeff_annihilate_comp_annihilate, mul_zero]
-
-/-- The normalized free-Gibbs expectation of two creators vanishes. -/
-theorem freeGibbsExpectation_create_comp_create
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeGibbsExpectation ε β ((create i).comp (create j)) = 0 := by
-  unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
-  simp_rw [Common.matrixCoeff_diagonalEvolution_comp, matrixCoeff_create_comp_create, mul_zero]
-  simp
-
-/-- The normalized free-Gibbs expectation of two annihilators vanishes. -/
-theorem freeGibbsExpectation_annihilate_comp_annihilate
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeGibbsExpectation ε β ((annihilate i).comp (annihilate j)) = 0 := by
-  unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
-  simp_rw [Common.matrixCoeff_diagonalEvolution_comp,
-    matrixCoeff_annihilate_comp_annihilate, mul_zero]
-  simp
-
 variable [Fintype Mode]
 
 /-- Every ordered product of two free thermal fields belongs to the explicit free-Gibbs domain. -/
@@ -73,8 +37,11 @@ theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
   | annihilate i =>
       cases g with
       | annihilate j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator] using
-            annihilate_comp_annihilate_mem_freeGibbsDomain ε β i j
+          change freeGibbsSummable ε β
+            ((_root_.SecondQuantization.Bosonic.annihilate i).comp
+              (_root_.SecondQuantization.Bosonic.annihilate j))
+          exact freeGibbsSummable_of_matrixCoeff_self_eq_zero ε β _
+            (matrixCoeff_annihilate_comp_annihilate i j)
       | create j =>
           change freeGibbsSummable ε β
             ((_root_.SecondQuantization.Bosonic.annihilate i).comp
@@ -86,8 +53,11 @@ theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator] using
             create_comp_annihilate_mem_freeGibbsDomain ε β hpos j i
       | create j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator] using
-            create_comp_create_mem_freeGibbsDomain ε β i j
+          change freeGibbsSummable ε β
+            ((_root_.SecondQuantization.Bosonic.create i).comp
+              (_root_.SecondQuantization.Bosonic.create j))
+          exact freeGibbsSummable_of_matrixCoeff_self_eq_zero ε β _
+            (matrixCoeff_create_comp_create i j)
 
 /-- The canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the
 corresponding ordered two-field product. -/
@@ -102,7 +72,10 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue] using
-            freeGibbsExpectation_annihilate_comp_annihilate ε β i j
+            (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
+              ((_root_.SecondQuantization.Bosonic.annihilate i).comp
+                (_root_.SecondQuantization.Bosonic.annihilate j))
+              (matrixCoeff_annihilate_comp_annihilate i j))
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue] using
@@ -116,7 +89,10 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue] using
-            freeGibbsExpectation_create_comp_create ε β i j
+            (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
+              ((_root_.SecondQuantization.Bosonic.create i).comp
+                (_root_.SecondQuantization.Bosonic.create j))
+              (matrixCoeff_create_comp_create i j))
 
 /-- Functional form of the concrete pair-kernel theorem, suitable for the generic Wick-recursion
 interface. -/

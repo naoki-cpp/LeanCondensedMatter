@@ -34,22 +34,6 @@ def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Direction2 → ℂ
   | .x => (((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA)
   | .y => (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)
 
-private theorem integral_polar_cos_sin_linear_zero (cCos cSin : ℂ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
-  have hcos : IntervalIntegrable
-      (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) * cCos) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  have hsin : IntervalIntegrable
-      (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) * cSin) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  rw [intervalIntegral.integral_add hcos hsin,
-    intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
-  simp
-
 private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       c0 +
@@ -180,7 +164,7 @@ theorem integral_polarPauliOperator_inPlane_eq
     simp [matrixOperator, map_add, map_smul]
   have hScalarIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
-    convert integral_polar_cos_sin_linear_zero
+    convert integral_complex_cos_mul_add_sin_mul_zero_two_pi
       (coefficients .x * (aA * bR + aR * bA) -
         coefficients .y * Complex.I * (bA * dR - bR * dA))
       (coefficients .x * Complex.I * (bA * dR - bR * dA) +
@@ -221,7 +205,7 @@ theorem integral_polarPauliOperator_inPlane_eq
       ring
   have hZIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), zCoefficient θ) = 0 := by
-    convert integral_polar_cos_sin_linear_zero
+    convert integral_complex_cos_mul_add_sin_mul_zero_two_pi
       (coefficients .x * (bA * dR + bR * dA) -
         coefficients .y * Complex.I * (aR * bA - aA * bR))
       (coefficients .x * Complex.I * (aR * bA - aA * bR) +
