@@ -66,7 +66,7 @@ theorem pauliGreenPauliCoefficientOfRegulator_polar
           pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator
       | .z => pauliGreenPauliCoefficientOfRegulator .z v m p 0 probeEnergy regulator := by
   cases axis <;>
-    simp [pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
+    simp [pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent,
       pauliGreenDenominatorOfRegulator_polar] <;>
     ring
 

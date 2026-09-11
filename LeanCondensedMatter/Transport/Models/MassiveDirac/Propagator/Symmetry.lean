@@ -47,7 +47,7 @@ def pauliAxisMomentumInversionSign : PauliAxis → ℝ
         pauliGreenPauliCoefficientOfRegulator
           axis v m px py probeEnergy regulator := by
   cases axis <;>
-    simp [pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
+    simp [pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent,
       pauliAxisMomentumInversionSign]
 
 /-- The inversion symmetrization of the arbitrary-regulator Green operator retains only its scalar

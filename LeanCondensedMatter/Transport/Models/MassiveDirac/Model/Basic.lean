@@ -67,13 +67,6 @@ instance : Fintype Direction2 where
     intro direction
     cases direction <;> simp
 
-/-- Select a component of a Pauli vector. -/
-def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
-  match axis with
-  | .x => x
-  | .y => y
-  | .z => z
-
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
   | .x => sigmaX

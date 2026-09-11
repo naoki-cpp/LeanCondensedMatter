@@ -49,7 +49,7 @@ def pauliGreenPauliCoefficientOfRegulator
     (axis : PauliAxis)
     (v m px py probeEnergy regulator : ℝ) : ℂ :=
   (pauliGreenDenominatorOfRegulator v m px py probeEnergy regulator)⁻¹ *
-    ((pauliAxisComponent axis (v * px) (v * py) m : ℝ) : ℂ)
+    ((InternalSpace.pauliAxisComponent axis (v * px) (v * py) m : ℝ) : ℂ)
 
 /-- Physical-side identity-matrix coefficient. -/
 def pauliGreenScalarCoefficient
@@ -148,7 +148,7 @@ theorem pauliGreenOperatorOfRegulator_eq_closedForm
           hamiltonianOperator v m px py) := by
   rw [hamiltonianOperator_eq_pauli]
   simp [pauliGreenOperatorOfRegulator, pauliGreenScalarCoefficientOfRegulator,
-    pauliGreenPauliCoefficientOfRegulator, pauliAxisComponent,
+    pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent,
     Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
   module
 
