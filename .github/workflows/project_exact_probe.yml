@@ -18,12 +18,6 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
-      - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
-        with:
-          path: .lake/build
-          key: forwarding-reuse-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
-          restore-keys: |
-            project-build-${{ runner.os }}-${{ runner.arch }}-
       - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
         with:
           build: false
@@ -31,63 +25,100 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-      - name: Build target modules
-        run: |
-          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
-          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-      - name: Verify forwarding compression
+      - name: Compile Lean-native proof reuse MVP
         shell: bash
         run: |
-          cat > ForwardingProbe.py <<'PY'
-          import re
-          import sys
-          from pathlib import Path
-          sys.path.insert(0, str(Path('scripts').resolve()))
-          import proof_reuse_audit as audit
+          cat > ProofReuseMVP.lean <<'LEAN'
+          import LeanCondensedMatter
+          import Mathlib.Tactic.ClickSuggestions.FindPremises
 
-          HAVE_RE = re.compile(r"^\s*have\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*:=\s*(?P<term>.*)$", re.S)
-          RWA_RE = re.compile(r"^\s*rwa\s*\[(?P<rules>.*)\]\s+at\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*$", re.S)
-          def compact(text): return ' '.join(line.strip() for line in text.splitlines()).strip()
+          open Lean Meta Elab Command
+          open Lean.Meta.RefinedDiscrTree
+          open Mathlib.Tactic.ClickSuggestions
 
-          def run(path):
-              source = path.read_text(encoding='utf-8')
-              lines = source.splitlines(keepends=True)
-              generated = verified = 0
-              for block in audit.find_proof_blocks(source, 2):
-                  chunks = audit.top_level_tactic_chunks(source, block)
-                  for first, second in zip(chunks, chunks[1:]):
-                      have = HAVE_RE.match(''.join(lines[first.start_index:first.end_index]))
-                      rwa = RWA_RE.match(''.join(lines[second.start_index:second.end_index]))
-                      if have is None or rwa is None or have.group('name') != rwa.group('name'):
-                          continue
-                      term, rules = compact(have.group('term')), compact(rwa.group('rules'))
-                      candidate = f"simpa [{rules}, exchangeAlgebra, numberOperator] using ({term})"
-                      generated += 1
-                      region = audit.Region(scope='interval', block_kind=block.kind,
-                          start_line=first.start_line, end_line=second.end_line,
-                          start_index=first.start_index, end_index=second.end_index,
-                          indent=first.indent,
-                          original_lines=first.significant_lines + second.significant_lines,
-                          tactic_count=2)
-                      code, output, timed_out = audit.run_probe(
-                          audit.replace_region(source, region, candidate),
-                          f"forward-{first.start_line}-{second.end_line}", 30)
-                      print('CANDIDATE', path, first.start_line, second.end_line, candidate)
-                      if code == 0 and not timed_out and audit.replay_is_admission_free(output):
-                          verified += 1
-                          print('VERIFIED', candidate)
-                      else:
-                          print('ERROR', audit.first_error(output))
-              return generated, verified
+          namespace LeanCondensedMatter.ProofReuse
 
-          totals = [0,0]
-          for raw in [
-              'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean',
-              'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean']:
-              g,v = run(Path(raw).resolve()); totals[0] += g; totals[1] += v
-          print('TOTAL_GENERATED', totals[0])
-          print('TOTAL_VERIFIED', totals[1])
-          if totals[1] != 2:
-              raise SystemExit(f'expected two verified forwarding compressions, got {totals[1]}')
-          PY
-          python3 ForwardingProbe.py
+          structure Reuse where
+            candidate : Name
+            premiseGoals : Nat
+
+          private def projectModule? (moduleName : Name) : Bool :=
+            moduleName.toString.startsWith "LeanCondensedMatter"
+
+          private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
+            let moduleIdx ← env.const2ModIdx.get? declName
+            env.header.moduleNames[moduleIdx]?
+
+          private def collectProjectTheorems : CommandElabM NameSet := do
+            let env ← getEnv
+            let mut names := NameSet.empty
+            for (declName, info) in env.constants.toList do
+              let .thmInfo _ := info | continue
+              let some moduleName := declarationModule? env declName | continue
+              unless projectModule? moduleName do continue
+              unless (← findDeclarationRanges? declName).isSome do continue
+              names := names.insert declName
+            return names
+
+          private def tryCandidate (goal : MVarId) (candidate : Name) : MetaM (Option Nat) := do
+            let saved ← saveState
+            try
+              let proof ← mkConstWithFreshMVarLevels candidate
+              let subgoals ← goal.apply proof
+              let mut closes := true
+              for subgoal in subgoals do
+                unless ← subgoal.assumptionCore do
+                  closes := false
+              let result := if closes then some subgoals.size else none
+              saved.restore
+              return result
+            catch _ =>
+              saved.restore
+              return none
+
+          private def findReuse (subject : Name) (projectTheorems : NameSet) : MetaM (Array Reuse) := do
+            let subjectConst ← mkConstWithFreshMVarLevels subject
+            let subjectType ← inferType subjectConst
+            let syntheticGoal ← mkFreshExprSyntheticOpaqueMVar subjectType
+            let (_, goal) ← syntheticGoal.mvarId!.intros
+            goal.withContext do
+              let target ← goal.getType
+              computeImportDiscrTrees { rw := false, grw := false, app := true, appAt := false }
+              let matches ← getImportMatches appRef target
+              let mut seen := NameSet.empty
+              let mut result := #[]
+              for group in matches.flatten do
+                for lemma in group do
+                  let .const candidate := lemma.name | continue
+                  if candidate == subject || !projectTheorems.contains candidate || seen.contains candidate then
+                    continue
+                  seen := seen.insert candidate
+                  if let some premiseGoals ← tryCandidate goal candidate then
+                    result := result.push { candidate, premiseGoals }
+              return result
+
+          syntax (name := proofReuseCmd) "#proof_reuse " ident : command
+
+          elab_rules : command
+            | `(#proof_reuse $id:ident) => do
+                let subject ← resolveGlobalConstNoOverloadWithInfo id
+                let projectTheorems ← collectProjectTheorems
+                unless projectTheorems.contains subject do
+                  throwError "`{subject}` is not a source-declared LeanCondensedMatter theorem"
+                let results ← liftTermElabM do
+                  findReuse subject projectTheorems
+                if results.isEmpty then
+                  logInfo m!"{subject}: no project-theorem apply reuse found"
+                else
+                  let lines := results.toList.take 20 |>.map fun result =>
+                    let mode := if result.premiseGoals == 0 then "exact" else "apply + assumptions"
+                    s!"{result.candidate} ({mode})"
+                  logInfo m!"{subject}:\n{String.intercalate "\n" lines}"
+
+          end LeanCondensedMatter.ProofReuse
+
+          #proof_reuse SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self
+          #proof_reuse SecondQuantization.Fermionic.exchangeCommutator_annihilate_create_self
+          LEAN
+          lake env lean ProofReuseMVP.lean 2>&1 | tee proof-reuse.log
+          grep -q 'SecondQuantization.Common.exchangeCommutator_annihilate_create_self' proof-reuse.log
