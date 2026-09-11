@@ -86,20 +86,6 @@ noncomputable def projectorBastinTraceIntegrand
   finiteDimensionalOperatorTrace
     (projectorBastinOperatorIntegrand e v m px py probeEnergy broadening)
 
-/-- The existing Bastin trace integrand is unchanged when its current vertices are rewritten as the
-canonical electron-charge velocity representatives. -/
-theorem regularizedBastinTraceIntegrand_eq_canonicalChargeVelocityVertices
-    (e v m px py probeEnergy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
-      regularizedBastinTraceIntegrand
-        (hamiltonianOperator v m px py)
-        ((((-e : ℝ) : ℂ)) • velocityOperator .x v)
-        ((((-e : ℝ) : ℂ)) • velocityOperator .y v) probeEnergy broadening := by
-  rw [currentOperator_eq_charge_smul_velocityOperator,
-    currentOperator_eq_charge_smul_velocityOperator]
-
 /-- At nonzero broadening and away from the band degeneracy, the generic massive-Dirac Bastin trace
 integrand is exactly the projector-expanded expression. -/
 theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand

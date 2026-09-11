@@ -73,7 +73,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
 
 /-- The real coefficient of the radial current amplitude is bounded by `v²`; the mass-magnitude to
 energy ratio cannot exceed one. -/
-theorem abs_radialInterbandCurrentCoefficient_le_velocity_sq
+private theorem abs_radialInterbandCurrentCoefficient_le_velocity_sq
     (band : Band) (v m p : ℝ) :
     |bandSign band * m * v ^ 2 / energy v m p 0| ≤ v ^ 2 := by
   by_cases hm : m = 0
