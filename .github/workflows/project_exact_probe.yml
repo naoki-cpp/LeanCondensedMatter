@@ -31,13 +31,16 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-      - name: Build LeanCondensedMatter root
-        run: lake build LeanCondensedMatter
+      - name: Build representative modules
+        run: |
+          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
+          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
       - name: Compile Lean-native proof reuse MVP
         shell: bash
         run: |
           cat > ProofReuseMVP.lean <<'LEAN'
-          import LeanCondensedMatter
+          import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
           import Mathlib.Tactic.ClickSuggestions.FindPremises
 
           open Lean Meta Elab Command
