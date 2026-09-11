@@ -108,6 +108,21 @@ theorem coe_smul_site (X : AtomicConfiguration E Species) (g : X.symmetryGroup) 
     ((g • x : X.Site) : E) = (g : E ≃ᵢ E) x :=
   rfl
 
+/-- Membership in a site orbit is exactly reachability by an ambient configuration symmetry. -/
+@[simp]
+theorem mem_site_orbit_iff (X : AtomicConfiguration E Species) (x y : X.Site) :
+    y ∈ MulAction.orbit X.symmetryGroup x ↔
+      ∃ g : X.symmetryGroup, (g : E ≃ᵢ E) x = (y : E) := by
+  rw [MulAction.mem_orbit_iff]
+  constructor
+  · rintro ⟨g, h⟩
+    refine ⟨g, ?_⟩
+    exact congrArg (fun z : X.Site => (z : E)) h
+  · rintro ⟨g, h⟩
+    refine ⟨g, ?_⟩
+    apply Subtype.ext
+    exact h
+
 /-- Fixing a site under the canonical action is exactly fixing its underlying ambient point. -/
 @[simp]
 theorem smul_site_eq_self_iff (X : AtomicConfiguration E Species) (g : X.symmetryGroup)
@@ -135,6 +150,12 @@ theorem species_smul (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (
     rfl
   rw [hsite]
   exact hs
+
+/-- Sites in the same symmetry orbit have the same species label. -/
+theorem species_eq_of_mem_site_orbit (X : AtomicConfiguration E Species) {x y : X.Site}
+    (hy : y ∈ MulAction.orbit X.symmetryGroup x) : X.species y = X.species x := by
+  rcases MulAction.mem_orbit_iff.1 hy with ⟨g, rfl⟩
+  exact X.species_smul g x
 
 end Symmetry
 
