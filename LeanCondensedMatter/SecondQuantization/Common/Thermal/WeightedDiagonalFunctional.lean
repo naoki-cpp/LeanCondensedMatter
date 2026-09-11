@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 
 set_option linter.style.header false
 
@@ -60,6 +61,23 @@ theorem normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero
     normalizedWeightedDiagonal w A = 0 := by
   rw [normalizedWeightedDiagonal]
   simp [weightedTrace, hdiag]
+
+/-- A normalized weighted diagonal of a time-ordered product vanishes whenever both possible
+operator orderings have zero normalized weighted diagonal. -/
+theorem normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
+    (s : Statistics) (w : Config → ℂ)
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τA τB : ℝ)
+    (hAB : normalizedWeightedDiagonal w (A.comp B) = 0)
+    (hBA : normalizedWeightedDiagonal w (B.comp A) = 0) :
+    normalizedWeightedDiagonal w (timeOrderedProduct s A B τA τB) = 0 := by
+  rcases lt_trichotomy τB τA with h | h | h
+  · rw [timeOrderedProduct_of_gt s A B h, hAB]
+  · subst τB
+    rw [timeOrderedProduct_self_time s A B τA, normalizedWeightedDiagonal_smul,
+      normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_smul, hAB, hBA]
+    simp
+  · rw [timeOrderedProduct_of_lt s A B h, normalizedWeightedDiagonal_smul, hBA]
+    simp
 
 /-! ## Identity and diagonal operators -/
 
