@@ -36,15 +36,14 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: auto
 
-      - name: Build target modules
+      - name: Build target modules and theorem catalog
         run: |
-          lake build LeanCondensedMatter.Analysis.Dyson.Basic
-          lake build LeanCondensedMatter.Analysis.Operator.ZetaCommutator
-          lake build LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
-          lake build LeanCondensedMatter.Permutation.TraceLog
-          lake build LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
+          lake build LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
+          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
           lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
+          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
           lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
+          lake env lean scripts/TheoremCatalog.lean
 
       - name: Define project-only theorem search tactics
         shell: bash
@@ -134,15 +133,99 @@ jobs:
           EOF
           lake env lean ProjectProofSearch.lean
 
-      - name: Run project-only proof reuse probe
+      - name: Run extended proof reuse probe
         shell: bash
         run: |
           cat > ProjectAudit.py <<'PY'
+          import re
           import sys
           from pathlib import Path
 
           sys.path.insert(0, str(Path('scripts').resolve()))
           import proof_reuse_audit as audit
+
+          FIELD_BY_RE = re.compile(
+              r"^(?P<indent>[ \t]+)(?P<name>[A-Za-z_][A-Za-z0-9_']*)(?P<header>.*):=\s*by\s*(?:--.*)?$"
+          )
+          SIMP_NAME_RE = re.compile(
+              r"(?<![A-Za-z0-9_'])@?(?P<name>[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)"
+          )
+
+          def find_field_blocks(source, min_body_lines):
+              lines = source.splitlines(keepends=True)
+              blocks = []
+              for i, line in enumerate(lines):
+                  match = FIELD_BY_RE.match(line.rstrip('\r\n'))
+                  if match is None or match.group('name') in {'have', 'haveI', 'let', 'set'}:
+                      continue
+                  base_indent = audit.indent_width(match.group('indent'))
+                  body_start = i + 1
+                  end_index = audit.block_end(lines, body_start, base_indent)
+                  metadata = audit.body_metadata(lines, body_start, end_index, min_body_lines)
+                  if metadata is None:
+                      continue
+                  body_indent, body_lines = metadata
+                  blocks.append(audit.ProofBlock(
+                      kind='field',
+                      body_start_line=body_start + 1,
+                      end_line=end_index,
+                      body_start_index=body_start,
+                      end_index=end_index,
+                      base_indent=base_indent,
+                      body_indent=body_indent,
+                      body_lines=body_lines,
+                  ))
+              return blocks
+
+          original_find_proof_blocks = audit.find_proof_blocks
+          def find_proof_blocks(source, min_body_lines):
+              blocks = [*original_find_proof_blocks(source, min_body_lines),
+                        *find_field_blocks(source, min_body_lines)]
+              unique = {(b.body_start_index, b.end_index, b.kind): b for b in blocks}
+              return sorted(unique.values(), key=lambda b: (b.body_start_index, b.end_index, b.kind))
+          audit.find_proof_blocks = find_proof_blocks
+
+          original_whole = audit.whole_have_region
+          def whole_region(block):
+              if block.kind == 'field':
+                  return audit.Region(
+                      scope='block', block_kind='field',
+                      start_line=block.body_start_line, end_line=block.end_line,
+                      start_index=block.body_start_index, end_index=block.end_index,
+                      indent=block.body_indent, original_lines=block.body_lines, tactic_count=0)
+              return original_whole(block)
+          audit.whole_have_region = whole_region
+
+          def project_name_in_simp(replacement, index):
+              raw = audit.suggested_decl_name(replacement)
+              resolved = index.resolve(raw)
+              if resolved is not None:
+                  return resolved
+              if not replacement.lstrip().startswith(('simp', 'simpa')):
+                  return None
+              for bracket in re.findall(r"\[([^\]]*)\]", replacement):
+                  for match in SIMP_NAME_RE.finditer(bracket):
+                      resolved = index.resolve(match.group('name'))
+                      if resolved is not None:
+                          return resolved
+              return None
+
+          original_classify = audit.classify_candidate
+          def classify_candidate(mode, replacement, index):
+              candidate = original_classify(mode, replacement, index)
+              if mode != 'simp':
+                  return candidate
+              project_name = project_name_in_simp(replacement, index)
+              if project_name is None:
+                  return candidate
+              return audit.VerifiedCandidate(
+                  mode=mode,
+                  replacement=replacement,
+                  kind='theorem_reuse',
+                  candidate_origin='project',
+                  candidate_name=project_name,
+              )
+          audit.classify_candidate = classify_candidate
 
           original_run_probe = audit.run_probe
           def run_probe(source, label, timeout):
@@ -151,40 +234,42 @@ jobs:
           audit.PROBES['exact'] = 'project_exact?'
           audit.PROBES['apply'] = 'project_apply?'
 
-          index = audit.ProjectTheoremIndex(frozenset(), {}, 'project-meta', False)
+          index = audit.load_project_theorem_index(Path('docs/generated/theorems.json').resolve())
           targets = [
-              'LeanCondensedMatter/Analysis/Dyson/Basic.lean',
-              'LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean',
-              'LeanCondensedMatter/Analysis/Operator/OrbitalAngularMomentum.lean',
-              'LeanCondensedMatter/Permutation/TraceLog.lean',
-              'LeanCondensedMatter/SecondQuantization/Common/Algebra/ExchangeCommutator.lean',
+              'LeanCondensedMatter/SecondQuantization/Common/Algebra/ExchangeAlgebra.lean',
+              'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean',
               'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/ExchangeAlgebra.lean',
+              'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/CanonicalAnticommutationRelations.lean',
               'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/ExchangeAlgebra.lean',
           ]
           total = 0
+          project_total = 0
           for raw in targets:
               path = Path(raw).resolve()
               findings, diagnostics = audit.audit_file(
                   path,
-                  modes=('exact', 'apply'),
+                  modes=('exact', 'apply', 'simp'),
                   theorem_index=index,
                   min_body_lines=2,
-                  max_blocks=16,
+                  max_blocks=40,
                   timeout=30,
                   baseline=False,
                   scan_intervals=True,
                   min_tactics=2,
                   max_span_tactics=6,
-                  max_intervals_per_block=5,
-                  max_findings=12,
-                  max_suggestions_per_search=4,
+                  max_intervals_per_block=6,
+                  max_findings=20,
+                  max_suggestions_per_search=8,
               )
               print(f'===== {raw} =====')
               for item in diagnostics:
                   print('DIAG', item)
               for item in findings:
                   print(item)
+                  if item.candidate_origin == 'project':
+                      project_total += 1
               total += len(findings)
-          print('TOTAL_PROJECT_REUSE_FINDINGS', total)
+          print('TOTAL_FINDINGS', total)
+          print('TOTAL_PROJECT_REUSE_FINDINGS', project_total)
           PY
           python3 ProjectAudit.py
