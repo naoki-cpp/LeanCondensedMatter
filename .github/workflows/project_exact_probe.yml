@@ -80,7 +80,7 @@ jobs:
               for subgoal in subgoals do
                 unless ← subgoal.assumptionCore do
                   closes := false
-              let result := if closes then some subgoals.size else none
+              let result := if closes then some subgoals.length else none
               saved.restore
               return result
             catch _ =>
@@ -95,10 +95,10 @@ jobs:
             goal.withContext do
               let target ← goal.getType
               computeImportDiscrTrees { rw := false, grw := false, app := true, appAt := false }
-              let matches ← getImportMatches appRef target
+              let matchResult ← getImportMatches appRef target
               let mut seen := NameSet.empty
               let mut result := #[]
-              for group in matches.flatten do
+              for group in matchResult.flatten do
                 for lemma in group do
                   let .const candidate := lemma.name | continue
                   if candidate == subject || !projectTheorems.contains candidate || seen.contains candidate then
@@ -112,7 +112,7 @@ jobs:
 
           elab_rules : command
             | `(#proof_reuse $id:ident) => do
-                let subject ← resolveGlobalConstNoOverloadWithInfo id
+                let subject ← resolveGlobalConstNoOverload id
                 let projectTheorems ← collectProjectTheorems
                 unless projectTheorems.contains subject do
                   throwError "`{subject}` is not a source-declared LeanCondensedMatter theorem"
