@@ -57,7 +57,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     inPlaneLadderBareXSource, inPlaneCoefficientVector, mul_one, mul_zero, sub_zero]
   unfold pauliRungAngularCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
-    finiteCutoffContinuumBornDysonPauliCoefficient pauliAxisComponent
+    finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.pauliAxisComponent
   have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
       (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
     push_cast

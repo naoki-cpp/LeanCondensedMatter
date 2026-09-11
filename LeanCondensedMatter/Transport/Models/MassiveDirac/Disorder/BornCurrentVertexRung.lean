@@ -80,7 +80,7 @@ private theorem continuumBornPauliGreenOperator_polar_eq
     rw [hradial]
   simpa [continuumBornPauliGreenOperator,
     continuumBornPauliGreenScalarCoefficient,
-    continuumBornPauliGreenPauliCoefficient, pauliAxisComponent, hden] using
+    continuumBornPauliGreenPauliCoefficient, InternalSpace.pauliAxisComponent, hden] using
     (commonDenominatorPauliOperator_polar_eq
       (continuumBornPauliGreenDenominator
         side v m p 0 probeEnergy disorderStrength hbar)
@@ -186,14 +186,14 @@ private theorem continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_inverse
   · unfold continuumBornRetardedAdvancedPauliXAngularCoefficient
       continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularCoefficient
     unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
-    simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
+    simp [InternalSpace.pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
     ring_nf
     simp [hI]
     ring
   · unfold continuumBornRetardedAdvancedPauliXAngularCoefficient
       continuumBornRetardedAdvancedPauliXAngularNumerator pauliRungAngularCoefficient
     unfold continuumBornPauliGreenScalarCoefficient continuumBornPauliGreenPauliCoefficient
-    simp [pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
+    simp [InternalSpace.pauliAxisComponent, continuumBornEffectiveEnergy, continuumBornEffectiveMass]
     ring_nf
     simp [hI]
 
