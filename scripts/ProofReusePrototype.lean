@@ -29,14 +29,20 @@ private def collectProjectTheorems : CommandElabM (Array ProjectTheorem) := do
     theorems := theorems.push { name := declName, type := theoremInfo.type }
   return theorems
 
+private def indexKeys (conclusion : Expr) : Array Expr :=
+  match conclusion.eq? with
+  | some (_, lhs, _) => #[conclusion, lhs]
+  | none => #[conclusion]
+
 private def buildProjectTree (theorems : Array ProjectTheorem) :
     MetaM (RefinedDiscrTree Name) := do
   let mut pre : PreDiscrTree Name := {}
   for entry in theorems do
     setMCtx {}
     let (_, _, conclusion) ← forallMetaTelescope entry.type
-    for (key, lazy) in (← initializeLazyEntryWithEta conclusion) do
-      pre := pre.push key (lazy, entry.name)
+    for indexed in indexKeys conclusion do
+      for (key, lazy) in (← initializeLazyEntryWithEta indexed) do
+        pre := pre.push key (lazy, entry.name)
   return pre.toRefinedDiscrTree
 
 private def tryCandidate (goal : MVarId) (candidate : Name) : MetaM (Option Nat) := do
@@ -63,16 +69,17 @@ private def findReuse
   let (_, goal) ← syntheticGoal.mvarId!.intros
   goal.withContext do
     let target ← goal.getType
-    let matchResult ← getMatches tree target
     let mut seen := NameSet.empty
     let mut results := #[]
-    for group in matchResult.flatten do
-      for candidate in group do
-        if candidate == subject || seen.contains candidate then
-          continue
-        seen := seen.insert candidate
-        if let some premiseGoals ← tryCandidate goal candidate then
-          results := results.push (candidate, premiseGoals)
+    for query in indexKeys target do
+      let matchResult ← getMatches tree query
+      for group in matchResult.flatten do
+        for candidate in group do
+          if candidate == subject || seen.contains candidate then
+            continue
+          seen := seen.insert candidate
+          if let some premiseGoals ← tryCandidate goal candidate then
+            results := results.push (candidate, premiseGoals)
     return results
 
 syntax (name := proofReuseCmd) "#proof_reuse " ident : command
