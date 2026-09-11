@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Symmetry
+import Mathlib.Algebra.Torsor.Basic
 import Mathlib.Topology.MetricSpace.IsometricSMul
 
 /-!
