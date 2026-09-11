@@ -13,7 +13,7 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .lake/build
-          key: proof-reuse-catalog-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          key: proof-reuse-prototype-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-
       - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
@@ -31,17 +31,9 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-      - name: Build project root
-        run: lake build LeanCondensedMatter
-      - name: Generate theorem catalog
-        run: lake env lean scripts/TheoremCatalog.lean
-      - name: Show direct wrappers
+      - name: Build representative module
+        run: lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
+      - name: Compile project theorem index prototype
         run: |
-          python3 - <<'PY'
-          import json
-          entries = json.load(open('docs/generated/theorems.json'))
-          wrappers = [e for e in entries if e['directWrapperOf'] is not None]
-          print('direct wrappers:', len(wrappers))
-          for e in wrappers[:80]:
-              print(f"{e['name']} -> {e['directWrapperOf']} | {e['module']}")
-          PY
+          lake env lean scripts/ProofReusePrototype.lean 2>&1 | tee proof-reuse.log
+          grep -q 'SecondQuantization.Bosonic.create_basisState (apply)' proof-reuse.log
