@@ -161,11 +161,7 @@ theorem species_eq_of_mem_site_orbit (X : AtomicConfiguration E Species) {x y : 
 instance bondMulAction (X : AtomicConfiguration E Species) : MulAction X.symmetryGroup X.Bond where
   smul g b :=
     ⟨Sym2.map (fun x : X.Site => g • x) b.1, by
-      have hinj : Function.Injective (fun x : X.Site => g • x) := by
-        intro x y hxy
-        have h := congrArg (fun z : X.Site => (g⁻¹ : X.symmetryGroup) • z) hxy
-        simpa using h
-      simpa only [Sym2.isDiag_map hinj] using b.2⟩
+      simpa only [Sym2.isDiag_map (MulAction.injective g)] using b.2⟩
   one_smul b := by
     apply Subtype.ext
     refine Sym2.inductionOn (b : Sym2 X.Site) ?_
