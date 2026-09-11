@@ -122,9 +122,8 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_self
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
-    rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
-      ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
-    exact Complex.ofReal_ne_zero.2 (by positivity)
+    simpa [Common.Statistics.zetaInt_fermion, add_comm] using
+      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
   field_simp
   ring
 
@@ -182,9 +181,8 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
-    rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
-      ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
-    exact Complex.ofReal_ne_zero.2 (by positivity)
+    simpa [Common.Statistics.zetaInt_fermion, add_comm] using
+      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
   field_simp
   ring
 

@@ -45,5 +45,19 @@ theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) :
   refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
   exact Finset.sum_pos (fun n _ => Real.exp_pos _) Finset.univ_nonempty
 
+/-- The Bloch--de Dominicis non-resonance denominator is automatically nonzero for fermionic
+statistics and any real energy shift and inverse temperature. -/
+theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
+    (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
+  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by
+    positivity
+  have heq : (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
+      Complex.exp ((x * β : ℝ) : ℂ) = ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
+    rw [Common.Statistics.zetaInt_fermion]
+    push_cast [Complex.ofReal_exp]
+    ring
+  rw [heq]
+  exact_mod_cast hpos.ne'
+
 end Fermionic
 end SecondQuantization
