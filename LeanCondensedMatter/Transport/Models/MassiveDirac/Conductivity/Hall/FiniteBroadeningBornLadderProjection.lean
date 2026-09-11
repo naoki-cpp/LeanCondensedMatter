@@ -38,7 +38,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivity
         e v m probeEnergy broadening disorderStrength hbar pMax).component .y .x =
       -(finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
         e v m probeEnergy broadening disorderStrength hbar pMax).component .x .y := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+  change
+    ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+          .y .x e v m probeEnergy broadening disorderStrength hbar pMax =
+      -(((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+          .x .y e v m probeEnergy broadening disorderStrength hbar pMax)
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy]
   ring
 
@@ -50,7 +56,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivity
         e v m probeEnergy broadening disorderStrength hbar pMax).component .y .y =
       (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
         e v m probeEnergy broadening disorderStrength hbar pMax).component .x .x := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+  change
+    ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+          .y .y e v m probeEnergy broadening disorderStrength hbar pMax =
+      ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
+          .x .x e v m probeEnergy broadening disorderStrength hbar pMax
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx]
 
 /-- Physical fixed-cutoff conductivity tensor after the componentwise `η → 0⁺` boundary has been
