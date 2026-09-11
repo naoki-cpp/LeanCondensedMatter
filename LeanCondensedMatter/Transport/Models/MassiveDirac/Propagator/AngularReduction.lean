@@ -113,27 +113,10 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
     pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
       matrixOperator sigmaY
-  have hcos : Continuous (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ)) :=
-    Complex.continuous_ofReal.comp Real.continuous_cos
-  have hsin : Continuous (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ)) :=
-    Complex.continuous_ofReal.comp Real.continuous_sin
-  have heven : IntervalIntegrable (fun _ : ℝ => even) volume 0 (2 * Real.pi) :=
-    (continuous_const : Continuous (fun _ : ℝ => even)).intervalIntegrable 0 (2 * Real.pi)
-  have hx : IntervalIntegrable
-      (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) • xPart) volume 0 (2 * Real.pi) :=
-    (hcos.smul (continuous_const : Continuous (fun _ : ℝ => xPart))).intervalIntegrable
-      0 (2 * Real.pi)
-  have hy : IntervalIntegrable
-      (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • yPart) volume 0 (2 * Real.pi) :=
-    (hsin.smul (continuous_const : Continuous (fun _ : ℝ => yPart))).intervalIntegrable
-      0 (2 * Real.pi)
   unfold continuumAngularGreenIntegralOfRegulator
   simp_rw [pauliGreenOperatorOfRegulator_polar_eq v m p _ probeEnergy regulator]
-  rw [intervalIntegral.integral_add (heven.add hx) hy]
-  rw [intervalIntegral.integral_add heven hx]
-  rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rw [integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
-  simp [even]
+  simpa [even] using
+    integral_const_add_complex_cos_smul_add_complex_sin_smul even xPart yPart
 
 end
 
