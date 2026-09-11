@@ -99,8 +99,8 @@ jobs:
               let mut seen := NameSet.empty
               let mut result := #[]
               for group in matchResult.flatten do
-                for lemma in group do
-                  let .const candidate := lemma.name | continue
+                for candidateLemma in group do
+                  let .const candidate := candidateLemma.name | continue
                   if candidate == subject || !projectTheorems.contains candidate || seen.contains candidate then
                     continue
                   seen := seen.insert candidate
