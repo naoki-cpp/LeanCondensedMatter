@@ -82,8 +82,10 @@ theorem mem_symmetryGroup {X : AtomicConfiguration E Species} {g : E ≃ᵢ E} :
 /-- Every species-preserving symmetry preserves the total occupied set. -/
 theorem image_occupied_eq {X : AtomicConfiguration E Species} {g : E ≃ᵢ E}
     (hg : g ∈ X.symmetryGroup) : g '' X.occupied = X.occupied := by
+  have hspecies : ∀ s, g '' X.sitesOfSpecies s = X.sitesOfSpecies s :=
+    mem_symmetryGroup.1 hg
   rw [X.occupied_eq_iUnion_sitesOfSpecies, Set.image_iUnion]
-  simp_rw [hg]
+  simp_rw [hspecies]
 
 /-- The action of a configuration symmetry on one occupied site. -/
 def mapSite (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) : X.Site :=
