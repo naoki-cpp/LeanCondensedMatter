@@ -57,7 +57,6 @@ jobs:
               generated = verified = 0
               for block in blocks:
                   chunks = audit.top_level_tactic_chunks(source, block)
-                  print('CHUNKS', block.kind, [(c.start_line,c.end_line,compact(''.join(lines[c.start_index:c.end_index]))) for c in chunks])
                   for first, second in zip(chunks, chunks[1:]):
                       first_text = ''.join(lines[first.start_index:first.end_index])
                       second_text = ''.join(lines[second.start_index:second.end_index])
@@ -66,7 +65,7 @@ jobs:
                       if have is None or rwa is None or have.group('name') != rwa.group('name'):
                           continue
                       term, rules = compact(have.group('term')), compact(rwa.group('rules'))
-                      candidate = f"simpa only [{rules}] using ({term})"
+                      candidate = f"simpa [{rules}] using ({term})"
                       generated += 1
                       print('GENERATED', first.start_line, second.end_line, candidate)
                       region = audit.Region(scope='interval', block_kind=block.kind,
@@ -94,5 +93,7 @@ jobs:
               g,v = run(Path(raw).resolve()); totals[0] += g; totals[1] += v
           print('TOTAL_GENERATED', totals[0])
           print('TOTAL_VERIFIED', totals[1])
+          if totals[1] == 0:
+              raise SystemExit('expected a verified forwarding compression')
           PY
           python3 ForwardingProbe.py
