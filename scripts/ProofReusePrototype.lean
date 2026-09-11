@@ -32,11 +32,11 @@ private def collectProjectTheorems : CommandElabM (Array ProjectTheorem) := do
 private def buildProjectTree (theorems : Array ProjectTheorem) :
     MetaM (RefinedDiscrTree Name) := do
   let mut pre : PreDiscrTree Name := {}
-  for theorem in theorems do
+  for entry in theorems do
     setMCtx {}
-    let (_, _, conclusion) ← forallMetaTelescope theorem.type
+    let (_, _, conclusion) ← forallMetaTelescope entry.type
     for (key, lazy) in (← initializeLazyEntryWithEta conclusion) do
-      pre := pre.push key (lazy, theorem.name)
+      pre := pre.push key (lazy, entry.name)
   return pre.toRefinedDiscrTree
 
 private def tryCandidate (goal : MVarId) (candidate : Name) : MetaM (Option Nat) := do
@@ -48,7 +48,7 @@ private def tryCandidate (goal : MVarId) (candidate : Name) : MetaM (Option Nat)
     for subgoal in subgoals do
       unless ← subgoal.assumptionCore do
         closes := false
-    let result := if closes then some subgoals.size else none
+    let result := if closes then some subgoals.length else none
     saved.restore
     return result
   catch _ =>
@@ -63,10 +63,10 @@ private def findReuse
   let (_, goal) ← syntheticGoal.mvarId!.intros
   goal.withContext do
     let target ← goal.getType
-    let matches ← getMatches tree target
+    let matchResult ← getMatches tree target
     let mut seen := NameSet.empty
     let mut results := #[]
-    for group in matches.flatten do
+    for group in matchResult.flatten do
       for candidate in group do
         if candidate == subject || seen.contains candidate then
           continue
