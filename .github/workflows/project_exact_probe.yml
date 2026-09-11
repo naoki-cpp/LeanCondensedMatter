@@ -22,7 +22,7 @@ jobs:
       - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .lake/build
-          key: proof-reuse-production-v3-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          key: proof-reuse-production-v4-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-
       - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
