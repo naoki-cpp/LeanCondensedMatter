@@ -71,8 +71,8 @@ def symmetryGroup (X : AtomicConfiguration E Species) : Subgroup (E ≃ᵢ E) wh
       (g⁻¹ : E ≃ᵢ E) '' X.sitesOfSpecies s =
           (g⁻¹ : E ≃ᵢ E) '' (g '' X.sitesOfSpecies s) := by rw [hg s]
       _ = X.sitesOfSpecies s := by
-        rw [Set.image_image]
-        simp
+        change g.symm '' (g '' X.sitesOfSpecies s) = X.sitesOfSpecies s
+        exact g.toEquiv.symm_image_image _
 
 @[simp]
 theorem mem_symmetryGroup {X : AtomicConfiguration E Species} {g : E ≃ᵢ E} :
