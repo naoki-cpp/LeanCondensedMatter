@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
 
@@ -12,8 +12,7 @@ The closed massive-Dirac Berry curvature must
 - have opposite signs in the two bands.
 
 The algebraic `berryCurvature` definition is total even when `E = 0`, because Lean's field
-division is total. The algebraic massless identity therefore needs no nondegeneracy hypothesis,
-while force-matrix/projector statements retain it where the spectral projectors require `E ≠ 0`.
+division is total. The algebraic massless identity therefore needs no nondegeneracy hypothesis.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -49,25 +48,6 @@ theorem berryCurvature_massless (band : Band) (v px py : ℝ) :
     berryCurvature band v 0 px py = 0 := by
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower]
-
-/-- The force-matrix/projector curvature inherits the odd-in-mass symmetry away from the band
-degeneracy. -/
-theorem forceMatrixBerryCurvature_neg_mass (band : Band) (v m px py : ℝ)
-    (hE : energy v m px py ≠ 0) :
-    forceMatrixBerryCurvature band v (-m) px py =
-      -forceMatrixBerryCurvature band v m px py := by
-  have hEneg : energy v (-m) px py ≠ 0 := by
-    simpa [energy_neg_mass] using hE
-  rw [forceMatrixBerryCurvature_eq_berryCurvature band v (-m) px py hEneg]
-  rw [forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
-  exact berryCurvature_neg_mass band v m px py
-
-/-- The force-matrix/projector curvature vanishes in the massless nondegenerate model. -/
-theorem forceMatrixBerryCurvature_massless (band : Band) (v px py : ℝ)
-    (hE : energy v 0 px py ≠ 0) :
-    forceMatrixBerryCurvature band v 0 px py = 0 := by
-  rw [forceMatrixBerryCurvature_eq_berryCurvature band v 0 px py hE]
-  exact berryCurvature_massless band v px py
 
 end
 
