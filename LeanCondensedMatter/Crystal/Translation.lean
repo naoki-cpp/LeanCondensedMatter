@@ -30,12 +30,14 @@ configuration species by species. -/
 def translationSubgroup (X : AtomicConfiguration E Species) : AddSubgroup V where
   carrier := {v | (IsometryEquiv.constVAdd v : E ≃ᵢ E) ∈ X.symmetryGroup}
   zero_mem' := by
+    change (IsometryEquiv.constVAdd (0 : V) : E ≃ᵢ E) ∈ X.symmetryGroup
     have h : (IsometryEquiv.constVAdd (0 : V) : E ≃ᵢ E) = 1 := by
       ext x
       simp
     rw [h]
     exact X.symmetryGroup.one_mem
   add_mem' {v w} hv hw := by
+    change (IsometryEquiv.constVAdd (v + w) : E ≃ᵢ E) ∈ X.symmetryGroup
     have h : (IsometryEquiv.constVAdd (v + w) : E ≃ᵢ E) =
         (IsometryEquiv.constVAdd v : E ≃ᵢ E) * (IsometryEquiv.constVAdd w : E ≃ᵢ E) := by
       ext x
@@ -43,6 +45,7 @@ def translationSubgroup (X : AtomicConfiguration E Species) : AddSubgroup V wher
     rw [h]
     exact X.symmetryGroup.mul_mem hv hw
   neg_mem' {v} hv := by
+    change (IsometryEquiv.constVAdd (-v) : E ≃ᵢ E) ∈ X.symmetryGroup
     have h : (IsometryEquiv.constVAdd (-v) : E ≃ᵢ E) =
         (IsometryEquiv.constVAdd v : E ≃ᵢ E)⁻¹ := by
       ext x
