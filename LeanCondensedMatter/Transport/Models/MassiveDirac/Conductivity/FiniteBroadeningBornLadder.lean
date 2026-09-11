@@ -27,13 +27,13 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- Physically normalized finite-cutoff finite-`η` Středa surface conductivity tensor. The upstream
-angle integral already supplies the angular measure, so `momentumMeasurePrefactor hbar` is attached
-without an additional `2π` factor. -/
+angle integral already supplies the angular measure, so the combined Středa conductivity
+normalization is attached without an additional `2π` factor. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     ConductivityTensor Direction2 where
   component := fun measured source =>
-    ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+    ((bastinStredaConductivityNormalization hbar : ℝ) : ℂ) *
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
         measured source e v m probeEnergy broadening disorderStrength hbar pMax
 

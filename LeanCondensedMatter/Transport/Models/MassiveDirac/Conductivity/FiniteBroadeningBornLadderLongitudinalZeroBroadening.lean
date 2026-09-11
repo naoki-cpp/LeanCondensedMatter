@@ -24,7 +24,7 @@ open Filter QuantumTheory.Transport
 Born-Dyson Středa surface conductivity. -/
 def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  ((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ) *
+  ((bastinStredaConductivityNormalization hbar : ℝ) : ℂ) *
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
       e v m probeEnergy disorderStrength hbar pMax
 
@@ -55,8 +55,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   simpa [
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
-    h.const_mul
-      (((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ))
+    h.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
 
 end
 
