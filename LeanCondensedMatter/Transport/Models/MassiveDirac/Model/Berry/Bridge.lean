@@ -40,22 +40,6 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : �
     simp [berryCurvature_upper, berryCurvature_lower] <;>
     field_simp [hE]
 
-/-- Upper-band force-matrix curvature reproduces `Ω₊ = -m v²/(2E³)`. -/
-theorem forceMatrixBerryCurvature_upper (v m px py : ℝ)
-    (hE : energy v m px py ≠ 0) :
-    forceMatrixBerryCurvature .upper v m px py =
-      -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  rw [forceMatrixBerryCurvature_eq_berryCurvature .upper v m px py hE]
-  exact berryCurvature_upper v m px py
-
-/-- Lower-band force-matrix curvature reproduces `Ω₋ = +m v²/(2E³)`. -/
-theorem forceMatrixBerryCurvature_lower (v m px py : ℝ)
-    (hE : energy v m px py ≠ 0) :
-    forceMatrixBerryCurvature .lower v m px py =
-      (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  rw [forceMatrixBerryCurvature_eq_berryCurvature .lower v m px py hE]
-  exact berryCurvature_lower v m px py
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
