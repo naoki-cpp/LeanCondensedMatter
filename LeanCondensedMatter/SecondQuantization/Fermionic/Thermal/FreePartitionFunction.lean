@@ -97,12 +97,11 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
   have hZ : freePartitionFunction ε β = (1 + f i) * P := by
     rw [freePartitionFunction_eq_prod, hP, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
   have hPne : P ≠ 0 := by
-    rw [← hsum_not]
-    simp_rw [freeBoltzmannWeight_eq_ofReal]
-    rw [← Complex.ofReal_sum]
-    refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
-    apply Finset.sum_pos (fun n _ => Real.exp_pos _)
-    exact ⟨vacuum, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp [vacuum]⟩⟩
+    rw [hP, Finset.prod_ne_zero_iff]
+    intro j _
+    rw [hf]
+    simpa [Common.Statistics.zetaInt_fermion] using
+      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (-ε j))
   have hnum : Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) = f i * P := by
     have hsplit :
         Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) +
