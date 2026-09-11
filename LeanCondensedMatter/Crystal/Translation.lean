@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Symmetry
-import Mathlib.Algebra.Torsor.Basic
 import Mathlib.Topology.MetricSpace.IsometricSMul
 
 /-!
@@ -23,7 +22,7 @@ variable {V E Species : Type*}
 
 section Translation
 
-variable [AddGroup V] [MetricSpace E] [AddTorsor V E] [IsIsometricVAdd V E]
+variable [AddGroup V] [MetricSpace E] [AddAction V E] [IsIsometricVAdd V E]
 
 /-- The additive subgroup of translation vectors whose induced isometries preserve the atomic
 configuration species by species. -/
