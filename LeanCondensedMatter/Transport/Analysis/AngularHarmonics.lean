@@ -31,6 +31,36 @@ theorem integral_complex_sin_zero_two_pi :
   simpa using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
 
+/-- Full-angle integration of a constant plus first complex harmonics in a complex Banach space. -/
+theorem integral_const_add_complex_cos_smul_add_complex_sin_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
+    (x₀ xCos xSin : E) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      x₀ + ((Real.cos θ : ℝ) : ℂ) • xCos + ((Real.sin θ : ℝ) : ℂ) • xSin) =
+      (2 * Real.pi : ℝ) • x₀ := by
+  have hconst : IntervalIntegrable (fun _θ : ℝ => x₀) volume 0 (2 * Real.pi) :=
+    continuous_const.intervalIntegrable 0 (2 * Real.pi)
+  have hcos : IntervalIntegrable
+      (fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) • xCos) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hsin : IntervalIntegrable
+      (fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) • xSin) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  rw [intervalIntegral.integral_add (hconst.add hcos) hsin,
+    intervalIntegral.integral_add hconst hcos,
+    intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const,
+    integral_complex_cos_zero_two_pi, integral_complex_sin_zero_two_pi]
+  simp
+
+/-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
+theorem integral_complex_cos_mul_add_sin_mul_zero_two_pi (cCos cSin : ℂ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((Real.cos θ : ℝ) : ℂ) * cCos + ((Real.sin θ : ℝ) : ℂ) * cSin) = 0 := by
+  simpa [smul_eq_mul] using
+    (integral_const_add_complex_cos_smul_add_complex_sin_smul (0 : ℂ) cCos cSin)
+
 /-- Full-angle integral of `cos² θ`. -/
 theorem integral_cos_sq_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2) = Real.pi := by
