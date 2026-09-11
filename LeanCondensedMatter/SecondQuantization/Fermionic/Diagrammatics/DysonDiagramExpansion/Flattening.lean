@@ -206,24 +206,5 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) at hlocal
   rw [hlocal, smul_smul, flatVertexLegCommutatorCoeff]
 
-/-! ## The general theorem's non-resonance hypothesis -/
-
-/-- **The general theorem's third (non-resonance) hypothesis is automatic for fermions, at any real
-eigenvalue shift** — `Common.Statistics.fermion.zetaInt = -1` turns `1 - ζ * exp(x * β)` into
-`1 + exp(x * β)`, and `Complex.exp` at a real argument is a positive real number, so this can never
-vanish. Unlike the eigenoperator/commutator hypotheses, this one needs no information about the
-`quarticLegOperatorForSequence` family at all — it holds for *every* real `x`, `β`. -/
-theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
-    (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
-  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by
-    positivity
-  have heq : (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
-      Complex.exp ((x * β : ℝ) : ℂ) = ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
-    rw [Common.Statistics.zetaInt_fermion]
-    push_cast [Complex.ofReal_exp]
-    ring
-  rw [heq]
-  exact_mod_cast hpos.ne'
-
 end Fermionic
 end SecondQuantization
