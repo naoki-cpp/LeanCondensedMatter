@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.AtomicConfiguration
+import Mathlib.Algebra.Group.Action.Defs
 import Mathlib.Algebra.Group.Subgroup.Defs
 import Mathlib.Topology.MetricSpace.Isometry
 
@@ -87,44 +88,39 @@ theorem image_occupied_eq {X : AtomicConfiguration E Species} {g : E ≃ᵢ E}
   rw [X.occupied_eq_iUnion_sitesOfSpecies, Set.image_iUnion]
   simp_rw [hspecies]
 
-/-- The action of a configuration symmetry on one occupied site. -/
-def mapSite (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) : X.Site :=
-  ⟨(g : E ≃ᵢ E) x, by
-    have hx : (g : E ≃ᵢ E) x ∈ (g : E ≃ᵢ E) '' X.occupied :=
-      ⟨x, x.property, rfl⟩
-    rwa [X.image_occupied_eq g.property] at hx⟩
+/-- Configuration symmetries act canonically on occupied sites. -/
+instance siteMulAction (X : AtomicConfiguration E Species) : MulAction X.symmetryGroup X.Site where
+  smul g x :=
+    ⟨(g : E ≃ᵢ E) x, by
+      have hx : (g : E ≃ᵢ E) x ∈ (g : E ≃ᵢ E) '' X.occupied :=
+        ⟨x, x.property, rfl⟩
+      rwa [X.image_occupied_eq g.property] at hx⟩
+  one_smul x := by
+    apply Subtype.ext
+    rfl
+  mul_smul g h x := by
+    apply Subtype.ext
+    rfl
 
 @[simp]
-theorem coe_mapSite (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
-    (X.mapSite g x : E) = (g : E ≃ᵢ E) x :=
+theorem coe_smul_site (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
+    ((g • x : X.Site) : E) = (g : E ≃ᵢ E) x :=
   rfl
 
-/-- A configuration symmetry induces a permutation of occupied sites. -/
-def siteEquiv (X : AtomicConfiguration E Species) (g : X.symmetryGroup) : X.Site ≃ X.Site where
-  toFun := X.mapSite g
-  invFun := X.mapSite g⁻¹
-  left_inv x := by
-    apply Subtype.ext
-    simp [mapSite]
-  right_inv x := by
-    apply Subtype.ext
-    simp [mapSite]
-
+/-- The canonical site action preserves the species label. -/
 @[simp]
-theorem coe_siteEquiv (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
-    (X.siteEquiv g x : E) = (g : E ≃ᵢ E) x :=
-  rfl
-
-/-- The induced site permutation preserves the species label. -/
-@[simp]
-theorem species_siteEquiv (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
-    X.species (X.siteEquiv g x) = X.species x := by
+theorem species_smul (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
+    X.species (g • x) = X.species x := by
   have hx : (x : E) ∈ X.sitesOfSpecies (X.species x) := ⟨x.property, rfl⟩
   have hgx : (g : E ≃ᵢ E) x ∈ X.sitesOfSpecies (X.species x) := by
     rw [← g.property (X.species x)]
     exact ⟨x, hx, rfl⟩
   rcases hgx with ⟨hoccupied, hs⟩
-  simpa [siteEquiv, mapSite] using hs
+  have hsite : g • x = (⟨(g : E ≃ᵢ E) x, hoccupied⟩ : X.Site) := by
+    apply Subtype.ext
+    rfl
+  rw [hsite]
+  exact hs
 
 end Symmetry
 
