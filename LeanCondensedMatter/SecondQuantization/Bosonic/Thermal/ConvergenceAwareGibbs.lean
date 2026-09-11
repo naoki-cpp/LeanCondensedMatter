@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalCompositionMatrixCoeff
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
@@ -83,6 +84,17 @@ noncomputable def freeGibbsSummable (ε : Mode → ℝ) (β : ℝ)
   Summable (fun n : Occupation Mode =>
     Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp A) n n)
 
+omit [Fintype Mode] in
+/-- An operator with identically zero diagonal occupation-basis coefficients has a summable free
+Gibbs numerator. -/
+theorem freeGibbsSummable_of_matrixCoeff_self_eq_zero
+    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (hdiag : ∀ n, Common.matrixCoeff A n n = 0) :
+    freeGibbsSummable ε β A := by
+  unfold freeGibbsSummable imaginaryTimeEvolveFree
+  exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
+    rw [Common.matrixCoeff_diagonalEvolution_comp, hdiag n, mul_zero]
+
 /-- The linear domain of algebraic-Fock endomorphisms with summable free Gibbs numerator. -/
 noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
@@ -118,6 +130,17 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : ℂ :=
   Common.tsumTrace ((imaginaryTimeEvolveFree ε (-β)).comp A) /
     freeGibbsPartition ε β
+
+omit [Fintype Mode] in
+/-- The free Gibbs expectation vanishes when every diagonal occupation-basis coefficient of the
+observable vanishes. -/
+theorem freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero
+    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (hdiag : ∀ n, Common.matrixCoeff A n n = 0) :
+    freeGibbsExpectation ε β A = 0 := by
+  unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
+  simp_rw [Common.matrixCoeff_diagonalEvolution_comp, hdiag, mul_zero]
+  simp
 
 omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
