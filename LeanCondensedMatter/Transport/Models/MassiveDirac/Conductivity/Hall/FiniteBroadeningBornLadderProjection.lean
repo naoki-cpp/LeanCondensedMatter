@@ -15,9 +15,10 @@ any broadening or disorder limit is taken. This module uses those identities tog
 existing ordered `xx` and `xy` zero-broadening limits to construct the physical zero-broadening
 tensor boundary.
 
-The Hall component is then the antisymmetric tensor projection rather than a label attached to an
-ordered response. Its subsequent one-sided weak-disorder limit reproduces the standard non-crossing
-massive-Dirac result of Ado et al., EPL 111, 37004 (2015), Eq. (3).
+The Hall component is the antisymmetric tensor projection rather than a label attached to an
+ordered response. Its subsequent one-sided weak-disorder limit is inherited from the ordered `xy`
+endpoint. Identification with external closed-form benchmarks belongs to downstream benchmark
+modules.
 
 The cutoff remains fixed beyond the metallic shell, and the limits remain sequential: `η → 0⁺` at
 fixed positive disorder, then `W → 0⁺`. No ultraviolet/thermodynamic/simultaneous limit, crossed
@@ -143,44 +144,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy] using
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero
       e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-
-/-- Standard non-crossing massive-Dirac Hall conductivity of Ado et al., EPL 111, 37004 (2015),
-Eq. (3), written with `h = 2πℏ`. -/
-def nonCrossingHallConductivity (e hbar m probeEnergy : ℝ) : ℝ :=
-  -(4 * e ^ 2 / planckFromReduced hbar) *
-    (probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
-      (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)
-
-/-- The sequential zero-broadening then weak-disorder Hall projection reproduces the Ado
-non-crossing conductivity formula. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing
-    (e v m probeEnergy hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hhbar : 0 < hbar)
-    (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun disorderStrength : ℝ =>
-        (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax).hallComponent .x .y)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (((nonCrossingHallConductivity e hbar m probeEnergy : ℝ) : ℂ))) := by
-  have h :=
-    tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero
-      e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
-  have htarget :
-      (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
-        (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) =
-      (((nonCrossingHallConductivity e hbar m probeEnergy : ℝ) : ℂ)) := by
-    norm_cast
-    unfold nonCrossingHallConductivity planckFromReduced
-    field_simp [ne_of_gt hhbar, hden, Real.pi_ne_zero]
-    norm_num
-    ring
-  rw [htarget] at h
-  exact h
 
 end
 
