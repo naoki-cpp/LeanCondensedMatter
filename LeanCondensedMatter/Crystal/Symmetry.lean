@@ -108,12 +108,11 @@ theorem coe_smul_site (X : AtomicConfiguration E Species) (g : X.symmetryGroup) 
     ((g • x : X.Site) : E) = (g : E ≃ᵢ E) x :=
   rfl
 
-/-- Membership in the canonical stabilizer of a site is exactly ambient pointwise fixation. -/
+/-- Fixing a site under the canonical action is exactly fixing its underlying ambient point. -/
 @[simp]
-theorem mem_site_stabilizer_iff (X : AtomicConfiguration E Species) (x : X.Site)
-    (g : X.symmetryGroup) :
-    g ∈ MulAction.stabilizer X.symmetryGroup x ↔ (g : E ≃ᵢ E) x = x := by
-  rw [MulAction.mem_stabilizer_iff]
+theorem smul_site_eq_self_iff (X : AtomicConfiguration E Species) (g : X.symmetryGroup)
+    (x : X.Site) :
+    g • x = x ↔ (g : E ≃ᵢ E) x = x := by
   constructor
   · intro h
     have hcoe := congrArg (fun y : X.Site => (y : E)) h
