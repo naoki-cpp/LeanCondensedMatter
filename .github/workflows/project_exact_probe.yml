@@ -37,3 +37,5 @@ jobs:
         run: |
           lake env lean scripts/ProofReusePrototype.lean 2>&1 | tee proof-reuse.log
           grep -q 'SecondQuantization.Bosonic.create_basisState (apply)' proof-reuse.log
+          grep -q 'SecondQuantization.Bosonic.create_basisState_eq: no project theorem reuse found' proof-reuse.log
+          grep -q 'SecondQuantization.Bosonic.create_basisState: no project theorem reuse found' proof-reuse.log
