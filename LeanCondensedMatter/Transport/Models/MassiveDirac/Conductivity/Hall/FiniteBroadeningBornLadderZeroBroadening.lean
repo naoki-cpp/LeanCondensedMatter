@@ -29,8 +29,8 @@ def finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConduct
     finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
       e v m probeEnergy disorderStrength hbar pMax
 
-/-- At fixed positive disorder and finite cutoff, the physically normalized ordered `xy` Born-Dyson
-Středa surface conductivity converges to its zero-broadening boundary. -/
+/-- At fixed positive disorder and finite cutoff, the physically normalized ordered `xy` component
+of the Born-Dyson Středa conductivity tensor converges to its zero-broadening boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivity_broadening_zero
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -42,8 +42,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
       v m probeEnergy disorderStrength hbar pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-          .x .y e v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+          e v m probeEnergy broadening disorderStrength hbar pMax).component .x .y)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
@@ -53,7 +53,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
       e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
       hdisorder hmetal hcutoff hrenorm hdet
   simpa [
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
     finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
     h.const_mul
       (((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ))

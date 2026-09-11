@@ -29,7 +29,8 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceCond
       e v m probeEnergy disorderStrength hbar pMax
 
 /-- At fixed positive disorder and finite cutoff, the physically normalized longitudinal ordered
-`xx` Born-Dyson Středa surface conductivity converges to its zero-broadening boundary. -/
+`xx` component of the Born-Dyson Středa conductivity tensor converges to its zero-broadening
+boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivity_broadening_zero
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -41,8 +42,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
       v m probeEnergy disorderStrength hbar pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-          .x .x e v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+          e v m probeEnergy broadening disorderStrength hbar pMax).component .x .x)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
@@ -52,7 +53,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
       e v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hhbar
       hdisorder hmetal hcutoff hrenorm hdet
   simpa [
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor,
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
     h.const_mul
       (((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ))
