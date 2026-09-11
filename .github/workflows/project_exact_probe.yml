@@ -21,7 +21,7 @@ jobs:
       - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .lake/build
-          key: proof-reuse-mvp-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          key: proof-reuse-catalog-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-
       - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
@@ -31,105 +31,17 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-      - name: Build representative modules
+      - name: Build project root
+        run: lake build LeanCondensedMatter
+      - name: Generate theorem catalog
+        run: lake env lean scripts/TheoremCatalog.lean
+      - name: Show direct wrappers
         run: |
-          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
-          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-      - name: Compile Lean-native proof reuse MVP
-        shell: bash
-        run: |
-          cat > ProofReuseMVP.lean <<'LEAN'
-          import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
-          import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-          import Mathlib.Tactic.ClickSuggestions.FindPremises
-
-          open Lean Meta Elab Command
-          open Lean.Meta.RefinedDiscrTree
-          open Mathlib.Tactic.ClickSuggestions
-
-          namespace LeanCondensedMatter.ProofReuse
-
-          structure Reuse where
-            candidate : Name
-            premiseGoals : Nat
-
-          private def projectModule? (moduleName : Name) : Bool :=
-            moduleName.toString.startsWith "LeanCondensedMatter"
-
-          private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
-            let moduleIdx ← env.const2ModIdx.get? declName
-            env.header.moduleNames[moduleIdx]?
-
-          private def collectProjectTheorems : CommandElabM NameSet := do
-            let env ← getEnv
-            let mut names := NameSet.empty
-            for (declName, info) in env.constants.toList do
-              let .thmInfo _ := info | continue
-              let some moduleName := declarationModule? env declName | continue
-              unless projectModule? moduleName do continue
-              unless (← findDeclarationRanges? declName).isSome do continue
-              names := names.insert declName
-            return names
-
-          private def tryCandidate (goal : MVarId) (candidate : Name) : MetaM (Option Nat) := do
-            let saved ← saveState
-            try
-              let proof ← mkConstWithFreshMVarLevels candidate
-              let subgoals ← goal.apply proof
-              let mut closes := true
-              for subgoal in subgoals do
-                unless ← subgoal.assumptionCore do
-                  closes := false
-              let result := if closes then some subgoals.length else none
-              saved.restore
-              return result
-            catch _ =>
-              saved.restore
-              return none
-
-          private def findReuse (subject : Name) (projectTheorems : NameSet) : MetaM (Array Reuse) := do
-            let subjectConst ← mkConstWithFreshMVarLevels subject
-            let subjectType ← inferType subjectConst
-            let syntheticGoal ← mkFreshExprSyntheticOpaqueMVar subjectType
-            let (_, goal) ← syntheticGoal.mvarId!.intros
-            goal.withContext do
-              let target ← goal.getType
-              computeImportDiscrTrees { rw := false, grw := false, app := true, appAt := false }
-              let matchResult ← getImportMatches appRef target
-              let mut seen := NameSet.empty
-              let mut result := #[]
-              for group in matchResult.flatten do
-                for candidateLemma in group do
-                  let .const candidate := candidateLemma.name | continue
-                  if candidate == subject || !projectTheorems.contains candidate || seen.contains candidate then
-                    continue
-                  seen := seen.insert candidate
-                  if let some premiseGoals ← tryCandidate goal candidate then
-                    result := result.push { candidate, premiseGoals }
-              return result
-
-          syntax (name := proofReuseCmd) "#proof_reuse " ident : command
-
-          elab_rules : command
-            | `(#proof_reuse $id:ident) => do
-                let subject ← resolveGlobalConstNoOverload id
-                let projectTheorems ← collectProjectTheorems
-                unless projectTheorems.contains subject do
-                  throwError "`{subject}` is not a source-declared LeanCondensedMatter theorem"
-                let results ← liftTermElabM do
-                  findReuse subject projectTheorems
-                if results.isEmpty then
-                  logInfo m!"{subject}: no project-theorem apply reuse found"
-                else
-                  let lines := results.toList.take 20 |>.map fun result =>
-                    let mode := if result.premiseGoals == 0 then "exact" else "apply + assumptions"
-                    s!"{result.candidate} ({mode})"
-                  logInfo m!"{subject}:\n{String.intercalate "\n" lines}"
-
-          end LeanCondensedMatter.ProofReuse
-
-          #proof_reuse SecondQuantization.Bosonic.exchangeCommutator_annihilate_create_self
-          #proof_reuse SecondQuantization.Fermionic.exchangeCommutator_annihilate_create_self
-          LEAN
-          lake env lean ProofReuseMVP.lean 2>&1 | tee proof-reuse.log
-          grep -q 'SecondQuantization.Common.exchangeCommutator_annihilate_create_self' proof-reuse.log
+          python3 - <<'PY'
+          import json
+          entries = json.load(open('docs/generated/theorems.json'))
+          wrappers = [e for e in entries if e['directWrapperOf'] is not None]
+          print('direct wrappers:', len(wrappers))
+          for e in wrappers[:80]:
+              print(f"{e['name']} -> {e['directWrapperOf']} | {e['module']}")
+          PY
