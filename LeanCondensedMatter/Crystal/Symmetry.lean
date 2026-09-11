@@ -164,14 +164,30 @@ instance bondMulAction (X : AtomicConfiguration E Species) : MulAction X.symmetr
       simpa only [Sym2.isDiag_map (MulAction.injective g)] using b.2⟩
   one_smul b := by
     apply Subtype.ext
-    refine Sym2.inductionOn (b : Sym2 X.Site) ?_
-    intro x y
-    simp
+    change Sym2.map (fun x : X.Site => (1 : X.symmetryGroup) • x) (b : Sym2 X.Site) =
+      (b : Sym2 X.Site)
+    have hfun : (fun x : X.Site => (1 : X.symmetryGroup) • x) = id := by
+      funext x
+      exact one_smul X.symmetryGroup x
+    rw [hfun]
+    change Sym2.map id (b : Sym2 X.Site) = id (b : Sym2 X.Site)
+    exact congrFun Sym2.map_id (b : Sym2 X.Site)
   mul_smul g h b := by
     apply Subtype.ext
-    refine Sym2.inductionOn (b : Sym2 X.Site) ?_
-    intro x y
-    simp [mul_smul]
+    change Sym2.map (fun x : X.Site => (g * h) • x) (b : Sym2 X.Site) =
+      Sym2.map (fun x : X.Site => g • x)
+        (Sym2.map (fun x : X.Site => h • x) (b : Sym2 X.Site))
+    have hfun : (fun x : X.Site => (g * h) • x) =
+        (fun x : X.Site => g • x) ∘ (fun x : X.Site => h • x) := by
+      funext x
+      exact mul_smul g h x
+    rw [hfun]
+    simpa only [Function.comp_apply] using
+      congrFun
+        (Sym2.map_comp
+          (g := fun x : X.Site => g • x)
+          (f := fun x : X.Site => h • x))
+        (b : Sym2 X.Site)
 
 @[simp]
 theorem coe_smul_bond (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (b : X.Bond) :
