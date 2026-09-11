@@ -9,10 +9,11 @@ set_option linter.style.header false
 /-!
 # Hall projection of the massive-Dirac Born-Dyson conductivity tensor
 
-The finite-`η` massive-Dirac Středa bridge is pair-indexed in the measured-current and source
-directions. Rotational closure proves `σ_yx = -σ_xy` and `σ_yy = σ_xx` before any broadening or
-disorder limit is taken. This module uses those identities together with the existing ordered `xx`
-and `xy` zero-broadening limits to construct the physical `ConductivityTensor Direction2` boundary.
+The finite-`η` massive-Dirac Středa conductivity is represented directly as a
+`ConductivityTensor Direction2`. Rotational closure proves `σ_yx = -σ_xy` and `σ_yy = σ_xx` before
+any broadening or disorder limit is taken. This module uses those identities together with the
+existing ordered `xx` and `xy` zero-broadening limits to construct the physical zero-broadening
+tensor boundary.
 
 The Hall component is then the antisymmetric tensor projection rather than a label attached to an
 ordered response. Its subsequent one-sided weak-disorder limit reproduces the standard non-crossing
@@ -29,26 +30,27 @@ noncomputable section
 
 open Filter QuantumTheory.Transport
 
-/-- Finite-`η` rotational closure makes the physically normalized ordered `yx` component the
+/-- Finite-`η` rotational closure makes the physically normalized ordered `yx` tensor component the
 negative of ordered `xy`. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_yx_eq_neg_xy
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-        .y .x e v m probeEnergy broadening disorderStrength hbar pMax =
-      -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-        .x .y e v m probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+        e v m probeEnergy broadening disorderStrength hbar pMax).component .y .x =
+      -(finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+        e v m probeEnergy broadening disorderStrength hbar pMax).component .x .y := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy]
   ring
 
-/-- Finite-`η` rotational closure makes the two physically normalized diagonal components equal. -/
-theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_yy_eq_xx
+/-- Finite-`η` rotational closure makes the two physically normalized diagonal tensor components
+equal. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-        .y .y e v m probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-        .x .x e v m probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
+    (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+        e v m probeEnergy broadening disorderStrength hbar pMax).component .y .y =
+      (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+        e v m probeEnergy broadening disorderStrength hbar pMax).component .x .x := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx]
 
 /-- Physical fixed-cutoff conductivity tensor after the componentwise `η → 0⁺` boundary has been
@@ -70,10 +72,10 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTens
         finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
           e v m probeEnergy disorderStrength hbar pMax
 
-/-- Every finite-`η` conductivity component converges to the corresponding entry of the physical
-zero-broadening conductivity tensor. The off-diagonal `yx` and diagonal `yy` cases are obtained from
-the finite-`η` rotational identities rather than assigned independently. -/
-theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_broadening_zero
+/-- Every finite-`η` conductivity tensor component converges to the corresponding entry of the
+physical zero-broadening conductivity tensor. The off-diagonal `yx` and diagonal `yy` cases are
+obtained from the finite-`η` rotational identities rather than assigned independently. -/
+theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero
     (measured source : Direction2)
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -85,8 +87,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
       v m probeEnergy disorderStrength hbar pMax ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge
-          measured source e v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
+          e v m probeEnergy broadening disorderStrength hbar pMax).component measured source)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         ((finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
@@ -104,11 +106,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary] using hxy
   · apply Tendsto.congr' ?_ hxy.neg
     filter_upwards with broadening
-    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_yx_eq_neg_xy
+    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy
       e v m probeEnergy broadening disorderStrength hbar pMax).symm
   · apply Tendsto.congr' ?_ hxx
     filter_upwards with broadening
-    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityComponentBridge_yy_eq_xx
+    exact (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx
       e v m probeEnergy broadening disorderStrength hbar pMax).symm
 
 /-- The antisymmetric Hall projection of the zero-broadening tensor equals its ordered `xy`
