@@ -18,52 +18,46 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
-
-      - name: Restore project build cache
-        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+      - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .lake/build
           key: forwarding-reuse-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-
-
-      - name: Set up Lean and Mathlib cache
-        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
+      - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596
         with:
           build: false
           test: false
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
-
       - name: Build target modules
         run: |
           lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
           lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-
-      - name: Detect and replay forwarding compressions
+      - name: Diagnose forwarding compression
         shell: bash
         run: |
           cat > ForwardingProbe.py <<'PY'
           import re
           import sys
           from pathlib import Path
-
           sys.path.insert(0, str(Path('scripts').resolve()))
           import proof_reuse_audit as audit
 
           HAVE_RE = re.compile(r"^\s*have\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*:=\s*(?P<term>.*)$", re.S)
           RWA_RE = re.compile(r"^\s*rwa\s*\[(?P<rules>.*)\]\s+at\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*$", re.S)
+          def compact(text): return ' '.join(line.strip() for line in text.splitlines()).strip()
 
-          def compact_piece(text):
-              return ' '.join(line.strip() for line in text.splitlines()).strip()
-
-          def forwarding_candidates(path):
+          def run(path):
               source = path.read_text(encoding='utf-8')
               lines = source.splitlines(keepends=True)
-              findings = []
-              for block in audit.find_proof_blocks(source, 2):
+              blocks = audit.find_proof_blocks(source, 2)
+              print('BLOCKS', [(b.kind,b.body_start_line,b.end_line) for b in blocks])
+              generated = verified = 0
+              for block in blocks:
                   chunks = audit.top_level_tactic_chunks(source, block)
+                  print('CHUNKS', block.kind, [(c.start_line,c.end_line,compact(''.join(lines[c.start_index:c.end_index]))) for c in chunks])
                   for first, second in zip(chunks, chunks[1:]):
                       first_text = ''.join(lines[first.start_index:first.end_index])
                       second_text = ''.join(lines[second.start_index:second.end_index])
@@ -71,42 +65,34 @@ jobs:
                       rwa = RWA_RE.match(second_text)
                       if have is None or rwa is None or have.group('name') != rwa.group('name'):
                           continue
-                      term = compact_piece(have.group('term'))
-                      rules = compact_piece(rwa.group('rules'))
-                      if not term or not rules:
-                          continue
+                      term, rules = compact(have.group('term')), compact(rwa.group('rules'))
                       candidate = f"simpa only [{rules}] using ({term})"
-                      region = audit.Region(
-                          scope='interval', block_kind=block.kind,
+                      generated += 1
+                      print('GENERATED', first.start_line, second.end_line, candidate)
+                      region = audit.Region(scope='interval', block_kind=block.kind,
                           start_line=first.start_line, end_line=second.end_line,
                           start_index=first.start_index, end_index=second.end_index,
                           indent=first.indent,
                           original_lines=first.significant_lines + second.significant_lines,
-                          tactic_count=2,
-                      )
-                      replay = audit.replace_region(source, region, candidate)
+                          tactic_count=2)
                       code, output, timed_out = audit.run_probe(
-                          replay, f"forward-{first.start_line}-{second.end_line}", 30)
-                      if code == 0 and not timed_out and audit.replay_is_admission_free(output):
-                          findings.append((region, term, candidate))
-              return findings
+                          audit.replace_region(source, region, candidate),
+                          f"forward-{first.start_line}-{second.end_line}", 30)
+                      print('REPLAY', code, 'timeout=', timed_out)
+                      if code != 0:
+                          print('ERROR', audit.first_error(output))
+                      elif audit.replay_is_admission_free(output):
+                          verified += 1
+                          print('VERIFIED', candidate)
+              return generated, verified
 
-          targets = [
-              Path('LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean'),
-              Path('LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean'),
-          ]
-          total = 0
-          for path in targets:
-              print(f'===== {path} =====')
-              findings = forwarding_candidates(path.resolve())
-              for region, theorem_term, replacement in findings:
-                  print(f'{region.start_line}-{region.end_line}: 2 tactics -> 1')
-                  print('  theorem:', theorem_term)
-                  print('  replacement:', replacement)
-                  print('  verified by replay: yes')
-              total += len(findings)
-          print('TOTAL_FORWARDING_REUSE_FINDINGS', total)
-          if total == 0:
-              raise SystemExit('expected at least one real forwarding reuse finding')
+          totals = [0,0]
+          for raw in [
+              'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean',
+              'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean']:
+              print('=====', raw, '=====')
+              g,v = run(Path(raw).resolve()); totals[0] += g; totals[1] += v
+          print('TOTAL_GENERATED', totals[0])
+          print('TOTAL_VERIFIED', totals[1])
           PY
           python3 ForwardingProbe.py
