@@ -58,10 +58,12 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
       momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
+  have hnormalized :=
+    hmomentum.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
+  rw [htarget] at hnormalized
   simpa [
     finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary,
-    htarget, mul_assoc, mul_left_comm, mul_comm] using
-    hmomentum.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
+    mul_assoc, mul_left_comm, mul_comm] using hnormalized
 
 /-- The scaled Born-Dyson conductivity converges directly to the microscopic Born-RTA scaled
 benchmark evaluated at any positive reference disorder strength. -/
