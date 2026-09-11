@@ -13,7 +13,7 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
         with:
           path: .lake/build
-          key: project-reuse-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          key: forwarding-reuse-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-
 
@@ -38,83 +38,13 @@ jobs:
 
       - name: Build target modules
         run: |
-          lake build LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
-          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
-          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
-          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
-          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
+          lake build LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
+          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 
-      - name: Define project-only theorem search tactics
+      - name: Detect and replay forwarding compressions
         shell: bash
         run: |
-          cat > ProjectProofSearch.lean <<'EOF'
-          import Lean
-          import Mathlib.Tactic
-
-          open Lean Meta Elab Tactic
-
-          private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
-            let moduleIdx ← env.const2ModIdx.get? declName
-            env.header.moduleNames[moduleIdx]?
-
-          private partial def conclusionBody : Expr → Expr
-            | .forallE _ _ body _ => conclusionBody body
-            | .mdata _ body => conclusionBody body
-            | e => e
-
-          private def plausibleHead (target theoremType : Expr) : Bool :=
-            (conclusionBody target).getAppFn.constName? ==
-              (conclusionBody theoremType).getAppFn.constName?
-
-          private def projectTheorems (env : Environment) (target : Expr) : Array Name := Id.run do
-            let mut names := #[]
-            for (declName, info) in env.constants.toList do
-              let .thmInfo theoremInfo := info | continue
-              let some moduleName := declarationModule? env declName | continue
-              unless moduleName.toString.startsWith "LeanCondensedMatter" do continue
-              unless plausibleHead target theoremInfo.type do continue
-              names := names.push declName
-            return names
-
-          private def closeAllByAssumption (goals : List MVarId) : MetaM Bool := do
-            for goal in goals do
-              unless ← goal.assumptionCore do return false
-            return true
-
-          elab "project_exact?" : tactic => do
-            liftMetaTactic fun goal => goal.withContext do
-              let target ← goal.getType
-              for declName in projectTheorems (← getEnv) target do
-                let saved ← saveState
-                try
-                  let subgoals ← goal.apply (← mkConstWithFreshMVarLevels declName)
-                  if subgoals.isEmpty then
-                    logInfo m!"Try this:\n  [exact] exact {declName}"
-                    return []
-                  restoreState saved
-                catch _ => restoreState saved
-              throwError "project_exact? could not close the goal"
-
-          elab "project_apply?" : tactic => do
-            liftMetaTactic fun goal => goal.withContext do
-              let target ← goal.getType
-              for declName in projectTheorems (← getEnv) target do
-                let saved ← saveState
-                try
-                  let subgoals ← goal.apply (← mkConstWithFreshMVarLevels declName)
-                  if !subgoals.isEmpty && (← closeAllByAssumption subgoals) then
-                    logInfo m!"Try this:\n  [apply] apply {declName} <;> assumption"
-                    return []
-                  restoreState saved
-                catch _ => restoreState saved
-              throwError "project_apply? could not close the goal"
-          EOF
-          lake env lean ProjectProofSearch.lean
-
-      - name: Run extended proof reuse probe
-        shell: bash
-        run: |
-          cat > ProjectAudit.py <<'PY'
+          cat > ForwardingProbe.py <<'PY'
           import re
           import sys
           from pathlib import Path
@@ -122,107 +52,61 @@ jobs:
           sys.path.insert(0, str(Path('scripts').resolve()))
           import proof_reuse_audit as audit
 
-          FIELD_BY_RE = re.compile(
-              r"^(?P<indent>[ \t]+)(?P<name>[A-Za-z_][A-Za-z0-9_']*)(?P<header>.*):=\s*by\s*(?:--.*)?$"
-          )
-          SIMP_NAME_RE = re.compile(
-              r"(?<![A-Za-z0-9_'])@?(?P<name>[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)"
-          )
-          EXCLUDED = {'have', 'haveI', 'let', 'set', 'theorem', 'lemma', 'example', 'private',
-                      'protected', 'noncomputable', 'def', 'instance', 'structure', 'class'}
+          HAVE_RE = re.compile(r"^\s*have\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*:=\s*(?P<term>.*)$", re.S)
+          RWA_RE = re.compile(r"^\s*rwa\s*\[(?P<rules>.*)\]\s+at\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*)\s*$", re.S)
 
-          def find_field_blocks(source, min_body_lines):
+          def compact_piece(text):
+              return ' '.join(line.strip() for line in text.splitlines()).strip()
+
+          def forwarding_candidates(path):
+              source = path.read_text(encoding='utf-8')
               lines = source.splitlines(keepends=True)
-              blocks = []
-              for i, line in enumerate(lines):
-                  match = FIELD_BY_RE.match(line.rstrip('\r\n'))
-                  if match is None or match.group('name') in EXCLUDED:
-                      continue
-                  base_indent = audit.indent_width(match.group('indent'))
-                  body_start = i + 1
-                  end_index = audit.block_end(lines, body_start, base_indent)
-                  metadata = audit.body_metadata(lines, body_start, end_index, min_body_lines)
-                  if metadata is None:
-                      continue
-                  body_indent, body_lines = metadata
-                  blocks.append(audit.ProofBlock(
-                      kind='field', body_start_line=body_start + 1, end_line=end_index,
-                      body_start_index=body_start, end_index=end_index, base_indent=base_indent,
-                      body_indent=body_indent, body_lines=body_lines))
-              return blocks
-
-          original_find = audit.find_proof_blocks
-          audit.find_proof_blocks = lambda source, minimum: sorted(
-              [*original_find(source, minimum), *find_field_blocks(source, minimum)],
-              key=lambda b: (b.body_start_index, b.end_index, b.kind))
-
-          original_whole = audit.whole_have_region
-          def whole(block):
-              if block.kind != 'field': return original_whole(block)
-              return audit.Region(scope='block', block_kind='field', start_line=block.body_start_line,
-                  end_line=block.end_line, start_index=block.body_start_index, end_index=block.end_index,
-                  indent=block.body_indent, original_lines=block.body_lines, tactic_count=0)
-          audit.whole_have_region = whole
-
-          project_names = [
-              'SecondQuantization.Bosonic.comm_annihilate_create',
-              'SecondQuantization.Bosonic.comm_annihilate_annihilate',
-              'SecondQuantization.Bosonic.comm_create_create',
-              'SecondQuantization.Fermionic.anticomm_annihilate_create',
-              'SecondQuantization.Fermionic.anticomm_annihilate_annihilate',
-              'SecondQuantization.Fermionic.anticomm_create_create',
-              'SecondQuantization.Common.exchangeCommutator_annihilate_create_self',
-              'LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq',
-              'LinearMap.zetaCommutator_swap_of_sq_eq_one',
-              'SecondQuantization.Common.Statistics.zetaInt_boson',
-              'SecondQuantization.Common.Statistics.zetaInt_fermion',
-          ]
-          index = audit.ProjectTheoremIndex(
-              frozenset(project_names), audit._unique_suffixes(project_names), 'focused-project-index', True)
-
-          original_classify = audit.classify_candidate
-          def classify(mode, replacement, theorem_index):
-              candidate = original_classify(mode, replacement, theorem_index)
-              if mode != 'simp': return candidate
-              raw = audit.suggested_decl_name(replacement)
-              resolved = theorem_index.resolve(raw)
-              if resolved is None and replacement.lstrip().startswith(('simp', 'simpa')):
-                  for bracket in re.findall(r"\[([^\]]*)\]", replacement):
-                      for match in SIMP_NAME_RE.finditer(bracket):
-                          resolved = theorem_index.resolve(match.group('name'))
-                          if resolved is not None: break
-                      if resolved is not None: break
-              if resolved is None: return candidate
-              return audit.VerifiedCandidate(mode=mode, replacement=replacement,
-                  kind='theorem_reuse', candidate_origin='project', candidate_name=resolved)
-          audit.classify_candidate = classify
-
-          original_run = audit.run_probe
-          audit.run_probe = lambda source, label, timeout: original_run(
-              'import ProjectProofSearch\n' + source, label, timeout)
-          audit.PROBES['exact'] = 'project_exact?'
-          audit.PROBES['apply'] = 'project_apply?'
+              findings = []
+              for block in audit.find_proof_blocks(source, 2):
+                  chunks = audit.top_level_tactic_chunks(source, block)
+                  for first, second in zip(chunks, chunks[1:]):
+                      first_text = ''.join(lines[first.start_index:first.end_index])
+                      second_text = ''.join(lines[second.start_index:second.end_index])
+                      have = HAVE_RE.match(first_text)
+                      rwa = RWA_RE.match(second_text)
+                      if have is None or rwa is None or have.group('name') != rwa.group('name'):
+                          continue
+                      term = compact_piece(have.group('term'))
+                      rules = compact_piece(rwa.group('rules'))
+                      if not term or not rules:
+                          continue
+                      candidate = f"simpa only [{rules}] using ({term})"
+                      region = audit.Region(
+                          scope='interval', block_kind=block.kind,
+                          start_line=first.start_line, end_line=second.end_line,
+                          start_index=first.start_index, end_index=second.end_index,
+                          indent=first.indent,
+                          original_lines=first.significant_lines + second.significant_lines,
+                          tactic_count=2,
+                      )
+                      replay = audit.replace_region(source, region, candidate)
+                      code, output, timed_out = audit.run_probe(
+                          replay, f"forward-{first.start_line}-{second.end_line}", 30)
+                      if code == 0 and not timed_out and audit.replay_is_admission_free(output):
+                          findings.append((region, term, candidate))
+              return findings
 
           targets = [
-              'LeanCondensedMatter/SecondQuantization/Common/Algebra/ExchangeAlgebra.lean',
-              'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean',
-              'LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/ExchangeAlgebra.lean',
-              'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/CanonicalAnticommutationRelations.lean',
-              'LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/ExchangeAlgebra.lean',
+              Path('LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean'),
+              Path('LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean'),
           ]
-          total = project_total = 0
-          for raw in targets:
-              findings, diagnostics = audit.audit_file(Path(raw).resolve(), modes=('exact','apply','simp'),
-                  theorem_index=index, min_body_lines=2, max_blocks=50, timeout=30, baseline=False,
-                  scan_intervals=True, min_tactics=2, max_span_tactics=6,
-                  max_intervals_per_block=8, max_findings=30, max_suggestions_per_search=8)
-              print(f'===== {raw} =====')
-              for item in diagnostics: print('DIAG', item)
-              for item in findings:
-                  print(item)
-                  project_total += item.candidate_origin == 'project'
+          total = 0
+          for path in targets:
+              print(f'===== {path} =====')
+              findings = forwarding_candidates(path.resolve())
+              for region, theorem_term, replacement in findings:
+                  print(f'{region.start_line}-{region.end_line}: 2 tactics -> 1')
+                  print('  theorem:', theorem_term)
+                  print('  replacement:', replacement)
+                  print('  verified by replay: yes')
               total += len(findings)
-          print('TOTAL_FINDINGS', total)
-          print('TOTAL_PROJECT_REUSE_FINDINGS', project_total)
+          print('TOTAL_FORWARDING_REUSE_FINDINGS', total)
+          if total == 0:
+              raise SystemExit('expected at least one real forwarding reuse finding')
           PY
-          python3 ProjectAudit.py
+          python3 ForwardingProbe.py
