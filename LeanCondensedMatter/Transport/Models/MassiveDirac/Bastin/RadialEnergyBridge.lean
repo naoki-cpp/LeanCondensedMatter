@@ -48,7 +48,7 @@ theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
 
 /-- The clean radial energy density is continuous on the positive-energy image of any radial
 momentum interval when the mass is nonzero. -/
-theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
+private theorem continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
     (band : Band) (e v m pMax : ℝ) (hm : m ≠ 0) :
     ContinuousOn (cleanInterbandBastinPairRadialEnergyDensity band e m)
       ((fun p : ℝ => energy v m p 0) '' [[(0 : ℝ), pMax]]) := by
