@@ -56,10 +56,12 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
     ring
-  simpa [
-    finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary,
-    htarget] using
+  have hnormalized :=
     hresponse.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
+  rw [htarget] at hnormalized
+  simpa [
+    finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
+    hnormalized
 
 end
 
