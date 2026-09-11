@@ -60,7 +60,7 @@ theorem mem_translationSubgroup {X : AtomicConfiguration E Species} {v : V} :
 
 /-- Translation symmetries act canonically on occupied sites. -/
 instance translationSiteAddAction (X : AtomicConfiguration E Species) :
-    AddAction X.translationSubgroup X.Site where
+    AddAction (X.translationSubgroup (V := V)) X.Site where
   vadd v x :=
     let g : X.symmetryGroup :=
       ⟨IsometryEquiv.constVAdd (v : V), mem_translationSubgroup.1 v.property⟩
@@ -76,16 +76,16 @@ instance translationSiteAddAction (X : AtomicConfiguration E Species) :
     exact add_vadd (v : V) (w : V) (x : E)
 
 @[simp]
-theorem coe_vadd_site (X : AtomicConfiguration E Species) (v : X.translationSubgroup)
-    (x : X.Site) :
+theorem coe_vadd_site (X : AtomicConfiguration E Species)
+    (v : X.translationSubgroup (V := V)) (x : X.Site) :
     ((v +ᵥ x : X.Site) : E) = (v : V) +ᵥ (x : E) :=
   rfl
 
 /-- Membership in a translation orbit is exactly reachability by a translation symmetry. -/
 @[simp]
 theorem mem_translation_site_orbit_iff (X : AtomicConfiguration E Species) (x y : X.Site) :
-    y ∈ AddAction.orbit X.translationSubgroup x ↔
-      ∃ v : X.translationSubgroup, (v : V) +ᵥ (x : E) = (y : E) := by
+    y ∈ AddAction.orbit (X.translationSubgroup (V := V)) x ↔
+      ∃ v : X.translationSubgroup (V := V), (v : V) +ᵥ (x : E) = (y : E) := by
   rw [AddAction.mem_orbit_iff]
   constructor
   · rintro ⟨v, h⟩
@@ -98,19 +98,20 @@ theorem mem_translation_site_orbit_iff (X : AtomicConfiguration E Species) (x y 
 
 /-- Every translation orbit is contained in the corresponding full symmetry orbit. -/
 theorem translation_site_orbit_subset_site_orbit (X : AtomicConfiguration E Species) (x : X.Site) :
-    AddAction.orbit X.translationSubgroup x ⊆ MulAction.orbit X.symmetryGroup x := by
+    AddAction.orbit (X.translationSubgroup (V := V)) x ⊆ MulAction.orbit X.symmetryGroup x := by
   intro y hy
-  rcases (X.mem_translation_site_orbit_iff x y).1 hy with ⟨v, hv⟩
+  rcases (X.mem_translation_site_orbit_iff (V := V) x y).1 hy with ⟨v, hv⟩
   refine (X.mem_site_orbit_iff x y).2 ⟨
     ⟨IsometryEquiv.constVAdd (v : V), mem_translationSubgroup.1 v.property⟩, ?_⟩
   simpa using hv
 
 /-- The canonical translation action preserves the species label. -/
 @[simp]
-theorem species_vadd (X : AtomicConfiguration E Species) (v : X.translationSubgroup) (x : X.Site) :
+theorem species_vadd (X : AtomicConfiguration E Species)
+    (v : X.translationSubgroup (V := V)) (x : X.Site) :
     X.species (v +ᵥ x) = X.species x := by
   apply X.species_eq_of_mem_site_orbit
-  exact X.translation_site_orbit_subset_site_orbit x (AddAction.mem_orbit x v)
+  exact X.translation_site_orbit_subset_site_orbit (V := V) x (AddAction.mem_orbit x v)
 
 end Translation
 
