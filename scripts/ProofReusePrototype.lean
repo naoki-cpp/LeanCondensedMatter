@@ -124,7 +124,8 @@ private def findReuse
   let (_, goal) ← syntheticGoal.mvarId!.intros
   goal.withContext do
     let target ← goal.getType
-    let byName := theorems.foldl (init := NameMap.empty) fun map entry => map.insert entry.name entry
+    let byName : NameMap ProjectTheorem :=
+      theorems.foldl (init := {}) fun map entry => map.insert entry.name entry
     let mut seen := NameSet.empty
     let mut results := #[]
     for query in indexKeys target do
