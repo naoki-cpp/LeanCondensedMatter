@@ -5,6 +5,7 @@
       "paths": [
         "LeanCondensedMatter/Analysis.lean",
         "LeanCondensedMatter/Combinatorics.lean",
+        "LeanCondensedMatter/Crystal.lean",
         "LeanCondensedMatter/Permutation.lean",
         "LeanCondensedMatter/QuantumTheory.lean",
         "LeanCondensedMatter/QuantumMechanics.lean",
@@ -483,6 +484,7 @@
       "modules": [
         "LeanCondensedMatter.Analysis",
         "LeanCondensedMatter.Combinatorics",
+        "LeanCondensedMatter.Crystal",
         "LeanCondensedMatter.Permutation",
         "LeanCondensedMatter.QuantumTheory",
         "LeanCondensedMatter.QuantumMechanics",
