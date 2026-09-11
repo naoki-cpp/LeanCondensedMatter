@@ -8,8 +8,9 @@ set_option linter.style.header false
 This module owns scalar normalizations shared by physically normalized massive-Dirac
 Kubo–Bastin/Středa conductivity consumers. Current vertices already contain the charge `-e`, so the
 traced static response receives only the standard `ℏ/(2π)` trace prefactor before the continuum
-momentum measure is attached downstream. It also owns the shared conversion `h = 2πℏ` used when
-closed-form conductivities are written in `e²/h` units.
+momentum measure is attached. The combined finite-dimensional Středa normalization is named here so
+all conductivity consumers use the same physical-momentum normalization boundary. This module also
+owns the shared conversion `h = 2πℏ` used when closed-form conductivities are written in `e²/h` units.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -24,6 +25,11 @@ def planckFromReduced (hbar : ℝ) : ℝ :=
 conductivity component before the continuum momentum measure is applied. -/
 def bastinTraceConductivityPrefactor (hbar : ℝ) : ℝ :=
   hbar / (2 * Real.pi)
+
+/-- Combined normalization for a traced Bastin/Středa response integrated with the two-dimensional
+physical-momentum continuum measure. -/
+def bastinStredaConductivityNormalization (hbar : ℝ) : ℝ :=
+  bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar
 
 end
 

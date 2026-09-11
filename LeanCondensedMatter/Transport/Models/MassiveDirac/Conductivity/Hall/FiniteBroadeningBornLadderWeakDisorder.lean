@@ -41,27 +41,27 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
   have hresponse :=
     tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero
       e v m probeEnergy hbar pMax hvelocity hhbarNe hmetal hcutoff
-  have hnormalized := hresponse.const_mul
-    (((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ))
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
-      (((bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ)) *
           (((-16 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
             (probeEnergy ^ 2 + m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) =
         (((-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) := by
-    unfold bastinTraceConductivityPrefactor momentumMeasurePrefactor
+    unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+      momentumMeasurePrefactor
     push_cast
     field_simp [hhbarNe, hden, Real.pi_ne_zero]
     ring
+  have hnormalized :=
+    hresponse.const_mul (((bastinStredaConductivityNormalization hbar : ℝ) : ℂ))
   rw [htarget] at hnormalized
-  apply Tendsto.congr' ?_ hnormalized
-  filter_upwards with disorderStrength
-  unfold finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
-  ring
+  simpa [
+    finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary] using
+    hnormalized
 
 end
 
