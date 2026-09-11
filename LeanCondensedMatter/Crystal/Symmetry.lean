@@ -6,6 +6,7 @@ Authors: Naoki Yano
 import LeanCondensedMatter.Crystal.AtomicConfiguration
 import Mathlib.Algebra.Group.Action.Defs
 import Mathlib.Algebra.Group.Subgroup.Defs
+import Mathlib.GroupTheory.GroupAction.Defs
 import Mathlib.Topology.MetricSpace.Isometry
 
 /-!
@@ -106,6 +107,20 @@ instance siteMulAction (X : AtomicConfiguration E Species) : MulAction X.symmetr
 theorem coe_smul_site (X : AtomicConfiguration E Species) (g : X.symmetryGroup) (x : X.Site) :
     ((g • x : X.Site) : E) = (g : E ≃ᵢ E) x :=
   rfl
+
+/-- Membership in the canonical stabilizer of a site is exactly ambient pointwise fixation. -/
+@[simp]
+theorem mem_site_stabilizer_iff (X : AtomicConfiguration E Species) (x : X.Site)
+    (g : X.symmetryGroup) :
+    g ∈ MulAction.stabilizer X.symmetryGroup x ↔ (g : E ≃ᵢ E) x = x := by
+  rw [MulAction.mem_stabilizer_iff]
+  constructor
+  · intro h
+    have hcoe := congrArg (fun y : X.Site => (y : E)) h
+    simpa using hcoe
+  · intro h
+    apply Subtype.ext
+    simpa using h
 
 /-- The canonical site action preserves the species label. -/
 @[simp]
