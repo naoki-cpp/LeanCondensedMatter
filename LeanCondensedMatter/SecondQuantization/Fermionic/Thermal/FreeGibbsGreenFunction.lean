@@ -83,15 +83,15 @@ private theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i �
 
 private theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne
     (w : Occupation Mode → ℂ) {i j : Mode} (hij : i ≠ j) :
-    Common.normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
-  rw [Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_annihilate_comp_create_of_ne hij]
+    Common.normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 :=
+  Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero w _
+    (matrixCoeff_annihilate_comp_create_of_ne hij)
 
 private theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne
     (w : Occupation Mode → ℂ) {i j : Mode} (hij : i ≠ j) :
-    Common.normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
-  rw [Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_create_comp_annihilate_of_ne hij]
+    Common.normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 :=
+  Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero w _
+    (matrixCoeff_create_comp_annihilate_of_ne hij)
 
 omit [LinearOrder Mode] in
 private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
@@ -222,25 +222,15 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
 theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
     (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
   rw [freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction, weightedFreeTwoPointFunction]
-  rcases lt_trichotomy τ' τ with h | h | h
-  · rw [twoPointTimeOrderedProduct_of_gt ε i j h,
-      imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+  simp only [neg_eq_zero]
+  unfold twoPointTimeOrderedProduct
+  rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
+  apply Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
-  · subst h
-    rw [twoPointTimeOrderedProduct_self_time ε i j τ',
-      imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
-      normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij,
-      normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
-  · rw [twoPointTimeOrderedProduct_of_lt ε i j h,
-      imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-      Common.normalizedWeightedDiagonal_smul,
-      Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
@@ -250,9 +240,9 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator ((annihilate i).comp (annihilate j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-    Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_annihilate_comp_annihilate]
+  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
+  exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
+    (matrixCoeff_annihilate_comp_annihilate i j)
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -260,9 +250,9 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator ((create i).comp (create j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-    Common.normalizedWeightedDiagonal]
-  simp [Common.weightedTrace, matrixCoeff_create_comp_create]
+  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
+  exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
+    (matrixCoeff_create_comp_create i j)
 
 end Fermionic
 end SecondQuantization
