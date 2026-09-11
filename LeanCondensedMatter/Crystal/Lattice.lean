@@ -1,4 +1,4 @@
-/-
+/*
 Copyright (c) 2026 Naoki Yano. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
@@ -42,14 +42,32 @@ theorem reciprocalPairing_apply (G R : V) :
   simp [reciprocalPairing, smul_eq_mul]
 
 /-- The physical reciprocal lattice of a real-space `ℤ`-submodule. For a Bravais lattice `L`,
-membership means that the normalized inner product with every `R ∈ L` is an integer. -/
+membership means that the inner product with every `R ∈ L` is an integer multiple of `2π`. -/
 noncomputable def reciprocalLattice (L : Submodule ℤ V) : Submodule ℤ V :=
   (reciprocalPairing (V := V)).dualSubmodule L
 
+/-- Physical membership criterion for the reciprocal lattice. This theorem hides the normalized
+pairing and Mathlib's unit `ℤ`-submodule from downstream crystal and Bloch consumers. -/
 @[simp]
 theorem mem_reciprocalLattice {L : Submodule ℤ V} {G : V} :
     G ∈ reciprocalLattice L ↔
-      ∀ R ∈ L, reciprocalPairing G R ∈ (1 : Submodule ℤ ℝ) := by
-  rfl
+      ∀ R ∈ L, ∃ n : ℤ, inner ℝ G R = (2 * Real.pi) * (n : ℝ) := by
+  change (∀ R ∈ L, reciprocalPairing G R ∈ (1 : Submodule ℤ ℝ)) ↔ _
+  have hpi : (2 * Real.pi : ℝ) ≠ 0 := mul_ne_zero (by norm_num) Real.pi_ne_zero
+  constructor
+  · intro h R hR
+    obtain ⟨n, hn⟩ := Submodule.mem_one.mp (h R hR)
+    refine ⟨n, ?_⟩
+    rw [reciprocalPairing_apply] at hn
+    calc
+      inner ℝ G R = (2 * Real.pi) * ((2 * Real.pi)⁻¹ * inner ℝ G R) := by
+        field_simp [hpi]
+      _ = (2 * Real.pi) * (n : ℝ) := by rw [← hn]
+  · intro h R hR
+    obtain ⟨n, hn⟩ := h R hR
+    apply Submodule.mem_one.mpr
+    refine ⟨n, ?_⟩
+    rw [reciprocalPairing_apply, hn]
+    field_simp [hpi]
 
 end LeanCondensedMatter.Crystal
