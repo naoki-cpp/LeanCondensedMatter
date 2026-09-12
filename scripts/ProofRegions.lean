@@ -116,6 +116,23 @@ private def prettyTactic (stx : TSyntax `tactic) : Command.CommandElabM String :
   let fmt ← Command.liftCoreM <| Lean.PrettyPrinter.ppTactic ⟨Syntax.stripPos stx⟩
   return fmt.pretty
 
+private def tacticSeqText
+    (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM String := do
+  let mut text := ""
+  for node in seq do
+    let tactic : TSyntax `tactic := ⟨node.tacI.stx⟩
+    text := text ++ "\n" ++ (← prettyTactic tactic)
+  return text
+
+private def theoremMentioned (source : String) (name : Name) : Bool :=
+  let shortName := match name with
+    | .str _ value => value
+    | _ => name.toString
+  source.contains name.toString || source.contains shortName
+
+private def theoremMentionBonus (source : String) (name : Name) : Nat :=
+  if theoremMentioned source name then 320 else 0
+
 private def candidateBaseScore (spanLines : Nat) : Nat := spanLines * 100
 
 private def rewriteBonus (depth : Nat) : Nat :=
@@ -127,6 +144,14 @@ private def rewriteBonus (depth : Nat) : Nat :=
 private def rewritePenalty (suggestion : RewriteSuggestion) : Nat :=
   Nat.min 220 (suggestion.growth * 6 + suggestion.introducedConsts * 35)
 
+private def rewriteScore
+    (spanLines : Nat) (source : String) (suggestion : RewriteSuggestion)
+    (needsAssumption : Bool) : Nat :=
+  let reward := candidateBaseScore spanLines + rewriteBonus suggestion.depth +
+    theoremMentionBonus source suggestion.theoremName + (if needsAssumption then 15 else 40)
+  let penalty := rewritePenalty suggestion + (if needsAssumption then 140 else 0)
+  reward - penalty
+
 private def betterCandidate (best : Option Candidate) (candidate : Candidate) : Option Candidate :=
   match best with
   | none => some candidate
@@ -136,6 +161,13 @@ private def betterCandidate (best : Option Candidate) (candidate : Candidate) : 
         some candidate
       else
         best
+
+private def topRewriteSuggestions
+    (suggestions : Array RewriteSuggestion) (spanLines : Nat) (source : String)
+    (limit : Nat) : Array RewriteSuggestion :=
+  let ranked := suggestions.qsort fun a b =>
+    decide (rewriteScore spanLines source a false > rewriteScore spanLines source b false)
+  ranked.extract 0 (Nat.min limit ranked.size)
 
 /-- Replay a concrete tactic and return the proof it assigns to the fresh replay goal. -/
 private def replayCandidateProof
@@ -259,16 +291,16 @@ private def importedExactTerm
 
 /-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
 private def exactSearch
-    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat) :
-    Command.CommandElabM (Option Candidate) := do
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+    (source : String) : Command.CommandElabM (Option Candidate) := do
   let result ← try
     importedExactTerm node goal
   catch _ =>
     pure none
   let some (term, declName, moduleName) := result | return none
   let replacement ← `(tactic| exact $term)
-  verifiedCandidate node goal "exact?" replacement (candidateBaseScore spanLines + 140)
-    (some declName) (some moduleName)
+  let score := candidateBaseScore spanLines + 140 + theoremMentionBonus source declName
+  verifiedCandidate node goal "exact?" replacement score (some declName) (some moduleName)
 
 /--
 Collect a bounded set of imported-library rewrites that apply to the goal or one of its shallow
@@ -276,16 +308,17 @@ subexpressions. The actual replacement is still accepted only after replay, so t
 discovery without weakening verification.
 -/
 private def importedRewriteSuggestions
-    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+    (maxDepth : Nat := 2) (limit : Nat := 64) :
     Command.CommandElabM (Array RewriteSuggestion) :=
   node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
     let env ← getEnv
     let target ← freshGoal.getType
     let mut suggestions := #[]
-    for (expr, depth) in rewriteTargets target 2 do
+    for (expr, depth) in rewriteTargets target maxDepth do
       for rewrites in ← Mathlib.Tactic.LibraryRewrite.getImportRewrites expr do
         for (rw, declName) in rewrites do
-          if suggestions.size >= 64 then
+          if suggestions.size >= limit then
             return suggestions
           let some moduleName := declarationModule? env declName | continue
           if !rw.extraGoals.isEmpty then
@@ -304,41 +337,43 @@ private def importedRewriteSuggestions
     return suggestions
 
 /--
-Rank named imported rewrites rather than accepting the first replay success. Root rewrites score
-above rewrites of shallow subexpressions, while rewrites that enlarge the expression or introduce
-new concepts are penalized.
+Rank rewrites cheaply first, then replay only the highest-scoring few. Rewrites already named by the
+original proof receive a strong relevance bonus, while `rw ... <;> assumption` is penalized unless
+it is supported by such evidence.
 -/
 private def rewriteSearch
-    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat) :
-    Command.CommandElabM (Option Candidate) := do
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+    (source : String) : Command.CommandElabM (Option Candidate) := do
   let suggestions ← try
     importedRewriteSuggestions node goal
   catch _ =>
     pure #[]
+  let suggestions := topRewriteSuggestions suggestions spanLines source 12
   let mut best : Option Candidate := none
   for suggestion in suggestions do
-    let base := candidateBaseScore spanLines + rewriteBonus suggestion.depth
-    let penalty := rewritePenalty suggestion
     if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic
-        (base + 40 - penalty) (some suggestion.theoremName) (some suggestion.moduleName) then
+        (rewriteScore spanLines source suggestion false)
+        (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
     let rewrite := suggestion.tactic
     let replacement ← `(tactic| $rewrite <;> assumption)
     if let some candidate ← verifiedCandidate node goal "rw?" replacement
-        (base + 15 - penalty) (some suggestion.theoremName) (some suggestion.moduleName) then
+        (rewriteScore spanLines source suggestion true)
+        (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
   return best
 
-/-- Search a precomputed rewrite set for one theorem that reproduces an intermediate transition. -/
+/-- Search a pre-ranked rewrite set for one theorem that reproduces an intermediate transition. -/
 private def rewriteTransitionSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (targetType : Expr)
-    (spanLines : Nat) (suggestions : Array RewriteSuggestion) :
+    (spanLines : Nat) (source : String) (suggestions : Array RewriteSuggestion) :
     Command.CommandElabM (Option Candidate) := do
+  let suggestions := suggestions.filter fun suggestion =>
+    suggestion.introducedConsts ≤ 1 && suggestion.growth ≤ 4
+  let suggestions := topRewriteSuggestions suggestions spanLines source 8
   let mut best : Option Candidate := none
   for suggestion in suggestions do
-    if suggestion.introducedConsts > 1 || suggestion.growth > 4 then
-      continue
-    let score := candidateBaseScore spanLines + rewriteBonus suggestion.depth - rewritePenalty suggestion
+    let score := rewriteScore spanLines source suggestion false
     if let some candidate ← verifiedTransitionCandidate node goal targetType "rw→" suggestion.tactic
         score (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
@@ -357,10 +392,11 @@ private def auditSeq
   let some region := regionOfSeq fileMap minLines seq | return none
   let some first := seq[0]? | return some { region }
   let [goal] := first.tacI.goalsBefore | return some { region }
+  let source ← tacticSeqText seq
   let mut best : Option Candidate := none
-  if let some candidate ← rewriteSearch first goal region.spanLines then
+  if let some candidate ← rewriteSearch first goal region.spanLines source then
     best := betterCandidate best candidate
-  if let some candidate ← exactSearch first goal region.spanLines then
+  if let some candidate ← exactSearch first goal region.spanLines source then
     best := betterCandidate best candidate
   if let some candidate ← concreteSearch first goal "simp" (← `(tactic| simp))
       (candidateBaseScore region.spanLines + 100) then
@@ -369,6 +405,19 @@ private def auditSeq
       (candidateBaseScore region.spanLines + 50) then
     best := betterCandidate best candidate
   return some { region, candidate? := best }
+
+private def transitionStartEligible
+    (node : Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM Bool := do
+  let [goal] := node.tacI.goalsBefore | return false
+  let [nextGoal] := node.tacI.goalsAfter | return false
+  let some startDecl := node.tacI.mctxBefore.decls.find? goal | return false
+  let some nextDecl := node.tacI.mctxAfter.decls.find? nextGoal | return false
+  if localFVarIds startDecl.lctx != localFVarIds nextDecl.lctx then
+    return false
+  let tactic : TSyntax `tactic := ⟨node.tacI.stx⟩
+  let text ← prettyTactic tactic
+  return text.startsWith "rw " || text.startsWith "simp " || text.startsWith "simpa " ||
+    text.startsWith "change " || text.startsWith "nth_rw " || text.startsWith "erw "
 
 /--
 Audit a nonterminal tactic window conservatively. The window must start and end with one goal,
@@ -390,7 +439,8 @@ private def auditTransitionWindow
     return none
   if endDecl.type.hasExprMVar then
     return none
-  let candidate? ← rewriteTransitionSearch first goal endDecl.type region.spanLines suggestions
+  let source ← tacticSeqText seq
+  let candidate? ← rewriteTransitionSearch first goal endDecl.type region.spanLines source suggestions
   let some candidate := candidate? | return none
   return some { region, candidate? := some candidate }
 
@@ -407,9 +457,11 @@ private def collectAudits
         if maxLen < 2 then
           continue
         let some first := seq[start]? | continue
+        if !(← transitionStartEligible first) then
+          continue
         let [goal] := first.tacI.goalsBefore | continue
         let suggestions ← try
-          importedRewriteSuggestions first goal
+          importedRewriteSuggestions first goal 1 32
         catch _ =>
           pure #[]
         if suggestions.isEmpty then
