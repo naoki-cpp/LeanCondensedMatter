@@ -12385,6 +12385,26 @@
   "compiledConsumerCount": 0},
  {"terminal": true,
   "statement":
+  "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : AddGroup V] [inst_1 : MetricSpace E]\n  [inst_2 : AddAction V E] [inst_3 : IsIsometricVAdd V E] {X : Crystal.AtomicConfiguration E Species}\n  [IsCancelVAdd ↥X.translationSubgroup ↑X.Site],\n  X.FiniteModuloTranslations → ∃ M, M.Finite ∧ ∀ (x : ↑X.Site), ∃! p, p.2 ∈ M ∧ p.1 +ᵥ p.2 = x",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name":
+  "LeanCondensedMatter.Crystal.AtomicConfiguration.FiniteModuloTranslations.exists_finite_translation_normal_form",
+  "module": "LeanCondensedMatter.Crystal.Periodicity",
+  "docString":
+  "If translation symmetries act freely on occupied sites, finiteness modulo translations gives a\nfinite motif with a unique translation-motif decomposition of every occupied site. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": [],
+  "dependencies": [],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0},
+ {"terminal": true,
+  "statement":
   "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]\n  [inst_2 : MetricSpace E] [inst_3 : NormedAddTorsor V E] {X : Crystal.AtomicConfiguration E Species},\n  X.Periodic → DiscreteTopology ↥(AddSubgroup.toIntSubmodule X.translationSubgroup)",
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -12757,6 +12777,26 @@
   "dependencies":
   ["LeanCondensedMatter.Crystal.AtomicConfiguration.species_eq_of_mem_site_orbit",
    "LeanCondensedMatter.Crystal.AtomicConfiguration.translation_site_orbit_subset_site_orbit"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0},
+ {"terminal": true,
+  "statement":
+  "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : AddGroup V] [inst_1 : MetricSpace E]\n  [inst_2 : AddTorsor V E] [inst_3 : IsIsometricVAdd V E] (X : Crystal.AtomicConfiguration E Species),\n  IsCancelVAdd ↥X.translationSubgroup ↑X.Site",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name":
+  "LeanCondensedMatter.Crystal.AtomicConfiguration.translationSiteIsCancelVAdd",
+  "module": "LeanCondensedMatter.Crystal.Translation",
+  "docString":
+  "A free ambient translation action induces a free action of translation symmetries on occupied\nsites. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": [],
+  "dependencies": [],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
