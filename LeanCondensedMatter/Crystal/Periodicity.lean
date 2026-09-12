@@ -56,6 +56,35 @@ theorem exists_finite_translation_motif (h : X.FiniteModuloTranslations (V := V)
   obtain ⟨v, hv⟩ := Quotient.exact hq
   exact ⟨v, hv⟩
 
+/-- If ambient translations act freely, finiteness modulo translation symmetries gives a finite
+motif with a unique translation-motif decomposition of every occupied site. -/
+theorem exists_finite_translation_normal_form [IsCancelVAdd V E]
+    (h : X.FiniteModuloTranslations (V := V)) :
+    ∃ M : Set X.Site,
+      M.Finite ∧
+        ∀ x : X.Site,
+          ∃! p : X.translationSubgroup (V := V) × X.Site,
+            p.2 ∈ M ∧ p.1 +ᵥ p.2 = x := by
+  let Q := AddAction.orbitRel.Quotient (X.translationSubgroup (V := V)) X.Site
+  letI : Finite Q := h
+  refine ⟨Set.range (fun q : Q => q.out), Set.finite_range _, ?_⟩
+  intro x
+  let q : Q := Quotient.mk'' x
+  have hq : (Quotient.mk'' x : Q) = Quotient.mk'' q.out := (Quotient.out_eq' q).symm
+  obtain ⟨v, hv⟩ := Quotient.exact hq
+  refine ⟨⟨v, q.out⟩, ⟨⟨q, rfl⟩, hv⟩, ?_⟩
+  rintro ⟨w, m⟩ ⟨hm, hwm⟩
+  rcases hm with ⟨r, rfl⟩
+  have hrq : r = q := by
+    calc
+      r = Quotient.mk'' r.out := (Quotient.out_eq' r).symm
+      _ = Quotient.mk'' x := (Quotient.sound ⟨w, hwm⟩).symm
+      _ = q := rfl
+  subst r
+  apply Prod.ext
+  · exact IsCancelVAdd.right_cancel w v q.out (hwm.trans hv.symm)
+  · rfl
+
 end FiniteModuloTranslations
 
 end FiniteModuloTranslations
