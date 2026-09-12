@@ -78,7 +78,9 @@ theorem exists_finite_translation_normal_form [IsCancelVAdd V E]
   have hrq : r = q := by
     calc
       r = Quotient.mk'' r.out := (Quotient.out_eq' r).symm
-      _ = Quotient.mk'' x := (Quotient.sound ⟨w, hwm⟩).symm
+      _ = Quotient.mk'' x := (Quotient.sound (show
+        AddAction.orbitRel (X.translationSubgroup (V := V)) X.Site x r.out from
+          ⟨w, hwm⟩)).symm
       _ = q := rfl
   subst r
   apply Prod.ext
