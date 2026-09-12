@@ -1,4 +1,0 @@
-import LeanCondensedMatter.Crystal.AtomicConfiguration
-import LeanCondensedMatter.Crystal.Symmetry
-import LeanCondensedMatter.Crystal.Translation
-import LeanCondensedMatter.Crystal.Lattice
