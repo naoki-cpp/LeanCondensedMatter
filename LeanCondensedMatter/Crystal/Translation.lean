@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Symmetry
+import Mathlib.Algebra.Torsor.Defs
 import Mathlib.Topology.MetricSpace.IsometricSMul
 
 /-!
@@ -114,6 +115,25 @@ theorem species_vadd (X : AtomicConfiguration E Species)
   exact X.translation_site_orbit_subset_site_orbit (V := V) x (AddAction.mem_orbit x v)
 
 end Translation
+
+section TorsorTranslation
+
+variable [AddGroup V] [MetricSpace E] [AddTorsor V E] [IsIsometricVAdd V E]
+
+/-- A free ambient translation action induces a free action of translation symmetries on occupied
+sites. -/
+instance translationSiteIsCancelVAdd (X : AtomicConfiguration E Species) :
+    IsCancelVAdd (X.translationSubgroup (V := V)) X.Site where
+  left_cancel' v x y h := by
+    apply Subtype.ext
+    exact IsLeftCancelVAdd.left_cancel (v : V) (x : E) (y : E) <| by
+      simpa using congrArg (fun z : X.Site => (z : E)) h
+  right_cancel' v w x h := by
+    apply Subtype.ext
+    exact vadd_right_cancel (x : E) <| by
+      simpa using congrArg (fun z : X.Site => (z : E)) h
+
+end TorsorTranslation
 
 end AtomicConfiguration
 
