@@ -51,9 +51,7 @@ omit [CompleteSpace A] in
 @[simp]
 theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
     coeff V n 0 = if n = 0 then 1 else 0 := by
-  cases n with
-  | zero => simp
-  | succ n => simp [coeff_succ]
+  simp
 
 /-- The `n`th perturbatively weighted Dyson coefficient. -/
 noncomputable def term (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) : A :=
@@ -75,10 +73,7 @@ omit [CompleteSpace A] in
 @[simp]
 theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
     term V lam 0 n = if n = 0 then 1 else 0 := by
-  by_cases hn : n = 0
-  · subst n
-    simp [term]
-  · simp [term, coeff_at_zero, hn]
+  simp
 
 /-- The formal norm-topological Dyson evolution, defined as the `tsum` of weighted coefficients. -/
 noncomputable def evolution (V : ℝ → A) (lam : ℂ) (τ : ℝ) : A :=
