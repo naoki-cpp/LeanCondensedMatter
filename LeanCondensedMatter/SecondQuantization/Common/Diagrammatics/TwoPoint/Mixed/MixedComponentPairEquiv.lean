@@ -298,46 +298,5 @@ theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
           e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)))
   exact d.mixedComponentPairToRestricted_pair_eq_or_swap τ τ' σ B e localPairing hpartner pr
 
-/-- Canonical external split pair transport preserves transported endpoints up to swap. -/
-theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart) :
-    (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 =
-        (d.mixedExternalPositionEquiv τ τ' σ
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)),
-          d.mixedExternalPositionEquiv τ τ' σ
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1))) ∨
-      (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 =
-        (d.mixedExternalPositionEquiv τ τ' σ
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)),
-          d.mixedExternalPositionEquiv τ τ' σ
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0))) :=
-  d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ d.externalComponentPart
-    (d.mixedExternalPositionEquiv τ τ' σ) d.externalVacuumSplit.1.pairing
-    (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr
-
-/-- Vacuum mixed-pair restriction preserves transported endpoints up to swap. -/
-theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B) (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 =
-        (d.mixedVacuumPositionEquiv τ τ' σ B hVac
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
-          d.mixedVacuumPositionEquiv τ τ' σ B hVac
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 =
-        (d.mixedVacuumPositionEquiv τ τ' σ B hVac
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
-          d.mixedVacuumPositionEquiv τ τ' σ B hVac
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) :=
-  d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ B
-    (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
-    (d.restrictedVacuumPairing B hVac)
-    (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
-
 end Common
 end SecondQuantization
