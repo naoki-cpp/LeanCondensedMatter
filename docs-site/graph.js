@@ -1,5 +1,6 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const MAX_NODES = 80;
+const SEARCH_LIMIT = 10;
 
 const state = {
   catalog: [],
@@ -10,18 +11,29 @@ const state = {
   depth: 2,
   module: "*",
   highlights: new Set(),
+  searchResults: [],
+  searchIndex: -1,
+  graphBounds: null,
+  viewBox: null,
+  drag: null,
 };
 
 const ui = {
+  overviewLink: document.querySelector("#overview-link"),
   searchForm: document.querySelector("#search-form"),
   search: document.querySelector("#theorem-search"),
-  suggestions: document.querySelector("#theorem-suggestions"),
+  searchResults: document.querySelector("#search-results"),
   direction: document.querySelector("#direction"),
   depth: document.querySelector("#depth"),
   module: document.querySelector("#module-filter"),
   graph: document.querySelector("#graph"),
+  viewport: document.querySelector("#graph-viewport"),
+  overview: document.querySelector("#overview"),
   graphStatus: document.querySelector("#graph-status"),
   detail: document.querySelector("#detail"),
+  zoomOut: document.querySelector("#zoom-out"),
+  zoomIn: document.querySelector("#zoom-in"),
+  fitView: document.querySelector("#fit-view"),
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
 
@@ -33,19 +45,50 @@ function svg(tag, attributes = {}) {
   return element;
 }
 
+function element(tag, className = "", text = "") {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
 function normalizeEntry(entry) {
   return {
     ...entry,
     dependencies: Array.isArray(entry.dependencies) ? entry.dependencies : [],
     dependents: Array.isArray(entry.dependents) ? entry.dependents : [],
     compiledConsumers: Array.isArray(entry.compiledConsumers) ? entry.compiledConsumers : [],
+    sourceUrl: typeof entry.sourceUrl === "string" ? entry.sourceUrl : null,
+    sourceFile: typeof entry.sourceFile === "string" ? entry.sourceFile : null,
+    sourceLine: Number.isInteger(entry.sourceLine) ? entry.sourceLine : null,
   };
+}
+
+function shortModule(moduleName) {
+  const prefix = "LeanCondensedMatter.";
+  return moduleName.startsWith(prefix) ? moduleName.slice(prefix.length) : moduleName;
+}
+
+function domainName(moduleName) {
+  return shortModule(moduleName).split(".")[0] || shortModule(moduleName);
+}
+
+function declarationBaseName(name) {
+  return name.split(".").at(-1) ?? name;
 }
 
 function displayName(name) {
   const parts = name.split(".");
-  if (parts.length <= 3) return name;
-  return `…${parts.slice(-3).join(".")}`;
+  if (!state.root) return parts.length <= 3 ? name : `…${parts.slice(-3).join(".")}`;
+
+  const rootParts = state.root.split(".");
+  let common = 0;
+  while (common < parts.length && common < rootParts.length && parts[common] === rootParts[common]) {
+    common += 1;
+  }
+  const contextual = parts.slice(common).join(".");
+  if (contextual && contextual.length <= 34) return contextual;
+  return parts.length <= 3 ? name : `…${parts.slice(-3).join(".")}`;
 }
 
 function moduleAllowed(name) {
@@ -123,10 +166,10 @@ function layout(levels) {
 
   const levelNumbers = [...grouped.keys()].sort((a, b) => a - b);
   const maxLayer = Math.max(...[...grouped.values()].map((names) => names.length), 1);
-  const width = Math.max(980, levelNumbers.length * 260 + 180);
-  const height = Math.max(660, maxLayer * 88 + 180);
+  const width = Math.max(900, levelNumbers.length * 260 + 180);
+  const height = Math.max(620, maxLayer * 88 + 160);
   const xMargin = 135;
-  const yMargin = 90;
+  const yMargin = 80;
   const xSpan = Math.max(1, width - 2 * xMargin);
   const positions = new Map();
 
@@ -147,13 +190,48 @@ function layout(levels) {
   return { positions, width, height };
 }
 
-function renderGraph() {
+function setGraphViewBox(viewBox) {
+  state.viewBox = viewBox;
+  ui.graph.setAttribute("viewBox", `${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`);
+}
+
+function fitGraph() {
+  if (!state.graphBounds) return;
+  setGraphViewBox({ ...state.graphBounds });
+}
+
+function zoomGraph(factor, clientX = null, clientY = null) {
+  if (!state.viewBox || !state.graphBounds) return;
+  const rect = ui.viewport.getBoundingClientRect();
+  const px = clientX === null ? 0.5 : Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+  const py = clientY === null ? 0.5 : Math.min(1, Math.max(0, (clientY - rect.top) / rect.height));
+  const anchorX = state.viewBox.x + state.viewBox.width * px;
+  const anchorY = state.viewBox.y + state.viewBox.height * py;
+  const minWidth = Math.min(220, state.graphBounds.width);
+  const maxWidth = state.graphBounds.width * 3;
+  const width = Math.min(maxWidth, Math.max(minWidth, state.viewBox.width * factor));
+  const aspect = state.viewBox.height / state.viewBox.width;
+  const height = width * aspect;
+  setGraphViewBox({
+    x: anchorX - width * px,
+    y: anchorY - height * py,
+    width,
+    height,
+  });
+}
+
+function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
 
+  ui.overview.hidden = true;
+  ui.viewport.hidden = false;
+  setGraphActionsEnabled(true);
+
+  const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated } = collectNeighborhood();
   const { positions, width, height } = layout(levels);
   ui.graph.replaceChildren();
-  ui.graph.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  state.graphBounds = { x: 0, y: 0, width, height };
 
   const defs = svg("defs");
   const marker = svg("marker", {
@@ -241,9 +319,10 @@ function renderGraph() {
     const select = () => {
       state.selected = name;
       renderDetails(name);
-      renderGraph();
+      renderGraph({ preserveView: true });
     };
     group.addEventListener("click", select);
+    group.addEventListener("dblclick", () => focusRoot(name));
     group.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -253,6 +332,9 @@ function renderGraph() {
     nodes.append(group);
   }
   ui.graph.append(nodes);
+
+  if (previousView) setGraphViewBox(previousView);
+  else fitGraph();
 
   ui.graphStatus.textContent = `${levels.size} nodes · ${edgeCount} edges${truncated ? ` · capped at ${MAX_NODES} nodes` : ""}`;
 }
@@ -303,6 +385,14 @@ function relationSection(title, names) {
   return section;
 }
 
+function sourceHref(entry) {
+  if (entry.sourceUrl) return entry.sourceUrl;
+  if (!entry.sourceFile) return null;
+  const path = entry.sourceFile.split("/").map(encodeURIComponent).join("/");
+  const line = entry.sourceLine ? `#L${entry.sourceLine}` : "";
+  return `https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/${path}${line}`;
+}
+
 function renderDetails(name) {
   const entry = state.byName.get(name);
   ui.detail.replaceChildren();
@@ -310,7 +400,7 @@ function renderDetails(name) {
 
   const eyebrow = document.createElement("p");
   eyebrow.className = "detail-eyebrow";
-  eyebrow.textContent = entry.module;
+  eyebrow.textContent = shortModule(entry.module);
   ui.detail.append(eyebrow);
 
   const heading = document.createElement("h2");
@@ -327,14 +417,22 @@ function renderDetails(name) {
   if (entry.completedMention) badges.append(badge("completed"));
   ui.detail.append(badges);
 
+  const actions = element("div", "detail-actions");
   if (name !== state.root) {
-    const focus = document.createElement("button");
+    const focus = element("button", "focus-button", "Focus graph here");
     focus.type = "button";
-    focus.className = "focus-button";
-    focus.textContent = "Focus graph here";
     focus.addEventListener("click", () => focusRoot(name));
-    ui.detail.append(focus);
+    actions.append(focus);
   }
+  const href = sourceHref(entry);
+  if (href) {
+    const source = element("a", "source-link", "View source");
+    source.href = href;
+    source.target = "_blank";
+    source.rel = "noreferrer";
+    actions.append(source);
+  }
+  if (actions.childElementCount > 0) ui.detail.append(actions);
 
   const statementHeading = document.createElement("h3");
   statementHeading.textContent = "Statement";
@@ -368,66 +466,400 @@ function renderDetails(name) {
   ui.detail.append(relationSection("Compiled consumers", entry.compiledConsumers));
 }
 
-function focusRoot(name) {
+function setGraphActionsEnabled(enabled) {
+  ui.zoomOut.disabled = !enabled;
+  ui.zoomIn.disabled = !enabled;
+  ui.fitView.disabled = !enabled;
+}
+
+function writeLocation(push) {
+  const url = new URL(window.location.href);
+  if (state.direction === "both") url.searchParams.delete("direction");
+  else url.searchParams.set("direction", state.direction);
+  if (state.depth === 2) url.searchParams.delete("depth");
+  else url.searchParams.set("depth", String(state.depth));
+  if (state.module === "*") url.searchParams.delete("module");
+  else url.searchParams.set("module", state.module);
+  url.hash = state.root ?? "";
+  const next = `${url.pathname}${url.search}${url.hash}`;
+  if (push) history.pushState(null, "", next);
+  else history.replaceState(null, "", next);
+}
+
+function focusRoot(name, { historyEntry = true } = {}) {
   if (!state.byName.has(name)) return;
   state.root = name;
   state.selected = name;
   ui.search.value = name;
-  history.replaceState(null, "", `#${encodeURIComponent(name)}`);
+  hideSearchResults();
   renderDetails(name);
   renderGraph();
+  if (historyEntry) writeLocation(true);
+}
+
+function overviewHeader(title, description) {
+  const header = element("div", "overview-header");
+  header.append(element("h2", "", title));
+  header.append(element("p", "", description));
+  return header;
+}
+
+function summaryChip(text) {
+  return element("span", "summary-chip", text);
+}
+
+function renderDomainOverview() {
+  ui.overview.replaceChildren();
+  ui.overview.append(overviewHeader(
+    "Explore LeanCondensedMatter",
+    "Browse a project area, choose a module, or search directly for a declaration. The dependency graph opens only after you choose a declaration."
+  ));
+
+  const modules = new Set(state.catalog.map((entry) => entry.module));
+  const summary = element("div", "overview-summary");
+  summary.append(summaryChip(`${state.catalog.length} theorems`));
+  summary.append(summaryChip(`${modules.size} modules`));
+  summary.append(summaryChip(`${state.catalog.filter((entry) => entry.terminal).length} terminal`));
+  summary.append(summaryChip(`${state.catalog.filter((entry) => entry.directWrapperOf !== null).length} wrappers`));
+  ui.overview.append(summary);
+
+  const groups = new Map();
+  for (const entry of state.catalog) {
+    const domain = domainName(entry.module);
+    if (!groups.has(domain)) groups.set(domain, []);
+    groups.get(domain).push(entry);
+  }
+
+  const section = element("section", "overview-section");
+  section.append(element("h3", "", "Project areas"));
+  const grid = element("div", "domain-grid");
+  for (const [domain, entries] of [...groups.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    const moduleCount = new Set(entries.map((entry) => entry.module)).size;
+    const button = element("button", "domain-card");
+    button.type = "button";
+    button.append(element("strong", "", domain));
+    button.append(element("small", "", `${entries.length} theorems · ${moduleCount} modules`));
+    button.addEventListener("click", () => renderDomain(domain));
+    grid.append(button);
+  }
+  section.append(grid);
+  ui.overview.append(section);
+}
+
+function renderDomain(domain) {
+  const entries = state.catalog.filter((entry) => domainName(entry.module) === domain);
+  const modules = new Map();
+  for (const entry of entries) {
+    if (!modules.has(entry.module)) modules.set(entry.module, []);
+    modules.get(entry.module).push(entry);
+  }
+
+  ui.overview.replaceChildren();
+  ui.overview.append(overviewHeader(domain, `${entries.length} theorems across ${modules.size} modules.`));
+  const section = element("section", "overview-section");
+  const head = element("div", "overview-section-head");
+  head.append(element("h3", "", "Modules"));
+  const back = element("button", "overview-back", "All areas");
+  back.type = "button";
+  back.addEventListener("click", renderDomainOverview);
+  head.append(back);
+  section.append(head);
+
+  const grid = element("div", "module-grid");
+  for (const [moduleName, moduleEntries] of [...modules.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    const button = element("button", "module-card");
+    button.type = "button";
+    button.append(element("strong", "", shortModule(moduleName)));
+    button.append(element("small", "", `${moduleEntries.length} theorems`));
+    button.addEventListener("click", () => renderModule(moduleName));
+    grid.append(button);
+  }
+  section.append(grid);
+  ui.overview.append(section);
+}
+
+function renderModule(moduleName) {
+  const entries = state.catalog
+    .filter((entry) => entry.module === moduleName)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  ui.overview.replaceChildren();
+  ui.overview.append(overviewHeader(shortModule(moduleName), `${entries.length} theorems in this module.`));
+  const section = element("section", "overview-section");
+  const head = element("div", "overview-section-head");
+  head.append(element("h3", "", "Declarations"));
+  const back = element("button", "overview-back", domainName(moduleName));
+  back.type = "button";
+  back.addEventListener("click", () => renderDomain(domainName(moduleName)));
+  head.append(back);
+  section.append(head);
+
+  const list = element("div", "declaration-list");
+  for (const entry of entries) {
+    const button = element("button", "declaration-card");
+    button.type = "button";
+    button.append(element("strong", "", declarationBaseName(entry.name)));
+    const context = entry.docString?.trim() || entry.statement;
+    button.append(element("small", "", context.slice(0, 150)));
+    button.addEventListener("click", () => focusRoot(entry.name));
+    list.append(button);
+  }
+  section.append(list);
+  ui.overview.append(section);
+}
+
+function showOverview({ historyEntry = true, resetModule = true } = {}) {
+  state.root = null;
+  state.selected = null;
+  state.viewBox = null;
+  state.graphBounds = null;
+  if (resetModule) {
+    state.module = "*";
+    ui.module.value = "*";
+  }
+  ui.search.value = "";
+  hideSearchResults();
+  ui.viewport.hidden = true;
+  ui.overview.hidden = false;
+  setGraphActionsEnabled(false);
+  const moduleCount = new Set(state.catalog.map((entry) => entry.module)).size;
+  ui.graphStatus.textContent = `${state.catalog.length} theorems · ${moduleCount} modules`;
+  ui.detail.replaceChildren(element("p", "muted", "Choose a declaration from the overview or search to inspect its statement and relationships."));
+  if (!resetModule && state.module !== "*" && state.catalog.some((entry) => entry.module === state.module)) {
+    renderModule(state.module);
+  } else {
+    renderDomainOverview();
+  }
+  if (historyEntry) writeLocation(true);
 }
 
 function populateControls() {
-  for (const entry of state.catalog) {
-    const option = document.createElement("option");
-    option.value = entry.name;
-    ui.suggestions.append(option);
-  }
-
   const modules = [...new Set(state.catalog.map((entry) => entry.module))].sort((a, b) => a.localeCompare(b));
   for (const moduleName of modules) {
     const option = document.createElement("option");
     option.value = moduleName;
-    option.textContent = moduleName;
+    option.textContent = shortModule(moduleName);
     ui.module.append(option);
   }
 }
 
-function findSearchMatch(query) {
+function searchScore(entry, query) {
   const needle = query.trim().toLowerCase();
   if (!needle) return null;
-  const exact = state.catalog.find((entry) => entry.name.toLowerCase() === needle);
-  if (exact) return exact.name;
-  return state.catalog.find((entry) => entry.name.toLowerCase().includes(needle))?.name ?? null;
+  const name = entry.name.toLowerCase();
+  const base = declarationBaseName(entry.name).toLowerCase();
+  const moduleName = entry.module.toLowerCase();
+  const docs = (entry.docString ?? "").toLowerCase();
+  const tokens = needle.split(/\s+/).filter(Boolean);
+  const haystack = `${name} ${moduleName} ${docs}`;
+  if (!tokens.every((token) => haystack.includes(token))) return null;
+
+  if (name === needle) return 0;
+  if (base === needle) return 1;
+  if (name.startsWith(needle)) return 2;
+  if (base.startsWith(needle)) return 3;
+  const nameIndex = name.indexOf(needle);
+  if (nameIndex >= 0) return 10 + nameIndex / 1000;
+  if (moduleName.includes(needle)) return 20;
+  if (docs.includes(needle)) return 30;
+  return 40;
+}
+
+function findSearchResults(query) {
+  const ranked = [];
+  for (const entry of state.catalog) {
+    const score = searchScore(entry, query);
+    if (score !== null) ranked.push({ entry, score });
+  }
+  ranked.sort((a, b) => a.score - b.score || a.entry.name.localeCompare(b.entry.name));
+  return ranked.slice(0, SEARCH_LIMIT).map(({ entry }) => entry);
+}
+
+function updateSearchActive() {
+  [...ui.searchResults.querySelectorAll(".search-result")].forEach((button, index) => {
+    const active = index === state.searchIndex;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+}
+
+function renderSearchResults() {
+  const query = ui.search.value.trim();
+  state.searchResults = findSearchResults(query);
+  state.searchIndex = state.searchResults.length > 0 ? 0 : -1;
+  ui.searchResults.replaceChildren();
+
+  if (!query || state.searchResults.length === 0) {
+    hideSearchResults();
+    return;
+  }
+
+  state.searchResults.forEach((entry, index) => {
+    const button = element("button", "search-result");
+    button.type = "button";
+    button.setAttribute("role", "option");
+    button.append(element("strong", "", entry.name));
+    const context = entry.docString?.trim() || shortModule(entry.module);
+    button.append(element("small", "", `${shortModule(entry.module)}${context && context !== shortModule(entry.module) ? ` · ${context}` : ""}`));
+    button.addEventListener("click", () => focusRoot(entry.name));
+    button.addEventListener("mousemove", () => {
+      state.searchIndex = index;
+      updateSearchActive();
+    });
+    ui.searchResults.append(button);
+  });
+
+  ui.searchResults.hidden = false;
+  ui.search.setAttribute("aria-expanded", "true");
+  updateSearchActive();
+}
+
+function hideSearchResults() {
+  ui.searchResults.hidden = true;
+  ui.search.setAttribute("aria-expanded", "false");
+  state.searchResults = [];
+  state.searchIndex = -1;
+}
+
+function openActiveSearchResult() {
+  const entry = state.searchResults[state.searchIndex] ?? state.searchResults[0];
+  if (entry) focusRoot(entry.name);
+}
+
+function restoreLocation() {
+  const params = new URLSearchParams(location.search);
+  const direction = params.get("direction");
+  state.direction = ["both", "dependencies", "consumers"].includes(direction) ? direction : "both";
+  const depth = Number(params.get("depth"));
+  state.depth = [1, 2, 3, 4].includes(depth) ? depth : 2;
+  const requestedModule = params.get("module");
+  state.module = requestedModule && state.catalog.some((entry) => entry.module === requestedModule)
+    ? requestedModule
+    : "*";
+
+  ui.direction.value = state.direction;
+  ui.depth.value = String(state.depth);
+  ui.module.value = state.module;
+
+  let requested = "";
+  try {
+    requested = decodeURIComponent(location.hash.slice(1));
+  } catch {
+    requested = location.hash.slice(1);
+  }
+  if (requested && state.byName.has(requested)) {
+    focusRoot(requested, { historyEntry: false });
+  } else {
+    showOverview({ historyEntry: false, resetModule: false });
+  }
+}
+
+function bindGraphNavigation() {
+  ui.zoomIn.addEventListener("click", () => zoomGraph(0.8));
+  ui.zoomOut.addEventListener("click", () => zoomGraph(1.25));
+  ui.fitView.addEventListener("click", fitGraph);
+
+  ui.viewport.addEventListener("wheel", (event) => {
+    if (!state.root) return;
+    event.preventDefault();
+    zoomGraph(event.deltaY < 0 ? 0.88 : 1.14, event.clientX, event.clientY);
+  }, { passive: false });
+
+  ui.viewport.addEventListener("pointerdown", (event) => {
+    if (!state.viewBox || event.target.closest?.(".node")) return;
+    ui.viewport.setPointerCapture(event.pointerId);
+    state.drag = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      viewBox: { ...state.viewBox },
+    };
+    ui.viewport.classList.add("dragging");
+  });
+
+  ui.viewport.addEventListener("pointermove", (event) => {
+    if (!state.drag || event.pointerId !== state.drag.pointerId) return;
+    const rect = ui.viewport.getBoundingClientRect();
+    const dx = (event.clientX - state.drag.x) * state.drag.viewBox.width / Math.max(1, rect.width);
+    const dy = (event.clientY - state.drag.y) * state.drag.viewBox.height / Math.max(1, rect.height);
+    setGraphViewBox({
+      ...state.drag.viewBox,
+      x: state.drag.viewBox.x - dx,
+      y: state.drag.viewBox.y - dy,
+    });
+  });
+
+  const endDrag = (event) => {
+    if (!state.drag || event.pointerId !== state.drag.pointerId) return;
+    state.drag = null;
+    ui.viewport.classList.remove("dragging");
+  };
+  ui.viewport.addEventListener("pointerup", endDrag);
+  ui.viewport.addEventListener("pointercancel", endDrag);
 }
 
 function bindEvents() {
+  ui.overviewLink.addEventListener("click", () => showOverview());
+
+  ui.search.addEventListener("input", renderSearchResults);
+  ui.search.addEventListener("focus", () => {
+    if (ui.search.value.trim()) renderSearchResults();
+  });
+  ui.search.addEventListener("keydown", (event) => {
+    if (ui.searchResults.hidden) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      state.searchIndex = Math.min(state.searchResults.length - 1, state.searchIndex + 1);
+      updateSearchActive();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      state.searchIndex = Math.max(0, state.searchIndex - 1);
+      updateSearchActive();
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      openActiveSearchResult();
+    } else if (event.key === "Escape") {
+      hideSearchResults();
+    }
+  });
+
   ui.searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const match = findSearchMatch(ui.search.value);
-    if (match) focusRoot(match);
+    if (state.searchResults.length === 0) renderSearchResults();
+    openActiveSearchResult();
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!ui.searchForm.contains(event.target)) hideSearchResults();
   });
 
   ui.direction.addEventListener("change", () => {
     state.direction = ui.direction.value;
-    renderGraph();
+    if (state.root) renderGraph();
+    writeLocation(false);
   });
   ui.depth.addEventListener("change", () => {
     state.depth = Number(ui.depth.value);
-    renderGraph();
+    if (state.root) renderGraph();
+    writeLocation(false);
   });
   ui.module.addEventListener("change", () => {
     state.module = ui.module.value;
-    renderGraph();
+    if (state.root) renderGraph();
+    else if (state.module === "*") renderDomainOverview();
+    else renderModule(state.module);
+    writeLocation(false);
   });
   for (const input of ui.highlightInputs) {
     input.addEventListener("change", () => {
       if (input.checked) state.highlights.add(input.dataset.highlight);
       else state.highlights.delete(input.dataset.highlight);
-      renderGraph();
+      if (state.root) renderGraph({ preserveView: true });
     });
   }
+
+  window.addEventListener("popstate", restoreLocation);
+  bindGraphNavigation();
 }
 
 async function main() {
@@ -440,16 +872,7 @@ async function main() {
 
   populateControls();
   bindEvents();
-
-  const requested = decodeURIComponent(location.hash.slice(1));
-  const initial = state.byName.has(requested)
-    ? requested
-    : [...state.catalog].sort((a, b) => {
-        const aScore = a.dependencies.length + a.dependents.length;
-        const bScore = b.dependencies.length + b.dependents.length;
-        return bScore - aScore || a.name.localeCompare(b.name);
-      })[0].name;
-  focusRoot(initial);
+  restoreLocation();
 }
 
 main().catch((error) => {
