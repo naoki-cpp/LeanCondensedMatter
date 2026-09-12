@@ -58,6 +58,61 @@ theorem mem_translationSubgroup {X : AtomicConfiguration E Species} {v : V} :
     v ∈ X.translationSubgroup ↔ (IsometryEquiv.constVAdd v : E ≃ᵢ E) ∈ X.symmetryGroup :=
   Iff.rfl
 
+/-- Translation symmetries act canonically on occupied sites. -/
+instance translationSiteAddAction (X : AtomicConfiguration E Species) :
+    AddAction (X.translationSubgroup (V := V)) X.Site where
+  vadd v x :=
+    let g : X.symmetryGroup :=
+      ⟨IsometryEquiv.constVAdd (v : V), mem_translationSubgroup.1 v.property⟩
+    g • x
+  zero_vadd x := by
+    apply Subtype.ext
+    change (0 : V) +ᵥ (x : E) = (x : E)
+    simp
+  add_vadd v w x := by
+    apply Subtype.ext
+    change ((v : V) + (w : V)) +ᵥ (x : E) =
+      (v : V) +ᵥ ((w : V) +ᵥ (x : E))
+    exact add_vadd (v : V) (w : V) (x : E)
+
+@[simp]
+theorem coe_vadd_site (X : AtomicConfiguration E Species)
+    (v : X.translationSubgroup (V := V)) (x : X.Site) :
+    ((v +ᵥ x : X.Site) : E) = (v : V) +ᵥ (x : E) :=
+  rfl
+
+/-- Membership in a translation orbit is exactly reachability by a translation symmetry. -/
+@[simp]
+theorem mem_translation_site_orbit_iff (X : AtomicConfiguration E Species) (x y : X.Site) :
+    y ∈ AddAction.orbit (X.translationSubgroup (V := V)) x ↔
+      ∃ v : X.translationSubgroup (V := V), (v : V) +ᵥ (x : E) = (y : E) := by
+  rw [AddAction.mem_orbit_iff]
+  constructor
+  · rintro ⟨v, h⟩
+    refine ⟨v, ?_⟩
+    simpa using congrArg (fun z : X.Site => (z : E)) h
+  · rintro ⟨v, h⟩
+    refine ⟨v, ?_⟩
+    apply Subtype.ext
+    simpa using h
+
+/-- Every translation orbit is contained in the corresponding full symmetry orbit. -/
+theorem translation_site_orbit_subset_site_orbit (X : AtomicConfiguration E Species) (x : X.Site) :
+    AddAction.orbit (X.translationSubgroup (V := V)) x ⊆ MulAction.orbit X.symmetryGroup x := by
+  intro y hy
+  rcases (X.mem_translation_site_orbit_iff (V := V) x y).1 hy with ⟨v, hv⟩
+  refine (X.mem_site_orbit_iff x y).2 ⟨
+    ⟨IsometryEquiv.constVAdd (v : V), mem_translationSubgroup.1 v.property⟩, ?_⟩
+  simpa using hv
+
+/-- The canonical translation action preserves the species label. -/
+@[simp]
+theorem species_vadd (X : AtomicConfiguration E Species)
+    (v : X.translationSubgroup (V := V)) (x : X.Site) :
+    X.species (v +ᵥ x) = X.species x := by
+  apply X.species_eq_of_mem_site_orbit
+  exact X.translation_site_orbit_subset_site_orbit (V := V) x (AddAction.mem_orbit x v)
+
 end Translation
 
 end AtomicConfiguration
