@@ -156,9 +156,9 @@ theorem reciprocalLattice_reciprocalLattice_span_of_basis {ι : Type*} [Finite �
       (reciprocalPairing_nondegenerate (V := V))
       (reciprocalPairing_isSymm (V := V)) b)
 
-/-- The physical reciprocal of any full real `ℤ`-lattice is discrete. -/
+/-- The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is discrete. -/
 noncomputable instance instDiscreteTopologyReciprocalLattice
-    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
     DiscreteTopology (reciprocalLattice L) := by
   letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
   letI : Module.Free ℤ L := ZLattice.module_free ℝ L
@@ -167,9 +167,9 @@ noncomputable instance instDiscreteTopologyReciprocalLattice
   rw [← b.ofZLatticeBasis_span ℝ, reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)]
   infer_instance
 
-/-- The physical reciprocal of any full real `ℤ`-lattice is again a full `ℤ`-lattice. -/
+/-- The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is again full. -/
 noncomputable instance instIsZLatticeReciprocalLattice
-    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
     IsZLattice ℝ (reciprocalLattice L) := by
   letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
   letI : Module.Free ℤ L := ZLattice.module_free ℝ L
@@ -178,10 +178,11 @@ noncomputable instance instIsZLatticeReciprocalLattice
   rw [← b.ofZLatticeBasis_span ℝ, reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)]
   infer_instance
 
-/-- Taking the physical reciprocal lattice twice recovers any full real `ℤ`-lattice. -/
+/-- Taking the physical reciprocal lattice twice recovers any full finite-dimensional real
+`ℤ`-lattice. -/
 @[simp]
 theorem reciprocalLattice_reciprocalLattice
-    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
     reciprocalLattice (reciprocalLattice L) = L := by
   letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
   letI : Module.Free ℤ L := ZLattice.module_free ℝ L
