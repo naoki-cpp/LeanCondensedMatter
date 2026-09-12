@@ -55,27 +55,29 @@ namespace Periodic
 variable {X : AtomicConfiguration E Species}
 
 /-- A periodic configuration has discrete translation vectors. -/
-theorem discreteTranslations (h : X.Periodic (V := V)) :
+theorem discrete_translations (h : X.Periodic (V := V)) :
     DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) := by
   simpa only [Periodic] using h.1
 
 /-- The translation vectors of a periodic configuration span the full ambient vector space. -/
-theorem spanTranslations_eq_top (h : X.Periodic (V := V)) :
+theorem span_translations_eq_top (h : X.Periodic (V := V)) :
     Submodule.span ℝ
         ((AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) : Submodule ℤ V) : Set V) =
       ⊤ := by
   simpa only [Periodic] using h.2.1
 
 /-- A periodic configuration has finitely many occupied-site classes modulo translations. -/
-theorem finiteModuloTranslations (h : X.Periodic (V := V)) :
+theorem finite_modulo_translations (h : X.Periodic (V := V)) :
     X.FiniteModuloTranslations (V := V) := by
   simpa only [Periodic] using h.2.2
 
 /-- The translation subgroup of a periodic configuration is a Mathlib full `ℤ`-lattice. -/
-theorem isZLatticeTranslations (h : X.Periodic (V := V)) :
+theorem translationSubgroup_isZLattice (h : X.Periodic (V := V)) :
     @IsZLattice ℝ inferInstance V inferInstance inferInstance
-      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) h.discreteTranslations := by
-  exact ⟨h.spanTranslations_eq_top⟩
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) h.discrete_translations := by
+  letI : DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) :=
+    h.discrete_translations
+  exact ⟨h.span_translations_eq_top⟩
 
 end Periodic
 
