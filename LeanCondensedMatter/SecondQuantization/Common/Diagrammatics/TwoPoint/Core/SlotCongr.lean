@@ -67,12 +67,6 @@ noncomputable def twoPointLegCongr (e : ↥T ≃ ↥U) :
     ((Equiv.sumCongr (Equiv.refl (Fin 2)) (e.prodCongr (Equiv.refl (Fin 4)))).trans
       (twoPointLegEquiv U).symm)
 
-/-- The flattened relabeling is the unflattened one read through the two leg enumerations. -/
-theorem twoPointLegCongr_eq_trans (e : ↥T ≃ ↥U) :
-    twoPointLegCongr e =
-      (twoPointLegEquiv T).trans ((twoPointLegDataCongr e).trans (twoPointLegEquiv U).symm) :=
-  rfl
-
 /-- The inverse relabeling of legs is the relabeling along the inverse. -/
 theorem twoPointLegCongr_symm (e : ↥T ≃ ↥U) :
     twoPointLegCongr e.symm = (twoPointLegCongr e).symm := by

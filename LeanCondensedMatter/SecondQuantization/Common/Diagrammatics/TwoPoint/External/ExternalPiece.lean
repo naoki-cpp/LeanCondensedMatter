@@ -127,8 +127,18 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
             ((twoPointLegEquiv
               (Finset.univ : Finset (Fin d.externalInteractionPart.card))).symm x)) =
         twoPointLegDataCongr e.symm x := by
-    rw [← twoPointLegCongr_symm, twoPointLegCongr_eq_trans,
-      Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
+    rw [← twoPointLegCongr_symm]
+    change
+      twoPointLegEquiv d.externalInteractionPart
+          (((twoPointLegEquiv
+              (Finset.univ : Finset (Fin d.externalInteractionPart.card))).trans
+            ((twoPointLegDataCongr e.symm).trans
+              (twoPointLegEquiv d.externalInteractionPart).symm))
+            ((twoPointLegEquiv
+              (Finset.univ : Finset (Fin d.externalInteractionPart.card))).symm x)) =
+        twoPointLegDataCongr e.symm x
+    rw [Equiv.trans_apply, Equiv.trans_apply,
+      Equiv.apply_symm_apply, Equiv.apply_symm_apply]
   have hunfold :
       ((d.externalPieceLegEquiv.symm
           ((twoPointLegEquiv
