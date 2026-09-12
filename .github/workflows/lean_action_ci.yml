@@ -151,11 +151,13 @@ jobs:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Restore project build cache
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
@@ -219,20 +221,24 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Build declaration graph site
-        run: python3 scripts/build_declaration_graph_site.py
-
-      - name: Add declaration graph summary
-        if: success()
+      - name: Publish declaration graph data
+        if: success() && github.ref == 'refs/heads/main'
         shell: bash
         run: |
-          echo "## Declaration graph" >> "$GITHUB_STEP_SUMMARY"
-          echo "The static graph explorer is attached as the declaration-graph artifact." >> "$GITHUB_STEP_SUMMARY"
+          set -euo pipefail
+          graph_data_dir="$(mktemp -d)"
+          git fetch origin graph-data
+          git worktree add "$graph_data_dir" origin/graph-data
+          cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
 
-      - name: Upload declaration graph
-        uses: actions/upload-artifact@v4
-        with:
-          name: declaration-graph
-          path: site
-          if-no-files-found: error
-          retention-days: 30
+          git -C "$graph_data_dir" config user.name "github-actions[bot]"
+          git -C "$graph_data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$graph_data_dir" add theorems.json
+
+          if git -C "$graph_data_dir" diff --cached --quiet; then
+            echo "Declaration graph data is unchanged."
+            exit 0
+          fi
+
+          git -C "$graph_data_dir" commit -m "chore(graph-data): update theorem catalog"
+          git -C "$graph_data_dir" push origin HEAD:graph-data
