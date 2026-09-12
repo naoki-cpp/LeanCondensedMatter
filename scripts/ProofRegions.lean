@@ -347,8 +347,10 @@ private def auditTransitionWindow
   let [endGoal] := last.tacI.goalsAfter | return none
   let some startDecl := first.tacI.mctxBefore.decls.find? goal | return none
   let some endDecl := last.tacI.mctxAfter.decls.find? endGoal | return none
-  guard (localFVarIds startDecl.lctx == localFVarIds endDecl.lctx)
-  guard (!endDecl.type.hasExprMVar)
+  if localFVarIds startDecl.lctx != localFVarIds endDecl.lctx then
+    return none
+  if endDecl.type.hasExprMVar then
+    return none
   let candidate? ← rewriteTransitionSearch first goal endDecl.type region.spanLines
   let some candidate := candidate? | return none
   return some { region, candidate? := some candidate }
