@@ -36,6 +36,10 @@ jobs:
           set -euo pipefail
           while IFS= read -r file; do
             echo "::group::$file"
+            module="${file%.lean}"
+            module="${module//\//.}"
+            lake build "$module" 2>&1 \
+              | grep -vE '^(trace:|Some required targets logged failures:|- LeanCondensedMatter\.|error: build failed$)' || true
             lake env lean --run scripts/ProofRegions.lean "$file" 2
             echo "::endgroup::"
           done < <(find "LeanCondensedMatter/SecondQuantization/${{ matrix.area }}" -type f -name '*.lean' | sort)
