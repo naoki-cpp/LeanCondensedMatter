@@ -1,6 +1,7 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
+const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/theorems.json";
 
 const state = {
   catalog: [],
@@ -863,7 +864,7 @@ function bindEvents() {
 }
 
 async function main() {
-  const response = await fetch("./data/theorems.json");
+  const response = await fetch(CATALOG_URL, { cache: "no-store" });
   if (!response.ok) throw new Error(`failed to load theorem catalog: ${response.status}`);
   state.catalog = (await response.json()).map(normalizeEntry).sort((a, b) => a.name.localeCompare(b.name));
   state.byName = new Map(state.catalog.map((entry) => [entry.name, entry]));
