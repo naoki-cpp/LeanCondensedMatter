@@ -39,6 +39,16 @@ private structure RewriteSuggestion where
   growth : Nat
   introducedConsts : Nat
 
+private structure RewriteSearchCacheEntry where
+  goal : MVarId
+  maxDepth : Nat
+  limit : Nat
+  suggestions : Array RewriteSuggestion
+
+private structure ExactSearchCacheEntry where
+  goal : MVarId
+  result : Option (Term × Name × Name)
+
 private def regionOfWindow
     (fileMap : FileMap) (minLines : Nat)
     (seq : Array Mathlib.TacticAnalysis.TacticNode) : Option Region := do
@@ -304,14 +314,27 @@ private def importedExactTerm
         restoreState initialState
       return none
 
-/-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
-private def exactSearch
-    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
-    (source : String) : Command.CommandElabM (Option Candidate) := do
+/-- Reuse exact-search results for repeated InfoTree views of the same goal. -/
+private def cachedImportedExactTerm
+    (cache : IO.Ref (Array ExactSearchCacheEntry))
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+    Command.CommandElabM (Option (Term × Name × Name)) := do
+  let entries ← Command.liftIO cache.get
+  if let some entry := entries.find? fun entry => entry.goal == goal then
+    return entry.result
   let result ← try
     importedExactTerm node goal
   catch _ =>
     pure none
+  Command.liftIO <| cache.set (entries.push { goal, result })
+  return result
+
+/-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
+private def exactSearch
+    (cache : IO.Ref (Array ExactSearchCacheEntry))
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+    (source : String) : Command.CommandElabM (Option Candidate) := do
+  let result ← cachedImportedExactTerm cache node goal
   let some (term, declName, moduleName) := result | return none
   let replacement ← `(tactic| exact $term)
   let score := candidateBaseScore spanLines + 140 + theoremMentionBonus source declName
@@ -330,7 +353,11 @@ private def importedRewriteSuggestions
     let env ← getEnv
     let target ← freshGoal.getType
     let mut suggestions := #[]
+    let mut seenTargets : Array Expr := #[]
     for (expr, depth) in rewriteTargets target maxDepth do
+      if seenTargets.any (fun seen => seen == expr) then
+        continue
+      seenTargets := seenTargets.push expr
       for rewrites in ← Mathlib.Tactic.LibraryRewrite.getImportRewrites expr do
         for (rw, declName) in rewrites do
           if suggestions.size >= limit then
@@ -351,6 +378,20 @@ private def importedRewriteSuggestions
           }
     return suggestions
 
+/-- Reuse imported rewrite discovery for repeated InfoTree views of the same goal. -/
+private def cachedImportedRewriteSuggestions
+    (cache : IO.Ref (Array RewriteSearchCacheEntry))
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+    (maxDepth : Nat := 2) (limit : Nat := 64) :
+    Command.CommandElabM (Array RewriteSuggestion) := do
+  let entries ← Command.liftIO cache.get
+  if let some entry := entries.find? fun entry =>
+      entry.goal == goal && entry.maxDepth == maxDepth && entry.limit == limit then
+    return entry.suggestions
+  let suggestions ← importedRewriteSuggestions node goal maxDepth limit
+  Command.liftIO <| cache.set (entries.push { goal, maxDepth, limit, suggestions })
+  return suggestions
+
 /--
 Rank rewrites cheaply first, then replay only high-scoring suggestions. Rewrites already named by
 the original proof receive a strong relevance bonus. Rewrites that need `assumption` are trusted when
@@ -359,10 +400,11 @@ heavily penalized when they introduce a semantic detour. Weak rewrite recommenda
 so theorem search and deterministic automation can remain the fallback.
 -/
 private def rewriteSearch
+    (cache : IO.Ref (Array RewriteSearchCacheEntry))
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
     (source : String) : Command.CommandElabM (Option Candidate) := do
   let suggestions ← try
-    importedRewriteSuggestions node goal
+    cachedImportedRewriteSuggestions cache node goal
   catch _ =>
     pure #[]
   let suggestions := topRewriteSuggestions suggestions spanLines source 12
@@ -410,6 +452,8 @@ private def concreteSearch
   verifiedCandidate node goal mode replacement score
 
 private def auditSeq
+    (rewriteCache : IO.Ref (Array RewriteSearchCacheEntry))
+    (exactCache : IO.Ref (Array ExactSearchCacheEntry))
     (fileMap : FileMap) (minLines : Nat)
     (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM (Option AuditResult) := do
   let some region := regionOfSeq fileMap minLines seq | return none
@@ -417,9 +461,9 @@ private def auditSeq
   let [goal] := first.tacI.goalsBefore | return some { region }
   let source ← tacticSeqText seq
   let mut best : Option Candidate := none
-  if let some candidate ← rewriteSearch first goal region.spanLines source then
+  if let some candidate ← rewriteSearch rewriteCache first goal region.spanLines source then
     best := betterCandidate best candidate
-  if let some candidate ← exactSearch first goal region.spanLines source then
+  if let some candidate ← exactSearch exactCache first goal region.spanLines source then
     best := betterCandidate best candidate
   if let some candidate ← concreteSearch first goal "simp" (← `(tactic| simp))
       (candidateBaseScore region.spanLines + 100) then
@@ -470,10 +514,12 @@ private def auditTransitionWindow
 private def collectAudits
     (fileMap : FileMap) (minLines : Nat) (trees : Array InfoTree) :
     Command.CommandElabM (Array AuditResult) := do
+  let rewriteCache ← Command.liftIO <| IO.mkRef (#[] : Array RewriteSearchCacheEntry)
+  let exactCache ← Command.liftIO <| IO.mkRef (#[] : Array ExactSearchCacheEntry)
   let mut results := #[]
   for tree in trees do
     for seq in ← Mathlib.TacticAnalysis.findTacticSeqs tree do
-      if let some result ← auditSeq fileMap minLines seq then
+      if let some result ← auditSeq rewriteCache exactCache fileMap minLines seq then
         results := results.push result
       for start in [:seq.size] do
         let maxLen := Nat.min 6 (seq.size - start)
@@ -484,7 +530,7 @@ private def collectAudits
           continue
         let [goal] := first.tacI.goalsBefore | continue
         let suggestions ← try
-          importedRewriteSuggestions first goal 1 32
+          cachedImportedRewriteSuggestions rewriteCache first goal 1 32
         catch _ =>
           pure #[]
         if suggestions.isEmpty then
