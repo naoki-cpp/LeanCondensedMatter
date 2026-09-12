@@ -56772,26 +56772,6 @@
   "compiledConsumerCount": 4},
  {"terminal": false,
   "statement":
-  "∀ {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U),\n  SecondQuantization.Common.twoPointLegCongr e =\n    (SecondQuantization.Common.twoPointLegEquiv T).trans\n      ((SecondQuantization.Common.twoPointLegDataCongr e).trans (SecondQuantization.Common.twoPointLegEquiv U).symm)",
-  "singleCompiledConsumer": true,
-  "retainedMention": false,
-  "name": "SecondQuantization.Common.twoPointLegCongr_eq_trans",
-  "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
-  "docString":
-  "The flattened relabeling is the unflattened one read through the two leg enumerations. ",
-  "directWrapperTargetModule": null,
-  "directWrapperOf": null,
-  "dependents":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm"],
-  "dependencies": [],
-  "crossModuleDirectWrapper": false,
-  "completedMention": false,
-  "compiledConsumers":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm"],
-  "compiledConsumerCount": 1},
- {"terminal": false,
-  "statement":
   "∀ {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U),\n  SecondQuantization.Common.twoPointLegCongr e.symm = (SecondQuantization.Common.twoPointLegCongr e).symm",
   "singleCompiledConsumer": true,
   "retainedMention": false,
@@ -79498,7 +79478,6 @@
    "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition"],
   "dependencies":
   ["SecondQuantization.Common.standardSlotEquiv_symm_coe",
-   "SecondQuantization.Common.twoPointLegCongr_eq_trans",
    "SecondQuantization.Common.twoPointLegCongr_symm",
    "SecondQuantization.Common.twoPointLegDataCongr_inl",
    "SecondQuantization.Common.twoPointLegDataCongr_inr",
