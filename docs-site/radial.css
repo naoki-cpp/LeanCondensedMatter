@@ -1,0 +1,58 @@
+/* Radial declaration-map styles layered over the shared explorer shell. */
+#graph [data-branch] {
+  transition: opacity 120ms ease;
+}
+
+.node > circle:nth-of-type(2) {
+  transition: r 120ms ease, stroke 120ms ease, stroke-width 120ms ease, filter 120ms ease;
+}
+
+.node:focus-visible > circle:nth-of-type(2) {
+  stroke: #ffffff;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 7px rgba(145, 169, 255, 0.72));
+}
+
+.node:focus-visible > circle:first-of-type {
+  stroke: rgba(145, 169, 255, 0.55);
+  stroke-width: 1.5;
+}
+
+/* Dense radial maps use smaller pointer targets so adjacent branches remain selectable. */
+.graph-dense .node > circle:first-of-type {
+  r: 9px;
+}
+
+.graph-dense .node:not(.node-root) > circle:nth-of-type(2) {
+  r: 3.8px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.legend-dot.root {
+  width: 12px;
+  height: 12px;
+  flex-basis: 12px;
+  background: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(217, 255, 251, 0.8);
+}
+
+.legend-dot.branch {
+  background: linear-gradient(135deg, #ff5f6d, #8b5cf6);
+}
+
+.legend-edge.tree {
+  border-top: 2px solid var(--accent);
+}
+
+.legend-edge.cross {
+  border-top: 1px dashed var(--muted);
+  opacity: 0.7;
+}
