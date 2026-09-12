@@ -56,9 +56,10 @@ theorem exists_finite_translation_motif (h : X.FiniteModuloTranslations (V := V)
   obtain ⟨v, hv⟩ := Quotient.exact hq
   exact ⟨v, hv⟩
 
-/-- If ambient translations act freely, finiteness modulo translation symmetries gives a finite
-motif with a unique translation-motif decomposition of every occupied site. -/
-theorem exists_finite_translation_normal_form [IsCancelVAdd V E]
+/-- If translation symmetries act freely on occupied sites, finiteness modulo translations gives a
+finite motif with a unique translation-motif decomposition of every occupied site. -/
+theorem exists_finite_translation_normal_form
+    [IsCancelVAdd (X.translationSubgroup (V := V)) X.Site]
     (h : X.FiniteModuloTranslations (V := V)) :
     ∃ M : Set X.Site,
       M.Finite ∧
