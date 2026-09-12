@@ -73,9 +73,6 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible` —
   physics-facing representation theorem `J = J_sym + J_corr + K` with `K` invisible on exact
   differentials; it is the explicit extension-ambiguity endpoint of the corrected-current API.
-- `SecondQuantization.Common.TwoPointDiagram.isSplit_ofSlotSplit` — canonical constructor invariant
-  stating that a diagram rebuilt from slot-split pieces is split by that same slot decomposition;
-  it is the evidence used to place reconstructed diagrams in the split-diagram subtype.
 - `SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace` — canonical interpretation of the
   named Dyson trace coefficient as the Boltzmann-weighted diagonal functional of the corresponding
   bare Dyson coefficient.
