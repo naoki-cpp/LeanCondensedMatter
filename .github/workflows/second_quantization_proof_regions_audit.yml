@@ -1,0 +1,41 @@
+name: Second Quantization Proof Regions Audit
+
+on:
+  push:
+    branches: [audit/second-quantization-proof-regions]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: audit-${{ matrix.area }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        area: [Bosonic, Common, Fermionic]
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Audit proof regions
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            echo "::group::$file"
+            lake env lean --run scripts/ProofRegions.lean "$file" 2
+            echo "::endgroup::"
+          done < <(find "LeanCondensedMatter/SecondQuantization/${{ matrix.area }}" -type f -name '*.lean' | sort)
