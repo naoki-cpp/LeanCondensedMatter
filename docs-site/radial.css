@@ -4,7 +4,7 @@
 }
 
 .node > circle:nth-of-type(2) {
-  transition: r 120ms ease, stroke 120ms ease, stroke-width 120ms ease, filter 120ms ease;
+  transition: stroke 120ms ease, stroke-width 120ms ease, filter 120ms ease;
 }
 
 .node:focus-visible > circle:nth-of-type(2) {
@@ -16,15 +16,6 @@
 .node:focus-visible > circle:first-of-type {
   stroke: rgba(145, 169, 255, 0.55);
   stroke-width: 1.5;
-}
-
-/* Dense radial maps use smaller pointer targets so adjacent branches remain selectable. */
-.graph-dense .node > circle:first-of-type {
-  r: 9px;
-}
-
-.graph-dense .node:not(.node-root) > circle:nth-of-type(2) {
-  r: 3.8px;
 }
 
 .legend-node {
