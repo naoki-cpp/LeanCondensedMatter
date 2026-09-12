@@ -144,12 +144,24 @@ private def rewriteBonus (depth : Nat) : Nat :=
 private def rewritePenalty (suggestion : RewriteSuggestion) : Nat :=
   Nat.min 220 (suggestion.growth * 6 + suggestion.introducedConsts * 35)
 
+private def isConservativeRewrite (suggestion : RewriteSuggestion) : Bool :=
+  suggestion.depth == 0 && suggestion.growth == 0 && suggestion.introducedConsts == 0
+
+private def assumptionPenalty (source : String) (suggestion : RewriteSuggestion) : Nat :=
+  if theoremMentioned source suggestion.theoremName then
+    20
+  else if isConservativeRewrite suggestion then
+    140
+  else
+    420
+
 private def rewriteScore
     (spanLines : Nat) (source : String) (suggestion : RewriteSuggestion)
     (needsAssumption : Bool) : Nat :=
   let reward := candidateBaseScore spanLines + rewriteBonus suggestion.depth +
     theoremMentionBonus source suggestion.theoremName + (if needsAssumption then 15 else 40)
-  let penalty := rewritePenalty suggestion + (if needsAssumption then 140 else 0)
+  let penalty := rewritePenalty suggestion +
+    (if needsAssumption then assumptionPenalty source suggestion else 0)
   reward - penalty
 
 private def betterCandidate (best : Option Candidate) (candidate : Candidate) : Option Candidate :=
@@ -338,8 +350,9 @@ private def importedRewriteSuggestions
 
 /--
 Rank rewrites cheaply first, then replay only the highest-scoring few. Rewrites already named by the
-original proof receive a strong relevance bonus, while `rw ... <;> assumption` is penalized unless
-it is supported by such evidence.
+original proof receive a strong relevance bonus. Rewrites that need `assumption` are trusted when the
+proof already names the theorem, tolerated when they preserve the root expression shape, and heavily
+penalized when they introduce a semantic detour.
 -/
 private def rewriteSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
@@ -369,7 +382,7 @@ private def rewriteTransitionSearch
     (spanLines : Nat) (source : String) (suggestions : Array RewriteSuggestion) :
     Command.CommandElabM (Option Candidate) := do
   let suggestions := suggestions.filter fun suggestion =>
-    suggestion.introducedConsts ≤ 1 && suggestion.growth ≤ 4
+    theoremMentioned source suggestion.theoremName || isConservativeRewrite suggestion
   let suggestions := topRewriteSuggestions suggestions spanLines source 8
   let mut best : Option Candidate := none
   for suggestion in suggestions do
