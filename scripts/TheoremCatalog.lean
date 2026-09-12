@@ -327,9 +327,15 @@ private def prepareCandidate (candidate : Candidate) : MetaM PreparedCandidate :
     argumentHeads := arguments.map fun argument => argument.getAppFn.constName?
   }
 
+private def argumentHeadSketchKey (heads : Array (Option Name)) : String :=
+  heads.foldl (init := "") fun key head =>
+    let component := head.map (·.toString) |>.getD "_"
+    if key.isEmpty then component else key ++ "," ++ component
+
 private def fingerprintKey (candidate : PreparedCandidate) : String :=
   let head := candidate.resultHead.map (·.toString) |>.getD "<none>"
-  head ++ "#" ++ toString candidate.resultArity
+  head ++ "#" ++ toString candidate.resultArity ++ "#" ++
+    argumentHeadSketchKey candidate.argumentHeads
 
 private def sameArgumentHeadSketch
     (left right : Array (Option Name)) : Bool := Id.run do
@@ -766,7 +772,7 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Replacement candidate edges: {replacementEdgeCount entries}\n\n"
   output := output ++ s!"Definitional-equivalence pairs: {definitionalEquivalencePairCount entries}\n\n"
   output := output ++ s!"Theorems with project assumptions: {assumptionEntries.size}\n\n"
-  output := output ++ "`replacementCandidates` records existing project theorems that Lean can conservatively apply to the target theorem conclusion under the target binders, with remaining application goals discharged only by target-local hypotheses or typeclass synthesis. Candidates are bucketed by result-head fingerprints before Meta-level application, and direct-wrapper and definitionally-equivalent relations are reported separately. No `simp` or general proof search is used.\n\n"
+  output := output ++ "`replacementCandidates` records existing project theorems that Lean can conservatively apply to the target theorem conclusion under the target binders, with remaining application goals discharged only by target-local hypotheses or typeclass synthesis. Candidates are bucketed by result-head, result-arity, and result-argument-head fingerprints before Meta-level application, and direct-wrapper and definitionally-equivalent relations are reported separately. No `simp` or general proof search is used.\n\n"
   output := output ++ "`definitionallyEquivalentTo` is weaker than the hard exact-duplicate check: it is computed by Meta-level definitional equality under reducible transparency after cheap fingerprinting. Exact structural duplicates remain the responsibility of `CheckDuplicates.lean` and are not weakened by this advisory relation.\n\n"
   output := output ++ "`axioms` records kernel axiom provenance from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. `projectAssumptions` is a separate model-level provenance relation: it follows compiled declaration dependencies transitively to source declarations explicitly documented as a postulate/assumption or declared as a project axiom. Modeling assumptions represented only as theorem hypotheses remain visible in the theorem statement and are not promoted to global assumption roots.\n\n"
   output := output ++ "`declarationDependencies` and `declarationConsumers` generalize the graph beyond theorem proof dependencies by scanning both declaration types and values for source-declared project theorem/definition/opaque/axiom references. The legacy `dependencies`, `dependents`, and `compiledConsumers` fields retain their narrower semantics for compatibility with existing review queues and the graph explorer.\n\n"
