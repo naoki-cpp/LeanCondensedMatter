@@ -187,7 +187,66 @@ or consumer structure changes.
   time-labelled external field as its scalar imaginary-time factor times the bare field operator.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt` — canonical later-first branch of
   the named fermionic two-point time-ordering operator, including the statistics convention.
-- `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt` — canonical exchanged branch of the
-  named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
+- `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt` — canonical exchanged branch of
+  the named fermionic two-point time-ordering operator, exposing the fermionic minus sign.
 - `SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time` — canonical equal-time branch of
   the named fermionic two-point time-ordering operator, fixing the project's equal-time convention.
+- `LinearPMap.norm_resolventEvolutionStrongLimitOperator_sub_resolventApproximationEvolution_le` —
+  canonical generator-domain error estimate comparing the limiting Stone evolution with one bounded
+  resolvent approximant; it is reusable independently of the downstream slope argument.
+- `LinearPMap.resolventApproximationEvolutionAtScale_dist_eq` — canonical isometry property of the
+  totalized bounded resolvent approximants, not merely a transport step in the strong-limit proof.
+- `QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded`
+  — canonical coordinate expansion of the named gauge-covariant current divergence used to expose
+  the local continuity cancellation explicitly.
+- `QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one` — spectral normalization law for a
+  density operator: the absolute eigenvalue weights sum to one independently of the expectation
+  norm estimate that currently consumes it.
+- `QuantumTheory.POVM.hasSum_inner_apply` — canonical diagonal weak-operator consequence of strong
+  POVM normalization and a reusable bridge from operator normalization to Born probabilities.
+- `QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator` —
+  model-level spectral identity expressing the Hamiltonian eigenvalue equation on each band
+  projector.
+- `QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
+  canonical closed numerator/denominator form of the arbitrary-regulator Massive Dirac Green
+  operator.
+- `QuantumTheory.Transport.Models.MassiveDirac.sum_bandProjectorOperator_eq_one` — canonical
+  completeness relation for the finite family of Massive Dirac band projectors.
+- `SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeMemBlockEquiv` — one direction of the
+  canonical inverse laws between the public block-vertex embedding and `subtypeMemBlockEquiv`, paired
+  with `subtypeMemBlockEquiv_blockVertex` rather than one-use proof routing.
+- `SecondQuantization.Common.QuarticDiagram.restrictComponentConnected_reassemble` — round-trip law
+  for connected component restriction after reassembly; it forms the semantic right-inverse layer
+  underlying the public component-decomposition equivalence.
+- `SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff` — canonical graph
+  transport characterization identifying adjacency in a restricted component with ambient adjacency
+  through `blockVertex`.
+- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner` — canonical partner-map
+  characterization for the external split pairing. Source-level public mixed-component theorems also
+  use this law even when simplification removes the reference from their compiled proof terms.
+- `SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise` — structural invariant that the
+  canonical mixed-event list is pairwise ordered by the stable time precedence relation.
+- `SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport` — finite-order
+  support/reachability theorem for Dyson coefficients, independently useful beyond the continuity
+  proof that currently retains it.
+- `SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_excited_eigenvector` — explicit
+  upper-energy eigenvector theorem for the public two-site gapped validation benchmark.
+- `SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_eigenvector` — explicit
+  lower-energy eigenvector theorem for the public two-site gapped validation benchmark.
+- `SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset` — exactness of
+  completed mode truncation once the truncation contains the finite support of an algebraic vector;
+  this is the canonical dense-subspace approximation boundary.
+- `SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` — general
+  finite-mode continuity theorem for matrix coefficients of an interaction-picture operator composed
+  with a Dyson coefficient, stated for arbitrary interaction `V` rather than the quartic consumer.
+- `SecondQuantization.Fermionic.continuous_matrixCoeff_nestedVertexOperatorComp` — joint continuity of
+  the public nested vertex-operator product, providing the analytic interface used to lift matrix
+  coefficients to Gibbs-expectation continuity.
+- `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
+  estimate bounding truncation error by twice the distance to any fixed point of the truncation.
+- `SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel` — combinatorial sign identity
+  directly expressing the cancellation behind the fermionic relation `{aᵢ, aⱼ} = 0`.
+- `SecondQuantization.Fermionic.fermionSign_create_create_cancel` — combinatorial sign identity directly
+  expressing the cancellation behind the fermionic relation `{aᵢ†, aⱼ†} = 0`.
+- `SecondQuantization.Fermionic.norm_completedToggleLinear` — canonical norm-preservation law for the
+  completed occupation-toggle map, stronger and more reusable than its downstream one-sided bound.
