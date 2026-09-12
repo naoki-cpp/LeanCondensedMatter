@@ -6,6 +6,7 @@ Authors: Naoki Yano
 import LeanCondensedMatter.Crystal.Translation
 import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.Analysis.Normed.Group.AddTorsor
+import Mathlib.Data.Set.Finite.Range
 
 /-!
 # Periodicity of atomic configurations
@@ -57,6 +58,30 @@ structure Periodic (X : AtomicConfiguration E Species) : Prop where
       (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) discreteTranslations
   /-- There are finitely many occupied-site classes modulo translations. -/
   finiteModuloTranslations : X.FiniteModuloTranslations (V := V)
+
+namespace Periodic
+
+variable {X : AtomicConfiguration E Species}
+
+/-- A periodic configuration admits a finite motif whose translation orbits cover every occupied
+site. The motif is derived noncomputably from representatives of the translation-orbit quotient;
+it is not stored as part of the atomic configuration. -/
+theorem exists_finite_translation_motif (h : X.Periodic (V := V)) :
+    ∃ M : Set X.Site,
+      M.Finite ∧
+        ∀ x : X.Site,
+          ∃ m ∈ M, ∃ v : X.translationSubgroup (V := V), v +ᵥ m = x := by
+  let Q := AddAction.orbitRel.Quotient (X.translationSubgroup (V := V)) X.Site
+  letI : Finite Q := h.finiteModuloTranslations
+  refine ⟨Set.range (fun q : Q => q.out), Set.finite_range _, ?_⟩
+  intro x
+  let q : Q := Quotient.mk'' x
+  refine ⟨q.out, ⟨q, rfl⟩, ?_⟩
+  have hq : (Quotient.mk'' x : Q) = Quotient.mk'' q.out := (Quotient.out_eq' q).symm
+  obtain ⟨v, hv⟩ := Quotient.exact hq
+  exact ⟨v, hv⟩
+
+end Periodic
 
 end Periodic
 
