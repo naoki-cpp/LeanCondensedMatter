@@ -17,6 +17,7 @@ structure Entry where
   statement : String
   docString : Option String
   dependencies : Array String
+  simpLemma : Bool
   directWrapperOf : Option String
   directWrapperTargetModule : Option String
   crossModuleDirectWrapper : Bool
@@ -31,6 +32,8 @@ structure CatalogEntry where
   compiledConsumers : Array String
   compiledConsumerCount : Nat
   singleCompiledConsumer : Bool
+  soleCompiledConsumerPrivate : Bool
+  simpLemma : Bool
   terminal : Bool
   directWrapperOf : Option String
   directWrapperTargetModule : Option String
@@ -79,6 +82,15 @@ private partial def stripDirectWrapperPackaging : Expr → Expr
 
 private def privateDeclarationName? (declName : Name) : Bool :=
   declName.toString.startsWith "_private."
+
+private def privateDeclarationString? (declName : String) : Bool :=
+  declName.startsWith "_private."
+
+private def simpLemma? (simpTheorems : SimpTheorems) (declName : Name) : Bool :=
+  simpTheorems.isLemma (.decl declName true false) ||
+    simpTheorems.isLemma (.decl declName true true) ||
+    simpTheorems.isLemma (.decl declName false false) ||
+    simpTheorems.isLemma (.decl declName false true)
 
 /-- Restrict direct-wrapper candidates to applications assembled from variables, non-theorem
 constants, projections, and other simple specialization arguments. A project theorem occurring in
@@ -129,6 +141,7 @@ private def addConsumer
 private def collectEntries :
     CommandElabM (Array Entry × NameSet × NameMap (Array String)) := do
   let env ← getEnv
+  let simpTheorems := simpExtension.getState env
   let (candidates, projectTheorems) ← collectCandidates
   let mut entries := #[]
   let mut theoremDependents : NameMap (Array String) := {}
@@ -157,6 +170,7 @@ private def collectEntries :
       statement
       docString
       dependencies := sortedNameStrings dependencyNames
+      simpLemma := simpLemma? simpTheorems candidate.name
       directWrapperOf
       directWrapperTargetModule
       crossModuleDirectWrapper
@@ -209,6 +223,10 @@ private def annotateEntries
     let compiledConsumers := sortedConsumers compiledConsumers entry.declName
     let compiledConsumerCount := compiledConsumers.size
     let singleCompiledConsumer := compiledConsumerCount == 1
+    let soleCompiledConsumerPrivate :=
+      match compiledConsumers.toList with
+      | [consumer] => privateDeclarationString? consumer
+      | _ => false
     let terminal := dependents.isEmpty
     {
       name := entry.name
@@ -220,6 +238,8 @@ private def annotateEntries
       compiledConsumers
       compiledConsumerCount
       singleCompiledConsumer
+      soleCompiledConsumerPrivate
+      simpLemma := entry.simpLemma
       terminal
       directWrapperOf := entry.directWrapperOf
       directWrapperTargetModule := entry.directWrapperTargetModule
@@ -239,6 +259,11 @@ private def compiledConsumerFreeEntries (entries : Array CatalogEntry) : Array C
 
 private def singleCompiledConsumerEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
   entries.filter fun entry => entry.singleCompiledConsumer
+
+private def privateSingleConsumerReviewEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
+  entries.filter fun entry =>
+    !entry.retainedMention && !entry.simpLemma && !privateDeclarationString? entry.name &&
+      entry.soleCompiledConsumerPrivate
 
 private def directWrapperEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
   entries.filter fun entry => entry.directWrapperOf.isSome
@@ -351,6 +376,7 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
     singleConsumerEntries.filter fun entry => entry.retainedMention
   let singleConsumerReviewQueue :=
     singleConsumerEntries.filter fun entry => !entry.retainedMention
+  let privateSingleConsumerReviewQueue := privateSingleConsumerReviewEntries entries
   let directWrappers := directWrapperEntries entries
   let retainedDirectWrappers :=
     directWrappers.filter fun entry => entry.retainedMention
@@ -364,7 +390,7 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
     terminals.filter fun entry => !entry.compiledConsumers.isEmpty
   let mut output := "# LeanCondensedMatter theorem catalog\n\n"
   output := output ++ "This file is generated from source-declared theorems in LeanCondensedMatter modules. Do not edit it manually.\n\n"
-  output := output ++ "The JSON catalog records theorem attributes on one entry per declaration: direct theorem dependencies/dependents, compiled project-declaration consumers, terminal status, retained/completed annotations, and conservative direct-wrapper metadata. Dependencies and consumers are distinct declaration-level graph edges: repeated references from one compiled declaration are counted once. Compiled consumers scan source-declared project theorem, definition, and opaque-declaration values.\n\n"
+  output := output ++ "The JSON catalog records theorem attributes on one entry per declaration: direct theorem dependencies/dependents, compiled project-declaration consumers, simp status, terminal status, retained/completed annotations, and conservative direct-wrapper metadata. Dependencies and consumers are distinct declaration-level graph edges: repeated references from one compiled declaration are counted once. Compiled consumers scan source-declared project theorem, definition, and opaque-declaration values.\n\n"
   output := output ++ s!"Theorems: {entries.size}\n\n"
   output := output ++ s!"Dependency edges: {dependencyEdgeCount entries}\n\n"
   output := output ++ s!"Retained audit declarations: {retainedEntries.size}\n\n"
@@ -376,6 +402,7 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Priority terminal review queue with no compiled project consumers: {priorityReviewQueue.size}\n\n"
   output := output ++ s!"Single-consumer theorems documented as retained: {retainedSingleConsumers.size}\n\n"
   output := output ++ s!"Single-consumer theorem review queue: {singleConsumerReviewQueue.size}\n\n"
+  output := output ++ s!"Priority public non-simp theorems with a sole private compiled consumer: {privateSingleConsumerReviewQueue.size}\n\n"
   output := output ++ s!"Direct-wrapper candidates: {directWrappers.size}\n\n"
   output := output ++ s!"Direct-wrapper candidates documented as retained: {retainedDirectWrappers.size}\n\n"
   output := output ++ s!"Direct-wrapper review queue: {directWrapperReviewQueue.size}\n\n"
@@ -383,9 +410,10 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Cross-module direct-wrapper review queue: {crossModuleDirectWrapperReviewQueue.size}\n\n"
   output := output ++ s!"Multi-step single-consumer chains: {chains.size}\n\n"
   output := output ++ "Here a terminal theorem means a theorem with no direct project-theorem dependents: no other source-declared project theorem in the catalog retains it in its compiled proof term. This is the endpoint side of the theorem proof graph, not the prerequisite-free side.\n\n"
-  output := output ++ "`compiledConsumers` is broader: it records source-declared project theorems, definitions, and opaque declarations whose compiled values retain a reference to the theorem. `compiledConsumerCount` and `singleCompiledConsumer` are derived from that same array, so usage status is an attribute of the theorem rather than a separately maintained candidate set. It is still not a source-level use analysis: simplification, unfolding, and definitional reduction can erase an explicit source reference before compilation. Therefore a theorem with no compiled consumer is only a higher-priority review candidate, never automatic evidence that the theorem is unused.\n\n"
+  output := output ++ "`compiledConsumers` is broader: it records source-declared project theorems, definitions, and opaque declarations whose compiled values retain a reference to the theorem. `compiledConsumerCount` and `singleCompiledConsumer` are derived from that same array, so usage status is an attribute of the theorem rather than a separately maintained candidate set. `soleCompiledConsumerPrivate` additionally records whether the unique compiled consumer, when one exists, is a private declaration. It is still not a source-level use analysis: simplification, unfolding, and definitional reduction can erase an explicit source reference before compilation. Therefore a theorem with no compiled consumer is only a higher-priority review candidate, never automatic evidence that the theorem is unused.\n\n"
+  output := output ++ "`simpLemma` records membership in Lean's active default simp extension, including simp attributes applied separately from the theorem declaration. The priority private-consumer queue excludes simp lemmas because public canonical evaluation/normalization rules can remain useful API even when their only currently retained compiled consumer is private. This exclusion is a ranking heuristic, not a claim that every simp theorem should be retained.\n\n"
   output := output ++ "`directWrapperOf` is a conservative proof-term attribute: after removing only lambda/metadata packaging, the theorem body must be a direct application of another non-private source-declared project theorem and all application arguments must have a simple specialization shape without references to other project theorems. Extensionality lemmas are excluded because they are commonly proof mechanisms for genuinely new results. `directWrapperTargetModule` and `crossModuleDirectWrapper` record where that target lives. These attributes are advisory and do not imply that a domain-specific specialization lacks independent API value.\n\n"
-  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API.\n\n"
+  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API.\n\n"
   output := output ++ "A single-consumer theorem has exactly one distinct compiled project-declaration consumer. Multi-step chains follow that unique edge through theorem consumers until the chain reaches a theorem without exactly one compiled consumer, or a non-theorem definition/opaque endpoint. Only chains with at least two single-consumer edges are listed separately. These highlight public wrappers and proof-routing stages that may be candidates for inlining, privatization, or deletion; source search and semantic review remain required before changing the API. Retained declarations can still appear in these chains because the chains describe graph structure rather than review status.\n\n"
   output := output ++ "A mention in `notes/completed.md` is evidence that a terminal endpoint is an intentional completed result. A mention in `notes/theorem-catalog-retained.md` is evidence that a declaration surfaced by one or more audit signals was semantically reviewed and intentionally retained. Terminal declarations with neither disposition remain review candidates: compare their statement and module with `notes/roadmap.md` and the detailed roadmaps to decide whether they are roadmap intermediates that still need a consumer, intentional local endpoints, or unnecessary public theorems.\n\n"
   output := output ++ "## Direct-wrapper review queue\n\n"
@@ -394,6 +422,11 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
     let target := entry.directWrapperOf.getD "<unknown>"
     let targetModule := entry.directWrapperTargetModule.getD "<unknown>"
     output := output ++ s!"- `{entry.name}` → `{target}` — module `{entry.moduleName}`; target module: `{targetModule}`; compiled consumers: {entry.compiledConsumerCount}; single consumer: {entry.singleCompiledConsumer}; terminal: {entry.terminal}; cross-module: {entry.crossModuleDirectWrapper}\n"
+  output := output ++ "\n## Priority private-consumer theorem review queue\n\n"
+  output := output ++ "Each row is a public, non-simp, unresolved theorem whose sole compiled project-declaration consumer is private. This is a high-priority semantic-audit pool for public proof-routing helpers; it remains advisory because the theorem may still express an independently useful API result.\n\n"
+  for entry in privateSingleConsumerReviewQueue do
+    for consumer in entry.compiledConsumers do
+      output := output ++ s!"- `{entry.name}` → `{consumer}` — module `{entry.moduleName}`; theorem dependents: {entry.dependents.size}; direct prerequisites: {entry.dependencies.size}; direct wrapper: {entry.directWrapperOf.isSome}\n"
   output := output ++ "\n## Multi-step single-consumer chains\n\n"
   output := output ++ "Each chain is maximal from a theorem with no single-consumer theorem predecessor. The final declaration may be a theorem, definition, or opaque declaration.\n\n"
   for chain in chains do
@@ -431,6 +464,8 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("compiledConsumers", .arr <| entry.compiledConsumers.map Json.str),
       ("compiledConsumerCount", .num entry.compiledConsumerCount),
       ("singleCompiledConsumer", .bool entry.singleCompiledConsumer),
+      ("soleCompiledConsumerPrivate", .bool entry.soleCompiledConsumerPrivate),
+      ("simpLemma", .bool entry.simpLemma),
       ("terminal", .bool entry.terminal),
       ("directWrapperOf", entry.directWrapperOf.map Json.str |>.getD .null),
       ("directWrapperTargetModule", entry.directWrapperTargetModule.map Json.str |>.getD .null),
@@ -457,6 +492,7 @@ run_cmd do
     singleConsumerEntries.filter fun entry => entry.retainedMention
   let singleConsumerReviewQueue :=
     singleConsumerEntries.filter fun entry => !entry.retainedMention
+  let privateSingleConsumerReviewQueue := privateSingleConsumerReviewEntries catalog
   let directWrappers := directWrapperEntries catalog
   let retainedDirectWrappers :=
     directWrappers.filter fun entry => entry.retainedMention
@@ -473,6 +509,6 @@ run_cmd do
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
-  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"
+  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"
 
 end LeanCondensedMatter.TheoremCatalog
