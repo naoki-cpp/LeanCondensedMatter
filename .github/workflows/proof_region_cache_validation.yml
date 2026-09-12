@@ -1,0 +1,71 @@
+name: Proof Region Cache Validation
+
+on:
+  push:
+    branches: [perf/proof-region-search-cache]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Prepare baseline tool
+        shell: bash
+        run: git show 93146d1b87d37581386b6e0283d530717311bf90:scripts/ProofRegions.lean > scripts/ProofRegionsBaseline.lean
+
+      - name: Compare outputs and timings
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            LeanCondensedMatter/Permutation/TraceLog.lean
+            LeanCondensedMatter/Analysis/Dyson/Basic.lean
+            LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean
+            LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/CanonicalAnticommutationRelations.lean
+          )
+
+          for file in "${files[@]}"; do
+            module="${file%.lean}"
+            module="${module//\//.}"
+            echo "::group::build $module"
+            lake build "$module" 2>&1 | grep -vE '^(trace:|Some required targets logged failures:|- LeanCondensedMatter\.|error: build failed$)' || true
+            echo "::endgroup::"
+
+            safe="${file//\//_}"
+            echo "::group::baseline $file"
+            /usr/bin/time -f 'BASELINE_SECONDS=%e' -o "/tmp/${safe}.baseline.time" \
+              timeout 600s lake env lean --run scripts/ProofRegionsBaseline.lean "$file" 2 \
+              > "/tmp/${safe}.baseline.out"
+            cat "/tmp/${safe}.baseline.time"
+            cat "/tmp/${safe}.baseline.out"
+            echo "::endgroup::"
+
+            echo "::group::cached $file"
+            /usr/bin/time -f 'CACHED_SECONDS=%e' -o "/tmp/${safe}.cached.time" \
+              timeout 600s lake env lean --run scripts/ProofRegions.lean "$file" 2 \
+              > "/tmp/${safe}.cached.out"
+            cat "/tmp/${safe}.cached.time"
+            cat "/tmp/${safe}.cached.out"
+            echo "::endgroup::"
+
+            echo "::group::diff $file"
+            diff -u "/tmp/${safe}.baseline.out" "/tmp/${safe}.cached.out"
+            echo "OUTPUT_IDENTICAL=1"
+            echo "::endgroup::"
+          done
