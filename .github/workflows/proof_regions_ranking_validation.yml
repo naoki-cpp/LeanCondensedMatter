@@ -41,3 +41,13 @@ jobs:
           lake env lean --run scripts/ProofRegions.lean LeanCondensedMatter/Permutation/TraceLog.lean
           lake env lean --run scripts/ProofRegions.lean LeanCondensedMatter/Analysis/Dyson/Basic.lean
           lake env lean --run scripts/ProofRegions.lean LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean
+          cat > scripts/ProofRegionsTransitionProbe.lean <<'EOF'
+          import Mathlib.Tactic
+
+          example (a b c d : ℤ) (h : a + (b + c) = d) : (a + b) + c = d := by
+            rw [add_assoc]
+            change a + (b + c) = d
+            exact h
+          EOF
+          lake env lean --run scripts/ProofRegions.lean scripts/ProofRegionsTransitionProbe.lean
+          rm scripts/ProofRegionsTransitionProbe.lean
