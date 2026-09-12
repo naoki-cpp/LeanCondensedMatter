@@ -146,11 +146,11 @@ jobs:
 
   # Generated developer artifacts and advisory audits run on pushes to main and explicit manual
   # dispatches. They consume the compiled Lean environment but are not part of the PR gate.
-  docs:
+  insights:
     needs: ci
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -163,19 +163,6 @@ jobs:
           path: .lake/build
           key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
           fail-on-cache-miss: true
-
-      - name: Restore documentation cache
-        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
-        with:
-          path: |
-            docbuild/.lake/build
-            docbuild/lake-manifest.json
-          # GitHub caches are immutable, so include the commit SHA to save a fresh
-          # incremental snapshot after every successful main build. The restore prefix
-          # selects the newest snapshot with the same Lean and dependency versions.
-          key: docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
-          restore-keys: |
-            docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
 
       - name: Set up Lean and dependency cache
         uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
@@ -232,67 +219,20 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-      - name: Build API documentation
+      - name: Build declaration graph site
+        run: python3 scripts/build_declaration_graph_site.py
+
+      - name: Add declaration graph summary
+        if: success()
         shell: bash
         run: |
-          set -euo pipefail
+          echo "## Declaration graph" >> "$GITHUB_STEP_SUMMARY"
+          echo "The static graph explorer is attached as the declaration-graph artifact." >> "$GITHUB_STEP_SUMMARY"
 
-          mkdir -p docbuild
-          cat > docbuild/lakefile.toml <<EOF
-          name = "docbuild"
-          reservoir = false
-          version = "0.1.0"
-          packagesDir = "../.lake/packages"
-
-          [[require]]
-          name = "LeanCondensedMatter"
-          path = "../"
-
-          [[require]]
-          scope = "leanprover"
-          name = "doc-gen4"
-          rev = "$(cut -f 2 -d: lean-toolchain)"
-          EOF
-
-          (
-            cd docbuild
-            MATHLIB_NO_CACHE_ON_UPDATE=1 ~/.elan/bin/lake update LeanCondensedMatter
-            ~/.elan/bin/lake build LeanCondensedMatter:docs
-          )
-
-      - name: Assemble themed documentation site
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          rm -rf site
-          mkdir -p site/docs
-          cp -R docbuild/.lake/build/doc/. site/docs/
-          cat docs-site/docgen.css >> site/docs/style.css
-          cp docs-site/project-nav.js site/docs/
-          cp docs-site/index.html docs-site/site.css site/
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          navbar = Path("site/docs/navbar.html")
-          html = navbar.read_text(encoding="utf-8")
-          script = '  <script type="module" src="./project-nav.js"></script>\n'
-          closing_tag = "</body>"
-
-          if closing_tag not in html:
-              raise SystemExit("doc-gen4 navbar.html does not contain </body>")
-
-          navbar.write_text(
-              html.replace(closing_tag, script + closing_tag, 1),
-              encoding="utf-8",
-          )
-          PY
-
-      - name: Upload documentation
+      - name: Upload declaration graph
         uses: actions/upload-artifact@v4
         with:
-          name: docs
+          name: declaration-graph
           path: site
           if-no-files-found: error
           retention-days: 30
