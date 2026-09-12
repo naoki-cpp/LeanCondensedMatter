@@ -5,6 +5,7 @@ Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Translation
 import Mathlib.Algebra.Module.ZLattice.Basic
+import Mathlib.Algebra.Torsor.Defs
 
 /-!
 # Periodicity of atomic configurations
