@@ -295,29 +295,27 @@ private def transitiveAssumptionRoots
 private def standardAxiom? (name : Name) : Bool :=
   name == ``propext || name == ``Classical.choice || name == ``Quot.sound
 
-private def classifyAxioms (axioms projectAxioms : NameSet) :
+private def classifyAxioms (axioms : Array Name) (projectAxioms : NameSet) :
     Array String × Array String × Array String × Array String := Id.run do
-  let mut all := #[]
   let mut standard := #[]
   let mut project := #[]
   let mut external := #[]
-  for axiom in axioms do
-    all := all.push axiom
-    if standardAxiom? axiom then
-      standard := standard.push axiom
-    else if projectAxioms.contains axiom then
-      project := project.push axiom
-    else if axiom != ``sorryAx then
-      external := external.push axiom
+  for axiomName in axioms do
+    if standardAxiom? axiomName then
+      standard := standard.push axiomName
+    else if projectAxioms.contains axiomName then
+      project := project.push axiomName
+    else if axiomName != ``sorryAx then
+      external := external.push axiomName
   return (
-    sortedNameStrings all,
+    sortedNameStrings axioms,
     sortedNameStrings standard,
     sortedNameStrings project,
     sortedNameStrings external)
 
 private def prepareCandidate (candidate : Candidate) : MetaM PreparedCandidate := do
-  let theorem ← mkConstWithFreshMVarLevels candidate.name
-  let theoremType ← inferType theorem
+  let theoremConst ← mkConstWithFreshMVarLevels candidate.name
+  let theoremType ← inferType theoremConst
   let (binders, _, result) ← forallMetaTelescope theoremType
   let result ← whnf result
   let arguments := result.getAppArgs
@@ -382,17 +380,17 @@ private def collectDefinitionalEquivalences
         if left.candidate.name.toString < right.candidate.name.toString &&
             left.binderCount == right.binderCount &&
             sameArgumentHeadSketch left.argumentHeads right.argumentHeads &&
-            (← statementDefEq left.candidate right.candidate) then
+            (← liftMetaM <| statementDefEq left.candidate right.candidate) then
           relations := addRelation relations left.candidate.name right.candidate.name
           relations := addRelation relations right.candidate.name left.candidate.name
     return relations
 
 private def tryCloseGoalWithLocal (goal : MVarId) (locals : Array Expr) : MetaM Bool := do
   let target ← goal.getType'
-  for local in locals do
+  for localExpr in locals do
     let saved ← saveState
-    if ← isDefEq (← inferType local) target then
-      goal.assign local
+    if ← isDefEq (← inferType localExpr) target then
+      goal.assign localExpr
       return true
     else
       saved.restore
@@ -403,8 +401,8 @@ private def tryCloseGoalWithInstance (goal : MVarId) : MetaM Bool := do
   unless (← isClass? target).isSome do return false
   let saved ← saveState
   try
-    let instance ← synthInstance target
-    goal.assign instance
+    let instanceExpr ← synthInstance target
+    goal.assign instanceExpr
     return true
   catch _ =>
     saved.restore
@@ -459,7 +457,7 @@ private def collectReplacementCandidates
             !extensionTheoremName? source.candidate.name &&
             !defEqTargets.contains source.candidate.name.toString &&
             compatibleArgumentHeadSketch source.argumentHeads target.argumentHeads &&
-            (← replacementCloses source.candidate target.candidate) then
+            (← liftMetaM <| replacementCloses source.candidate target.candidate) then
           replacements := addRelation replacements target.candidate.name source.candidate.name
     return replacements
 
@@ -491,17 +489,17 @@ private def collectEntries
       | none => false
     for dependency in dependencyNames do
       theoremDependents := addConsumer theoremDependents dependency candidate.name.toString
-    let axioms ← Lean.collectAxioms candidate.name
+    let collectedAxioms ← Lean.collectAxioms candidate.name
     let (axioms, standardAxioms, projectAxiomsForTheorem, externalAxioms) :=
-      classifyAxioms axioms projectAxioms
+      classifyAxioms collectedAxioms projectAxioms
     let declarationDependenciesForTheorem :=
       sortedNameStrings ((declarationDependencies.find? candidate.name).getD #[])
     let projectAssumptions :=
       transitiveAssumptionRoots declarationDependencies assumptionRoots candidate.name
     let defEq := ((definitionallyEquivalent.find? candidate.name).getD #[]).qsort (· < ·)
-    let replacement := ((replacementCandidates.find? candidate.name).getD #[])
-      |>.filter fun replacement => directWrapperOf != some replacement
-      |>.qsort (· < ·)
+    let replacement :=
+      (((replacementCandidates.find? candidate.name).getD #[]).filter fun replacementName =>
+        directWrapperOf != some replacementName).qsort (· < ·)
     entries := entries.push {
       declName := candidate.name
       name := candidate.name.toString
@@ -850,7 +848,7 @@ run_cmd do
     collectDeclarationGraph declarations projectDeclarations
   let assumptionRoots := projectAssumptionRoots declarations
   let prepared ← liftTermElabM do
-    candidates.mapM prepareCandidate
+    liftMetaM <| candidates.mapM prepareCandidate
   let definitionallyEquivalent ← collectDefinitionalEquivalences prepared
   let replacementCandidates ←
     collectReplacementCandidates prepared definitionallyEquivalent
