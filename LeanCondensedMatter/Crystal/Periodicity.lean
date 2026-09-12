@@ -44,32 +44,21 @@ variable [MetricSpace E] [AddAction V E] [IsIsometricVAdd V E]
 The translation subgroup is interpreted through Mathlib's canonical equivalence between additive
 subgroups and `ℤ`-submodules. Periodicity requires that this `ℤ`-submodule is discrete, spans the
 full real vector space, and has only finitely many occupied-site orbits. -/
-def Periodic (X : AtomicConfiguration E Species) : Prop :=
-  let L := AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))
-  DiscreteTopology L ∧
-    Submodule.span ℝ (L : Set V) = ⊤ ∧
-    X.FiniteModuloTranslations (V := V)
+structure Periodic (X : AtomicConfiguration E Species) : Prop where
+  /-- The translation vectors form a discrete subgroup. -/
+  discrete_translations :
+    DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))
+  /-- The translation vectors span the full ambient vector space. -/
+  span_translations_eq_top :
+    Submodule.span ℝ
+        ((AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) : Submodule ℤ V) : Set V) =
+      ⊤
+  /-- There are finitely many occupied-site classes modulo translations. -/
+  finite_modulo_translations : X.FiniteModuloTranslations (V := V)
 
 namespace Periodic
 
 variable {X : AtomicConfiguration E Species}
-
-/-- A periodic configuration has discrete translation vectors. -/
-theorem discrete_translations (h : X.Periodic (V := V)) :
-    DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) := by
-  simpa only [Periodic] using h.1
-
-/-- The translation vectors of a periodic configuration span the full ambient vector space. -/
-theorem span_translations_eq_top (h : X.Periodic (V := V)) :
-    Submodule.span ℝ
-        ((AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) : Submodule ℤ V) : Set V) =
-      ⊤ := by
-  simpa only [Periodic] using h.2.1
-
-/-- A periodic configuration has finitely many occupied-site classes modulo translations. -/
-theorem finite_modulo_translations (h : X.Periodic (V := V)) :
-    X.FiniteModuloTranslations (V := V) := by
-  simpa only [Periodic] using h.2.2
 
 /-- The translation subgroup of a periodic configuration is a Mathlib full `ℤ`-lattice. -/
 theorem translationSubgroup_isZLattice (h : X.Periodic (V := V)) :
