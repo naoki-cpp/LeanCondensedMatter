@@ -171,12 +171,13 @@ noncomputable instance instDiscreteTopologyReciprocalLattice
 noncomputable instance instIsZLatticeReciprocalLattice
     [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
     IsZLattice ℝ (reciprocalLattice L) := by
+  constructor
   letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
   letI : Module.Free ℤ L := ZLattice.module_free ℝ L
   let b := Module.Free.chooseBasis ℤ L
   letI : Finite (Module.Free.ChooseBasisIndex ℤ L) := Module.Finite.finite_basis b
   rw [← b.ofZLatticeBasis_span ℝ, reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)]
-  infer_instance
+  exact ZSpan.span_top (reciprocalBasis (b.ofZLatticeBasis ℝ L))
 
 /-- Taking the physical reciprocal lattice twice recovers any full finite-dimensional real
 `ℤ`-lattice. -/
