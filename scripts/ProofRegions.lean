@@ -135,6 +135,9 @@ private def theoremMentionBonus (source : String) (name : Name) : Nat :=
 
 private def candidateBaseScore (spanLines : Nat) : Nat := spanLines * 100
 
+private def rewriteRecommendationFloor (spanLines : Nat) : Nat :=
+  candidateBaseScore spanLines + 100
+
 private def rewriteBonus (depth : Nat) : Nat :=
   match depth with
   | 0 => 220
@@ -349,10 +352,11 @@ private def importedRewriteSuggestions
     return suggestions
 
 /--
-Rank rewrites cheaply first, then replay only the highest-scoring few. Rewrites already named by the
-original proof receive a strong relevance bonus. Rewrites that need `assumption` are trusted when the
-proof already names the theorem, tolerated when they preserve the root expression shape, and heavily
-penalized when they introduce a semantic detour.
+Rank rewrites cheaply first, then replay only high-scoring suggestions. Rewrites already named by
+the original proof receive a strong relevance bonus. Rewrites that need `assumption` are trusted when
+the proof already names the theorem, tolerated when they preserve the root expression shape, and
+heavily penalized when they introduce a semantic detour. Weak rewrite recommendations are discarded
+so theorem search and deterministic automation can remain the fallback.
 -/
 private def rewriteSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
@@ -362,18 +366,21 @@ private def rewriteSearch
   catch _ =>
     pure #[]
   let suggestions := topRewriteSuggestions suggestions spanLines source 12
+  let floor := rewriteRecommendationFloor spanLines
   let mut best : Option Candidate := none
   for suggestion in suggestions do
-    if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic
-        (rewriteScore spanLines source suggestion false)
-        (some suggestion.theoremName) (some suggestion.moduleName) then
-      best := betterCandidate best candidate
-    let rewrite := suggestion.tactic
-    let replacement ← `(tactic| $rewrite <;> assumption)
-    if let some candidate ← verifiedCandidate node goal "rw?" replacement
-        (rewriteScore spanLines source suggestion true)
-        (some suggestion.theoremName) (some suggestion.moduleName) then
-      best := betterCandidate best candidate
+    let directScore := rewriteScore spanLines source suggestion false
+    if directScore >= floor then
+      if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic directScore
+          (some suggestion.theoremName) (some suggestion.moduleName) then
+        best := betterCandidate best candidate
+    let assumptionScore := rewriteScore spanLines source suggestion true
+    if assumptionScore >= floor then
+      let rewrite := suggestion.tactic
+      let replacement ← `(tactic| $rewrite <;> assumption)
+      if let some candidate ← verifiedCandidate node goal "rw?" replacement assumptionScore
+          (some suggestion.theoremName) (some suggestion.moduleName) then
+        best := betterCandidate best candidate
   return best
 
 /-- Search a pre-ranked rewrite set for one theorem that reproduces an intermediate transition. -/
@@ -384,9 +391,12 @@ private def rewriteTransitionSearch
   let suggestions := suggestions.filter fun suggestion =>
     theoremMentioned source suggestion.theoremName || isConservativeRewrite suggestion
   let suggestions := topRewriteSuggestions suggestions spanLines source 8
+  let floor := rewriteRecommendationFloor spanLines
   let mut best : Option Candidate := none
   for suggestion in suggestions do
     let score := rewriteScore spanLines source suggestion false
+    if score < floor then
+      continue
     if let some candidate ← verifiedTransitionCandidate node goal targetType "rw→" suggestion.tactic
         score (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
