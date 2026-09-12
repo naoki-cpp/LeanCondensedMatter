@@ -143,4 +143,17 @@ appendNodeLabel = function appendRadialNodeLabel(nodes, name, position, color, r
   nodes.append(text);
 };
 
+ui.graph.addEventListener("focusin", (event) => {
+  const node = event.target.closest?.(".node");
+  if (!node) return;
+  const branch = node.getAttribute("data-branch");
+  setBranchFocus(branch === "root" ? null : branch);
+});
+
+ui.graph.addEventListener("focusout", (event) => {
+  const nextNode = event.relatedTarget?.closest?.(".node");
+  if (nextNode) return;
+  setBranchFocus(null);
+});
+
 if (state.root) renderGraph();
