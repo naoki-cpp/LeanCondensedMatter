@@ -13,7 +13,7 @@ import Mathlib.Analysis.Normed.Group.AddTorsor
 Periodicity is derived from the translation-symmetry subgroup rather than stored as unit-cell data.
 The finite-motif condition is finiteness of the quotient of occupied sites by translation orbits.
 Full periodicity additionally requires the translation subgroup, viewed canonically as a
-`ℤ`-submodule, to be discrete and full-rank.
+`ℤ`-submodule, to be a Mathlib full `ℤ`-lattice.
 -/
 
 namespace LeanCondensedMatter.Crystal
@@ -45,33 +45,18 @@ variable [MetricSpace E] [NormedAddTorsor V E]
 The ambient positions form a normed affine torsor for the translation-vector space, so translations
 act freely and the ambient metric agrees with the norm of displacement vectors. The translation
 subgroup is interpreted through Mathlib's canonical equivalence between additive subgroups and
-`ℤ`-submodules. Periodicity requires that this `ℤ`-submodule is discrete, spans the full real vector
-space, and has only finitely many occupied-site orbits. -/
+`ℤ`-submodules. Periodicity requires that this `ℤ`-submodule be a Mathlib full `ℤ`-lattice and have
+only finitely many occupied-site orbits. -/
 structure Periodic (X : AtomicConfiguration E Species) : Prop where
   /-- The translation vectors form a discrete subgroup. -/
-  discrete_translations :
+  discreteTranslations :
     DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))
-  /-- The translation vectors span the full translation-vector space. -/
-  span_translations_eq_top :
-    Submodule.span ℝ
-        ((AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) : Submodule ℤ V) : Set V) =
-      ⊤
-  /-- There are finitely many occupied-site classes modulo translations. -/
-  finite_modulo_translations : X.FiniteModuloTranslations (V := V)
-
-namespace Periodic
-
-variable {X : AtomicConfiguration E Species}
-
-/-- The translation subgroup of a periodic configuration is a Mathlib full `ℤ`-lattice. -/
-theorem translationSubgroup_isZLattice (h : X.Periodic (V := V)) :
+  /-- The translation vectors form a full `ℤ`-lattice in the translation-vector space. -/
+  isZLattice :
     @IsZLattice ℝ inferInstance V inferInstance inferInstance
-      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) h.discrete_translations := by
-  letI : DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) :=
-    h.discrete_translations
-  exact ⟨h.span_translations_eq_top⟩
-
-end Periodic
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) discreteTranslations
+  /-- There are finitely many occupied-site classes modulo translations. -/
+  finiteModuloTranslations : X.FiniteModuloTranslations (V := V)
 
 end Periodic
 
