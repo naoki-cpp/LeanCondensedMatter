@@ -1,7 +1,7 @@
 # LeanCondensedMatter
 
 [![CI](https://github.com/naoki-cpp/LeanCondensedMatter/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/naoki-cpp/LeanCondensedMatter/actions/workflows/lean_action_ci.yml)
-[![docs](https://img.shields.io/badge/docs-online-blue)](https://naoki-cpp.github.io/LeanCondensedMatter/docs/)
+[![declaration explorer](https://img.shields.io/badge/declaration%20explorer-online-blue)](https://naoki-cpp.github.io/LeanCondensedMatter/)
 
 Formalizing results in condensed matter physics as machine-checked theorems in Lean 4, building on Mathlib.
 
@@ -13,6 +13,7 @@ legs.
 
 ## Documentation
 
+- [Declaration Explorer](https://naoki-cpp.github.io/LeanCondensedMatter/) — interactive project-area, module, theorem, dependency, and consumer navigation generated from the compiled theorem catalog.
 - [PROJECT.md](PROJECT.md) — project purpose, documentation layout, and contribution rules.
 - [notes/roadmap.md](notes/roadmap.md) — repository-wide targets and current status.
 - [notes/completed.md](notes/completed.md) — major proved endpoints.

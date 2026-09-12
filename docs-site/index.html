@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Interactive theorem dependency graph for LeanCondensedMatter.">
   <meta name="theme-color" content="#080c18">
-  <title>LeanCondensedMatter Graph</title>
+  <title>LeanCondensedMatter Explorer</title>
   <link rel="stylesheet" href="./site.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="./" aria-label="LeanCondensedMatter declaration graph home">
+    <a class="brand" href="./" aria-label="LeanCondensedMatter declaration explorer home">
       <span class="brand-mark" aria-hidden="true">LCM</span>
       <span>
         <strong>LeanCondensedMatter</strong>
-        <small>Declaration Graph</small>
+        <small>Declaration Explorer</small>
       </span>
     </a>
     <nav aria-label="Project links">
+      <button id="overview-link" class="nav-button" type="button">Overview</button>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter">GitHub</a>
       <a href="https://github.com/naoki-cpp/LeanCondensedMatter/blob/main/notes/roadmap.md">Roadmap</a>
     </nav>
@@ -27,16 +28,16 @@
     <aside class="controls" aria-label="Graph controls">
       <div>
         <p class="eyebrow">Explore the proof graph</p>
-        <h1>Find a theorem and follow its structure.</h1>
+        <h1>Find a declaration and follow its structure.</h1>
       </div>
 
-      <form id="search-form" class="search-form">
-        <label for="theorem-search">Theorem</label>
+      <form id="search-form" class="search-form" role="search">
+        <label for="theorem-search">Declaration</label>
         <div class="search-row">
-          <input id="theorem-search" list="theorem-suggestions" autocomplete="off" placeholder="Search declaration name">
+          <input id="theorem-search" autocomplete="off" placeholder="Name, module, or documentation" aria-controls="search-results" aria-expanded="false">
           <button type="submit">Go</button>
         </div>
-        <datalist id="theorem-suggestions"></datalist>
+        <div id="search-results" class="search-results" role="listbox" hidden></div>
       </form>
 
       <div class="control-grid">
@@ -81,21 +82,27 @@
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
       </div>
 
-      <p class="hint">Click a node to inspect it. Use <strong>Focus graph here</strong> in the details panel to re-center the neighborhood.</p>
+      <p class="hint">Start from the overview or search. Click a node to inspect it; double-click or use <strong>Focus graph here</strong> to re-center the neighborhood.</p>
     </aside>
 
     <section class="graph-panel" aria-label="Declaration dependency graph">
       <div class="graph-toolbar">
         <span id="graph-status">Loading theorem catalog…</span>
-        <span>Edges point from theorem to prerequisite.</span>
+        <div class="graph-actions" aria-label="Graph view controls">
+          <button id="zoom-out" type="button" title="Zoom out" aria-label="Zoom out">−</button>
+          <button id="fit-view" type="button">Fit</button>
+          <button id="zoom-in" type="button" title="Zoom in" aria-label="Zoom in">+</button>
+        </div>
       </div>
-      <div class="graph-scroll">
+
+      <div id="overview" class="overview-panel" aria-live="polite"></div>
+      <div id="graph-viewport" class="graph-scroll" hidden>
         <svg id="graph" role="img" aria-label="Interactive theorem dependency graph"></svg>
       </div>
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite">
-      <p class="muted">Select a theorem to inspect its statement and relationships.</p>
+      <p class="muted">Choose a declaration from the overview or search to inspect its statement and relationships.</p>
     </aside>
   </main>
 
