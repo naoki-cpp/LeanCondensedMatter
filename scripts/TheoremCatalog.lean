@@ -71,6 +71,8 @@ structure CatalogEntry where
   completedMention : Bool
   retainedMention : Bool
 
+private def semanticBucketLimit : Nat := 64
+
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
 
@@ -230,12 +232,6 @@ private def directWrapperTarget?
 private def sortedNameStrings (names : Array Name) : Array String :=
   (names.map fun name => name.toString).qsort fun left right => left < right
 
-private def sortedNameSetStrings (names : NameSet) : Array String := Id.run do
-  let mut result := #[]
-  for name in names do
-    result := result.push name.toString
-  return result.qsort fun left right => left < right
-
 private def addConsumer
     (consumers : NameMap (Array String)) (dependency : Name) (consumer : String) :
     NameMap (Array String) :=
@@ -252,45 +248,49 @@ private def addNameDependency
 
 private def collectDeclarationGraph
     (declarations : Array ProjectDeclaration) (projectDeclarations : NameSet) :
-    NameMap (Array Name) × NameMap (Array String) := Id.run do
+    NameMap (Array Name) × NameMap (Array Name) × NameMap (Array String) := Id.run do
   let mut dependencies : NameMap (Array Name) := {}
+  let mut consumerNames : NameMap (Array Name) := {}
   let mut consumers : NameMap (Array String) := {}
   for declaration in declarations do
     let direct := directProjectDeclarationDependencyNames projectDeclarations declaration
     for dependency in direct do
       dependencies := addNameDependency dependencies declaration.name dependency
+      consumerNames := addNameDependency consumerNames dependency declaration.name
       consumers := addConsumer consumers dependency declaration.name.toString
-  return (dependencies, consumers)
+  return (dependencies, consumerNames, consumers)
 
 private def projectAssumptionRoots (declarations : Array ProjectDeclaration) : NameSet :=
   declarations.foldl (init := NameSet.empty) fun roots declaration =>
     if declaration.assumptionRoot then roots.insert declaration.name else roots
 
-private def transitiveAssumptionRoots
-    (dependencies : NameMap (Array Name)) (roots : NameSet) (start : Name) : Array String := Id.run do
-  let initial := (dependencies.find? start).getD #[]
-  let rec visit (frontier : Array Name) (visited found : NameSet) : Nat → NameSet
-    | 0 => found
-    | fuel + 1 =>
-        if frontier.isEmpty then
-          found
-        else
-          let (next, visited, found) := frontier.foldl
-            (init := (#[], visited, found))
-            fun (next, visited, found) name =>
-              if visited.contains name then
-                (next, visited, found)
-              else
-                let visited := visited.insert name
-                let found := if roots.contains name then found.insert name else found
-                let direct := (dependencies.find? name).getD #[]
-                let next := direct.foldl (init := next) fun next dependency =>
-                  if visited.contains dependency || next.contains dependency then next
-                  else next.push dependency
-                (next, visited, found)
-          visit next visited found fuel
-  let found := visit initial NameSet.empty NameSet.empty 10000
-  return sortedNameSetStrings found
+private def collectAssumptionProvenance
+    (consumerNames : NameMap (Array Name)) (roots : NameSet) : NameMap (Array String) := Id.run do
+  let mut provenance : NameMap (Array String) := {}
+  for root in roots do
+    let rec visit (frontier : Array Name) (visited : NameSet)
+        (provenance : NameMap (Array String)) : Nat → NameMap (Array String)
+      | 0 => provenance
+      | fuel + 1 =>
+          if frontier.isEmpty then
+            provenance
+          else
+            let (next, visited, provenance) := frontier.foldl
+              (init := (#[], visited, provenance))
+              fun (next, visited, provenance) name =>
+                if visited.contains name then
+                  (next, visited, provenance)
+                else
+                  let visited := visited.insert name
+                  let provenance := addConsumer provenance name root.toString
+                  let directConsumers := (consumerNames.find? name).getD #[]
+                  let next := directConsumers.foldl (init := next) fun next consumer =>
+                    if visited.contains consumer || next.contains consumer then next
+                    else next.push consumer
+                  (next, visited, provenance)
+            visit next visited provenance fuel
+    provenance := visit #[root] NameSet.empty provenance 10000
+  return provenance
 
 private def standardAxiom? (name : Name) : Bool :=
   name == ``propext || name == ``Classical.choice || name == ``Quot.sound
@@ -382,6 +382,7 @@ private def collectDefinitionalEquivalences
     let mut relations : NameMap (Array String) := {}
     for left in prepared do
       let bucket := (buckets.get? (fingerprintKey left)).getD #[]
+      if bucket.size > semanticBucketLimit then continue
       for right in bucket do
         if left.candidate.name.toString < right.candidate.name.toString &&
             left.binderCount == right.binderCount &&
@@ -456,6 +457,7 @@ private def collectReplacementCandidates
     let mut replacements : NameMap (Array String) := {}
     for target in prepared do
       let bucket := (buckets.get? (fingerprintKey target)).getD #[]
+      if bucket.size > semanticBucketLimit then continue
       let defEqTargets := (definitionallyEquivalent.find? target.candidate.name).getD #[]
       for source in bucket do
         if source.candidate.name != target.candidate.name &&
@@ -471,7 +473,7 @@ private def collectEntries
     (candidates : Array Candidate)
     (projectTheorems projectAxioms : NameSet)
     (declarationDependencies : NameMap (Array Name))
-    (assumptionRoots : NameSet)
+    (assumptionProvenance : NameMap (Array String))
     (definitionallyEquivalent replacementCandidates : NameMap (Array String)) :
     CommandElabM (Array Entry × NameMap (Array String)) := do
   let env ← getEnv
@@ -501,7 +503,7 @@ private def collectEntries
     let declarationDependenciesForTheorem :=
       sortedNameStrings ((declarationDependencies.find? candidate.name).getD #[])
     let projectAssumptions :=
-      transitiveAssumptionRoots declarationDependencies assumptionRoots candidate.name
+      ((assumptionProvenance.find? candidate.name).getD #[]).qsort fun left right => left < right
     let defEq := ((definitionallyEquivalent.find? candidate.name).getD #[]).qsort (· < ·)
     let replacement :=
       (((replacementCandidates.find? candidate.name).getD #[]).filter fun replacementName =>
@@ -772,9 +774,10 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Replacement candidate edges: {replacementEdgeCount entries}\n\n"
   output := output ++ s!"Definitional-equivalence pairs: {definitionalEquivalencePairCount entries}\n\n"
   output := output ++ s!"Theorems with project assumptions: {assumptionEntries.size}\n\n"
-  output := output ++ "`replacementCandidates` records existing project theorems that Lean can conservatively apply to the target theorem conclusion under the target binders, with remaining application goals discharged only by target-local hypotheses or typeclass synthesis. Candidates are bucketed by result-head, result-arity, and result-argument-head fingerprints before Meta-level application, and direct-wrapper and definitionally-equivalent relations are reported separately. No `simp` or general proof search is used.\n\n"
-  output := output ++ "`definitionallyEquivalentTo` is weaker than the hard exact-duplicate check: it is computed by Meta-level definitional equality under reducible transparency after cheap fingerprinting. Exact structural duplicates remain the responsibility of `CheckDuplicates.lean` and are not weakened by this advisory relation.\n\n"
-  output := output ++ "`axioms` records kernel axiom provenance from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. `projectAssumptions` is a separate model-level provenance relation: it follows compiled declaration dependencies transitively to source declarations explicitly documented as a postulate/assumption or declared as a project axiom. Modeling assumptions represented only as theorem hypotheses remain visible in the theorem statement and are not promoted to global assumption roots.\n\n"
+  output := output ++ s!"Semantic comparison bucket limit: {semanticBucketLimit}\n\n"
+  output := output ++ "`replacementCandidates` records existing project theorems that Lean can conservatively apply to the target theorem conclusion under the target binders, with remaining application goals discharged only by target-local hypotheses or typeclass synthesis. Candidates are bucketed by result-head, result-arity, and result-argument-head fingerprints before Meta-level application. Buckets larger than the fixed semantic comparison limit are skipped rather than falling back to unrestricted all-pairs search. Direct-wrapper and definitionally-equivalent relations are reported separately. No `simp` or general proof search is used.\n\n"
+  output := output ++ "`definitionallyEquivalentTo` is weaker than the hard exact-duplicate check: it is computed by Meta-level definitional equality under reducible transparency after the same bounded fingerprinting pass. Exact structural duplicates remain the responsibility of `CheckDuplicates.lean` and are not weakened by this advisory relation.\n\n"
+  output := output ++ "`axioms` records kernel axiom provenance from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. `projectAssumptions` is a separate model-level provenance relation: source declarations explicitly documented as a postulate/assumption or declared as a project axiom are roots, and those roots are propagated once along declaration-consumer edges. Modeling assumptions represented only as theorem hypotheses remain visible in the theorem statement and are not promoted to global assumption roots.\n\n"
   output := output ++ "`declarationDependencies` and `declarationConsumers` generalize the graph beyond theorem proof dependencies by scanning both declaration types and values for source-declared project theorem/definition/opaque/axiom references. The legacy `dependencies`, `dependents`, and `compiledConsumers` fields retain their narrower semantics for compatibility with existing review queues and the graph explorer.\n\n"
   output := output ++ "## Replacement-candidate review queue\n\n"
   for entry in replacementReviewQueue do
@@ -850,16 +853,17 @@ private def json (entries : Array CatalogEntry) : Json :=
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
   let (declarations, projectDeclarations, projectAxioms) ← collectProjectDeclarations
-  let (declarationDependencies, declarationConsumers) :=
+  let (declarationDependencies, declarationConsumerNames, declarationConsumers) :=
     collectDeclarationGraph declarations projectDeclarations
   let assumptionRoots := projectAssumptionRoots declarations
+  let assumptionProvenance := collectAssumptionProvenance declarationConsumerNames assumptionRoots
   let prepared ← liftTermElabM do
     liftMetaM <| candidates.mapM prepareCandidate
   let definitionallyEquivalent ← collectDefinitionalEquivalences prepared
   let replacementCandidates ←
     collectReplacementCandidates prepared definitionallyEquivalent
   let (entries, theoremDependents) ←
-    collectEntries candidates projectTheorems projectAxioms declarationDependencies assumptionRoots
+    collectEntries candidates projectTheorems projectAxioms declarationDependencies assumptionProvenance
       definitionallyEquivalent replacementCandidates
   let compiledConsumers ← collectCompiledConsumers projectTheorems
   let completed ← liftIO <| IO.FS.readFile ("notes" / "completed.md")
