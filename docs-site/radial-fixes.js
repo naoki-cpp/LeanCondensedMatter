@@ -1,9 +1,18 @@
 const RADIAL_NODE_ARC_SPACING = 38;
 const RADIAL_DENSE_FIRST_RING = 14;
+const RADIAL_DENSE_HIT_RADIUS = 8;
 
 let radialDensity = {
   dense: false,
   showFirstRingLabels: true,
+};
+
+const baseSvg = svg;
+svg = function densityAwareSvg(tag, attributes = {}) {
+  if (tag !== "circle" || !radialDensity.dense || attributes.fill !== "transparent") {
+    return baseSvg(tag, attributes);
+  }
+  return baseSvg(tag, { ...attributes, r: Math.min(Number(attributes.r) || RADIAL_DENSE_HIT_RADIUS, RADIAL_DENSE_HIT_RADIUS) });
 };
 
 function densityAwareRadiusStep(levels, maxDepth) {
