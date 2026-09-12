@@ -79,11 +79,6 @@ or consumer structure changes.
 - `SecondQuantization.Common.dysonTraceCoeff_eq_weightedTrace` — canonical interpretation of the
   named Dyson trace coefficient as the Boltzmann-weighted diagonal functional of the corresponding
   bare Dyson coefficient.
-- `SecondQuantization.Fermionic.completedFreeHamiltonian_denseDomain` — standard analytic property of
-  the named completed free Hamiltonian; the common diagonal-operator proof does not make the
-  fermionic physical endpoint redundant.
-- `SecondQuantization.Fermionic.completedFreeHamiltonian_isClosed` — standard analytic property of
-  the named completed free Hamiltonian, retained alongside its self-adjointness endpoint.
 - `SecondQuantization.Fermionic.timeOrderedExternalFields_swap` — canonical fermionic exchange law
   for the named time-ordered external-field construction: swapping both fields and times produces
   the fermionic statistics sign.
