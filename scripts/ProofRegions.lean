@@ -66,8 +66,8 @@ private def prettyTactic (stx : TSyntax `tactic) : Command.CommandElabM String :
 private def replayCandidateProof
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
     (replacement : TSyntax `tactic) : Command.CommandElabM (Option Expr) := do
-  let termCtx ← liftTermElabM read
-  let termState ← liftTermElabM get
+  let termCtx ← Command.liftTermElabM read
+  let termState ← Command.liftTermElabM get
   node.ctxI.runTactic node.tacI goal fun freshGoal => do
     let goals ← Lean.Elab.runTactic' (ctx := termCtx) (s := termState) freshGoal replacement
     if !goals.isEmpty then
