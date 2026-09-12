@@ -24,7 +24,7 @@ rather than by a project-local wrapper type.
 For a real inner-product space, the physical reciprocal lattice uses the Bloch wave-vector
 convention `exp (i k · R)`. The reciprocal condition is therefore
 `⟪G, R⟫ ∈ 2π ℤ`. We encode the `2π` exactly once by normalizing the inner-product bilinear form,
-then reuse Mathlib's `LinearMap.BilinForm.dualSubmodule`.
+then reuse Mathlib's `LinearMap.BilinForm.dualSubmodule` and dual-basis machinery.
 -/
 
 namespace LeanCondensedMatter.Crystal
@@ -40,6 +40,27 @@ noncomputable def reciprocalPairing : LinearMap.BilinForm ℝ V :=
 theorem reciprocalPairing_apply (G R : V) :
     reciprocalPairing G R = (2 * Real.pi)⁻¹ * inner ℝ G R := by
   simp [reciprocalPairing, smul_eq_mul]
+
+/-- The normalized reciprocal pairing is nondegenerate. -/
+theorem reciprocalPairing_nondegenerate :
+    (reciprocalPairing (V := V)).Nondegenerate := by
+  have hpi : (2 * Real.pi : ℝ) ≠ 0 := mul_ne_zero (by norm_num) Real.pi_ne_zero
+  have hinv : (2 * Real.pi : ℝ)⁻¹ ≠ 0 := inv_ne_zero hpi
+  constructor
+  · intro x hx
+    apply ext_inner_right ℝ
+    intro y
+    have hxy := hx y
+    rw [reciprocalPairing_apply] at hxy
+    have hinner : inner ℝ x y = 0 := (mul_eq_zero.mp hxy).resolve_left hinv
+    simpa using hinner
+  · intro y hy
+    apply ext_inner_left ℝ
+    intro x
+    have hxy := hy x
+    rw [reciprocalPairing_apply] at hxy
+    have hinner : inner ℝ x y = 0 := (mul_eq_zero.mp hxy).resolve_left hinv
+    simpa using hinner
 
 /-- The physical reciprocal lattice of a real-space `ℤ`-submodule. For a Bravais lattice `L`,
 membership means that the inner product with every `R ∈ L` is an integer multiple of `2π`. -/
@@ -71,5 +92,47 @@ theorem mem_reciprocalLattice {L : Submodule ℤ V} {G : V} :
     change (n : ℝ) = reciprocalPairing G R
     rw [reciprocalPairing_apply, hn]
     field_simp [hpi]
+
+/-- The physical reciprocal basis associated with a finite real basis. It is Mathlib's dual basis
+for the normalized reciprocal pairing, so the `2π` convention is inherited from
+`reciprocalPairing`. -/
+noncomputable def reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) : Basis ι ℝ V := by
+  classical
+  exact (reciprocalPairing (V := V)).dualBasis
+    (reciprocalPairing_nondegenerate (V := V)) b
+
+/-- A reciprocal basis satisfies the crystallographic pairing relation
+`bᵢ · aⱼ = 2π δᵢⱼ`. -/
+@[simp]
+theorem inner_reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) (i j : ι) :
+    inner ℝ (reciprocalBasis b i) (b j) =
+      if i = j then 2 * Real.pi else 0 := by
+  classical
+  have hpair :
+      reciprocalPairing (reciprocalBasis b i) (b j) = if j = i then 1 else 0 := by
+    simpa [reciprocalBasis] using
+      (LinearMap.BilinForm.apply_dualBasis_left
+        (B := reciprocalPairing (V := V))
+        (reciprocalPairing_nondegenerate (V := V)) b i j)
+  have hpi : (2 * Real.pi : ℝ) ≠ 0 := mul_ne_zero (by norm_num) Real.pi_ne_zero
+  calc
+    inner ℝ (reciprocalBasis b i) (b j) =
+        (2 * Real.pi) * reciprocalPairing (reciprocalBasis b i) (b j) := by
+      rw [reciprocalPairing_apply]
+      field_simp [hpi]
+    _ = (2 * Real.pi) * (if j = i then 1 else 0) := by rw [hpair]
+    _ = if i = j then 2 * Real.pi else 0 := by simp [eq_comm]
+
+/-- If a real-space lattice is the `ℤ`-span of a finite real basis, its physical reciprocal lattice
+is the `ℤ`-span of the corresponding reciprocal basis. -/
+theorem reciprocalLattice_span_of_basis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) :
+    reciprocalLattice (Submodule.span ℤ (Set.range b)) =
+      Submodule.span ℤ (Set.range (reciprocalBasis b)) := by
+  classical
+  simpa [reciprocalLattice, reciprocalBasis] using
+    (LinearMap.BilinForm.dualSubmodule_span_of_basis
+      (B := reciprocalPairing (V := V))
+      (R := ℤ)
+      (reciprocalPairing_nondegenerate (V := V)) b)
 
 end LeanCondensedMatter.Crystal
