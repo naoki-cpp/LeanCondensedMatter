@@ -1,0 +1,306 @@
+name: Proof Region Cache Patch
+
+on:
+  push:
+    branches: [perf/proof-region-search-cache]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message != 'perf(tooling): cache proof-region searches'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: true
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Patch search caches
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/ProofRegions.lean')
+          text = path.read_text()
+
+          old = '''private structure RewriteSuggestion where
+            tactic : TSyntax `tactic
+            theoremName : Name
+            moduleName : Name
+            depth : Nat
+            growth : Nat
+            introducedConsts : Nat
+          '''
+          new = old + '''
+          private structure RewriteSearchCacheEntry where
+            goal : MVarId
+            maxDepth : Nat
+            limit : Nat
+            suggestions : Array RewriteSuggestion
+
+          private structure ExactSearchCacheEntry where
+            goal : MVarId
+            result : Option (Term × Name × Name)
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+
+          old = '''private def importedExactTerm
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+              Command.CommandElabM (Option (Term × Name × Name)) :=
+            node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+              let (_, searchGoal) ← freshGoal.intros
+              searchGoal.withContext do
+                let env ← getEnv
+                let candidates ← Lean.Meta.LibrarySearch.librarySearchSymm
+                  Lean.Meta.LibrarySearch.libSearchFindDecls searchGoal
+                let initialState ← saveState
+                for ((candidateGoal, candidateMCtx), (declName, modifier)) in candidates do
+                  let some moduleName := declarationModule? env declName | continue
+                  setMCtx candidateMCtx
+                  try
+                    let thm ← Lean.Meta.LibrarySearch.mkLibrarySearchLemma declName modifier
+                    let subgoals ← candidateGoal.apply thm { allowSynthFailures := true }
+                    let remaining ← Lean.Meta.LibrarySearch.solveByElim [] false subgoals 6
+                    if remaining.isEmpty then
+                      let proof := (← instantiateMVars (mkMVar freshGoal)).headBeta
+                      if let some parentDecl := node.ctxI.parentDecl? then
+                        if containsConst parentDecl proof then
+                          restoreState initialState
+                          continue
+                      let term ← delabToRefinableSyntax proof
+                      return some (term, declName, moduleName)
+                  catch _ =>
+                    pure ()
+                  restoreState initialState
+                return none
+
+          /-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
+          private def exactSearch
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+              (source : String) : Command.CommandElabM (Option Candidate) := do
+            let result ← try
+              importedExactTerm node goal
+            catch _ =>
+              pure none
+          '''
+          new = '''private def importedExactTerm
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+              Command.CommandElabM (Option (Term × Name × Name)) :=
+            node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+              let (_, searchGoal) ← freshGoal.intros
+              searchGoal.withContext do
+                let env ← getEnv
+                let candidates ← Lean.Meta.LibrarySearch.librarySearchSymm
+                  Lean.Meta.LibrarySearch.libSearchFindDecls searchGoal
+                let initialState ← saveState
+                for ((candidateGoal, candidateMCtx), (declName, modifier)) in candidates do
+                  let some moduleName := declarationModule? env declName | continue
+                  setMCtx candidateMCtx
+                  try
+                    let thm ← Lean.Meta.LibrarySearch.mkLibrarySearchLemma declName modifier
+                    let subgoals ← candidateGoal.apply thm { allowSynthFailures := true }
+                    let remaining ← Lean.Meta.LibrarySearch.solveByElim [] false subgoals 6
+                    if remaining.isEmpty then
+                      let proof := (← instantiateMVars (mkMVar freshGoal)).headBeta
+                      if let some parentDecl := node.ctxI.parentDecl? then
+                        if containsConst parentDecl proof then
+                          restoreState initialState
+                          continue
+                      let term ← delabToRefinableSyntax proof
+                      return some (term, declName, moduleName)
+                  catch _ =>
+                    pure ()
+                  restoreState initialState
+                return none
+
+          /-- Reuse exact-search results for repeated InfoTree views of the same goal. -/
+          private def cachedImportedExactTerm
+              (cache : IO.Ref (Array ExactSearchCacheEntry))
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+              Command.CommandElabM (Option (Term × Name × Name)) := do
+            let entries ← liftIO cache.get
+            if let some entry := entries.find? fun entry => entry.goal == goal then
+              return entry.result
+            let result ← try
+              importedExactTerm node goal
+            catch _ =>
+              pure none
+            liftIO <| cache.set (entries.push { goal, result })
+            return result
+
+          /-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
+          private def exactSearch
+              (cache : IO.Ref (Array ExactSearchCacheEntry))
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+              (source : String) : Command.CommandElabM (Option Candidate) := do
+            let result ← cachedImportedExactTerm cache node goal
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+
+          old = '''private def importedRewriteSuggestions
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+              (maxDepth : Nat := 2) (limit : Nat := 64) :
+              Command.CommandElabM (Array RewriteSuggestion) :=
+            node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+              let env ← getEnv
+              let target ← freshGoal.getType
+              let mut suggestions := #[]
+              for (expr, depth) in rewriteTargets target maxDepth do
+                for rewrites in ← Mathlib.Tactic.LibraryRewrite.getImportRewrites expr do
+                  for (rw, declName) in rewrites do
+                    if suggestions.size >= limit then
+                      return suggestions
+                    let some moduleName := declarationModule? env declName | continue
+                    if !rw.extraGoals.isEmpty then
+                      continue
+                    let tactic ← Mathlib.Tactic.LibraryRewrite.tacticSyntax rw none none
+                    let beforeSize := exprSize expr
+                    let afterSize := exprSize rw.replacement
+                    suggestions := suggestions.push {
+                      tactic
+                      theoremName := declName
+                      moduleName
+                      depth
+                      growth := afterSize - beforeSize
+                      introducedConsts := introducedConstCount expr rw.replacement
+                    }
+              return suggestions
+          '''
+          new = '''private def importedRewriteSuggestions
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+              (maxDepth : Nat := 2) (limit : Nat := 64) :
+              Command.CommandElabM (Array RewriteSuggestion) :=
+            node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+              let env ← getEnv
+              let target ← freshGoal.getType
+              let mut suggestions := #[]
+              let mut seenTargets : Array Expr := #[]
+              for (expr, depth) in rewriteTargets target maxDepth do
+                if seenTargets.any (fun seen => seen == expr) then
+                  continue
+                seenTargets := seenTargets.push expr
+                for rewrites in ← Mathlib.Tactic.LibraryRewrite.getImportRewrites expr do
+                  for (rw, declName) in rewrites do
+                    if suggestions.size >= limit then
+                      return suggestions
+                    let some moduleName := declarationModule? env declName | continue
+                    if !rw.extraGoals.isEmpty then
+                      continue
+                    let tactic ← Mathlib.Tactic.LibraryRewrite.tacticSyntax rw none none
+                    let beforeSize := exprSize expr
+                    let afterSize := exprSize rw.replacement
+                    suggestions := suggestions.push {
+                      tactic
+                      theoremName := declName
+                      moduleName
+                      depth
+                      growth := afterSize - beforeSize
+                      introducedConsts := introducedConstCount expr rw.replacement
+                    }
+              return suggestions
+
+          /-- Reuse imported rewrite discovery for repeated InfoTree views of the same goal. -/
+          private def cachedImportedRewriteSuggestions
+              (cache : IO.Ref (Array RewriteSearchCacheEntry))
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+              (maxDepth : Nat := 2) (limit : Nat := 64) :
+              Command.CommandElabM (Array RewriteSuggestion) := do
+            let entries ← liftIO cache.get
+            if let some entry := entries.find? fun entry =>
+                entry.goal == goal && entry.maxDepth == maxDepth && entry.limit == limit then
+              return entry.suggestions
+            let suggestions ← importedRewriteSuggestions node goal maxDepth limit
+            liftIO <| cache.set (entries.push { goal, maxDepth, limit, suggestions })
+            return suggestions
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+
+          old = '''private def rewriteSearch
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+              (source : String) : Command.CommandElabM (Option Candidate) := do
+            let suggestions ← try
+              importedRewriteSuggestions node goal
+            catch _ =>
+              pure #[]
+          '''
+          new = '''private def rewriteSearch
+              (cache : IO.Ref (Array RewriteSearchCacheEntry))
+              (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+              (source : String) : Command.CommandElabM (Option Candidate) := do
+            let suggestions ← try
+              cachedImportedRewriteSuggestions cache node goal
+            catch _ =>
+              pure #[]
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+
+          old = '''private def auditSeq
+              (fileMap : FileMap) (minLines : Nat)
+              (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM (Option AuditResult) := do
+          '''
+          new = '''private def auditSeq
+              (rewriteCache : IO.Ref (Array RewriteSearchCacheEntry))
+              (exactCache : IO.Ref (Array ExactSearchCacheEntry))
+              (fileMap : FileMap) (minLines : Nat)
+              (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM (Option AuditResult) := do
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+          text = text.replace('''  if let some candidate ← rewriteSearch first goal region.spanLines source then
+          ''', '''  if let some candidate ← rewriteSearch rewriteCache first goal region.spanLines source then
+          ''', 1)
+          text = text.replace('''  if let some candidate ← exactSearch first goal region.spanLines source then
+          ''', '''  if let some candidate ← exactSearch exactCache first goal region.spanLines source then
+          ''', 1)
+
+          old = '''private def collectAudits
+              (fileMap : FileMap) (minLines : Nat) (trees : Array InfoTree) :
+              Command.CommandElabM (Array AuditResult) := do
+            let mut results := #[]
+          '''
+          new = '''private def collectAudits
+              (fileMap : FileMap) (minLines : Nat) (trees : Array InfoTree) :
+              Command.CommandElabM (Array AuditResult) := do
+            let rewriteCache ← liftIO <| IO.mkRef (#[] : Array RewriteSearchCacheEntry)
+            let exactCache ← liftIO <| IO.mkRef (#[] : Array ExactSearchCacheEntry)
+            let mut results := #[]
+          '''
+          assert old in text
+          text = text.replace(old, new, 1)
+          text = text.replace('''      if let some result ← auditSeq fileMap minLines seq then
+          ''', '''      if let some result ← auditSeq rewriteCache exactCache fileMap minLines seq then
+          ''', 1)
+          text = text.replace('''          importedRewriteSuggestions first goal 1 32
+          ''', '''          cachedImportedRewriteSuggestions rewriteCache first goal 1 32
+          ''', 1)
+
+          path.write_text(text)
+          PY
+
+      - name: Compile proof-region tool
+        run: lake env lean scripts/ProofRegions.lean
+
+      - name: Commit validated patch
+        shell: bash
+        run: |
+          rm .github/workflows/proof_region_cache_patch.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ProofRegions.lean .github/workflows/proof_region_cache_patch.yml
+          git commit -m 'perf(tooling): cache proof-region searches'
+          git push origin HEAD:perf/proof-region-search-cache
