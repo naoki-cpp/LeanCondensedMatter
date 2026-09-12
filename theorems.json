@@ -3008,16 +3008,14 @@
   "directWrapperOf": null,
   "dependents":
   ["Combinatorics.Pairing.splitLeft_ofSplit",
-   "Combinatorics.Pairing.splitRight_ofSplit",
-   "SecondQuantization.Common.TwoPointDiagram.isSplit_ofSlotSplit"],
+   "Combinatorics.Pairing.splitRight_ofSplit"],
   "dependencies": ["Combinatorics.Pairing.ofSplit_partner_inl"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
   ["Combinatorics.Pairing.splitLeft_ofSplit",
-   "Combinatorics.Pairing.splitRight_ofSplit",
-   "SecondQuantization.Common.TwoPointDiagram.isSplit_ofSlotSplit"],
-  "compiledConsumerCount": 3},
+   "Combinatorics.Pairing.splitRight_ofSplit"],
+  "compiledConsumerCount": 2},
  {"terminal": false,
   "statement":
   "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))},\n  p ∈ pairing.pairs →\n    p ≠ pairing.firstPair →\n      p.1 ∈ Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0) ∧\n        p.2 ∈ Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0)",
@@ -46005,25 +46003,6 @@
    "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalVacuumSplit",
    "SecondQuantization.Common.isSplit_slotLegSplitting_of_interactionPart_eq"],
   "compiledConsumerCount": 4},
- {"terminal": true,
-  "statement":
-  "∀ {N : ℕ} {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  Combinatorics.Pairing.IsSplit (SecondQuantization.Common.slotLegSplitting h)\n    (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).pairing",
-  "singleCompiledConsumer": false,
-  "retainedMention": true,
-  "name": "SecondQuantization.Common.TwoPointDiagram.isSplit_ofSlotSplit",
-  "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting",
-  "docString":
-  "A reconstructed diagram is split by the splitting it was reconstructed along. ",
-  "directWrapperTargetModule":
-  "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-  "directWrapperOf": "Combinatorics.Pairing.isSplit_ofSplit",
-  "dependents": [],
-  "dependencies": ["Combinatorics.Pairing.isSplit_ofSplit"],
-  "crossModuleDirectWrapper": true,
-  "completedMention": false,
-  "compiledConsumers": [],
-  "compiledConsumerCount": 0},
  {"terminal": false,
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (B : ↥d.componentPartition.parts)\n  (leg : Fin (2 * (2 * S.card + 1))),\n  d.legInComponent (↑B) leg ↔ d.unflattenedLegInComponent B ((SecondQuantization.Common.twoPointLegEquiv S) leg)",
