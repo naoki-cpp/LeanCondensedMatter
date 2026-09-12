@@ -1,0 +1,54 @@
+name: Proof Region Cache Recovery
+
+on:
+  push:
+    branches: [perf/proof-region-search-cache]
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: true
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Apply staged patch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/proof_region_cache_patch.yml').read_text()
+          marker = "          from pathlib import Path\n"
+          start = workflow.index(marker)
+          end = workflow.index("          PY\n", start)
+          block = textwrap.dedent(workflow[start:end])
+          exec(compile(block, '<staged-proof-region-patch>', 'exec'))
+          PY
+
+      - name: Compile proof-region tool
+        run: lake env lean scripts/ProofRegions.lean
+
+      - name: Commit validated patch
+        shell: bash
+        run: |
+          rm .github/workflows/proof_region_cache_patch.yml
+          rm .github/workflows/proof_region_cache_recover.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ProofRegions.lean .github/workflows/proof_region_cache_patch.yml .github/workflows/proof_region_cache_recover.yml
+          git commit -m 'perf(tooling): cache proof-region searches'
+          git push origin HEAD:perf/proof-region-search-cache
