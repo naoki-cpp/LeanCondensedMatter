@@ -81,6 +81,19 @@ theorem coe_vadd_site (X : AtomicConfiguration E Species)
     ((v +ᵥ x : X.Site) : E) = (v : V) +ᵥ (x : E) :=
   rfl
 
+/-- A cancellative ambient translation action induces a free translation-symmetry action on
+occupied sites. -/
+instance translationSiteIsCancelVAdd (X : AtomicConfiguration E Species) [IsCancelVAdd V E] :
+    IsCancelVAdd (X.translationSubgroup (V := V)) X.Site where
+  left_cancel' v x y h := by
+    apply Subtype.ext
+    exact IsCancelVAdd.left_cancel (v : V) (x : E) (y : E) <| by
+      simpa using congrArg (fun z : X.Site => (z : E)) h
+  right_cancel' v w x h := by
+    apply Subtype.ext
+    exact IsCancelVAdd.right_cancel (v : V) (w : V) (x : E) <| by
+      simpa using congrArg (fun z : X.Site => (z : E)) h
+
 /-- Membership in a translation orbit is exactly reachability by a translation symmetry. -/
 @[simp]
 theorem mem_translation_site_orbit_iff (X : AtomicConfiguration E Species) (x y : X.Site) :
