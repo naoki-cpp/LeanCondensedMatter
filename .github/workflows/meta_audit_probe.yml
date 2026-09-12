@@ -1,0 +1,32 @@
+name: Meta Audit Probe
+
+on:
+  push:
+    branches: [feat/meta-audit-catalog]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Build Lean library
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: true
+          build-args: "--wfail"
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Generate theorem catalog
+        run: lake env lean scripts/TheoremCatalog.lean
+
+      - name: Build declaration graph site
+        run: python3 scripts/build_declaration_graph_site.py
