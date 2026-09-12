@@ -7,16 +7,31 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: meta-audit-probe
+  cancel-in-progress: true
+
 jobs:
   probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
 
+      - name: Restore project build cache
+        id: project-cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: meta-audit-project-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            meta-audit-project-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+            project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
       - name: Build Lean library
+        id: lean-build
         uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
         with:
           build: true
@@ -24,6 +39,13 @@ jobs:
           lint: false
           use-github-cache: false
           use-mathlib-cache: auto
+
+      - name: Save project build cache
+        if: steps.lean-build.outcome == 'success' && steps.project-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: ${{ steps.project-cache.outputs.cache-primary-key }}
 
       - name: Generate theorem catalog
         run: lake env lean scripts/TheoremCatalog.lean
