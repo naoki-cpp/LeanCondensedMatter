@@ -27,32 +27,40 @@
   r: 3.8px;
 }
 
-.legend-dot {
+.legend-node {
   width: 10px;
   height: 10px;
   flex: 0 0 10px;
+  border: 0;
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55);
 }
 
-.legend-dot.root {
+.legend-node.root {
   width: 12px;
   height: 12px;
   flex-basis: 12px;
+  border: 0;
   background: var(--cyan);
   box-shadow: 0 0 0 2px rgba(217, 255, 251, 0.8);
 }
 
-.legend-dot.branch {
+.legend-node.branch {
   background: linear-gradient(135deg, #ff5f6d, #8b5cf6);
 }
 
-.legend-edge.tree {
+.legend-edge {
+  width: 16px;
+  height: 0;
   border-top: 2px solid var(--accent);
 }
 
 .legend-edge.cross {
   border-top: 1px dashed var(--muted);
   opacity: 0.7;
+}
+
+.legend-edge.wrapper {
+  border-top: 2px dashed var(--accent-strong);
 }
