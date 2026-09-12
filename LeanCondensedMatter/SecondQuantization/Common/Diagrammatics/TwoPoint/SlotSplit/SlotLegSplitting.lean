@@ -148,13 +148,6 @@ theorem TwoPointDiagram.ofSlotSplit_slotSplit (h : T ⊆ S)
     · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem h _ _ v hv
   · exact Pairing.ofSplit_splitLeft_splitRight (slotLegSplitting h) hd
 
-/-- A reconstructed diagram is split by the splitting it was reconstructed along. -/
-theorem TwoPointDiagram.isSplit_ofSlotSplit (h : T ⊆ S)
-    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
-    (vac : QuarticDiagram InternalLabel N (S \ T)) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).pairing.IsSplit (slotLegSplitting h) :=
-  Pairing.isSplit_ofSplit _ _ _
-
 /-- Reconstructing and then reading off the external piece returns the external piece. -/
 theorem TwoPointDiagram.slotSplitExternal_ofSlotSplit (h : T ⊆ S)
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
@@ -190,7 +183,7 @@ noncomputable def TwoPointDiagram.slotSplitEquiv (h : T ⊆ S) :
       TwoPointDiagram ExternalLabel InternalLabel N T × QuarticDiagram InternalLabel N (S \ T) where
   toFun d := (d.1.slotSplitExternal h d.2, d.1.slotSplitVacuum h d.2)
   invFun p :=
-    ⟨TwoPointDiagram.ofSlotSplit h p.1 p.2, TwoPointDiagram.isSplit_ofSlotSplit h p.1 p.2⟩
+    ⟨TwoPointDiagram.ofSlotSplit h p.1 p.2, Pairing.isSplit_ofSplit _ _ _⟩
   left_inv d := Subtype.ext (TwoPointDiagram.ofSlotSplit_slotSplit h d.1 d.2)
   right_inv p := by
     obtain ⟨ext, vac⟩ := p
