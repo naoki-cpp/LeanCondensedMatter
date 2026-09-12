@@ -96,7 +96,8 @@ theorem mem_reciprocalLattice {L : Submodule ℤ V} {G : V} :
 /-- The physical reciprocal basis associated with a finite real basis. It is Mathlib's dual basis
 for the normalized reciprocal pairing, so the `2π` convention is inherited from
 `reciprocalPairing`. -/
-noncomputable def reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) : Basis ι ℝ V := by
+noncomputable def reciprocalBasis {ι : Type*} [Finite ι]
+    (b : Module.Basis ι ℝ V) : Module.Basis ι ℝ V := by
   classical
   exact (reciprocalPairing (V := V)).dualBasis
     (reciprocalPairing_nondegenerate (V := V)) b
@@ -104,7 +105,8 @@ noncomputable def reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) 
 /-- A reciprocal basis satisfies the crystallographic pairing relation
 `bᵢ · aⱼ = 2π δᵢⱼ`. -/
 @[simp]
-theorem inner_reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) (i j : ι) :
+theorem inner_reciprocalBasis {ι : Type*} [Finite ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ V) (i j : ι) :
     inner ℝ (reciprocalBasis b i) (b j) =
       if i = j then 2 * Real.pi else 0 := by
   classical
@@ -125,7 +127,7 @@ theorem inner_reciprocalBasis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) (i j
 
 /-- If a real-space lattice is the `ℤ`-span of a finite real basis, its physical reciprocal lattice
 is the `ℤ`-span of the corresponding reciprocal basis. -/
-theorem reciprocalLattice_span_of_basis {ι : Type*} [Finite ι] (b : Basis ι ℝ V) :
+theorem reciprocalLattice_span_of_basis {ι : Type*} [Finite ι] (b : Module.Basis ι ℝ V) :
     reciprocalLattice (Submodule.span ℤ (Set.range b)) =
       Submodule.span ℤ (Set.range (reciprocalBasis b)) := by
   classical
