@@ -55,7 +55,6 @@ theorem coeff_formalTraceLogOneSubSeries
 theorem constantCoeff_formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     PowerSeries.constantCoeff (formalTraceLogOneSubSeries ζ K) = 0 := by
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff]
   simp
 
 private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
