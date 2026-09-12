@@ -36,6 +36,8 @@ private structure RewriteSuggestion where
   theoremName : Name
   moduleName : Name
   depth : Nat
+  growth : Nat
+  introducedConsts : Nat
 
 private def regionOfWindow
     (fileMap : FileMap) (minLines : Nat)
@@ -75,6 +77,30 @@ private partial def containsConst (declName : Name) : Expr → Bool
   | .proj _ _ body => containsConst declName body
   | _ => false
 
+private partial def exprSize : Expr → Nat
+  | .app fn arg => 1 + exprSize fn + exprSize arg
+  | .lam _ type body _ => 1 + exprSize type + exprSize body
+  | .forallE _ type body _ => 1 + exprSize type + exprSize body
+  | .letE _ type value body _ => 1 + exprSize type + exprSize value + exprSize body
+  | .mdata _ body => 1 + exprSize body
+  | .proj _ _ body => 1 + exprSize body
+  | _ => 1
+
+private partial def exprConsts : Expr → List Name
+  | .const name _ => [name]
+  | .app fn arg => exprConsts fn ++ exprConsts arg
+  | .lam _ type body _ => exprConsts type ++ exprConsts body
+  | .forallE _ type body _ => exprConsts type ++ exprConsts body
+  | .letE _ type value body _ => exprConsts type ++ exprConsts value ++ exprConsts body
+  | .mdata _ body => exprConsts body
+  | .proj name _ body => name :: exprConsts body
+  | _ => []
+
+private def introducedConstCount (before after : Expr) : Nat :=
+  let beforeNames := (exprConsts before).eraseDups
+  let afterNames := (exprConsts after).eraseDups
+  (afterNames.filter fun name => !beforeNames.contains name).length
+
 private partial def rewriteTargets
     (target : Expr) (fuel : Nat) (depth : Nat := 0) : Array (Expr × Nat) :=
   match fuel with
@@ -97,6 +123,9 @@ private def rewriteBonus (depth : Nat) : Nat :=
   | 0 => 220
   | 1 => 160
   | _ => 90
+
+private def rewritePenalty (suggestion : RewriteSuggestion) : Nat :=
+  Nat.min 220 (suggestion.growth * 6 + suggestion.introducedConsts * 35)
 
 private def betterCandidate (best : Option Candidate) (candidate : Candidate) : Option Candidate :=
   match best with
@@ -262,13 +291,22 @@ private def importedRewriteSuggestions
           if !rw.extraGoals.isEmpty then
             continue
           let tactic ← Mathlib.Tactic.LibraryRewrite.tacticSyntax rw none none
-          suggestions := suggestions.push { tactic, theoremName := declName, moduleName, depth }
+          let beforeSize := exprSize expr
+          let afterSize := exprSize rw.replacement
+          suggestions := suggestions.push {
+            tactic
+            theoremName := declName
+            moduleName
+            depth
+            growth := afterSize - beforeSize
+            introducedConsts := introducedConstCount expr rw.replacement
+          }
     return suggestions
 
 /--
 Rank named imported rewrites rather than accepting the first replay success. Root rewrites score
-above rewrites of shallow subexpressions, and direct closure scores above a rewrite that still needs
-`assumption`.
+above rewrites of shallow subexpressions, while rewrites that enlarge the expression or introduce
+new concepts are penalized.
 -/
 private def rewriteSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat) :
@@ -280,27 +318,27 @@ private def rewriteSearch
   let mut best : Option Candidate := none
   for suggestion in suggestions do
     let base := candidateBaseScore spanLines + rewriteBonus suggestion.depth
-    if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic (base + 40)
-        (some suggestion.theoremName) (some suggestion.moduleName) then
+    let penalty := rewritePenalty suggestion
+    if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic
+        (base + 40 - penalty) (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
     let rewrite := suggestion.tactic
     let replacement ← `(tactic| $rewrite <;> assumption)
-    if let some candidate ← verifiedCandidate node goal "rw?" replacement (base + 15)
-        (some suggestion.theoremName) (some suggestion.moduleName) then
+    if let some candidate ← verifiedCandidate node goal "rw?" replacement
+        (base + 15 - penalty) (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
   return best
 
-/-- Search for one imported rewrite that reproduces an original intermediate goal transition. -/
+/-- Search a precomputed rewrite set for one theorem that reproduces an intermediate transition. -/
 private def rewriteTransitionSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (targetType : Expr)
-    (spanLines : Nat) : Command.CommandElabM (Option Candidate) := do
-  let suggestions ← try
-    importedRewriteSuggestions node goal
-  catch _ =>
-    pure #[]
+    (spanLines : Nat) (suggestions : Array RewriteSuggestion) :
+    Command.CommandElabM (Option Candidate) := do
   let mut best : Option Candidate := none
   for suggestion in suggestions do
-    let score := candidateBaseScore spanLines + rewriteBonus suggestion.depth
+    if suggestion.introducedConsts > 1 || suggestion.growth > 4 then
+      continue
+    let score := candidateBaseScore spanLines + rewriteBonus suggestion.depth - rewritePenalty suggestion
     if let some candidate ← verifiedTransitionCandidate node goal targetType "rw→" suggestion.tactic
         score (some suggestion.theoremName) (some suggestion.moduleName) then
       best := betterCandidate best candidate
@@ -339,7 +377,8 @@ Only named imported rewrites are considered for these intermediate transitions.
 -/
 private def auditTransitionWindow
     (fileMap : FileMap) (minLines : Nat)
-    (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM (Option AuditResult) := do
+    (seq : Array Mathlib.TacticAnalysis.TacticNode) (suggestions : Array RewriteSuggestion) :
+    Command.CommandElabM (Option AuditResult) := do
   let some region := regionOfWindow fileMap minLines seq | return none
   let some first := seq[0]? | return none
   let some last := seq.back? | return none
@@ -351,7 +390,7 @@ private def auditTransitionWindow
     return none
   if endDecl.type.hasExprMVar then
     return none
-  let candidate? ← rewriteTransitionSearch first goal endDecl.type region.spanLines
+  let candidate? ← rewriteTransitionSearch first goal endDecl.type region.spanLines suggestions
   let some candidate := candidate? | return none
   return some { region, candidate? := some candidate }
 
@@ -365,12 +404,22 @@ private def collectAudits
         results := results.push result
       for start in [:seq.size] do
         let maxLen := Nat.min 6 (seq.size - start)
+        if maxLen < 2 then
+          continue
+        let some first := seq[start]? | continue
+        let [goal] := first.tacI.goalsBefore | continue
+        let suggestions ← try
+          importedRewriteSuggestions first goal
+        catch _ =>
+          pure #[]
+        if suggestions.isEmpty then
+          continue
         for offset in [:maxLen] do
           let len := offset + 1
           if len < 2 then
             continue
           let window := seq.extract start (start + len)
-          if let some result ← auditTransitionWindow fileMap minLines window then
+          if let some result ← auditTransitionWindow fileMap minLines window suggestions then
             results := results.push result
   return results
 
