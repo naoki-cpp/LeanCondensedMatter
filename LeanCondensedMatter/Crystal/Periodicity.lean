@@ -37,18 +37,20 @@ end FiniteModuloTranslations
 section Periodic
 
 variable [NormedAddCommGroup V] [NormedSpace ℝ V]
-variable [MetricSpace E] [AddAction V E] [IsIsometricVAdd V E]
+variable [MetricSpace E] [AddTorsor V E] [IsIsometricVAdd V E]
 
 /-- A full-dimensional periodic atomic configuration.
 
-The translation subgroup is interpreted through Mathlib's canonical equivalence between additive
-subgroups and `ℤ`-submodules. Periodicity requires that this `ℤ`-submodule is discrete, spans the
-full real vector space, and has only finitely many occupied-site orbits. -/
+The ambient positions form an affine torsor for the translation-vector space, so the translation
+action is free and nonzero vectors cannot be mistaken for lattice translations merely because they
+act trivially. The translation subgroup is interpreted through Mathlib's canonical equivalence
+between additive subgroups and `ℤ`-submodules. Periodicity requires that this `ℤ`-submodule is
+discrete, spans the full real vector space, and has only finitely many occupied-site orbits. -/
 structure Periodic (X : AtomicConfiguration E Species) : Prop where
   /-- The translation vectors form a discrete subgroup. -/
   discrete_translations :
     DiscreteTopology (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))
-  /-- The translation vectors span the full ambient vector space. -/
+  /-- The translation vectors span the full translation-vector space. -/
   span_translations_eq_top :
     Submodule.span ℝ
         ((AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) : Submodule ℤ V) : Set V) =
