@@ -35,7 +35,7 @@ jobs:
           marker = "          from pathlib import Path\n"
           start = workflow.index(marker)
           end = workflow.index("          PY\n", start)
-          block = textwrap.dedent(workflow[start:end])
+          block = textwrap.dedent(workflow[start:end]).replace('liftIO', 'Command.liftIO')
           exec(compile(block, '<staged-proof-region-patch>', 'exec'))
           PY
 
