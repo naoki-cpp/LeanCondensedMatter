@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 # For repeated pushes to the same ref, only the newest run is useful.
 concurrency:
@@ -15,7 +16,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      lean: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.lean == 'true' }}
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          fetch-depth: 20
+
+      - name: Detect Lean-related changes
+        id: filter
+        if: github.event_name != 'workflow_dispatch'
+        uses: dorny/paths-filter@0e4a8c6effa4802afeda77dc8d303f8176d7dfad # v3.0.3
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            lean:
+              - '**/*.lean'
+              - 'lean-toolchain'
+              - 'lakefile.toml'
+              - 'lake-manifest.json'
+              - 'scripts/**/*.py'
+              - 'scripts/architecture/**'
+              - '.github/workflows/lean_action_ci.yml'
+
   source-checks:
+    needs: changes
+    if: needs.changes.outputs.lean == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
 
@@ -28,6 +59,8 @@ jobs:
         run: python3 scripts/check_architecture.py
 
   build:
+    needs: changes
+    if: needs.changes.outputs.lean == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
@@ -129,17 +162,24 @@ jobs:
   # while exposing one durable required-check name.
   ci:
     if: always()
-    needs: [source-checks, build, compiled-checks]
+    needs: [changes, source-checks, build, compiled-checks]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
       - name: Verify required checks
         env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          LEAN_RELATED: ${{ needs.changes.outputs.lean }}
           SOURCE_CHECKS_RESULT: ${{ needs.source-checks.result }}
           BUILD_RESULT: ${{ needs.build.result }}
           COMPILED_CHECKS_RESULT: ${{ needs.compiled-checks.result }}
         run: |
+          test "$CHANGES_RESULT" = success
+          if [ "$LEAN_RELATED" != true ]; then
+            echo "No Lean-related changes; Lean code checks were skipped."
+            exit 0
+          fi
           test "$SOURCE_CHECKS_RESULT" = success
           test "$BUILD_RESULT" = success
           test "$COMPILED_CHECKS_RESULT" = success
@@ -147,8 +187,8 @@ jobs:
   # Generated developer artifacts and advisory audits run on pushes to main and explicit manual
   # dispatches. They consume the compiled Lean environment but are not part of the PR gate.
   insights:
-    needs: ci
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+    needs: [changes, ci]
+    if: needs.changes.outputs.lean == 'true' && ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
