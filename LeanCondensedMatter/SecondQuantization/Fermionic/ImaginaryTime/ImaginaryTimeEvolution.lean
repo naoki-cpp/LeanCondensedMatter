@@ -22,7 +22,7 @@ diagonal definition is specific to a *diagonal* Hamiltonian; it does not extend 
 `H = H₀ + V` (that is exactly why the interaction picture and Dyson series are needed for anything
 beyond the free theory).
 
-Generic semigroup, inverse, and zero-time laws for the diagonal and Heisenberg evolutions are owned
+Generic semigroup, inverse, zero-time laws for the diagonal and Heisenberg evolutions are owned
 by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution` and consumed directly from there.
 -/
 
@@ -82,17 +82,9 @@ omit [LinearOrder Mode] in
 diagonal in the very basis `e^{τH₀}` acts on by a scalar. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (freeHamiltonian ε) (basisState n) =
-    freeHamiltonian ε (basisState n)
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, freeHamiltonian_basisState, smul_smul,
-    map_smul, imaginaryTimeEvolveFree_basisState, smul_smul]
-  congr 1
-  have hx : (↑(-τ) : ℂ) * ∑ i ∈ n, (ε i : ℂ) = -((τ : ℂ) * ∑ i ∈ n, (ε i : ℂ)) := by
-    push_cast; ring
-  rw [hx, mul_right_comm, Complex.exp_neg, inv_mul_cancel₀ (Complex.exp_ne_zero _), one_mul]
+  simpa only [imaginaryTimeEvolve, freeHamiltonian] using
+    Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
+      (fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ)))
 
 /-! ## Evolved creation and annihilation operators -/
 
