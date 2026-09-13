@@ -24,7 +24,7 @@ noncomputable section
 /-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
 the generic formula `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
 def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
-  2 * (forceMatrixTraceNumerator .x .y band v m px py).im /
+  2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
