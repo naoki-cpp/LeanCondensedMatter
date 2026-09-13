@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 This module integrates the finite-cutoff finite-`η` RA-dressed/bare-same-side Středa surface trace
 bridge over the two-dimensional momentum domain in polar coordinates. The measured-current and
-source directions are carried explicitly by `Direction2` from the pointwise response through the
+source directions are carried explicitly by `Fin 2` from the pointwise response through the
 angular integral, radial Jacobian, and finite-cutoff momentum integral.
 
 The values are algebraic candidates built from the total solved ladder coefficients; ladder
@@ -29,7 +29,7 @@ open scoped Interval
 /-- Full polar-angle integral of the finite-`η` RA-dressed Středa surface trace bridge at fixed
 radial momentum for the requested measured/source pair. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ θ in (0 : ℝ)..(2 * Real.pi),
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
@@ -39,7 +39,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAn
 /-- Radial integrand for the finite-`η` pair-indexed Středa surface response after the full
 polar-angle integral, including exactly one polar Jacobian factor `p`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
@@ -48,7 +48,7 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
 /-- Finite-cutoff polar momentum integral of the finite-`η` pair-indexed Středa surface response
 before the Bastin/Středa trace prefactor and physical momentum-measure prefactor are attached. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
