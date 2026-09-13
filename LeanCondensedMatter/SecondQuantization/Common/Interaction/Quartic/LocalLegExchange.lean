@@ -41,8 +41,7 @@ theorem exchangeCommutator_operator (s : Statistics) [ExchangeAlgebra s Mode Con
   cases a <;> cases b <;>
     simp [operator, exchangeCoeff, ExchangeAlgebra.create_create,
       ExchangeAlgebra.annihilate_annihilate, ExchangeAlgebra.annihilate_create,
-      exchangeCommutator_create_annihilate] <;>
-    split_ifs <;> simp_all
+      exchangeCommutator_create_annihilate]
 
 end QuarticLocalLeg
 
