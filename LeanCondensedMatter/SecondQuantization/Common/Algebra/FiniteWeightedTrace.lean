@@ -21,9 +21,17 @@ variable {Config : Type*} [Fintype Config]
 
 /-! ## Finite traces -/
 
-/-- **The Fock-space trace** of an operator, `Tr A := Σₙ ⟨n| A |n⟩`. -/
-noncomputable def traceFock (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
-  ∑ n : Config, matrixCoeff A n n
+/-- **The Fock-space trace** as a linear functional on endomorphisms,
+`Tr A := Σₙ ⟨n| A |n⟩`. -/
+noncomputable def traceFock :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
+  toFun := fun A => ∑ n : Config, matrixCoeff A n n
+  map_add' := by
+    intro A B
+    simp only [matrixCoeff_add, Finset.sum_add_distrib]
+  map_smul' := by
+    intro c A
+    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul]
 
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
@@ -35,20 +43,27 @@ theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFoc
 /-- `traceFock` is linear in its operator argument: scaling. -/
 theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (c • A) = c * traceFock A := by
-  simp only [traceFock, matrixCoeff_smul, Finset.mul_sum]
+  simpa only [smul_eq_mul] using (traceFock (Config := Config)).map_smul c A
 
 /-- `traceFock` is linear in its operator argument: addition. -/
 theorem traceFock_add (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    traceFock (A + B) = traceFock A + traceFock B := by
-  simp only [traceFock, matrixCoeff_add]
-  exact Finset.sum_add_distrib
+    traceFock (A + B) = traceFock A + traceFock B :=
+  (traceFock (Config := Config)).map_add A B
 
 /-! ## Weighted coordinate sums -/
 
-/-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
-noncomputable def weightedTrace (w : Config → ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
-  ∑ n : Config, w n * matrixCoeff A n n
+/-- **The weighted trace** as a linear functional on endomorphisms,
+`Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
+noncomputable def weightedTrace (w : Config → ℂ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
+  toFun := fun A => ∑ n : Config, w n * matrixCoeff A n n
+  map_add' := by
+    intro A B
+    simp only [matrixCoeff_add, mul_add, Finset.sum_add_distrib]
+  map_smul' := by
+    intro c A
+    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul]
+    exact Finset.sum_congr rfl fun n _ => by ring
 
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
 noncomputable def weightSum (w : Config → ℂ) : ℂ :=
@@ -58,15 +73,13 @@ noncomputable def weightSum (w : Config → ℂ) : ℂ :=
 theorem weightedTrace_smul (c : ℂ) (w : Config → ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     weightedTrace w (c • A) = c * weightedTrace w A := by
-  simp only [weightedTrace, matrixCoeff_smul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun n _ => by ring
+  simpa only [smul_eq_mul] using (weightedTrace w).map_smul c A
 
 /-- `weightedTrace` is linear in its operator argument: addition. -/
 theorem weightedTrace_add (w : Config → ℂ)
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    weightedTrace w (A + B) = weightedTrace w A + weightedTrace w B := by
-  simp only [weightedTrace, matrixCoeff_add, mul_add]
-  exact Finset.sum_add_distrib
+    weightedTrace w (A + B) = weightedTrace w A + weightedTrace w B :=
+  (weightedTrace w).map_add A B
 
 /-! ## Identity and diagonal operators -/
 
