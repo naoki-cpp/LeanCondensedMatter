@@ -290,7 +290,7 @@ private def importedExactTerm
         try
           let thm ← Lean.Meta.LibrarySearch.mkLibrarySearchLemma declName modifier
           let subgoals ← candidateGoal.apply thm { allowSynthFailures := true }
-          let remaining ← Lean.Meta.LibrarySearch.solveByElim [] false subgoals 6
+          let remaining ← Lean.Meta.LibrarySearch.solveByElim [] false subgoals 1
           if remaining.isEmpty then
             let proof := (← instantiateMVars (mkMVar freshGoal)).headBeta
             if let some parentDecl := node.ctxI.parentDecl? then
