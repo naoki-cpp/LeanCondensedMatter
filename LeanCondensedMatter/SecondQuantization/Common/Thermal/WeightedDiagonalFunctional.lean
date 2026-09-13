@@ -40,30 +40,6 @@ theorem normalizedWeightedDiagonal_eq_weightedTrace_div (w : Config → ℂ)
     normalizedWeightedDiagonal w A = weightedTrace w A / weightSum w :=
   rfl
 
-/-! ## Linearity -/
-
-theorem normalizedWeightedDiagonal_smul (c : ℂ) (w : Config → ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonal w (c • A) = c * normalizedWeightedDiagonal w A := by
-  simpa only [smul_eq_mul] using (normalizedWeightedDiagonal w).map_smul c A
-
-theorem normalizedWeightedDiagonal_add (w : Config → ℂ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonal w (A + B) =
-      normalizedWeightedDiagonal w A + normalizedWeightedDiagonal w B :=
-  (normalizedWeightedDiagonal w).map_add A B
-
-theorem normalizedWeightedDiagonal_neg (w : Config → ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonal w (-A) = -normalizedWeightedDiagonal w A :=
-  (normalizedWeightedDiagonal w).map_neg A
-
-theorem normalizedWeightedDiagonal_sub (w : Config → ℂ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonal w (A - B) =
-      normalizedWeightedDiagonal w A - normalizedWeightedDiagonal w B :=
-  (normalizedWeightedDiagonal w).map_sub A B
-
 /-- A normalized weighted diagonal vanishes when every diagonal matrix coefficient vanishes. -/
 theorem normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero
     (w : Config → ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
@@ -79,7 +55,7 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
     (hBA : normalizedWeightedDiagonal w (B.comp A) = 0) :
     normalizedWeightedDiagonal w (timeOrderedProduct s A B τA τB) = 0 := by
   unfold timeOrderedProduct
-  split_ifs <;> simp [normalizedWeightedDiagonal_smul, normalizedWeightedDiagonal_add, hAB, hBA]
+  split_ifs <;> simp [hAB, hBA]
 
 /-! ## Identity and diagonal operators -/
 
