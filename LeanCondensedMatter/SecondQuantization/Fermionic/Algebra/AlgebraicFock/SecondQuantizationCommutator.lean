@@ -85,9 +85,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 noncomputable def dGammaLieHom :
     (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ⁅ℂ⁆
       (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) where
-  toFun := dGamma 𝓗₁
-  map_add' := dGamma_add 𝓗₁
-  map_smul' := dGamma_smul 𝓗₁
+  toLinearMap := dGammaLinear 𝓗₁
   map_lie' := by
     intro S T
     simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
@@ -97,17 +95,6 @@ noncomputable def dGammaLieHom :
 @[simp]
 theorem dGammaLieHom_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     dGammaLieHom 𝓗₁ T = dGamma 𝓗₁ T :=
-  rfl
-
-/-- The underlying complex-linear map of fermionic second quantization. -/
-noncomputable def dGammaLinear :
-    (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ[ℂ]
-      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
-  (dGammaLieHom 𝓗₁).toLinearMap
-
-@[simp]
-theorem dGammaLinear_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    dGammaLinear 𝓗₁ T = dGamma 𝓗₁ T :=
   rfl
 
 /-- Second quantization preserves ordinary commutators. -/
