@@ -12,7 +12,7 @@ set_option linter.style.header false
 Quartic interaction vertices, local-leg semantics, ordered Wick diagrams and amplitudes, and their
 connected-component factorization; the two-point external-leg foundation and perturbative diagram
 expansion; the Dyson diagram expansion, connected-diagram formula for Dyson vertex cumulants, the
-general algebraic Dyson Linked Cluster Theorem, and its explicit low-order regression corollaries.
+general algebraic Dyson Linked Cluster Theorem, and its explicit low-order corollaries.
 Statistics-independent quartic and two-point diagram structure is owned by
 `SecondQuantization.Common`.
 -/

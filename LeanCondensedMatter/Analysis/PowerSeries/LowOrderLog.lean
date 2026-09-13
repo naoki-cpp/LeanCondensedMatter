@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Low-order coefficients of a normalized formal logarithm
 
 This file exposes the first three factorial-normalized coefficients of `PowerSeries.logOf` in terms
-of the coefficients of a power series with constant coefficient one.  The formulas are the first
-three moment-cumulant identities and provide small, readable regression lemmas for applications.
+of the coefficients of a power series with constant coefficient one. The formulas are the first
+three moment-cumulant identities in explicit coefficient form.
 -/
 
 open scoped BigOperators

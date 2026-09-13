@@ -7,10 +7,9 @@ set_option linter.style.header false
 /-!
 # Component factorization of the fermionic contraction integrand
 
-Common owns the Statistics-generic pairing-evaluation factorization. This module supplies only the
+Common owns the statistics-generic pairing-evaluation factorization. This module supplies the
 fermionic Gibbs pair kernel and its locality under the Common component leg embedding, yielding the
-fixed-order contraction-integrand factorization required by milestone M1 of the fermionic
-linked-cluster theorem.
+fixed-order contraction-integrand factorization over connected components.
 -/
 
 namespace SecondQuantization

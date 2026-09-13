@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Finite spin-current / electric-source cross response
 
-This module gives the first concrete generalized-current response required by issue #1159 Q7. The
-one-particle space is the finite spinful lattice `Site × Fin 2`. Its measured spin current is the
-conventional current associated with the diagonal internal spin operator,
+This module gives a concrete generalized-current response on the finite spinful lattice
+`Site × Fin 2`. Its measured spin current is the conventional current associated with the diagonal
+internal spin operator,
 
 ```text
 J^(S_z) = dΓ( 1/2 {v, S_z} ),

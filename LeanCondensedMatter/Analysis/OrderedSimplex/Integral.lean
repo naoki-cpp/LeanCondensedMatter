@@ -7,44 +7,26 @@ set_option linter.style.header false
 /-!
 # Ordered-simplex iterated scalar integrals
 
-Step 6 (PR 5a) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): a
-purely analytic, physics-free `ℂ`-valued iterated integral, defined recursively via
-`intervalIntegral` rather than as a single integral over an explicit `MeasureTheory`-level simplex
-subset of `ℝⁿ`. For `0 ≤ β`, this is the genuine iterated integral over the ordered simplex
-`0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β`; for arbitrary real `β` (including negative), `intervalIntegral`'s
-own orientation convention (`∫ x in a..b = -∫ x in b..a`) makes this the corresponding recursively
-oriented interval-integral extension, not literally an integral over that simplex (which would be
-empty for `β < 0`) — e.g. `orderedSimplexIntegral_const` gives `βⁿ/n!` for *every* real `β`, not
-just `β ≥ 0`, and that value should be read as "simplex volume" only in the `0 ≤ β` case. Coordinate
-`0` is the *latest*/*outermost* time — this orientation deliberately matches the existing Dyson
-recursion (`Fermionic/Perturbation/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
-also has range `[0, τ]` with `τ` the overall bound.
+This module defines a `ℂ`-valued iterated integral recursively through `intervalIntegral`. For
+`0 ≤ β`, it is the iterated integral over the ordered simplex
+`0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β`. For arbitrary real `β`, including negative values,
+`intervalIntegral` supplies the corresponding recursively oriented extension rather than an integral
+over that simplex as a subset of `ℝⁿ`. In particular, `orderedSimplexIntegral_const` gives `βⁿ/n!`
+for every real `β`, which is a simplex volume only when `0 ≤ β`.
 
-**Deliberately minimal, but not silent on sums.** `orderedSimplexIntegral_finsetSum` gives a finite
-sum commuting with `orderedSimplexIntegral`, but only under an explicit `Continuous` hypothesis on
-every summand — not unconditionally. No claim of measurability/integrability beyond what each
-individual lemma's own hypotheses require; a maximally general abstract version (arbitrary
-`Summable`/measure-theoretic sums, or dropping continuity in favor of bare integrability) would be
-premature here. `continuous_orderedSimplexIntegral_of_continuous` is what supplies each summand's
-own interval-integrability (via its own continuity) at every recursion level, so no separate
-integrability side-lemma is needed to invoke `orderedSimplexIntegral_finsetSum`.
-
-**A genuinely different kind of fact**: `continuous_orderedSimplexIntegral_of_continuous`, jointly
-continuity of `orderedSimplexIntegral n (bound x) (f x)` in an arbitrary parameter `x` — needed
-once a caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's
-own `dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
-*previous* level's integration variable). This is unlike the `_congr`/`_smul`/`_neg`/`_const`/
-`_finsetSum` lemmas above (all stated for a *fixed* bound `β`), so it earns its own name rather
-than being folded into any of them.
+Coordinate `0` is the latest and outermost time: the recursion integrates it over `[0, β]` and then
+recurses on the remaining coordinates with the current outer time as their bound. The module also
+provides joint continuity when both the bound and integrand vary continuously, and finite-sum
+linearity under an explicit continuity hypothesis on each summand.
 -/
 
 namespace intervalIntegral
 
-/-- **The iterated integral over the ordered simplex** `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β` for `0 ≤ β`
+/-- The iterated integral over the ordered simplex `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β` for `0 ≤ β`
 (vacuously `f Fin.elim0` at `n = 0`, the empty simplex); for arbitrary `β : ℝ`, the corresponding
-recursively oriented interval-integral extension (see the module docstring). Coordinate `0` is the
-latest/outermost time: the recursion integrates the *outermost* coordinate `τ` over `[0, β]`, then
-recurses into the remaining `n` coordinates over `[0, τ]`. -/
+recursively oriented interval-integral extension. Coordinate `0` is the latest/outermost time: the
+recursion integrates the outermost coordinate `τ` over `[0, β]`, then recurses into the remaining
+`n` coordinates over `[0, τ]`. -/
 noncomputable def orderedSimplexIntegral :
     (n : ℕ) → ℝ → ((Fin n → ℝ) → ℂ) → ℂ
   | 0, _β, f => f Fin.elim0
@@ -97,8 +79,7 @@ theorem orderedSimplexIntegral_neg (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) →
   have h := orderedSimplexIntegral_smul n β (-1) f
   simpa using h
 
-/-- **Sanity check**: on a constant function, the ordered-simplex integral reduces to the
-elementary-calculus volume `βⁿ/n!` of the simplex, times the constant. -/
+/-- On a constant function, the ordered-simplex integral is `βⁿ/n!` times the constant. -/
 theorem orderedSimplexIntegral_const (n : ℕ) (β : ℝ) (c : ℂ) :
     orderedSimplexIntegral n β (fun _ => c) = (β ^ n / n.factorial : ℝ) * c := by
   induction n generalizing β with
@@ -123,16 +104,8 @@ theorem orderedSimplexIntegral_const (n : ℕ) (β : ℝ) (c : ℂ) :
     field_simp
     ring
 
-/-- **`orderedSimplexIntegral` is continuous in an outer parameter `x`, jointly through both its
-own bound and its integrand.** For a continuous `bound : X → ℝ` and a jointly continuous
-`f : X → (Fin n → ℝ) → ℂ`, `x ↦ orderedSimplexIntegral n (bound x) (f x)` is continuous — the
-*bound itself* (not just the integrand, for a *fixed* bound) is allowed to vary continuously with
-`x`. Proved by induction on `n`, generalizing the parameter space `X`/`bound`/`f` at each level
-(the successor case's own inner recursion needs the inductive hypothesis at the *bigger* parameter
-space `X × ℝ`, pairing the original parameter with the outer integral's own integration variable),
-via `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous` (Leibniz-rule-style
-joint continuity of a parametrized interval integral with a variable, parameter-dependent, upper
-limit) and `Continuous.finCons` (joint continuity of `Fin.cons`). -/
+/-- If the upper bound and integrand vary continuously with a parameter `x`, then
+`x ↦ orderedSimplexIntegral n (bound x) (f x)` is continuous. -/
 theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [TopologicalSpace X] :
     ∀ (n : ℕ) (bound : X → ℝ) (f : X → (Fin n → ℝ) → ℂ), Continuous bound →
       Continuous (Function.uncurry f) →
@@ -153,11 +126,7 @@ theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [Topological
       (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest)) continuous_snd hf'
     exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous hF hbound
 
-/-- **A finite sum commutes with `orderedSimplexIntegral`**, given continuity of every summand —
-the tailored integrability the module docstring says any such lemma needs. Proved by induction on
-`n`, using `intervalIntegral.integral_finsetSum` at each level and
-`continuous_orderedSimplexIntegral_of_continuous` to supply that lemma's own
-`IntervalIntegrable` hypotheses. -/
+/-- A finite sum commutes with `orderedSimplexIntegral` when every summand is continuous. -/
 theorem orderedSimplexIntegral_finsetSum {ι : Type*} (s : Finset ι) (n : ℕ) (β : ℝ)
     (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, Continuous (f i)) :
     orderedSimplexIntegral n β (fun τ => ∑ i ∈ s, f i τ) =

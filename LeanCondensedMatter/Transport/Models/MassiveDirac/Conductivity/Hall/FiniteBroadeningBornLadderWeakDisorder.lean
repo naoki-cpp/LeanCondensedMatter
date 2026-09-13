@@ -11,7 +11,7 @@ This module attaches the canonical Bastin/Středa and physical-momentum normaliz
 fixed-cutoff ordered source-`.y` weak-disorder response. The limit is sequential: `η → 0⁺` is taken
 first at fixed positive disorder and only then `W → 0⁺`.
 
-The resulting ordered `xy` coefficient has the non-crossing massive-Dirac regression form in `ℏ`
+The resulting ordered `xy` coefficient has the non-crossing massive-Dirac closed form in `ℏ`
 normalization, but it is not yet identified with the antisymmetric Hall projection. No ultraviolet,
 thermodynamic, crossed-diagram, mechanism-decomposition, or simultaneous-limit claim is introduced.
 -/

@@ -1,9 +1,9 @@
 # Low-order fermionic linked-cluster identities
 
 The finite-mode fermionic Linked Cluster Theorem is available for every nonzero perturbation order.
-The orders `1`, `2`, and `3` are also exposed as explicit regression corollaries because they make
-the factorial and disconnected-subtraction conventions readable without unfolding the general
-moment-cumulant machinery.
+The orders `1`, `2`, and `3` are also exposed explicitly because they make the factorial and
+disconnected-subtraction conventions readable without unfolding the general moment-cumulant
+machinery.
 
 Write
 
@@ -19,8 +19,8 @@ The formal logarithm satisfies
 3! [λ³] log Z = 6 z₃ - 6 z₁ z₂ + 2 z₁³.
 ```
 
-The first identity fixes the normalization. The second checks cancellation of a partition into two
-single-vertex components. The third checks both one-plus-two decompositions and the partition into
+The first identity fixes the normalization. The second displays cancellation of a partition into two
+single-vertex components. The third displays both one-plus-two decompositions and the partition into
 three singletons. Each polynomial is proved equal to the sum of amplitudes over connected quartic
 Wick diagrams on `Fin 1`, `Fin 2`, or `Fin 3`.
 
@@ -36,6 +36,5 @@ The analytic statements use the same right-hand sides because
 (dⁿ/dλⁿ)|₀ log (Z(λ) / Z(0)) = n! [λⁿ] log Ẑ
 ```
 
-is already proved by the analytic/formal bridge. Thus these corollaries test the formal logarithm,
-the analytic derivative convention, and the connected-diagram theorem with one shared factorial and
-sign normalization.
+is already proved by the analytic/formal bridge. The formal and analytic corollaries therefore use
+one shared factorial and sign normalization for the connected-diagram identities.
