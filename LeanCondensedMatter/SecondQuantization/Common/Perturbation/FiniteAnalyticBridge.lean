@@ -67,8 +67,8 @@ noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config :
 theorem finiteAnalyticFockEquiv_basisState (n : Config) :
     finiteAnalyticFockEquiv (basisState n) = finiteAnalyticBasis n := by
   classical
-  simpa [finiteAnalyticBasis] using
-    (Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1)
+  rw [finiteAnalyticBasis, Pi.basisFun_apply]
+  exact Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1
 
 @[simp]
 theorem finiteContinuousOperator_basis_apply
