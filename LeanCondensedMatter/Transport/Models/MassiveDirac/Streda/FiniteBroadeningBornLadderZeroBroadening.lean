@@ -25,7 +25,7 @@ open QuantumTheory.Transport
 
 /-- Fixed-cutoff zero-broadening boundary of the source-indexed RA dressed current operator. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
-    (source : Direction2)
+    (source : Fin 2)
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
@@ -36,7 +36,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
 /-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built
 from the solved zero-broadening ladder vector. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_broadening_zero_of_boundary_realRenormalization_lt_one
-    (source : Direction2)
+    (source : Fin 2)
     (e v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
@@ -59,19 +59,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurre
     tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
       v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm hdet
-  have hAlpha := tendsto_pi_nhds.mp hSolved .x
-  have hBeta := tendsto_pi_nhds.mp hSolved .y
-  cases source
+  have hAlpha := tendsto_pi_nhds.mp hSolved 0
+  have hBeta := tendsto_pi_nhds.mp hSolved 1
+  fin_cases source
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
-      (hAlpha.smul_const (currentOperator .x e v)).add
-        (hBeta.smul_const (currentOperator .y e v))
+      (hAlpha.smul_const (currentOperator 0 e v)).add
+        (hBeta.smul_const (currentOperator 1 e v))
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix] using
-      (hBeta.neg.smul_const (currentOperator .x e v)).add
-        (hAlpha.smul_const (currentOperator .y e v))
+      (hBeta.neg.smul_const (currentOperator 0 e v)).add
+        (hAlpha.smul_const (currentOperator 1 e v))
 
 end
 

@@ -40,7 +40,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
     Tendsto
       (fun disorderStrength : ℝ =>
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax).hallComponent .x .y)
+          e v m probeEnergy disorderStrength hbar pMax).hallComponent 0 1)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (((nonCrossingHallConductivity e hbar m probeEnergy : ℝ) : ℂ))) := by
   have h :=

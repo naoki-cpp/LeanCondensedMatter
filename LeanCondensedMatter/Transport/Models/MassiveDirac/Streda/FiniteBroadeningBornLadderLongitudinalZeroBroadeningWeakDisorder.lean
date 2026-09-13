@@ -145,7 +145,7 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
               (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
                 v m probeEnergy disorderStrength hbar pMax)
               (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-                v m probeEnergy disorderStrength hbar pMax) .x -
+                v m probeEnergy disorderStrength hbar pMax) 0 -
           (((2 * Real.pi : ℝ) : ℂ)) * q ^ 2 *
             (endpoint .retarded disorderStrength + endpoint .advanced disorderStrength) := by
     rfl

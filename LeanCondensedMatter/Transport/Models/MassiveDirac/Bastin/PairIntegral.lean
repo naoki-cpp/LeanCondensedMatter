@@ -26,7 +26,7 @@ the opposite band and whose target is `band`. -/
 noncomputable def targetCenteredInterbandBastinPairIntegral
     (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
-    bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
+    bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
       (bandEnergy band v m px py + offset) broadening
 
 /-- For nonzero broadening, the integrated opposite-source Bastin pair is exactly `-2 i` times the
@@ -46,14 +46,14 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   apply intervalIntegral.integral_congr
   intro offset _
   change
-    bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
+    bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
         (bandEnergy band v m px py + offset) broadening =
       (-2 * Complex.I) *
         ((lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m px py (offset, broadening))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    .x .y band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
+    0 1 band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring

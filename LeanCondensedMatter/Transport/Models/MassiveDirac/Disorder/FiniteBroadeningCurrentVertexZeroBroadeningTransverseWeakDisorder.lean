@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Scaled transverse weak-disorder limit of the zero-broadening current rung
 
-The raw transverse component of the fixed-cutoff zero-broadening source-`.x` Born-Dyson current rung
+The raw transverse component of the fixed-cutoff zero-broadening source-`x` Born-Dyson current rung
 vanishes as `W → 0⁺`. The ordered Hall response consumes the first nonvanishing coefficient instead,
 so this module keeps the quotient by the positive disorder strength before taking that limit.
 
@@ -44,7 +44,7 @@ private theorem denominatorBoundaryValue_retarded_sub_advanced
 private theorem transverseAngularNumeratorBoundary_eq_disorder_mul
     (v m probeEnergy disorderStrength hbar pMax : ℝ) (hvelocity : v ≠ 0) :
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-        .y .x v m probeEnergy disorderStrength hbar pMax =
+        1 0 v m probeEnergy disorderStrength hbar pMax =
       (disorderStrength : ℂ) *
         (((2 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
           v ^ 2 : ℝ) : ℂ)) := by
@@ -83,25 +83,25 @@ private theorem transverseAngularNumeratorBoundary_eq_disorder_mul
 private theorem currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator
     (v m probeEnergy disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-        v m probeEnergy disorderStrength hbar pMax .y *
+        v m probeEnergy disorderStrength hbar pMax 1 *
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-        .x .x v m probeEnergy disorderStrength hbar pMax =
+        0 0 v m probeEnergy disorderStrength hbar pMax =
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-        v m probeEnergy disorderStrength hbar pMax .x *
+        v m probeEnergy disorderStrength hbar pMax 0 *
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-        .y .x v m probeEnergy disorderStrength hbar pMax := by
+        1 0 v m probeEnergy disorderStrength hbar pMax := by
   let common : ℝ → ℂ := fun p =>
     (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
       (((2 * Real.pi : ℝ) : ℂ)) *
       (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
         v m p probeEnergy disorderStrength hbar pMax)⁻¹
   let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    .x .x v m probeEnergy disorderStrength hbar pMax
+    0 0 v m probeEnergy disorderStrength hbar pMax
   let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    .y .x v m probeEnergy disorderStrength hbar pMax
+    1 0 v m probeEnergy disorderStrength hbar pMax
   have hx :
       finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax .x =
+          v m probeEnergy disorderStrength hbar pMax 0 =
         x * ∫ p in (0 : ℝ)..pMax, common p := by
     unfold finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
@@ -113,7 +113,7 @@ private theorem currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator
     ring
   have hy :
       finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax .y =
+          v m probeEnergy disorderStrength hbar pMax 1 =
         y * ∫ p in (0 : ℝ)..pMax, common p := by
     unfold finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
@@ -137,7 +137,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     Tendsto
       (fun disorderStrength : ℝ =>
         finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax .y /
+            v m probeEnergy disorderStrength hbar pMax 1 /
           (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
@@ -146,13 +146,13 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   let l := nhdsWithin (0 : ℝ) (Set.Ioi 0)
   let x := fun disorderStrength : ℝ =>
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-      .x .x v m probeEnergy disorderStrength hbar pMax
+      0 0 v m probeEnergy disorderStrength hbar pMax
   let rx := fun disorderStrength : ℝ =>
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-      v m probeEnergy disorderStrength hbar pMax .x
+      v m probeEnergy disorderStrength hbar pMax 0
   let ry := fun disorderStrength : ℝ =>
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-      v m probeEnergy disorderStrength hbar pMax .y
+      v m probeEnergy disorderStrength hbar pMax 1
   let c : ℂ := (((2 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
     v ^ 2 : ℝ) : ℂ))
   have hl : l ≤ nhds 0 := by
@@ -181,7 +181,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   have hrx : Tendsto rx l
       (nhds (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
         m probeEnergy : ℂ)) := by
-    simpa [rx, l, inPlaneCoefficientVector] using tendsto_pi_nhds.mp hrung .x
+    simpa [rx, l, inPlaneCoefficientVector] using tendsto_pi_nhds.mp hrung 0
   have hx : Tendsto x l (nhds (((probeEnergy ^ 2 - m ^ 2 : ℝ) : ℂ))) := by
     have hcont : ContinuousAt x 0 := by
       dsimp [x]

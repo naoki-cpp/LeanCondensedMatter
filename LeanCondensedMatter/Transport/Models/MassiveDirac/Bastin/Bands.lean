@@ -27,14 +27,14 @@ open QuantumTheory.Transport
 
 /-- Natural ordered trace `Tr(j_μ P_source j_ν P_target)` produced by the Bastin kernel. -/
 noncomputable def bastinBandBlockTrace
-    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (currentOperator μ e v * bandProjectorOperator source v m px py *
       currentOperator ν e v * bandProjectorOperator target v m px py)
 
 /-- Cyclicity identifies the direct Bastin block with the corresponding projector-first block. -/
 theorem bastinBandBlockTrace_eq_currentBandBlockTrace
-    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
     bastinBandBlockTrace μ ν source target e v m px py =
       currentBandBlockTrace μ ν source target e v m px py := by
   unfold bastinBandBlockTrace currentBandBlockTrace
@@ -57,7 +57,7 @@ theorem bastinBandBlockTrace_eq_currentBandBlockTrace
 
 /-- Reversing the current order exchanges the source and target band labels. -/
 theorem bastinBandBlockTrace_swap
-    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
     bastinBandBlockTrace ν μ source target e v m px py =
       bastinBandBlockTrace μ ν target source e v m px py := by
   unfold bastinBandBlockTrace
@@ -90,7 +90,7 @@ noncomputable def spectralDifferenceCoefficient
 one ordered current-direction pair `(μ,ν)`. The reversed current ordering is kept in the same
 canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
-    (μ ν : Direction2) (source target : Band)
+    (μ ν : Fin 2) (source target : Band)
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   let r := projectorResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening) source v m px py
@@ -104,13 +104,13 @@ noncomputable def bastinBandPairContribution
 noncomputable def diagonalBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   ∑ band : Band,
-    bastinBandPairContribution .x .y band band e v m px py probeEnergy broadening
+    bastinBandPairContribution 0 1 band band e v m px py probeEnergy broadening
 
 /-- Interband part of the finite-broadening projector Hall trace. -/
 noncomputable def interbandBastinTraceContribution
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   ∑ band : Band,
-    bastinBandPairContribution .x .y band (oppositeBand band)
+    bastinBandPairContribution 0 1 band (oppositeBand band)
       e v m px py probeEnergy broadening
 
 /-- The full projector Bastin Hall trace is the finite sum over all ordered band pairs. -/
@@ -119,7 +119,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (hE : energy v m px py ≠ 0) :
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
       ∑ source : Band, ∑ target : Band,
-        bastinBandPairContribution .x .y source target e v m px py probeEnergy broadening := by
+        bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   rw [projectorResolvent_sq
@@ -151,7 +151,7 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
     (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
     regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
+        (currentOperator 0 e v) (currentOperator 1 e v) probeEnergy broadening =
       diagonalBastinTraceContribution e v m px py probeEnergy broadening +
         interbandBastinTraceContribution e v m px py probeEnergy broadening := by
   rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand

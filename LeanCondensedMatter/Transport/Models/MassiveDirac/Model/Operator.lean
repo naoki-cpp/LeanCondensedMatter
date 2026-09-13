@@ -71,36 +71,36 @@ noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ]
 
 /-- Massive-Dirac velocity as a bounded operator in direction `μ`. -/
 noncomputable def velocityOperator
-    (direction : Direction2) (v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
+    (direction : Fin 2) (v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (velocity direction v)
 
 /-- Direction-indexed bounded adapter for the massive-Dirac charge-current vertex `j_μ = -e v_μ`. -/
 noncomputable def currentOperator
-    (direction : Direction2) (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
+    (direction : Fin 2) (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (current direction e v)
 
 /-- The bounded current vertex is electron charge times the bounded velocity in either direction. -/
 @[simp]
 theorem currentOperator_eq_charge_smul_velocityOperator
-    (direction : Direction2) (e v : ℝ) :
+    (direction : Fin 2) (e v : ℝ) :
     currentOperator direction e v = (((-e : ℝ) : ℂ)) • velocityOperator direction v := by
   unfold currentOperator velocityOperator current matrixOperator
   rw [map_smul]
 
 /-- Dimensionless in-plane Pauli vertex with direction-indexed coefficients. -/
 noncomputable def inPlanePauliVertexOperator
-    (coefficients : Direction2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  coefficients .x • matrixOperator sigmaX + coefficients .y • matrixOperator sigmaY
+    (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+  coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY
 
 /-- Physical in-plane current vertex with direction-indexed coefficients. -/
 noncomputable def inPlaneCurrentOperator
-    (e v : ℝ) (coefficients : Direction2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
-  coefficients .x • currentOperator .x e v + coefficients .y • currentOperator .y e v
+    (e v : ℝ) (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
+  coefficients 0 • currentOperator 0 e v + coefficients 1 • currentOperator 1 e v
 
 /-- The physical in-plane current is the charge-velocity scale multiplying the corresponding
 in-plane Pauli vertex. -/
 theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
-    (e v : ℝ) (coefficients : Direction2 → ℂ) :
+    (e v : ℝ) (coefficients : Fin 2 → ℂ) :
     inPlaneCurrentOperator e v coefficients =
       ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) • inPlanePauliVertexOperator coefficients := by
   rw [inPlaneCurrentOperator,
@@ -108,8 +108,7 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
     currentOperator_eq_charge_smul_velocityOperator]
   unfold velocityOperator velocity inPlanePauliVertexOperator matrixOperator
   rw [map_smul, map_smul]
-  simp only [directionPauli]
-  push_cast
+  simp [directionPauli]
   module
 
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
@@ -124,18 +123,20 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
     InternalSpace.pauliCombination_ofReal_isHermitian u
 
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
-theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
+theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
-  cases direction
+  fin_cases direction
   · let u : PauliAxis → ℝ
       | .x => -e * v
       | .y => 0
       | .z => 0
     have hcurrent :
-        current .x e v =
+        current 0 e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      simp [current, velocity, directionPauli,
+        InternalSpace.pauliCombination, u, smul_smul]
       module
+    change (current 0 e v).IsHermitian
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
   · let u : PauliAxis → ℝ
@@ -143,10 +144,12 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
       | .y => -e * v
       | .z => 0
     have hcurrent :
-        current .y e v =
+        current 1 e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      simp [current, velocity, directionPauli,
+        InternalSpace.pauliCombination, u, smul_smul]
       module
+    change (current 1 e v).IsHermitian
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
@@ -159,7 +162,7 @@ theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The direction-indexed current operator is self-adjoint. -/
-theorem currentOperator_isSelfAdjoint (direction : Direction2) (e v : ℝ) :
+theorem currentOperator_isSelfAdjoint (direction : Fin 2) (e v : ℝ) :
     IsSelfAdjoint (currentOperator direction e v) := by
   simpa [currentOperator, matrixOperator] using
     (current_isHermitian direction e v).isSelfAdjoint.map

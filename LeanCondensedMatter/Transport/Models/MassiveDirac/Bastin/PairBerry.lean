@@ -41,8 +41,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
     rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   calc
     (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-        bastinInterbandBlockDifference .x .y band e v m px py).im =
-      (bastinInterbandBlockDifference .x .y band e v m px py).im /
+        bastinInterbandBlockDifference 0 1 band e v m px py).im =
+      (bastinInterbandBlockDifference 0 1 band e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 := by
       rw [hcoeff]
       simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]

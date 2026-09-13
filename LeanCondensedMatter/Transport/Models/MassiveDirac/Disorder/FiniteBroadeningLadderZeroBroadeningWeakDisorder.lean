@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Weak-disorder limit of the zero-broadening Born-Dyson ladder
 
-The source-`.x` rung-vector limit is propagated directly through the generic in-plane ladder API.
+The source-`x` rung-vector limit is propagated directly through the generic in-plane ladder API.
 The cutoff remains fixed beyond the metallic shell. No conductivity, ultraviolet, thermodynamic, or
 simultaneous limit is taken here.
 -/
@@ -75,7 +75,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
           (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax)
           (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax) .x)
+            v m probeEnergy disorderStrength hbar pMax) 0)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (((probeEnergy ^ 2 - m ^ 2) /
@@ -103,15 +103,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
-      inPlaneLadderAction targetRung (inPlaneLadderSolvedVector targetRung) .x =
+      inPlaneLadderAction targetRung (inPlaneLadderSolvedVector targetRung) 0 =
         (((probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
     rw [inPlaneLadderAction_apply_x,
       inPlaneLadderSolvedVector_zero_transverse κ
         (by simpa [κ] using weakDisorderTargetOneMinusRung_ne_zero m probeEnergy hmetal)]
-    simp only [targetRung, inPlaneCoefficientVector, zero_mul, sub_zero, Complex.ofReal_div,
-      Complex.ofReal_sub, Complex.ofReal_pow, Complex.ofReal_add, Complex.ofReal_mul,
-      Complex.ofReal_ofNat]
+    simp only [targetRung, inPlaneCoefficientVector, Matrix.cons_val_zero,
+      Complex.ofReal_div, Complex.ofReal_sub, Complex.ofReal_pow, Complex.ofReal_add,
+      Complex.ofReal_mul, Complex.ofReal_ofNat]
     have hreal :
         continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient m probeEnergy *
             (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
@@ -124,7 +124,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     have hrealCast := congrArg Complex.ofReal hreal
     push_cast at hrealCast
     simpa [κ] using hrealCast
-  have hactionX := tendsto_pi_nhds.mp haction .x
+  have hactionX := tendsto_pi_nhds.mp haction 0
   rw [htarget] at hactionX
   exact hactionX
 

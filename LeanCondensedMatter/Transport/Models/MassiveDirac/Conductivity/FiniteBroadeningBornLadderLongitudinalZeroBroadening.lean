@@ -43,7 +43,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
     Tendsto
       (fun broadening : ℝ =>
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-          e v m probeEnergy broadening disorderStrength hbar pMax).component .x .x)
+          e v m probeEnergy broadening disorderStrength hbar pMax).component 0 0)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary

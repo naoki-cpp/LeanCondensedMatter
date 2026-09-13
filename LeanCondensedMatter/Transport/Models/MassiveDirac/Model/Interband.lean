@@ -51,7 +51,7 @@ theorem bandEnergy_ne_oppositeBandEnergy
 For rank-one spectral projectors this trace equals
 `⟨m|v_μ|n⟩ ⟨n|v_ν|m⟩`, with `m = oppositeBand n`. -/
 def forceMatrixTraceNumerator
-    (μ ν : Direction2) (band : Band) (v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (band : Band) (v m px py : ℝ) : ℂ :=
   Matrix.trace
     (bandProjector (oppositeBand band) v m px py * velocity μ v *
       bandProjector band v m px py * velocity ν v)
@@ -60,7 +60,7 @@ def forceMatrixTraceNumerator
 while the antisymmetric imaginary term is the mass component of the normalized Pauli vector. -/
 theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
-    forceMatrixTraceNumerator .x .y band v m px py =
+    forceMatrixTraceNumerator 0 1 band v m px py =
       -(((v ^ 4 * px * py / energy v m px py ^ 2 : ℝ) : ℂ)) -
         (((bandSign band * m * v ^ 2 / energy v m px py : ℝ) : ℂ)) * Complex.I := by
   let u : PauliAxis → ℂ :=
@@ -86,7 +86,11 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
     exact_mod_cast hE
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
-  simp only [velocity, directionPauli]
+  change Matrix.trace
+      (((1 / 2 : ℂ) • ((1 : Matrix2) - InternalSpace.pauliCombination u)) *
+        (((v : ℝ) : ℂ) • sigmaX) *
+        ((1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u)) *
+        (((v : ℝ) : ℂ) • sigmaY)) = _
   rw [InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
   cases band <;>
     simp [u, diracPauliCoefficients, bandSign] <;>

@@ -9,7 +9,7 @@ set_option linter.style.header false
 
 At a target-band Bastin pole, the source band is the opposite band. The two current orderings are
 coordinates of one direction-indexed interband block, so this module keeps them generic in
-`Direction2` and exposes their antisymmetric difference as the canonical Bastin object. The ordered
+`Fin 2` and exposes their antisymmetric difference as the canonical Bastin object. The ordered
 projector-first current blocks themselves are model-level spectral data owned by
 `Model/OperatorSpectral`.
 
@@ -26,14 +26,14 @@ noncomputable section
 
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) : ℂ :=
   bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
     bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
 /-- Exchanging the two current directions reverses the sign of the interband Bastin block
 difference. -/
 theorem bastinInterbandBlockDifference_swap
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
     bastinInterbandBlockDifference ν μ band e v m px py =
       -bastinInterbandBlockDifference μ ν band e v m px py := by
   unfold bastinInterbandBlockDifference
@@ -41,7 +41,7 @@ theorem bastinInterbandBlockDifference_swap
 
 /-- The antisymmetric interband Bastin block vanishes on equal current directions. -/
 theorem bastinInterbandBlockDifference_self
-    (μ : Direction2) (band : Band) (e v m px py : ℝ) :
+    (μ : Fin 2) (band : Band) (e v m px py : ℝ) :
     bastinInterbandBlockDifference μ μ band e v m px py = 0 := by
   simp [bastinInterbandBlockDifference]
 
@@ -49,7 +49,7 @@ theorem bastinInterbandBlockDifference_self
 curvature. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (bastinInterbandBlockDifference .x .y band e v m px py).im /
+    (bastinInterbandBlockDifference 0 1 band e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       -(e ^ 2 * berryCurvature band v m px py) := by
   have hband :=
@@ -61,9 +61,9 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
   rw [interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
   simp [pow_two] at hopp
   unfold bastinInterbandBlockDifference
-  rw [bastinBandBlockTrace_swap .x .y (oppositeBand band) band]
-  rw [bastinBandBlockTrace_eq_currentBandBlockTrace .x .y (oppositeBand band) band,
-    bastinBandBlockTrace_eq_currentBandBlockTrace .x .y band (oppositeBand band),
+  rw [bastinBandBlockTrace_swap 0 1 (oppositeBand band) band]
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 (oppositeBand band) band,
+    bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 band (oppositeBand band),
     Complex.sub_im]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   field_simp [hgap] at hband hopp ⊢

@@ -26,7 +26,7 @@ open scoped Interval
 
 /-- Zero-broadening boundary of normalized finite-cutoff current-rung entry `(i,j)`. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
@@ -37,13 +37,13 @@ noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningB
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
   fun output =>
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-      output .x v m probeEnergy disorderStrength hbar pMax
+      output 0 v m probeEnergy disorderStrength hbar pMax
 
 /-- Dominated convergence passes `η → 0⁺` through any normalized finite radial current-rung entry
 once one integrable radial bound, eventual strong measurability, and nonvanishing of the boundary RA
 denominator on the compact radial interval are supplied. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
@@ -123,7 +123,7 @@ private theorem continuous_boundaryBornDysonDenominator_radial
   fun_prop
 
 theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
     (hpMax : 0 ≤ pMax) :
@@ -269,7 +269,7 @@ private theorem eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_
 interval, the normalized finite-cutoff current-rung integral converges as `η → 0⁺` without requiring
 callers to supply separate measurability or domination hypotheses. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hdisorder : 0 ≤ disorderStrength)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
@@ -577,7 +577,7 @@ condition keeps the boundary retarded/advanced denominator off zero through its 
 component, thereby discharging the compact nonvanishing hypothesis required by dominated
 convergence. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hpMax : 0 ≤ pMax) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hdisorder : 0 < disorderStrength) (hmetal : |m| < probeEnergy)
@@ -626,7 +626,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_
   simpa [finiteCutoffContinuumBornDysonCurrentRungVector,
     finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary] using
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one
-      output .x v m probeEnergy disorderStrength hbar pMax
+      output 0 v m probeEnergy disorderStrength hbar pMax
       hpMax hvelocity hhbar hdisorder hmetal hcutoff hrenorm
 
 end

@@ -84,7 +84,7 @@ theorem tendsto_spectralDifferenceCoefficient_zero
 /-- A fixed direction-indexed ordered Bastin band-pair contribution tends to zero when the probe
 energy avoids both its source and target band energies. -/
 theorem tendsto_bastinBandPairContribution_zero
-    (μ ν : Direction2) (source target : Band) (e v m px py probeEnergy : ℝ)
+    (μ ν : Fin 2) (source target : Band) (e v m px py probeEnergy : ℝ)
     (hsource : probeEnergy ≠ bandEnergy source v m px py)
     (htarget : probeEnergy ≠ bandEnergy target v m px py) :
     Tendsto
@@ -120,9 +120,9 @@ theorem tendsto_diagonalBastinTraceContribution_zero
         diagonalBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hl := tendsto_bastinBandPairContribution_zero
-    .x .y .lower .lower e v m px py probeEnergy hlower hlower
+    0 1 .lower .lower e v m px py probeEnergy hlower hlower
   have hu := tendsto_bastinBandPairContribution_zero
-    .x .y .upper .upper e v m px py probeEnergy hupper hupper
+    0 1 .upper .upper e v m px py probeEnergy hupper hupper
   simpa only [diagonalBastinTraceContribution, sum_band, zero_add] using hl.add hu
 
 /-- The interband Hall sector also tends pointwise to zero away from both band energies. Its nonzero
@@ -137,9 +137,9 @@ theorem tendsto_interbandBastinTraceContribution_zero
         interbandBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
   have hlu := tendsto_bastinBandPairContribution_zero
-    .x .y .lower .upper e v m px py probeEnergy hlower hupper
+    0 1 .lower .upper e v m px py probeEnergy hlower hupper
   have hul := tendsto_bastinBandPairContribution_zero
-    .x .y .upper .lower e v m px py probeEnergy hupper hlower
+    0 1 .upper .lower e v m px py probeEnergy hupper hlower
   simpa only [interbandBastinTraceContribution, sum_band, oppositeBand_lower,
     oppositeBand_upper, zero_add] using hlu.add hul
 

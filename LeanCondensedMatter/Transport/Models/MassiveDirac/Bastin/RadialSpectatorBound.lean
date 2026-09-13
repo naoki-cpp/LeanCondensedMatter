@@ -65,7 +65,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
   dsimp
   rw [hret, hadv,
     bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
-    bastinBandBlockTrace_swap .x .y (oppositeBand band) band,
+    bastinBandBlockTrace_swap 0 1 (oppositeBand band) band,
     hxyOpp]
   simp only [SpectralSide.regulator_retarded, SpectralSide.regulator_advanced]
   push_cast

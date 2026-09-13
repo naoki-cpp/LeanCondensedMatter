@@ -39,13 +39,13 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass
 /-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    bastinBandBlockTrace .x .y (oppositeBand band) band e v m p 0 =
+    bastinBandBlockTrace 0 1 (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
   rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
   have hblock :=
     currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
-      .x .y (oppositeBand band) e v m p 0
+      0 1 (oppositeBand band) e v m p 0
   simp only [oppositeBand_oppositeBand] at hblock
   rw [hblock, forceMatrixTraceNumerator_xy_eq (oppositeBand band) v m p 0 hE]
   simp [bandSign_oppositeBand]

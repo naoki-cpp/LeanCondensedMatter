@@ -46,7 +46,7 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
 /-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
 noncomputable def interbandSpectatorCurrentFactor
-    (μ ν : Direction2) (band : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
+    (μ ν : Fin 2) (band : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   let r := projectorResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening)
     (oppositeBand band) v m px py
@@ -59,7 +59,7 @@ noncomputable def interbandSpectatorCurrentFactor
 /-- Exact factorization of one direction-indexed interband Bastin pair into its Lorentzian spectral
 pole and regular spectator/current factor. -/
 theorem bastinBandPairContribution_opposite_source_eq_lorentzian
-    (μ ν : Direction2) (band : Band) (e v m px py probeEnergy broadening : ℝ)
+    (μ ν : Fin 2) (band : Band) (e v m px py probeEnergy broadening : ℝ)
     (hbroadening : broadening ≠ 0) :
     bastinBandPairContribution μ ν (oppositeBand band) band
         e v m px py probeEnergy broadening =
@@ -77,7 +77,7 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
 /-- At the target-band pole, the regular direction-indexed spectator/current factor converges to the
 inverse squared interband gap multiplying the canonical antisymmetric current block. -/
 theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
         interbandSpectatorCurrentFactor μ ν
