@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.AffineFixedPoint
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import Mathlib.Tactic
 
@@ -95,6 +96,36 @@ theorem tendsto_inPlaneLadderAction
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
   (1 - rung 0) ^ 2 + (rung 1) ^ 2
 
+/-- Matrix form of the shifted ladder operator `I - L`. -/
+def inPlaneShiftMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2) ℂ :=
+  1 - inPlaneRotationMatrix rung
+
+/-- The closed scalar ladder denominator is the determinant of the shifted matrix. -/
+@[simp] theorem inPlaneShiftMatrix_det (rung : InPlaneCoefficientVector) :
+    (inPlaneShiftMatrix rung).det = inPlaneLadderDeterminant rung := by
+  rw [Matrix.det_fin_two]
+  simp [inPlaneShiftMatrix, inPlaneRotationMatrix, inPlaneLadderDeterminant]
+  ring
+
+/-- Acting with `I - L` is vector subtraction by the ladder action. -/
+@[simp] theorem inPlaneShiftMatrix_mulVec
+    (rung coefficients : InPlaneCoefficientVector) :
+    (inPlaneShiftMatrix rung).mulVec coefficients =
+      coefficients - inPlaneLadderAction rung coefficients := by
+  funext direction
+  fin_cases direction <;>
+    simp [inPlaneShiftMatrix, inPlaneLadderAction, Matrix.mulVec, dotProduct,
+      Fin.sum_univ_two, inPlaneRotationMatrix, sub_eq_add_neg] <;> ring
+
+private theorem inPlaneLadder_shift_injective
+    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
+    Function.Injective (fun coefficients => coefficients - inPlaneLadderAction rung coefficients) := by
+  have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
+    Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
+  intro left right h
+  apply hmatrix
+  simpa using h
+
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
     {ι : Type*} {l : Filter ι}
@@ -174,52 +205,9 @@ theorem inPlaneLadder_fixedPoint_unique
     (hfixed : coefficients =
       inPlaneLadderBareXSource + inPlaneLadderAction rung coefficients) :
     coefficients = inPlaneLadderSolvedVector rung := by
-  have hxFixed :
-      coefficients 0 =
-        1 + (rung 0 * coefficients 0 - rung 1 * coefficients 1) := by
-    simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
-      congrArg (fun values : InPlaneCoefficientVector => values 0) hfixed
-  have hyFixed :
-      coefficients 1 = rung 1 * coefficients 0 + rung 0 * coefficients 1 := by
-    simpa [inPlaneLadderBareXSource, inPlaneCoefficientVector] using
-      congrArg (fun values : InPlaneCoefficientVector => values 1) hfixed
-  have hxLinear :
-      (1 - rung 0) * coefficients 0 + rung 1 * coefficients 1 = 1 := by
-    linear_combination hxFixed
-  have hyLinear :
-      -(rung 1) * coefficients 0 + (1 - rung 0) * coefficients 1 = 0 := by
-    linear_combination hyFixed
-  have hxDet :
-      inPlaneLadderDeterminant rung * coefficients 0 = 1 - rung 0 := by
-    calc
-      inPlaneLadderDeterminant rung * coefficients 0 =
-          (1 - rung 0) *
-              ((1 - rung 0) * coefficients 0 + rung 1 * coefficients 1) -
-            rung 1 *
-              (-(rung 1) * coefficients 0 + (1 - rung 0) * coefficients 1) := by
-              unfold inPlaneLadderDeterminant
-              ring
-      _ = 1 - rung 0 := by rw [hxLinear, hyLinear]; ring
-  have hyDet :
-      inPlaneLadderDeterminant rung * coefficients 1 = rung 1 := by
-    calc
-      inPlaneLadderDeterminant rung * coefficients 1 =
-          rung 1 * ((1 - rung 0) * coefficients 0 + rung 1 * coefficients 1) +
-            (1 - rung 0) *
-              (-(rung 1) * coefficients 0 + (1 - rung 0) * coefficients 1) := by
-              unfold inPlaneLadderDeterminant
-              ring
-      _ = rung 1 := by rw [hxLinear, hyLinear]; ring
-  funext direction
-  fin_cases direction
-  · change coefficients 0 = inPlaneLadderSolvedVector rung 0
-    rw [inPlaneLadderSolvedVector_apply_x]
-    apply (eq_div_iff hdet).2
-    simpa [mul_comm] using hxDet
-  · change coefficients 1 = inPlaneLadderSolvedVector rung 1
-    rw [inPlaneLadderSolvedVector_apply_y]
-    apply (eq_div_iff hdet).2
-    simpa [mul_comm] using hyDet
+  exact Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply
+    (inPlaneLadderAction rung) (inPlaneLadder_shift_injective rung hdet) hfixed
+    (inPlaneLadderSolvedVector_fixedPoint rung hdet)
 
 /-- With no transverse rung mixing, the vector solution reduces to the scalar ladder factor in the
 longitudinal component and zero in the transverse component. -/
