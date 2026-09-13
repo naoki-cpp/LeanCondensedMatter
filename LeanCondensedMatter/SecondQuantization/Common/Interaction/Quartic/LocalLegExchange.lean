@@ -44,15 +44,7 @@ theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlg
           (ExchangeAlgebra.annihilate (s := s) (Config := Config)) q' l') =
       quarticLocalLegExchangeCoeff s q q' l l' •
         (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
-  change exchangeCommutator s
-      ((quarticLocalLeg q l).operator
-        (ExchangeAlgebra.create (s := s) (Config := Config))
-        (ExchangeAlgebra.annihilate (s := s) (Config := Config)))
-      ((quarticLocalLeg q' l').operator
-        (ExchangeAlgebra.create (s := s) (Config := Config))
-        (ExchangeAlgebra.annihilate (s := s) (Config := Config))) =
-    (quarticLocalLeg q l).exchangeCoeff s (quarticLocalLeg q' l') •
-      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+  simp only [quarticLocalLegOperator, quarticLocalLegExchangeCoeff]
   generalize quarticLocalLeg q l = a
   generalize quarticLocalLeg q' l' = b
   cases a <;> cases b <;>
