@@ -120,7 +120,7 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
     funext fun n => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw,
-    Common.normalizedWeightedDiagonal]
+    Common.normalizedWeightedDiagonal_eq_weightedTrace_div]
   change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
     freePartitionFunction ε β = _
   rw [hnum, hZ, hfi]
