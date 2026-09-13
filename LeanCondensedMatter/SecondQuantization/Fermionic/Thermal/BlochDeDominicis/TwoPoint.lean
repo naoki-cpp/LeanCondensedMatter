@@ -6,10 +6,10 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Un
 set_option linter.style.header false
 
 /-!
-# Finite-mode fermionic Bloch–de Dominicis two-point identity
+# Fermionic Bloch–de Dominicis two-point identity
 
-This module instantiates the Common unnormalized Bloch–de Dominicis two-point theorem for finite
-free fermions. The imaginary-time evolution supplies the eigenvalue shift
+This module instantiates the Common unnormalized Bloch–de Dominicis two-point theorem for free
+fermions. The imaginary-time evolution supplies the eigenvalue shift
 `c_i(τ) = e^{-τε_i} c_i`, while CAR supplies the exchange relation
 `{c_i, c_j†} = δ_{ij}`.
 
@@ -23,7 +23,8 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- **The finite-mode fermionic two-point identity**:
+omit [Fintype Mode] in
+/-- **The fermionic two-point identity**:
 `(1 + e^{-εᵢβ}) Tr[e^{-βH₀}(cᵢcⱼ†)] = δᵢⱼ Tr[e^{-βH₀}]`.
 
 This is the fermionic specialization of `Common.traceFock_diagonalEvolution_comp_two_point`, with
