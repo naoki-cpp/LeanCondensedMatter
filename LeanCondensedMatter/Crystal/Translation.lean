@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import LeanCondensedMatter.Crystal.Symmetry
+import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.Algebra.Torsor.Defs
 import Mathlib.Topology.MetricSpace.IsometricSMul
 
@@ -58,6 +59,24 @@ def translationSubgroup (X : AtomicConfiguration E Species) : AddSubgroup V wher
 theorem mem_translationSubgroup {X : AtomicConfiguration E Species} {v : V} :
     v ∈ X.translationSubgroup ↔ (IsometryEquiv.constVAdd v : E ≃ᵢ E) ∈ X.symmetryGroup :=
   Iff.rfl
+
+/-- Realize translation vectors as elements of the full configuration symmetry group. -/
+def translationSymmetryHom (X : AtomicConfiguration E Species) :
+    Multiplicative (X.translationSubgroup (V := V)) →* X.symmetryGroup where
+  toFun v :=
+    ⟨IsometryEquiv.constVAdd (v.toAdd : V), mem_translationSubgroup.1 v.toAdd.property⟩
+  map_one' := by
+    apply Subtype.ext
+    ext x
+    simp
+  map_mul' v w := by
+    apply Subtype.ext
+    ext x
+    simp [add_vadd]
+
+/-- Pure translations, represented as a subgroup of the full configuration symmetry group. -/
+def translationSymmetrySubgroup (X : AtomicConfiguration E Species) : Subgroup X.symmetryGroup :=
+  (X.translationSymmetryHom (V := V)).range
 
 /-- Translation symmetries act canonically on occupied sites. -/
 instance translationSiteAddAction (X : AtomicConfiguration E Species) :
