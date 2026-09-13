@@ -209,7 +209,7 @@ noncomputable def diagonalOperator {Config : Type*} :
     intro k
     apply linearMap_ext_basisState
     intro c
-    simp [smul_smul]
+    simp
 
 @[simp]
 theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
