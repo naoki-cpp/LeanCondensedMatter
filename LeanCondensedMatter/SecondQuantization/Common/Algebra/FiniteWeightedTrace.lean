@@ -70,6 +70,12 @@ noncomputable def weightedTrace (w : Config → ℂ) :
     simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
     exact Finset.sum_congr rfl fun n _ => by ring
 
+/-- Coordinate formula for the weighted trace. -/
+theorem weightedTrace_eq_sum_matrixCoeff (w : Config → ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    weightedTrace w A = ∑ n : Config, w n * matrixCoeff A n n :=
+  rfl
+
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
 noncomputable def weightSum (w : Config → ℂ) : ℂ :=
   ∑ n : Config, w n
@@ -99,14 +105,16 @@ theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ
 /-- The weighted trace of the identity is the total weight. -/
 theorem weightedTrace_id (w : Config → ℂ) :
     weightedTrace w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = weightSum w := by
+  rw [weightedTrace_eq_sum_matrixCoeff]
   have h : ∀ n : Config, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
     matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
-  simp [weightedTrace, weightSum, h]
+  simp [weightSum, h]
 
 /-- The weighted trace of a diagonal operator is the weighted sum of its eigenvalues. -/
 theorem weightedTrace_diagonalOperator (w a : Config → ℂ) :
     weightedTrace w (diagonalOperator a) = ∑ n : Config, w n * a n := by
-  simp [weightedTrace, matrixCoeff_diagonalOperator]
+  rw [weightedTrace_eq_sum_matrixCoeff]
+  simp [matrixCoeff_diagonalOperator]
 
 end Common
 end SecondQuantization
