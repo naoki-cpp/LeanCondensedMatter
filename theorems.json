@@ -12847,6 +12847,48 @@
   "completedMention": false,
   "compiledConsumers": [],
   "compiledConsumerCount": 0},
+ {"terminal": false,
+  "statement":
+  "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [FiniteDimensional ℝ V]\n  (L : Submodule ℤ V) [inst_3 : DiscreteTopology ↥L] [IsZLattice ℝ L], DiscreteTopology ↥(Crystal.reciprocalLattice L)",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": true,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name": "LeanCondensedMatter.Crystal.instDiscreteTopologyReciprocalLattice",
+  "module": "LeanCondensedMatter.Crystal.Lattice",
+  "docString":
+  "The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is discrete. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": ["LeanCondensedMatter.Crystal.instIsZLatticeReciprocalLattice"],
+  "dependencies":
+  ["LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers":
+  ["LeanCondensedMatter.Crystal.instIsZLatticeReciprocalLattice"],
+  "compiledConsumerCount": 1},
+ {"terminal": true,
+  "statement":
+  "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [inst_2 : FiniteDimensional ℝ V]\n  (L : Submodule ℤ V) [inst_3 : DiscreteTopology ↥L] [inst_4 : IsZLattice ℝ L],\n  IsZLattice ℝ (Crystal.reciprocalLattice L)",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name": "LeanCondensedMatter.Crystal.instIsZLatticeReciprocalLattice",
+  "module": "LeanCondensedMatter.Crystal.Lattice",
+  "docString":
+  "The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is again full. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": [],
+  "dependencies":
+  ["LeanCondensedMatter.Crystal.instDiscreteTopologyReciprocalLattice",
+   "LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0},
  {"terminal": true,
   "statement":
   "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {L : Submodule ℤ V} {G : V},\n  G ∈ Crystal.reciprocalLattice L ↔ ∀ R ∈ L, ∃ n, inner ℝ G R = 2 * Real.pi * ↑n",
@@ -12868,6 +12910,26 @@
   "compiledConsumerCount": 0},
  {"terminal": true,
   "statement":
+  "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [FiniteDimensional ℝ V]\n  (L : Submodule ℤ V) [inst_3 : DiscreteTopology ↥L] [IsZLattice ℝ L],\n  Crystal.reciprocalLattice (Crystal.reciprocalLattice L) = L",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
+  "simpLemma": true,
+  "retainedMention": false,
+  "name": "LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice",
+  "module": "LeanCondensedMatter.Crystal.Lattice",
+  "docString":
+  "Taking the physical reciprocal lattice twice recovers any full finite-dimensional real\n`ℤ`-lattice. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents": [],
+  "dependencies":
+  ["_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0},
+ {"terminal": false,
+  "statement":
   "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [inst_2 : Finite ι]\n  [inst_3 : DecidableEq ι] (b : Module.Basis ι ℝ V),\n  Crystal.reciprocalLattice (Submodule.span ℤ (Set.range ⇑b)) =\n    Submodule.span ℤ (Set.range ⇑(Crystal.reciprocalBasis b))",
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -12879,13 +12941,17 @@
   "If a real-space lattice is the `ℤ`-span of a finite real basis, its physical reciprocal lattice\nis the `ℤ`-span of the corresponding reciprocal basis. ",
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
-  "dependents": [],
+  "dependents":
+  ["LeanCondensedMatter.Crystal.instDiscreteTopologyReciprocalLattice",
+   "LeanCondensedMatter.Crystal.instIsZLatticeReciprocalLattice"],
   "dependencies":
   ["LeanCondensedMatter.Crystal.reciprocalPairing_nondegenerate"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
-  "compiledConsumers": [],
-  "compiledConsumerCount": 0},
+  "compiledConsumers":
+  ["LeanCondensedMatter.Crystal.instDiscreteTopologyReciprocalLattice",
+   "LeanCondensedMatter.Crystal.instIsZLatticeReciprocalLattice"],
+  "compiledConsumerCount": 2},
  {"terminal": false,
   "statement":
   "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] (G R : V),\n  (Crystal.reciprocalPairing G) R = (2 * Real.pi)⁻¹ * inner ℝ G R",
@@ -12912,6 +12978,26 @@
   "compiledConsumerCount": 3},
  {"terminal": false,
   "statement":
+  "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V], Crystal.reciprocalPairing.IsSymm",
+  "soleCompiledConsumerPrivate": true,
+  "singleCompiledConsumer": true,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name": "LeanCondensedMatter.Crystal.reciprocalPairing_isSymm",
+  "module": "LeanCondensedMatter.Crystal.Lattice",
+  "docString": "The normalized reciprocal pairing is symmetric. ",
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents":
+  ["_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"],
+  "dependencies": [],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers":
+  ["_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"],
+  "compiledConsumerCount": 1},
+ {"terminal": false,
+  "statement":
   "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V], Crystal.reciprocalPairing.Nondegenerate",
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -12924,15 +13010,17 @@
   "directWrapperOf": null,
   "dependents":
   ["LeanCondensedMatter.Crystal.inner_reciprocalBasis",
-   "LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis"],
+   "LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis",
+   "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"],
   "dependencies": ["LeanCondensedMatter.Crystal.reciprocalPairing_apply"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
   ["LeanCondensedMatter.Crystal.inner_reciprocalBasis",
    "LeanCondensedMatter.Crystal.reciprocalBasis",
-   "LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis"],
-  "compiledConsumerCount": 3},
+   "LeanCondensedMatter.Crystal.reciprocalLattice_span_of_basis",
+   "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis"],
+  "compiledConsumerCount": 4},
  {"terminal": false,
   "statement":
   "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) {A B C : V →ₗ[ℂ] V},\n  LinearMap.zetaCommutator ζ A B = C → A ∘ₗ B = C + ζ • B ∘ₗ A",
@@ -82309,6 +82397,29 @@
   "completedMention": false,
   "compiledConsumers":
   ["_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.cumulantFromMoment_atomMoment_eq_mu"],
+  "compiledConsumerCount": 1},
+ {"terminal": false,
+  "statement":
+  "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [Finite ι]\n  (b : Module.Basis ι ℝ V),\n  Crystal.reciprocalLattice (Crystal.reciprocalLattice (Submodule.span ℤ (Set.range ⇑b))) =\n    Submodule.span ℤ (Set.range ⇑b)",
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": true,
+  "simpLemma": false,
+  "retainedMention": false,
+  "name":
+  "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis",
+  "module": "LeanCondensedMatter.Crystal.Lattice",
+  "docString": null,
+  "directWrapperTargetModule": null,
+  "directWrapperOf": null,
+  "dependents":
+  ["LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"],
+  "dependencies":
+  ["LeanCondensedMatter.Crystal.reciprocalPairing_isSymm",
+   "LeanCondensedMatter.Crystal.reciprocalPairing_nondegenerate"],
+  "crossModuleDirectWrapper": false,
+  "completedMention": false,
+  "compiledConsumers":
+  ["LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"],
   "compiledConsumerCount": 1},
  {"terminal": false,
   "statement":
