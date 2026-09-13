@@ -139,6 +139,7 @@ private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode
         (fun m => norm_fermionPhase i (toggleOccupation i m))
         (Common.completedReindex (toggleOccupationEquiv i) (completedBasisState n)) =
       fermionPhase i n • completedBasisState (toggleOccupation i n)
+  simp only [completedBasisState]
   rw [Common.completedReindex_basisState, toggleOccupationEquiv_symm]
   rw [Common.completedPhaseMultiplier_basisState, toggleOccupationEquiv_apply]
   rw [toggleOccupation_involutive]
