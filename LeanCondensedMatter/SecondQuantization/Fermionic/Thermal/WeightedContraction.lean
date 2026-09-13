@@ -43,10 +43,8 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε 
       (matrixCoeff_annihilate_comp_annihilate a b)
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate]
   apply Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
-  · simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      hdiag i j]
-  · simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      hdiag j i]
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, hdiag i j]
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, hdiag j i]
 
 /-- **`⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`**, the creation-side counterpart of
 `normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`. -/
@@ -62,10 +60,8 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_create_create (ε : Mode �
       (matrixCoeff_create_comp_create a b)
   rw [imaginaryTimeEvolve_create, imaginaryTimeEvolve_create]
   apply Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
-  · simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      hdiag i j]
-  · simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
-      hdiag j i]
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, hdiag i j]
+  · simp [LinearMap.smul_comp, LinearMap.comp_smul, hdiag j i]
 
 end Fermionic
 end SecondQuantization
