@@ -17,8 +17,8 @@ For a symmetric partially defined operator `A` on a complex Hilbert space and a 
 operator the same estimate gives injectivity, and closedness of the graph then implies that the
 range of every nonreal shift is closed. Self-adjoint maximality forces the orthogonal complement
 of that range to vanish, so the range is dense and hence, being closed, all of the Hilbert space.
-Thus every nonreal shift is bijective. This is the analytic input for constructing the bounded
-resolvent and, later, the Cayley-transform / Stone-theorem layer tracked by issue #840.
+Thus every nonreal shift is bijective, providing the analytic input for the bounded resolvent and
+later Cayley-transform and Stone-theorem constructions.
 -/
 
 namespace LinearPMap
