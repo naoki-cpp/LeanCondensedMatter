@@ -47,6 +47,7 @@ private structure ExactWitness where
 
 private structure ExactSearchCacheEntry where
   shape : Expr
+  parentDecl? : Option Name
   result : Option ExactWitness
 
 private def regionOfWindow
@@ -380,7 +381,14 @@ private def cachedImportedExactTerm
     let (_, searchGoal) ← freshGoal.intros
     exactGoalShape searchGoal
   let entries ← Command.liftIO cache.get
-  if let some entry := entries.find? fun entry => entry.shape == shape then
+  let parentDecl? := node.ctxI.parentDecl?
+  let scoped? := entries.find? fun entry =>
+    entry.shape == shape && entry.parentDecl? == parentDecl?
+  let reusable? := match scoped? with
+    | some entry => some entry
+    | none => entries.find? fun entry =>
+        entry.shape == shape && entry.result.isSome
+  if let some entry := reusable? then
     match entry.result with
     | none => return none
     | some witness =>
@@ -391,8 +399,9 @@ private def cachedImportedExactTerm
   catch _ =>
     pure none
   let witness? := result.map (·.2)
-  let updated := entries.filter fun entry => entry.shape != shape
-  Command.liftIO <| cache.set (updated.push { shape, result := witness? })
+  let updated := entries.filter fun entry =>
+    !(entry.shape == shape && entry.parentDecl? == parentDecl?)
+  Command.liftIO <| cache.set (updated.push { shape, parentDecl?, result := witness? })
   return result.map fun (term, witness) => (term, witness.declName, witness.moduleName)
 
 /-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
