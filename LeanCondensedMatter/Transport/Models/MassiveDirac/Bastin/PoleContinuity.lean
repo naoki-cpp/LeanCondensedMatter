@@ -25,7 +25,7 @@ open Filter QuantumTheory.Transport
 `(offset, broadening)`. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentFactor
     (band : Band) (e v m px py : ℝ) (offsetBroadening : ℝ × ℝ) : ℂ :=
-  interbandSpectatorCurrentFactor .x .y band e v m px py
+  interbandSpectatorCurrentFactor 0 1 band e v m px py
     (bandEnergy band v m px py + offsetBroadening.1) offsetBroadening.2
 
 /-- At zero offset and zero broadening, the regular factor is exactly the inverse-gap-squared
@@ -34,11 +34,11 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
     (band : Band) (e v m px py : ℝ) :
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =
       (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-        bastinInterbandBlockDifference .x .y band e v m px py) := by
+        bastinInterbandBlockDifference 0 1 band e v m px py) := by
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   simp [retardedSpectralParameter, advancedSpectralParameter, spectralParameterOfRegulator,
     projectorResolventCoefficient_oppositeBand_at_bandEnergy,
-    bastinInterbandBlockDifference, mul_sub]
+    bastinInterbandBlockDifference]
 
 /-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
 spectator/current factor is jointly continuous there for arbitrary real broadening. -/
@@ -95,11 +95,11 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
   have hxy := (hret.mul hret).mul
     (continuousAt_const : ContinuousAt
       (fun _ : ℝ × ℝ =>
-        bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py) p)
+        bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py) p)
   have hyx := (hadv.mul hadv).mul
     (continuousAt_const : ContinuousAt
       (fun _ : ℝ × ℝ =>
-        bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) p)
+        bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py) p)
   have hsub := hxy.sub hyx
   change ContinuousAt
       (fun q : ℝ × ℝ =>
@@ -109,14 +109,14 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
             projectorResolventCoefficient
               (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
               (oppositeBand band) v m px py *
-          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+          bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py -
         projectorResolventCoefficient
               (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
               (oppositeBand band) v m px py *
             projectorResolventCoefficient
               (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
               (oppositeBand band) v m px py *
-          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
+          bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
       p at hsub
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
