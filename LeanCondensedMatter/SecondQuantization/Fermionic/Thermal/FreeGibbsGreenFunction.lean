@@ -181,7 +181,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_add,
     (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_neg,
     (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul,
-    smul_eq_mul, one_mul,
+    smul_eq_mul, one_smul ℂ,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_self,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
