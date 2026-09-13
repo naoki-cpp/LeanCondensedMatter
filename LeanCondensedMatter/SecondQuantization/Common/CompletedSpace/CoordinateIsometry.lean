@@ -77,11 +77,6 @@ theorem completedReindex_apply (e : Config ≃ Config) (ψ : CompletedFock Confi
   rfl
 
 @[simp]
-theorem norm_completedReindex (e : Config ≃ Config) (ψ : CompletedFock Config) :
-    ‖completedReindex e ψ‖ = ‖ψ‖ :=
-  (completedReindex e).norm_map ψ
-
-@[simp]
 theorem completedReindex_basisState (e : Config ≃ Config) (c : Config) :
     completedReindex e (completedBasisState c) = completedBasisState (e.symm c) := by
   classical
@@ -142,13 +137,6 @@ theorem completedPhaseMultiplier_apply
     (ψ : CompletedFock Config) (c : Config) :
     completedPhaseMultiplier phase hphase ψ c = phase c * ψ c :=
   rfl
-
-@[simp]
-theorem norm_completedPhaseMultiplier
-    (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1)
-    (ψ : CompletedFock Config) :
-    ‖completedPhaseMultiplier phase hphase ψ‖ = ‖ψ‖ :=
-  (completedPhaseMultiplier phase hphase).norm_map ψ
 
 @[simp]
 theorem completedPhaseMultiplier_basisState
