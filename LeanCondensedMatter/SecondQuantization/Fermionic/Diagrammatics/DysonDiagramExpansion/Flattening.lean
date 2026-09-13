@@ -36,8 +36,8 @@ theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
       ((create q.create₁).comp
         ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))) = _
   simp only [← Module.End.mul_eq_comp, map_mul]
-  simp [Common.prodComp, quarticLocalLegOperator, Common.quarticLocalLegOperator,
-    List.ofFn_succ, imaginaryTimeEvolve]
+  simp [Module.End.mul_eq_comp, Common.prodComp, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, List.ofFn_succ, imaginaryTimeEvolve]
 
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
