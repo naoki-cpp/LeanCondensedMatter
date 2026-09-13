@@ -80,14 +80,14 @@ noncomputable def matrixCoeff {Config : Type*}
 
 /-- `matrixCoeff` at fixed coordinates, bundled as a complex-linear functional of the operator. -/
 noncomputable def matrixCoeffLinear {Config : Type*} (m n : Config) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
-  toFun := fun A => matrixCoeff A m n
-  map_add' := by
-    intro A B
-    simp [matrixCoeff]
-  map_smul' := by
-    intro c A
-    simp [matrixCoeff]
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  (Finsupp.lapply m).comp (LinearMap.applyₗ (basisState n))
+
+@[simp]
+theorem matrixCoeffLinear_apply {Config : Type*} (m n : Config)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    matrixCoeffLinear m n A = matrixCoeff A m n :=
+  rfl
 
 /-- **The diagonal coefficient of `A (basisState n)`**, `matrixCoeff A n n`. -/
 noncomputable def diagonalCoeff {Config : Type*}
@@ -103,14 +103,64 @@ theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
 theorem matrixCoeff_smul {Config : Type*} (c : ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
-  change (matrixCoeffLinear m n) (c • A) = c • (matrixCoeffLinear m n) A
-  exact (matrixCoeffLinear m n).map_smul c A
+  simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
+    (matrixCoeffLinear m n).map_smul c A
 
 /-- `matrixCoeff` is linear in its operator argument: addition. -/
 theorem matrixCoeff_add {Config : Type*}
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n :=
-  (matrixCoeffLinear m n).map_add A B
+    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
+  simpa only [matrixCoeffLinear_apply] using (matrixCoeffLinear m n).map_add A B
+
+/-- **Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the
+`(n, n)` matrix coefficient is exactly `c`. -/
+theorem matrixCoeff_of_smul_basisState {Config : Type*}
+    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    {n : Config} {c : ℂ} (h : A (basisState n) = c • basisState n) :
+    matrixCoeff A n n = c := by
+  change A (basisState n) n = c
+  rw [h, smul_basisState_apply_self]
+
+/-- **Two operators agreeing on every matrix coefficient are equal.** -/
+theorem matrixCoeff_ext {Config : Type*}
+    {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    (h : ∀ m n, matrixCoeff A m n = matrixCoeff B m n) : A = B := by
+  apply linearMap_ext_basisState
+  intro n
+  apply Finsupp.ext
+  intro m
+  exact h m n
+
+/-- **`matrixCoeff` under composition, as a sum over `B`'s finite support**:
+`(AB)_{mn} = Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`. This holds for arbitrary `Config`, because an
+`AlgebraicFock Config` vector is finitely supported even when `Config` itself is infinite. -/
+theorem matrixCoeff_comp_support {Config : Type*}
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A.comp B) m n =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n := by
+  have hx : B (basisState n) =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
+    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
+    rw [Finsupp.sum]
+    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+  rw [matrixCoeff, LinearMap.comp_apply]
+  conv_lhs => rw [hx]
+  rw [map_sum]
+  simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
+  exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+
+/-- **`matrixCoeff` under composition is ordinary matrix multiplication** on a finite
+configuration type: `(AB)_{mn} = Σₖ A_{mk} B_{kn}`. -/
+theorem matrixCoeff_comp {Config : Type*} [Fintype Config]
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
+  rw [matrixCoeff_comp_support]
+  apply Finset.sum_subset (Finset.subset_univ _)
+  intro k _ hk
+  have hz : matrixCoeff B k n = 0 := by
+    by_contra h
+    exact hk (Finsupp.mem_support_iff.mpr h)
+  rw [hz, mul_zero]
 
 /-! ## Basis-diagonal operators
 
@@ -121,23 +171,12 @@ eigenvalues), and `Fermionic.occupationProjector` (indicator eigenvalues). Extra
 lets each of those be stated as a `diagonalOperator` specialization, sharing the same
 composition/matrix-coefficient/injectivity lemmas rather than re-proving them per call site. -/
 
-/-- **The basis-diagonal operator with eigenvalues `a`**: acts as `a c • basisState c` on each
-basis vector, extended linearly via `Finsupp.lift`. -/
-noncomputable def diagonalOperator {Config : Type*} (a : Config → ℂ) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
-
-@[simp]
-theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
-    diagonalOperator a (basisState c) = a c • basisState c := by
-  change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-
 /-- Basis-diagonal operators form the canonical representation of the pointwise function algebra
 `Config → ℂ` on the algebraic Fock space. -/
-noncomputable def diagonalOperatorAlgHom {Config : Type*} :
+noncomputable def diagonalOperator {Config : Type*} :
     (Config → ℂ) →ₐ[ℂ] (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) where
-  toFun := diagonalOperator
+  toFun := fun a =>
+    Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
   map_zero' := by
     apply linearMap_ext_basisState
     intro c
@@ -163,11 +202,37 @@ noncomputable def diagonalOperatorAlgHom {Config : Type*} :
     intro c
     simp
 
+@[simp]
+theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
+    diagonalOperator a (basisState c) = a c • basisState c := by
+  change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+
+/-- A basis-diagonal operator rescales each coordinate independently. -/
+theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
+    (x : AlgebraicFock Config) (c : Config) :
+    diagonalOperator a x c = a c * x c := by
+  let eval : AlgebraicFock Config →ₗ[ℂ] ℂ := Finsupp.lapply c
+  have hmap : eval.comp (diagonalOperator a) = a c • eval := by
+    apply Finsupp.lhom_ext
+    intro i b
+    have hb : (Finsupp.single i b : AlgebraicFock Config) = b • basisState i :=
+      (Finsupp.smul_single_one i b).symm
+    rw [hb, LinearMap.comp_apply, map_smul, diagonalOperator_basisState, map_smul,
+      LinearMap.smul_apply]
+    by_cases h : i = c
+    · subst i
+      simp [eval, basisState, mul_comm]
+    · simp [eval, basisState, h]
+  have hx := congrArg (fun L => L x) hmap
+  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
+    smul_eq_mul] using hx
+
 /-- **`diagonalOperator` turns pointwise multiplication into composition**: `[c•A, d•B]`-style
 constructions on diagonal operators reduce to plain scalar arithmetic on their eigenvalues. -/
 theorem diagonalOperator_comp {Config : Type*} (a b : Config → ℂ) :
     (diagonalOperator a).comp (diagonalOperator b) = diagonalOperator (fun c => a c * b c) := by
-  have h := map_mul (diagonalOperatorAlgHom (Config := Config)) a b
+  have h := map_mul (diagonalOperator (Config := Config)) a b
   rw [Module.End.mul_eq_comp] at h
   exact h.symm
 
@@ -184,8 +249,7 @@ open scoped Classical in
 only if their eigenvalues agree everywhere, read off via `matrixCoeff_diagonalOperator` at the
 diagonal `m = n`. -/
 theorem diagonalOperator_injective {Config : Type*} :
-    Function.Injective
-      (diagonalOperator : (Config → ℂ) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+    Function.Injective (diagonalOperator (Config := Config)) := by
   intro a b hab
   funext c
   have h := congrArg (fun A => matrixCoeff A c c) hab
