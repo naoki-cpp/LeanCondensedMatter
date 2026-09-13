@@ -35,7 +35,7 @@ open QuantumTheory.Transport
 /-- An opposite-band ordered current block is exactly `e²` times the gauge-independent force-matrix
 numerator. -/
 theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
-    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
     currentBandBlockTrace μ ν band (oppositeBand band) e v m px py =
       (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
   unfold currentBandBlockTrace
@@ -58,10 +58,10 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
 `e²` times the clean Berry curvature away from the Dirac degeneracy. -/
 theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    2 * (currentBandBlockTrace .x .y band (oppositeBand band) e v m px py).im /
+    2 * (currentBandBlockTrace 0 1 band (oppositeBand band) e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       e ^ 2 * berryCurvature band v m px py := by
-  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator .x .y]
+  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator 0 1]
   simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
   rw [← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
   unfold forceMatrixBerryCurvature
@@ -76,8 +76,8 @@ noncomputable def projectorBastinOperatorIntegrand
     projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py
   let advanced :=
     projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py
-  (currentOperator .x e v * retarded ^ 2 * currentOperator .y e v -
-      currentOperator .y e v * advanced ^ 2 * currentOperator .x e v) *
+  (currentOperator 0 e v * retarded ^ 2 * currentOperator 1 e v -
+      currentOperator 1 e v * advanced ^ 2 * currentOperator 0 e v) *
     (retarded - advanced)
 
 /-- Ordinary trace of the projector-expanded Bastin operator kernel. -/
@@ -93,7 +93,7 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     (hE : energy v m px py ≠ 0) (hbroadening : broadening ≠ 0) :
     regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
+        (currentOperator 0 e v) (currentOperator 1 e v) probeEnergy broadening =
       projectorBastinTraceIntegrand e v m px py probeEnergy broadening := by
   unfold regularizedBastinTraceIntegrand projectorBastinTraceIntegrand
     projectorBastinOperatorIntegrand regularizedBastinOperatorIntegrand
