@@ -181,6 +181,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_we
   unfold continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
     continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
+  simp only [Matrix.cons_val_zero]
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
     continuumBornDampingScale_disorderStrengthOfDampingScale
@@ -205,6 +206,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_we
   unfold continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
     continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
+  simp only [Matrix.cons_val_one, Matrix.cons_val_zero]
   rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
     continuumBornDampingScale_disorderStrengthOfDampingScale
