@@ -5,8 +5,11 @@ const overview = document.querySelector("#overview");
 const overviewLink = document.querySelector("#overview-link");
 const searchForm = document.querySelector("#search-form");
 const searchInput = document.querySelector("#theorem-search");
+const moduleFilter = document.querySelector("#module-filter");
+const graphViewport = document.querySelector("#graph-viewport");
 
 let catalogPromise = null;
+let canonicalizingLegacyModule = false;
 
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -204,6 +207,45 @@ async function renderHierarchy(domain, path = []) {
     overview.append(section);
   }
 }
+
+function syncModuleFilterAvailability() {
+  if (!moduleFilter || !graphViewport) return;
+  const graphActive = !graphViewport.hidden;
+  moduleFilter.disabled = !graphActive;
+  moduleFilter.title = graphActive
+    ? "Filter the current dependency graph by exact module."
+    : "Browse modules through the overview hierarchy.";
+}
+
+async function canonicalizeLegacyModuleRoute() {
+  if (canonicalizingLegacyModule || !overview || overview.hidden || !moduleFilter) return;
+  if (moduleFilter.options.length <= 1) return;
+  if (location.hash) return;
+  const requestedModule = new URLSearchParams(location.search).get("module");
+  if (!requestedModule) return;
+  const parts = moduleParts(requestedModule);
+  if (parts.length === 0) return;
+
+  canonicalizingLegacyModule = true;
+  try {
+    moduleFilter.value = "*";
+    moduleFilter.dispatchEvent(new Event("change", { bubbles: true }));
+    await renderHierarchy(parts[0], parts.slice(1));
+  } finally {
+    canonicalizingLegacyModule = false;
+  }
+}
+
+function syncOverviewNavigationMode() {
+  syncModuleFilterAvailability();
+  canonicalizeLegacyModuleRoute().catch((error) => console.error(error));
+}
+
+const navigationObserver = new MutationObserver(syncOverviewNavigationMode);
+if (overview) navigationObserver.observe(overview, { attributes: true, attributeFilter: ["hidden"], childList: true });
+if (graphViewport) navigationObserver.observe(graphViewport, { attributes: true, attributeFilter: ["hidden"] });
+if (moduleFilter) navigationObserver.observe(moduleFilter, { childList: true });
+syncOverviewNavigationMode();
 
 // The base explorer owns the project-area cards. Capture those clicks before its
 // flat domain renderer and replace only the domain-detail view with hierarchy.
