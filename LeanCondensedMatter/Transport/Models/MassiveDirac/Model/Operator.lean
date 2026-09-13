@@ -126,7 +126,7 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
-  cases direction
+  fin_cases direction
   · let u : PauliAxis → ℝ
       | .x => -e * v
       | .y => 0
