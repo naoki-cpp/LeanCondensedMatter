@@ -34,7 +34,7 @@ theorem freeGibbsExpectation_dysonCoeff_one
   apply tsum_congr
   intro n
   rw [matrixCoeff_freeGibbs_dysonCoeff_one_self]
-  simp only [LinearMap.comp_smul, Common.matrixCoeff_smul]
+  simp only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul]
 
 omit [Fintype Mode] in
 /-- At Dyson order zero, the Gibbs expectation satisfies the recursive interval formula directly.
