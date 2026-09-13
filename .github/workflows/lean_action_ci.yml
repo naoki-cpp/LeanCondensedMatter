@@ -246,7 +246,7 @@ jobs:
         shell: bash
         run: |
           echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
-          grep -E '^(Theorems|Retained audit declarations|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
 
