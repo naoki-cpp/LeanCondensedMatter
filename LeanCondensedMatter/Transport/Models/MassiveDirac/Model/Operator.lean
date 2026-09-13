@@ -108,7 +108,7 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
     currentOperator_eq_charge_smul_velocityOperator]
   unfold velocityOperator velocity inPlanePauliVertexOperator matrixOperator
   rw [map_smul, map_smul]
-  simp only [directionPauli]
+  simp [directionPauli, Direction2.x, Direction2.y]
   push_cast
   module
 
@@ -134,8 +134,10 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     have hcurrent :
         current .x e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      simp [current, velocity, directionPauli, Direction2.x,
+        InternalSpace.pauliCombination, u, smul_smul]
       module
+    change (current .x e v).IsHermitian
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
   · let u : PauliAxis → ℝ
@@ -145,8 +147,10 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     have hcurrent :
         current .y e v =
           InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli, InternalSpace.pauliCombination, u, smul_smul]
+      simp [current, velocity, directionPauli, Direction2.y,
+        InternalSpace.pauliCombination, u, smul_smul]
       module
+    change (current .y e v).IsHermitian
     rw [hcurrent]
     exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
