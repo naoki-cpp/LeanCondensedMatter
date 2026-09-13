@@ -2,7 +2,7 @@ name: Lean Action CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/crystal-point-group]
   pull_request:
   workflow_dispatch:
 
