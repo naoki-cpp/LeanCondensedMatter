@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Finit
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossing
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.CleanBastin
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
@@ -18,7 +19,9 @@ benchmark. The finite-`η` Středa conductivity is represented directly as a
 indices. Rotational closure proves the ordered `yx = -xy` and `yy = xx` relations before limits are
 taken. After the componentwise zero-broadening boundary is formed, the antisymmetric Hall projection
 of the resulting tensor is exactly the ordered `xy` component. The subsequent one-sided weak-disorder
-limit is exposed both in `ℏ` normalization and in the standard Ado non-crossing `e²/h` form.
+limit is exposed both in `ℏ` normalization and in the standard Ado non-crossing `e²/h` form. The
+closed Ado Eq. (12a-c) decomposition is retained as a theorem-level benchmark for later mechanism
+provenance results rather than as a separate primitive conductivity API.
 
 Formalism-specific analysis, including finite-`η` Středa momentum integration, radial reduction, and
 zero-broadening/weak-disorder response limits, remains upstream under the corresponding Bastin/Středa
