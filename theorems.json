@@ -65094,7 +65094,7 @@
   "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange",
   "externalAxioms": [],
   "docString":
-  "Two local quartic legs have a scalar exchange bracket determined by statistics, kind, and mode. ",
+  "Two local quartic legs have a scalar exchange bracket determined by statistics and leg semantics. ",
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
