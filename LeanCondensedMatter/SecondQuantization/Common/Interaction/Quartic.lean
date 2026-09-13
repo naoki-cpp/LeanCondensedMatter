@@ -43,21 +43,25 @@ inductive QuarticLocalLeg (Mode : Type*) where
 namespace QuarticLocalLeg
 
 /-- The mode carried by a quartic local leg. -/
+@[simp]
 def mode : QuarticLocalLeg Mode → Mode
   | .create i => i
   | .annihilate i => i
 
 /-- Whether a quartic local leg is a creation leg. -/
+@[simp]
 def isCreate : QuarticLocalLeg Mode → Bool
   | .create _ => true
   | .annihilate _ => false
 
 /-- The signed free-energy shift carried by a quartic local leg. -/
+@[simp]
 def energyShift (ε : Mode → ℝ) : QuarticLocalLeg Mode → ℝ
   | .create i => ε i
   | .annihilate i => -ε i
 
 /-- Realize a quartic local leg using arbitrary creation and annihilation maps. -/
+@[simp]
 def operator (leg : QuarticLocalLeg Mode)
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
