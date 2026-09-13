@@ -9,7 +9,7 @@ set_option linter.style.header false
 /-!
 # Weak-disorder longitudinal Born current-rung limit
 
-This module consumes the `.x` specialization of the direction-indexed normalized finite-cutoff Born
+This module consumes the longitudinal specialization of the direction-indexed normalized finite-cutoff Born
 current rung and takes the one-sided `disorderStrength → 0⁺` limit at fixed radial cutoff. The cutoff
 is required to lie beyond the metallic on-shell Fermi circle so the two arctangent endpoints
 approach opposite sides of the resonance.
@@ -99,8 +99,8 @@ private theorem tendsto_continuumBornRetardedAdvancedCurrentRungPrefactorFactor_
   simpa [nhdsWithin, continuumBornDampingScale] using
     hcont.tendsto.mono_left inf_le_left
 
-/-- At fixed cutoff beyond the metallic on-shell circle, the longitudinal `.x` component of the
-fully normalized Born RA current rung has a finite one-sided weak-disorder limit.
+/-- At fixed cutoff beyond the metallic on-shell circle, the longitudinal component of the fully
+normalized Born RA current rung has a finite one-sided weak-disorder limit.
 
 The cutoff condition `probeEnergy² - m² < v² pMax²` is exactly what forces the two arctangent
 endpoints to lie on opposite sides of the resonance as the disorder broadening vanishes. -/
@@ -110,7 +110,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun disorderStrength : ℝ =>
-        finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient .x
+        finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient 0
           v m probeEnergy disorderStrength hbar pMax)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
