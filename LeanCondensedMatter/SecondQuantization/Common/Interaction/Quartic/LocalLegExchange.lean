@@ -16,21 +16,13 @@ namespace Common
 
 variable {Mode Config : Type*} [DecidableEq Mode]
 
-namespace QuarticLocalLeg
-
-/-- Scalar coefficient in the exchange bracket of two semantic quartic local legs. -/
-def exchangeCoeff (s : Statistics) (a b : QuarticLocalLeg Mode) : ℂ :=
-  match a, b with
-  | .create i, .annihilate j => if i = j then -(s.zetaInt : ℂ) else 0
-  | .annihilate i, .create j => if i = j then 1 else 0
-  | _, _ => 0
-
-end QuarticLocalLeg
-
 /-- Scalar coefficient in the exchange bracket of two local legs selected from quartic vertices. -/
 def quarticLocalLegExchangeCoeff (s : Statistics) (q q' : QuarticVertexLabel Mode)
     (l l' : Fin 4) : ℂ :=
-  (quarticLocalLeg q l).exchangeCoeff s (quarticLocalLeg q' l')
+  match quarticLocalLeg q l, quarticLocalLeg q' l' with
+  | .create i, .annihilate j => if i = j then -(s.zetaInt : ℂ) else 0
+  | .annihilate i, .create j => if i = j then 1 else 0
+  | _, _ => 0
 
 /-- Two local quartic legs have a scalar exchange bracket determined by statistics and leg semantics. -/
 theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlgebra s Mode Config]
@@ -48,9 +40,8 @@ theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlg
   generalize quarticLocalLeg q l = a
   generalize quarticLocalLeg q' l' = b
   cases a <;> cases b <;>
-    simp [QuarticLocalLeg.exchangeCoeff, ExchangeAlgebra.create_create,
-      ExchangeAlgebra.annihilate_annihilate, ExchangeAlgebra.annihilate_create,
-      exchangeCommutator_create_annihilate]
+    simp [ExchangeAlgebra.create_create, ExchangeAlgebra.annihilate_annihilate,
+      ExchangeAlgebra.annihilate_create, exchangeCommutator_create_annihilate]
 
 end Common
 end SecondQuantization
