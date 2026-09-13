@@ -191,8 +191,9 @@ SecondQuantization.Fermionic.
   vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next correlation-function target is
-higher-point/source-insertion structure, not re-proving the two-point linked-cluster identity.
+in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next correlation-function
+target is higher-point/source-insertion structure, not re-proving the two-point linked-cluster
+identity.
 
 ## Fermionic field/current boundary
 
