@@ -133,8 +133,15 @@ theorem completedAnnihilate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
 private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode) :
     completedSignedToggle i (completedBasisState n) =
       fermionPhase i n • completedBasisState (toggleOccupation i n) := by
-  simp [completedSignedToggle, completedToggle, completedBasisState,
-    toggleOccupationEquiv_symm, toggleOccupationEquiv_apply, toggleOccupation_involutive]
+  change
+    Common.completedPhaseMultiplier
+        (fun m : Occupation Mode => fermionPhase i (toggleOccupation i m))
+        (fun m => norm_fermionPhase i (toggleOccupation i m))
+        (Common.completedReindex (toggleOccupationEquiv i) (completedBasisState n)) =
+      fermionPhase i n • completedBasisState (toggleOccupation i n)
+  rw [Common.completedReindex_basisState, toggleOccupationEquiv_symm]
+  rw [Common.completedPhaseMultiplier_basisState, toggleOccupationEquiv_apply]
+  rw [toggleOccupation_involutive]
 
 @[simp]
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
