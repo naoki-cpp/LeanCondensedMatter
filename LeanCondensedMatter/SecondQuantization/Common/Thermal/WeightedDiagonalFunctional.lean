@@ -20,25 +20,18 @@ namespace Common
 
 variable {Config : Type*} [Fintype Config]
 
-/-- **The normalized weighted diagonal coordinate functional** as a linear functional on
-endomorphisms, `Tr_w(A) / weightSum(w)`. No positivity or physical-state interpretation is implied
-for arbitrary complex weights. -/
+/-- **The normalized weighted diagonal coordinate functional**, obtained by scaling `weightedTrace`
+by the inverse total weight. No positivity or physical-state interpretation is implied for arbitrary
+complex weights. -/
 noncomputable def normalizedWeightedDiagonal (w : Config → ℂ) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
-  toFun := fun A => weightedTrace w A / weightSum w
-  map_add' := by
-    intro A B
-    rw [(weightedTrace w).map_add, add_div]
-  map_smul' := by
-    intro c A
-    rw [(weightedTrace w).map_smul]
-    simp only [smul_eq_mul, mul_div_assoc, RingHom.id_apply]
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  (weightSum w)⁻¹ • weightedTrace w
 
 /-- Coordinate formula underlying the normalized weighted diagonal functional. -/
 theorem normalizedWeightedDiagonal_eq_weightedTrace_div (w : Config → ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonal w A = weightedTrace w A / weightSum w :=
-  rfl
+    normalizedWeightedDiagonal w A = weightedTrace w A / weightSum w := by
+  simp [normalizedWeightedDiagonal, div_eq_mul_inv, mul_comm]
 
 /-- A normalized weighted diagonal vanishes when every diagonal matrix coefficient vanishes. -/
 theorem normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero
