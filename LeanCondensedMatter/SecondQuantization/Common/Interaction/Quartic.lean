@@ -48,12 +48,6 @@ def mode : QuarticLocalLeg Mode → Mode
   | .create i => i
   | .annihilate i => i
 
-/-- Whether a quartic local leg is a creation leg. -/
-@[simp]
-def isCreate : QuarticLocalLeg Mode → Bool
-  | .create _ => true
-  | .annihilate _ => false
-
 /-- The signed free-energy shift carried by a quartic local leg. -/
 @[simp]
 def energyShift (ε : Mode → ℝ) : QuarticLocalLeg Mode → ℝ
