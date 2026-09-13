@@ -31,8 +31,8 @@ structure AuditEntry where
   definitionallyEquivalentTo : Array String
   replacementCandidates : Array ReplacementCandidate
 
-private def sourceProbeLimit : Nat := 32
-private def maxReplacementCandidatesPerTarget : Nat := 4
+private def sourceProbeLimit : Nat := 12
+private def maxReplacementCandidatesPerTarget : Nat := 3
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -153,20 +153,30 @@ private def takeFirst (entries : Array α) (limit : Nat) : Array α :=
   entries.foldl (init := #[]) fun taken entry =>
     if taken.size < limit then taken.push entry else taken
 
-private def rankedSources
-    (bucket : Array PreparedCandidate) (target : PreparedCandidate) : Array PreparedCandidate :=
-  let compatible := bucket.filter fun source =>
-    source.candidate.name != target.candidate.name &&
-    !privateDeclarationName? source.candidate.name &&
-    !extensionTheoremName? source.candidate.name &&
-    compatibleArgumentHeadSketch source.argumentHeads target.argumentHeads
-  let scored := compatible.map fun source => (candidateScore source target, source)
-  let ranked := scored.qsort fun left right =>
-    if left.1 == right.1 then
-      left.2.candidate.name.toString < right.2.candidate.name.toString
-    else
-      left.1 > right.1
-  ranked.map fun pair => pair.2
+private def betterCandidate
+    (left right : Nat × PreparedCandidate) : Bool :=
+  if left.1 == right.1 then
+    left.2.candidate.name.toString < right.2.candidate.name.toString
+  else
+    left.1 > right.1
+
+/-- Scan the coarse bucket once, but keep only the best bounded set instead of sorting the entire
+bucket for every target. The returned pool size makes truncation explicit in generated data. -/
+private def selectSources
+    (bucket : Array PreparedCandidate) (target : PreparedCandidate) :
+    Nat × Array PreparedCandidate := Id.run do
+  let mut poolSize := 0
+  let mut best : Array (Nat × PreparedCandidate) := #[]
+  for source in bucket do
+    if source.candidate.name == target.candidate.name ||
+        privateDeclarationName? source.candidate.name ||
+        extensionTheoremName? source.candidate.name ||
+        !compatibleArgumentHeadSketch source.argumentHeads target.argumentHeads then
+      continue
+    poolSize := poolSize + 1
+    let ranked := (best.push (candidateScore source target, source)).qsort betterCandidate
+    best := takeFirst ranked sourceProbeLimit
+  return (poolSize, best.map fun pair => pair.2)
 
 private def statementDefEq (left right : Candidate) : MetaM Bool :=
   withoutModifyingState do
@@ -273,17 +283,16 @@ private def collectAuditEntries
     let mut truncatedTargets := 0
     for target in prepared do
       let bucket := (buckets.get? (coarseFingerprint target)).getD #[]
-      let ranked := rankedSources bucket target
-      let truncated := ranked.size > sourceProbeLimit
+      let (poolSize, sources) := selectSources bucket target
+      let truncated := poolSize > sources.size
       if truncated then truncatedTargets := truncatedTargets + 1
-      let sources := takeFirst ranked sourceProbeLimit
       totalProbed := totalProbed + sources.size
       let (defEq, replacements) ←
         liftMetaM <| auditTarget target sources directDependencies
       entries := entries.push {
         target := target.candidate.name.toString
         moduleName := target.candidate.moduleName.toString
-        candidatePoolSize := ranked.size
+        candidatePoolSize := poolSize
         probedCandidateCount := sources.size
         candidatePoolTruncated := truncated
         definitionallyEquivalentTo := defEq
