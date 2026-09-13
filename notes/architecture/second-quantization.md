@@ -74,7 +74,40 @@ The dependency DAG is owned centrally by
 `scripts/check_fermionic_transport_validation_boundary.py`. Focused AlgebraicFock and Lattice audits
 add domain-specific constraints without duplicating that graph.
 
-## Public import boundary
+## Public import hierarchy
+
+The public import surface mirrors the repository directory hierarchy. Each reusable package has an
+umbrella module at the corresponding dotted path, and each parent umbrella imports its immediate
+public children instead of flattening all descendant leaves.
+
+```text
+SecondQuantization
+├── Common
+│   ├── Algebra
+│   ├── CompletedSpace
+│   ├── Diagrammatics
+│   ├── ImaginaryTime
+│   ├── Interaction
+│   ├── Perturbation
+│   └── Thermal
+├── Fermionic
+│   ├── Algebra
+│   ├── CompletedSpace
+│   ├── Diagrammatics
+│   ├── Field
+│   ├── ImaginaryTime
+│   ├── Lattice
+│   ├── Perturbation
+│   ├── Thermal
+│   ├── Transport
+│   └── Validation
+└── Bosonic
+    ├── Algebra
+    ├── Diagrammatics
+    ├── ImaginaryTime
+    ├── Perturbation
+    └── Thermal
+```
 
 The full public entry point is
 
@@ -82,13 +115,19 @@ The full public entry point is
 import LeanCondensedMatter.SecondQuantization
 ```
 
-Responsibility-specific developments should prefer the narrowest public leaf umbrella, for example
+A development may stop at any reusable subtree boundary, for example
 
 ```lean
+import LeanCondensedMatter.SecondQuantization.Common
+import LeanCondensedMatter.SecondQuantization.Fermionic
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 ```
+
+Implementation modules should still import the narrowest leaf modules they use; umbrellas are public
+package boundaries and navigation surfaces, not a reason to widen internal dependencies. When a file
+sharing a directory name is itself a semantic base imported by descendants, it remains that base
+rather than being turned into an aggregator that would create an import cycle.
 
 One-body generalized current work that does not use second quantization should instead import the
 appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
