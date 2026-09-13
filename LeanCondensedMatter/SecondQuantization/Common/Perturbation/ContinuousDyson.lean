@@ -111,8 +111,8 @@ theorem continuousInteractionPicture_eq_conj (energy : Config → ℝ)
       (continuousDiagonalEvolution energy τ).comp
         ((finiteContinuousOperator V).comp
           (continuousDiagonalEvolution energy (-τ))) := by
-  simp [continuousInteractionPicture, interactionPicture, heisenbergEvolve,
-    continuousDiagonalEvolution]
+  simp only [continuousInteractionPicture, interactionPicture, heisenbergEvolve_eq_comp,
+    finiteContinuousOperator_comp, continuousDiagonalEvolution]
 
 /-! ## Continuous Dyson coefficients -/
 
