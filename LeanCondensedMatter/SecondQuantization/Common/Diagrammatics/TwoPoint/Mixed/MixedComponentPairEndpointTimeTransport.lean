@@ -75,8 +75,14 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         (d.mixedExternalComponentPairEquiv τ τ' υ q).1 =
           (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 :=
       congrArg Subtype.val hlocal
-    rcases d.mixedExternalComponentPairEquiv_pair_eq_or_swap τ τ' σ pr with hp | hp <;>
-      rcases d.mixedExternalComponentPairEquiv_pair_eq_or_swap τ τ' υ q with hq | hq
+    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ
+        d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
+        d.externalVacuumSplit.1.pairing
+        (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr with hp | hp <;>
+      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ
+          d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' υ)
+          d.externalVacuumSplit.1.pairing
+          (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' υ) q with hq | hq
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
@@ -116,8 +122,16 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q).1 =
           (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 :=
       congrArg Subtype.val hlocal
-    rcases d.mixedVacuumComponentPairEquiv_pair_eq_or_swap τ τ' σ B hVac pr with hp | hp <;>
-      rcases d.mixedVacuumComponentPairEquiv_pair_eq_or_swap τ τ' υ B hVac q with hq | hq
+    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ B
+        (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+        (d.restrictedVacuumPairing B hVac)
+        (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
+      with hp | hp <;>
+      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ B
+          (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
+          (d.restrictedVacuumPairing B hVac)
+          (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' υ B hVac) q
+        with hq | hq
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
