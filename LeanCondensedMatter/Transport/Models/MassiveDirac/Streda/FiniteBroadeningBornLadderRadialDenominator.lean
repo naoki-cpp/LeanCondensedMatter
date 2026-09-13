@@ -59,8 +59,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   unfold pauliRungAngularCoefficient
     finiteCutoffContinuumBornDysonScalarCoefficient
     finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.pauliAxisComponent
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_zero, zero_mul, mul_one, one_mul,
-    sub_zero, zero_add, neg_zero]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_zero, mul_one, sub_zero]
   have hpi : (((4 * Real.pi : ℝ) : ℂ)) =
       (2 : ℂ) * (((2 * Real.pi : ℝ) : ℂ)) := by
     push_cast
