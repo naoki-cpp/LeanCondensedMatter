@@ -24,6 +24,7 @@ variable {Config : Type*}
 
 /-- **The Fock-space trace** as the canonical linear trace on the finite free algebraic Fock
 space. Its occupation-basis coordinate formula is `traceFock_eq_sum_matrixCoeff`. -/
+@[nolint unusedArguments]
 noncomputable def traceFock [Fintype Config] :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
   LinearMap.trace ℂ (AlgebraicFock Config)
