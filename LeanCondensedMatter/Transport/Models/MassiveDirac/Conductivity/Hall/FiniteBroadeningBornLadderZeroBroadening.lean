@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Zero-broadening ordered transverse Born-Dyson Středa conductivity
 
 This module attaches the physical Bastin/Středa conductivity prefactor and continuum momentum
-normalization to the fixed-cutoff ordered measured-`.x`, source-`.y` Středa momentum-integral
+normalization to the fixed-cutoff ordered measured-`x`, source-`y` Středa momentum-integral
 zero-broadening boundary. The result remains the ordered `xy` conductivity component;
 identification with the antisymmetric Hall projection is downstream.
 
@@ -43,7 +43,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
     Tendsto
       (fun broadening : ℝ =>
         (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor
-          e v m probeEnergy broadening disorderStrength hbar pMax).component .x .y)
+          e v m probeEnergy broadening disorderStrength hbar pMax).component 0 1)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary
