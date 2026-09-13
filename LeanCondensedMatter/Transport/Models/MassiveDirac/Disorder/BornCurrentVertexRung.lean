@@ -364,6 +364,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
     continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
     continuumBornRetardedAdvancedPauliXAngularNumerator
+  simp only [Matrix.cons_val_zero]
   rw [show
       (fun p : ℝ =>
         continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
