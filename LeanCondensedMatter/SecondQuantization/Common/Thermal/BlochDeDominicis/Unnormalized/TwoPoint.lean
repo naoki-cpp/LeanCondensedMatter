@@ -13,9 +13,10 @@ equation
 
 `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]`.
 
-Both the canonical `traceFock` version (`traceFock_diagonalEvolution_comp_two_point`) and a `tsum`,
-summability-hypothesis-gated version usable on an infinite `Config`
-(`tsumTrace_diagonalEvolution_comp_two_point`) are provided.
+Unlike the rotation identity itself (reusable beyond Bloch–de Dominicis), this equation is
+specifically the Bloch–de Dominicis base case. Both a `[Fintype Config]` version
+(`traceFock_diagonalEvolution_comp_two_point`) and a `tsum`, summability-hypothesis-gated version
+usable on an infinite `Config` (`tsumTrace_diagonalEvolution_comp_two_point`) are provided.
 -/
 
 namespace SecondQuantization
@@ -32,7 +33,7 @@ induction): derived from the assumed c-number commutator (rewriting `C₁Cⱼ` a
 and `traceFock_diagonalEvolution_comp_rotate` (rotating `CⱼC₁` back to `w₁•(C₁Cⱼ)`), then solving
 the resulting self-referential equation for the trace — left un-divided (rather than requiring
 `1 - ζw₁ ≠ 0` as a further hypothesis) so the caller decides how to use it. -/
-theorem traceFock_diagonalEvolution_comp_two_point
+theorem traceFock_diagonalEvolution_comp_two_point [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)
     (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
@@ -52,7 +53,7 @@ theorem traceFock_diagonalEvolution_comp_two_point
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 
-/-- **The `tsum` 2-point Bloch–de Dominicis base case**: the coordinate-summability analogue of
+/-- **The `tsum` 2-point Bloch–de Dominicis base case**: the `[Fintype Config]`-free analogue of
 `traceFock_diagonalEvolution_comp_two_point`, given the same c-number-commutator and KMS-weight
 hypotheses plus explicit summability of the partition-function diagonal series
 (`n ↦ (e^{-βH₀})ₙₙ`, `hSummD`) and of the rotation's double series (`h`). Summability of the
