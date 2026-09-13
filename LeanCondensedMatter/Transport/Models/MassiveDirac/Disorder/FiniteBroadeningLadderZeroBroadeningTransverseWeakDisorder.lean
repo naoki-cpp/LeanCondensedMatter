@@ -35,7 +35,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
             (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
               v m probeEnergy disorderStrength hbar pMax)
             (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-              v m probeEnergy disorderStrength hbar pMax) .y /
+              v m probeEnergy disorderStrength hbar pMax) 1 /
           (disorderStrength : ℂ))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
@@ -83,7 +83,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
         (((((probeEnergy ^ 2 + 3 * m ^ 2) /
           (2 * (probeEnergy ^ 2 + m ^ 2))) ^ 2 : ℝ) : ℂ)) := by
     dsimp [targetRung]
-    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector]
+    simp only [inPlaneLadderDeterminant, inPlaneCoefficientVector,
+      Matrix.cons_val_zero, Matrix.cons_val_one]
     have hOneMinusC :
         (1 : ℂ) - (κ : ℂ) =
           ((((probeEnergy ^ 2 + 3 * m ^ 2) /
