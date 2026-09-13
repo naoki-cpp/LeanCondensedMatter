@@ -19,7 +19,7 @@ This matches the physics reference notes' derivation (`quantum-statistical-mecha
 the role of `Ĉ₂⋯Ĉ_{2n}`, `C` plays the role of `Ĉ₁`, and `w₁ = e^{qβ}` is `C`'s eigenvalue-shift
 weight (`q = -εᵢ` for `annihilate i`, `q = εᵢ` for `create i`).
 
-Both a `[Fintype Config]` version (`traceFock_diagonalEvolution_comp_rotate`) and a `tsum`,
+Both the canonical `traceFock` rotation (`traceFock_diagonalEvolution_comp_rotate`) and a `tsum`,
 summability-hypothesis-gated version usable on an infinite `Config`
 (`tsumTrace_diagonalEvolution_comp_rotate`) are proved below. The Bloch–de Dominicis 2-point base
 case that consumes this rotation identity lives in
@@ -52,7 +52,7 @@ operator `A` and any operator `C` with eigenvalue-shift `q` under `heisenbergEvo
 `traceFock_comp_comm` (cyclicity) with `comp_diagonalEvolution_eq_smul_diagonalEvolution_comp` (the
 KMS-type relation) exactly as the physics reference notes' `⟨Ĉ₂⋯Ĉ_{2n}Ĉ₁⟩ = w₁⟨Ĉ₁Ĉ₂⋯Ĉ_{2n}⟩` step
 does. -/
-theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
+theorem traceFock_diagonalEvolution_comp_rotate
     (energy : Config → ℝ) (β q : ℝ) (A C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C) :
     traceFock ((diagonalEvolution energy (-β)).comp (A.comp C)) =
@@ -72,16 +72,15 @@ theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
           (((diagonalEvolution energy (-β)).comp C).comp A)) := by rw [LinearMap.smul_comp]
     _ = Complex.exp ((q * β : ℝ) : ℂ) •
           traceFock (((diagonalEvolution energy (-β)).comp C).comp A) := by
-        rw [traceFock_smul, smul_eq_mul]
+        rw [(traceFock (Config := Config)).map_smul, smul_eq_mul]
     _ = Complex.exp ((q * β : ℝ) : ℂ) •
           traceFock ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
         rw [LinearMap.comp_assoc]
 
-/-- **The `tsum` KMS-type trace rotation**: the `[Fintype Config]`-free analogue of
+/-- **The `tsum` KMS-type trace rotation**: the coordinate-summability analogue of
 `traceFock_diagonalEvolution_comp_rotate`, built from `Common.tsumTrace_comp_comm` instead of
 `traceFock_comp_comm`. This lets the rotation step operate on a genuine bosonic occupation type at
-the cost of the explicit double-summability hypothesis `h`, unlike the `[Fintype Config]` case
-where summability is automatic. -/
+the cost of the explicit double-summability hypothesis `h`. -/
 theorem tsumTrace_diagonalEvolution_comp_rotate
     (energy : Config → ℝ) (β q : ℝ) (A C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C)
