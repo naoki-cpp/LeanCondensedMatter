@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick
 
 set_option linter.style.header false
 
