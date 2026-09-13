@@ -8,7 +8,7 @@ set_option linter.style.header false
 /-!
 # Weak-disorder limit of the zero-broadening Born-Dyson current rung
 
-The canonical fixed-cutoff zero-broadening source-`.x` rung is reduced privately to the shared
+The canonical fixed-cutoff zero-broadening source-`x` rung is reduced privately to the shared
 quadratic Lorentzian and then sent through the separate one-sided `W → 0⁺` limit. No exact radial
 normal-form API, cutoff limit, or simultaneous broadening/disorder limit is exposed.
 -/
@@ -111,13 +111,13 @@ private theorem boundaryRAProduct_eq
   ring
 
 private theorem currentRungBoundary_eq_lorentzianIntegral
-    (output : Direction2)
+    (output : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-        output .x v m probeEnergy disorderStrength hbar pMax =
+        output 0 v m probeEnergy disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-          output .x v m probeEnergy disorderStrength hbar pMax *
+          output 0 v m probeEnergy disorderStrength hbar pMax *
         (((2 * Real.pi * (disorderStrength * momentumMeasurePrefactor hbar)) *
           (∫ p in (0 : ℝ)..pMax,
             p / ((boundaryRACenter v m probeEnergy disorderStrength hbar pMax - v ^ 2 * p ^ 2) ^ 2 +
@@ -125,11 +125,11 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
   let A := boundaryRACenter v m probeEnergy disorderStrength hbar pMax
   let B := boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
   let N := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    output .x v m probeEnergy disorderStrength hbar pMax
+    output 0 v m probeEnergy disorderStrength hbar pMax
   let scale := 2 * Real.pi * (disorderStrength * momentumMeasurePrefactor hbar)
   have hintegrand (p : ℝ) :
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-          output .x v m p probeEnergy disorderStrength hbar pMax =
+          output 0 v m p probeEnergy disorderStrength hbar pMax =
         N * (((scale * (p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) : ℝ)) : ℂ) := by
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
     rw [boundaryRAProduct_eq v m p probeEnergy disorderStrength hbar pMax hvelocity hhbar]
@@ -150,7 +150,7 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
   simp_rw [hintegrand]
   rw [intervalIntegral.integral_const_mul, hcast, intervalIntegral.integral_const_mul]
 
-/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`.x` rung tends
+/-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
 as one in-plane vector to `(κ, 0)`. -/
 theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
     (v m probeEnergy hbar pMax : ℝ)
@@ -258,9 +258,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     v pMax hvelocity hcenter0 hgap hcenterMax (by linarith) hwidth hscale
   rw [tendsto_pi_nhds]
   intro output
-  let n0 : ℂ := match output with
-    | .x => (probeEnergy ^ 2 - m ^ 2 : ℝ)
-    | .y => 0
+  let n0 : ℂ := ![(probeEnergy ^ 2 - m ^ 2 : ℝ), 0] output
   have hE (side : SpectralSide) :
       Tendsto
         (fun disorderStrength : ℝ =>
@@ -296,9 +294,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       Tendsto
         (fun disorderStrength : ℝ =>
           finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-            output .x v m probeEnergy disorderStrength hbar pMax)
+            output 0 v m probeEnergy disorderStrength hbar pMax)
         l (nhds n0) := by
-    cases output
+    fin_cases output
     · simpa [n0,
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
         inPlaneRotationMatrix, inPlaneCoefficientVector, pow_two] using hX
@@ -311,7 +309,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
         inPlaneCoefficientVector
           (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
             m probeEnergy : ℂ) 0 output := by
-    cases output
+    fin_cases output
     · dsimp [n0]
       simp only [inPlaneCoefficientVector]
       unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
