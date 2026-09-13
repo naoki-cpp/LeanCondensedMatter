@@ -171,12 +171,21 @@ eigenvalues), and `Fermionic.occupationProjector` (indicator eigenvalues). Extra
 lets each of those be stated as a `diagonalOperator` specialization, sharing the same
 composition/matrix-coefficient/injectivity lemmas rather than re-proving them per call site. -/
 
+private noncomputable def diagonalOperatorLinear {Config : Type*} (a : Config → ℂ) :
+    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
+
+@[simp]
+private theorem diagonalOperatorLinear_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
+    diagonalOperatorLinear a (basisState c) = a c • basisState c := by
+  change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+
 /-- Basis-diagonal operators form the canonical representation of the pointwise function algebra
 `Config → ℂ` on the algebraic Fock space. -/
 noncomputable def diagonalOperator {Config : Type*} :
     (Config → ℂ) →ₐ[ℂ] (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) where
-  toFun := fun a =>
-    Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
+  toFun := diagonalOperatorLinear
   map_zero' := by
     apply linearMap_ext_basisState
     intro c
@@ -200,13 +209,12 @@ noncomputable def diagonalOperator {Config : Type*} :
     intro k
     apply linearMap_ext_basisState
     intro c
-    simp
+    simp [smul_smul]
 
 @[simp]
 theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
-    diagonalOperator a (basisState c) = a c • basisState c := by
-  change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+    diagonalOperator a (basisState c) = a c • basisState c :=
+  diagonalOperatorLinear_basisState a c
 
 /-- A basis-diagonal operator rescales each coordinate independently. -/
 theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
