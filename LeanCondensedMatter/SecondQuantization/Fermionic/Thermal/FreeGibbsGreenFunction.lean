@@ -117,7 +117,8 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_self
         (Common.finiteHilbertOperator ((annihilate i).comp (create i))) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
   rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-    annihilate_comp_create_self, Common.normalizedWeightedDiagonal_sub,
+    annihilate_comp_create_self,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_sub,
     Common.normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_numberOperator]
@@ -138,7 +139,8 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
   rw [freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction,
     weightedFreeTwoPointFunction_of_gt ε (freeBoltzmannWeight ε β) i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
-    LinearMap.comp_smul, smul_smul, Common.normalizedWeightedDiagonal_smul,
+    LinearMap.comp_smul, smul_smul,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul, smul_eq_mul,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_self]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
@@ -156,7 +158,7 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl,
-    Common.normalizedWeightedDiagonal_smul,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul, smul_eq_mul,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
@@ -174,8 +176,12 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  rw [neg_smul, Common.normalizedWeightedDiagonal_smul, Common.normalizedWeightedDiagonal_add,
-    Common.normalizedWeightedDiagonal_neg, Common.normalizedWeightedDiagonal_smul, one_mul,
+  rw [neg_smul,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_add,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_neg,
+    (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul,
+    smul_eq_mul, one_mul,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_self,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
@@ -225,10 +231,8 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   apply Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
   · simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-      Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
   · simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-      Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
