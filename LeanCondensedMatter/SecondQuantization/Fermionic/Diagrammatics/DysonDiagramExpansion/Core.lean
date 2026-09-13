@@ -20,8 +20,7 @@ dysonVertexMoment ε β (quarticInteraction g) S =
 ```
 
 (`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude`), via the general
-finite-temperature Bloch–de Dominicis theorem. See `notes/roadmaps/second-quantization.md` for the
-surrounding diagram-connectedness plan.
+finite-temperature Bloch–de Dominicis theorem.
 -/
 
 namespace SecondQuantization
