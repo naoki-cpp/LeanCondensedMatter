@@ -232,12 +232,21 @@ jobs:
           set -o pipefail
           lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
 
+      - name: Audit proof-guided theorem replacements
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
+
+      - name: Merge theorem replacement findings
+        run: python3 scripts/merge_theorem_replacements.py
+
       - name: Add theorem catalog summary
         if: success()
         shell: bash
         run: |
           echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
-          grep -E '^(Theorems|Retained audit declarations|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Retained audit declarations|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
 
@@ -252,12 +261,14 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload theorem catalog generator log
+      - name: Upload theorem catalog logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: theorem-catalog-log
-          path: theorem-catalog.log
+          path: |
+            theorem-catalog.log
+            theorem-replacement-audit.log
           if-no-files-found: warn
           retention-days: 7
 
