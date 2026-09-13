@@ -37,9 +37,6 @@ or consumer structure changes.
   specialization identifying the corrected current with the conventional local pairing `q v`.
 - `QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero` — model-independent analytic
   approximate-identity result for vanishing Lorentzian mass between fixed nested positive windows.
-- `SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq` — structural invariant
-  of the fixed-external fiber equivalence: reassembly preserves the standardized connected external
-  piece independently of the vacuum component.
 - `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
   representation theorem identifying one Wick diagram's fixed-order ordered-simplex contribution
   with the flattened pairing evaluator after transport to a chosen vertex order.
@@ -152,9 +149,6 @@ or consumer structure changes.
 - `QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
   physical endpoint that every state of a filled band has unit zero-temperature occupation, paired
   with the retained empty-band theorem.
-- `SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder` — canonical
-  reassembly identity for the quartic-diagram-facing component-order API; the module deliberately
-  specializes the generic partition-order machinery into this domain vocabulary.
 - `SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem` — semantic normalization
   rule for the named flattened-leg component predicate, identifying it with membership of the
   incident vertex in the corresponding component part.
