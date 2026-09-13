@@ -87,11 +87,13 @@ noncomputable def diagonalEvolutionEquiv (energy : Config → ℝ) (τ : ℝ) :
   __ := diagonalEvolution energy τ
   invFun := diagonalEvolution energy (-τ)
   left_inv x := by
-    have h := LinearMap.congr_fun (diagonalEvolution_neg_comp energy τ) x
-    simpa only [LinearMap.comp_apply, LinearMap.id_apply] using h
+    change ((diagonalEvolution energy (-τ)).comp (diagonalEvolution energy τ)) x = x
+    rw [diagonalEvolution_neg_comp]
+    rfl
   right_inv x := by
-    have h := LinearMap.congr_fun (diagonalEvolution_comp_neg energy τ) x
-    simpa only [LinearMap.comp_apply, LinearMap.id_apply] using h
+    change ((diagonalEvolution energy τ).comp (diagonalEvolution energy (-τ))) x = x
+    rw [diagonalEvolution_comp_neg]
+    rfl
 
 @[simp]
 theorem diagonalEvolutionEquiv_apply (energy : Config → ℝ) (τ : ℝ)
@@ -231,7 +233,7 @@ theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (
     heisenbergEvolve energy τ (diagonalOperator a) = diagonalOperator a := by
   apply matrixCoeff_ext
   intro m n
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_diagonalOperator, matrixCoeff_diagonalOperator]
+  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_diagonalOperator]
   split_ifs with h
   · subst m
     simp
