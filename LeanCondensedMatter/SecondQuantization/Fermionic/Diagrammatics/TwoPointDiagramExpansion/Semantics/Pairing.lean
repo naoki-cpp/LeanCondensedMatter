@@ -172,7 +172,7 @@ theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
       quarticLocalLegOperator q l := by
   cases h : Common.quarticLocalLeg q l <;>
     simp [quarticLocalLegExternalFieldLabel, bareExternalFieldOperator,
-      quarticLocalLegOperator, h]
+      quarticLocalLegOperator, Common.quarticLocalLegOperator, h]
 
 omit [LinearOrder Mode] in
 @[simp]
