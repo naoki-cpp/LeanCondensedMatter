@@ -80,6 +80,20 @@ theorem dGamma_smul (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
       rw [dGamma_oneParticle_mul, dGamma_oneParticle_mul]
       simp [hx, smul_add]
 
+/-- The basis-independent second-quantization construction as a linear map between endomorphism
+spaces. -/
+noncomputable def dGammaLinear :
+    (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ[ℂ]
+      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) where
+  toFun := dGamma 𝓗₁
+  map_add' := dGamma_add 𝓗₁
+  map_smul' := dGamma_smul 𝓗₁
+
+@[simp]
+theorem dGammaLinear_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    dGammaLinear 𝓗₁ T = dGamma 𝓗₁ T :=
+  rfl
+
 end AlgebraicFock
 end Fermionic
 end SecondQuantization
