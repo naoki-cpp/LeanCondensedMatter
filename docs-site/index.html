@@ -62,10 +62,11 @@
       </div>
 
       <label>
-        Module
-        <select id="module-filter">
+        Graph module filter
+        <select id="module-filter" aria-describedby="module-filter-hint" disabled>
           <option value="*">All modules</option>
         </select>
+        <span id="module-filter-hint" class="control-help">Browse modules through Overview; this filter becomes available after opening a declaration graph.</span>
       </label>
 
       <fieldset class="highlight-controls">
