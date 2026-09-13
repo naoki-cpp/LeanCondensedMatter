@@ -28,7 +28,7 @@ noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     ((imaginaryTimeEvolveFree ε (-β)).comp
       (Common.dysonCoeff (fermionEnergy ε) V n β))
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The fermionic coefficient is the specialization of the Common Dyson trace coefficient. -/
 theorem dysonPartitionCoeff_eq_dysonTraceCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
@@ -39,7 +39,7 @@ noncomputable def dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) : PowerSeries ℂ :=
   Common.dysonTraceSeries (fermionEnergy ε) β V
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Coefficients are the fermionic Dyson partition coefficients. -/
 theorem coeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
@@ -75,20 +75,23 @@ noncomputable def dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
   PowerSeries.logOf
     (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
 
-omit [LinearOrder Mode] in
-theorem constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries
+omit [LinearOrder Mode] [Fintype Mode] in
+theorem constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries [Finite Mode]
     (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     PowerSeries.constantCoeff
-        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1 :=
-  PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1 := by
+  letI := Fintype.ofFinite Mode
+  exact PowerSeries.constantCoeff_normalizeByConstantCoeff
     (constantCoeff_dysonPartitionSeries ε β V ▸ freePartitionFunction_ne_zero ε β)
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The formal logarithm has vanishing constant coefficient. -/
-theorem constantCoeff_dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
+theorem constantCoeff_dysonFormalLogPartitionFunction [Finite Mode]
+    (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     PowerSeries.constantCoeff (dysonFormalLogPartitionFunction ε β V) = 0 := by
+  letI := Fintype.ofFinite Mode
   rw [dysonFormalLogPartitionFunction]
   exact PowerSeries.constantCoeff_logOf
     (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V)
