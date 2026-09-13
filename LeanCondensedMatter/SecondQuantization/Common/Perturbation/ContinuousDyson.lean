@@ -22,127 +22,12 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config]
 
-/-! ## Algebraic compatibility of finite operator transport -/
-
-@[simp]
-theorem finiteContinuousOperator_zero :
-    finiteContinuousOperator
-        (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  funext m
-  rw [finiteContinuousOperator_basis_apply]
-  rfl
-
-@[simp]
-theorem finiteContinuousOperator_add
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator (A + B) =
-      finiteContinuousOperator A + finiteContinuousOperator B := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  funext m
-  rw [finiteContinuousOperator_basis_apply, matrixCoeff_add]
-  change matrixCoeff A m n + matrixCoeff B m n =
-    finiteContinuousOperator A (finiteAnalyticBasis n) m +
-      finiteContinuousOperator B (finiteAnalyticBasis n) m
-  rw [finiteContinuousOperator_basis_apply, finiteContinuousOperator_basis_apply]
-
-@[simp]
-theorem finiteContinuousOperator_smul (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator (c • A) = c • finiteContinuousOperator A := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  funext m
-  rw [finiteContinuousOperator_basis_apply, matrixCoeff_smul]
-  change c * matrixCoeff A m n =
-    c * finiteContinuousOperator A (finiteAnalyticBasis n) m
-  rw [finiteContinuousOperator_basis_apply]
-
-@[simp]
-theorem finiteContinuousOperator_neg
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator (-A) = - finiteContinuousOperator A := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  funext m
-  rw [finiteContinuousOperator_basis_apply]
-  simp [matrixCoeff]
-
-@[simp]
-theorem finiteContinuousOperator_id :
-    finiteContinuousOperator
-        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
-      ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config) := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  calc
-    finiteContinuousOperator
-        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-        (finiteAnalyticBasis n) =
-      finiteAnalyticFockEquiv
-        ((LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-          (basisState n)) := by
-        rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
-    _ = finiteAnalyticBasis n := by
-      simp only [LinearMap.id_apply, finiteAnalyticFockEquiv_basisState]
-    _ = ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)
-        (finiteAnalyticBasis n) := rfl
-
-@[simp]
-theorem finiteContinuousOperator_one :
-    finiteContinuousOperator
-        (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
-  change finiteContinuousOperator
-      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
-    ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)
-  exact finiteContinuousOperator_id
-
-@[simp]
-theorem finiteContinuousOperator_comp
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator (A.comp B) =
-      (finiteContinuousOperator A).comp (finiteContinuousOperator B) := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  funext m
-  rw [finiteContinuousOperator_basis_apply]
-  change matrixCoeff (A.comp B) m n =
-    finiteContinuousOperator A
-      (finiteContinuousOperator B (finiteAnalyticBasis n)) m
-  rw [matrixCoeff_comp, finiteContinuousOperator_apply_apply]
-  exact Finset.sum_congr rfl fun k _ => by
-    rw [finiteContinuousOperator_basis_apply]
-
-@[simp]
-theorem finiteContinuousOperator_mul
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator (A * B) =
-      finiteContinuousOperator A * finiteContinuousOperator B := by
-  change finiteContinuousOperator (A.comp B) =
-    (finiteContinuousOperator A).comp (finiteContinuousOperator B)
-  exact finiteContinuousOperator_comp A B
-
-@[simp]
-theorem finiteContinuousOperator_pow
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    finiteContinuousOperator (A ^ n) = finiteContinuousOperator A ^ n := by
-  induction n with
-  | zero => simp
-  | succ n ih => simp [pow_succ, ih]
-
 /-! ## Continuous free evolution and interaction picture -/
 
 /-- The transported continuous realization of `diagonalEvolution`. -/
 noncomputable def continuousDiagonalEvolution (energy : Config → ℝ) (τ : ℝ) :
     FiniteContinuousOperator Config :=
   finiteContinuousOperator (diagonalEvolution energy τ)
-
-@[simp]
-theorem continuousDiagonalEvolution_toLinearMap (energy : Config → ℝ) (τ : ℝ) :
-    (continuousDiagonalEvolution energy τ).toLinearMap =
-      transportedFiniteOperatorLinearMap (diagonalEvolution energy τ) := rfl
 
 @[simp]
 theorem continuousDiagonalEvolution_basis_apply (energy : Config → ℝ) (τ : ℝ)
@@ -197,12 +82,6 @@ noncomputable def continuousInteractionPicture (energy : Config → ℝ)
   finiteContinuousOperator (interactionPicture energy V τ)
 
 @[simp]
-theorem continuousInteractionPicture_toLinearMap (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
-    (continuousInteractionPicture energy V τ).toLinearMap =
-      transportedFiniteOperatorLinearMap (interactionPicture energy V τ) := rfl
-
-@[simp]
 theorem continuousInteractionPicture_basis_apply_apply (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (m n : Config) :
     continuousInteractionPicture energy V τ (finiteAnalyticBasis n) m =
@@ -242,12 +121,6 @@ noncomputable def continuousDysonCoeff (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
     FiniteContinuousOperator Config :=
   finiteContinuousOperator (dysonCoeff energy V n τ)
-
-@[simp]
-theorem continuousDysonCoeff_toLinearMap (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
-    (continuousDysonCoeff energy V n τ).toLinearMap =
-      transportedFiniteOperatorLinearMap (dysonCoeff energy V n τ) := rfl
 
 /-- Each continuous Dyson coefficient is a continuous operator-valued function of imaginary
  time. -/
