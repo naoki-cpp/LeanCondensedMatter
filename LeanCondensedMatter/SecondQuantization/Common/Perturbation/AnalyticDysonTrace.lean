@@ -40,7 +40,8 @@ theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
 theorem finiteOperatorTrace_finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteOperatorTrace (finiteContinuousOperator A) = traceFock A := by
-  simp [finiteOperatorTrace_apply, traceFock, finiteContinuousOperator_basis_apply]
+  simp [finiteOperatorTrace_apply, traceFock_eq_sum_matrixCoeff,
+    finiteContinuousOperator_basis_apply]
 
 /-- Left composition by a fixed finite operator, bundled as a continuous linear map on the
 operator algebra. -/
