@@ -164,8 +164,11 @@ theorem boundedLatticeOperator_comp
       AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A.comp B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
-  simpa [boundedLatticeOperator] using
-    map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
+  change
+    boundedLatticeOperatorAlgEquiv (A.comp B) =
+      (boundedLatticeOperatorAlgEquiv A).comp (boundedLatticeOperatorAlgEquiv B)
+  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
+  exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
 /-- Bounded transport preserves the ordinary algebraic commutator. -/
 theorem boundedLatticeOperator_linearCommutator
