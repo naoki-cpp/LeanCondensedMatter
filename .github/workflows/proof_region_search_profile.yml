@@ -43,32 +43,37 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import os
+          import re
           from pathlib import Path
 
           variant = os.environ['VARIANT']
           source = Path('scripts/ProofRegions.lean').read_text()
 
-          exact = '''  if let some candidate ← exactSearch exactCache first goal region.spanLines source then
-            best := betterCandidate best candidate
-          '''
-          rewrite = '''  if let some candidate ← rewriteSearch rewriteCache first goal region.spanLines source then
-            best := betterCandidate best candidate
-          '''
-          transition = '''      for start in [:seq.size] do
-          '''
-          run_audit = '''  let results ← runAudit inputCtx state minLines
-          '''
+          def replace_once(pattern, replacement, text):
+              updated, count = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
+              if count != 1:
+                  raise SystemExit(f'profile transform failed: {variant}')
+              return updated
 
-          transforms = {
-              'Full': lambda text: text,
-              'NoExact': lambda text: text.replace(exact, '  pure ()\n'),
-              'NoRewrite': lambda text: text.replace(rewrite, '  pure ()\n'),
-              'NoTransitions': lambda text: text.replace(transition, '      for start in [:0] do\n'),
-              'NoAudit': lambda text: text.replace(run_audit, '  let results : Array AuditResult := #[]\n'),
-          }
-          text = transforms[variant](source)
-          if variant != 'Full' and text == source:
-              raise SystemExit(f'profile transform failed: {variant}')
+          if variant == 'Full':
+              text = source
+          elif variant == 'NoExact':
+              text = replace_once(
+                  r'^  if let some candidate ← exactSearch exactCache first goal region\.spanLines source then\n    best := betterCandidate best candidate\n',
+                  '  pure ()\n', source)
+          elif variant == 'NoRewrite':
+              text = replace_once(
+                  r'^  if let some candidate ← rewriteSearch rewriteCache first goal region\.spanLines source then\n    best := betterCandidate best candidate\n',
+                  '  pure ()\n', source)
+          elif variant == 'NoTransitions':
+              text = replace_once(r'^      for start in \[:seq\.size\] do\n',
+                                  '      for start in [:0] do\n', source)
+          elif variant == 'NoAudit':
+              text = replace_once(r'^  let results ← runAudit inputCtx state minLines\n',
+                                  '  let results : Array AuditResult := #[]\n', source)
+          else:
+              raise SystemExit(f'unknown variant: {variant}')
+
           Path('scripts/ProofRegionsProfile.lean').write_text(text)
           PY
 
