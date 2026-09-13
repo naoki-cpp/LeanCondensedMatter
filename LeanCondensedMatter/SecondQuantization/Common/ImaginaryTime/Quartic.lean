@@ -18,34 +18,7 @@ noncomputable section
 
 variable {Mode Config : Type*}
 
-/-- A semantic quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. -/
-theorem heisenbergEvolve_quarticLocalLeg
-    (energy : Config → ℝ) (ε : Mode → ℝ)
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (leg : QuarticLocalLeg Mode) (τ : ℝ)
-    (hcreate : ∀ i, heisenbergEvolve energy τ (create i) =
-      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
-    (hannihilate : ∀ i, heisenbergEvolve energy τ (annihilate i) =
-      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
-    heisenbergEvolve energy τ (leg.operator create annihilate) =
-      Complex.exp (((τ * leg.energyShift ε : ℝ) : ℂ)) • leg.operator create annihilate := by
-  cases leg with
-  | create i =>
-      change heisenbergEvolve energy τ (create i) =
-        Complex.exp (((τ * ε i : ℝ) : ℂ)) • create i
-      rw [hcreate i]
-      congr 2
-      push_cast
-      rfl
-  | annihilate i =>
-      change heisenbergEvolve energy τ (annihilate i) =
-        Complex.exp (((τ * -ε i : ℝ) : ℂ)) • annihilate i
-      rw [hannihilate i]
-      congr 2
-      push_cast
-      ring
-
-/-- A vertex-selected local quartic leg specializes the semantic local-leg evolution theorem. -/
+/-- A local quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. -/
 theorem heisenbergEvolve_quarticLocalLegOperator
     (energy : Config → ℝ) (ε : Mode → ℝ)
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
@@ -57,8 +30,11 @@ theorem heisenbergEvolve_quarticLocalLegOperator
     heisenbergEvolve energy τ (quarticLocalLegOperator create annihilate q l) =
       Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
         quarticLocalLegOperator create annihilate q l := by
-  exact heisenbergEvolve_quarticLocalLeg
-    energy ε create annihilate (quarticLocalLeg q l) τ hcreate hannihilate
+  change heisenbergEvolve energy τ ((quarticLocalLeg q l).operator create annihilate) =
+    Complex.exp (((τ * (quarticLocalLeg q l).energyShift ε : ℝ) : ℂ)) •
+      (quarticLocalLeg q l).operator create annihilate
+  generalize quarticLocalLeg q l = leg
+  cases leg <;> simp [hcreate, hannihilate, mul_comm]
 
 /-- A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. -/
 theorem heisenbergEvolve_quarticVertexOperator
