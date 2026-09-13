@@ -51,24 +51,17 @@ theorem traceFock_comp_comm [Fintype Config]
 
 variable [Fintype Config]
 
-/-- **The weighted trace** as a linear functional on endomorphisms,
-`Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
+/-- **The weighted trace** as the finite linear combination of diagonal matrix-coefficient
+functionals, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
 noncomputable def weightedTrace (w : Config → ℂ) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
-  toFun := fun A => ∑ n : Config, w n * matrixCoeffLinear n n A
-  map_add' := by
-    intro A B
-    simp only [map_add, mul_add, Finset.sum_add_distrib]
-  map_smul' := by
-    intro c A
-    simp only [map_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
-    exact Finset.sum_congr rfl fun n _ => by ring
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  ∑ n : Config, w n • matrixCoeffLinear n n
 
 /-- Coordinate formula for the weighted trace. -/
 theorem weightedTrace_eq_sum_matrixCoeff (w : Config → ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    weightedTrace w A = ∑ n : Config, w n * matrixCoeff A n n :=
-  rfl
+    weightedTrace w A = ∑ n : Config, w n * matrixCoeff A n n := by
+  simp [weightedTrace]
 
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
 noncomputable def weightSum (w : Config → ℂ) : ℂ :=
