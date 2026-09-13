@@ -55,13 +55,15 @@ theorem traceFock_diagonalEvolution_comp_eq_weightedTrace (energy : Config → �
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock ((diagonalEvolution energy (-β)).comp A) = weightedTrace (boltzmannWeight energy β) A
     := by
-  simp only [traceFock, weightedTrace, matrixCoeff_comp, matrixCoeff_diagonalEvolution, ite_mul,
-    zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  rw [traceFock_eq_sum_matrixCoeff, weightedTrace_eq_sum_matrixCoeff]
+  simp only [matrixCoeff_comp, matrixCoeff_diagonalEvolution, ite_mul, zero_mul,
+    Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :
     traceFock (diagonalEvolution energy (-β)) = weightSum (boltzmannWeight energy β) := by
-  simp only [traceFock, weightSum]
+  rw [traceFock_eq_sum_matrixCoeff]
+  simp only [weightSum]
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [matrixCoeff_diagonalEvolution]
   simp
@@ -76,7 +78,7 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
       traceFock ((diagonalEvolution energy (-β)).comp A) /
         traceFock (diagonalEvolution energy (-β)) := by
   rw [finiteGibbsExpectation_eq_sum, traceFock_diagonalEvolution_comp_eq_weightedTrace,
-    traceFock_diagonalEvolution_eq_weightSum, weightedTrace, weightSum]
+    traceFock_diagonalEvolution_eq_weightSum, weightedTrace_eq_sum_matrixCoeff, weightSum]
   simp_rw [purePointGibbsProbability]
   have hZcast : ((purePointPartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n := by
@@ -102,7 +104,7 @@ theorem finiteGibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config �
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteGibbsExpectation energy β A =
       normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
-  rw [finiteGibbsExpectation_eq_trace_div, normalizedWeightedDiagonal,
+  rw [finiteGibbsExpectation_eq_trace_div, normalizedWeightedDiagonal_eq_weightedTrace_div,
     traceFock_diagonalEvolution_comp_eq_weightedTrace,
     traceFock_diagonalEvolution_eq_weightSum]
 
