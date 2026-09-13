@@ -5,7 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 set_option linter.style.header false
 
 /-!
-# Local legs of a bosonic quartic vertex
+# Local legs of a quartic bosonic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
 specialized to bosonic ladder operators here. Generic exchange algebra lives in `Common.Algebra`;
@@ -22,9 +22,9 @@ noncomputable section
 variable {Mode : Type*}
 
 /-- The bosonic operator represented by a local leg of a quartic vertex. -/
-noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  (Common.quarticLocalLeg q l).operator create annihilate
+noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
+    Fin 4 → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.quarticLocalLegOperator create annihilate q
 
 /-- Every quartic local-leg operator is an eigenoperator of the free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
