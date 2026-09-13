@@ -22,9 +22,9 @@ noncomputable section
 variable {Mode : Type*}
 
 /-- The bosonic operator represented by a local leg of a quartic vertex. -/
-noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
-    Fin 4 → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Common.quarticLocalLegOperator create annihilate q
+noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  (Common.quarticLocalLeg q l).operator create annihilate
 
 /-- Every quartic local-leg operator is an eigenoperator of the free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
