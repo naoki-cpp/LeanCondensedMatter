@@ -36,6 +36,7 @@ theorem heisenbergEvolve_quarticLocalLeg
       rw [hcreate i]
       congr 2
       push_cast
+      rfl
   | annihilate i =>
       change heisenbergEvolve energy τ (annihilate i) =
         Complex.exp (((τ * -ε i : ℝ) : ℂ)) • annihilate i
