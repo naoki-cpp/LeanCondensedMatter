@@ -1,4 +1,4 @@
-import Mathlib.Algebra.Algebra.Hom
+import Mathlib.Algebra.Algebra.Pi
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.LinearAlgebra.Finsupp.LSum
@@ -103,7 +103,8 @@ theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
 theorem matrixCoeff_smul {Config : Type*} (c : ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
-  simpa [smul_eq_mul] using (matrixCoeffLinear m n).map_smul c A
+  change (matrixCoeffLinear m n) (c • A) = c • (matrixCoeffLinear m n) A
+  exact (matrixCoeffLinear m n).map_smul c A
 
 /-- `matrixCoeff` is linear in its operator argument: addition. -/
 theorem matrixCoeff_add {Config : Type*}
