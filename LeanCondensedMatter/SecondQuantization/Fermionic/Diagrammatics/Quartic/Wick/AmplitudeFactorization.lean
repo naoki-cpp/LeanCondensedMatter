@@ -10,12 +10,11 @@ set_option linter.style.header false
 # Component factorization of quartic Wick-diagram amplitudes
 
 The global vertex-order sum is reindexed by component-local orders and component shuffles. For each
-fixed family of local orders, the M1 contraction-integrand factorization identifies the global
-integrand with the generic family-shuffle integrand, so the ordered-simplex product theorem applies
-directly. The remaining finite sum over families of component orders distributes into the product of
-the local order sums. Combining this with the Common scalar-prefactor factorization gives the full M2
-quartic Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is
-introduced at this assembly boundary.
+fixed family of local orders, contraction-integrand factorization identifies the global integrand
+with the generic family-shuffle integrand, so the ordered-simplex product theorem applies directly.
+The remaining finite sum over families of component orders distributes into the product of the local
+order sums. Combining this with the Common scalar-prefactor factorization gives the quartic
+Wick-amplitude factorization.
 -/
 
 namespace SecondQuantization
