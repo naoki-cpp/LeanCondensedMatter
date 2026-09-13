@@ -109,7 +109,6 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
   unfold velocityOperator velocity inPlanePauliVertexOperator matrixOperator
   rw [map_smul, map_smul]
   simp [directionPauli, Direction2.x, Direction2.y]
-  push_cast
   module
 
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
