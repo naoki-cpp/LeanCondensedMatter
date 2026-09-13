@@ -28,13 +28,13 @@ noncomputable section
 open Filter
 
 /-- Two complex coefficients indexed by the in-plane Cartesian directions. -/
-abbrev InPlaneCoefficientVector := Fin 2 → ℂ
+abbrev InPlaneCoefficientVector := Direction2 → ℂ
 
 /-- In-plane coefficient vector with components `(x,y)`. -/
 def inPlaneCoefficientVector (x y : ℂ) : InPlaneCoefficientVector := ![x, y]
 
 /-- Repository-oriented isotropic in-plane matrix derived from a rung vector `(X,Y)`. -/
-def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2) ℂ :=
+def inPlaneRotationMatrix (rung : InPlaneCoefficientVector) : Matrix Direction2 Direction2 ℂ :=
   !![rung .x, -(rung .y); rung .y, rung .x]
 
 @[simp] theorem inPlaneRotationMatrix_apply_x_x (rung : InPlaneCoefficientVector) :
