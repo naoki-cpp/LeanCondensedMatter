@@ -115,8 +115,7 @@ theorem mixedTimeOrderedAtomicLegs_all_mem {n : ℕ}
   | inr p =>
       rcases p with ⟨⟨v, hv⟩, l⟩
       refine ⟨Sum.inr v, orderedTwoPointTimedEvents_all_mem τ τ' σ (Sum.inr v), ?_⟩
-      rw [twoPointTimedEventAtomicLegs_interaction, List.mem_ofFn]
-      exact ⟨l, rfl⟩
+      simpa [twoPointTimedEventAtomicLegs_interaction, List.mem_ofFn]
 
 /-- The mixed-time leg list has exactly `4n + 2` entries. -/
 theorem mixedTimeOrderedAtomicLegs_length {n : ℕ}
@@ -162,8 +161,7 @@ theorem orderedTwoPointLeg_mem_eventAtomicLegs {n : ℕ} (leg : OrderedTwoPointL
   | inl e => simp [orderedTwoPointLegEvent]
   | inr p =>
       rcases p with ⟨⟨v, hv⟩, l⟩
-      rw [orderedTwoPointLegEvent, twoPointTimedEventAtomicLegs_interaction, List.mem_ofFn]
-      exact ⟨l, rfl⟩
+      simpa [orderedTwoPointLegEvent, twoPointTimedEventAtomicLegs_interaction, List.mem_ofFn]
 
 /-- The mixed position occupied by a standard two-point leg identity. -/
 noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
