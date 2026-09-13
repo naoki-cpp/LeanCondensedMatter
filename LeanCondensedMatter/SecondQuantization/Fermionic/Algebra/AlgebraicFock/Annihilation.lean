@@ -96,49 +96,21 @@ section InnerProduct
 
 variable (𝓗₁ : Type*) [NormedAddCommGroup 𝓗₁] [InnerProductSpace ℂ 𝓗₁]
 
-/-- The linear functional `g ↦ inner ℂ f g` associated with `f`.
-
-As a function of `f`, this dual vector is conjugate-linear. -/
-noncomputable def innerDual (f : 𝓗₁) : Module.Dual ℂ 𝓗₁ :=
-  ((innerSL ℂ) f).toLinearMap
+/-- The inner-product dual `f ↦ (g ↦ inner ℂ f g)`, bundled with its canonical conjugate-linearity
+in the smearing vector. -/
+noncomputable def innerDual : 𝓗₁ →ₗ⋆[ℂ] Module.Dual ℂ 𝓗₁ :=
+  innerₛₗ ℂ
 
 @[simp]
 theorem innerDual_apply (f g : 𝓗₁) :
-    innerDual 𝓗₁ f g = inner ℂ f g := by
-  simp [innerDual]
+    innerDual 𝓗₁ f g = inner ℂ f g :=
+  rfl
 
-/-- The inner-product dual is additive in its vector argument. -/
-theorem innerDual_add (f g : 𝓗₁) :
-    innerDual 𝓗₁ (f + g) = innerDual 𝓗₁ f + innerDual 𝓗₁ g := by
-  apply LinearMap.ext
-  intro h
-  simp [innerDual]
-
-/-- The inner-product dual is conjugate-linear in its vector argument. -/
-theorem innerDual_smul (c : ℂ) (f : 𝓗₁) :
-    innerDual 𝓗₁ (c • f) = star c • innerDual 𝓗₁ f := by
-  apply LinearMap.ext
-  intro h
-  simp [innerDual]
-
-/-- The smeared annihilation operator `a(f)`, defined by contraction with `g ↦ inner ℂ f g`. -/
-noncomputable def annihilate (f : 𝓗₁) :
-    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
-  annihilateDual 𝓗₁ (innerDual 𝓗₁ f)
-
-/-- Smeared annihilation is additive in the smearing vector. -/
-theorem annihilate_add (f g : 𝓗₁) :
-    annihilate 𝓗₁ (f + g) = annihilate 𝓗₁ f + annihilate 𝓗₁ g := by
-  change annihilateDual 𝓗₁ (innerDual 𝓗₁ (f + g)) =
-    annihilateDual 𝓗₁ (innerDual 𝓗₁ f) + annihilateDual 𝓗₁ (innerDual 𝓗₁ g)
-  rw [innerDual_add, map_add]
-
-/-- Smeared annihilation is conjugate-linear in the smearing vector. -/
-theorem annihilate_smul (c : ℂ) (f : 𝓗₁) :
-    annihilate 𝓗₁ (c • f) = star c • annihilate 𝓗₁ f := by
-  change annihilateDual 𝓗₁ (innerDual 𝓗₁ (c • f)) =
-    star c • annihilateDual 𝓗₁ (innerDual 𝓗₁ f)
-  rw [innerDual_smul, map_smul]
+/-- The smeared annihilation field, bundled as the conjugate-linear map obtained by composing the
+inner-product dual with left contraction. -/
+noncomputable def annihilate :
+    𝓗₁ →ₗ⋆[ℂ] (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
+  (annihilateDual 𝓗₁).comp (innerDual 𝓗₁)
 
 /-- A smeared annihilation field kills the vacuum. -/
 @[simp]

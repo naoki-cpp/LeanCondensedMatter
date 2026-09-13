@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic
+import Mathlib.Algebra.Algebra.Bilinear
 
 set_option linter.style.header false
 
@@ -22,10 +23,11 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- The smeared fermionic creation operator `a†(f)`, acting by left exterior multiplication. -/
-noncomputable def create (f : 𝓗₁) :
-    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
-  LinearMap.mulLeft ℂ (oneParticle 𝓗₁ f)
+/-- The smeared fermionic creation field, bundled as the canonical complex-linear map from
+one-particle vectors to left-multiplication endomorphisms of algebraic Fock space. -/
+noncomputable def create :
+    𝓗₁ →ₗ[ℂ] (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
+  (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)).toLinearMap.comp (oneParticle 𝓗₁)
 
 @[simp]
 theorem create_apply (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
