@@ -107,6 +107,15 @@ theorem diagonalEvolutionEquiv_symm_apply (energy : Config → ℝ) (τ : ℝ)
     (diagonalEvolutionEquiv energy τ).symm x = diagonalEvolution energy (-τ) x :=
   rfl
 
+private theorem diagonalEvolutionEquiv_trans (energy : Config → ℝ) (s t : ℝ) :
+    (diagonalEvolutionEquiv energy s).trans (diagonalEvolutionEquiv energy t) =
+      diagonalEvolutionEquiv energy (s + t) := by
+  apply LinearEquiv.ext
+  intro x
+  change ((diagonalEvolution energy t).comp (diagonalEvolution energy s)) x =
+    diagonalEvolution energy (s + t) x
+  rw [diagonalEvolution_add, add_comm t s]
+
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
 /-- **The algebraic imaginary-time (Heisenberg-type) evolution of operators under the diagonal
@@ -168,24 +177,14 @@ theorem heisenbergEvolve_heisenbergEvolve (energy : Config → ℝ) (s t : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy t (heisenbergEvolve energy s A) =
       heisenbergEvolve energy (s + t) A := by
-  rw [heisenbergEvolve_eq_comp, heisenbergEvolve_eq_comp, heisenbergEvolve_eq_comp]
-  calc
-    (diagonalEvolution energy t).comp
-        (((diagonalEvolution energy s).comp
-          (A.comp (diagonalEvolution energy (-s)))).comp
-          (diagonalEvolution energy (-t))) =
-      ((diagonalEvolution energy t).comp (diagonalEvolution energy s)).comp
-        (A.comp ((diagonalEvolution energy (-s)).comp
-          (diagonalEvolution energy (-t)))) := by
-        simp only [LinearMap.comp_assoc]
-    _ = (diagonalEvolution energy (t + s)).comp
-        (A.comp (diagonalEvolution energy (-s + -t))) := by
-      rw [diagonalEvolution_add, diagonalEvolution_add]
-    _ = (diagonalEvolution energy (s + t)).comp
-        (A.comp (diagonalEvolution energy (-(s + t)))) := by
-      have hst : t + s = s + t := by ring
-      have hneg : -s + -t = -(s + t) := by ring
-      rw [hst, hneg]
+  change
+    (diagonalEvolutionEquiv energy t).conjAlgEquiv ℂ
+        ((diagonalEvolutionEquiv energy s).conjAlgEquiv ℂ A) =
+      (diagonalEvolutionEquiv energy (s + t)).conjAlgEquiv ℂ A
+  rw [← diagonalEvolutionEquiv_trans energy s t]
+  apply LinearMap.ext
+  intro x
+  rfl
 
 /-- Every basis-diagonal operator is fixed by diagonal Heisenberg evolution. -/
 theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (a : Config → ℂ) :
