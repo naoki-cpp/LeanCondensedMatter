@@ -135,26 +135,6 @@ theorem heisenbergEvolve_zero (energy : Config → ℝ)
   rw [heisenbergEvolve_eq_comp]
   simp
 
-/-- **`heisenbergEvolve` distributes over composition**: `(AB)(τ) = A(τ) B(τ)`. -/
-theorem heisenbergEvolve_comp (energy : Config → ℝ) (τ : ℝ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (A.comp B) =
-      (heisenbergEvolve energy τ A).comp (heisenbergEvolve energy τ B) := by
-  have h := map_mul (heisenbergEvolve energy τ) A B
-  simpa only [Module.End.mul_eq_comp] using h
-
-/-- **`heisenbergEvolve` commutes with scalar multiplication.** -/
-theorem heisenbergEvolve_smul (energy : Config → ℝ) (τ : ℝ) (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (c • A) = c • heisenbergEvolve energy τ A := by
-  exact map_smul (heisenbergEvolve energy τ) c A
-
-/-- **`heisenbergEvolve` distributes over finite sums.** -/
-theorem heisenbergEvolve_sum {ι : Type*} (energy : Config → ℝ) (τ : ℝ) (s : Finset ι)
-    (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (∑ i ∈ s, f i) = ∑ i ∈ s, heisenbergEvolve energy τ (f i) := by
-  simp only [map_sum]
-
 /-! ## Matrix coefficients -/
 
 /-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
