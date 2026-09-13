@@ -93,7 +93,7 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_fo
 
 /-- Analytic fermionic Dyson linked-cluster theorem: derivatives of the local normalized log
 partition function are sums of connected quartic Wick-diagram amplitudes. -/
-theorem iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
+theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ)
     (n : ℕ) (hn : n ≠ 0) :
     iteratedDeriv n
@@ -102,7 +102,7 @@ theorem iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAm
         quarticWickDiagramAmplitude ε β g d.1 := by
   rw [iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff
     ε hβ (quarticInteraction g) n]
-  exact factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+  exact factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     ε β g n hn
 
 end
