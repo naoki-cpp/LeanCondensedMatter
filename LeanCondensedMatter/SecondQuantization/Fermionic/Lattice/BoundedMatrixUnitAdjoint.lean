@@ -76,9 +76,9 @@ theorem latticeBasis_apply_eq_latticeKet (x : Site) :
     latticeBasis (Site := Site) x = latticeKet x := by
   rfl
 
-@[simp]
-theorem latticeBasis_coord_eq_latticeCoordinateDual (y : Site) :
-    (latticeBasis (Site := Site)).coord y = latticeCoordinateDual y := by
+private theorem latticeBasis_coord_eq_lapply (y : Site) :
+    (latticeBasis (Site := Site)).coord y =
+      (Finsupp.lapply y : Module.Dual ℂ (LatticeState Site)) := by
   apply LinearMap.ext
   intro ψ
   change ψ y = ψ y
@@ -97,7 +97,7 @@ theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
       (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) = _
   rw [dGamma_matrixUnit, occupationConjugate_comp]
   rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
-    ← latticeBasis_coord_eq_latticeCoordinateDual (Site := Site) y]
+    ← latticeBasis_coord_eq_lapply (Site := Site) y]
   rw [occupationConjugate_create]
   change
     (SecondQuantization.Fermionic.create x).comp
