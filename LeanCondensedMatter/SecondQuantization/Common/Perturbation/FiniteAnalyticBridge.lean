@@ -1,8 +1,10 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
+import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.LinearAlgebra.Finsupp.Pi
 import Mathlib.LinearAlgebra.StdBasis
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 set_option linter.style.header false
 
@@ -11,8 +13,8 @@ set_option linter.style.header false
 
 For a finite configuration type, `AlgebraicFock Config = Config →₀ ℂ` is transported through
 `Finsupp.linearEquivFunOnFinite` to the normed finite-dimensional space `Config → ℂ`. Algebraic
-endomorphisms are conjugated through this equivalence and promoted with
-`LinearMap.toContinuousLinearMap`.
+endomorphisms are transported by the canonical conjugation algebra equivalence and the
+finite-dimensional equivalence between linear and continuous linear endomorphisms.
 
 The existing coefficientwise `operatorIntervalIntegral` remains the algebraic definition used by
 the Dyson and diagrammatic layers. The theorem `continuousOperatorIntervalIntegral_eq` proves that,
@@ -40,24 +42,101 @@ noncomputable def finiteAnalyticFockEquiv :
     AlgebraicFock Config ≃ₗ[ℂ] FiniteAnalyticFock Config :=
   Finsupp.linearEquivFunOnFinite ℂ ℂ Config
 
-/-- Conjugate an algebraic Fock endomorphism through `finiteAnalyticFockEquiv`. -/
-noncomputable def transportedFiniteOperatorLinearMap
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    FiniteAnalyticFock Config →ₗ[ℂ] FiniteAnalyticFock Config :=
-  (finiteAnalyticFockEquiv (Config := Config)).toLinearMap.comp
-    (A.comp (finiteAnalyticFockEquiv (Config := Config)).symm.toLinearMap)
+/-- Canonical transport of algebraic Fock endomorphisms to continuous finite-dimensional
+operators. -/
+noncomputable def finiteContinuousOperatorAlgEquiv :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) ≃ₐ[ℂ]
+      FiniteContinuousOperator Config :=
+  ((finiteAnalyticFockEquiv (Config := Config)).conjAlgEquiv ℂ).trans
+    (Module.End.toContinuousLinearMap (FiniteAnalyticFock Config))
 
-/-- Promote a transported finite-dimensional algebraic operator to a continuous linear map. -/
+/-- The continuous finite-dimensional operator induced by an algebraic Fock endomorphism. -/
 noncomputable def finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     FiniteContinuousOperator Config :=
-  (transportedFiniteOperatorLinearMap A).toContinuousLinearMap
+  finiteContinuousOperatorAlgEquiv A
 
 @[simp]
 theorem finiteContinuousOperator_equiv_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (x : AlgebraicFock Config) :
     finiteContinuousOperator A (finiteAnalyticFockEquiv x) = finiteAnalyticFockEquiv (A x) := by
-  simp [finiteContinuousOperator, transportedFiniteOperatorLinearMap]
+  change
+    ((finiteAnalyticFockEquiv (Config := Config)).toLinearMap.comp
+      (A.comp (finiteAnalyticFockEquiv (Config := Config)).symm.toLinearMap))
+        (finiteAnalyticFockEquiv x) = finiteAnalyticFockEquiv (A x)
+  simp
+
+@[simp]
+theorem finiteContinuousOperator_zero :
+    finiteContinuousOperator
+        (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
+  simpa [finiteContinuousOperator] using
+    map_zero (finiteContinuousOperatorAlgEquiv (Config := Config))
+
+@[simp]
+theorem finiteContinuousOperator_add
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteContinuousOperator (A + B) =
+      finiteContinuousOperator A + finiteContinuousOperator B := by
+  simpa [finiteContinuousOperator] using
+    map_add (finiteContinuousOperatorAlgEquiv (Config := Config)) A B
+
+@[simp]
+theorem finiteContinuousOperator_smul (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteContinuousOperator (c • A) = c • finiteContinuousOperator A := by
+  simpa [finiteContinuousOperator] using
+    map_smul (finiteContinuousOperatorAlgEquiv (Config := Config)) c A
+
+@[simp]
+theorem finiteContinuousOperator_neg
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteContinuousOperator (-A) = -finiteContinuousOperator A := by
+  simpa [finiteContinuousOperator] using
+    map_neg (finiteContinuousOperatorAlgEquiv (Config := Config)) A
+
+@[simp]
+theorem finiteContinuousOperator_id :
+    finiteContinuousOperator
+        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
+      ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config) := by
+  change
+    finiteContinuousOperatorAlgEquiv
+        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
+      ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)
+  rw [← Module.End.one_eq_id, ← ContinuousLinearMap.one_def]
+  exact map_one (finiteContinuousOperatorAlgEquiv (Config := Config))
+
+@[simp]
+theorem finiteContinuousOperator_one :
+    finiteContinuousOperator
+        (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
+  simpa [finiteContinuousOperator] using
+    map_one (finiteContinuousOperatorAlgEquiv (Config := Config))
+
+@[simp]
+theorem finiteContinuousOperator_mul
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteContinuousOperator (A * B) =
+      finiteContinuousOperator A * finiteContinuousOperator B := by
+  simpa [finiteContinuousOperator] using
+    map_mul (finiteContinuousOperatorAlgEquiv (Config := Config)) A B
+
+@[simp]
+theorem finiteContinuousOperator_comp
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteContinuousOperator (A.comp B) =
+      (finiteContinuousOperator A).comp (finiteContinuousOperator B) := by
+  change finiteContinuousOperator (A * B) =
+    finiteContinuousOperator A * finiteContinuousOperator B
+  exact finiteContinuousOperator_mul A B
+
+@[simp]
+theorem finiteContinuousOperator_pow
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
+    finiteContinuousOperator (A ^ n) = finiteContinuousOperator A ^ n := by
+  simpa [finiteContinuousOperator] using
+    map_pow (finiteContinuousOperatorAlgEquiv (Config := Config)) A n
 
 /-- The standard coordinate basis vector in the analytic realization. -/
 noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config :=
