@@ -49842,7 +49842,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace μ ν source target e v m px py =\n    QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace μ ν source target e v m px py",
+    "statement": "∀ (μ ν : Fin 2) (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace μ ν source target e v m px py =\n    QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace μ ν source target e v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49884,7 +49884,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace ν μ source target e v m px py =\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace μ ν target source e v m px py",
+    "statement": "∀ (μ ν : Fin 2) (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace ν μ source target e v m px py =\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace μ ν target source e v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49926,7 +49926,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution μ ν\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py probeEnergy broadening =\n      -2 * Complex.I *\n          ↑(QuantumTheory.Transport.lorentzianSpectralKernel\n              (probeEnergy - QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) broadening) *\n        QuantumTheory.Transport.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py probeEnergy\n          broadening",
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution μ ν\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m px py probeEnergy broadening =\n      -2 * Complex.I *\n          ↑(QuantumTheory.Transport.lorentzianSpectralKernel\n              (probeEnergy - QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) broadening) *\n        QuantumTheory.Transport.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py probeEnergy\n          broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50008,7 +50008,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    (QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.y band e v m px py).im /\n        QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n      -(e ^ 2 * QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py)",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    (QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference 0 1 band e v m px py).im /\n        QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n      -(e ^ 2 * QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50054,7 +50054,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (μ : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band)\n  (e v m px py : ℝ), QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ μ band e v m px py = 0",
+    "statement": "∀ (μ : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ μ band e v m px py = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50088,7 +50088,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference ν μ band e v m px py =\n    -QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ ν band e v m px py",
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference ν μ band e v m px py =\n    -QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ ν band e v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50122,7 +50122,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0 ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m p 0 =\n      ↑(e ^ 2) *\n          ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0) *\n        Complex.I",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0 ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 0 1\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m p 0 =\n      ↑(e ^ 2) *\n          ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0) *\n        Complex.I",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50644,7 +50644,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        Continuous fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n            i j v m p probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        Continuous fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n            i j v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51334,7 +51334,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXRadialIntegrand\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y v 0 p probeEnergy disorderStrength hbar =\n    0",
+    "statement": "∀ (v p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXRadialIntegrand 1 v 0 p probeEnergy\n      disorderStrength hbar =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51348,7 +51348,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXRadialIntegrand_y_massless",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
     "externalAxioms": [],
-    "docString": "The orientation-sensitive radial `.y` Green-product kernel vanishes in the massless model. ",
+    "docString": "The orientation-sensitive transverse Green-product kernel vanishes in the massless model. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -51961,7 +51961,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace μ ν band\n      (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py =\n    ↑(e ^ 2) * QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator μ ν band v m px py",
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace μ ν band\n      (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py =\n    ↑(e ^ 2) * QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator μ ν band v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52003,7 +52003,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (direction : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (e v : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.currentOperator direction e v =\n    ↑(-e) • QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v",
+    "statement": "∀ (direction : Fin 2) (e v : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.currentOperator direction e v =\n    ↑(-e) • QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52049,7 +52049,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (direction : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (e v : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.MassiveDirac.currentOperator direction e v)",
+    "statement": "∀ (direction : Fin 2) (e v : ℝ),\n  IsSelfAdjoint (QuantumTheory.Transport.Models.MassiveDirac.currentOperator direction e v)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52085,7 +52085,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (direction : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (e v : ℝ),\n  Matrix.IsHermitian (QuantumTheory.Transport.Models.MassiveDirac.current direction e v)",
+    "statement": "∀ (direction : Fin 2) (e v : ℝ), Matrix.IsHermitian (QuantumTheory.Transport.Models.MassiveDirac.current direction e v)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53384,7 +53384,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    ↑p *\n      (-↑(4 * Real.pi) * q ^ 2 *\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct\n              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator\n          v m probeEnergy broadening disorderStrength hbar pMax)",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    ↑p *\n      (-↑(4 * Real.pi) * q ^ 2 *\n          (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct\n              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator\n          v m probeEnergy broadening disorderStrength hbar pMax)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53398,7 +53398,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator",
     "externalAxioms": [],
-    "docString": "The ordered `xy` radial Hall-surface integrand is the measured-`.x`, source-`.y` Středa radial\nresponse in explicit common RA Born-Dyson denominator form. ",
+    "docString": "The ordered `xy` radial Hall-surface integrand is the measured-`x`, source-`y` Středa radial\nresponse in explicit common RA Born-Dyson denominator form. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -53501,7 +53501,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient i j v m p\n      probeEnergy broadening disorderStrength hbar pMax =\n    ↑(2 * Real.pi) *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v\n            m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator i j v m\n        probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (i j : Fin 2) (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient i j v m p\n      probeEnergy broadening disorderStrength hbar pMax =\n    ↑(2 * Real.pi) *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v\n            m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator i j v m\n        probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53549,7 +53549,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient i j v\n      m probeEnergy broadening 0 hbar pMax =\n    0",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient i j v\n      m probeEnergy broadening 0 hbar pMax =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53631,7 +53631,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (source : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (e v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n      source e v m probeEnergy broadening 0 hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.currentOperator source e v",
+    "statement": "∀ (source : Fin 2) (e v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n      source e v m probeEnergy broadening 0 hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.currentOperator source e v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53672,7 +53672,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured source : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (measured source : Fin 2) (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53719,7 +53719,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    have solved :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n        broadening disorderStrength hbar pMax;\n    have eR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have massR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have dR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    have eA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have massA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have dA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    ↑(4 * Real.pi) * q ^ 2 *\n      (dR⁻¹ * dA⁻¹ *\n          ((eR * eA - massR * massA) * solved QuantumTheory.Transport.Models.MassiveDirac.Direction2.x -\n            Complex.I * (eA * massR - eR * massA) * solved QuantumTheory.Transport.Models.MassiveDirac.Direction2.y) -\n        1 / 2 * (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) + dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2)))",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    have solved :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n        broadening disorderStrength hbar pMax;\n    have eR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have massR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n    have dR :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    have eA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have massA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n    have dA :=\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n    ↑(4 * Real.pi) * q ^ 2 *\n      (dR⁻¹ * dA⁻¹ * ((eR * eA - massR * massA) * solved 0 - Complex.I * (eA * massR - eR * massA) * solved 1) -\n        1 / 2 * (dR⁻¹ ^ 2 * (eR ^ 2 - massR ^ 2) + dA⁻¹ ^ 2 * (eA ^ 2 - massA ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53740,7 +53740,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -53759,7 +53761,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v m p probeEnergy broadening disorderStrength hbar\n        pMax",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53781,7 +53783,11 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -53800,7 +53806,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53822,7 +53828,11 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -53841,7 +53851,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n          e v m probeEnergy disorderStrength hbar pMax).hallComponent\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n          e v m probeEnergy disorderStrength hbar pMax).hallComponent\n      0 1 =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53879,7 +53889,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x =\n    -(QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n            e v m probeEnergy broadening disorderStrength hbar pMax).component\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      1 0 =\n    -(QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n            e v m probeEnergy broadening disorderStrength hbar pMax).component\n        0 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53919,7 +53929,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.x",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      1 1 =\n    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n          e v m probeEnergy broadening disorderStrength hbar pMax).component\n      0 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53959,7 +53969,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v m probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      1 0 e v m probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n        0 1 e v m probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53999,7 +54009,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      e v m probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      1 1 e v m probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n      0 0 e v m probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54039,7 +54049,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured source : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax =\n    ↑p *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        measured source e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (measured source : Fin 2) (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      measured source e v m p probeEnergy broadening disorderStrength hbar pMax =\n    ↑p *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n        measured source e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54085,7 +54095,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v m p probeEnergy broadening disorderStrength hbar\n        pMax",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    -QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54126,7 +54136,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      e v m p probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand\n      0 0 e v m p probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54167,7 +54177,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (measured source : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (e v m px py probeEnergy broadening hbar pMax : ℝ),\n  0 < broadening →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge\n        measured source e v m px py probeEnergy broadening 0 hbar pMax =\n      QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace\n        (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n        (QuantumTheory.Transport.Models.MassiveDirac.currentOperator measured e v)\n        (QuantumTheory.Transport.Models.MassiveDirac.currentOperator source e v) probeEnergy broadening",
+    "statement": "∀ (measured source : Fin 2) (e v m px py probeEnergy broadening hbar pMax : ℝ),\n  0 < broadening →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge\n        measured source e v m px py probeEnergy broadening 0 hbar pMax =\n      QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace\n        (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n        (QuantumTheory.Transport.Models.MassiveDirac.currentOperator measured e v)\n        (QuantumTheory.Transport.Models.MassiveDirac.currentOperator source e v) probeEnergy broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54498,7 +54508,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        probeEnergy ^ 2 + m ^ 2 ≠ 0 →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax =\n            (1 + QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar ^ 2) *\n                  (probeEnergy ^ 2 - m ^ 2) /\n                (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungArctanPhase v m 0\n                  probeEnergy disorderStrength hbar -\n                QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungArctanPhase v m pMax\n                  probeEnergy disorderStrength hbar)",
+    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      disorderStrength ≠ 0 →\n        probeEnergy ^ 2 + m ^ 2 ≠ 0 →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n              0 v m probeEnergy disorderStrength hbar pMax =\n            (1 + QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar ^ 2) *\n                  (probeEnergy ^ 2 - m ^ 2) /\n                (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungArctanPhase v m 0\n                  probeEnergy disorderStrength hbar -\n                QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungArctanPhase v m pMax\n                  probeEnergy disorderStrength hbar)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54539,7 +54549,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y v 0 probeEnergy disorderStrength hbar pMax =\n    0",
+    "statement": "∀ (v probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient 1 v 0\n      probeEnergy disorderStrength hbar pMax =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54553,7 +54563,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXRadialCoefficient_y_massless",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
     "externalAxioms": [],
-    "docString": "The finite-cutoff orientation-sensitive `.y` coefficient vanishes in the massless model. ",
+    "docString": "The finite-cutoff orientation-sensitive transverse coefficient vanishes in the massless model. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -54903,7 +54913,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y band v m px py =\n      -↑(v ^ 4 * px * py / QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ^ 2) -\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m px py) *\n          Complex.I",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator 0 1 band v m px py =\n      -↑(v ^ 4 * px * py / QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ^ 2) -\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m px py) *\n          Complex.I",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55415,7 +55425,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v : ℝ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.Direction2 → ℂ),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneCurrentOperator e v coefficients =\n    (↑(-e) * ↑v) • QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator coefficients",
+    "statement": "∀ (e v : ℝ) (coefficients : Fin 2 → ℂ),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneCurrentOperator e v coefficients =\n    (↑(-e) * ↑v) • QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator coefficients",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55455,7 +55465,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (rung coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.x *\n        coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.x -\n      rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.y *\n        coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
+    "statement": "∀ (rung coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients 0 =\n    rung 0 * coefficients 0 - rung 1 * coefficients 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55478,6 +55488,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
@@ -55488,9 +55499,7 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.sum_direction2"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -55499,6 +55508,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
@@ -55509,7 +55519,7 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55521,7 +55531,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (rung coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.y *\n        coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.x +\n      rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.x *\n        coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
+    "statement": "∀ (rung coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients 1 =\n    rung 1 * coefficients 0 + rung 0 * coefficients 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55543,6 +55553,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
@@ -55550,9 +55561,7 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.sum_direction2"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -55560,6 +55569,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
@@ -55567,7 +55577,7 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55579,14 +55589,14 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x =\n    (1 - rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.x) /\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung",
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung 0 =\n    (1 - rung 0) / QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedMention": false,
     "projectAxioms": [],
@@ -55597,15 +55607,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55617,14 +55631,14 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.y /\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung",
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung 1 =\n    rung 1 / QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedMention": false,
     "projectAxioms": [],
@@ -55635,15 +55649,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55674,7 +55692,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.sum_direction2"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_y"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55767,8 +55788,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.x",
+    "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung 0 0 = rung 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55785,12 +55806,26 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55801,8 +55836,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    -rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
+    "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung 0 1 = -rung 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55819,12 +55854,20 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55835,8 +55878,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
+    "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung 1 0 = rung 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55853,12 +55896,26 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55869,8 +55926,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.y =\n    rung QuantumTheory.Transport.Models.MassiveDirac.Direction2.x",
+    "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix rung 1 1 = rung 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55887,12 +55944,20 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58207,7 +58272,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand e v m px py probeEnergy broadening =\n      ∑ source,\n        ∑ target,\n          QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.y source target e v m px py probeEnergy broadening",
+    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand e v m px py probeEnergy broadening =\n      ∑ source,\n        ∑ target,\n          QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution 0 1 source target e v m px py\n            probeEnergy broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58861,7 +58926,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    0 < broadening →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.x e v)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v)\n          probeEnergy broadening =\n        QuantumTheory.Transport.Models.MassiveDirac.diagonalBastinTraceContribution e v m px py probeEnergy broadening +\n          QuantumTheory.Transport.Models.MassiveDirac.interbandBastinTraceContribution e v m px py probeEnergy\n            broadening",
+    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    0 < broadening →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator 0 e v)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator 1 e v) probeEnergy broadening =\n        QuantumTheory.Transport.Models.MassiveDirac.diagonalBastinTraceContribution e v m px py probeEnergy broadening +\n          QuantumTheory.Transport.Models.MassiveDirac.interbandBastinTraceContribution e v m px py probeEnergy\n            broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58898,7 +58963,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.x e v)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator\n            QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v)\n          probeEnergy broadening =\n        QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand e v m px py probeEnergy broadening",
+    "statement": "∀ (e v m px py probeEnergy broadening : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    broadening ≠ 0 →\n      QuantumTheory.Transport.regularizedBastinTraceIntegrand\n          (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator 0 e v)\n          (QuantumTheory.Transport.Models.MassiveDirac.currentOperator 1 e v) probeEnergy broadening =\n        QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand e v m px py probeEnergy broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59634,7 +59699,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =\n    (↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹ ^ 2 *\n      QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y band e v m px py",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =\n    (↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹ ^ 2 *\n      QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference 0 1 band e v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59758,7 +59823,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py probeEnergy : ℝ),\n  probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy source v m px py →\n    probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy target v m px py →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution μ ν source target e v m px py\n            probeEnergy broadening)\n        (nhds 0) (nhds 0)",
+    "statement": "∀ (μ ν : Fin 2) (source target : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py probeEnergy : ℝ),\n  probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy source v m px py →\n    probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy target v m px py →\n      Filter.Tendsto\n        (fun broadening =>\n          QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution μ ν source target e v m px py\n            probeEnergy broadening)\n        (nhds 0) (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59881,7 +59946,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      m ^ 2 < probeEnergy ^ 2 →\n        Filter.Tendsto\n          (fun gamma =>\n            QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n              m probeEnergy))",
+    "statement": "∀ (v m probeEnergy hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      m ^ 2 < probeEnergy ^ 2 →\n        Filter.Tendsto\n          (fun gamma =>\n            QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV 0 v\n              m probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n              m probeEnergy))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59918,7 +59983,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      m ^ 2 < probeEnergy ^ 2 →\n        Filter.Tendsto\n          (fun gamma =>\n            QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.y v m probeEnergy\n                (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n                hbar /\n              gamma)\n          (nhdsWithin 0 (Set.Ioi 0)) (nhds (2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2)))",
+    "statement": "∀ (v m probeEnergy hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      m ^ 2 < probeEnergy ^ 2 →\n        Filter.Tendsto\n          (fun gamma =>\n            QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV 1 v\n                m probeEnergy\n                (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n                hbar /\n              gamma)\n          (nhdsWithin 0 (Set.Ioi 0)) (nhds (2 * probeEnergy * m / (probeEnergy ^ 2 + m ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59932,7 +59997,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_div_gamma_weakDisorder",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
     "externalAxioms": [],
-    "docString": "Metallic weak-disorder limit of the leading transverse one-rung coefficient. The unscaled\n`.y` coefficient is `O(γ)`; the limit below exposes its positive repository-orientation coefficient. ",
+    "docString": "Metallic weak-disorder limit of the leading transverse one-rung coefficient. The unscaled\ntransverse coefficient is `O(γ)`; the limit below exposes its positive repository-orientation\ncoefficient. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -60291,7 +60356,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder",
     "externalAxioms": [],
-    "docString": "At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`.x` rung tends\nas one in-plane vector to `(κ, 0)`. ",
+    "docString": "At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends\nas one in-plane vector to `(κ, 0)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -60327,7 +60392,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax QuantumTheory.Transport.Models.MassiveDirac.Direction2.y /\n                ↑disorderStrength)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                      probeEnergy *\n                    m /\n                  (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))))",
+    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax 1 /\n                ↑disorderStrength)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                      probeEnergy *\n                    m /\n                  (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60348,6 +60413,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.transverseAngularNumeratorBoundary_eq_disorder_mul"
@@ -60546,7 +60612,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n                (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds ↑((probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2)))",
+    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n                (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax)\n                0)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds ↑((probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60593,7 +60659,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        0 0)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60633,7 +60699,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x e v m probeEnergy broadening\n                        disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        0 0 e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60719,7 +60785,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        0 1)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60799,7 +60865,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v m probeEnergy broadening\n                        disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                        0 1 e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n                        e v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60842,7 +60908,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator i\n              j v m probeEnergy broadening disorderStrength hbar pMax)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n              i j v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator i\n              j v m probeEnergy broadening disorderStrength hbar pMax)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n              i j v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60885,7 +60951,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    0 ≤ disorderStrength →\n      v ≠ 0 →\n        |m| < probeEnergy →\n          probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n            (∀ p ∈ Set.Icc 0 pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                    v m p probeEnergy disorderStrength hbar pMax ≠\n                  0) →\n              Filter.Tendsto\n                (fun broadening =>\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                    i j v m probeEnergy broadening disorderStrength hbar pMax)\n                (nhdsWithin 0 (Set.Ioi 0))\n                (nhds\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                    i j v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    0 ≤ disorderStrength →\n      v ≠ 0 →\n        |m| < probeEnergy →\n          probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n            (∀ p ∈ Set.Icc 0 pMax,\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                    v m p probeEnergy disorderStrength hbar pMax ≠\n                  0) →\n              Filter.Tendsto\n                (fun broadening =>\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                    i j v m probeEnergy broadening disorderStrength hbar pMax)\n                (nhdsWithin 0 (Set.Ioi 0))\n                (nhds\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                    i j v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60930,7 +60996,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                      i j v m probeEnergy broadening disorderStrength hbar pMax)\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                      i j v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                      i j v m probeEnergy broadening disorderStrength hbar pMax)\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                      i j v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60971,7 +61037,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                  v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∀ (bound : ℝ → ℝ),\n              (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  MeasureTheory.AEStronglyMeasurable\n                    (fun p =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                        i j v m p probeEnergy broadening disorderStrength hbar pMax)\n                    (MeasureTheory.volume.restrict (Set.Icc 0 pMax))) →\n                (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                    ∀ᵐ (p : ℝ) ∂MeasureTheory.volume.restrict (Set.Icc 0 pMax),\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                            i j v m p probeEnergy broadening disorderStrength hbar pMax‖ ≤\n                        bound p) →\n                  MeasureTheory.Integrable bound (MeasureTheory.volume.restrict (Set.Icc 0 pMax)) →\n                    Filter.Tendsto\n                      (fun broadening =>\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                          i j v m probeEnergy broadening disorderStrength hbar pMax)\n                      (nhdsWithin 0 (Set.Ioi 0))\n                      (nhds\n                        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                          i j v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                  v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∀ (bound : ℝ → ℝ),\n              (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  MeasureTheory.AEStronglyMeasurable\n                    (fun p =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                        i j v m p probeEnergy broadening disorderStrength hbar pMax)\n                    (MeasureTheory.volume.restrict (Set.Icc 0 pMax))) →\n                (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                    ∀ᵐ (p : ℝ) ∂MeasureTheory.volume.restrict (Set.Icc 0 pMax),\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                            i j v m p probeEnergy broadening disorderStrength hbar pMax‖ ≤\n                        bound p) →\n                  MeasureTheory.Integrable bound (MeasureTheory.volume.restrict (Set.Icc 0 pMax)) →\n                    Filter.Tendsto\n                      (fun broadening =>\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient\n                          i j v m probeEnergy broadening disorderStrength hbar pMax)\n                      (nhdsWithin 0 (Set.Ioi 0))\n                      (nhds\n                        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n                          i j v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61011,7 +61077,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (i j : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n              v m p probeEnergy disorderStrength hbar pMax ≠\n            0 →\n          Filter.Tendsto\n            (fun broadening =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                i j v m p probeEnergy broadening disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary\n                i j v m p probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (i j : Fin 2) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n              v m p probeEnergy disorderStrength hbar pMax ≠\n            0 →\n          Filter.Tendsto\n            (fun broadening =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand\n                i j v m p probeEnergy broadening disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary\n                i j v m p probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61093,7 +61159,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (source : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n                        source e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary\n                        source e v m probeEnergy disorderStrength hbar pMax))",
+    "statement": "∀ (source : Fin 2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator\n                        source e v m probeEnergy broadening disorderStrength hbar pMax)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary\n                        source e v m probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61130,7 +61196,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.y)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /\n                  (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61171,7 +61237,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.y)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61207,7 +61273,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (measured source : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        measured source)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                            e v m probeEnergy disorderStrength hbar pMax).component\n                        measured source))",
+    "statement": "∀ (measured source : Fin 2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        measured source)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                            e v m probeEnergy disorderStrength hbar pMax).component\n                        measured source))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61246,7 +61312,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                    v m probeEnergy disorderStrength hbar pMax)\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                    v m probeEnergy disorderStrength hbar pMax)\n                  QuantumTheory.Transport.Models.MassiveDirac.Direction2.y /\n                ↑disorderStrength)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(4 * Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                        probeEnergy *\n                      m *\n                    (probeEnergy ^ 2 + m ^ 2) /\n                  (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                    v m probeEnergy disorderStrength hbar pMax)\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                    v m probeEnergy disorderStrength hbar pMax)\n                  1 /\n                ↑disorderStrength)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(4 * Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                        probeEnergy *\n                      m *\n                    (probeEnergy ^ 2 + m ^ 2) /\n                  (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61268,6 +61334,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_y",
       "QuantumTheory.Transport.Models.MassiveDirac.one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero",
@@ -61424,7 +61492,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    0 <\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth v m probeEnergy disorderStrength\n          hbar →\n      Filter.Tendsto\n        (fun pMax =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n            output v m probeEnergy disorderStrength hbar pMax)\n        Filter.atTop\n        (nhds\n          (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n            output v m probeEnergy disorderStrength hbar))",
+    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    0 <\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth v m probeEnergy disorderStrength\n          hbar →\n      Filter.Tendsto\n        (fun pMax =>\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n            output v m probeEnergy disorderStrength hbar pMax)\n        Filter.atTop\n        (nhds\n          (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n            output v m probeEnergy disorderStrength hbar))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61461,7 +61529,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n                m probeEnergy))",
+    "statement": "∀ (v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n                0 v m probeEnergy disorderStrength hbar pMax)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient\n                m probeEnergy))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61475,7 +61543,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_disorder_zero",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
     "externalAxioms": [],
-    "docString": "At fixed cutoff beyond the metallic on-shell circle, the longitudinal `.x` component of the\nfully normalized Born RA current rung has a finite one-sided weak-disorder limit.\n\nThe cutoff condition `probeEnergy² - m² < v² pMax²` is exactly what forces the two arctangent\nendpoints to lie on opposite sides of the resonance as the disorder broadening vanishes. ",
+    "docString": "At fixed cutoff beyond the metallic on-shell circle, the longitudinal component of the fully\nnormalized Born RA current rung has a finite one-sided weak-disorder limit.\n\nThe cutoff condition `probeEnergy² - m² < v² pMax²` is exactly what forces the two arctangent\nendpoints to lie on opposite sides of the resonance as the disorder broadening vanishes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -62037,7 +62105,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (μ ν : QuantumTheory.Transport.Models.MassiveDirac.Direction2)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py\n          (QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) broadening)\n      (nhds 0)\n      (nhds\n        ((↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹ ^ 2 *\n          QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ ν band e v m px py))",
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py\n          (QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) broadening)\n      (nhds 0)\n      (nhds\n        ((↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹ ^ 2 *\n          QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference μ ν band e v m px py))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62691,7 +62759,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    2 *\n          (QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.y band\n              (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py).im /\n        QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n      e ^ 2 * QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    2 *\n          (QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace 0 1 band\n              (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py).im /\n        QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n      e ^ 2 * QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154157,7 +154225,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      gamma ≠ 0 →\n        m ^ 2 < probeEnergy ^ 2 →\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar =\n            (1 + gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2) / (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              QuantumTheory.Transport.Models.MassiveDirac.continuumBornRAWeakDisorderArctanMass✝ m probeEnergy gamma",
+    "statement": "∀ (v m probeEnergy hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      gamma ≠ 0 →\n        m ^ 2 < probeEnergy ^ 2 →\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV 0 v m\n              probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar =\n            (1 + gamma ^ 2) * (probeEnergy ^ 2 - m ^ 2) / (2 * Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              QuantumTheory.Transport.Models.MassiveDirac.continuumBornRAWeakDisorderArctanMass✝ m probeEnergy gamma",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154199,7 +154267,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      gamma ≠ 0 →\n        m ^ 2 < probeEnergy ^ 2 →\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.y v m probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar =\n            2 * gamma * probeEnergy * m / (Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              QuantumTheory.Transport.Models.MassiveDirac.continuumBornRAWeakDisorderArctanMass✝ m probeEnergy gamma",
+    "statement": "∀ (v m probeEnergy hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      gamma ≠ 0 →\n        m ^ 2 < probeEnergy ^ 2 →\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV 1 v m\n              probeEnergy\n              (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma)\n              hbar =\n            2 * gamma * probeEnergy * m / (Real.pi * (probeEnergy ^ 2 + m ^ 2)) *\n              QuantumTheory.Transport.Models.MassiveDirac.continuumBornRAWeakDisorderArctanMass✝ m probeEnergy gamma",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154241,7 +154309,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n      output v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n          hbar *\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRARadialIntegral✝ v m probeEnergy\n        disorderStrength hbar pMax",
+    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n      output v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n          hbar *\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRARadialIntegral✝ v m probeEnergy\n        disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154359,7 +154427,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output\n        v m p probeEnergy disorderStrength hbar) =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v\n      m p probeEnergy disorderStrength hbar",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal output\n        v m p probeEnergy disorderStrength hbar) =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v\n      m p probeEnergy disorderStrength hbar",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154435,7 +154503,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularCoefficient v m p probeEnergy\n      disorderStrength hbar output =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularCoefficient v m p probeEnergy\n      disorderStrength hbar output =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154476,7 +154544,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularCoefficient v m p probeEnergy\n      disorderStrength hbar output =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n        (QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy disorderStrength hbar)⁻¹ *\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator\n          QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy disorderStrength hbar)⁻¹",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularCoefficient v m p probeEnergy\n      disorderStrength hbar output =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n        (QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy disorderStrength hbar)⁻¹ *\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator\n          QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy disorderStrength hbar)⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154514,7 +154582,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v m\n      p probeEnergy disorderStrength hbar =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n              hbar *\n            p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v m\n      p probeEnergy disorderStrength hbar =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n              hbar *\n            p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154554,7 +154622,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXRadialIntegrand output v m p\n      probeEnergy disorderStrength hbar =\n    ↑(p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXRadialIntegrand output v m p\n      probeEnergy disorderStrength hbar =\n    ↑(p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155507,7 +155575,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v m\n        probeEnergy disorderStrength hbar pMax QuantumTheory.Transport.Models.MassiveDirac.Direction2.y *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v\n        m probeEnergy disorderStrength hbar pMax QuantumTheory.Transport.Models.MassiveDirac.Direction2.x *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax",
+    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v m\n        probeEnergy disorderStrength hbar pMax 1 *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        0 0 v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v\n        m probeEnergy disorderStrength hbar pMax 0 *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        1 0 v m probeEnergy disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155583,7 +155651,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n        QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax =\n      ↑disorderStrength *\n        ↑(2 * Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                probeEnergy *\n              m /\n            v ^ 2)",
+    "statement": "∀ (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n        1 0 v m probeEnergy disorderStrength hbar pMax =\n      ↑disorderStrength *\n        ↑(2 * Real.pi * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n                probeEnergy *\n              m /\n            v ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155604,6 +155672,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_y_div_disorder_zero"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.denominatorBoundaryValue_retarded_sub_advanced"
     ],
     "crossModuleDirectWrapper": false,
@@ -155705,7 +155774,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          output QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax =\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n            output QuantumTheory.Transport.Models.MassiveDirac.Direction2.x v m probeEnergy disorderStrength hbar pMax *\n          ↑(2 * Real.pi * (disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                p /\n                  ((QuantumTheory.Transport.Models.MassiveDirac.boundaryRACenter✝ v m probeEnergy disorderStrength hbar\n                          pMax -\n                        v ^ 2 * p ^ 2) ^\n                      2 +\n                    QuantumTheory.Transport.Models.MassiveDirac.boundaryRAWidth✝ v m probeEnergy disorderStrength hbar\n                        pMax ^\n                      2))",
+    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          output 0 v m probeEnergy disorderStrength hbar pMax =\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n            output 0 v m probeEnergy disorderStrength hbar pMax *\n          ↑(2 * Real.pi * (disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                p /\n                  ((QuantumTheory.Transport.Models.MassiveDirac.boundaryRACenter✝ v m probeEnergy disorderStrength hbar\n                          pMax -\n                        v ^ 2 * p ^ 2) ^\n                      2 +\n                    QuantumTheory.Transport.Models.MassiveDirac.boundaryRAWidth✝ v m probeEnergy disorderStrength hbar\n                        pMax ^\n                      2))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156201,7 +156270,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    hbar ≠ 0 →\n      broadening ≠ 0 →\n        0 < disorderStrength →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n              QuantumTheory.Transport.Models.MassiveDirac.Direction2.y e v m probeEnergy broadening disorderStrength\n              hbar pMax =\n            QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningOrderedXYMomentumEndpointForm✝ e v m probeEnergy\n              broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    hbar ≠ 0 →\n      broadening ≠ 0 →\n        0 < disorderStrength →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n              0 1 e v m probeEnergy broadening disorderStrength hbar pMax =\n            QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningOrderedXYMomentumEndpointForm✝ e v m probeEnergy\n              broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156286,7 +156355,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        broadening ≠ 0 →\n          0 < disorderStrength →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x\n                QuantumTheory.Transport.Models.MassiveDirac.Direction2.x e v m probeEnergy broadening disorderStrength\n                hbar pMax =\n              QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningLongitudinalMomentumEndpointForm✝ e v m\n                probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        broadening ≠ 0 →\n          0 < disorderStrength →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral\n                0 0 e v m probeEnergy broadening disorderStrength hbar pMax =\n              QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningLongitudinalMomentumEndpointForm✝ e v m\n                probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156312,6 +156381,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
     ],
     "crossModuleDirectWrapper": false,
@@ -156491,7 +156562,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.x •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.y •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ) =\n    2 * q *\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aL aR dL dR) coefficients measured",
+    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ) =\n    2 * q *\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aL aR dL dR) coefficients measured",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156537,7 +156608,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured : QuantumTheory.Transport.Models.MassiveDirac.Direction2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.x •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.y •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ))\n    MeasureTheory.volume 0 (2 * Real.pi)",
+    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ))\n    MeasureTheory.volume 0 (2 * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156577,7 +156648,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (aL aR bL bR dL dR : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n          (coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.x •\n              QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n            coefficients QuantumTheory.Transport.Models.MassiveDirac.Direction2.y •\n              QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n        QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ)\n    MeasureTheory.volume 0 (2 * Real.pi)",
+    "statement": "∀ (aL aR bL bR dL dR : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n          (coefficients 0 •\n              QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n            coefficients 1 •\n              QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n        QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ)\n    MeasureTheory.volume 0 (2 * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156617,7 +156688,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      QuantumTheory.Transport.Models.MassiveDirac.Direction2.x QuantumTheory.Transport.Models.MassiveDirac.Direction2.y\n      e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    -↑(4 * Real.pi) * q ^ 2 *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v\n            m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator\n        v m probeEnergy broadening disorderStrength hbar pMax",
+    "statement": "∀ (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient\n      0 1 e v m p probeEnergy broadening disorderStrength hbar pMax =\n    have q := ↑(-e) * ↑v;\n    -↑(4 * Real.pi) * q ^ 2 *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v\n            m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator\n        v m probeEnergy broadening disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156639,7 +156710,11 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_y"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -156647,48 +156722,6 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : QuantumTheory.Transport.Models.MassiveDirac.Direction2 → M),\n  ∑ direction, f direction =\n    f QuantumTheory.Transport.Models.MassiveDirac.Direction2.x +\n      f QuantumTheory.Transport.Models.MassiveDirac.Direction2.y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.sum_direction2",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
