@@ -18,18 +18,18 @@ Boltzmann weights and comparison with a normalized density operator.
 namespace SecondQuantization
 namespace Common
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*}
 
 /-! ## Finite traces -/
 
 /-- **The Fock-space trace** as the canonical linear trace on the finite free algebraic Fock
 space. Its occupation-basis coordinate formula is `traceFock_eq_sum_matrixCoeff`. -/
-noncomputable def traceFock :
+noncomputable def traceFock [Fintype Config] :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
   LinearMap.trace ℂ (AlgebraicFock Config)
 
 /-- Coordinate formula for the canonical trace in the occupation basis. -/
-theorem traceFock_eq_sum_matrixCoeff
+theorem traceFock_eq_sum_matrixCoeff [Fintype Config]
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock A = ∑ n : Config, matrixCoeff A n n := by
   classical
@@ -38,15 +38,17 @@ theorem traceFock_eq_sum_matrixCoeff
     (Finsupp.basisSingleOne : Module.Basis Config ℂ (AlgebraicFock Config))]
   simp [Matrix.trace, LinearMap.toMatrix_apply, matrixCoeff, basisState, Finsupp.basisSingleOne]
 
-omit [Fintype Config] in
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
-theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+theorem traceFock_comp_comm [Fintype Config]
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A.comp B) = traceFock (B.comp A) := by
   change LinearMap.trace ℂ (AlgebraicFock Config) (A.comp B) =
     LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
   simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
 /-! ## Weighted coordinate sums -/
+
+variable [Fintype Config]
 
 /-- **The weighted trace** as a linear functional on endomorphisms,
 `Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
