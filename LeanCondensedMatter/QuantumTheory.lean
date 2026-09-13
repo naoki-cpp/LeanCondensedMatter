@@ -1,54 +1,16 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.ConservationLaw
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
+import LeanCondensedMatter.QuantumTheory.LinearResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
 import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
-import LeanCondensedMatter.QuantumTheory.LinearResponse.InteractionPicture
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FirstVariation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Finite
-import LeanCondensedMatter.QuantumTheory.Gibbs.State
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
-import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
-import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
-import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
-import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
-import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
-import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
-import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs
 
 set_option linter.style.header false
 
@@ -58,6 +20,10 @@ set_option linter.style.header false
 Public entry point for particle-number-independent quantum theory: postulates, density operators,
 entropy and Gibbs-state theory, one-body conservation/current semantics, together with the generic
 linear-response stack.
+
+The linear-response and Gibbs hierarchies are exposed through package-level routing modules. The root
+keeps the direct one-body dynamics and conservation imports required by the public ownership contract.
+Existing semantic bases such as `ConservationLaw`, `DensityOperator`, and `Entropy` remain unchanged.
 
 Concrete first-quantized realizations belong to `QuantumMechanics`, while second-quantized model
 specializations belong to `SecondQuantization`. Implementation modules should import narrow leaves
