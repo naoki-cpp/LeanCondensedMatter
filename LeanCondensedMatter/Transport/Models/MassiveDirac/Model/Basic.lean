@@ -17,12 +17,12 @@ v_μ = ∂H₀/∂p_μ,
 j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
-The in-plane direction is represented explicitly by `Direction2`; the direction-indexed `velocity`
-and `current` definitions are the public model-level owners used throughout the transport stack.
-The Pauli-vector basis uses the model-independent `InternalSpace.PauliAxis`, since its `z` component
-is an internal mass/pseudospin channel rather than a third momentum direction.
-The closed Berry-curvature benchmark is recorded directly here; its agreement with the
-model-specific force-matrix expression is proved downstream.
+The in-plane Cartesian direction uses the standard finite index `Fin 2`, with `0` for `x` and `1`
+for `y`; the direction-indexed `velocity` and `current` definitions are the public model-level
+owners used throughout the transport stack. The Pauli-vector basis uses the model-independent
+`InternalSpace.PauliAxis`, since its `z` component is an internal mass/pseudospin channel rather
+than a third momentum direction. The closed Berry-curvature benchmark is recorded directly here;
+its agreement with the model-specific force-matrix expression is proved downstream.
 
 The generic charge-like current theory is the authority for the canonical `q v` interpretation;
 this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
@@ -55,22 +55,8 @@ abbrev sigmaZ : Matrix2 := InternalSpace.pauliZ
 /-- Massive-Dirac notation for the model-independent Pauli-basis axis. -/
 abbrev PauliAxis := InternalSpace.PauliAxis
 
-/-- Cartesian directions in the two-dimensional Dirac plane. -/
-inductive Direction2 where
-  | x
-  | y
-  deriving DecidableEq
-
-instance : Fintype Direction2 where
-  elems := {.x, .y}
-  complete := by
-    intro direction
-    cases direction <;> simp
-
-/-- Pauli matrix associated with an in-plane Cartesian direction. -/
-def directionPauli : Direction2 → Matrix2
-  | .x => sigmaX
-  | .y => sigmaY
+/-- Pauli matrix associated with an in-plane Cartesian direction (`0 = x`, `1 = y`). -/
+def directionPauli : Fin 2 → Matrix2 := ![sigmaX, sigmaY]
 
 /-- Axis-indexed coefficient vector `d(p) = (v pₓ, v pᵧ, m)` of the clean Dirac Hamiltonian. -/
 def diracPauliCoefficients (v m px py : ℝ) : PauliAxis → ℂ
@@ -92,13 +78,13 @@ def hamiltonian (v m px py : ℝ) : Matrix2 :=
   rfl
 
 /-- Velocity operator `v_μ = ∂H₀/∂p_μ = v σ_μ`. -/
-def velocity (direction : Direction2) (v : ℝ) : Matrix2 :=
+def velocity (direction : Fin 2) (v : ℝ) : Matrix2 :=
   ((v : ℝ) : ℂ) • directionPauli direction
 
 /-- Concrete massive-Dirac realization `j_μ = -e v_μ` of the canonical charge-like current
 representative. The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
 charge is `-e`. -/
-def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
+def current (direction : Fin 2) (e v : ℝ) : Matrix2 :=
   (((-e : ℝ) : ℂ)) • velocity direction v
 
 /-- Positive energy squared of the clean massive Dirac dispersion. -/
