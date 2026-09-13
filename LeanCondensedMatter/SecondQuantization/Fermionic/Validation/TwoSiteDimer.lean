@@ -13,9 +13,10 @@ the two second-quantized matrix units with conjugate coefficients. The current i
 oriented bond current of the same Hermitian hopping model at `ℏ = q = 1`, while the contact is the
 first Peierls-source derivative of that current family.
 
-The resulting operators provide a finite tight-binding validation of the canonical pointwise
-Kubo–Bastin/Středa identity. Current-orientation reversal and simultaneous current-sign reversal are
-also recorded. No disorder average, numerical approximation, or limiting procedure is used.
+The resulting operators provide a finite tight-binding model to which the canonical pointwise
+Kubo–Bastin/Středa identity applies directly. Current-orientation reversal is recorded here, while
+simultaneous current-sign reversal is inherited from the general validation theorem. No disorder
+average, numerical approximation, or limiting procedure is used.
 -/
 
 namespace SecondQuantization
@@ -90,42 +91,6 @@ theorem twoSiteDimerCurrent_reverse (t : ℂ) :
       -twoSiteDimerCurrent t := by
   simpa [twoSiteDimerCurrent] using
     boundedBondCurrent_swap (1 : ℂ) (1 : ℂ) (twoSiteDimerHopping t) 0 1
-
-/-- Concrete pointwise Kubo–Bastin/Středa agreement for the finite two-site dimer. -/
-theorem twoSiteDimer_bastin_eq_streda
-    (t : ℂ) (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        (twoSiteDimerSystem t).hamiltonian.1
-        (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-        energy broadening =
-      regularizedStredaSurfacePrimitiveTraceDerivative
-          (twoSiteDimerSystem t).hamiltonian.1
-          (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-          energy broadening +
-        regularizedStredaResidualSeaTraceKernel
-          (twoSiteDimerSystem t).hamiltonian.1
-          (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-          energy broadening :=
-  regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea
-    (twoSiteDimerSystem t).hamiltonian.1
-    (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-    energy broadening
-
-/-- Simultaneous reversal of both dimer-current insertions leaves the Bastin trace unchanged. -/
-theorem twoSiteDimer_currentSign_symmetry
-    (t : ℂ) (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        (twoSiteDimerSystem t).hamiltonian.1
-        (-twoSiteDimerCurrent t) (-twoSiteDimerCurrent t)
-        energy broadening =
-      regularizedBastinTraceIntegrand
-        (twoSiteDimerSystem t).hamiltonian.1
-        (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-        energy broadening :=
-  regularizedBastinTraceIntegrand_neg_neg
-    (twoSiteDimerSystem t).hamiltonian.1
-    (twoSiteDimerCurrent t) (twoSiteDimerCurrent t)
-    energy broadening
 
 end
 end Validation

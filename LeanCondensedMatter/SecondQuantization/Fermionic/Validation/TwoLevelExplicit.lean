@@ -78,7 +78,7 @@ theorem twoLevel_scalarCurrent_streda_sum_one_one :
       regularizedStredaResidualSeaTraceKernel
         twoLevelSystem.hamiltonian.1
         twoLevelScalarCurrent twoLevelScalarCurrent 1 1 = -2 := by
-  rw [← twoLevel_scalarCurrent_bastin_eq_streda]
+  rw [← regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
   exact twoLevel_scalarCurrent_bastinTrace_one_one
 
 end
