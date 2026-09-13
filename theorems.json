@@ -69085,7 +69085,8 @@
   ["SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
    "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_lt_uniform"],
   "dependencies":
-  ["SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem"],
+  ["SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
+   "SecondQuantization.Common.twoPointTimedEventAtomicLegs_interaction"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -70097,7 +70098,8 @@
    "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
    "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt",
    "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"],
-  "dependencies": [],
+  "dependencies":
+  ["SecondQuantization.Common.twoPointTimedEventAtomicLegs_interaction"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -72583,8 +72585,8 @@
   "statement":
   "∀ {n : ℕ} (v : Fin n),\n  SecondQuantization.Common.twoPointTimedEventAtomicLegs (Sum.inr v) = List.ofFn fun l => Sum.inr (⟨v, ⋯⟩, l)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "soleCompiledConsumerPrivate": true,
-  "singleCompiledConsumer": true,
+  "soleCompiledConsumerPrivate": false,
+  "singleCompiledConsumer": false,
   "simpLemma": true,
   "retainedMention": false,
   "projectAxioms": [],
@@ -72596,13 +72598,17 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"],
+  ["SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
+   "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
+   "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"],
   "dependencies": [],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"],
-  "compiledConsumerCount": 1,
+  ["SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
+   "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
+   "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock"],
+  "compiledConsumerCount": 3,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"terminal": false,
   "statement":
