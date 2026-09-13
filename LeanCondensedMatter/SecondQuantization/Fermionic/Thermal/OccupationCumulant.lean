@@ -123,7 +123,7 @@ theorem occupationProjector_empty :
     show (fun n : Occupation Mode => if (∅ : Finset Mode) ⊆ n then (1 : ℂ) else 0) =
       (1 : Occupation Mode → ℂ) from funext fun n => by simp]
   change Common.diagonalOperator (1 : Occupation Mode → ℂ) = LinearMap.id
-  have h := map_one (Common.diagonalOperatorAlgHom (Config := Occupation Mode))
+  have h := map_one (Common.diagonalOperator (Config := Occupation Mode))
   change Common.diagonalOperator (1 : Occupation Mode → ℂ) =
     (1 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) at h
   rwa [Module.End.one_eq_id] at h
