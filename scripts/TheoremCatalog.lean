@@ -49,6 +49,7 @@ structure CatalogEntry where
   crossModuleDirectWrapper : Bool
   completedMention : Bool
   retainedMention : Bool
+  retainedNeedsReview : Bool
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -287,6 +288,10 @@ private def annotateEntries
       | [consumer] => privateDeclarationString? consumer
       | _ => false
     let terminal := dependents.isEmpty
+    let retainedMention := mentionedInRetained retained entry.name
+    let retainedNeedsReview :=
+      retainedMention && (terminal || compiledConsumers.isEmpty || singleCompiledConsumer ||
+        entry.directWrapperOf.isSome)
     {
       name := entry.name
       moduleName := entry.moduleName
@@ -308,7 +313,8 @@ private def annotateEntries
       directWrapperTargetModule := entry.directWrapperTargetModule
       crossModuleDirectWrapper := entry.crossModuleDirectWrapper
       completedMention := terminal && mentionedInCompleted completed entry.name
-      retainedMention := mentionedInRetained retained entry.name
+      retainedMention
+      retainedNeedsReview
     }
 
 private def dependencyEdgeCount (entries : Array CatalogEntry) : Nat :=
@@ -368,6 +374,9 @@ private def retainedWithoutCurrentAuditSignal
     (entries : Array CatalogEntry) : Array CatalogEntry :=
   entries.filter fun entry =>
     entry.retainedMention && !retainedStructuralAuditSignal entry
+
+private def retainedReviewEntries (entries : Array CatalogEntry) : Array CatalogEntry :=
+  entries.filter fun entry => entry.retainedNeedsReview
 
 private def sortedStringContains (names : Array String) (target : String) : Bool :=
   let rec search (lower upper : Nat) : Nat → Bool
@@ -445,6 +454,7 @@ private def markdown
   let retainedNames := retainedDeclarationNames retained
   let missingRetained := missingRetainedDeclarations entries retainedNames
   let retainedWithoutSignal := retainedWithoutCurrentAuditSignal entries
+  let retainedReviewQueue := retainedReviewEntries entries
   let terminals := terminalEntries entries
   let completedTerminals := terminals.filter fun entry => entry.completedMention
   let retainedTerminals := terminals.filter fun entry => entry.retainedMention
@@ -478,6 +488,7 @@ private def markdown
   output := output ++ s!"Retained audit declarations: {retainedEntries.size}\n\n"
   output := output ++ s!"Retained declarations missing from the theorem catalog: {missingRetained.size}\n\n"
   output := output ++ s!"Retained declarations without a current structural audit signal: {retainedWithoutSignal.size}\n\n"
+  output := output ++ s!"Retained re-audit queue: {retainedReviewQueue.size}\n\n"
   output := output ++ s!"Terminal theorems: {terminals.size}\n\n"
   output := output ++ s!"Terminal theorems mentioned in completed.md: {completedTerminals.size}\n\n"
   output := output ++ s!"Terminal theorems documented as retained: {retainedTerminals.size}\n\n"
@@ -500,7 +511,7 @@ private def markdown
   output := output ++ "`axioms` records transitive kernel axiom dependencies from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. This is kernel provenance, not a replacement for explicit model assumptions represented as theorem hypotheses.\n\n"
   output := output ++ "`simpLemma` records membership in Lean's active default simp extension, including simp attributes applied separately from the theorem declaration. The priority private-consumer queue excludes simp lemmas because public canonical evaluation/normalization rules can remain useful API even when their only currently retained compiled consumer is private. This exclusion is a ranking heuristic, not a claim that every simp theorem should be retained.\n\n"
   output := output ++ "`directWrapperOf` is a conservative proof-term attribute: after removing only lambda/metadata packaging, the theorem body must be a direct application of another non-private source-declared project theorem and all application arguments must have a simple specialization shape without references to other project theorems. Extensionality lemmas are excluded because they are commonly proof mechanisms for genuinely new results. `directWrapperTargetModule` and `crossModuleDirectWrapper` record where that target lives. These attributes are advisory and do not imply that a domain-specific specialization lacks independent API value.\n\n"
-  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API. The retained consistency audit separately reports listed names that no longer resolve to catalog theorems and retained entries that no longer carry any of the structural signals that justify this disposition (terminal, zero/single compiled consumer, or direct wrapper). These findings are advisory cleanup prompts.\n\n"
+  output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API. The retained consistency audit separately reports listed names that no longer resolve to catalog theorems and retained entries that no longer carry any of the structural signals that justify this disposition (terminal, zero/single compiled consumer, or direct wrapper). `retainedNeedsReview` separately marks retained declarations that still carry at least one such structural signal; they remain suppressed from ordinary unresolved queues but are surfaced in the retained re-audit queue for renewed semantic review. These findings are advisory cleanup and review prompts.\n\n"
   output := output ++ "A single-consumer theorem has exactly one distinct compiled project-declaration consumer. Multi-step chains follow that unique edge through theorem consumers until the chain reaches a theorem without exactly one compiled consumer, or a non-theorem definition/opaque endpoint. Only chains with at least two single-consumer edges are listed separately. These highlight public wrappers and proof-routing stages that may be candidates for inlining, privatization, or deletion; source search and semantic review remain required before changing the API. Retained declarations can still appear in these chains because the chains describe graph structure rather than review status.\n\n"
   output := output ++ "A mention in `notes/completed.md` is evidence that a terminal endpoint is an intentional completed result. A mention in `notes/theorem-catalog-retained.md` is evidence that a declaration surfaced by one or more audit signals was semantically reviewed and intentionally retained. Terminal declarations with neither disposition remain review candidates: compare their statement and module with `notes/roadmap.md` and the detailed roadmaps to decide whether they are roadmap intermediates that still need a consumer, intentional local endpoints, or unnecessary public theorems.\n\n"
   output := output ++ "## Retained catalog consistency\n\n"
@@ -517,6 +528,13 @@ private def markdown
   else
     for entry in retainedWithoutSignal do
       output := output ++ s!"- `{entry.name}` — module `{entry.moduleName}`; compiled consumers: {entry.compiledConsumerCount}; terminal: {entry.terminal}; direct wrapper: {entry.directWrapperOf.isSome}\n"
+  output := output ++ "\n## Retained re-audit queue\n\n"
+  output := output ++ "These declarations were previously retained after semantic review but still carry at least one current structural audit signal. They remain excluded from ordinary unresolved queues; this separate advisory queue makes the continuing structural pressure visible for renewed semantic review.\n\n"
+  if retainedReviewQueue.isEmpty then
+    output := output ++ "- None.\n"
+  else
+    for entry in retainedReviewQueue do
+      output := output ++ s!"- `{entry.name}` — module `{entry.moduleName}`; compiled consumers: {entry.compiledConsumerCount}; terminal: {entry.terminal}; direct wrapper: {entry.directWrapperOf.isSome}; cross-module wrapper: {entry.crossModuleDirectWrapper}; simp: {entry.simpLemma}\n"
   output := output ++ "\n## Project axiom provenance\n\n"
   output := output ++ "Each row lists the source-declared LeanCondensedMatter axioms transitively used by a theorem. Standard logical axioms remain available in the JSON entry but are omitted here.\n\n"
   for entry in projectAxiomEntries do
@@ -583,7 +601,8 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("directWrapperTargetModule", entry.directWrapperTargetModule.map Json.str |>.getD .null),
       ("crossModuleDirectWrapper", .bool entry.crossModuleDirectWrapper),
       ("completedMention", .bool entry.completedMention),
-      ("retainedMention", .bool entry.retainedMention)
+      ("retainedMention", .bool entry.retainedMention),
+      ("retainedNeedsReview", .bool entry.retainedNeedsReview)
     ]
 
 run_cmd do
@@ -625,9 +644,11 @@ run_cmd do
   let retainedNames := retainedDeclarationNames retained
   let missingRetained := missingRetainedDeclarations catalog retainedNames
   let retainedWithoutSignal := retainedWithoutCurrentAuditSignal catalog
+  let retainedReviewQueue := retainedReviewEntries catalog
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains retained)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
   logInfo m!"Retained catalog consistency: {missingRetained.size} missing declaration(s); {retainedWithoutSignal.size} retained declaration(s) without a current structural audit signal"
+  logInfo m!"Retained re-audit queue: {retainedReviewQueue.size} declaration(s)"
   logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {projectAxiomEntries.size} theorems depending on project axioms; {externalAxiomEntries.size} theorems depending on external nonstandard axioms; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"
 
 end LeanCondensedMatter.TheoremCatalog
