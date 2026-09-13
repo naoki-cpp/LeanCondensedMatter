@@ -35,9 +35,10 @@ theorem traceFock_eq_sum_matrixCoeff
   classical
   change LinearMap.trace ℂ (AlgebraicFock Config) A = _
   rw [LinearMap.trace_eq_matrix_trace ℂ
-    (Finsupp.basisSingleOne : Basis Config ℂ (AlgebraicFock Config))]
+    (Finsupp.basisSingleOne : Module.Basis Config ℂ (AlgebraicFock Config))]
   simp [Matrix.trace, LinearMap.toMatrix_apply, matrixCoeff, basisState, Finsupp.basisSingleOne]
 
+omit [Fintype Config] in
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A.comp B) = traceFock (B.comp A) := by
@@ -45,11 +46,13 @@ theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFoc
     LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
   simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
+omit [Fintype Config] in
 /-- `traceFock` is linear in its operator argument: scaling. -/
 theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (c • A) = c * traceFock A := by
   simpa only [smul_eq_mul] using (traceFock (Config := Config)).map_smul c A
 
+omit [Fintype Config] in
 /-- `traceFock` is linear in its operator argument: addition. -/
 theorem traceFock_add (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A + B) = traceFock A + traceFock B :=
