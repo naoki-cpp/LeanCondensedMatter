@@ -41,7 +41,7 @@ private theorem twoPointTimedEventAtomicLegs_interaction_idxOf
     (Sum.inr (⟨v, Finset.mem_univ v⟩, k) : OrderedTwoPointLeg n)) (by
       intro a b hab
       exact congrArg Prod.snd (Sum.inr.inj hab))
-  simpa [List.get_ofFn] using h.get_idxOf (Fin.cast (by simp) l)
+  simpa [List.get_ofFn] using List.get_idxOf h (Fin.cast (by simp) l)
 
 /-- Mixed two-point position occupied by a fixed-order quartic interaction leg. -/
 noncomputable def mixedTimeOrderedQuarticLegPosition {n : ℕ}
