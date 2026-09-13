@@ -22,9 +22,10 @@ SecondQuantization.Fermionic.CompletedFockSpace Mode
 - explicit product domains and free-Hamiltonian/ladder relations;
 - finite-dimensional compatibility and finite-mode coordinate truncations.
 
-Bounded operators use `ContinuousLinearMap`; genuinely unbounded diagonal operators keep explicit
-`LinearPMap` domains. Completion alone never licenses coercing an unbounded Hamiltonian or number
-operator to a bounded map.
+Uniformly bounded coordinatewise scalar multiplication uses Mathlib `lp.mapCLM`, specialized locally
+to completed-space diagonal operators. Genuinely unbounded diagonal weights keep explicit `LinearPMap`
+domains; completion alone never licenses coercing an unbounded Hamiltonian or number operator to a
+bounded map.
 
 ## Thermal boundary
 
