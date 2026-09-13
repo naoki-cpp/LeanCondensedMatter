@@ -112,10 +112,9 @@ def inPlaneShiftMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2
     (rung coefficients : InPlaneCoefficientVector) :
     (inPlaneShiftMatrix rung).mulVec coefficients =
       coefficients - inPlaneLadderAction rung coefficients := by
-  funext direction
-  fin_cases direction <;>
-    simp [inPlaneShiftMatrix, inPlaneLadderAction, Matrix.mulVec, dotProduct,
-      Fin.sum_univ_two, inPlaneRotationMatrix, sub_eq_add_neg] <;> ring
+  simpa [inPlaneShiftMatrix, inPlaneLadderAction] using
+    (Matrix.sub_mulVec
+      (1 : Matrix (Fin 2) (Fin 2) ℂ) (inPlaneRotationMatrix rung) coefficients)
 
 private theorem inPlaneLadder_shift_injective
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
