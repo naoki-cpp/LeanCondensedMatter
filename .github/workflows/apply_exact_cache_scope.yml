@@ -1,0 +1,97 @@
+name: Scope Exact Cache
+
+on:
+  push:
+    branches: [chore/proof-region-search-profile]
+    paths: [.github/workflows/apply_exact_cache_scope.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: perf/proof-region-search-cache
+          persist-credentials: true
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+      - name: Scope negative cache and compile
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/ProofRegions.lean')
+          s = p.read_text()
+          old = '''private structure ExactSearchCacheEntry where
+            shape : Expr
+            result : Option ExactWitness
+          '''
+          new = '''private structure ExactSearchCacheEntry where
+            shape : Expr
+            parentDecl? : Option Name
+            result : Option ExactWitness
+          '''
+          if old not in s:
+              raise SystemExit('cache structure anchor not found')
+          s = s.replace(old, new, 1)
+          old = '''  let entries ← Command.liftIO cache.get
+            if let some entry := entries.find? fun entry => entry.shape == shape then
+              match entry.result with
+              | none => return none
+              | some witness =>
+                  if let some result ← exactTermFromWitness node goal witness then
+                    return some result
+            let result ← try
+              importedExactTerm node goal
+            catch _ =>
+              pure none
+            let witness? := result.map (·.2)
+            let updated := entries.filter fun entry => entry.shape != shape
+            Command.liftIO <| cache.set (updated.push { shape, result := witness? })
+          '''
+          new = '''  let entries ← Command.liftIO cache.get
+            let parentDecl? := node.ctxI.parentDecl?
+            let scoped? := entries.find? fun entry =>
+              entry.shape == shape && entry.parentDecl? == parentDecl?
+            let reusable? := scoped?.orElse <| entries.find? fun entry =>
+              entry.shape == shape && entry.result.isSome
+            if let some entry := reusable? then
+              match entry.result with
+              | none => return none
+              | some witness =>
+                  if let some result ← exactTermFromWitness node goal witness then
+                    return some result
+            let result ← try
+              importedExactTerm node goal
+            catch _ =>
+              pure none
+            let witness? := result.map (·.2)
+            let updated := entries.filter fun entry =>
+              !(entry.shape == shape && entry.parentDecl? == parentDecl?)
+            Command.liftIO <| cache.set (updated.push { shape, parentDecl?, result := witness? })
+          '''
+          if old not in s:
+              raise SystemExit('cache logic anchor not found')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+          lake env lean scripts/ProofRegions.lean
+      - name: Commit implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ProofRegions.lean
+          git commit -m 'perf(tooling): scope exact-search cache safely'
+          git push origin HEAD:perf/proof-region-search-cache
