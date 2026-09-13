@@ -121,8 +121,9 @@ theorem occupationProjector_empty :
     occupationProjector (∅ : Finset Mode) = LinearMap.id := by
   rw [occupationProjector,
     show (fun n : Occupation Mode => if (∅ : Finset Mode) ⊆ n then (1 : ℂ) else 0) =
-      fun _ => (1 : ℂ) from funext fun n => if_pos (Finset.empty_subset n),
-    Common.diagonalOperator_one]
+      (1 : Occupation Mode → ℂ) from funext fun n => by simp]
+  simpa [Module.End.one_eq_id] using
+    map_one (Common.diagonalOperatorAlgHom (Config := Occupation Mode))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **Occupation projectors compose by taking unions.** The operator-level confirmation that
