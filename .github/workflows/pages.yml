@@ -1,9 +1,11 @@
 name: Deploy Declaration Explorer
 
 on:
-  workflow_run:
-    workflows: ["Lean Action CI"]
-    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - 'docs-site/**'
+      - '.github/workflows/pages.yml'
 
 permissions:
   contents: read
@@ -14,37 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  frontend-changes:
-    if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    outputs:
-      deploy: ${{ steps.changes.outputs.deploy }}
-
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 2
-          persist-credentials: false
-
-      - name: Detect declaration explorer changes
-        id: changes
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq '^(docs-site/|\.github/workflows/pages\.yml$)'; then
-            echo "deploy=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "deploy=false" >> "$GITHUB_OUTPUT"
-          fi
-
   deploy:
-    needs: frontend-changes
-    if: needs.frontend-changes.outputs.deploy == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -58,7 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
 
       - name: Configure GitHub Pages
