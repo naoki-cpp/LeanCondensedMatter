@@ -174,14 +174,14 @@ endpoints. The canonical formal endpoint is
 
 ```lean
 SecondQuantization.Fermionic.
-  factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+  factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 and the finite-dimensional analytic endpoint is
 
 ```lean
 SecondQuantization.Fermionic.
-  iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
+  iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 The external-leg line has also reached the finite-mode two-point endpoint
@@ -191,8 +191,9 @@ SecondQuantization.Fermionic.
   vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-in `TwoPointDiagramExpansion/CauchySeries.lean`. This means the next correlation-function target is
-higher-point/source-insertion structure, not re-proving the two-point linked-cluster identity.
+in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next correlation-function
+target is higher-point/source-insertion structure, not re-proving the two-point linked-cluster
+identity.
 
 ## Fermionic field/current boundary
 

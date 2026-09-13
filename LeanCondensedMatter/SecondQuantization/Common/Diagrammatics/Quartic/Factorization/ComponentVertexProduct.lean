@@ -30,8 +30,8 @@ theorem QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts
   rfl
 
 /-- The statistics-independent complex Dyson sign times vertex weight factors over connected
-component restrictions. -/
-theorem QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected
+components. -/
+theorem QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (w : Label → ℂ) :
     (-1 : ℂ) ^ S.card * d.vertexWeight w =
       ∏ B : d.componentPartition.parts,

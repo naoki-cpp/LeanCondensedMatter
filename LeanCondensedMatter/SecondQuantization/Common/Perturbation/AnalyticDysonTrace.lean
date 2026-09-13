@@ -81,7 +81,7 @@ theorem finiteOperatorTraceLeft_continuousDysonCoeff (energy : Config → ℝ) (
 
 /-- The scalar Dyson trace series converges to the trace of the free evolution composed with the
 analytic Dyson evolution. -/
-theorem hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
+theorem hasSum_dysonTraceCoeff
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     HasSum (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)

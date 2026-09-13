@@ -29,7 +29,7 @@ private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → 
     change quarticWickDiagramAmplitude ε β g d =
       ∏ B : d.componentPartition.parts,
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
-    exact quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected ε β g d
+    exact quarticWickDiagramAmplitude_eq_prod_components ε β g d
 
 /-- The Dyson vertex cumulant is the sum of amplitudes of connected quartic Wick diagrams. -/
 theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude

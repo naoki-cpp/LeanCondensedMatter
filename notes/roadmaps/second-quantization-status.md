@@ -39,13 +39,13 @@ trace/operator integration, or forms finite diagram sums.
 Three finite-mode endpoints are proved:
 
 ```lean
-factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 for the coefficientwise formal log-partition linked-cluster theorem,
 
 ```lean
-iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
+iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 for the finite-dimensional analytic log-partition theorem, and

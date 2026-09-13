@@ -66,7 +66,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumula
         coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
 
 /-- Fermionic Dyson Linked Cluster Theorem. -/
-theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *

@@ -87,7 +87,7 @@ theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
         QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) (orders B) := by
   classical
   unfold QuarticDiagram.orderedThermalAmplitude
-  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g]
+  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g]
   simp only [Common.QuarticDiagram.restrictComponentConnected]
   rw [d.orderedThermalPairingValue_eq_prod_components ε β orders shuffle]
   rw [← Finset.prod_mul_distrib]
