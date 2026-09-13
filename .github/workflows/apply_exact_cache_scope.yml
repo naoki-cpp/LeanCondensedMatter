@@ -63,8 +63,10 @@ jobs:
             let parentDecl? := node.ctxI.parentDecl?
             let scoped? := entries.find? fun entry =>
               entry.shape == shape && entry.parentDecl? == parentDecl?
-            let reusable? := scoped?.orElse <| entries.find? fun entry =>
-              entry.shape == shape && entry.result.isSome
+            let reusable? := match scoped? with
+              | some entry => some entry
+              | none => entries.find? fun entry =>
+                  entry.shape == shape && entry.result.isSome
             if let some entry := reusable? then
               match entry.result with
               | none => return none
