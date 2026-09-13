@@ -47,14 +47,14 @@ theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
 
 omit [LinearOrder Mode] in
 /-- The specialized Common Dyson trace coefficients sum to the analytic partition function. -/
-theorem hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
+theorem hasSum_dysonTraceCoeff
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) :
     HasSum
       (fun n : ℕ => lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n)
       (analyticDysonPartitionFunction ε β V lam) := by
   rw [analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution ε hβ V lam]
-  exact Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
+  exact Common.hasSum_dysonTraceCoeff
     (fermionEnergy ε) hβ V lam
 
 /-- The one-variable formal multilinear series of specialized Common Dyson trace coefficients. -/
@@ -92,8 +92,7 @@ theorem radius_dysonPartitionFPowerSeries_eq_top
   intro r
   have hs : Summable (fun n : ℕ =>
       ‖(r : ℂ) ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n‖) :=
-    (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
-      ε hβ V (r : ℂ)).summable.norm
+    (hasSum_dysonTraceCoeff ε hβ V (r : ℂ)).summable.norm
   simpa [dysonPartitionFPowerSeries, norm_mul, norm_pow, mul_comm] using hs
 
 omit [LinearOrder Mode] in
@@ -108,7 +107,7 @@ theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
   · intro lam _
     simpa [dysonPartitionFPowerSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
-      hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V lam
+      hasSum_dysonTraceCoeff ε hβ V lam
 
 omit [LinearOrder Mode] in
 /-- Taylor-series packaging at zero for downstream analytic logarithms. -/
@@ -134,7 +133,7 @@ theorem analyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
-  rw [← (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0).tsum_eq,
+  rw [← (hasSum_dysonTraceCoeff ε hβ V 0).tsum_eq,
     tsum_eq_single 0]
   · rw [← dysonPartitionCoeff_eq_dysonTraceCoeff, dysonPartitionCoeff_zero]
     simp

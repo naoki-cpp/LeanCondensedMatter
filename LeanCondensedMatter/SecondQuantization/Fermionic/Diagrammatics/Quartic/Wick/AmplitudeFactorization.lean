@@ -92,9 +92,8 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
               (d.restrictComponentConnected B.2).1 order := by
       rfl
 
-/-- A quartic Wick-diagram amplitude is the product of the amplitudes of its connected-component
-restrictions. This is the exit theorem of milestone M2 of the fermionic linked-cluster roadmap. -/
-theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
+/-- A quartic Wick-diagram amplitude is the product of the amplitudes of its connected components. -/
+theorem quarticWickDiagramAmplitude_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
     quarticWickDiagramAmplitude ε β g d =
@@ -102,7 +101,7 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight]
-  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g,
+  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
     sum_orderedSimplexContribution_eq_prod_components ε β d]
   rw [← Finset.prod_mul_distrib]
 

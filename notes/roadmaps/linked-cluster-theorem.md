@@ -9,7 +9,7 @@ higher-point expansion.
 For nonzero perturbation order `n`,
 
 ```lean
-factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 identifies
@@ -39,7 +39,7 @@ The analytic Dyson theory identifies the formal coefficients with the Taylor exp
 proves
 
 ```lean
-iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
+iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 ```
 
 for the local normalized logarithm of the interacting finite-temperature partition function.
@@ -54,7 +54,7 @@ cancellation then gives
 vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean`.
+from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean`.
 
 Here `vacuumNormalized` is the Lean identifier for division by the zero-external-leg Dyson partition
 series; it does not mean that the thermal state is a vacuum state. Schematically,

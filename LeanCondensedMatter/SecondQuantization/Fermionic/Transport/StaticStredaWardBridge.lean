@@ -150,7 +150,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
           (system.hbar : ℂ) (q : ℂ) K)
         (kuboBastinEnergyBroadening system.hbar eta)
         lowerEnergy upperEnergy occupation := by
-  rw [finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotential]
+  rw [finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotentialResponse_mul_normalization]
   rw [ward.vectorPotentialResponse_eq_scaledTracedBastin]
   rw [finiteVolumeConductivityNormalization_zero_frequency]
   let denominator : ℂ := (convention.volume : ℂ) * (-(eta : ℂ))

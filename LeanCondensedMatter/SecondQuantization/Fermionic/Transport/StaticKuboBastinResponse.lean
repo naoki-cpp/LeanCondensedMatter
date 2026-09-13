@@ -66,7 +66,7 @@ noncomputable def finiteStaticKuboBastinDirectionalConductivity
 
 /-- The static conductivity is the retained vector-potential coefficient multiplied by the exact
 zero-frequency finite-volume electric-field normalization. -/
-theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotential
+theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotentialResponse_mul_normalization
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
