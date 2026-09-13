@@ -32,7 +32,7 @@ noncomputable def normalizedWeightedDiagonal (w : Config → ℂ) :
   map_smul' := by
     intro c A
     rw [(weightedTrace w).map_smul]
-    simp only [smul_eq_mul, mul_div_assoc]
+    simp only [smul_eq_mul, mul_div_assoc, RingHom.id_apply]
 
 /-! ## Linearity -/
 
