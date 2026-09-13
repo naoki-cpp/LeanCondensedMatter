@@ -49961,7 +49961,7 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap"],
+  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
   "dependencies":
   ["SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner",
    "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"],
@@ -49969,7 +49969,7 @@
   "completedMention": false,
   "compiledConsumers":
   ["SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv",
-   "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap"],
+   "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
   "compiledConsumerCount": 2},
  {"terminal": false,
   "statement":
@@ -50805,17 +50805,15 @@
   "directWrapperOf": null,
   "dependents":
   ["SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap",
-   "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap",
-   "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap"],
+   "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
   "dependencies":
   ["SecondQuantization.Common.TwoPointDiagram.mixedComponentPairToRestricted_pair_eq_or_swap"],
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
   ["SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap",
-   "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap",
-   "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap"],
-  "compiledConsumerCount": 3},
+   "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
+  "compiledConsumerCount": 2},
  {"terminal": false,
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B),\n  (d.mixedComponentPairSigmaEquiv τ τ' σ) ⟨B, pr⟩ = ↑pr",
@@ -51234,31 +51232,6 @@
   "compiledConsumerCount": 1},
  {"terminal": false,
   "statement":
-  "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart),\n  ↑((d.mixedExternalComponentPairEquiv τ τ' σ) pr) =\n      ((d.mixedExternalPositionEquiv τ τ' σ)\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 0)),\n        (d.mixedExternalPositionEquiv τ τ' σ)\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 1))) ∨\n    ↑((d.mixedExternalComponentPairEquiv τ τ' σ) pr) =\n      ((d.mixedExternalPositionEquiv τ τ' σ)\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 1)),\n        (d.mixedExternalPositionEquiv τ τ' σ)\n          ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart) (pr, 0)))",
-  "soleCompiledConsumerPrivate": true,
-  "singleCompiledConsumer": true,
-  "simpLemma": false,
-  "retainedMention": false,
-  "name":
-  "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap",
-  "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-  "docString":
-  "Canonical external split pair transport preserves transported endpoints up to swap. ",
-  "directWrapperTargetModule": null,
-  "directWrapperOf": null,
-  "dependents":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
-  "dependencies":
-  ["SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
-   "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap"],
-  "crossModuleDirectWrapper": false,
-  "completedMention": false,
-  "compiledConsumers":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
-  "compiledConsumerCount": 1},
- {"terminal": false,
-  "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart),\n  (d.mixedExternalPositionEquiv τ τ' υ) ((d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart) p) =\n    (d.mixedExternalPositionEquiv τ τ' σ) p",
   "soleCompiledConsumerPrivate": true,
   "singleCompiledConsumer": true,
@@ -51525,31 +51498,6 @@
   ["SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff"],
   "compiledConsumerCount": 2},
- {"terminal": false,
-  "statement":
-  "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) (pr : d.MixedComponentPair τ τ' σ B),\n  ↑((d.mixedVacuumComponentPairEquiv τ τ' σ B hVac) pr) =\n      ((d.mixedVacuumPositionEquiv τ τ' σ B hVac) ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 0)),\n        (d.mixedVacuumPositionEquiv τ τ' σ B hVac) ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 1))) ∨\n    ↑((d.mixedVacuumComponentPairEquiv τ τ' σ B hVac) pr) =\n      ((d.mixedVacuumPositionEquiv τ τ' σ B hVac) ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 1)),\n        (d.mixedVacuumPositionEquiv τ τ' σ B hVac) ((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 0)))",
-  "soleCompiledConsumerPrivate": true,
-  "singleCompiledConsumer": true,
-  "simpLemma": false,
-  "retainedMention": false,
-  "name":
-  "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap",
-  "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-  "docString":
-  "Vacuum mixed-pair restriction preserves transported endpoints up to swap. ",
-  "directWrapperTargetModule": null,
-  "directWrapperOf": null,
-  "dependents":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
-  "dependencies":
-  ["SecondQuantization.Common.TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap",
-   "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"],
-  "crossModuleDirectWrapper": false,
-  "completedMention": false,
-  "compiledConsumers":
-  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
-  "compiledConsumerCount": 1},
  {"terminal": false,
   "statement":
   "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) (p : d.MixedComponentPosition τ τ' σ B),\n  (d.mixedVacuumPositionEquiv τ τ' υ B hVac) ((d.mixedComponentPositionTimeEquiv τ τ' σ υ B) p) =\n    (d.mixedVacuumPositionEquiv τ τ' σ B hVac) p",
@@ -52380,7 +52328,7 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap"],
+  ["_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
   "dependencies":
   ["Combinatorics.Pairing.restrictAlongEquiv_partner",
    "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
@@ -52389,7 +52337,7 @@
   "completedMention": false,
   "compiledConsumers":
   ["SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv",
-   "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap"],
+   "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"],
   "compiledConsumerCount": 2},
  {"terminal": false,
   "statement":
@@ -86980,10 +86928,11 @@
   ["SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"],
   "dependencies":
   ["SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
-   "SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap",
+   "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv",
+   "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap",
    "SecondQuantization.Common.TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv",
-   "SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap",
    "SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv",
+   "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv"],
   "crossModuleDirectWrapper": false,
