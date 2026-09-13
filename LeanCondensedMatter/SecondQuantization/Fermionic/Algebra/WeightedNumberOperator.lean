@@ -29,7 +29,8 @@ theorem weightedTrace_numberOperator (w : Occupation Mode → ℂ) (i : Mode) :
     · exact Common.matrixCoeff_of_smul_basisState
         (show numberOperator i (basisState n) = (1 : ℂ) • basisState n by
           rw [numberOperator_basisState, if_pos hi, one_smul])
-  simp only [Common.weightedTrace, h, mul_ite, mul_one, mul_zero]
+  rw [Common.weightedTrace_eq_sum_matrixCoeff]
+  simp only [h, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
 
 end Fermionic
