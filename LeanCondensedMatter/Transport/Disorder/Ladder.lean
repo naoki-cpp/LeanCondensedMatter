@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.AffineFixedPoint
 import LeanCondensedMatter.Transport.Disorder.Moments
 
 set_option linter.style.header false
@@ -102,30 +103,22 @@ theorem eq_resummedLadderVertex_of_fixedPoint
   let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
   have hleft : inverse * (1 - ladder) = 1 := by
     simpa [inverse] using hinvertible.val_inv_mul
+  have hleftInverse : Function.LeftInverse inverse
+      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := by
+    intro vertex
+    change (inverse * (1 - ladder)) vertex = vertex
+    rw [hleft]
+    simp
+  have hinjectiveShifted : Function.Injective
+      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := hleftInverse.injective
   have hinjective : Function.Injective
-      ((1 - ladder) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) := by
-    intro left right heq
-    have hleftApply : inverse ((1 - ladder) left) = left := by
-      change (inverse * (1 - ladder)) left = left
-      rw [hleft]
-      simp
-    have hrightApply : inverse ((1 - ladder) right) = right := by
-      change (inverse * (1 - ladder)) right = right
-      rw [hleft]
-      simp
-    calc
-      left = inverse ((1 - ladder) left) := hleftApply.symm
-      _ = inverse ((1 - ladder) right) := congrArg inverse heq
-      _ = right := hrightApply
-  apply hinjective
-  have hdressed : (1 - ladder) dressedVertex = bareVertex := by
-    have hshift : dressedVertex - ladder dressedVertex = bareVertex :=
-      (sub_eq_iff_eq_add).mpr hfixed
-    simpa using hshift
-  calc
-    (1 - ladder) dressedVertex = bareVertex := hdressed
-    _ = (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) :=
-      (shiftedLadder_apply_resummedLadderVertex ladder hinvertible bareVertex).symm
+      (fun vertex : H →L[ℂ] H => vertex - ladder vertex) := by
+    intro left right h
+    apply hinjectiveShifted
+    simpa using h
+  exact Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply
+    (fun vertex => ladder vertex) hinjective hfixed
+    (resummedLadderVertex_fixedPoint ladder hinvertible bareVertex)
 
 end
 end Transport

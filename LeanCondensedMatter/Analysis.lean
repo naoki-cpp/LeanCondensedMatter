@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.AffineFixedPoint
 import LeanCondensedMatter.Analysis.InternalSpace
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.Analysis.Dyson
