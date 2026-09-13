@@ -1,0 +1,85 @@
+name: Compare Proof Region Cache
+
+on:
+  push:
+    branches: [chore/proof-region-search-profile]
+    paths: [.github/workflows/compare_proof_region_cache.yml]
+
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+      - name: Build audited targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build \
+            LeanCondensedMatter.Permutation.TraceLog \
+            LeanCondensedMatter.Analysis.Dyson.Basic \
+            LeanCondensedMatter.Analysis.Operator.ZetaCommutator \
+            LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations \
+            2>&1 | grep -vE '^(trace:|Some required targets logged failures:|- LeanCondensedMatter\.|error: build failed$)' || true
+      - name: Prepare baseline and cached tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          git show 93146d1b87d37581386b6e0283d530717311bf90:scripts/ProofRegions.lean > scripts/ProofRegionsBaseline.lean
+          git show 5dd82cd1085a2773776de980f1aad0efaab0fe1a:scripts/ProofRegions.lean > scripts/ProofRegionsCached.lean
+          lake env lean scripts/ProofRegionsBaseline.lean
+          lake env lean scripts/ProofRegionsCached.lean
+      - name: Compare output and runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > /tmp/times.txt
+
+          run_one() {
+            local tag="$1"
+            local script="$2"
+            local key="$3"
+            local file="$4"
+            /usr/bin/time -f "${tag}_${key}_SECONDS=%e" -o /tmp/times.txt -a \
+              timeout 700s lake env lean --run "$script" "$file" 2 > "/tmp/${key}.${tag}.out"
+          }
+
+          trace=LeanCondensedMatter/Permutation/TraceLog.lean
+          dyson=LeanCondensedMatter/Analysis/Dyson/Basic.lean
+          zeta=LeanCondensedMatter/Analysis/Operator/ZetaCommutator.lean
+          car=LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/CanonicalAnticommutationRelations.lean
+
+          # Alternate order to reduce a systematic warm-cache bias.
+          run_one BASELINE scripts/ProofRegionsBaseline.lean TRACE "$trace"
+          run_one CACHED   scripts/ProofRegionsCached.lean   TRACE "$trace"
+          diff -u /tmp/TRACE.BASELINE.out /tmp/TRACE.CACHED.out
+
+          run_one CACHED   scripts/ProofRegionsCached.lean   DYSON "$dyson"
+          run_one BASELINE scripts/ProofRegionsBaseline.lean DYSON "$dyson"
+          diff -u /tmp/DYSON.BASELINE.out /tmp/DYSON.CACHED.out
+
+          run_one BASELINE scripts/ProofRegionsBaseline.lean ZETA "$zeta"
+          run_one CACHED   scripts/ProofRegionsCached.lean   ZETA "$zeta"
+          diff -u /tmp/ZETA.BASELINE.out /tmp/ZETA.CACHED.out
+
+          run_one CACHED   scripts/ProofRegionsCached.lean   CAR "$car"
+          run_one BASELINE scripts/ProofRegionsBaseline.lean CAR "$car"
+          diff -u /tmp/CAR.BASELINE.out /tmp/CAR.CACHED.out
+
+          echo '=== timings ==='
+          cat /tmp/times.txt
+          echo '=== summaries ==='
+          head -n 1 /tmp/TRACE.CACHED.out
+          head -n 1 /tmp/DYSON.CACHED.out
+          head -n 1 /tmp/ZETA.CACHED.out
+          head -n 1 /tmp/CAR.CACHED.out
