@@ -123,9 +123,10 @@ theorem tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeni
   ring
 
 /-- The transverse component of the zero-broadening dressed-current vector carries the same first
-nonvanishing weak-disorder coefficient as the transverse ladder action. This is the
-repository-oriented `F² B` content of Ado et al., EPL 111, 37004 (2015), Eq. (11), kept before
-conductivity normalization or mechanism classification. -/
+nonvanishing weak-disorder coefficient as the transverse ladder action. In the repository
+`Gᴿ Γ Gᴬ` orientation, this is the scaled transverse coefficient entering the dressed-current
+structure compared with Ado et al., EPL 111, 37004 (2015), Eq. (11). The retarded/advanced-order
+sign and disorder-normalization conversion to Ado's `F² B` convention remain downstream. -/
 theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero
     (v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
@@ -144,32 +145,12 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
   have haction :=
     tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  have hdetEventually :=
-    eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary_ne_zero_disorder_zero
-      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
   apply Tendsto.congr' ?_ haction
-  filter_upwards [hdetEventually] with disorderStrength hdet
-  have hdet' :
-      inPlaneLadderDeterminant
-        (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax) ≠ 0 := by
-    simpa [finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary] using hdet
-  have hfixed :=
-    inPlaneLadderSolvedVector_fixedPoint
-      (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-        v m probeEnergy disorderStrength hbar pMax) hdet'
-  have hy := congrFun hfixed 1
-  have hy' :
-      finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax 1 =
-        inPlaneLadderAction
-          (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax) 1 := by
-    simpa [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
-      inPlaneLadderBareXSource, inPlaneCoefficientVector] using hy
-  exact (congrArg (fun z : ℂ => z / (disorderStrength : ℂ)) hy').symm
+  filter_upwards with disorderStrength
+  simp only [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary]
+  rw [inPlaneLadderAction_apply_y]
+  simp only [inPlaneLadderSolvedVector_apply_x, inPlaneLadderSolvedVector_apply_y]
+  ring
 
 end
 
