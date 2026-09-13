@@ -64,7 +64,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three
       (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries
         ε β (quarticInteraction g)))
 
-/-- First-order formal linked-cluster regression corollary. -/
+/-- First-order formal linked-cluster corollary. -/
 theorem dysonFormalLinkedCluster_order_one
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 =
@@ -81,8 +81,8 @@ theorem dysonFormalLinkedCluster_order_one
       factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g 1 (by norm_num)
 
-/-- Second-order formal linked-cluster regression corollary, displaying cancellation of the
-product of two disconnected one-vertex contributions. -/
+/-- Second-order formal linked-cluster corollary, displaying cancellation of the product of two
+disconnected one-vertex contributions. -/
 theorem dysonFormalLinkedCluster_order_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 -
@@ -101,8 +101,8 @@ theorem dysonFormalLinkedCluster_order_two
       factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g 2 (by norm_num)
 
-/-- Third-order formal linked-cluster regression corollary, displaying cancellation of all
-one-plus-two and three-singleton disconnected decompositions. -/
+/-- Third-order formal linked-cluster corollary, displaying cancellation of all one-plus-two and
+three-singleton disconnected decompositions. -/
 theorem dysonFormalLinkedCluster_order_three
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 3 -
