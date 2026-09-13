@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import Mathlib.LinearAlgebra.Finsupp.Pi
+import Mathlib.LinearAlgebra.StdBasis
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
@@ -59,15 +60,15 @@ theorem finiteContinuousOperator_equiv_apply
   simp [finiteContinuousOperator, transportedFiniteOperatorLinearMap]
 
 /-- The standard coordinate basis vector in the analytic realization. -/
-noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config := by
-  classical
-  exact Pi.single n 1
+noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config :=
+  Pi.basisFun ℂ Config n
 
 @[simp]
 theorem finiteAnalyticFockEquiv_basisState (n : Config) :
     finiteAnalyticFockEquiv (basisState n) = finiteAnalyticBasis n := by
   classical
-  exact Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1
+  simpa [finiteAnalyticBasis] using
+    (Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1)
 
 @[simp]
 theorem finiteContinuousOperator_basis_apply
@@ -76,32 +77,19 @@ theorem finiteContinuousOperator_basis_apply
   rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
   rfl
 
-private theorem finiteAnalyticFock_eq_sum_basis (x : FiniteAnalyticFock Config) :
-    x = ∑ n : Config, x n • finiteAnalyticBasis n := by
-  classical
-  funext k
-  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
-  rw [Finset.sum_eq_single k]
-  · simp [finiteAnalyticBasis]
-  · intro n _ hnk
-    simp [finiteAnalyticBasis, hnk]
-  · simp
-
 set_option linter.unusedFintypeInType false in
 /-- Two continuous finite operators that agree on every standard basis vector are equal. -/
 theorem finiteContinuousOperator_ext_basis
     {A B : FiniteContinuousOperator Config}
     (h : ∀ n : Config, A (finiteAnalyticBasis n) = B (finiteAnalyticBasis n)) : A = B := by
+  classical
   apply ContinuousLinearMap.ext
   intro x
-  have hx := finiteAnalyticFock_eq_sum_basis x
-  calc
-    A x = A (∑ n : Config, x n • finiteAnalyticBasis n) := congrArg A hx
-    _ = ∑ n : Config, x n • A (finiteAnalyticBasis n) := by simp
-    _ = ∑ n : Config, x n • B (finiteAnalyticBasis n) :=
-      Finset.sum_congr rfl fun n _ => by rw [h n]
-    _ = B (∑ n : Config, x n • finiteAnalyticBasis n) := by simp
-    _ = B x := congrArg B hx.symm
+  have hlinear : A.toLinearMap = B.toLinearMap := by
+    apply (Pi.basisFun ℂ Config).ext
+    intro n
+    simpa [finiteAnalyticBasis] using h n
+  exact LinearMap.congr_fun hlinear x
 
 /-- Matrix multiplication formula for the transported continuous operator. -/
 theorem finiteContinuousOperator_apply_apply
@@ -109,7 +97,8 @@ theorem finiteContinuousOperator_apply_apply
     (x : FiniteAnalyticFock Config) (m : Config) :
     finiteContinuousOperator A x m = ∑ n : Config, matrixCoeff A m n * x n := by
   classical
-  have hx := finiteAnalyticFock_eq_sum_basis x
+  have hx : x = ∑ n : Config, x n • finiteAnalyticBasis n := by
+    simpa [finiteAnalyticBasis] using (pi_eq_sum_univ' x)
   calc
     finiteContinuousOperator A x m =
         finiteContinuousOperator A (∑ n : Config, x n • finiteAnalyticBasis n) m :=
