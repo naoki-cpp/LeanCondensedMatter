@@ -36,7 +36,12 @@ private theorem twoPointTimedEventAtomicLegs_interaction_idxOf
     @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
         (Sum.inr (⟨v, hv⟩, l))
         (twoPointTimedEventAtomicLegs (Sum.inr v)) = l.val := by
-  fin_cases l <;> simp [twoPointTimedEventAtomicLegs]
+  rw [twoPointTimedEventAtomicLegs_interaction]
+  have h := List.nodup_ofFn_ofInjective (f := fun k : Fin 4 =>
+    (Sum.inr (⟨v, Finset.mem_univ v⟩, k) : OrderedTwoPointLeg n)) (by
+      intro a b hab
+      exact congrArg Prod.snd (Sum.inr.inj hab))
+  simpa [List.get_ofFn] using h.get_idxOf (Fin.cast (by simp) l)
 
 /-- Mixed two-point position occupied by a fixed-order quartic interaction leg. -/
 noncomputable def mixedTimeOrderedQuarticLegPosition {n : ℕ}
