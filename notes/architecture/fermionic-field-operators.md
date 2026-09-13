@@ -9,9 +9,15 @@ SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ = ExteriorAlgebra ℂ 𝓗₁
 ```
 
 Creation is exterior multiplication and annihilation is contraction by the corresponding dual
-functional. A chosen ordered mode basis gives the occupation representation
-`Fermionic.OccupationFock Mode`, with an explicit linear equivalence to `AlgebraicFock` that
-intertwines the ladder operators.
+functional. The canonical smearing APIs expose this structure directly: creation is the complex-linear
+map obtained by composing `oneParticle` with Mathlib's left regular representation `Algebra.lmul`,
+while the inner-product dual is Mathlib's star-linear `innerₛₗ` and annihilation is its composition
+with the linear contraction map `annihilateDual`. Consequently, linearity of creation and
+conjugate-linearity of annihilation come from the bundled maps rather than operation-specific
+forwarding theorems.
+
+A chosen ordered mode basis gives the occupation representation `Fermionic.OccupationFock Mode`, with
+an explicit linear equivalence to `AlgebraicFock` that intertwines the ladder operators.
 
 The completed representation
 
