@@ -11,7 +11,7 @@ set_option linter.style.header false
 
 This module inserts the solved finite-cutoff finite-external-broadening Born-Dyson current-vertex
 vector into the retarded-advanced block of the massive-Dirac Středa surface algebra. Both the bare
-measured-current direction and the source direction are indexed by `Direction2`.
+measured-current direction and the source direction are indexed by `Fin 2`.
 
 The canonical ladder solution for a bare `σₓ` source is stored as one in-plane coefficient vector.
 Rotational closure supplies the source-indexed algebraic vertex
@@ -21,7 +21,7 @@ Rotational closure supplies the source-indexed algebraic vertex
 Γᵧᴿᴬ = -β σₓ + α σᵧ,
 ```
 
-where `α` and `β` are the `.x` and `.y` projections of that vector. These computational values are
+where `α` and `β` are the `0` and `1` coordinates of that vector. These computational values are
 total; ladder regularity is needed only when the solved vector is interpreted as the physical fixed
 point. Only the `Gᴿ Γ Gᴬ` ladder has been solved. The explicit same-side RR/AA remainder consequently
 retains the bare source current rather than reusing the RA-dressed vertex without a corresponding
@@ -41,7 +41,7 @@ open QuantumTheory.Transport
 vector into the requested in-plane source direction. This is the total algebraic value; the separate
 ladder-regularity predicate governs when the vector is the physical fixed-point solution. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-    (source : Direction2)
+    (source : Fin 2)
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
@@ -51,7 +51,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
-    (source : Direction2) (e v m probeEnergy broadening hbar pMax : ℝ) :
+    (source : Fin 2) (e v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
       source e v m probeEnergy broadening 0 hbar pMax = currentOperator source e v := by
   fin_cases source <;>
@@ -63,7 +63,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
 the solved source-indexed algebraic vertex only in the RA block, and the corresponding bare source
 current in the RR/AA same-side remainder. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   retardedAdvancedVertexTraceKernel
       (currentOperator measured e v)
@@ -86,7 +86,7 @@ bridge reduces exactly to the clean massive-Dirac Středa surface primitive for 
 source directions. -/
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m px py probeEnergy broadening hbar pMax : ℝ)
     (hbroadening : 0 < broadening) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
