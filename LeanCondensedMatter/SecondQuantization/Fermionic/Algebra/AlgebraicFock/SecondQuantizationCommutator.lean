@@ -1,20 +1,23 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
 /-!
-# Commutator functoriality of fermionic second quantization
+# Lie-algebra functoriality of fermionic second quantization
 
-Second quantization sends the commutator of one-particle endomorphisms to the commutator of their
-induced finite-particle endomorphisms:
+Second quantization is a complex-linear Lie algebra homomorphism from one-particle endomorphisms to
+finite-particle endomorphisms. In particular, it sends the commutator of one-particle operators to
+the commutator of their second quantizations:
 
 ```text
 [dGamma S, dGamma T] = dGamma [S, T].
 ```
 
-The ordinary linear-map commutator is owned upstream by `Analysis.Operator.LinearCommutator`;
-this module proves only the fermionic second-quantization functoriality theorem and its consequences.
+Mathlib's `LieHom` supplies the canonical bundled structure. The ordinary linear-map commutator is
+owned upstream by `Analysis.Operator.LinearCommutator`; the theorem stated with that semantic API is
+derived below from the bundled Lie-homomorphism law.
 -/
 
 namespace SecondQuantization
@@ -23,8 +26,7 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Second quantization preserves ordinary commutators. -/
-theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+private theorem dGamma_linearCommutator_raw (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     ConservationLaw.linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
       dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) := by
   apply LinearMap.ext
@@ -76,6 +78,45 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
           rw [hx]
         _ = dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) (oneParticle 𝓗₁ f * x) := by
           rw [dGamma_oneParticle_mul, ConservationLaw.linearCommutator_apply]
+
+attribute [local instance 100] LieRing.ofAssociativeRing
+
+/-- Fermionic second quantization as a Lie algebra homomorphism between endomorphism algebras. -/
+noncomputable def dGammaLieHom :
+    (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ⁅ℂ⁆
+      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) where
+  toFun := dGamma 𝓗₁
+  map_add' := dGamma_add 𝓗₁
+  map_smul' := dGamma_smul 𝓗₁
+  map_lie' := by
+    intro S T
+    simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+      ConservationLaw.linearCommutator] using
+      (dGamma_linearCommutator_raw 𝓗₁ S T).symm
+
+@[simp]
+theorem dGammaLieHom_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    dGammaLieHom 𝓗₁ T = dGamma 𝓗₁ T :=
+  rfl
+
+/-- The underlying complex-linear map of fermionic second quantization. -/
+noncomputable def dGammaLinear :
+    (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ[ℂ]
+      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
+  (dGammaLieHom 𝓗₁).toLinearMap
+
+@[simp]
+theorem dGammaLinear_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    dGammaLinear 𝓗₁ T = dGamma 𝓗₁ T :=
+  rfl
+
+/-- Second quantization preserves ordinary commutators. -/
+theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
+    ConservationLaw.linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
+      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) := by
+  simpa [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+    ConservationLaw.linearCommutator] using
+    (LieHom.map_lie (dGammaLieHom 𝓗₁) S T).symm
 
 /-- The algebraic total particle-number operator, identified as `dGamma id`.
 
