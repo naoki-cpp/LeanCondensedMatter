@@ -37,10 +37,12 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
   push_cast
   ring_nf
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The free-fermion diagonal Gibbs evolution has nonzero algebraic-Fock trace. -/
-theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
+theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero [Finite Mode]
+    (ε : Mode → ℝ) (β : ℝ) :
     Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
+  letI := Fintype.ofFinite Mode
   rw [Common.traceFock_diagonalEvolution_eq_weightSum]
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
     funext fun n => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
