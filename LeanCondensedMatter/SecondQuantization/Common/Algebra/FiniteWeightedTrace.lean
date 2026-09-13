@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
+import Mathlib.LinearAlgebra.Trace
 
 set_option linter.style.header false
 
@@ -21,24 +22,28 @@ variable {Config : Type*} [Fintype Config]
 
 /-! ## Finite traces -/
 
-/-- **The Fock-space trace** as a linear functional on endomorphisms,
-`Tr A := Σₙ ⟨n| A |n⟩`. -/
+/-- **The Fock-space trace** as the canonical linear trace on the finite free algebraic Fock
+space. Its occupation-basis coordinate formula is `traceFock_eq_sum_matrixCoeff`. -/
 noncomputable def traceFock :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
-  toFun := fun A => ∑ n : Config, matrixCoeff A n n
-  map_add' := by
-    intro A B
-    simp only [matrixCoeff_add, Finset.sum_add_distrib]
-  map_smul' := by
-    intro c A
-    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  LinearMap.trace ℂ (AlgebraicFock Config)
+
+/-- Coordinate formula for the canonical trace in the occupation basis. -/
+theorem traceFock_eq_sum_matrixCoeff
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    traceFock A = ∑ n : Config, matrixCoeff A n n := by
+  classical
+  change LinearMap.trace ℂ (AlgebraicFock Config) A = _
+  rw [LinearMap.trace_eq_matrix_trace ℂ
+    (Finsupp.basisSingleOne : Basis Config ℂ (AlgebraicFock Config))]
+  simp [Matrix.trace, LinearMap.toMatrix_apply, matrixCoeff, basisState, Finsupp.basisSingleOne]
 
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A.comp B) = traceFock (B.comp A) := by
-  simp only [traceFock, matrixCoeff_comp]
-  rw [Finset.sum_comm]
-  exact Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun k _ => mul_comm _ _
+  change LinearMap.trace ℂ (AlgebraicFock Config) (A.comp B) =
+    LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
+  simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
 /-- `traceFock` is linear in its operator argument: scaling. -/
 theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
@@ -86,9 +91,10 @@ theorem weightedTrace_add (w : Config → ℂ)
 @[simp]
 theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) =
     (Fintype.card Config : ℂ) := by
+  rw [traceFock_eq_sum_matrixCoeff]
   have h : ∀ n : Config, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
     matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
-  simp [traceFock, h]
+  simp [h]
 
 /-- The weighted trace of the identity is the total weight. -/
 theorem weightedTrace_id (w : Config → ℂ) :
