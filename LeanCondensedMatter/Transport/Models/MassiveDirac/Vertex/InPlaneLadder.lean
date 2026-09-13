@@ -108,7 +108,7 @@ def inPlaneShiftMatrix (rung : InPlaneCoefficientVector) : Matrix (Fin 2) (Fin 2
   ring
 
 /-- Acting with `I - L` is vector subtraction by the ladder action. -/
-@[simp] theorem inPlaneShiftMatrix_mulVec
+theorem inPlaneShiftMatrix_mulVec
     (rung coefficients : InPlaneCoefficientVector) :
     (inPlaneShiftMatrix rung).mulVec coefficients =
       coefficients - inPlaneLadderAction rung coefficients := by
@@ -123,7 +123,7 @@ private theorem inPlaneLadder_shift_injective
     Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
   intro left right h
   apply hmatrix
-  simpa using h
+  simpa only [inPlaneShiftMatrix_mulVec] using h
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
