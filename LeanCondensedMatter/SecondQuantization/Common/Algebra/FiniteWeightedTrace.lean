@@ -46,18 +46,6 @@ theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFoc
     LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
   simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
-omit [Fintype Config] in
-/-- `traceFock` is linear in its operator argument: scaling. -/
-theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    traceFock (c • A) = c * traceFock A := by
-  simpa only [smul_eq_mul] using (traceFock (Config := Config)).map_smul c A
-
-omit [Fintype Config] in
-/-- `traceFock` is linear in its operator argument: addition. -/
-theorem traceFock_add (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    traceFock (A + B) = traceFock A + traceFock B :=
-  (traceFock (Config := Config)).map_add A B
-
 /-! ## Weighted coordinate sums -/
 
 /-- **The weighted trace** as a linear functional on endomorphisms,
@@ -82,18 +70,6 @@ theorem weightedTrace_eq_sum_matrixCoeff (w : Config → ℂ)
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
 noncomputable def weightSum (w : Config → ℂ) : ℂ :=
   ∑ n : Config, w n
-
-/-- `weightedTrace` is linear in its operator argument: scaling. -/
-theorem weightedTrace_smul (c : ℂ) (w : Config → ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    weightedTrace w (c • A) = c * weightedTrace w A := by
-  simpa only [smul_eq_mul] using (weightedTrace w).map_smul c A
-
-/-- `weightedTrace` is linear in its operator argument: addition. -/
-theorem weightedTrace_add (w : Config → ℂ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    weightedTrace w (A + B) = weightedTrace w A + weightedTrace w B :=
-  (weightedTrace w).map_add A B
 
 /-! ## Identity and diagonal operators -/
 
