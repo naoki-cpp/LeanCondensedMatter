@@ -3,3 +3,4 @@ import LeanCondensedMatter.Crystal.Symmetry
 import LeanCondensedMatter.Crystal.Translation
 import LeanCondensedMatter.Crystal.Periodicity
 import LeanCondensedMatter.Crystal.Lattice
+import LeanCondensedMatter.Crystal.PointGroup
