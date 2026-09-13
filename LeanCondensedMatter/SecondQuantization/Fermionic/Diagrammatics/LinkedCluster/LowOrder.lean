@@ -78,7 +78,7 @@ theorem dysonFormalLinkedCluster_order_one
       (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one ε β g).symm
     _ = ∑ d : ConnectedQuarticWickDiagram Mode 1 Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g 1 (by norm_num)
 
 /-- Second-order formal linked-cluster regression corollary, displaying cancellation of the
@@ -98,7 +98,7 @@ theorem dysonFormalLinkedCluster_order_two
       (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two ε β g).symm
     _ = ∑ d : ConnectedQuarticWickDiagram Mode 2 Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g 2 (by norm_num)
 
 /-- Third-order formal linked-cluster regression corollary, displaying cancellation of all
@@ -122,7 +122,7 @@ theorem dysonFormalLinkedCluster_order_three
       (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three ε β g).symm
     _ = ∑ d : ConnectedQuarticWickDiagram Mode 3 Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g 3 (by norm_num)
 
 end Fermionic
