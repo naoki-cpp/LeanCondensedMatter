@@ -54,7 +54,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
     (source : Direction2) (e v m probeEnergy broadening hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
       source e v m probeEnergy broadening 0 hbar pMax = currentOperator source e v := by
-  cases source <;>
+  fin_cases source <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix,
       inPlaneLadderBareXSource, inPlaneCoefficientVector]
