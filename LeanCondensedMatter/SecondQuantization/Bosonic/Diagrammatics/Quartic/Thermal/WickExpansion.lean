@@ -37,7 +37,8 @@ theorem FreeThermalField.operator_quarticFreeThermalField
     (q : QuarticVertexLabel Mode) (l : Fin 4) :
     FreeThermalField.operator (quarticFreeThermalField q l) = quarticLocalLegOperator q l := by
   cases h : Common.quarticLocalLeg q l <;>
-    simp [quarticFreeThermalField, quarticLocalLegOperator, FreeThermalField.operator, h]
+    simp [quarticFreeThermalField, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+      FreeThermalField.operator, h]
 
 /-- Flatten `n` ordered quartic vertices into their `4 n` free thermal field labels. -/
 noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
