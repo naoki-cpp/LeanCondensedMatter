@@ -134,7 +134,7 @@ private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode
     completedSignedToggle i (completedBasisState n) =
       fermionPhase i n • completedBasisState (toggleOccupation i n) := by
   simp [completedSignedToggle, completedToggle, completedBasisState,
-    toggleOccupationEquiv_symm, toggleOccupationEquiv_apply]
+    toggleOccupationEquiv_symm, toggleOccupationEquiv_apply, toggleOccupation_involutive]
 
 @[simp]
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
