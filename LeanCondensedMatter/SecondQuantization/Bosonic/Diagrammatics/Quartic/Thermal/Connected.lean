@@ -110,7 +110,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
 
 /-- Averaging over global vertex orders removes the shuffle multiplicity, so the coefficientwise
 thermal amplitude factors exactly over connected components. -/
-theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
+theorem QuarticDiagram.thermalAmplitude_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
     d.thermalAmplitude ε β g =
@@ -161,7 +161,7 @@ noncomputable def quarticThermalDiagramMultiplicativeWeight
     change QuarticDiagram.thermalAmplitude ε β g d =
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1
-    exact QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected ε β g d
+    exact QuarticDiagram.thermalAmplitude_eq_prod_components ε β g d
 
 /-- Total coefficientwise bosonic thermal diagram weight on a finite vertex set. -/
 noncomputable def quarticThermalMoment
