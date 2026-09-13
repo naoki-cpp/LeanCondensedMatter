@@ -1,15 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
+import Mathlib.Analysis.Normed.Lp.lpHolder
 import Mathlib.LinearAlgebra.LinearPMap
 
 set_option linter.style.header false
 
 /-!
-# Diagonal unbounded operators on generic completed Fock space
+# Diagonal operators on generic completed Fock space
 
-A scalar weight `w : Config → ℂ` defines coordinatewise multiplication on the generic completed
-Fock space. For an unbounded weight, the natural maximal domain consists of vectors whose weighted
-coordinates remain square summable. This file owns that statistics-independent domain and the
-associated maximal `LinearPMap`.
+A scalar weight `w : Config → ℂ` acts by coordinatewise multiplication on the generic completed
+Fock space. Uniformly bounded weights give continuous linear maps through Mathlib's canonical
+`lp.mapCLM`; arbitrary weights give maximal partial linear maps on the weighted `ℓ²` domain.
 -/
 
 namespace SecondQuantization
@@ -20,6 +20,55 @@ open scoped ENNReal
 noncomputable section
 
 variable {Config : Type*}
+
+/-- Coordinatewise multiplication by a uniformly bounded scalar weight on completed Fock space. -/
+noncomputable def completedBoundedDiagonalOperator
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C) :
+    CompletedFock Config →L[ℂ] CompletedFock Config :=
+  lp.mapCLM 2
+    (fun c : Config => (ContinuousLinearMap.lsmul ℂ ℂ (w c) : ℂ →L[ℂ] ℂ)) hC
+    (fun c =>
+      (ContinuousLinearMap.opNorm_lsmul_apply_le (𝕜 := ℂ) (R := ℂ) (E := ℂ) (w c)).trans
+        (hw c))
+
+@[simp]
+theorem completedBoundedDiagonalOperator_apply
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C)
+    (ψ : CompletedFock Config) (c : Config) :
+    completedBoundedDiagonalOperator w hC hw ψ c = w c * ψ c := by
+  rfl
+
+/-- The operator norm of bounded diagonal multiplication is controlled by the uniform weight bound. -/
+theorem norm_completedBoundedDiagonalOperator_le
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C) :
+    ‖completedBoundedDiagonalOperator w hC hw‖ ≤ C := by
+  exact lp.norm_mapCLM_le 2
+    (fun c : Config => (ContinuousLinearMap.lsmul ℂ ℂ (w c) : ℂ →L[ℂ] ℂ)) hC
+    (fun c =>
+      (ContinuousLinearMap.opNorm_lsmul_apply_le (𝕜 := ℂ) (R := ℂ) (E := ℂ) (w c)).trans
+        (hw c))
+
+/-- Uniformly bounded diagonal multiplication satisfies the corresponding pointwise norm bound. -/
+theorem norm_completedBoundedDiagonalOperator_apply_le
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C)
+    (ψ : CompletedFock Config) :
+    ‖completedBoundedDiagonalOperator w hC hw ψ‖ ≤ C * ‖ψ‖ :=
+  (completedBoundedDiagonalOperator w hC hw).le_of_opNorm_le
+    (norm_completedBoundedDiagonalOperator_le w hC hw) ψ
+
+/-- A canonical basis state is an eigenvector of bounded diagonal multiplication. -/
+@[simp]
+theorem completedBoundedDiagonalOperator_basisState
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C) (c : Config) :
+    completedBoundedDiagonalOperator w hC hw (completedBasisState c) =
+      w c • completedBasisState c := by
+  classical
+  ext d
+  rw [completedBoundedDiagonalOperator_apply]
+  by_cases h : d = c
+  · subst d
+    simp
+  · simp [completedBasisState_apply_of_ne h]
 
 private noncomputable def completedDiagonalCoordinates (w : Config → ℂ) :
     CompletedFock Config →ₗ[ℂ] PreLp (fun _ : Config => ℂ) where

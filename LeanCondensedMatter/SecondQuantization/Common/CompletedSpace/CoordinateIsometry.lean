@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
 
 set_option linter.style.header false
 
@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Coordinate isometries on completed Fock space
 
 Configuration equivalences act on the generic completed Fock space by reindexing coordinates, and
-unit-modulus scalar functions act by coordinatewise multiplication. Both constructions preserve the
-`ℓ²` norm and are bundled as linear isometries.
+unit-modulus scalar functions act through bounded diagonal multiplication. Both constructions
+preserve the `ℓ²` norm and are bundled as linear isometries.
 
 Statistics-specific completed-space operators should specialize these constructions and keep only
 their occupation, sign, or other model-specific semantics locally.
@@ -91,65 +91,53 @@ theorem completedReindex_basisState (e : Config ≃ Config) (c : Config) :
       exact e.injective <| by simpa using he
     simp [completedBasisState_apply_of_ne h, completedBasisState_apply_of_ne hed]
 
-private noncomputable def completedPhaseMultiplierLinear
-    (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1) :
-    CompletedFock Config →ₗ[ℂ] CompletedFock Config where
-  toFun ψ :=
-    ⟨fun c => phase c * ψ c,
-      (lp.memℓp ψ).mono' fun c => by simp [hphase c]⟩
-  map_add' ψ φ := by
-    ext c
-    change phase c * (ψ c + φ c) = phase c * ψ c + phase c * φ c
-    ring
-  map_smul' a ψ := by
-    ext c
-    change phase c * (a * ψ c) = a * (phase c * ψ c)
-    ring
+private theorem completedPhaseMultiplier_bound
+    (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1) (c : Config) :
+    ‖phase c‖ ≤ 1 := by
+  simp [hphase c]
 
-@[simp]
-private theorem completedPhaseMultiplierLinear_apply
-    (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1)
-    (ψ : CompletedFock Config) (c : Config) :
-    completedPhaseMultiplierLinear phase hphase ψ c = phase c * ψ c :=
-  rfl
-
-private theorem norm_completedPhaseMultiplierLinear
+private theorem norm_completedPhaseMultiplier
     (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1)
     (ψ : CompletedFock Config) :
-    ‖completedPhaseMultiplierLinear phase hphase ψ‖ = ‖ψ‖ := by
+    ‖completedBoundedDiagonalOperator phase zero_le_one
+        (completedPhaseMultiplier_bound phase hphase) ψ‖ = ‖ψ‖ := by
   apply le_antisymm
-  · exact lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun c => by
-      simp [completedPhaseMultiplierLinear_apply, hphase c]
+  · simpa only [one_mul] using
+      norm_completedBoundedDiagonalOperator_apply_le phase zero_le_one
+        (completedPhaseMultiplier_bound phase hphase) ψ
   · exact lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-      (x := ψ) (y := completedPhaseMultiplierLinear phase hphase ψ) fun c => by
-        simp [completedPhaseMultiplierLinear_apply, hphase c]
+      (x := ψ)
+      (y := completedBoundedDiagonalOperator phase zero_le_one
+        (completedPhaseMultiplier_bound phase hphase) ψ) fun c => by
+        rw [completedBoundedDiagonalOperator_apply]
+        simp [hphase c]
 
 /-- Coordinatewise multiplication by a unit-modulus complex phase as a linear isometry. -/
 noncomputable def completedPhaseMultiplier
     (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1) :
     CompletedFock Config →ₗᵢ[ℂ] CompletedFock Config :=
-  { completedPhaseMultiplierLinear phase hphase with
-    norm_map' := norm_completedPhaseMultiplierLinear phase hphase }
+  { (completedBoundedDiagonalOperator phase zero_le_one
+      (completedPhaseMultiplier_bound phase hphase)).toLinearMap with
+    norm_map' := norm_completedPhaseMultiplier phase hphase }
 
 @[simp]
 theorem completedPhaseMultiplier_apply
     (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1)
     (ψ : CompletedFock Config) (c : Config) :
-    completedPhaseMultiplier phase hphase ψ c = phase c * ψ c :=
-  rfl
+    completedPhaseMultiplier phase hphase ψ c = phase c * ψ c := by
+  change completedBoundedDiagonalOperator phase zero_le_one
+      (completedPhaseMultiplier_bound phase hphase) ψ c = _
+  rw [completedBoundedDiagonalOperator_apply]
 
 @[simp]
 theorem completedPhaseMultiplier_basisState
     (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1) (c : Config) :
     completedPhaseMultiplier phase hphase (completedBasisState c) =
       phase c • completedBasisState c := by
-  classical
-  ext d
-  rw [completedPhaseMultiplier_apply]
-  by_cases h : d = c
-  · subst d
-    simp
-  · simp [completedBasisState_apply_of_ne h]
+  change completedBoundedDiagonalOperator phase zero_le_one
+      (completedPhaseMultiplier_bound phase hphase) (completedBasisState c) = _
+  exact completedBoundedDiagonalOperator_basisState phase zero_le_one
+    (completedPhaseMultiplier_bound phase hphase) c
 
 end
 end Common
