@@ -1,10 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Diagram
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Connected
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal
 
 set_option linter.style.header false
 
