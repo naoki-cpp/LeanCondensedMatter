@@ -60,7 +60,8 @@ theorem occupationMoment_bot {w : Occupation Mode → ℂ} (hZ : Common.weightSu
 weighted functional. -/
 theorem occupationMoment_singleton (w : Occupation Mode → ℂ) (i : Mode) :
     occupationMoment w {i} = Common.normalizedWeightedDiagonal w (numberOperator i) := by
-  rw [occupationMoment, Common.normalizedWeightedDiagonal, weightedTrace_numberOperator]
+  rw [occupationMoment, Common.normalizedWeightedDiagonal_eq_weightedTrace_div,
+    weightedTrace_numberOperator]
   congr 1
   apply Finset.sum_congr
   · ext n

@@ -72,7 +72,7 @@ theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
           (((diagonalEvolution energy (-β)).comp C).comp A)) := by rw [LinearMap.smul_comp]
     _ = Complex.exp ((q * β : ℝ) : ℂ) •
           traceFock (((diagonalEvolution energy (-β)).comp C).comp A) := by
-        rw [traceFock_smul, smul_eq_mul]
+        rw [(traceFock (Config := Config)).map_smul, smul_eq_mul]
     _ = Complex.exp ((q * β : ℝ) : ℂ) •
           traceFock ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
         rw [LinearMap.comp_assoc]

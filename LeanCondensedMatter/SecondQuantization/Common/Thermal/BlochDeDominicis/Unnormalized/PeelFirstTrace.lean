@@ -61,7 +61,7 @@ theorem traceFock_diagonalEvolution_comp_peel [Fintype Config]
         ζ ^ l.length * traceFock ((diagonalEvolution energy (-β)).comp
           ((prodComp (l.map Prod.fst)).comp C1)) := by
     conv_lhs => rw [hopeq]
-    simp only [LinearMap.comp_add, LinearMap.comp_smul, traceFock_add, traceFock_smul]
+    simp only [LinearMap.comp_add, LinearMap.comp_smul, map_add, map_smul, smul_eq_mul]
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 

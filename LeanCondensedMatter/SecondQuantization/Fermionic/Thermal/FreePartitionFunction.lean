@@ -39,7 +39,8 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
 
 omit [LinearOrder Mode] in
 /-- The free-fermion diagonal Gibbs evolution has nonzero algebraic-Fock trace. -/
-theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
+theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
+    (ε : Mode → ℝ) (β : ℝ) :
     Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
   rw [Common.traceFock_diagonalEvolution_eq_weightSum]
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
@@ -120,7 +121,7 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
     funext fun n => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw,
-    Common.normalizedWeightedDiagonal]
+    Common.normalizedWeightedDiagonal_eq_weightedTrace_div]
   change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
     freePartitionFunction ε β = _
   rw [hnum, hZ, hfi]

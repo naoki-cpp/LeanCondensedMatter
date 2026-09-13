@@ -42,13 +42,13 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
     · simpa [LinearMap.zetaCommutator] using hcomm12
     · simpa [LinearMap.zetaCommutator] using hcomm13
     · simpa [LinearMap.zetaCommutator] using hcomm14
-  have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
-    simp [traceFock, matrixCoeff]
+  have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
+    (traceFock (Config := Config)).map_zero
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
     [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
   simp only [prodComp, peelSum, List.map_cons, List.map_nil, List.length_cons, List.length_nil,
     LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
-    traceFock_add, traceFock_smul, hz, mul_zero] at h
+    map_add, map_smul, smul_eq_mul, hz, mul_zero] at h
   have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
     rwa [mul_comm β q1]
   simp only [finiteGibbsExpectation_eq_trace_div]

@@ -48,8 +48,8 @@ theorem traceFock_diagonalEvolution_comp_two_point [Fintype Config]
       c1j * traceFock (diagonalEvolution energy (-β)) +
         ζ * traceFock ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) := by
     conv_lhs => rw [hcomm']
-    rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
-      traceFock_add, traceFock_smul, traceFock_smul]
+    simp only [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_id,
+      map_add, map_smul, smul_eq_mul]
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 
