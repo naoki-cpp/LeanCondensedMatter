@@ -32,7 +32,6 @@ theorem intrinsicHallConductivity_eq_ado_eq12a
   rw [intrinsicHallConductivity_eq_massiveDirac]
   unfold planckFromReduced
   field_simp [hhbar, hprobe, Real.pi_ne_zero]
-  ring
 
 /-- The completed non-crossing Hall benchmark equals the sum of the three closed expressions in
 Ado et al., Eq. (12a-c). This is an algebraic regression target; it does not by itself identify the
