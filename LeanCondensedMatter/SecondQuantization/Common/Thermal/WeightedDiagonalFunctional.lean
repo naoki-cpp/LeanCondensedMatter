@@ -34,6 +34,12 @@ noncomputable def normalizedWeightedDiagonal (w : Config → ℂ) :
     rw [(weightedTrace w).map_smul]
     simp only [smul_eq_mul, mul_div_assoc, RingHom.id_apply]
 
+/-- Coordinate formula underlying the normalized weighted diagonal functional. -/
+theorem normalizedWeightedDiagonal_eq_weightedTrace_div (w : Config → ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    normalizedWeightedDiagonal w A = weightedTrace w A / weightSum w :=
+  rfl
+
 /-! ## Linearity -/
 
 theorem normalizedWeightedDiagonal_smul (c : ℂ) (w : Config → ℂ)
@@ -63,8 +69,8 @@ theorem normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero
     (w : Config → ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hdiag : ∀ n, matrixCoeff A n n = 0) :
     normalizedWeightedDiagonal w A = 0 := by
-  change weightedTrace w A / weightSum w = 0
-  simp [weightedTrace, hdiag]
+  rw [normalizedWeightedDiagonal_eq_weightedTrace_div, weightedTrace_eq_sum_matrixCoeff]
+  simp [hdiag]
 
 /-- Time ordering preserves vanishing when both operator orders have zero weighted diagonal. -/
 theorem normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
@@ -80,8 +86,7 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
 /-- The normalized weighted diagonal of the identity is one when the total weight is nonzero. -/
 theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
-  change weightedTrace w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) / weightSum w = 1
-  rw [weightedTrace_id, div_self hw]
+  rw [normalizedWeightedDiagonal_eq_weightedTrace_div, weightedTrace_id, div_self hw]
 
 /-- The normalized weighted diagonal as a normalized endomorphism functional when its total weight
 is nonzero. -/
@@ -94,8 +99,7 @@ noncomputable def normalizedWeightedDiagonalFunctional (w : Config → ℂ) (hw 
 theorem normalizedWeightedDiagonal_diagonalOperator (w a : Config → ℂ) :
     normalizedWeightedDiagonal w (diagonalOperator a) =
       (∑ n : Config, w n * a n) / weightSum w := by
-  change weightedTrace w (diagonalOperator a) / weightSum w = _
-  rw [weightedTrace_diagonalOperator]
+  rw [normalizedWeightedDiagonal_eq_weightedTrace_div, weightedTrace_diagonalOperator]
 
 end Common
 end SecondQuantization
