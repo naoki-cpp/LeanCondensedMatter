@@ -25,7 +25,7 @@ open QuantumTheory.Transport
 
 /-- Zero-broadening boundary of output/input entry `(i,j)` of the RA angular numerator matrix. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   let rung := inPlaneCoefficientVector
     (finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary
@@ -49,7 +49,7 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadening
 
 /-- Every RA angular numerator entry converges at fixed disorder strength. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
@@ -71,7 +71,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
     .advanced v m probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hX := (hER.mul hEA).sub (hMR.mul hMA)
   have hY := ((hEA.mul hMR).sub (hER.mul hMA)).const_mul Complex.I
-  cases i <;> cases j
+  fin_cases i <;> fin_cases j
   · simpa [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary,
       inPlaneRotationMatrix, inPlaneCoefficientVector] using hX
@@ -87,7 +87,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
 
 /-- Fixed-`p` zero-broadening boundary of normalized output/input current-rung entry `(i,j)`. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
     ((((2 * Real.pi : ℝ) : ℂ)) *
@@ -99,7 +99,7 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZero
 /-- Every normalized radial current-rung entry has the corresponding fixed-`p` positive-broadening
 boundary. -/
 theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand_broadening_zero
-    (i j : Direction2)
+    (i j : Fin 2)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2)
