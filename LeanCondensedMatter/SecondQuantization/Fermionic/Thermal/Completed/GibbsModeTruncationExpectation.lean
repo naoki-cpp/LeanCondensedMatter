@@ -7,10 +7,10 @@ set_option linter.style.header false
 /-!
 # Weak convergence of finite-mode Gibbs truncations
 
-This file completes the state-side C5 approximation layer.  The finite-mode Gibbs density operators
-from `GibbsModeTruncation` converge to the generic pure-point free Gibbs state on completed Fock
-space when tested against every bounded operator.  The topology is therefore explicit: this is weak
-state convergence of bounded expectations, not a trace-norm convergence claim.
+The finite-mode Gibbs density operators from `GibbsModeTruncation` converge to the generic
+pure-point free Gibbs state on completed Fock space when tested against every bounded operator. The
+topology is therefore explicit: this is weak state convergence of bounded expectations, not a
+trace-norm convergence claim.
 -/
 
 namespace SecondQuantization
