@@ -1,4 +1,5 @@
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/theorems.json";
+const SOURCE_ROOT_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/LeanCondensedMatter";
 const PROJECT_PREFIX = "LeanCondensedMatter.";
 
 const overview = document.querySelector("#overview");
@@ -10,6 +11,8 @@ const graphViewport = document.querySelector("#graph-viewport");
 
 let catalogPromise = null;
 let canonicalizingLegacyModule = false;
+let hierarchyRenderVersion = 0;
+const moduleDescriptionPromises = new Map();
 
 function element(tag, className = "", text = "") {
   const node = document.createElement(tag);
@@ -24,6 +27,41 @@ function shortModule(moduleName) {
 
 function moduleParts(moduleName) {
   return shortModule(moduleName).split(".").filter(Boolean);
+}
+
+function moduleSourceUrl(moduleName) {
+  return `${SOURCE_ROOT_URL}/${moduleParts(moduleName).join("/")}.lean`;
+}
+
+function extractModuleDescription(source) {
+  const match = source.match(/\/-!\s*([\s\S]*?)\s*-\//);
+  if (!match) return "";
+
+  const paragraphs = match[1]
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+  const description = paragraphs.find((block) => !block.startsWith("#"));
+  if (!description) return "";
+
+  return description
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join(" ")
+    .replace(/`([^`]+)`/g, "$1");
+}
+
+function loadModuleDescription(moduleName) {
+  const canonicalName = shortModule(moduleName);
+  if (!moduleDescriptionPromises.has(canonicalName)) {
+    const descriptionPromise = fetch(moduleSourceUrl(canonicalName), { cache: "no-store" })
+      .then((response) => (response.ok ? response.text() : ""))
+      .then(extractModuleDescription)
+      .catch(() => "");
+    moduleDescriptionPromises.set(canonicalName, descriptionPromise);
+  }
+  return moduleDescriptionPromises.get(canonicalName);
 }
 
 function declarationBaseName(name) {
@@ -128,7 +166,7 @@ function openDeclaration(entry) {
   searchForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
 }
 
-function moduleCard(domain, path, child) {
+function moduleCard(domain, path, child, description) {
   const button = element("button", "module-tree-card");
   button.type = "button";
 
@@ -141,6 +179,7 @@ function moduleCard(domain, path, child) {
   details.push(`${child.declarationCount} declaration${child.declarationCount === 1 ? "" : "s"}`);
   if (child.moduleCount > 1) details.push(`${child.moduleCount} modules`);
   button.append(element("small", "", details.join(" · ")));
+  if (description) button.append(element("span", "module-description module-card-description", description));
 
   button.addEventListener("click", () => renderHierarchy(domain, [...path, child.name]));
   return button;
@@ -157,11 +196,21 @@ function declarationCard(entry) {
 }
 
 async function renderHierarchy(domain, path = []) {
+  const renderVersion = ++hierarchyRenderVersion;
   const catalog = await loadCatalog();
   const entries = catalog.filter((entry) => moduleParts(entry.module)[0] === domain);
   const tree = makeTree(domain, entries);
   const node = resolveNode(tree, path);
-  if (!node || !overview) return;
+  if (!node || !overview || renderVersion !== hierarchyRenderVersion) return;
+
+  const children = [...node.children.values()].sort(
+    (a, b) => b.declarationCount - a.declarationCount || a.name.localeCompare(b.name),
+  );
+  const descriptions = await Promise.all([
+    loadModuleDescription(node.fullName),
+    ...children.map((child) => loadModuleDescription(child.fullName)),
+  ]);
+  if (renderVersion !== hierarchyRenderVersion) return;
 
   overview.replaceChildren();
   overview.append(renderBreadcrumb(domain, path));
@@ -169,6 +218,7 @@ async function renderHierarchy(domain, path = []) {
   const header = element("div", "overview-header module-overview-header");
   header.append(element("p", "module-overview-eyebrow", "Module hierarchy"));
   header.append(element("h2", "", node.fullName));
+  if (descriptions[0]) header.append(element("p", "module-description module-header-description", descriptions[0]));
   const summary = element("div", "overview-summary");
   summary.append(summaryChip(`${node.declarationCount} declarations`));
   summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
@@ -176,14 +226,11 @@ async function renderHierarchy(domain, path = []) {
   header.append(summary);
   overview.append(header);
 
-  if (node.children.size > 0) {
+  if (children.length > 0) {
     const section = element("section", "overview-section");
     section.append(element("h3", "", "Direct submodules"));
     const grid = element("div", "module-tree-grid");
-    const children = [...node.children.values()].sort(
-      (a, b) => b.declarationCount - a.declarationCount || a.name.localeCompare(b.name),
-    );
-    for (const child of children) grid.append(moduleCard(domain, path, child));
+    children.forEach((child, index) => grid.append(moduleCard(domain, path, child, descriptions[index + 1])));
     section.append(grid);
     overview.append(section);
   }
@@ -210,6 +257,22 @@ function syncModuleFilterAvailability() {
     : "Browse modules through the overview hierarchy.";
 }
 
+async function hydrateDomainDescriptions() {
+  if (!overview || overview.hidden) return;
+  const cards = [...overview.querySelectorAll(".domain-card")];
+  await Promise.all(cards.map(async (card) => {
+    if (card.dataset.moduleDescriptionHydrated) return;
+    const domain = card.querySelector("strong")?.textContent?.trim();
+    if (!domain) return;
+    card.dataset.moduleDescriptionHydrated = "pending";
+    const description = await loadModuleDescription(domain);
+    if (description && card.isConnected && !card.querySelector(".domain-description")) {
+      card.append(element("span", "module-description domain-description", description));
+    }
+    card.dataset.moduleDescriptionHydrated = "true";
+  }));
+}
+
 async function canonicalizeLegacyModuleRoute() {
   if (canonicalizingLegacyModule || !overview || overview.hidden || !moduleFilter) return;
   if (moduleFilter.options.length <= 1) return;
@@ -231,6 +294,7 @@ async function canonicalizeLegacyModuleRoute() {
 
 function syncOverviewNavigationMode() {
   syncModuleFilterAvailability();
+  hydrateDomainDescriptions().catch((error) => console.error(error));
   canonicalizeLegacyModuleRoute().catch((error) => console.error(error));
 }
 
