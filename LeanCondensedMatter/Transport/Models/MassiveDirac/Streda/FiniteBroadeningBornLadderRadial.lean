@@ -55,8 +55,8 @@ private theorem intervalIntegrable_polarPauli_rung
     IntervalIntegrable
       (fun θ : ℝ =>
         polarPauliOperator aL bL dL θ *
-          (coefficients .x • matrixOperator sigmaX +
-            coefficients .y • matrixOperator sigmaY) *
+          (coefficients 0 • matrixOperator sigmaX +
+            coefficients 1 • matrixOperator sigmaY) *
           polarPauliOperator aR bR dR θ)
       volume 0 (2 * Real.pi) := by
   apply Continuous.intervalIntegrable
@@ -65,15 +65,15 @@ private theorem intervalIntegrable_polarPauli_rung
       (continuous_polarPauliOperator aR bR dR)
 
 private theorem intervalIntegrable_polarPauli_directionTrace
-    (measured : Direction2) (q aL aR bL bR dL dR : ℂ)
+    (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)
     (coefficients : InPlaneCoefficientVector) :
     IntervalIntegrable
       (fun θ : ℝ =>
         finiteDimensionalOperatorTrace
           ((q • matrixOperator (directionPauli measured)) *
             polarPauliOperator aL bL dL θ *
-            (coefficients .x • matrixOperator sigmaX +
-              coefficients .y • matrixOperator sigmaY) *
+            (coefficients 0 • matrixOperator sigmaX +
+              coefficients 1 • matrixOperator sigmaY) *
             polarPauliOperator aR bR dR θ))
       volume 0 (2 * Real.pi) := by
   apply Continuous.intervalIntegrable
@@ -83,22 +83,22 @@ private theorem intervalIntegrable_polarPauli_directionTrace
 
 /-- Full-angle trace of a polar Pauli rung with a measured in-plane Pauli vertex. -/
 private theorem integral_polarPauli_directionTrace_eq
-    (measured : Direction2) (q aL aR bL bR dL dR : ℂ)
+    (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)
     (coefficients : InPlaneCoefficientVector) :
     (∫ θ in (0 : ℝ)..(2 * Real.pi),
       finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
           polarPauliOperator aL bL dL θ *
-          (coefficients .x • matrixOperator sigmaX +
-            coefficients .y • matrixOperator sigmaY) *
+          (coefficients 0 • matrixOperator sigmaX +
+            coefficients 1 • matrixOperator sigmaY) *
           polarPauliOperator aR bR dR θ)) =
       2 * q *
         inPlaneLadderAction
           (pauliRungAngularCoefficient aL aR dL dR) coefficients measured := by
   let rung : ℝ → DiracOperator := fun θ =>
     polarPauliOperator aL bL dL θ *
-      (coefficients .x • matrixOperator sigmaX +
-        coefficients .y • matrixOperator sigmaY) *
+      (coefficients 0 • matrixOperator sigmaX +
+        coefficients 1 • matrixOperator sigmaY) *
       polarPauliOperator aR bR dR θ
   have hrungIntegrable : IntervalIntegrable rung volume 0 (2 * Real.pi) := by
     simpa [rung] using
@@ -109,14 +109,14 @@ private theorem integral_polarPauli_directionTrace_eq
         (q • matrixOperator (directionPauli measured)) 1)
   have hoperator (c : InPlaneCoefficientVector) :
       inPlanePauliVertexOperator c =
-        c .x • matrixOperator sigmaX + c .y • matrixOperator sigmaY := rfl
+        c 0 • matrixOperator sigmaX + c 1 • matrixOperator sigmaY := rfl
   have hfun :
       (fun θ : ℝ =>
         finiteDimensionalOperatorTrace
           ((q • matrixOperator (directionPauli measured)) *
             polarPauliOperator aL bL dL θ *
-            (coefficients .x • matrixOperator sigmaX +
-              coefficients .y • matrixOperator sigmaY) *
+            (coefficients 0 • matrixOperator sigmaX +
+              coefficients 1 • matrixOperator sigmaY) *
             polarPauliOperator aR bR dR θ)) =
         fun θ : ℝ => L (rung θ) := by
     funext θ
@@ -124,15 +124,15 @@ private theorem integral_polarPauli_directionTrace_eq
   rw [hfun]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
   let coefficientsRung := pauliRungAngularCoefficient aL aR dL dR
-  let x : ℂ := inPlaneLadderAction coefficientsRung coefficients .x
-  let y : ℂ := inPlaneLadderAction coefficientsRung coefficients .y
+  let x : ℂ := inPlaneLadderAction coefficientsRung coefficients 0
+  let y : ℂ := inPlaneLadderAction coefficientsRung coefficients 1
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
         x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
     simpa [x, y, coefficientsRung, rung, hoperator] using
       (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
-  cases measured
+  fin_cases measured
   · change finiteDimensionalOperatorTrace
         ((q • matrixOperator sigmaX) *
           (x • matrixOperator sigmaX + y • matrixOperator sigmaY)) = 2 * q * x
@@ -164,7 +164,7 @@ private theorem integral_polarPauli_directionTrace_eq
 RA and same-side rungs act on complete dressed and bare in-plane source vectors; the requested
 measured-current direction is the final projection. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
@@ -191,7 +191,7 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadi
 /-- Every pair-indexed finite-`η` dressed Středa angular trace equals the same canonical radial
 coefficient as an unconditional algebraic identity. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral
         measured source e v m p probeEnergy broadening disorderStrength hbar pMax =
@@ -216,7 +216,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hmeasured : currentOperator measured e v =
       q • matrixOperator (directionPauli measured) := by
-    cases measured <;>
+    fin_cases measured <;>
       dsimp [q]
     all_goals unfold currentOperator current velocity directionPauli matrixOperator
     all_goals rw [map_smul, map_smul]
@@ -225,40 +225,40 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
           source e v m probeEnergy broadening disorderStrength hbar pMax =
-        (q • dressed) .x • matrixOperator sigmaX +
-          (q • dressed) .y • matrixOperator sigmaY := by
+        (q • dressed) 0 • matrixOperator sigmaX +
+          (q • dressed) 1 • matrixOperator sigmaY := by
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
     rw [inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, solved, dressed, inPlanePauliVertexOperator, smul_add, smul_smul]
   have hbareInPlane :
       currentOperator source e v = inPlaneCurrentOperator e v bare := by
-    cases source <;>
+    fin_cases source <;>
       simp [bare, inPlaneLadderBareXSource, Matrix.transpose, inPlaneRotationMatrix,
         inPlaneCoefficientVector, inPlaneCurrentOperator]
   have hbare :
       currentOperator source e v =
-        (q • bare) .x • matrixOperator sigmaX +
-          (q • bare) .y • matrixOperator sigmaY := by
+        (q • bare) 0 • matrixOperator sigmaX +
+          (q • bare) 1 • matrixOperator sigmaY := by
     rw [hbareInPlane,
       inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, inPlanePauliVertexOperator, smul_add, smul_smul]
   let ra : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aR bR dR θ *
-        ((q • dressed) .x • matrixOperator sigmaX +
-          (q • dressed) .y • matrixOperator sigmaY) *
+        ((q • dressed) 0 • matrixOperator sigmaX +
+          (q • dressed) 1 • matrixOperator sigmaY) *
         polarPauliOperator aA bA dA θ)
   let rr : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aR bR dR θ *
-        ((q • bare) .x • matrixOperator sigmaX +
-          (q • bare) .y • matrixOperator sigmaY) *
+        ((q • bare) 0 • matrixOperator sigmaX +
+          (q • bare) 1 • matrixOperator sigmaY) *
         polarPauliOperator aR bR dR θ)
   let aa : ℝ → ℂ := fun θ =>
     finiteDimensionalOperatorTrace
       ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aA bA dA θ *
-        ((q • bare) .x • matrixOperator sigmaX +
-          (q • bare) .y • matrixOperator sigmaY) *
+        ((q • bare) 0 • matrixOperator sigmaX +
+          (q • bare) 1 • matrixOperator sigmaY) *
         polarPauliOperator aA bA dA θ)
   have hbridge :
       (fun θ : ℝ =>
@@ -274,21 +274,21 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
     have hcyclic :
         finiteDimensionalOperatorTrace
-          (((q • bare) .x • matrixOperator sigmaX +
-              (q • bare) .y • matrixOperator sigmaY) *
+          (((q • bare) 0 • matrixOperator sigmaX +
+              (q • bare) 1 • matrixOperator sigmaY) *
             polarPauliOperator aA bA dA θ *
             (q • matrixOperator (directionPauli measured)) *
             polarPauliOperator aA bA dA θ) =
           finiteDimensionalOperatorTrace
             ((q • matrixOperator (directionPauli measured)) *
               polarPauliOperator aA bA dA θ *
-              ((q • bare) .x • matrixOperator sigmaX +
-                (q • bare) .y • matrixOperator sigmaY) *
+              ((q • bare) 0 • matrixOperator sigmaX +
+                (q • bare) 1 • matrixOperator sigmaY) *
               polarPauliOperator aA bA dA θ) := by
       simpa [mul_assoc] using
         (finiteDimensionalOperatorTrace_mul_comm
-          (((q • bare) .x • matrixOperator sigmaX +
-              (q • bare) .y • matrixOperator sigmaY) *
+          (((q • bare) 0 • matrixOperator sigmaX +
+              (q • bare) 1 • matrixOperator sigmaY) *
             polarPauliOperator aA bA dA θ)
           ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aA bA dA θ))
     rw [hcyclic]
@@ -314,7 +314,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  cases measured <;>
+  fin_cases measured <;>
     simp [q, solved, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource,
       inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y] <;>
     ring
@@ -322,7 +322,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 /-- The pair-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the canonical
 angularly reduced coefficient. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient
-    (measured source : Direction2)
+    (measured source : Fin 2)
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
         measured source e v m p probeEnergy broadening disorderStrength hbar pMax =
@@ -336,9 +336,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        .y .x e v m p probeEnergy broadening disorderStrength hbar pMax =
+        1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
       -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        .x .y e v m p probeEnergy broadening disorderStrength hbar pMax := by
+        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
   simp only [Matrix.transpose_apply, inPlaneLadderAction_apply_x,
@@ -351,9 +351,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        .y .y e v m p probeEnergy broadening disorderStrength hbar pMax =
+        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-        .x .x e v m p probeEnergy broadening disorderStrength hbar pMax := by
+        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
   simp only [Matrix.transpose_apply, inPlaneLadderAction_apply_x,
@@ -366,9 +366,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .y .x e v m p probeEnergy broadening disorderStrength hbar pMax =
+        1 0 e v m p probeEnergy broadening disorderStrength hbar pMax =
       -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .x .y e v m p probeEnergy broadening disorderStrength hbar pMax := by
+        0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy]
@@ -378,9 +378,9 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yy_eq_xx
     (e v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .y .y e v m p probeEnergy broadening disorderStrength hbar pMax =
+        1 1 e v m p probeEnergy broadening disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .x .x e v m p probeEnergy broadening disorderStrength hbar pMax := by
+        0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx]
@@ -389,33 +389,33 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegr
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yx_eq_neg_xy
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .y .x e v m probeEnergy broadening disorderStrength hbar pMax =
+        1 0 e v m probeEnergy broadening disorderStrength hbar pMax =
       -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .x .y e v m probeEnergy broadening disorderStrength hbar pMax := by
+        0 1 e v m probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
   calc
     (∫ p in (0 : ℝ)..pMax,
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-        .y .x e v m p probeEnergy broadening disorderStrength hbar pMax) =
+        1 0 e v m p probeEnergy broadening disorderStrength hbar pMax) =
       ∫ p in (0 : ℝ)..pMax,
         -finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          .x .y e v m p probeEnergy broadening disorderStrength hbar pMax := by
+          0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
         apply intervalIntegral.integral_congr
         intro p _
         exact finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_yx_eq_neg_xy
           e v m p probeEnergy broadening disorderStrength hbar pMax
     _ = -∫ p in (0 : ℝ)..pMax,
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand
-          .x .y e v m p probeEnergy broadening disorderStrength hbar pMax := by
+          0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
         rw [intervalIntegral.integral_neg]
 
 /-- After radial integration, the two finite-`η` diagonal Středa responses are equal. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_yy_eq_xx
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .y .y e v m probeEnergy broadening disorderStrength hbar pMax =
+        1 1 e v m probeEnergy broadening disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
-        .x .x e v m probeEnergy broadening disorderStrength hbar pMax := by
+        0 0 e v m probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral
   apply intervalIntegral.integral_congr
   intro p _
