@@ -169,13 +169,6 @@ async function renderHierarchy(domain, path = []) {
   const header = element("div", "overview-header module-overview-header");
   header.append(element("p", "module-overview-eyebrow", "Module hierarchy"));
   header.append(element("h2", "", node.fullName));
-  header.append(element(
-    "p",
-    "",
-    node.children.size > 0
-      ? "Choose a direct submodule to go deeper. Declarations are shown only for the current module, so large areas stay structured instead of being flattened."
-      : "This is a leaf module. Choose a declaration to open its dependency graph.",
-  ));
   const summary = element("div", "overview-summary");
   summary.append(summaryChip(`${node.declarationCount} declarations`));
   summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
