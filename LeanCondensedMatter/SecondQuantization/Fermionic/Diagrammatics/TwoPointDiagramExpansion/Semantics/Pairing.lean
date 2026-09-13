@@ -161,19 +161,18 @@ theorem heisenbergEvolve_timedFieldOperator (ε : Mode → ℝ) (β : ℝ)
 /-- View one quartic local leg as an external-style annihilation or creation field label. -/
 def quarticLocalLegExternalFieldLabel (q : QuarticVertexLabel Mode) (l : Fin 4) :
     ExternalFieldLabel Mode :=
-  if quarticLocalLegIsCreate l then
-    .creation (quarticLocalLegMode q l)
-  else
-    .annihilation (quarticLocalLegMode q l)
+  match Common.quarticLocalLeg q l with
+  | .create i => .creation i
+  | .annihilate i => .annihilation i
 
 @[simp]
 theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
     (q : QuarticVertexLabel Mode) (l : Fin 4) :
     bareExternalFieldOperator (quarticLocalLegExternalFieldLabel q l) =
       quarticLocalLegOperator q l := by
-  fin_cases l <;>
-    simp [quarticLocalLegExternalFieldLabel, quarticLocalLegIsCreate, quarticLocalLegMode,
-      bareExternalFieldOperator, quarticLocalLegOperator]
+  cases h : Common.quarticLocalLeg q l <;>
+    simp [quarticLocalLegExternalFieldLabel, bareExternalFieldOperator,
+      quarticLocalLegOperator, Common.quarticLocalLegOperator, h]
 
 omit [LinearOrder Mode] in
 @[simp]
@@ -181,9 +180,9 @@ theorem externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel
     (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) :
     externalFieldLabelEnergyShift ε (quarticLocalLegExternalFieldLabel q l) =
       quarticLocalLegEnergyShift ε q l := by
-  fin_cases l <;>
-    simp [quarticLocalLegExternalFieldLabel, quarticLocalLegIsCreate, quarticLocalLegMode,
-      externalFieldLabelEnergyShift, quarticLocalLegEnergyShift]
+  cases h : Common.quarticLocalLeg q l <;>
+    simp [quarticLocalLegExternalFieldLabel, externalFieldLabelEnergyShift,
+      quarticLocalLegEnergyShift, h]
 
 /-- The time-labelled field corresponding to one quartic local leg has the existing local-leg
 operator semantics. -/

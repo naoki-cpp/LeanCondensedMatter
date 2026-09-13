@@ -34,27 +34,38 @@ structure QuarticVertexLabel (Mode : Type*) where
   annihilate₂ : Mode
   deriving DecidableEq, Fintype
 
-/-- The creation/annihilation kind carried by a local quartic leg. -/
-inductive QuarticLocalLegKind where
-  | create
-  | annihilate
+/-- One local leg of a quartic vertex, carrying both its ladder kind and mode. -/
+inductive QuarticLocalLeg (Mode : Type*) where
+  | create (mode : Mode)
+  | annihilate (mode : Mode)
   deriving DecidableEq
 
-/-- The mode on which a local quartic leg acts, in fixed operator-composition order. -/
-abbrev quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
-  ![q.create₁, q.create₂, q.annihilate₂, q.annihilate₁]
+namespace QuarticLocalLeg
 
-/-- The creation/annihilation kind of each local quartic leg. -/
-abbrev quarticLocalLegKind : Fin 4 → QuarticLocalLegKind :=
-  ![.create, .create, .annihilate, .annihilate]
+/-- The signed free-energy shift carried by a quartic local leg. -/
+@[simp]
+def energyShift (ε : Mode → ℝ) : QuarticLocalLeg Mode → ℝ
+  | .create i => ε i
+  | .annihilate i => -ε i
 
-/-- Boolean compatibility view of `quarticLocalLegKind`. -/
-abbrev quarticLocalLegIsCreate : Fin 4 → Bool :=
-  ![true, true, false, false]
+/-- Realize a quartic local leg using arbitrary creation and annihilation maps. -/
+@[simp]
+def operator (leg : QuarticLocalLeg Mode)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  match leg with
+  | .create i => create i
+  | .annihilate i => annihilate i
+
+end QuarticLocalLeg
+
+/-- The four semantic local legs of a quartic vertex, in fixed operator-composition order. -/
+abbrev quarticLocalLeg (q : QuarticVertexLabel Mode) : Fin 4 → QuarticLocalLeg Mode :=
+  ![.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁]
 
 /-- The free-energy shift of each local quartic leg. -/
-abbrev quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) : Fin 4 → ℝ :=
-  ![ε q.create₁, ε q.create₂, -ε q.annihilate₂, -ε q.annihilate₁]
+abbrev quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) : ℝ :=
+  (quarticLocalLeg q l).energyShift ε
 
 /-- The total free-energy shift of a quartic vertex. -/
 def quarticVertexEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) : ℝ :=
@@ -63,8 +74,8 @@ def quarticVertexEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
 /-- Local quartic-leg operators constructed from arbitrary creation and annihilation maps. -/
 abbrev quarticLocalLegOperator
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (q : QuarticVertexLabel Mode) : Fin 4 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
+    (q : QuarticVertexLabel Mode) (l : Fin 4) : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  (quarticLocalLeg q l).operator create annihilate
 
 /-- The fixed ordered quartic vertex operator constructed from arbitrary ladder maps. -/
 abbrev quarticVertexOperator

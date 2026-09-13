@@ -30,8 +30,9 @@ theorem heisenbergEvolve_quarticLocalLegOperator
     heisenbergEvolve energy τ (quarticLocalLegOperator create annihilate q l) =
       Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
         quarticLocalLegOperator create annihilate q l := by
-  fin_cases l <;>
-    simp [quarticLocalLegOperator, quarticLocalLegEnergyShift, hcreate, hannihilate, mul_comm]
+  simp only [quarticLocalLegOperator, quarticLocalLegEnergyShift]
+  generalize quarticLocalLeg q l = leg
+  cases leg <;> simp [hcreate, hannihilate, mul_comm]
 
 /-- A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. -/
 theorem heisenbergEvolve_quarticVertexOperator
