@@ -22,8 +22,11 @@ theorem finiteHilbertOperator_comp
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteHilbertOperator (A.comp B) =
       (finiteHilbertOperator A).comp (finiteHilbertOperator B) := by
-  simpa [finiteHilbertOperator] using
-    map_mul (finiteHilbertOperatorAlgEquiv (Config := Config)) A B
+  change
+    finiteHilbertOperatorAlgEquiv (A.comp B) =
+      (finiteHilbertOperatorAlgEquiv A).comp (finiteHilbertOperatorAlgEquiv B)
+  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
+  exact map_mul (finiteHilbertOperatorAlgEquiv (Config := Config)) A B
 
 /-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, viewed as an algebra
 homomorphism. -/
