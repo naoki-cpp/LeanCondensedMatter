@@ -14,8 +14,8 @@ models separate from the general theorems and introduces:
 * zero-current and simultaneous-current-sign symmetry checks for the canonical Bastin trace; and
 * a nontrivial two-site Hermitian dimer hopping model.
 
-The pointwise Bastin/Středa equality below is an instantiation of the general theorem, while the
-zero-current and sign-reversal statements are symbolic sanity checks on the concrete conventions.
+The zero-current Středa statement below is a concrete consequence of the general pointwise
+identity, while sign-reversal is recorded once at the general operator level.
 No numerical approximation, disorder average, or limiting statement occurs here.
 -/
 
@@ -133,36 +133,6 @@ theorem twoLevel_zeroCurrent_streda_sum_zero
         twoLevelZeroCurrent twoLevelScalarCurrent energy broadening = 0 := by
   rw [← regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea]
   exact twoLevel_zeroCurrent_bastinTrace_zero energy broadening
-
-/-- Concrete pointwise Kubo–Bastin/Středa agreement for the scalar-current two-level toy model. -/
-theorem twoLevel_scalarCurrent_bastin_eq_streda
-    (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        twoLevelSystem.hamiltonian.1
-        twoLevelScalarCurrent twoLevelScalarCurrent energy broadening =
-      regularizedStredaSurfacePrimitiveTraceDerivative
-          twoLevelSystem.hamiltonian.1
-          twoLevelScalarCurrent twoLevelScalarCurrent energy broadening +
-        regularizedStredaResidualSeaTraceKernel
-          twoLevelSystem.hamiltonian.1
-          twoLevelScalarCurrent twoLevelScalarCurrent energy broadening :=
-  regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea
-    twoLevelSystem.hamiltonian.1
-    twoLevelScalarCurrent twoLevelScalarCurrent energy broadening
-
-/-- Simultaneous reversal of the scalar current leaves the concrete two-level Bastin trace
-unchanged. -/
-theorem twoLevel_scalarCurrent_sign_symmetry
-    (energy broadening : ℝ) :
-    regularizedBastinTraceIntegrand
-        twoLevelSystem.hamiltonian.1
-        (-twoLevelScalarCurrent) (-twoLevelScalarCurrent) energy broadening =
-      regularizedBastinTraceIntegrand
-        twoLevelSystem.hamiltonian.1
-        twoLevelScalarCurrent twoLevelScalarCurrent energy broadening :=
-  regularizedBastinTraceIntegrand_neg_neg
-    twoLevelSystem.hamiltonian.1
-    twoLevelScalarCurrent twoLevelScalarCurrent energy broadening
 
 /-- Two-site type used by the finite tight-binding dimer validation. -/
 abbrev TwoSite := Fin 2
