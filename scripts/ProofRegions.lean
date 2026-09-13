@@ -39,6 +39,16 @@ private structure RewriteSuggestion where
   growth : Nat
   introducedConsts : Nat
 
+private structure ExactWitness where
+  declName : Name
+  moduleName : Name
+  modifier : Lean.Meta.LibrarySearch.DeclMod
+  symmetric : Bool
+
+private structure ExactSearchCacheEntry where
+  shape : Expr
+  result : Option ExactWitness
+
 private def regionOfWindow
     (fileMap : FileMap) (minLines : Nat)
     (seq : Array Mathlib.TacticAnalysis.TacticNode) : Option Region := do
@@ -111,6 +121,26 @@ private partial def rewriteTargets
 
 private def localFVarIds (lctx : LocalContext) : List FVarId :=
   lctx.decls.toList.filterMap id |>.map (·.fvarId)
+
+private partial def eraseBinderNames : Expr → Expr
+  | .app fn arg => .app (eraseBinderNames fn) (eraseBinderNames arg)
+  | .lam _ type body bi =>
+      .lam Name.anonymous (eraseBinderNames type) (eraseBinderNames body) bi
+  | .forallE _ type body bi =>
+      .forallE Name.anonymous (eraseBinderNames type) (eraseBinderNames body) bi
+  | .letE _ type value body nonDep =>
+      .letE Name.anonymous (eraseBinderNames type) (eraseBinderNames value)
+        (eraseBinderNames body) nonDep
+  | .mdata _ body => eraseBinderNames body
+  | .proj name idx body => .proj name idx (eraseBinderNames body)
+  | expr => expr
+
+/-- Close a goal over its local context and erase binder names to obtain an alpha-stable key. -/
+private def exactGoalShape (goal : MVarId) : MetaM Expr := goal.withContext do
+  let target ← instantiateMVars (← goal.getType)
+  let fvars := ((localFVarIds (← getLCtx)).map mkFVar).toArray
+  let closed ← mkForallFVars fvars target
+  return eraseBinderNames closed
 
 private def prettyTactic (stx : TSyntax `tactic) : Command.CommandElabM String := do
   let fmt ← Command.liftCoreM <| Lean.PrettyPrinter.ppTactic ⟨Syntax.stripPos stx⟩
@@ -269,6 +299,37 @@ private def verifiedTransitionCandidate
     closesRegion := false
   }
 
+/-- Re-run one cached imported theorem witness against the current goal. -/
+private def exactTermFromWitness
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (witness : ExactWitness) :
+    Command.CommandElabM (Option (Term × Name × Name)) :=
+  node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+    let (_, searchGoal) ← freshGoal.intros
+    searchGoal.withContext do
+      let initialState ← saveState
+      try
+        let candidateGoal ← if witness.symmetric then
+          let some symmGoal ← observing? searchGoal.applySymm | return none
+          pure symmGoal
+        else
+          pure searchGoal
+        let thm ← Lean.Meta.LibrarySearch.mkLibrarySearchLemma witness.declName witness.modifier
+        let subgoals ← candidateGoal.apply thm { allowSynthFailures := true }
+        let remaining ← Lean.Meta.LibrarySearch.solveByElim [] false subgoals 6
+        if !remaining.isEmpty then
+          restoreState initialState
+          return none
+        let proof := (← instantiateMVars (mkMVar freshGoal)).headBeta
+        if let some parentDecl := node.ctxI.parentDecl? then
+          if containsConst parentDecl proof then
+            restoreState initialState
+            return none
+        let term ← delabToRefinableSyntax proof
+        return some (term, witness.declName, witness.moduleName)
+      catch _ =>
+        restoreState initialState
+        return none
+
 /--
 Search imported declarations only. This intentionally excludes declarations from the file currently
 being audited, including the theorem under construction and declarations that appear later in the
@@ -276,7 +337,7 @@ file, so an offline InfoTree cannot create self- or future-reference false posit
 -/
 private def importedExactTerm
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
-    Command.CommandElabM (Option (Term × Name × Name)) :=
+    Command.CommandElabM (Option (Term × ExactWitness)) :=
   node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
     let (_, searchGoal) ← freshGoal.intros
     searchGoal.withContext do
@@ -298,20 +359,48 @@ private def importedExactTerm
                 restoreState initialState
                 continue
             let term ← delabToRefinableSyntax proof
-            return some (term, declName, moduleName)
+            let witness := {
+              declName
+              moduleName
+              modifier
+              symmetric := candidateGoal != searchGoal
+            }
+            return some (term, witness)
         catch _ =>
           pure ()
         restoreState initialState
       return none
 
-/-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
-private def exactSearch
-    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
-    (source : String) : Command.CommandElabM (Option Candidate) := do
+/-- Cache exact-search outcomes for alpha-equivalent goals, replaying positive witnesses on hits. -/
+private def cachedImportedExactTerm
+    (cache : IO.Ref (Array ExactSearchCacheEntry))
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+    Command.CommandElabM (Option (Term × Name × Name)) := do
+  let shape ← node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+    let (_, searchGoal) ← freshGoal.intros
+    exactGoalShape searchGoal
+  let entries ← Command.liftIO cache.get
+  if let some entry := entries.find? fun entry => entry.shape == shape then
+    match entry.result with
+    | none => return none
+    | some witness =>
+        if let some result ← exactTermFromWitness node goal witness then
+          return some result
   let result ← try
     importedExactTerm node goal
   catch _ =>
     pure none
+  let witness? := result.map (·.2)
+  let updated := entries.filter fun entry => entry.shape != shape
+  Command.liftIO <| cache.set (updated.push { shape, result := witness? })
+  return result.map fun (term, witness) => (term, witness.declName, witness.moduleName)
+
+/-- Find an imported theorem reuse candidate and verify its concrete `exact` replacement. -/
+private def exactSearch
+    (cache : IO.Ref (Array ExactSearchCacheEntry))
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) (spanLines : Nat)
+    (source : String) : Command.CommandElabM (Option Candidate) := do
+  let result ← cachedImportedExactTerm cache node goal
   let some (term, declName, moduleName) := result | return none
   let replacement ← `(tactic| exact $term)
   let score := candidateBaseScore spanLines + 140 + theoremMentionBonus source declName
@@ -410,6 +499,7 @@ private def concreteSearch
   verifiedCandidate node goal mode replacement score
 
 private def auditSeq
+    (exactCache : IO.Ref (Array ExactSearchCacheEntry))
     (fileMap : FileMap) (minLines : Nat)
     (seq : Array Mathlib.TacticAnalysis.TacticNode) : Command.CommandElabM (Option AuditResult) := do
   let some region := regionOfSeq fileMap minLines seq | return none
@@ -419,7 +509,7 @@ private def auditSeq
   let mut best : Option Candidate := none
   if let some candidate ← rewriteSearch first goal region.spanLines source then
     best := betterCandidate best candidate
-  if let some candidate ← exactSearch first goal region.spanLines source then
+  if let some candidate ← exactSearch exactCache first goal region.spanLines source then
     best := betterCandidate best candidate
   if let some candidate ← concreteSearch first goal "simp" (← `(tactic| simp))
       (candidateBaseScore region.spanLines + 100) then
@@ -470,10 +560,11 @@ private def auditTransitionWindow
 private def collectAudits
     (fileMap : FileMap) (minLines : Nat) (trees : Array InfoTree) :
     Command.CommandElabM (Array AuditResult) := do
+  let exactCache ← Command.liftIO <| IO.mkRef (#[] : Array ExactSearchCacheEntry)
   let mut results := #[]
   for tree in trees do
     for seq in ← Mathlib.TacticAnalysis.findTacticSeqs tree do
-      if let some result ← auditSeq fileMap minLines seq then
+      if let some result ← auditSeq exactCache fileMap minLines seq then
         results := results.push result
       for start in [:seq.size] do
         let maxLen := Nat.min 6 (seq.size - start)
