@@ -80,26 +80,26 @@ private def collectDirectDependencyMap
       directProjectTheoremDependencyNames
         projectTheorems candidate.name candidate.theoremInfo.value
 
-private def prepareCandidate (candidate : Candidate) : MetaM PreparedCandidate := do
-  let theoremConst ← mkConstWithFreshMVarLevels candidate.name
-  let theoremType ← inferType theoremConst
-  let (binders, _, result) ← forallMetaTelescope theoremType
-  let result ← whnf result
+/-- Peel the explicit theorem telescope without invoking reduction. This is deliberately structural:
+its job is only to partition the candidate space before any Meta-level replay. -/
+private partial def resultShape (binderCount : Nat) : Expr → Nat × Expr
+  | .forallE _ _ body _ => resultShape (binderCount + 1) body
+  | .mdata _ body => resultShape binderCount body
+  | result => (binderCount, result)
+
+private def prepareCandidate (candidate : Candidate) : PreparedCandidate :=
+  let (binderCount, result) := resultShape 0 candidate.theoremInfo.type
   let arguments := result.getAppArgs
-  return {
+  {
     candidate
-    binderCount := binders.size
+    binderCount
     resultHead := result.getAppFn.constName?
     resultArity := arguments.size
     argumentHeads := arguments.map fun argument => argument.getAppFn.constName?
   }
 
-private def prepareCandidates (candidates : Array Candidate) : CommandElabM (Array PreparedCandidate) :=
-  liftTermElabM do
-    let mut prepared := #[]
-    for candidate in candidates do
-      prepared := prepared.push (← liftMetaM <| prepareCandidate candidate)
-    return prepared
+private def prepareCandidates (candidates : Array Candidate) : Array PreparedCandidate :=
+  candidates.map prepareCandidate
 
 private def coarseFingerprint (candidate : PreparedCandidate) : String :=
   let head := candidate.resultHead.map (·.toString) |>.getD "<none>"
@@ -237,40 +237,40 @@ private def auditTarget
     withTransparency .reducible do
       let targetConst ← mkConstWithFreshMVarLevels target.candidate.name
       let targetType ← inferType targetConst
-      forallTelescopeReducing targetType fun locals targetResult => do
-        let baseState ← saveState
-        let mut defEq := #[]
-        let mut replacements := #[]
-        for source in sources do
-          baseState.restore
-          let sourceDirectDependencies := (directDependencies.find? source.candidate.name).getD #[]
-          if sourceDirectDependencies.contains target.candidate.name then
-            continue
-          let equivalent ←
-            if source.binderCount == target.binderCount &&
-                sameArgumentHeadSketch source.argumentHeads target.argumentHeads then
-              statementDefEq source.candidate target.candidate
-            else
-              pure false
-          if equivalent then
-            defEq := defEq.push source.candidate.name.toString
-            continue
-          if replacements.size >= maxReplacementCandidatesPerTarget then
-            continue
-          let goal ← mkFreshExprSyntheticOpaqueMVar targetResult
-          try
-            let subgoals ← goal.mvarId!.applyConst source.candidate.name { allowSynthFailures := true }
-            if ← closeReplacementSubgoals subgoals locals then
-              replacements := replacements.push {
-                name := source.candidate.name.toString
-                moduleName := source.candidate.moduleName.toString
-              }
-          catch _ =>
-            pure ()
+      let (locals, _, targetResult) ← forallMetaTelescope targetType
+      let baseState ← saveState
+      let mut defEq := #[]
+      let mut replacements := #[]
+      for source in sources do
         baseState.restore
-        return (
-          defEq.qsort fun left right => left < right,
-          replacements.qsort fun left right => left.name < right.name)
+        let sourceDirectDependencies := (directDependencies.find? source.candidate.name).getD #[]
+        if sourceDirectDependencies.contains target.candidate.name then
+          continue
+        let equivalent ←
+          if source.binderCount == target.binderCount &&
+              sameArgumentHeadSketch source.argumentHeads target.argumentHeads then
+            statementDefEq source.candidate target.candidate
+          else
+            pure false
+        if equivalent then
+          defEq := defEq.push source.candidate.name.toString
+          continue
+        if replacements.size >= maxReplacementCandidatesPerTarget then
+          continue
+        let goal ← mkFreshExprSyntheticOpaqueMVar targetResult
+        try
+          let subgoals ← goal.mvarId!.applyConst source.candidate.name { allowSynthFailures := true }
+          if ← closeReplacementSubgoals subgoals locals then
+            replacements := replacements.push {
+              name := source.candidate.name.toString
+              moduleName := source.candidate.moduleName.toString
+            }
+        catch _ =>
+          pure ()
+      baseState.restore
+      return (
+        defEq.qsort fun left right => left < right,
+        replacements.qsort fun left right => left.name < right.name)
 
 private def collectAuditEntries
     (prepared : Array PreparedCandidate)
@@ -288,7 +288,10 @@ private def collectAuditEntries
       if truncated then truncatedTargets := truncatedTargets + 1
       totalProbed := totalProbed + sources.size
       let (defEq, replacements) ←
-        liftMetaM <| auditTarget target sources directDependencies
+        if sources.isEmpty then
+          pure (#[], #[])
+        else
+          liftMetaM <| auditTarget target sources directDependencies
       entries := entries.push {
         target := target.candidate.name.toString
         moduleName := target.candidate.moduleName.toString
@@ -346,7 +349,7 @@ private def markdown (entries : Array AuditEntry) : String := Id.run do
 
 run_cmd do
   let (candidates, projectTheorems) ← collectCandidates
-  let prepared ← prepareCandidates candidates
+  let prepared := prepareCandidates candidates
   let directDependencies := collectDirectDependencyMap candidates projectTheorems
   let (entries, totalProbed, truncatedTargets) ←
     collectAuditEntries prepared directDependencies
