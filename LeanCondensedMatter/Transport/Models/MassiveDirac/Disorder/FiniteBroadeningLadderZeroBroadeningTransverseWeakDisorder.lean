@@ -169,7 +169,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBo
             v m probeEnergy disorderStrength hbar pMax) 1 := by
     simpa [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
       inPlaneLadderBareXSource, inPlaneCoefficientVector] using hy
-  exact congrArg (fun z : ℂ => z / (disorderStrength : ℂ)) hy'
+  exact (congrArg (fun z : ℂ => z / (disorderStrength : ℂ)) hy').symm
 
 end
 
