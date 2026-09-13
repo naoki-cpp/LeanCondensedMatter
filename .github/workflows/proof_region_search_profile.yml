@@ -1,0 +1,80 @@
+name: Proof Region Search Profile
+
+on:
+  push:
+    branches: [chore/proof-region-search-profile]
+
+permissions:
+  contents: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Build target
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake build LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations \
+            2>&1 | grep -vE '^(trace:|Some required targets logged failures:|- LeanCondensedMatter\.|error: build failed$)' || true
+
+      - name: Prepare profile variants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source = Path('scripts/ProofRegions.lean').read_text()
+
+          exact = '''  if let some candidate ← exactSearch exactCache first goal region.spanLines source then
+            best := betterCandidate best candidate
+          '''
+          rewrite = '''  if let some candidate ← rewriteSearch rewriteCache first goal region.spanLines source then
+            best := betterCandidate best candidate
+          '''
+          transition = '''      for start in [:seq.size] do
+          '''
+          run_audit = '''  let results ← runAudit inputCtx state minLines
+          '''
+
+          variants = {
+              'Full': source,
+              'NoExact': source.replace(exact, '  pure ()\n'),
+              'NoRewrite': source.replace(rewrite, '  pure ()\n'),
+              'NoTransitions': source.replace(transition, '      for start in [:0] do\n'),
+              'NoAudit': source.replace(run_audit, '  let results : Array AuditResult := #[]\n'),
+          }
+
+          for key, text in variants.items():
+              if key != 'Full' and text == source:
+                  raise SystemExit(f'profile transform failed: {key}')
+              Path(f'scripts/ProofRegions{key}.lean').write_text(text)
+          PY
+
+      - name: Profile CAR audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/CanonicalAnticommutationRelations.lean
+          for variant in NoAudit NoExact NoRewrite NoTransitions Full; do
+            echo "::group::$variant"
+            /usr/bin/time -f "${variant}_SECONDS=%e" \
+              timeout 600s lake env lean --run "scripts/ProofRegions${variant}.lean" "$file" 2 \
+              > "/tmp/${variant}.out"
+            head -n 1 "/tmp/${variant}.out"
+            echo "::endgroup::"
+          done
