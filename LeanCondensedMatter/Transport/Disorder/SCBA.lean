@@ -7,11 +7,10 @@ set_option linter.style.header false
 /-!
 # Bounded self-consistent Born data
 
-This module provides the bounded one-particle SCBA foundation used by the conserving impurity
-program in issue #688. It consumes the canonical exact finite second-moment bounded complex-linear
-map from the finite-disorder moment layer and records supplied retarded self-consistent Born
-approximation (SCBA) data. Advanced data are derived by adjoint through the common `SpectralSide`
-interface.
+This module provides bounded one-particle SCBA data built from the canonical exact finite
+second-moment bounded complex-linear map from the finite-disorder moment layer. It records supplied
+retarded self-consistent Born approximation (SCBA) data, while advanced data are derived by adjoint
+through the common `SpectralSide` interface.
 
 SCBA is not identified with the exact finite disorder average. A solution stores only its retarded
 self-energy fixed-point equation and a two-sided inverse identity for the retarded Green operator.
