@@ -1,5 +1,6 @@
 import Lean
 import LeanCondensedMatter
+import Lean.Util.CollectAxioms
 
 open Lean Elab Command Meta
 
@@ -17,6 +18,10 @@ structure Entry where
   statement : String
   docString : Option String
   dependencies : Array String
+  axioms : Array String
+  standardAxioms : Array String
+  projectAxioms : Array String
+  externalAxioms : Array String
   simpLemma : Bool
   directWrapperOf : Option String
   directWrapperTargetModule : Option String
@@ -35,6 +40,10 @@ structure CatalogEntry where
   soleCompiledConsumerPrivate : Bool
   simpLemma : Bool
   terminal : Bool
+  axioms : Array String
+  standardAxioms : Array String
+  projectAxioms : Array String
+  externalAxioms : Array String
   directWrapperOf : Option String
   directWrapperTargetModule : Option String
   crossModuleDirectWrapper : Bool
@@ -62,6 +71,17 @@ private def collectCandidates : CommandElabM (Array Candidate × NameSet) := do
     candidates := candidates.push { name := declName, moduleName, theoremInfo }
     theoremNames := theoremNames.insert declName
   return (candidates, theoremNames)
+
+private def collectProjectAxioms : CommandElabM NameSet := do
+  let env ← getEnv
+  let mut projectAxioms := NameSet.empty
+  for (declName, info) in env.constants.toList do
+    let .axiomInfo _ := info | continue
+    let some moduleName := declarationModule? env declName | continue
+    unless projectModule? moduleName do continue
+    unless (← findDeclarationRanges? declName).isSome do continue
+    projectAxioms := projectAxioms.insert declName
+  return projectAxioms
 
 private def directProjectTheoremDependencyNames
     (projectTheorems : NameSet) (declName : Name) (value : Expr) : Array Name :=
@@ -131,6 +151,27 @@ private def directWrapperTarget?
 private def sortedNameStrings (names : Array Name) : Array String :=
   (names.map fun name => name.toString).qsort fun left right => left < right
 
+private def standardAxiom? (name : Name) : Bool :=
+  name == ``propext || name == ``Classical.choice || name == ``Quot.sound
+
+private def classifyAxioms (axioms : Array Name) (projectAxioms : NameSet) :
+    Array String × Array String × Array String × Array String := Id.run do
+  let mut standard := #[]
+  let mut project := #[]
+  let mut external := #[]
+  for axiomName in axioms do
+    if standardAxiom? axiomName then
+      standard := standard.push axiomName
+    else if projectAxioms.contains axiomName then
+      project := project.push axiomName
+    else if axiomName != ``sorryAx then
+      external := external.push axiomName
+  return (
+    sortedNameStrings axioms,
+    sortedNameStrings standard,
+    sortedNameStrings project,
+    sortedNameStrings external)
+
 private def addConsumer
     (consumers : NameMap (Array String)) (dependency : Name) (consumer : String) :
     NameMap (Array String) :=
@@ -138,7 +179,8 @@ private def addConsumer
   let updated := if existing.contains consumer then existing else existing.push consumer
   consumers.insert dependency updated
 
-private def collectEntries :
+private def collectEntries
+    (projectAxioms : NameSet) :
     CommandElabM (Array Entry × NameSet × NameMap (Array String)) := do
   let env ← getEnv
   let simpTheorems := simpExtension.getState env
@@ -163,6 +205,9 @@ private def collectEntries :
       | none => false
     for dependency in dependencyNames do
       theoremDependents := addConsumer theoremDependents dependency candidate.name.toString
+    let collectedAxioms ← Lean.collectAxioms candidate.name
+    let (axioms, standardAxioms, projectAxiomsForTheorem, externalAxioms) :=
+      classifyAxioms collectedAxioms projectAxioms
     entries := entries.push {
       declName := candidate.name
       name := candidate.name.toString
@@ -170,6 +215,10 @@ private def collectEntries :
       statement
       docString
       dependencies := sortedNameStrings dependencyNames
+      axioms
+      standardAxioms
+      projectAxioms := projectAxiomsForTheorem
+      externalAxioms
       simpLemma := simpLemma? simpTheorems candidate.name
       directWrapperOf
       directWrapperTargetModule
@@ -241,6 +290,10 @@ private def annotateEntries
       soleCompiledConsumerPrivate
       simpLemma := entry.simpLemma
       terminal
+      axioms := entry.axioms
+      standardAxioms := entry.standardAxioms
+      projectAxioms := entry.projectAxioms
+      externalAxioms := entry.externalAxioms
       directWrapperOf := entry.directWrapperOf
       directWrapperTargetModule := entry.directWrapperTargetModule
       crossModuleDirectWrapper := entry.crossModuleDirectWrapper
@@ -388,9 +441,11 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
     directWrapperReviewQueue.filter fun entry => entry.crossModuleDirectWrapper
   let terminalsWithCompiledConsumers :=
     terminals.filter fun entry => !entry.compiledConsumers.isEmpty
+  let projectAxiomEntries := entries.filter fun entry => !entry.projectAxioms.isEmpty
+  let externalAxiomEntries := entries.filter fun entry => !entry.externalAxioms.isEmpty
   let mut output := "# LeanCondensedMatter theorem catalog\n\n"
   output := output ++ "This file is generated from source-declared theorems in LeanCondensedMatter modules. Do not edit it manually.\n\n"
-  output := output ++ "The JSON catalog records theorem attributes on one entry per declaration: direct theorem dependencies/dependents, compiled project-declaration consumers, simp status, terminal status, retained/completed annotations, and conservative direct-wrapper metadata. Dependencies and consumers are distinct declaration-level graph edges: repeated references from one compiled declaration are counted once. Compiled consumers scan source-declared project theorem, definition, and opaque-declaration values.\n\n"
+  output := output ++ "The JSON catalog records theorem attributes on one entry per declaration: direct theorem dependencies/dependents, compiled project-declaration consumers, kernel axiom provenance, simp status, terminal status, retained/completed annotations, and conservative direct-wrapper metadata. Dependencies and consumers are distinct declaration-level graph edges: repeated references from one compiled declaration are counted once. Compiled consumers scan source-declared project theorem, definition, and opaque-declaration values.\n\n"
   output := output ++ s!"Theorems: {entries.size}\n\n"
   output := output ++ s!"Dependency edges: {dependencyEdgeCount entries}\n\n"
   output := output ++ s!"Retained audit declarations: {retainedEntries.size}\n\n"
@@ -409,14 +464,24 @@ private def markdown (entries : Array CatalogEntry) (chains : Array (Array Strin
   output := output ++ s!"Cross-module direct-wrapper candidates: {crossModuleDirectWrappers.size}\n\n"
   output := output ++ s!"Cross-module direct-wrapper review queue: {crossModuleDirectWrapperReviewQueue.size}\n\n"
   output := output ++ s!"Multi-step single-consumer chains: {chains.size}\n\n"
+  output := output ++ s!"Theorems depending on project axioms: {projectAxiomEntries.size}\n\n"
+  output := output ++ s!"Theorems depending on external nonstandard axioms: {externalAxiomEntries.size}\n\n"
   output := output ++ "Here a terminal theorem means a theorem with no direct project-theorem dependents: no other source-declared project theorem in the catalog retains it in its compiled proof term. This is the endpoint side of the theorem proof graph, not the prerequisite-free side.\n\n"
   output := output ++ "`compiledConsumers` is broader: it records source-declared project theorems, definitions, and opaque declarations whose compiled values retain a reference to the theorem. `compiledConsumerCount` and `singleCompiledConsumer` are derived from that same array, so usage status is an attribute of the theorem rather than a separately maintained candidate set. `soleCompiledConsumerPrivate` additionally records whether the unique compiled consumer, when one exists, is a private declaration. It is still not a source-level use analysis: simplification, unfolding, and definitional reduction can erase an explicit source reference before compilation. Therefore a theorem with no compiled consumer is only a higher-priority review candidate, never automatic evidence that the theorem is unused.\n\n"
+  output := output ++ "`axioms` records transitive kernel axiom dependencies from `Lean.collectAxioms`. `standardAxioms` classifies `propext`, `Classical.choice`, and `Quot.sound`; `projectAxioms` records source-declared LeanCondensedMatter axioms; `externalAxioms` records other non-`sorryAx` axioms. This is kernel provenance, not a replacement for explicit model assumptions represented as theorem hypotheses.\n\n"
   output := output ++ "`simpLemma` records membership in Lean's active default simp extension, including simp attributes applied separately from the theorem declaration. The priority private-consumer queue excludes simp lemmas because public canonical evaluation/normalization rules can remain useful API even when their only currently retained compiled consumer is private. This exclusion is a ranking heuristic, not a claim that every simp theorem should be retained.\n\n"
   output := output ++ "`directWrapperOf` is a conservative proof-term attribute: after removing only lambda/metadata packaging, the theorem body must be a direct application of another non-private source-declared project theorem and all application arguments must have a simple specialization shape without references to other project theorems. Extensionality lemmas are excluded because they are commonly proof mechanisms for genuinely new results. `directWrapperTargetModule` and `crossModuleDirectWrapper` record where that target lives. These attributes are advisory and do not imply that a domain-specific specialization lacks independent API value.\n\n"
   output := output ++ "`retainedMention` records a semantic review disposition from `notes/theorem-catalog-retained.md`. Retained declarations keep all structural attributes in the full catalog, but are omitted from terminal, single-consumer, private-consumer, and direct-wrapper review queues so the queues contain unresolved audit work rather than repeatedly surfacing reviewed API.\n\n"
   output := output ++ "A single-consumer theorem has exactly one distinct compiled project-declaration consumer. Multi-step chains follow that unique edge through theorem consumers until the chain reaches a theorem without exactly one compiled consumer, or a non-theorem definition/opaque endpoint. Only chains with at least two single-consumer edges are listed separately. These highlight public wrappers and proof-routing stages that may be candidates for inlining, privatization, or deletion; source search and semantic review remain required before changing the API. Retained declarations can still appear in these chains because the chains describe graph structure rather than review status.\n\n"
   output := output ++ "A mention in `notes/completed.md` is evidence that a terminal endpoint is an intentional completed result. A mention in `notes/theorem-catalog-retained.md` is evidence that a declaration surfaced by one or more audit signals was semantically reviewed and intentionally retained. Terminal declarations with neither disposition remain review candidates: compare their statement and module with `notes/roadmap.md` and the detailed roadmaps to decide whether they are roadmap intermediates that still need a consumer, intentional local endpoints, or unnecessary public theorems.\n\n"
-  output := output ++ "## Direct-wrapper review queue\n\n"
+  output := output ++ "## Project axiom provenance\n\n"
+  output := output ++ "Each row lists the source-declared LeanCondensedMatter axioms transitively used by a theorem. Standard logical axioms remain available in the JSON entry but are omitted here.\n\n"
+  for entry in projectAxiomEntries do
+    output := output ++ s!"- `{entry.name}` — "
+    output := entry.projectAxioms.foldl (init := output) fun output axiomName =>
+      output ++ s!"`{axiomName}` "
+    output := output ++ "\n"
+  output := output ++ "\n## Direct-wrapper review queue\n\n"
   output := output ++ "Each row is an unresolved direct-wrapper candidate with its relevant audit attributes shown together. Declarations recorded in `notes/theorem-catalog-retained.md` remain in the full catalog but are omitted from this queue.\n\n"
   for entry in directWrapperReviewQueue do
     let target := entry.directWrapperOf.getD "<unknown>"
@@ -467,6 +532,10 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("soleCompiledConsumerPrivate", .bool entry.soleCompiledConsumerPrivate),
       ("simpLemma", .bool entry.simpLemma),
       ("terminal", .bool entry.terminal),
+      ("axioms", .arr <| entry.axioms.map Json.str),
+      ("standardAxioms", .arr <| entry.standardAxioms.map Json.str),
+      ("projectAxioms", .arr <| entry.projectAxioms.map Json.str),
+      ("externalAxioms", .arr <| entry.externalAxioms.map Json.str),
       ("directWrapperOf", entry.directWrapperOf.map Json.str |>.getD .null),
       ("directWrapperTargetModule", entry.directWrapperTargetModule.map Json.str |>.getD .null),
       ("crossModuleDirectWrapper", .bool entry.crossModuleDirectWrapper),
@@ -475,7 +544,8 @@ private def json (entries : Array CatalogEntry) : Json :=
     ]
 
 run_cmd do
-  let (entries, projectTheorems, theoremDependents) ← collectEntries
+  let projectAxioms ← collectProjectAxioms
+  let (entries, projectTheorems, theoremDependents) ← collectEntries projectAxioms
   let compiledConsumers ← collectCompiledConsumers projectTheorems
   let completed ← liftIO <| IO.FS.readFile ("notes" / "completed.md")
   let retained ← liftIO <| IO.FS.readFile ("notes" / "theorem-catalog-retained.md")
@@ -505,10 +575,12 @@ run_cmd do
   let chains := singleConsumerChains catalog
   let terminalsWithCompiledConsumers :=
     terminals.filter fun entry => !entry.compiledConsumers.isEmpty
+  let projectAxiomEntries := catalog.filter fun entry => !entry.projectAxioms.isEmpty
+  let externalAxiomEntries := catalog.filter fun entry => !entry.externalAxioms.isEmpty
   let outputDir : System.FilePath := "docs" / "generated"
   liftIO <| IO.FS.createDirAll outputDir
   liftIO <| IO.FS.writeFile (outputDir / "theorems.md") (markdown catalog chains)
   liftIO <| IO.FS.writeFile (outputDir / "theorems.json") (json catalog).pretty
-  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"
+  logInfo m!"Generated theorem catalog with {catalog.size} declarations, {dependencyEdgeCount catalog} dependency edges, and {terminals.size} terminal theorems ({retainedEntries.size} retained audit declarations; {completedTerminals.size} terminal theorems mentioned in completed.md; {retainedTerminals.size} retained terminal theorems; {terminalsWithCompiledConsumers.size} terminal theorems with compiled project consumers; {priorityReviewQueue.size} priority terminal review candidates; {retainedSingleConsumers.size} retained single-consumer theorems; {singleConsumerReviewQueue.size} single-consumer review candidates; {privateSingleConsumerReviewQueue.size} priority public non-simp theorems with sole private compiled consumers; {projectAxiomEntries.size} theorems depending on project axioms; {externalAxiomEntries.size} theorems depending on external nonstandard axioms; {directWrappers.size} direct-wrapper candidates; {retainedDirectWrappers.size} retained direct-wrapper candidates; {directWrapperReviewQueue.size} direct-wrapper review candidates; {crossModuleDirectWrappers.size} cross-module direct-wrapper candidates; {crossModuleDirectWrapperReviewQueue.size} cross-module direct-wrapper review candidates; {chains.size} multi-step single-consumer chains)"
 
 end LeanCondensedMatter.TheoremCatalog
