@@ -27,19 +27,27 @@ operator integration, or diagram sums.
 
 The fermionic algebraic and thermal layers provide CAR/Fock structure, free and interacting
 operators, imaginary-time evolution, free Gibbs theory, KMS identities, and Bloch--de Dominicis
-pairing.
+pairing. The canonical finite Gibbs pairing endpoint is
 
-The connected perturbative line proves:
+```lean
+SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+```
 
-1. the coefficientwise formal finite-temperature log-partition linked-cluster theorem;
+The connected perturbative line proves three finite-mode endpoints:
+
+1. the coefficientwise formal finite-temperature log-partition linked-cluster theorem
+   `factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude`;
 2. the finite-dimensional analytic log-partition linked-cluster theorem for
-   `Tr(exp(-β(H₀ + λV)))`;
+   `Tr(exp(-β(H₀ + λV)))`,
+   `iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude`;
 3. the finite-mode two-point theorem
    `vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`, where the identifier's
    `vacuumNormalized` means normalization by the zero-external-leg Dyson partition series.
 
-The two-point result already covers one external-leg correlation-function setting. The remaining
-connected-diagram target is arbitrary higher-point/source-insertion structure.
+The first two names deliberately identify the connected object on the right-hand side as the
+quartic Wick-diagram amplitude rather than using a generic `connectedAmplitude` label. The two-point
+result already covers one external-leg correlation-function setting. The remaining connected-diagram
+target is arbitrary higher-point/source-insertion structure.
 
 ## Diagrammatics ownership
 
@@ -49,6 +57,10 @@ connected-diagram target is arbitrary higher-point/source-insertion structure.
   second-quantized/diagrammatic semantics;
 - `SecondQuantization.Fermionic.Diagrammatics` owns fermionic signs, amplitudes, and physics-facing
   connected endpoints.
+
+Connected-component factorization theorems use semantic `..._eq_prod_components` names. The
+`restrictComponentConnected` construction may still occur inside theorem statements or proofs, but
+is not part of the public theorem-name vocabulary.
 
 One-use routing theorems, reindexings, and intermediate proof stages should remain private/local or be
 inlined rather than exposed as parallel public APIs.

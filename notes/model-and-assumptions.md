@@ -25,8 +25,10 @@ operator is positive, compact, self-adjoint, spectrally trace-class, and normali
 trace `1`. Physical pure states form the subtype `QuantumTheory.PureState H`; arbitrary mixed states
 are represented directly by `DensityOperator H`.
 
-The model is dimension-independent. In finite dimensions, specialization theorems recover ordinary
-matrix trace formulas without changing the density-state type.
+The model is dimension-independent. The canonical purity characterization is
+`QuantumTheory.isPureDensity_iff_purity_eq_one`; in finite dimensions,
+`QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity` identifies the ordinary matrix-trace
+quantity `Tr(ρ²)` with the same dimension-independent purity API.
 
 `QuantumTheory.pure` embeds a normalized state-vector representative as the rank-one projector
 `|ψ⟩⟨ψ|`. This is not purification of a mixed state on an enlarged Hilbert space.
@@ -96,6 +98,23 @@ contributions. The project separates three levels:
 2. formal or coefficientwise perturbative identities;
 3. analytic finite-dimensional partition-function identities near zero coupling.
 
+For the finite-mode fermionic theory, the canonical public endpoints are
+
+```lean
+SecondQuantization.Fermionic.
+  factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
+SecondQuantization.Fermionic.
+  iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
+SecondQuantization.Fermionic.
+  vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+```
+
+The first theorem is purely formal/coefficientwise. The second identifies derivatives of the genuine
+finite-dimensional normalized log partition function with the same connected quartic Wick-diagram
+amplitudes. The third is the two-external-leg analogue after division by the zero-external-leg Dyson
+partition series; `vacuumNormalized` is an identifier for that algebraic normalization, not a claim
+that the thermal state is the vacuum.
+
 The formal/combinatorial core does not assert convergence of an infinite-volume perturbation series
 or existence of a thermodynamic limit.
 
@@ -108,7 +127,12 @@ completed-space and unbounded-operator program, not a second density-state API.
 ## Bloch–de Dominicis theory
 
 The pairing theorem applies to free or quasifree Gaussian thermal states. It does not state that an
-arbitrary interacting Gibbs state has a pairing-only moment expansion.
+arbitrary interacting Gibbs state has a pairing-only moment expansion. The canonical finite-Gibbs
+endpoint is
+
+```lean
+SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+```
 
 The generic pairing recursion is independent of occupation bases and finite-dimensional traces. The
 current concrete instance transports algebraic Fock operators to a finite Hilbert realization and
