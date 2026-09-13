@@ -3,6 +3,7 @@ import Lake.CLI.Main
 import Lake.Load.Toml
 import Mathlib.Tactic
 import Mathlib.Tactic.TacticAnalysis
+import Mathlib.Tactic.Widget.LibraryRewrite
 
 open Lean Elab Meta System
 open Lean.Meta.Tactic.TryThis
@@ -27,6 +28,11 @@ structure Candidate where
 structure AuditResult where
   region : Region
   candidate? : Option Candidate := none
+
+private structure RewriteSuggestion where
+  tactic : TSyntax `tactic
+  theoremName : Name
+  moduleName : Name
 
 private def regionOfSeq
     (fileMap : FileMap) (minLines : Nat)
@@ -57,6 +63,13 @@ private partial def containsConst (declName : Name) : Expr → Bool
   | .mdata _ body => containsConst declName body
   | .proj _ _ body => containsConst declName body
   | _ => false
+
+private partial def rewriteTargets (target : Expr) (fuel : Nat) : Array Expr :=
+  match fuel with
+  | 0 => #[target]
+  | fuel + 1 =>
+      target.getAppArgs.foldl (init := #[target]) fun targets arg =>
+        targets ++ rewriteTargets arg fuel
 
 private def prettyTactic (stx : TSyntax `tactic) : Command.CommandElabM String := do
   let fmt ← Command.liftCoreM <| Lean.PrettyPrinter.ppTactic ⟨Syntax.stripPos stx⟩
@@ -149,6 +162,53 @@ private def exactSearch
   let replacement ← `(tactic| exact $term)
   verifiedCandidate node goal "exact?" replacement (some declName) (some moduleName)
 
+/--
+Collect a bounded set of imported-library rewrites that apply to the goal or one of its shallow
+subexpressions. The actual replacement is still accepted only after replay closes the full proof
+region, so this search broadens discovery without weakening verification.
+-/
+private def importedRewriteSuggestions
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+    Command.CommandElabM (Array RewriteSuggestion) :=
+  node.ctxI.runTactic node.tacI goal fun freshGoal => freshGoal.withContext do
+    let env ← getEnv
+    let target ← freshGoal.getType
+    let mut suggestions := #[]
+    for expr in rewriteTargets target 2 do
+      for rewrites in ← Mathlib.Tactic.LibraryRewrite.getImportRewrites expr do
+        for (rw, declName) in rewrites do
+          if suggestions.size >= 64 then
+            return suggestions
+          let some moduleName := declarationModule? env declName | continue
+          if !rw.extraGoals.isEmpty then
+            continue
+          let tactic ← Mathlib.Tactic.LibraryRewrite.tacticSyntax rw none none
+          suggestions := suggestions.push { tactic, theoremName := declName, moduleName }
+    return suggestions
+
+/--
+Prefer a named imported rewrite over broad automation when it can replace the whole region.
+If the rewrite reduces the goal to an existing local hypothesis, also try closing it with
+`assumption`.
+-/
+private def rewriteSearch
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId) :
+    Command.CommandElabM (Option Candidate) := do
+  let suggestions ← try
+    importedRewriteSuggestions node goal
+  catch _ =>
+    pure #[]
+  for suggestion in suggestions do
+    if let some candidate ← verifiedCandidate node goal "rw?" suggestion.tactic
+        (some suggestion.theoremName) (some suggestion.moduleName) then
+      return some candidate
+    let rewrite := suggestion.tactic
+    let replacement ← `(tactic| $rewrite <;> assumption)
+    if let some candidate ← verifiedCandidate node goal "rw?" replacement
+        (some suggestion.theoremName) (some suggestion.moduleName) then
+      return some candidate
+  return none
+
 /-- Try a deterministic concrete tactic and retain it only when replay closes the region goal. -/
 private def concreteSearch
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
@@ -161,6 +221,8 @@ private def auditSeq
   let some region := regionOfSeq fileMap minLines seq | return none
   let some first := seq[0]? | return some { region }
   let [goal] := first.tacI.goalsBefore | return some { region }
+  if let some candidate ← rewriteSearch first goal then
+    return some { region, candidate? := some candidate }
   if let some candidate ← exactSearch first goal then
     return some { region, candidate? := some candidate }
   if let some candidate ← concreteSearch first goal "simp" (← `(tactic| simp)) then
