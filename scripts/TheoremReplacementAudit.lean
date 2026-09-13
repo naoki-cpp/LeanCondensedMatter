@@ -168,7 +168,7 @@ private def replacementCloses (source target : Candidate) : MetaM Bool :=
 private def auditTarget
     (target : PreparedCandidate)
     (sources : Array PreparedCandidate) :
-    MetaM (Array String × Array ReplacementCandidate) :=
+    MetaM (Array String × Array ReplacementCandidate) := do
   let mut defEq := #[]
   let mut replacements := #[]
   for source in sources do
