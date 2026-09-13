@@ -44,7 +44,7 @@ theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : Occupation M
           (imaginaryTimeEvolve ε τ (annihilate i))) := by
   rw [weightedFreeTwoPointFunction, twoPointTimeOrderedProduct_of_lt ε i j h,
     Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
-    Common.normalizedWeightedDiagonal_neg, neg_neg]
+    (Common.normalizedWeightedDiagonal w).map_neg, neg_neg]
 
 /-- At equal times, use the symmetric `θ(0) = 1/2` convention of the canonical two-point operator. -/
 theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
