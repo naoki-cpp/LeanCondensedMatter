@@ -44,6 +44,7 @@ noncomputable def dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : PowerSeries ℂ :=
   PowerSeries.mk (dysonTraceCoeff energy β V)
 
+omit [Fintype Config] in
 theorem coeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
     PowerSeries.coeff n (dysonTraceSeries energy β V) = dysonTraceCoeff energy β V n :=
