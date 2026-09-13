@@ -101,7 +101,7 @@ private noncomputable def completedPhaseMultiplierLinear
     CompletedFock Config →ₗ[ℂ] CompletedFock Config where
   toFun ψ :=
     ⟨fun c => phase c * ψ c,
-      (lp.memℓp ψ).mono' fun c => by simp [norm_mul, hphase c]⟩
+      (lp.memℓp ψ).mono' fun c => by simp [hphase c]⟩
   map_add' ψ φ := by
     ext c
     change phase c * (ψ c + φ c) = phase c * ψ c + phase c * φ c
@@ -124,10 +124,10 @@ private theorem norm_completedPhaseMultiplierLinear
     ‖completedPhaseMultiplierLinear phase hphase ψ‖ = ‖ψ‖ := by
   apply le_antisymm
   · exact lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun c => by
-      simp [completedPhaseMultiplierLinear_apply, norm_mul, hphase c]
+      simp [completedPhaseMultiplierLinear_apply, hphase c]
   · exact lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
       (x := ψ) (y := completedPhaseMultiplierLinear phase hphase ψ) fun c => by
-        simp [completedPhaseMultiplierLinear_apply, norm_mul, hphase c]
+        simp [completedPhaseMultiplierLinear_apply, hphase c]
 
 /-- Coordinatewise multiplication by a unit-modulus complex phase as a linear isometry. -/
 noncomputable def completedPhaseMultiplier
