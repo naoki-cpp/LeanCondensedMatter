@@ -11255,7 +11255,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedMention": false,
@@ -11267,13 +11267,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -107421,6 +107421,40 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.dGammaLieHom 𝓗₁) T =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.dGammaLieHom_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear 𝓗₁) T =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
     "standardAxioms": [
@@ -107524,9 +107558,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -107536,9 +107570,9 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero"
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -107619,11 +107653,7 @@
       "SecondQuantization.Fermionic.Field.oneBodyObservable_commutes_of_commutes",
       "SecondQuantization.Fermionic.Lattice.heisenberg_siteChargeDensity"
     ],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_apply",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -107711,10 +107741,10 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul"
+      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
@@ -107724,10 +107754,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
-      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul"
+      "SecondQuantization.Fermionic.AlgebraicFock.numberOperator_oneParticle_mul",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -148739,6 +148769,44 @@
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  ConservationLaw.linearCommutator (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ S)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T) =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ (ConservationLaw.linearCommutator S T)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_linearCommutator_raw",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ConservationLaw.linearCommutator_apply",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
