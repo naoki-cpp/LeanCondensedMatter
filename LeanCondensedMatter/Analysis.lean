@@ -1,91 +1,22 @@
-import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Analysis.PowerSeries.Normalization
-import LeanCondensedMatter.Analysis.Dyson.Basic
-import LeanCondensedMatter.Analysis.Dyson.Bounds
-import LeanCondensedMatter.Analysis.Dyson.FirstVariation
-import LeanCondensedMatter.Analysis.Dyson.Volterra
-import LeanCondensedMatter.Analysis.Dyson.Uniqueness
-import LeanCondensedMatter.Analysis.Dyson.Constant
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
-import LeanCondensedMatter.Analysis.Lorentzian.Kernel
-import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
-import LeanCondensedMatter.Analysis.Lorentzian.Weighted
-import LeanCondensedMatter.Analysis.Lorentzian.Pole
-import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
-import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
-import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
-import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
-import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
-import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
-import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
-import LeanCondensedMatter.Analysis.Operator.LinearCommutator
-import LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
-import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
-import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace
-import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
-import LeanCondensedMatter.Analysis.Operator.Fredholm.FiniteDimensional
-import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
-import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
-import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
-import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
-import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
-import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
-import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
-import LeanCondensedMatter.Analysis.Calculus.CorrectedCurrentFlux
-import LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization
-import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
-import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
-import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
-import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
-import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
+import LeanCondensedMatter.Analysis.InternalSpace
+import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Analysis.Dyson
+import LeanCondensedMatter.Analysis.OrderedSimplex
+import LeanCondensedMatter.Analysis.FunctionalCalculus
+import LeanCondensedMatter.Analysis.Lorentzian
+import LeanCondensedMatter.Analysis.Operator
+import LeanCondensedMatter.Analysis.InfiniteSum
+import LeanCondensedMatter.Analysis.Calculus
+import LeanCondensedMatter.Analysis.Inequalities
 
 set_option linter.style.header false
 
 /-!
 # Analysis
 
-Public entry point for the analysis infrastructure exported by LeanCondensedMatter. It collects the
-project's internal-space matrix primitives, operator theory, Dyson and ordered-simplex analysis,
-functional calculus, interval localization and Lorentzian kernel/radial-quadratic/weighted-window/
-pole analysis, finite-dimensional trace, trace-class and Hilbert–Schmidt tools, and the
-analysis-level inequalities used by downstream physics layers.
+Public entry point for the analysis infrastructure exported by `LeanCondensedMatter`.
 
-`LeanCondensedMatter.lean` delegates the analysis export surface to this module. Implementation
+The public import surface is organized through package-level routing modules. This keeps the root
+entry point aligned with the source hierarchy without widening the curated endpoint set. Implementation
 modules should continue to import the narrow analysis leaves they actually use.
 -/
