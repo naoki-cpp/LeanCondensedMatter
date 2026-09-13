@@ -23,7 +23,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-bounded-theory) |
 | Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
 | Canonical purity, bounds, pure-state value, and finite-dimensional trace formula | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |
-| Maximal-purity rank-one characterization | A/C | `idea` | [quantum-theory open work](roadmaps/quantum-theory-foundations.md#open-work) |
+| Maximal-purity rank-one characterization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |
 | Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-born-probabilities) |
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
@@ -33,7 +33,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
-| Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Combinatorics/PowerSeriesCumulant.lean` |
+| Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Analysis/PowerSeries/Cumulant.lean` |
 | Compact self-adjoint spectral decomposition | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
@@ -47,7 +47,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Trace-per-unit-volume / thermodynamic-limit transport | C/E | `idea` | [transport roadmap](roadmaps/transport.md#open-targets) |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Finite-mode fermionic thermal, Dyson, and partition-function linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
-| Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean` |
+| Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
 | Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |
 | Bosonic algebraic and two-point thermal layer | D | `proved` for current stated results; general Gibbs/Dyson layer remains `idea` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
