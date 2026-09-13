@@ -40,7 +40,7 @@ noncomputable def targetCenteredZeroTemperatureInterbandBastinPairIntegral
   ∫ offset in -radius..radius,
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-      bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
+      bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
         (bandEnergy band v m px py + offset) broadening
 
 /-- For nonzero broadening, occupation weighting preserves the exact `-2 i` pole factorization. -/
@@ -60,7 +60,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   change
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-        bastinBandPairContribution .x .y (oppositeBand band) band e v m px py
+        bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
           (bandEnergy band v m px py + offset) broadening =
       (-2 * Complex.I) *
         (((zeroTemperatureOccupation fermiEnergy
@@ -69,7 +69,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (offset, broadening)))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
-    .x .y band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
+    0 1 band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring
