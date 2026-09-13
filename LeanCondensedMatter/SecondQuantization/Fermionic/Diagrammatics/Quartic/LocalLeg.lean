@@ -21,9 +21,9 @@ variable {Mode : Type*} [LinearOrder Mode]
 /-! ## Local-leg operator semantics -/
 
 /-- The fermionic operator represented by a local leg of a quartic vertex. -/
-noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  (Common.quarticLocalLeg q l).operator create annihilate
+noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
+    Fin 4 → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  Common.quarticLocalLegOperator create annihilate q
 
 /-- A local leg is an eigenoperator of the free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : QuarticVertexLabel Mode)
