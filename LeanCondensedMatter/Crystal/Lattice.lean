@@ -62,6 +62,12 @@ theorem reciprocalPairing_nondegenerate :
     have hinner : inner ℝ x y = 0 := (mul_eq_zero.mp hxy).resolve_left hinv
     simpa using hinner
 
+/-- The normalized reciprocal pairing is symmetric. -/
+theorem reciprocalPairing_isSymm :
+    (reciprocalPairing (V := V)).IsSymm := by
+  simpa [reciprocalPairing] using
+    (LinearMap.BilinForm.isSymm_iff.mpr (isSymm_inner (E := V))).smul ((2 * Real.pi)⁻¹)
+
 /-- The physical reciprocal lattice of a real-space `ℤ`-submodule. For a Bravais lattice `L`,
 membership means that the inner product with every `R ∈ L` is an integer multiple of `2π`. -/
 noncomputable def reciprocalLattice (L : Submodule ℤ V) : Submodule ℤ V :=
@@ -134,5 +140,52 @@ theorem reciprocalLattice_span_of_basis {ι : Type*} [Finite ι] [DecidableEq ι
       (B := reciprocalPairing (V := V))
       (R := ℤ)
       (reciprocalPairing_nondegenerate (V := V)) b)
+
+private theorem reciprocalLattice_reciprocalLattice_span_of_basis {ι : Type*} [Finite ι]
+    (b : Module.Basis ι ℝ V) :
+    reciprocalLattice (reciprocalLattice (Submodule.span ℤ (Set.range b))) =
+      Submodule.span ℤ (Set.range b) := by
+  simpa [reciprocalLattice] using
+    (LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis
+      (B := reciprocalPairing (V := V))
+      (R := ℤ)
+      (reciprocalPairing_nondegenerate (V := V))
+      (reciprocalPairing_isSymm (V := V)) b)
+
+/-- The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is discrete. -/
+noncomputable instance instDiscreteTopologyReciprocalLattice
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    DiscreteTopology (reciprocalLattice L) := by
+  letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
+  letI : Module.Free ℤ L := ZLattice.module_free ℝ L
+  let b := Module.Free.chooseBasis ℤ L
+  letI : Finite (Module.Free.ChooseBasisIndex ℤ L) := Module.Finite.finite_basis b
+  rw [← b.ofZLatticeBasis_span ℝ, reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)]
+  infer_instance
+
+/-- The physical reciprocal of any full finite-dimensional real `ℤ`-lattice is again full. -/
+noncomputable instance instIsZLatticeReciprocalLattice
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    IsZLattice ℝ (reciprocalLattice L) := by
+  constructor
+  letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
+  letI : Module.Free ℤ L := ZLattice.module_free ℝ L
+  let b := Module.Free.chooseBasis ℤ L
+  letI : Finite (Module.Free.ChooseBasisIndex ℤ L) := Module.Finite.finite_basis b
+  rw [← b.ofZLatticeBasis_span ℝ, reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)]
+  exact ZSpan.span_top (reciprocalBasis (b.ofZLatticeBasis ℝ L))
+
+/-- Taking the physical reciprocal lattice twice recovers any full finite-dimensional real
+`ℤ`-lattice. -/
+@[simp]
+theorem reciprocalLattice_reciprocalLattice
+    [FiniteDimensional ℝ V] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] :
+    reciprocalLattice (reciprocalLattice L) = L := by
+  letI : Module.Finite ℤ L := ZLattice.module_finite ℝ L
+  letI : Module.Free ℤ L := ZLattice.module_free ℝ L
+  let b := Module.Free.chooseBasis ℤ L
+  letI : Finite (Module.Free.ChooseBasisIndex ℤ L) := Module.Finite.finite_basis b
+  simpa only [b.ofZLatticeBasis_span ℝ] using
+    reciprocalLattice_reciprocalLattice_span_of_basis (b.ofZLatticeBasis ℝ L)
 
 end LeanCondensedMatter.Crystal
