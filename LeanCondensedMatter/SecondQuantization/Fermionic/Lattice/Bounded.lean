@@ -12,6 +12,11 @@ arbitrary locally finite lattice. Here the site type is explicitly finite. The c
 identifies that exterior Fock representation with the occupation-subset representation, and the
 finite-Hilbert transport turns every algebraic endomorphism into a bounded operator.
 
+Both representation changes are algebra equivalences: conjugation by the occupation/exterior
+linear equivalence, followed in finite dimensions by the canonical algebraic-to-bounded Hilbert
+transport. Their composition therefore preserves linear combinations, identity, and composition
+without coordinate-level proofs.
+
 The resulting Hilbert space contains all occupation sectors of the finite site cutoff. No fixed
 particle-number sector is required for boundedness because the complete finite-lattice fermionic
 Fock space is finite-dimensional. This layer does not take a thermodynamic limit and does not claim
@@ -44,55 +49,47 @@ noncomputable def latticeOccupationEquiv :
     OccupationFock Site ≃ₗ[ℂ] AlgebraicFock (LatticeState Site) :=
   AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))
 
+/-- Conjugation by `latticeOccupationEquiv`, as the canonical algebra equivalence from exterior-Fock
+endomorphisms to occupation-representation endomorphisms. -/
+noncomputable def occupationOperatorAlgEquiv :
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) ≃ₐ[ℂ]
+      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
+  (latticeOccupationEquiv (Site := Site)).symm.conjAlgEquiv ℂ
+
 /-- Conjugate an exterior-Fock endomorphism into the occupation-subset representation. -/
 noncomputable def occupationOperator
     (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
     OccupationFock Site →ₗ[ℂ] OccupationFock Site :=
-  (latticeOccupationEquiv (Site := Site)).symm.toLinearMap.comp
-    (A.comp (latticeOccupationEquiv (Site := Site)).toLinearMap)
+  occupationOperatorAlgEquiv A
 
 /-- Occupation-representation transport bundled as a complex-linear map. -/
 noncomputable def occupationOperatorLinearMap :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
-      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) where
-  toFun := occupationOperator
-  map_add' := by
-    intro A B
-    apply LinearMap.ext
-    intro Ψ
-    simp [occupationOperator, LinearMap.comp_apply]
-  map_smul' := by
-    intro c A
-    apply LinearMap.ext
-    intro Ψ
-    simp [occupationOperator, LinearMap.comp_apply]
+      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
+  (occupationOperatorAlgEquiv (Site := Site)).toLinearMap
 
-/-- Occupation-representation transport bundled as a complex algebra homomorphism. -/
+/-- Occupation-representation transport viewed as a complex algebra homomorphism. -/
 noncomputable def occupationOperatorAlgHom :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
       (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
-  AlgHom.ofLinearMap
-    (occupationOperatorLinearMap (Site := Site))
-    (by
-      apply LinearMap.ext
-      intro Ψ
-      change occupationOperator
-          (LinearMap.id : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-            AlgebraicFock (LatticeState Site)) Ψ = Ψ
-      simp [occupationOperator])
-    (fun A B => by
-      apply LinearMap.ext
-      intro Ψ
-      change occupationOperator (A.comp B) Ψ =
-        occupationOperator A (occupationOperator B Ψ)
-      simp [occupationOperator, LinearMap.comp_apply])
+  (occupationOperatorAlgEquiv (Site := Site)).toAlgHom
 
 section FiniteLattice
 
 variable [Fintype Site]
+
+/-- The complete representation transport from basis-independent exterior-Fock endomorphisms to
+bounded operators on the finite-lattice Hilbert Fock space. -/
+noncomputable def boundedLatticeOperatorAlgEquiv :
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) ≃ₐ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+  (occupationOperatorAlgEquiv (Site := Site)).trans
+    (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
 
 /-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
 the finite-lattice Hilbert Fock space. -/
@@ -100,54 +97,56 @@ noncomputable def boundedLatticeOperatorLinearMap :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (Common.finiteHilbertOperatorLinearMap (Config := Occupation Site)).comp
-    (occupationOperatorLinearMap (Site := Site))
+  (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap
 
-/-- The complete multiplicative bridge from basis-independent algebraic Fock endomorphisms to
-bounded operators on the finite-lattice Hilbert Fock space. -/
+/-- The multiplicative bridge from basis-independent algebraic Fock endomorphisms to bounded
+operators on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorAlgHom :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (Common.finiteHilbertOperatorAlgHom (Config := Occupation Site)).comp
-    (occupationOperatorAlgHom (Site := Site))
+  (boundedLatticeOperatorAlgEquiv (Site := Site)).toAlgHom
 
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
     (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperatorLinearMap A
+  boundedLatticeOperatorAlgEquiv A
 
 @[simp]
 theorem boundedLatticeOperator_add
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A + B) =
-      boundedLatticeOperator A + boundedLatticeOperator B :=
-  map_add (boundedLatticeOperatorLinearMap (Site := Site)) A B
+      boundedLatticeOperator A + boundedLatticeOperator B := by
+  simpa [boundedLatticeOperator] using
+    map_add (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
 @[simp]
 theorem boundedLatticeOperator_sub
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A - B) =
-      boundedLatticeOperator A - boundedLatticeOperator B :=
-  map_sub (boundedLatticeOperatorLinearMap (Site := Site)) A B
+      boundedLatticeOperator A - boundedLatticeOperator B := by
+  simpa [boundedLatticeOperator] using
+    map_sub (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
 @[simp]
 theorem boundedLatticeOperator_smul (c : ℂ)
     (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
-    boundedLatticeOperator (c • A) = c • boundedLatticeOperator A :=
-  map_smul (boundedLatticeOperatorLinearMap (Site := Site)) c A
+    boundedLatticeOperator (c • A) = c • boundedLatticeOperator A := by
+  simpa [boundedLatticeOperator] using
+    map_smul (boundedLatticeOperatorAlgEquiv (Site := Site)) c A
 
 @[simp]
 theorem boundedLatticeOperator_zero :
     boundedLatticeOperator
         (0 : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-          AlgebraicFock (LatticeState Site)) = 0 :=
-  map_zero (boundedLatticeOperatorLinearMap (Site := Site))
+          AlgebraicFock (LatticeState Site)) = 0 := by
+  simpa [boundedLatticeOperator] using
+    map_zero (boundedLatticeOperatorAlgEquiv (Site := Site))
 
 @[simp]
 theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
@@ -165,9 +164,11 @@ theorem boundedLatticeOperator_comp
       AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A.comp B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
-  change boundedLatticeOperatorAlgHom (A.comp B) =
-    (boundedLatticeOperatorAlgHom A).comp (boundedLatticeOperatorAlgHom B)
-  exact map_mul (boundedLatticeOperatorAlgHom (Site := Site)) A B
+  change
+    boundedLatticeOperatorAlgEquiv (A.comp B) =
+      (boundedLatticeOperatorAlgEquiv A).comp (boundedLatticeOperatorAlgEquiv B)
+  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
+  exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
 
 /-- Bounded transport preserves the ordinary algebraic commutator. -/
 theorem boundedLatticeOperator_linearCommutator
