@@ -23,10 +23,9 @@ The three terms match the four-position pairing weights `1`, `ζ`, `1` from
 **Scope.** All four operators act at the same mode `i`, so no cross-mode independence of the
 weight is needed. The identity follows from CAR (`annihilate_comp_create_self`,
 `annihilate_comp_self`, `create_comp_self`, `annihilate_comp_create_comp_self`,
-`annihilate_comp_create_add_create_comp_annihilate`) together with the diagonal-functional API
-(`Common.normalizedWeightedDiagonal_add`/`_id`) and direct evaluation at the zero operator. The
-middle `(13)(24)` term vanishes by the same-type selection rule represented here by
-`annihilate_comp_self`.
+`annihilate_comp_create_add_create_comp_annihilate`) together with the bundled normalized linear
+functional and its identity normalization. The middle `(13)(24)` term vanishes by the same-type
+selection rule represented here by `annihilate_comp_self`.
 -/
 
 namespace SecondQuantization
@@ -55,13 +54,12 @@ theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mo
           Common.normalizedWeightedDiagonal w ((create i).comp (annihilate i)) := by
   have hzero :
       Common.normalizedWeightedDiagonal w
-        (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) = 0 := by
-    have h := Common.normalizedWeightedDiagonal_smul (0 : ℂ) w
-      (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
-    simpa using h
+        (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) = 0 :=
+    (Common.normalizedWeightedDiagonal w).map_zero
   rw [annihilate_comp_create_comp_self, annihilate_comp_self, create_comp_self,
     hzero, mul_zero, mul_zero, add_zero, ← mul_add,
-    ← Common.normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
+    ← (Common.normalizedWeightedDiagonal w).map_add,
+    annihilate_comp_create_add_create_comp_annihilate,
     Common.normalizedWeightedDiagonal_id w hw, mul_one]
 
 end Fermionic
