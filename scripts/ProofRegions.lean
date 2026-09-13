@@ -62,26 +62,45 @@ private def prettyTactic (stx : TSyntax `tactic) : Command.CommandElabM String :
   let fmt ← Command.liftCoreM <| Lean.PrettyPrinter.ppTactic ⟨Syntax.stripPos stx⟩
   return fmt.pretty
 
-/-- Accept a replacement only after rerunning its concrete tactic against the original goal. -/
+/-- Replay a concrete tactic and return the proof it assigns to the fresh replay goal. -/
+private def replayCandidateProof
+    (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
+    (replacement : TSyntax `tactic) : Command.CommandElabM (Option Expr) := do
+  let termCtx ← Command.liftTermElabM read
+  let termState ← Command.liftTermElabM get
+  node.ctxI.runTactic node.tacI goal fun freshGoal => do
+    let goals ← Lean.Elab.runTactic' (ctx := termCtx) (s := termState) freshGoal replacement
+    if !goals.isEmpty then
+      return none
+    return some (← instantiateMVars (mkMVar freshGoal)).headBeta
+
+/--
+Accept a replacement only after rerunning its concrete tactic against the original goal and
+checking that the resulting proof does not refer to the declaration currently being audited.
+The latter matters because offline InfoTree analysis runs after the whole file is elaborated, so a
+`@[simp]` theorem can otherwise appear to prove itself during replay.
+-/
 private def verifiedCandidate
     (node : Mathlib.TacticAnalysis.TacticNode) (goal : MVarId)
     (mode : String) (replacement : TSyntax `tactic)
     (theoremName? : Option Name := none) (moduleName? : Option Name := none) :
     Command.CommandElabM (Option Candidate) := do
   let savedMessages := (← get).messages
-  let goals ← try
-    node.runTacticCode goal replacement
+  let proof? ← try
+    replayCandidateProof node goal replacement
   catch _ =>
-    pure [goal]
+    pure none
   modify fun state => { state with messages := savedMessages }
-  if goals.isEmpty then
-    return some {
-      mode
-      replacement := ← prettyTactic replacement
-      theoremName?
-      moduleName?
-    }
-  return none
+  let some proof := proof? | return none
+  if let some parentDecl := node.ctxI.parentDecl? then
+    if containsConst parentDecl proof then
+      return none
+  return some {
+    mode
+    replacement := ← prettyTactic replacement
+    theoremName?
+    moduleName?
+  }
 
 /--
 Search imported declarations only. This intentionally excludes declarations from the file currently
