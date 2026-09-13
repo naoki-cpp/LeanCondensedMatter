@@ -31,7 +31,7 @@ noncomputable def traceFock :
     simp only [matrixCoeff_add, Finset.sum_add_distrib]
   map_smul' := by
     intro c A
-    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul]
+    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
 
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
@@ -62,7 +62,7 @@ noncomputable def weightedTrace (w : Config → ℂ) :
     simp only [matrixCoeff_add, mul_add, Finset.sum_add_distrib]
   map_smul' := by
     intro c A
-    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul]
+    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
     exact Finset.sum_congr rfl fun n _ => by ring
 
 /-- **The total weight**, `weightSum(w) := ∑ₙ w(n)`. -/
