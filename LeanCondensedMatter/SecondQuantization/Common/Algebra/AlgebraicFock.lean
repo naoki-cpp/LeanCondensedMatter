@@ -99,19 +99,6 @@ theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
     diagonalCoeff A n = matrixCoeff A n n :=
   rfl
 
-/-- `matrixCoeff` is linear in its operator argument: scaling. -/
-theorem matrixCoeff_smul {Config : Type*} (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
-  simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
-    (matrixCoeffLinear m n).map_smul c A
-
-/-- `matrixCoeff` is linear in its operator argument: addition. -/
-theorem matrixCoeff_add {Config : Type*}
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
-  simpa only [matrixCoeffLinear_apply] using (matrixCoeffLinear m n).map_add A B
-
 /-- **Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the
 `(n, n)` matrix coefficient is exactly `c`. -/
 theorem matrixCoeff_of_smul_basisState {Config : Type*}
