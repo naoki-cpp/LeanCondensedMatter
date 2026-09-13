@@ -1,6 +1,5 @@
 import Lean
 import LeanCondensedMatter
-import Lean.Meta.Tactic.Apply
 
 open Lean Elab Command Meta
 
@@ -31,8 +30,9 @@ structure AuditEntry where
   definitionallyEquivalentTo : Array String
   replacementCandidates : Array ReplacementCandidate
 
-private def sourceProbeLimit : Nat := 12
+private def sourceProbeLimit : Nat := 8
 private def maxReplacementCandidatesPerTarget : Nat := 3
+private def extraSourceBinderLimit : Nat := 8
 
 private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
@@ -171,6 +171,7 @@ private def selectSources
     if source.candidate.name == target.candidate.name ||
         privateDeclarationName? source.candidate.name ||
         extensionTheoremName? source.candidate.name ||
+        source.binderCount > target.binderCount + extraSourceBinderLimit ||
         !compatibleArgumentHeadSketch source.argumentHeads target.argumentHeads then
       continue
     poolSize := poolSize + 1
@@ -184,6 +185,17 @@ private def statementDefEq (left right : Candidate) : MetaM Bool :=
       let leftConst ← mkConstWithFreshMVarLevels left.name
       let rightConst ← mkConstWithFreshMVarLevels right.name
       isDefEq (← inferType leftConst) (← inferType rightConst)
+
+private partial def instantiateSourceBinders
+    (type : Expr) (mvars : Array MVarId := #[]) : MetaM (Expr × Array MVarId) :=
+  match type with
+  | .forallE _ domain body _ => do
+      let argument ← mkFreshExprSyntheticOpaqueMVar domain
+      instantiateSourceBinders (body.instantiate1 argument) (mvars.push argument.mvarId!)
+  | .mdata _ body =>
+      instantiateSourceBinders body mvars
+  | result =>
+      return (result, mvars)
 
 private def tryCloseGoalWithLocal (goal : MVarId) (locals : Array Expr) : MetaM Bool := do
   let target ← goal.getType'
@@ -228,6 +240,14 @@ private def closeReplacementSubgoals
         loop remaining.reverse fuel
   loop goals (goals.length + 1)
 
+private def specializesTarget
+    (source : Candidate) (targetResult : Expr) (locals : Array Expr) : MetaM Bool := do
+  let sourceConst ← mkConstWithFreshMVarLevels source.name
+  let sourceType ← inferType sourceConst
+  let (sourceResult, sourceMVars) ← instantiateSourceBinders sourceType
+  unless ← isDefEq sourceResult targetResult do return false
+  closeReplacementSubgoals sourceMVars.toList locals
+
 private def auditTarget
     (target : PreparedCandidate)
     (sources : Array PreparedCandidate)
@@ -257,16 +277,11 @@ private def auditTarget
           continue
         if replacements.size >= maxReplacementCandidatesPerTarget then
           continue
-        let goal ← mkFreshExprSyntheticOpaqueMVar targetResult
-        try
-          let subgoals ← goal.mvarId!.applyConst source.candidate.name { allowSynthFailures := true }
-          if ← closeReplacementSubgoals subgoals locals then
-            replacements := replacements.push {
-              name := source.candidate.name.toString
-              moduleName := source.candidate.moduleName.toString
-            }
-        catch _ =>
-          pure ()
+        if ← specializesTarget source.candidate targetResult locals then
+          replacements := replacements.push {
+            name := source.candidate.name.toString
+            moduleName := source.candidate.moduleName.toString
+          }
       baseState.restore
       return (
         defEq.qsort fun left right => left < right,
@@ -329,7 +344,8 @@ private def json (entries : Array AuditEntry) : Json :=
 private def markdown (entries : Array AuditEntry) : String := Id.run do
   let mut text := "# Theorem replacement audit\n\n"
   text := text ++
-    "Candidates are advisory. Each replacement is replayed with `apply`; every remaining goal must " ++
+    "Candidates are advisory. Each source theorem is specialized with fresh metavariables; its " ++
+    "conclusion must be definitionally equal to the target, and every remaining source binder must " ++
     "close from an existing target hypothesis or typeclass synthesis. Search is bounded and may " ++
     "omit valid replacements.\n\n"
   for entry in entries do
