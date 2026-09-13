@@ -103,14 +103,19 @@ theorem eq_resummedLadderVertex_of_fixedPoint
   let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
   have hleft : inverse * (1 - ladder) = 1 := by
     simpa [inverse] using hinvertible.val_inv_mul
-  have hleftInverse : Function.LeftInverse inverse (1 - ladder) := by
+  have hleftInverse : Function.LeftInverse inverse
+      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := by
     intro vertex
     change (inverse * (1 - ladder)) vertex = vertex
     rw [hleft]
     simp
+  have hinjectiveShifted : Function.Injective
+      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := hleftInverse.injective
   have hinjective : Function.Injective
       (fun vertex : H →L[ℂ] H => vertex - ladder vertex) := by
-    simpa using hleftInverse.injective
+    intro left right h
+    apply hinjectiveShifted
+    simpa using h
   exact Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply
     (fun vertex => ladder vertex) hinjective hfixed
     (resummedLadderVertex_fixedPoint ladder hinvertible bareVertex)
