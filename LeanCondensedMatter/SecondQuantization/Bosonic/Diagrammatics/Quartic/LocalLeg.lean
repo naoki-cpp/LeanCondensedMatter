@@ -5,7 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 set_option linter.style.header false
 
 /-!
-# Local legs of a quartic bosonic vertex
+# Local legs of a bosonic quartic vertex
 
 The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
 specialized to bosonic ladder operators here. Generic exchange algebra lives in `Common.Algebra`;
