@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Exchange algebra of quartic local legs
 
-The scalar exchange coefficient of two local quartic legs depends only on their kinds, modes, and
-particle statistics. Concrete bosonic and fermionic realizations inherit the same theorem through
-`ExchangeAlgebra`.
+The scalar exchange coefficient of two local quartic legs depends only on their ladder constructors,
+modes, and particle statistics. Concrete bosonic and fermionic realizations inherit the same theorem
+through `ExchangeAlgebra`.
 -/
 
 namespace SecondQuantization
@@ -16,17 +16,42 @@ namespace Common
 
 variable {Mode Config : Type*} [DecidableEq Mode]
 
-/-- Scalar coefficient in the exchange bracket of two local quartic legs. -/
+namespace QuarticLocalLeg
+
+/-- Scalar coefficient in the exchange bracket of two semantic quartic local legs. -/
+def exchangeCoeff (s : Statistics) (a b : QuarticLocalLeg Mode) : ℂ :=
+  match a, b with
+  | .create i, .annihilate j => if i = j then -(s.zetaInt : ℂ) else 0
+  | .annihilate i, .create j => if i = j then 1 else 0
+  | _, _ => 0
+
+/-- Two semantic quartic local legs have a scalar exchange bracket determined only by their ladder
+constructors, modes, and statistics. -/
+theorem exchangeCommutator_operator (s : Statistics) [ExchangeAlgebra s Mode Config]
+    (a b : QuarticLocalLeg Mode) :
+    exchangeCommutator s
+        (a.operator
+          (ExchangeAlgebra.create (s := s) (Config := Config))
+          (ExchangeAlgebra.annihilate (s := s) (Config := Config)))
+        (b.operator
+          (ExchangeAlgebra.create (s := s) (Config := Config))
+          (ExchangeAlgebra.annihilate (s := s) (Config := Config))) =
+      a.exchangeCoeff s b •
+        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+  cases a <;> cases b <;>
+    simp [operator, exchangeCoeff, ExchangeAlgebra.create_create,
+      ExchangeAlgebra.annihilate_annihilate, ExchangeAlgebra.annihilate_create,
+      exchangeCommutator_create_annihilate] <;>
+    split_ifs <;> simp_all
+
+end QuarticLocalLeg
+
+/-- Scalar coefficient in the exchange bracket of two local legs selected from quartic vertices. -/
 def quarticLocalLegExchangeCoeff (s : Statistics) (q q' : QuarticVertexLabel Mode)
     (l l' : Fin 4) : ℂ :=
-  if quarticLocalLegKind l = quarticLocalLegKind l' then 0
-  else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then
-    match quarticLocalLegKind l with
-    | .create => -(s.zetaInt : ℂ)
-    | .annihilate => 1
-  else 0
+  (quarticLocalLeg q l).exchangeCoeff s (quarticLocalLeg q' l')
 
-/-- Two local quartic legs have a scalar exchange bracket determined by statistics, kind, and mode. -/
+/-- Two vertex-selected local quartic legs specialize the semantic local-leg exchange theorem. -/
 theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlgebra s Mode Config]
     (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
     exchangeCommutator s
@@ -38,11 +63,8 @@ theorem exchangeCommutator_quarticLocalLegOperator (s : Statistics) [ExchangeAlg
           (ExchangeAlgebra.annihilate (s := s) (Config := Config)) q' l') =
       quarticLocalLegExchangeCoeff s q q' l l' •
         (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
-  fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, quarticLocalLegExchangeCoeff, quarticLocalLegKind,
-      quarticLocalLegMode, ExchangeAlgebra.create_create, ExchangeAlgebra.annihilate_annihilate,
-      ExchangeAlgebra.annihilate_create, exchangeCommutator_create_annihilate] <;>
-    split_ifs <;> simp_all
+  exact QuarticLocalLeg.exchangeCommutator_operator
+    (Mode := Mode) (Config := Config) s (quarticLocalLeg q l) (quarticLocalLeg q' l')
 
 end Common
 end SecondQuantization
