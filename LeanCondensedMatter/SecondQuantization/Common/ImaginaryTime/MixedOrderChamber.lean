@@ -101,47 +101,32 @@ theorem sameTwoPointOrderChamber_iff_interaction_comparisons
     {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ' σ υ ↔
       (∀ v w, σ v < σ w ↔ υ v < υ w) ∧
-      (∀ v, σ v < τ ↔ υ v < τ) ∧
-      (∀ v, τ < σ v ↔ τ < υ v) ∧
-      (∀ v, σ v < τ' ↔ υ v < τ') ∧
-      (∀ v, τ' < σ v ↔ τ' < υ v) := by
+      (∀ v e, σ v < twoPointExternalTimes τ τ' e ↔
+        υ v < twoPointExternalTimes τ τ' e) ∧
+      (∀ e v, twoPointExternalTimes τ τ' e < σ v ↔
+        twoPointExternalTimes τ τ' e < υ v) := by
   constructor
   · intro h
-    refine ⟨?_, ?_, ?_, ?_, ?_⟩
+    refine ⟨?_, ?_, ?_⟩
     · intro v w
       simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
         h (Sum.inr v) (Sum.inr w)
-    · intro v
+    · intro v e
       simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inr v) (Sum.inl 0)
-    · intro v
+        h (Sum.inr v) (Sum.inl e)
+    · intro e v
       simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inl 0) (Sum.inr v)
-    · intro v
-      simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inr v) (Sum.inl 1)
-    · intro v
-      simpa [SameTwoPointOrderChamber, twoPointTimedEventTime] using
-        h (Sum.inl 1) (Sum.inr v)
-  · rintro ⟨hii, hiτ, hτi, hiτ', hτ'i⟩ a b
+        h (Sum.inl e) (Sum.inr v)
+  · rintro ⟨hii, hie, hei⟩ a b
     cases a with
     | inl a =>
         cases b with
-        | inl b =>
-            fin_cases a <;> fin_cases b <;>
-              simp [twoPointTimedEventTime, twoPointExternalTimes]
-        | inr b =>
-            fin_cases a
-            · simpa [twoPointTimedEventTime] using hτi b
-            · simpa [twoPointTimedEventTime] using hτ'i b
+        | inl b => rfl
+        | inr b => simpa [twoPointTimedEventTime] using hei a b
     | inr a =>
         cases b with
-        | inl b =>
-            fin_cases b
-            · simpa [twoPointTimedEventTime] using hiτ a
-            · simpa [twoPointTimedEventTime] using hiτ' a
-        | inr b =>
-            simpa [twoPointTimedEventTime] using hii a b
+        | inl b => simpa [twoPointTimedEventTime] using hie a b
+        | inr b => simpa [twoPointTimedEventTime] using hii a b
 
 end Common
 end SecondQuantization
