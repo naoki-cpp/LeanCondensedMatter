@@ -64,7 +64,7 @@ noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
   FormalMultilinearSeries.ofScalars ℂ
     (Common.dysonTraceCoeff (fermionEnergy ε) β V)
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem coeff_dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
@@ -72,7 +72,7 @@ theorem coeff_dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
       Common.dysonTraceCoeff (fermionEnergy ε) β V n := by
   simp [dysonPartitionFPowerSeries]
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The formal `PowerSeries` coefficient and analytic formal-multilinear coefficient agree. -/
 theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
     (ε : Mode → ℝ) (β : ℝ)
@@ -82,12 +82,13 @@ theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
   rw [coeff_dysonPartitionFPowerSeries, coeff_dysonPartitionSeries,
     dysonPartitionCoeff_eq_dysonTraceCoeff]
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The Dyson partition Taylor series has infinite radius of convergence. -/
-theorem radius_dysonPartitionFPowerSeries_eq_top
+theorem radius_dysonPartitionFPowerSeries_eq_top [Finite Mode]
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     (dysonPartitionFPowerSeries ε β V).radius = ⊤ := by
+  letI := Fintype.ofFinite Mode
   apply FormalMultilinearSeries.radius_eq_top_of_summable_norm
   intro r
   have hs : Summable (fun n : ℕ =>
