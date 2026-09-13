@@ -1,0 +1,21 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrentAmbiguity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.FiniteDimensional
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.TotalProbability1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.OperatorCurrentBridge1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.ElectromagneticWeak1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Stone1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.RepresentativeContinuity1D
+
+set_option linter.style.header false
+
+/-!
+# Single-particle quantum mechanics
+
+Public routing module for the stable generic current-representation and continuum one-particle
+endpoints exported by `LeanCondensedMatter.QuantumMechanics`. Lower implementation stages remain
+narrow leaf imports.
+-/
