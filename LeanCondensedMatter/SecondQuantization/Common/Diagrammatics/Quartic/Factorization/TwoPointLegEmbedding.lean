@@ -36,6 +36,8 @@ private theorem twoPointTimedEventAtomicLegs_interaction_idxOf
     @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
         (Sum.inr (⟨v, hv⟩, l))
         (twoPointTimedEventAtomicLegs (Sum.inr v)) = l.val := by
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
+  letI : LawfulBEq (OrderedTwoPointLeg n) := inferInstance
   rw [twoPointTimedEventAtomicLegs_interaction]
   have h := List.nodup_ofFn_ofInjective (f := fun k : Fin 4 =>
     (Sum.inr (⟨v, Finset.mem_univ v⟩, k) : OrderedTwoPointLeg n)) (by
