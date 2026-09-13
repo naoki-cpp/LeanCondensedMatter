@@ -110,13 +110,13 @@ noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     change freeGibbsSummable ε β (A + B)
     unfold freeGibbsSummable at hA hB ⊢
     have h := hA.add hB
-    simpa only [LinearMap.comp_add, Common.matrixCoeff_add] using h
+    simpa only [LinearMap.comp_add, ← Common.matrixCoeffLinear_apply, map_add] using h
   smul_mem' := by
     intro c A hA
     change freeGibbsSummable ε β (c • A)
     unfold freeGibbsSummable at hA ⊢
     have h := hA.mul_left c
-    simpa only [LinearMap.comp_smul, Common.matrixCoeff_smul] using h
+    simpa only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
 
 /-- The unnormalized free bosonic partition series, expressed as a summability-aware diagonal trace.
 -/
