@@ -42,12 +42,6 @@ inductive QuarticLocalLeg (Mode : Type*) where
 
 namespace QuarticLocalLeg
 
-/-- The mode carried by a quartic local leg. -/
-@[simp]
-def mode : QuarticLocalLeg Mode → Mode
-  | .create i => i
-  | .annihilate i => i
-
 /-- The signed free-energy shift carried by a quartic local leg. -/
 @[simp]
 def energyShift (ε : Mode → ℝ) : QuarticLocalLeg Mode → ℝ
@@ -68,14 +62,6 @@ end QuarticLocalLeg
 /-- The four semantic local legs of a quartic vertex, in fixed operator-composition order. -/
 abbrev quarticLocalLeg (q : QuarticVertexLabel Mode) : Fin 4 → QuarticLocalLeg Mode :=
   ![.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁]
-
-/-- The mode on which a local quartic leg acts, in fixed operator-composition order. -/
-abbrev quarticLocalLegMode (q : QuarticVertexLabel Mode) (l : Fin 4) : Mode :=
-  (quarticLocalLeg q l).mode
-
-/-- Boolean compatibility view of the fixed quartic local-leg ordering. -/
-abbrev quarticLocalLegIsCreate : Fin 4 → Bool :=
-  ![true, true, false, false]
 
 /-- The free-energy shift of each local quartic leg. -/
 abbrev quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) : ℝ :=
