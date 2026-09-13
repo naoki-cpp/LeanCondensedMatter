@@ -45,24 +45,17 @@ theorem CarriesGradingDegree.comp {Config : Type*} {grading : Config → ℤ}
   intro m n hmn
   by_contra hcharge
   apply hmn
-  rw [matrixCoeff, LinearMap.comp_apply]
-  have hx : B (basisState n) =
-      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
-    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
-    rw [Finsupp.sum]
-    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
-  rw [hx, map_sum]
-  simp only [map_smul]
-  rw [Finsupp.finsetSum_apply]
+  rw [matrixCoeff_comp_support]
   apply Finset.sum_eq_zero
   intro k _
-  simp only [Finsupp.smul_apply, smul_eq_mul]
-  change matrixCoeff B k n * matrixCoeff A m k = 0
-  by_cases hBk : matrixCoeff B k n = 0
-  · rw [hBk, zero_mul]
-  · by_cases hAk : matrixCoeff A m k = 0
-    · rw [hAk, mul_zero]
-    · exact absurd (by rw [hA m k hAk, hB k n hBk]; ring) hcharge
+  by_cases hAk : matrixCoeff A m k = 0
+  · simp [hAk]
+  · by_cases hBk : matrixCoeff B k n = 0
+    · simp [hBk]
+    · exfalso
+      apply hcharge
+      rw [hA m k hAk, hB k n hBk]
+      ring
 
 /-- **The particle-number selection rule.** An operator that carries a nonzero grading degree has
 vanishing diagonal matrix coefficients everywhere: it can never map a basis state back to a

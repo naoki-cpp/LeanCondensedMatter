@@ -84,8 +84,8 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
         ζ * matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n := by
     funext n
     conv_lhs => rw [hcomm']
-    rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
-      matrixCoeff_add, matrixCoeff_smul, matrixCoeff_smul]
+    rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id]
+    simpa only [← matrixCoeffLinear_apply, map_add, map_smul, smul_eq_mul]
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * tsumTrace (diagonalEvolution energy (-β)) +
         ζ * tsumTrace ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) := by

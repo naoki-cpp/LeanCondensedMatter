@@ -88,8 +88,16 @@ theorem operatorIntervalIntegral_add
   have hL : matrixCoeff (operatorIntervalIntegral (fun τ => F τ + G τ) a b) m n =
       ∫ τ in a..b, (matrixCoeff (F τ) m n + matrixCoeff (G τ) m n) := by
     rw [matrixCoeff_operatorIntervalIntegral]
-    exact intervalIntegral.integral_congr fun τ _ => matrixCoeff_add (F τ) (G τ) m n
-  rw [hL, matrixCoeff_add, matrixCoeff_operatorIntervalIntegral,
+    exact intervalIntegral.integral_congr fun τ _ => by
+      simpa only [matrixCoeffLinear_apply] using (matrixCoeffLinear m n).map_add (F τ) (G τ)
+  have hR : matrixCoeff
+      (operatorIntervalIntegral F a b + operatorIntervalIntegral G a b) m n =
+      matrixCoeff (operatorIntervalIntegral F a b) m n +
+        matrixCoeff (operatorIntervalIntegral G a b) m n := by
+    simpa only [matrixCoeffLinear_apply] using
+      (matrixCoeffLinear m n).map_add
+        (operatorIntervalIntegral F a b) (operatorIntervalIntegral G a b)
+  rw [hL, hR, matrixCoeff_operatorIntervalIntegral,
     matrixCoeff_operatorIntervalIntegral, intervalIntegral.integral_add (hF m n) (hG m n)]
 
 theorem operatorIntervalIntegral_smul (c : ℂ)
@@ -100,8 +108,14 @@ theorem operatorIntervalIntegral_smul (c : ℂ)
   have hL : matrixCoeff (operatorIntervalIntegral (fun τ => c • F τ) a b) m n =
       ∫ τ in a..b, c * matrixCoeff (F τ) m n := by
     rw [matrixCoeff_operatorIntervalIntegral]
-    exact intervalIntegral.integral_congr fun τ _ => matrixCoeff_smul c (F τ) m n
-  rw [hL, matrixCoeff_smul, intervalIntegral.integral_const_mul,
+    exact intervalIntegral.integral_congr fun τ _ => by
+      simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
+        (matrixCoeffLinear m n).map_smul c (F τ)
+  have hR : matrixCoeff (c • operatorIntervalIntegral F a b) m n =
+      c * matrixCoeff (operatorIntervalIntegral F a b) m n := by
+    simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
+      (matrixCoeffLinear m n).map_smul c (operatorIntervalIntegral F a b)
+  rw [hL, hR, intervalIntegral.integral_const_mul,
     matrixCoeff_operatorIntervalIntegral]
 
 /-- **Left-composition with a fixed operator commutes with `operatorIntervalIntegral`**:

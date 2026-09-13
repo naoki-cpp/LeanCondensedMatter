@@ -227,6 +227,23 @@ The generic bounded-current response module must not depend on the conventional 
 `1/2 {v,m}`. Conventional-current response is a downstream specialization, so non-conventional
 orbital/nonlocal currents can enter through the same arbitrary-current boundary.
 
+## Algebraic Fock operator coordinates
+
+`SecondQuantization.Common.Algebra.AlgebraicFock` owns the reusable occupation-basis coordinate API.
+For fixed basis labels, `matrixCoeffLinear m n` is the canonical complex-linear functional on
+algebraic-Fock endomorphisms; composition formulas belong there rather than in the trace layer.
+Basis-diagonal operators are represented by the algebra homomorphism
+`diagonalOperator : (Config → ℂ) →ₐ[ℂ] End`.
+
+Imaginary-time diagonal evolution specializes that algebra representation. Its invertible form is
+`diagonalEvolutionEquiv`, and operator Heisenberg evolution is the conjugation algebra equivalence
+`(diagonalEvolutionEquiv energy τ).conjAlgEquiv ℂ`. Consumers should use the bundled `map_*`
+interface rather than operation-specific forwarding lemmas.
+
+This algebraic coordinate layer is dimension-independent. Ordinary `LinearMap.trace` is only used
+for finite configuration types; possibly infinite occupation bases use `tsumTrace` together with
+explicit summability hypotheses.
+
 ## Bosonic boundary
 
 Bosonic algebraic and free thermal results may reuse Common infrastructure, but finite fermionic trace

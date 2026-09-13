@@ -46,9 +46,9 @@ theorem heisenbergEvolve_quarticVertexOperator
     heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) =
       Complex.exp ((τ : ℂ) * (quarticVertexEnergyShift ε q : ℂ)) •
         quarticVertexOperator create annihilate q := by
-  simp only [quarticVertexOperator, heisenbergEvolve_comp]
+  simp only [quarticVertexOperator, ← Module.End.mul_eq_comp, map_mul]
   rw [hcreate, hcreate, hannihilate, hannihilate]
-  simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
+  simp only [Module.End.mul_eq_comp, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
   congr 1
   rw [← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
   congr 1
@@ -63,9 +63,7 @@ theorem heisenbergEvolve_quarticInteractionOn
     (g : QuarticVertexLabel Mode → ℂ) :
     heisenbergEvolve energy τ (quarticInteractionOn support create annihilate g) =
       ∑ q ∈ support, g q • heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) := by
-  rw [quarticInteractionOn, heisenbergEvolve_sum]
-  refine Finset.sum_congr rfl fun q _ => ?_
-  rw [heisenbergEvolve_smul]
+  simp only [quarticInteractionOn, map_sum, map_smul]
 
 /-- Diagonal Heisenberg evolution distributes over the all-label finite-mode interaction. -/
 theorem heisenbergEvolve_quarticInteraction [Fintype Mode]

@@ -61,14 +61,11 @@ theorem freeEigenvalue_removeOccupation_of_pos {ε : Mode → ℝ} {i : Mode} {n
 /-- The free bosonic Hamiltonian, diagonal in the occupation basis. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode)
-    fun n => (freeEigenvalue ε n : ℂ) • basisState n
+  Common.diagonalOperator fun n : Occupation Mode => (freeEigenvalue ε n : ℂ)
 
 theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
-    freeHamiltonian ε (basisState n) = (freeEigenvalue ε n : ℂ) • basisState n := by
-  change Finsupp.lift _ ℂ _ (fun n => (freeEigenvalue ε n : ℂ) • basisState n)
-    (Finsupp.single n 1) = (freeEigenvalue ε n : ℂ) • basisState n
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+    freeHamiltonian ε (basisState n) = (freeEigenvalue ε n : ℂ) • basisState n :=
+  Common.diagonalOperator_basisState _ n
 
 /-- The diagonal algebraic realization of `e^{τH₀}`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
@@ -96,17 +93,9 @@ theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
 /-- The free Hamiltonian is fixed by its own imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (freeHamiltonian ε) (basisState n) =
-    freeHamiltonian ε (basisState n)
-  have hscalar : Complex.exp ((-τ * freeEigenvalue ε n : ℝ) : ℂ) *
-      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) = 1 := by
-    rw [← Complex.exp_add, ← Complex.ofReal_add]
-    norm_num
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, freeHamiltonian_basisState, smul_smul,
-    map_smul, imaginaryTimeEvolveFree_basisState, smul_smul, mul_right_comm, hscalar, one_mul]
+  simpa only [imaginaryTimeEvolve, freeHamiltonian] using
+    Common.heisenbergEvolve_diagonalOperator (freeEigenvalue ε) τ
+      (fun n : Occupation Mode => (freeEigenvalue ε n : ℂ))
 
 /-- The annihilation operator evolves with energy shift `-ε i`. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :

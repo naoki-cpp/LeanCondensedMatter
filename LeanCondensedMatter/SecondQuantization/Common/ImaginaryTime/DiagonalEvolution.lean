@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
+import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -35,25 +36,17 @@ open scoped Classical
 
 variable {Config : Type*}
 
-/-- **`e^{τH₀}`, on a basis state**, defined directly from `energy c` rather than as an operator
-exponential: `exp(τ · energy c) • |c⟩`. -/
-noncomputable def diagonalEvolutionBasis (energy : Config → ℝ) (τ : ℝ) (c : Config) :
-    AlgebraicFock Config :=
-  Complex.exp ((τ * energy c : ℝ) : ℂ) • basisState c
-
 /-- **The algebraic, basis-diagonal realization of `e^{τH₀}`** for a free Hamiltonian diagonal in
-the `basisState` eigenbasis with eigenvalue `energy`, extended linearly from
-`diagonalEvolutionBasis`. -/
+the `basisState` eigenbasis with eigenvalue `energy`. It is the specialization of the canonical
+`diagonalOperator` representation to eigenvalues `c ↦ exp (τ * energy c)`. -/
 noncomputable def diagonalEvolution (energy : Config → ℝ) (τ : ℝ) :
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  Finsupp.lift (AlgebraicFock Config) ℂ Config (diagonalEvolutionBasis energy τ)
+  diagonalOperator fun c => Complex.exp ((τ * energy c : ℝ) : ℂ)
 
 theorem diagonalEvolution_basisState (energy : Config → ℝ) (τ : ℝ) (c : Config) :
     diagonalEvolution energy τ (basisState c) =
-      Complex.exp ((τ * energy c : ℝ) : ℂ) • basisState c := by
-  change Finsupp.lift _ ℂ _ (diagonalEvolutionBasis energy τ) (Finsupp.single c 1) =
-    diagonalEvolutionBasis energy τ c
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index, diagonalEvolutionBasis]
+      Complex.exp ((τ * energy c : ℝ) : ℂ) • basisState c :=
+  diagonalOperator_basisState _ c
 
 /-- **`e^{0·H₀} = id`.** -/
 @[simp]
@@ -67,13 +60,13 @@ theorem diagonalEvolution_zero (energy : Config → ℝ) :
 theorem diagonalEvolution_add (energy : Config → ℝ) (τ τ' : ℝ) :
     (diagonalEvolution energy τ).comp (diagonalEvolution energy τ') =
       diagonalEvolution energy (τ + τ') := by
-  apply linearMap_ext_basisState
-  intro c
-  rw [LinearMap.comp_apply, diagonalEvolution_basisState, map_smul,
-    diagonalEvolution_basisState, diagonalEvolution_basisState, smul_smul,
-    ← Complex.exp_add, ← Complex.ofReal_add]
+  rw [diagonalEvolution, diagonalEvolution, diagonalEvolution, diagonalOperator_comp]
+  congr 1
+  funext c
+  rw [← Complex.exp_add]
   congr 2
-  ring_nf
+  push_cast
+  ring
 
 /-- **`e^{τH₀}` and `e^{-τH₀}` are mutually inverse.** -/
 @[simp]
@@ -88,55 +81,68 @@ theorem diagonalEvolution_neg_comp (energy : Config → ℝ) (τ : ℝ) :
   rw [diagonalEvolution_add]
   simp
 
+/-- Diagonal evolution as a linear automorphism, with inverse parameter `-τ`. -/
+noncomputable def diagonalEvolutionEquiv (energy : Config → ℝ) (τ : ℝ) :
+    AlgebraicFock Config ≃ₗ[ℂ] AlgebraicFock Config where
+  __ := diagonalEvolution energy τ
+  invFun := diagonalEvolution energy (-τ)
+  left_inv x := by
+    change ((diagonalEvolution energy (-τ)).comp (diagonalEvolution energy τ)) x = x
+    rw [diagonalEvolution_neg_comp]
+    rfl
+  right_inv x := by
+    change ((diagonalEvolution energy τ).comp (diagonalEvolution energy (-τ))) x = x
+    rw [diagonalEvolution_comp_neg]
+    rfl
+
+@[simp]
+theorem diagonalEvolutionEquiv_apply (energy : Config → ℝ) (τ : ℝ)
+    (x : AlgebraicFock Config) :
+    diagonalEvolutionEquiv energy τ x = diagonalEvolution energy τ x :=
+  rfl
+
+@[simp]
+theorem diagonalEvolutionEquiv_symm_apply (energy : Config → ℝ) (τ : ℝ)
+    (x : AlgebraicFock Config) :
+    (diagonalEvolutionEquiv energy τ).symm x = diagonalEvolution energy (-τ) x :=
+  rfl
+
+private theorem diagonalEvolutionEquiv_trans (energy : Config → ℝ) (s t : ℝ) :
+    (diagonalEvolutionEquiv energy s).trans (diagonalEvolutionEquiv energy t) =
+      diagonalEvolutionEquiv energy (s + t) := by
+  apply LinearEquiv.ext
+  intro x
+  change ((diagonalEvolution energy t).comp (diagonalEvolution energy s)) x =
+    diagonalEvolution energy (s + t) x
+  rw [diagonalEvolution_add, add_comm t s]
+
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
-/-- **The algebraic imaginary-time (Heisenberg-type) evolution of an operator `A` under the
-diagonal free Hamiltonian**: `A(τ) := e^{τH₀} A e^{-τH₀}`. This is the conjugation operation
-available on `AlgebraicFock`; it is not a completed-Hilbert-space operator construction. -/
-noncomputable def heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
+/-- **The algebraic imaginary-time (Heisenberg-type) evolution of operators under the diagonal
+free Hamiltonian**, bundled as Mathlib's canonical conjugation algebra equivalence. Applying it to
+`A` gives `A(τ) := e^{τH₀} A e^{-τH₀}`. This is an algebraic-Fock construction, not a
+completed-Hilbert-space operator exponential. -/
+noncomputable def heisenbergEvolve (energy : Config → ℝ) (τ : ℝ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) ≃ₐ[ℂ]
+      (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :=
+  (diagonalEvolutionEquiv energy τ).conjAlgEquiv ℂ
+
+/-- Unbundled composition formula for diagonal Heisenberg conjugation. -/
+theorem heisenbergEvolve_eq_comp (energy : Config → ℝ) (τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  (diagonalEvolution energy τ).comp (A.comp (diagonalEvolution energy (-τ)))
+    heisenbergEvolve energy τ A =
+      (diagonalEvolution energy τ).comp (A.comp (diagonalEvolution energy (-τ))) := by
+  apply LinearMap.ext
+  intro x
+  rfl
 
 /-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
 @[simp]
 theorem heisenbergEvolve_zero (energy : Config → ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy 0 A = A := by
-  simp [heisenbergEvolve]
-
-/-- **`heisenbergEvolve` distributes over composition**: `(AB)(τ) = A(τ) B(τ)`, since the
-`e^{-τH₀} e^{τH₀}` inserted between `A` and `B` cancels. Purely algebraic — no `Fintype Config`
-needed, since it only rearranges `LinearMap.comp` associativity and cancels
-`diagonalEvolution_neg_comp`. -/
-theorem heisenbergEvolve_comp (energy : Config → ℝ) (τ : ℝ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (A.comp B) =
-      (heisenbergEvolve energy τ A).comp (heisenbergEvolve energy τ B) := by
-  simp only [heisenbergEvolve]
-  have hcancel : (diagonalEvolution energy (-τ)).comp ((diagonalEvolution energy τ).comp
-      (B.comp (diagonalEvolution energy (-τ)))) = B.comp (diagonalEvolution energy (-τ)) := by
-    rw [← LinearMap.comp_assoc (B.comp (diagonalEvolution energy (-τ))) (diagonalEvolution energy τ)
-      (diagonalEvolution energy (-τ)), diagonalEvolution_neg_comp, LinearMap.id_comp]
-  rw [LinearMap.comp_assoc, LinearMap.comp_assoc, LinearMap.comp_assoc, hcancel]
-
-/-- **`heisenbergEvolve` commutes with scalar multiplication.** Purely algebraic. -/
-theorem heisenbergEvolve_smul (energy : Config → ℝ) (τ : ℝ) (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (c • A) = c • heisenbergEvolve energy τ A := by
-  simp only [heisenbergEvolve, LinearMap.smul_comp, LinearMap.comp_smul]
-
-/-- **`heisenbergEvolve` distributes over finite sums.** Purely algebraic, by induction on the
-`Finset` using `LinearMap.comp_add`/`LinearMap.add_comp`. -/
-theorem heisenbergEvolve_sum {ι : Type*} (energy : Config → ℝ) (τ : ℝ) (s : Finset ι)
-    (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (∑ i ∈ s, f i) = ∑ i ∈ s, heisenbergEvolve energy τ (f i) := by
-  classical
-  induction s using Finset.induction with
-  | empty => simp [heisenbergEvolve]
-  | insert x s hx ih =>
-    rw [Finset.sum_insert hx, Finset.sum_insert hx, ← ih]
-    simp only [heisenbergEvolve, LinearMap.add_comp, LinearMap.comp_add]
+  rw [heisenbergEvolve_eq_comp]
+  simp
 
 /-! ## Matrix coefficients -/
 
@@ -147,66 +153,52 @@ provides the basis-diagonal Gibbs-weight coefficients. -/
 theorem matrixCoeff_diagonalEvolution_eq_ite (energy : Config → ℝ) (τ : ℝ) (m n : Config) :
     matrixCoeff (diagonalEvolution energy τ) m n =
       if m = n then Complex.exp ((τ * energy n : ℝ) : ℂ) else 0 := by
-  rw [matrixCoeff, diagonalEvolution_basisState]
-  by_cases h : m = n
-  · simp only [if_pos h]
-    rw [← h, smul_basisState_apply_self]
-  · simp only [if_neg h]
-    exact smul_basisState_apply_of_ne _ (Ne.symm h)
+  simpa only [diagonalEvolution] using
+    matrixCoeff_diagonalOperator (fun c => Complex.exp ((τ * energy c : ℝ) : ℂ)) m n
 
 /-- **`heisenbergEvolve`'s matrix coefficients**: `A(τ)`'s `(m, n)` entry is `A`'s own `(m, n)`
 entry, rescaled by `exp(τ(energy m - energy n))` — the interaction-picture matrix-coefficient
-formula, for an arbitrary configuration type. The proof evaluates the two diagonal evolutions
-directly on a finitely supported algebraic-Fock vector, rather than summing over all configurations.
--/
+formula, for an arbitrary configuration type. -/
 theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (heisenbergEvolve energy τ A) m n =
       Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff A m n := by
-  classical
-  have hdiag (t : ℝ) (x : AlgebraicFock Config) (c : Config) :
-      diagonalEvolution energy t x c =
-        Complex.exp ((t * energy c : ℝ) : ℂ) * x c := by
-    let eval : AlgebraicFock Config →ₗ[ℂ] ℂ := Finsupp.lapply c
-    have hmap : eval.comp (diagonalEvolution energy t) =
-        Complex.exp ((t * energy c : ℝ) : ℂ) • eval := by
-      apply Finsupp.lhom_ext
-      intro a b
-      have hb : (Finsupp.single a b : AlgebraicFock Config) = b • basisState a :=
-        (Finsupp.smul_single_one a b).symm
-      rw [hb, LinearMap.comp_apply, map_smul, diagonalEvolution_basisState, map_smul,
-        LinearMap.smul_apply]
-      by_cases h : a = c
-      · subst a
-        simp [eval, basisState, mul_comm]
-      · simp [eval, basisState, h]
-    have hx := congrArg (fun L => L x) hmap
-    simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
-      smul_eq_mul] using hx
-  rw [heisenbergEvolve, matrixCoeff, LinearMap.comp_apply,
-    LinearMap.comp_apply, diagonalEvolution_basisState, map_smul, map_smul,
-    Finsupp.smul_apply, hdiag]
-  simp only [smul_eq_mul]
+  rw [heisenbergEvolve_eq_comp, matrixCoeff, LinearMap.comp_apply,
+    LinearMap.comp_apply, diagonalEvolution_basisState, map_smul, diagonalEvolution,
+    diagonalOperator_apply]
+  simp only [Finsupp.smul_apply, smul_eq_mul]
   rw [← mul_assoc, ← Complex.exp_add]
   congr 2
   push_cast
   ring
 
-/-- **`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`, i.e.
-`heisenbergEvolve energy t (heisenbergEvolve energy s A) = heisenbergEvolve energy (s + t) A`.
-The coefficient formula above is valid for arbitrary `Config`, so no global finiteness assumption
-is needed. -/
+/-- **`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`. -/
 theorem heisenbergEvolve_heisenbergEvolve (energy : Config → ℝ) (s t : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy t (heisenbergEvolve energy s A) =
       heisenbergEvolve energy (s + t) A := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_heisenbergEvolve, matrixCoeff_heisenbergEvolve,
-    ← mul_assoc, ← Complex.exp_add]
-  congr 2
-  push_cast
-  ring
+  change
+    (diagonalEvolutionEquiv energy t).conjAlgEquiv ℂ
+        ((diagonalEvolutionEquiv energy s).conjAlgEquiv ℂ A) =
+      (diagonalEvolutionEquiv energy (s + t)).conjAlgEquiv ℂ A
+  rw [← diagonalEvolutionEquiv_trans energy s t]
+  apply LinearMap.ext
+  intro x
+  rfl
+
+/-- Every basis-diagonal operator is fixed by diagonal Heisenberg evolution. -/
+theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (a : Config → ℂ) :
+    heisenbergEvolve energy τ (diagonalOperator a) = diagonalOperator a := by
+  rw [heisenbergEvolve_eq_comp]
+  have hcomm :
+      (diagonalEvolution energy τ).comp (diagonalOperator a) =
+        (diagonalOperator a).comp (diagonalEvolution energy τ) := by
+    rw [diagonalEvolution, diagonalOperator_comp, diagonalOperator_comp]
+    congr 1
+    funext c
+    ring
+  rw [← LinearMap.comp_assoc, hcomm, LinearMap.comp_assoc,
+    diagonalEvolution_comp_neg, LinearMap.comp_id]
 
 /-! ## The KMS-type commutation relation, for an operator with a known eigenvalue shift -/
 
@@ -229,8 +221,8 @@ theorem diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
     (diagonalEvolution energy τ).comp C =
       Complex.exp ((q * τ : ℝ) : ℂ) • (C.comp (diagonalEvolution energy τ)) := by
   have h := congrArg (fun f => f.comp (diagonalEvolution energy τ)) hC
-  rw [heisenbergEvolve, LinearMap.comp_assoc, LinearMap.comp_assoc, diagonalEvolution_neg_comp,
-    LinearMap.comp_id, LinearMap.smul_comp] at h
+  rw [heisenbergEvolve_eq_comp, LinearMap.comp_assoc, LinearMap.comp_assoc,
+    diagonalEvolution_neg_comp, LinearMap.comp_id, LinearMap.smul_comp] at h
   exact h
 
 end Common

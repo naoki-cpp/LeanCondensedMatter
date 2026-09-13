@@ -47,7 +47,7 @@ theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config → �
       apply matrixCoeff_ext
       intro m n'
       rw [matrixCoeff_operatorIntervalIntegral]
-      simp only [matrixCoeff_smul]
+      simp only [← matrixCoeffLinear_apply, map_smul, smul_eq_mul]
       rw [intervalIntegral.integral_mul_const]
     rw [hval]
     have hpow : (∫ σ in (0 : ℝ)..τ, (-σ) ^ k) = -(-τ) ^ (k + 1) / (k + 1) := by

@@ -107,7 +107,8 @@ theorem tsumTrace_diagonalEvolution_comp_peel
         ζ ^ l.length * matrixCoeff ((diagonalEvolution energy (-β)).comp
           ((prodComp (l.map Prod.fst)).comp C1)) n n := by
     funext n
-    rw [hDcomm, matrixCoeff_add, matrixCoeff_smul]
+    rw [hDcomm]
+    simpa only [← matrixCoeffLinear_apply, map_add, map_smul, smul_eq_mul]
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp
       (C1.comp (prodComp (l.map Prod.fst)))) =
       tsumTrace ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) +

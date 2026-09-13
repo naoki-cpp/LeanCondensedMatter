@@ -55,13 +55,13 @@ variable [Fintype Config]
 `Tr_w A := Σₙ w(n) ⟨n| A |n⟩`. -/
 noncomputable def weightedTrace (w : Config → ℂ) :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
-  toFun := fun A => ∑ n : Config, w n * matrixCoeff A n n
+  toFun := fun A => ∑ n : Config, w n * matrixCoeffLinear n n A
   map_add' := by
     intro A B
-    simp only [matrixCoeff_add, mul_add, Finset.sum_add_distrib]
+    simp only [map_add, mul_add, Finset.sum_add_distrib]
   map_smul' := by
     intro c A
-    simp only [matrixCoeff_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
+    simp only [map_smul, Finset.mul_sum, smul_eq_mul, RingHom.id_apply]
     exact Finset.sum_congr rfl fun n _ => by ring
 
 /-- Coordinate formula for the weighted trace. -/

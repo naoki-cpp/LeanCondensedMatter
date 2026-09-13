@@ -24,20 +24,20 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [Fintype Mode] in
 /-- **A single vertex's evolved operator, flattened into a `Common.prodComp` of its four
-individually-evolved atomic legs**: unfolds `quarticVertexOperator`'s own definition
-(`c₁† c₂† a₂ a₁`) via `Common.heisenbergEvolve_comp`, three times, matching
-`quarticLocalLegOperator`'s `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁`
-convention exactly. -/
+individually-evolved atomic legs**: uses the multiplicativity of the canonical Heisenberg algebra
+equivalence on `c₁† c₂† a₂ a₁`, matching `quarticLocalLegOperator`'s
+`0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention exactly. -/
 theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
     (q : QuarticVertexLabel Mode) (τ : ℝ) :
     interactionPicture ε (quarticVertexOperator q) τ =
       Common.prodComp
         (List.ofFn (fun l : Fin 4 => imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l))) := by
-  change Common.heisenbergEvolve (fermionEnergy ε) τ (quarticVertexOperator q) = _
-  rw [quarticVertexOperator, Common.heisenbergEvolve_comp, Common.heisenbergEvolve_comp,
-    Common.heisenbergEvolve_comp]
-  simp [Common.prodComp, quarticLocalLegOperator, Common.quarticLocalLegOperator,
-    List.ofFn_succ, imaginaryTimeEvolve]
+  change Common.heisenbergEvolve (fermionEnergy ε) τ
+      ((create q.create₁).comp
+        ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))) = _
+  simp only [← Module.End.mul_eq_comp, map_mul]
+  simp [Module.End.mul_eq_comp, Common.prodComp, quarticLocalLegOperator,
+    Common.quarticLocalLegOperator, List.ofFn_succ, imaginaryTimeEvolve]
 
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex

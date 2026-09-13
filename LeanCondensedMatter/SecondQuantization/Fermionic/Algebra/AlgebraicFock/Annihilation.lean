@@ -28,24 +28,11 @@ section Dual
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Algebraic annihilation by a linear functional, implemented as left contraction. -/
-noncomputable def annihilateDual (d : Module.Dual ℂ 𝓗₁) :
-    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
-  CliffordAlgebra.contractLeft d
-
-/-- Algebraic annihilation is linear in the dual vector. -/
-theorem annihilateDual_add (d e : Module.Dual ℂ 𝓗₁) :
-    annihilateDual 𝓗₁ (d + e) = annihilateDual 𝓗₁ d + annihilateDual 𝓗₁ e := by
-  simpa only [annihilateDual] using
-    (CliffordAlgebra.contractLeft
-      (Q := (0 : QuadraticForm ℂ 𝓗₁))).map_add d e
-
-/-- Algebraic annihilation is homogeneous in the dual vector. -/
-theorem annihilateDual_smul (c : ℂ) (d : Module.Dual ℂ 𝓗₁) :
-    annihilateDual 𝓗₁ (c • d) = c • annihilateDual 𝓗₁ d := by
-  simpa only [annihilateDual] using
-    (CliffordAlgebra.contractLeft
-      (Q := (0 : QuadraticForm ℂ 𝓗₁))).map_smul c d
+/-- Algebraic annihilation by a linear functional, bundled as the canonical linear map from dual
+vectors to left-contraction endomorphisms. -/
+noncomputable def annihilateDual :
+    Module.Dual ℂ 𝓗₁ →ₗ[ℂ] (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
+  CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm ℂ 𝓗₁))
 
 /-- A dual contraction kills the vacuum. -/
 @[simp]
@@ -144,14 +131,14 @@ theorem annihilate_add (f g : 𝓗₁) :
     annihilate 𝓗₁ (f + g) = annihilate 𝓗₁ f + annihilate 𝓗₁ g := by
   change annihilateDual 𝓗₁ (innerDual 𝓗₁ (f + g)) =
     annihilateDual 𝓗₁ (innerDual 𝓗₁ f) + annihilateDual 𝓗₁ (innerDual 𝓗₁ g)
-  rw [innerDual_add, annihilateDual_add]
+  rw [innerDual_add, map_add]
 
 /-- Smeared annihilation is conjugate-linear in the smearing vector. -/
 theorem annihilate_smul (c : ℂ) (f : 𝓗₁) :
     annihilate 𝓗₁ (c • f) = star c • annihilate 𝓗₁ f := by
   change annihilateDual 𝓗₁ (innerDual 𝓗₁ (c • f)) =
     star c • annihilateDual 𝓗₁ (innerDual 𝓗₁ f)
-  rw [innerDual_smul, annihilateDual_smul]
+  rw [innerDual_smul, map_smul]
 
 /-- A smeared annihilation field kills the vacuum. -/
 @[simp]

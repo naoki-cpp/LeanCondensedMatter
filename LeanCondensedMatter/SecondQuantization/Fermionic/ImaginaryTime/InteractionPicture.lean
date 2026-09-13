@@ -30,18 +30,9 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- `interactionHamiltonian` is time-independent under free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ)
     (τ : ℝ) : imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) = interactionHamiltonian Vint := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) (basisState n) =
-    interactionHamiltonian Vint (basisState n)
-  rw [imaginaryTimeEvolve_apply, imaginaryTimeEvolveFree_basisState, map_smul,
-    interactionHamiltonian_basisState, smul_smul, map_smul, imaginaryTimeEvolveFree_basisState,
-    smul_smul]
-  congr 1
-  have hx : (↑(-τ) : ℂ) * ∑ i ∈ n, (ε i : ℂ) = -((τ : ℂ) * ∑ i ∈ n, (ε i : ℂ)) := by
-    push_cast
-    ring
-  rw [hx, mul_right_comm, Complex.exp_neg, inv_mul_cancel₀ (Complex.exp_ne_zero _), one_mul]
+  simpa only [imaginaryTimeEvolve, interactionHamiltonian] using
+    Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
+      (fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (Vint i j : ℂ)))
 
 end Fermionic
 end SecondQuantization
