@@ -16,6 +16,11 @@ with the linear contraction map `annihilateDual`. Consequently, linearity of cre
 conjugate-linearity of annihilation come from the bundled maps rather than operation-specific
 forwarding theorems.
 
+Basis-independent algebraic rank-one one-particle maps use Mathlib's `LinearMap.smulRight`: the map
+`g ↦ d(g) • f` is represented directly as `d.smulRight f`. For finitely supported lattice states,
+coordinate duals use `Finsupp.lapply` directly; the lattice layer only owns the semantic bridge from
+these canonical rank-one maps to lattice `matrixUnit` operators.
+
 A chosen ordered mode basis gives the occupation representation `Fermionic.OccupationFock Mode`, with
 an explicit linear equivalence to `AlgebraicFock` that intertwines the ladder operators.
 
