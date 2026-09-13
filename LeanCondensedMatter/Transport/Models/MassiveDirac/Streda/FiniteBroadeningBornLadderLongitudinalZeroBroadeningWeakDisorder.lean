@@ -150,7 +150,8 @@ theorem tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalR
             (endpoint .retarded disorderStrength + endpoint .advanced disorderStrength) := by
     rfl
   rw [hboundary]
-  simp only [finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary]
+  simp only [inPlaneLadderAction_apply_x,
+    finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary]
   push_cast
   dsimp [q, measure] at hmeasure ⊢
   push_cast
