@@ -37,7 +37,7 @@ noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
-    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
