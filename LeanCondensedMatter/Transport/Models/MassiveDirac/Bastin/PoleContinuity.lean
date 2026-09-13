@@ -38,7 +38,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   simp [retardedSpectralParameter, advancedSpectralParameter, spectralParameterOfRegulator,
     projectorResolventCoefficient_oppositeBand_at_bandEnergy,
-    bastinInterbandBlockDifference]
+    bastinInterbandBlockDifference, mul_sub]
 
 /-- If the real shifted interband gap is nonzero at an offset, then the target-centered regular
 spectator/current factor is jointly continuous there for arbitrary real broadening. -/
