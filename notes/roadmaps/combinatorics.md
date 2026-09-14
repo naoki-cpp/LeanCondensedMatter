@@ -1,62 +1,49 @@
-# Combinatorics (Track B)
+# Combinatorics roadmap
 
-Track B contains physics-independent finite combinatorics used by the thermal and diagrammatic layers.
+This roadmap tracks reusable combinatorial infrastructure shared by linked-cluster, diagrammatic,
+and finite-index developments.
 
-## Partition-lattice Möbius theory
+## Set partitions and cumulants
 
 Status: `proved`.
 
-`Combinatorics/PartitionLattice.lean` and the set-partition modules provide the refinement structure
-needed for incidence-algebra arguments. The key results include:
+The project has finite set partitions, Möbius inversion on the partition lattice, cumulants,
+connected-class decompositions, and the moment--cumulant bridge needed by linked-cluster arguments.
+These live under `Combinatorics` and remain independent of Fock-space or statistics-specific
+semantics.
 
-- refinement intervals represented as products of partition lattices on the blocks;
-- the corresponding order isomorphism;
-- factorization of the Möbius function over blocks;
-- the explicit partition-lattice formula
+## Pairings and crossing parity
 
-```text
-μ(⊥, ⊤) = (-1)^(n-1) (n-1)!
-```
+Status: `proved`.
 
-for a nonempty `n`-element set, together with interval/blockwise versions.
+Perfect pairings, endpoint access, crossing predicates/counts, crossing parity, pair decompositions,
+and component crossing decompositions live under `Combinatorics/PerfectPairing`. Diagrammatic
+layers transport their physical pair data into these general APIs rather than restating crossing
+algebra downstream.
 
-General incidence-algebra support such as invariance under order isomorphism, down-set compatibility,
-and finite dependent-product factorization lives in `Combinatorics/IncidenceAlgebraMu.lean`.
+## Finite index transformations
 
-## Moment--cumulant inversion
+Status: `proved`.
 
-Status: `proved` in `Combinatorics/MomentCumulant.lean`.
+`Combinatorics/FiniteIndex` owns statistics-independent finite-index transformations that recur in
+operator and diagrammatic proofs, including deletion/reinsertion positions and fixed-width block
+coordinates. Downstream layers should expose only the model-specific meaning of an index and reuse
+these transformations for arithmetic and ordering facts.
 
-For a finite set `S`,
+## Exchange signs and permutations
 
-```text
-momentFromCumulant κ S
-  = ∑ π : Finpartition S, ∏ B ∈ π.parts, κ B,
-```
+Status: `proved`.
 
-and
+Permutation signs and exchange-sign bookkeeping are factored into general combinatorics before
+fermionic or bosonic specializations. This keeps sign algebra separate from operator semantics.
 
-```text
-cumulantFromMoment m S
-  = ∑ π : Finpartition S, μ(π, ⊤) ∏ B ∈ π.parts, m B.
-```
+## Finite product decomposition
 
-The two constructions are mutual inverses on nonempty sets. The nonempty hypothesis is genuine:
-`momentFromCumulant κ ∅ = 1` independently of `κ ∅`.
+Status: `proved`.
 
-The proof uses the refinement-product decomposition to factor partition products and applies Möbius
-inversion on the partition lattice.
-
-## Cumulants and independence
-
-Status: `proved` in `Combinatorics/CumulantFactorization.lean`.
-
-`Finpartition.IsIndependentAcross` expresses factorization of a moment function across two disjoint
-regions. Under that hypothesis, cumulants vanish on finite sets that straddle both regions; in
-particular the cumulant of their nontrivial union is zero.
-
-This is the reusable finite combinatorial independence theorem. Physics-specific notions of state or
-operator independence belong downstream.
+General finite-product identities and reindexing facts belong upstream of physical amplitudes.
+Diagrammatic factorization proofs should reduce to these generic results once the relevant component
+or slot equivalence has been constructed.
 
 ## Formal-log bridge
 
@@ -69,11 +56,13 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 ## Ownership boundary
 
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
-  identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
-- Mathlib v4.33.1 supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)`, while the cast-aware
-  fixed-width coordinate and block-order facts used by the project live in
+  identities, and fixed-width finite-index block coordinates/order/counting facts belong in
+  `Combinatorics`;
+- Mathlib v4.33.1 supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)`, finite-product sum
+  reindexing, and generic sum divisibility; the cast-aware fixed-width coordinate/order facts and
+  block-invariant indicator divisibility used by the project live in
   `Combinatorics/FiniteIndex/Block.lean`; diagrammatic layers specialize this API rather than owning
-  separate four-leg indexing lemmas;
+  separate fixed-leg counting proofs;
 - statistics-independent constructions that require Fock/thermal/diagram semantics belong in
   `SecondQuantization.Common`;
 - fermionic or bosonic sign/amplitude specializations stay downstream.
