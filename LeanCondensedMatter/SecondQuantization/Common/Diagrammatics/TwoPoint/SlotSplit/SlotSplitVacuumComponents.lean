@@ -149,8 +149,7 @@ theorem slotSplitVacuumComponentPart_surjective
       apply TwoPointDiagram.interactionPart_component_unique
         (d := TwoPointDiagram.ofSlotSplit h ext vac) w
       · rw [interactionPart_slotSplitVacuumComponentPart]
-        unfold QuarticDiagram.componentBlock
-        exact vac.componentPartition.mem_part v.2
+        simpa [C, QuarticDiagram.componentBlock] using vac.componentPartition.mem_part v.2
       · exact (TwoPointDiagram.mem_interactionPart_subtype
           (B.1 : Finset (TwoPointVertex S)) w).2 hxB
 
