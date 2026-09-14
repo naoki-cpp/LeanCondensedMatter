@@ -66,7 +66,7 @@ private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode 
     (h : 2 * (2 * n) = n * 4) :
     quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [quarticLegOperatorForSequence, FiniteIndex.blockEquiv_cast_mul_add h i j]
+  simp [quarticLegOperatorForSequence, Common.orderedQuarticLegEquiv]
 
 omit [Fintype Mode] in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
