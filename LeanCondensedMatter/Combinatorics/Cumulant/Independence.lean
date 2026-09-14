@@ -67,8 +67,9 @@ theorem partitionProduct_eq_mul_of_isIndependentAcross {m : Finset α → ℂ} {
 noncomputable def splitCumulant (m : Finset α → ℂ) (A B T : Finset α) : ℂ :=
   if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0
 
-theorem momentFromCumulant_splitCumulant_of_le_left {m : Finset α → ℂ} {A B T : Finset α}
-    (hT : T ≠ ⊥) (hTA : T ≤ A) : momentFromCumulant (splitCumulant m A B) T = m T := by
+private theorem momentFromCumulant_splitCumulant_of_le_left {m : Finset α → ℂ}
+    {A B T : Finset α} (hT : T ≠ ⊥) (hTA : T ≤ A) :
+    momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
       partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
     fun π => Finset.prod_congr rfl fun C hC => by
@@ -77,8 +78,9 @@ theorem momentFromCumulant_splitCumulant_of_le_left {m : Finset α → ℂ} {A B
   simp_rw [heq]
   exact momentFromCumulant_cumulantFromMoment m hT
 
-theorem momentFromCumulant_splitCumulant_of_le_right {m : Finset α → ℂ} {A B T : Finset α}
-    (hT : T ≠ ⊥) (hTB : T ≤ B) : momentFromCumulant (splitCumulant m A B) T = m T := by
+private theorem momentFromCumulant_splitCumulant_of_le_right {m : Finset α → ℂ}
+    {A B T : Finset α} (hT : T ≠ ⊥) (hTB : T ≤ B) :
+    momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
       partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
     fun π => Finset.prod_congr rfl fun C hC => by
@@ -87,7 +89,7 @@ theorem momentFromCumulant_splitCumulant_of_le_right {m : Finset α → ℂ} {A 
   simp_rw [heq]
   exact momentFromCumulant_cumulantFromMoment m hT
 
-theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B : Finset α}
+private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B : Finset α}
     (hind : IsIndependentAcross m A B) :
     ∀ T ≤ A ⊔ B, momentFromCumulant (splitCumulant m A B) T = m T := by
   classical
