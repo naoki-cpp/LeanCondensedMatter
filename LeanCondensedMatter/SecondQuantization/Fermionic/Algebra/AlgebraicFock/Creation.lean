@@ -53,10 +53,9 @@ theorem create_comp_add_swap (f g : 𝓗₁) :
 @[simp]
 theorem create_comp_self (f : 𝓗₁) :
     (create 𝓗₁ f).comp (create 𝓗₁ f) = 0 := by
-  simpa only [create, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_zero,
+  simpa only [create, LinearMap.comp_apply, AlgHom.toLinearMap_apply,
     Module.End.mul_eq_comp] using
-      congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁))
-        (ExteriorAlgebra.ι_sq_zero (R := ℂ) f)
+      ExteriorAlgebra.comp_ι_sq_zero (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)) f
 
 end AlgebraicFock
 end Fermionic
