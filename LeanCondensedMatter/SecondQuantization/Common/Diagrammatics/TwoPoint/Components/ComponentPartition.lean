@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
-import Mathlib.Order.Partition.Finpartition
+import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 
 set_option linter.style.header false
 
@@ -11,8 +11,8 @@ external vertices. A component is a vacuum component exactly when it contains ne
 vertex. The main theorem identifies `HasNoVacuumComponent` with emptiness of the finite set of
 vacuum component parts.
 
-The full component partition is the canonical finite partition induced by Mathlib's
-`SimpleGraph.reachableSetoid`; diagram-facing component blocks are views of its parts.
+Generic graph component partitions and their block lemmas are owned by `Combinatorics`; this module
+keeps the two-point-specific external/vacuum semantics.
 -/
 
 namespace SecondQuantization
@@ -20,61 +20,52 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-open Classical in
 /-- The partition of the full external-plus-interaction vertex set into graph components. -/
 noncomputable def TwoPointDiagram.componentPartition {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     Finpartition (Finset.univ : Finset (TwoPointVertex S)) :=
-  Finpartition.ofSetoid d.vertexGraph.reachableSetoid
+  d.vertexGraph.componentPartition
 
 /-- The full two-point component containing `v`. -/
 noncomputable def TwoPointDiagram.componentBlock {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v : TwoPointVertex S) :
     Finset (TwoPointVertex S) :=
-  d.componentPartition.part v
+  d.vertexGraph.componentBlock v
 
 /-- Membership in a two-point component block is graph reachability. -/
 theorem TwoPointDiagram.mem_componentBlock {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (v w : TwoPointVertex S) :
     w ∈ d.componentBlock v ↔ d.vertexGraph.Reachable w v := by
-  classical
-  change w ∈ (Finpartition.ofSetoid d.vertexGraph.reachableSetoid).part v ↔ _
-  rw [Finpartition.mem_part_ofSetoid_iff_rel]
-  exact d.vertexGraph.reachable_comm
+  simpa only [TwoPointDiagram.componentBlock] using d.vertexGraph.mem_componentBlock v w
 
 @[simp]
 theorem TwoPointDiagram.self_mem_componentBlock {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v : TwoPointVertex S) :
-    v ∈ d.componentBlock v :=
-  (d.mem_componentBlock v v).2 (SimpleGraph.Reachable.refl _)
+    v ∈ d.componentBlock v := by
+  simpa only [TwoPointDiagram.componentBlock] using d.vertexGraph.self_mem_componentBlock v
 
 /-- Every component block occurs as a part of the component partition. -/
 theorem TwoPointDiagram.componentBlock_mem_componentPartition {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v : TwoPointVertex S) :
     d.componentBlock v ∈ d.componentPartition.parts := by
-  change d.componentPartition.part v ∈ d.componentPartition.parts
-  exact d.componentPartition.part_mem.2 (Finset.mem_univ v)
+  simpa only [TwoPointDiagram.componentBlock, TwoPointDiagram.componentPartition] using
+    d.vertexGraph.componentBlock_mem_componentPartition v
 
 /-- Reachable vertices determine the same component block. -/
 theorem TwoPointDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) {v w : TwoPointVertex S}
     (h : d.vertexGraph.Reachable v w) :
     d.componentBlock v = d.componentBlock w := by
-  change d.componentPartition.part v = d.componentPartition.part w
-  exact (d.componentPartition.mem_part_iff_part_eq_part
-    (Finset.mem_univ v) (Finset.mem_univ w)).1 ((d.mem_componentBlock w v).2 h)
+  simpa only [TwoPointDiagram.componentBlock] using
+    d.vertexGraph.componentBlock_eq_of_reachable h
 
 /-- Two component blocks are equal exactly when their base vertices are reachable. -/
 theorem TwoPointDiagram.componentBlock_eq_iff_reachable {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v w : TwoPointVertex S) :
     d.componentBlock v = d.componentBlock w ↔ d.vertexGraph.Reachable v w := by
-  constructor
-  · intro h
-    apply (d.mem_componentBlock w v).1
-    rw [← h]
-    exact d.self_mem_componentBlock v
-  · exact d.componentBlock_eq_of_reachable
+  simpa only [TwoPointDiagram.componentBlock] using
+    d.vertexGraph.componentBlock_eq_iff_reachable v w
 
 /-- A vertex belongs to a component part exactly when its component block is that part. -/
 theorem TwoPointDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
@@ -82,8 +73,8 @@ theorem TwoPointDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     {B : Finset (TwoPointVertex S)} (hB : B ∈ d.componentPartition.parts)
     (v : TwoPointVertex S) :
     d.componentBlock v = B ↔ v ∈ B := by
-  change d.componentPartition.part v = B ↔ v ∈ B
-  exact d.componentPartition.part_eq_iff_mem hB
+  simpa only [TwoPointDiagram.componentBlock, TwoPointDiagram.componentPartition] using
+    d.vertexGraph.componentBlock_eq_iff_mem hB v
 
 /-- A component part contains at least one of the two external vertices. -/
 def TwoPointDiagram.ComponentMeetsExternal {S : Finset (Fin N)}
