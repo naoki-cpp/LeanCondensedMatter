@@ -43,7 +43,7 @@ noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (data.energy mn.2) (data.energy mn.1) energy
 
 omit [Fintype ι] in
-theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
+private theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -61,7 +61,7 @@ theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
   rfl
 
 omit [Fintype ι] in
-theorem integrable_finiteKuboBastinCommonTransitionIntegrand
+private theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -75,7 +75,7 @@ theorem integrable_finiteKuboBastinCommonTransitionIntegrand
       system data geometry direction K q omega eta mn)
 
 omit [Fintype ι] in
-theorem integral_finiteKuboBastinCommonTransitionIntegrand
+private theorem integral_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -88,8 +88,7 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
   rw [finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     system data interpolation geometry direction K q omega eta mn]
   rw [integral_purePointKuboBastinCommonVertexTransitionIntegrand]
-  exact (finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
-    system data interpolation geometry direction K q omega eta mn).symm
+  rfl
 
 /-- The finite sum of all localized directional transition integrands on the full energy axis. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
@@ -101,7 +100,7 @@ noncomputable def finiteKuboBastinCommonEnergyKernel
   ∑ mn : ι × ι, finiteKuboBastinCommonTransitionIntegrand
     system data interpolation geometry direction K q omega eta mn energy
 
-theorem finiteKuboBastinCommonEnergyKernel_eq_vertex
+private theorem finiteKuboBastinCommonEnergyKernel_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -167,7 +166,7 @@ noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
         (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization convention omega eta
 
-theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
+private theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)

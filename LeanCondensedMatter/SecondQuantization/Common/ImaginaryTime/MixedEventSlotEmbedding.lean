@@ -97,14 +97,5 @@ theorem orderedTwoPointTimedEventPosition_map_lt_iff (hf : StrictMono f) (τ τ'
   rw [orderedTwoPointTimedEventPosition_lt_iff, orderedTwoPointTimedEventPosition_lt_iff,
     twoPointTimedEventBefore_map_iff hf]
 
-theorem orderedTwoPointTimedEventPosition_orderEmbOfFin_lt_iff {k : ℕ} (T : Finset (Fin n))
-    (hT : T.card = k) (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : TwoPointTimedEvent k) :
-    orderedTwoPointTimedEventPosition τ τ' σ (twoPointTimedEventMap ⇑(T.orderEmbOfFin hT) a) <
-        orderedTwoPointTimedEventPosition τ τ' σ
-          (twoPointTimedEventMap ⇑(T.orderEmbOfFin hT) b) ↔
-      orderedTwoPointTimedEventPosition τ τ' (σ ∘ ⇑(T.orderEmbOfFin hT)) a <
-        orderedTwoPointTimedEventPosition τ τ' (σ ∘ ⇑(T.orderEmbOfFin hT)) b :=
-  orderedTwoPointTimedEventPosition_map_lt_iff (T.orderEmbOfFin hT).strictMono τ τ' σ a b
-
 end Common
 end SecondQuantization

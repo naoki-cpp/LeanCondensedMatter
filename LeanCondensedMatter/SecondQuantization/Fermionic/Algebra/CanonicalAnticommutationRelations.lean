@@ -107,7 +107,7 @@ private theorem annihilate_basisState_toggle (i : Mode) (n : Occupation Mode) :
 
 /-! ## `{aᵢ†, aⱼ†} = 0` -/
 
-theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
+private theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
     LinearMap.zetaCommutator (-1) (create i) (create j) (basisState n) = 0 := by
   rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
     create_basisState_toggle, map_smul, create_basisState_toggle,
@@ -153,7 +153,7 @@ theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
 
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
-theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
+private theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
     LinearMap.zetaCommutator (-1) (annihilate i) (annihilate j) (basisState n) = 0 := by
   rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
     annihilate_basisState_toggle, map_smul, annihilate_basisState_toggle,

@@ -55,23 +55,6 @@ noncomputable def finiteKuboBastinDirectionalTransitionFactor
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
 
-omit [Fintype ι] in
-theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinDirectionalTransitionFactor
-        system data geometry direction K q omega eta mn =
-      purePointKuboBastinVertexTransitionFactor system data
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta mn := by
-  rfl
-
 /-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
 by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
@@ -87,46 +70,6 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     (boundedDirectionalCurrent geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
     omega eta mn
-
-omit [Fintype ι] in
-theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn =
-      purePointKuboBastinOccupationResolvedVertexTerm system data interpolation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta mn := by
-  rfl
-
-omit [Fintype ι] in
-theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinSpectralDirectionalCurrentTerm
-        system data geometry direction K q omega eta mn =
-      finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn := by
-  simpa [finiteKuboBastinSpectralDirectionalCurrentTerm,
-    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm] using
-    purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
-      system data interpolation
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      omega eta mn
 
 /-- The complete finite directional conductivity after replacing every discrete probability
 difference by its oriented occupation-derivative integral. The contact term and finite-volume

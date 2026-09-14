@@ -64,7 +64,7 @@ theorem diagonalCoeff_eq_zero_of_carriesGradingDegree {Config : Type*} {grading 
     {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : ℤ}
     (hA : CarriesGradingDegree grading A q) (hq : q ≠ 0) (n : Config) :
     diagonalCoeff A n = 0 := by
-  rw [diagonalCoeff_eq_matrixCoeff]
+  unfold diagonalCoeff
   by_contra h
   have := hA n n h
   omega

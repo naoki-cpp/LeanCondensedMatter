@@ -23,10 +23,6 @@ local instance instDecidableEqNumberOperator : DecidableEq Mode := Classical.dec
 noncomputable def numberOperator (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (create i).comp (annihilate i)
 
-theorem numberOperator_apply (i : Mode) (x : FockSpace Mode) :
-    numberOperator i x = create i (annihilate i x) :=
-  rfl
-
 /-- The number-operator eigenvalue equation `N_i |n⟩ = n_i |n⟩`. -/
 theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = (n i : ℂ) • basisState n :=

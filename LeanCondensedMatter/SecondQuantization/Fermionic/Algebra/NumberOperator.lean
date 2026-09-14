@@ -13,10 +13,7 @@ annihilate i`, its eigenvalue equation on basis states, and the reordering ident
 id - N_i` (from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
 `Common.exchangeCommutator`). Split out from `Hamiltonian.lean` (which still holds
 `totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`, all built on top of this) so
-both statistics' number-operator layer live in symmetric files — mirroring
-`Bosonic/Algebra/NumberOperator.lean`'s `numberOperator`/`numberOperator_apply`/`numberOperator_basisState`/
-`exchangeCommutator_annihilate_create_self`/`annihilate_comp_create_self` exactly, up to the sign
-of `ζ`.
+both statistics' number-operator layers expose the same physical endpoints, up to the sign of `ζ`.
 -/
 
 namespace SecondQuantization
@@ -29,7 +26,7 @@ noncomputable def numberOperator (i : Mode) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (create i).comp (annihilate i)
 
-theorem numberOperator_apply (i : Mode) (x : OccupationFock Mode) :
+private theorem numberOperator_apply (i : Mode) (x : OccupationFock Mode) :
     numberOperator i x = create i (annihilate i x) :=
   rfl
 
