@@ -116,6 +116,18 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZ
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have htargetReal :
+      (-2 : ℝ) * ((-e) * v) ^ 2 * (momentumMeasurePrefactor hbar)⁻¹ *
+          ((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
+            (v ^ 2 * (probeEnergy ^ 2 + m ^ 2))) *
+            (2 * (probeEnergy ^ 2 + m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2))) =
+        -8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
+          (probeEnergy ^ 2 + 3 * m ^ 2) := by
+    unfold continuumBornAngularMeasurePrefactor
+    field_simp [hvelocity, hmeasureReal, hsum, hden] <;> ring
+  have htargetCast := congrArg Complex.ofReal htargetReal
+  push_cast at htargetCast
   have htarget :
       ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
           ((((Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m /
@@ -124,11 +136,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZ
               (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))) =
         (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) := by
-    dsimp [q, measure]
-    unfold continuumBornAngularMeasurePrefactor
-    push_cast
-    field_simp [hvelocity, hmeasureReal, hsum, hden]
-    ring
+    simpa [q, measure] using htargetCast
   rw [htarget] at hscaled
   apply Tendsto.congr' ?_ hscaled
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
@@ -138,7 +146,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZ
   dsimp [q, measure]
   push_cast
   field_simp [hdisorderC, hmeasure]
-  ring
 
 /-- The `r_x Γ_y` provenance term has a finite one-sided weak-disorder limit. -/
 theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary_disorder_zero
@@ -186,6 +193,21 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZ
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
+  have htargetReal :
+      (-2 : ℝ) * ((-e) * v) ^ 2 * (momentumMeasurePrefactor hbar)⁻¹ *
+          (continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+              m probeEnergy *
+            (4 * Real.pi * continuumBornAngularMeasurePrefactor hbar * probeEnergy * m *
+              (probeEnergy ^ 2 + m ^ 2) /
+              (v ^ 2 * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) =
+        -8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
+          (probeEnergy ^ 2 - m ^ 2) /
+          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 := by
+    unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
+      continuumBornAngularMeasurePrefactor
+    field_simp [hvelocity, hmeasureReal, hsum, hden] <;> ring
+  have htargetCast := congrArg Complex.ofReal htargetReal
+  push_cast at htargetCast
   have htarget :
       ((-2 : ℂ) * q ^ 2 * measure⁻¹) *
           ((continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
@@ -196,12 +218,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZ
         (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
           (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)) := by
-    dsimp [q, measure]
-    unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-      continuumBornAngularMeasurePrefactor
-    push_cast
-    field_simp [hvelocity, hmeasureReal, hsum, hden]
-    ring
+    simpa [q, measure] using htargetCast
   rw [htarget] at hscaled
   apply Tendsto.congr' ?_ hscaled
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
@@ -211,7 +228,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZ
   dsimp [q, measure]
   push_cast
   field_simp [hdisorderC, hmeasure]
-  ring
 
 end
 
