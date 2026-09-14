@@ -46,6 +46,12 @@ theorem eq_cast_mul_add_blockEquiv {total n k : ℕ} (h : total = n * k) (p : Fi
   rw [Prod.mk.eta] at heq
   exact ((blockEquiv h).injective heq).symm
 
+private theorem blockEquiv_reconstruct_val {total n k : ℕ} (h : total = n * k)
+    (p : Fin total) :
+    p.val = (blockEquiv h p).2.val + k * (blockEquiv h p).1.val := by
+  have hp := congrArg Fin.val (eq_cast_mul_add_blockEquiv h p)
+  simpa [Nat.mul_comm, Nat.add_comm] using hp
+
 private theorem local_add_block_mul_lt_of_block_lt {n k : ℕ}
     (i j : Fin n) (a b : Fin k) (hij : i < j) :
     (a : ℕ) + k * (i : ℕ) < (b : ℕ) + k * (j : ℕ) := by
@@ -58,41 +64,55 @@ private theorem local_add_block_mul_lt_of_block_lt {n k : ℕ}
     _ = k * (j : ℕ) := Nat.mul_comm _ _
     _ ≤ (b : ℕ) + k * (j : ℕ) := Nat.le_add_left _ _
 
+/-- Flat order is the lexicographic order on the block index followed by the local index. -/
+theorem blockEquiv_lt_iff {total n k : ℕ} (h : total = n * k) (p q : Fin total) :
+    p < q ↔
+      (blockEquiv h p).1 < (blockEquiv h q).1 ∨
+        ((blockEquiv h p).1 = (blockEquiv h q).1 ∧
+          (blockEquiv h p).2 < (blockEquiv h q).2) := by
+  have hp := blockEquiv_reconstruct_val h p
+  have hq := blockEquiv_reconstruct_val h q
+  constructor
+  · intro hpq
+    rcases lt_trichotomy (blockEquiv h p).1 (blockEquiv h q).1 with hlt | heq | hgt
+    · exact Or.inl hlt
+    · refine Or.inr ⟨heq, ?_⟩
+      have hblock : (blockEquiv h p).1.val = (blockEquiv h q).1.val := congrArg Fin.val heq
+      have hval : p.val < q.val := hpq
+      rw [hp, hq, hblock] at hval
+      exact Nat.add_lt_add_iff_right.mp hval
+    · have hval : p.val < q.val := hpq
+      rw [hp, hq] at hval
+      have hrev := local_add_block_mul_lt_of_block_lt
+        (blockEquiv h q).1 (blockEquiv h p).1
+        (blockEquiv h q).2 (blockEquiv h p).2 hgt
+      exact (lt_asymm hval hrev).elim
+  · rintro (hlt | ⟨heq, hlocal⟩)
+    · have hcoord := local_add_block_mul_lt_of_block_lt
+        (blockEquiv h p).1 (blockEquiv h q).1
+        (blockEquiv h p).2 (blockEquiv h q).2 hlt
+      change p.val < q.val
+      rw [hp, hq]
+      exact hcoord
+    · have hblock : (blockEquiv h p).1.val = (blockEquiv h q).1.val := congrArg Fin.val heq
+      change p.val < q.val
+      rw [hp, hq, hblock]
+      exact Nat.add_lt_add_right hlocal _
+
 /-- Flat coordinates in distinct blocks are ordered exactly by their block indices. -/
 theorem blockEquiv_symm_lt_symm_iff_fst_lt_of_ne {total n k : ℕ}
     (h : total = n * k) (i j : Fin n) (a b : Fin k) (hij : i ≠ j) :
     (blockEquiv h).symm (i, a) < (blockEquiv h).symm (j, b) ↔ i < j := by
-  have hp' : ((blockEquiv h).symm (i, a)).val = a.val + k * i.val := by
-    simp [blockEquiv, finProdFinEquiv]
-  have hq' : ((blockEquiv h).symm (j, b)).val = b.val + k * j.val := by
-    simp [blockEquiv, finProdFinEquiv]
-  change ((blockEquiv h).symm (i, a)).val <
-      ((blockEquiv h).symm (j, b)).val ↔ i < j
-  rw [hp', hq']
-  constructor
-  · intro hflat
-    rcases lt_or_gt_of_ne hij with hij' | hji
-    · exact hij'
-    · have hrev := local_add_block_mul_lt_of_block_lt j i b a hji
-      exact (lt_asymm hflat hrev).elim
-  · exact local_add_block_mul_lt_of_block_lt i j a b
+  have hlex := blockEquiv_lt_iff h
+    ((blockEquiv h).symm (i, a)) ((blockEquiv h).symm (j, b))
+  simpa [hij] using hlex
 
 /-- Flat coordinates in the same block are ordered exactly by their local indices. -/
 theorem blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq {total n k : ℕ}
     (hcard : total = n * k) (p q : Fin n × Fin k) (h : p.1 = q.1) :
     (blockEquiv hcard).symm p < (blockEquiv hcard).symm q ↔ p.2 < q.2 := by
-  rcases p with ⟨i, a⟩
-  rcases q with ⟨j, b⟩
-  change i = j at h
-  subst j
-  have hp' : ((blockEquiv hcard).symm (i, a)).val = a.val + k * i.val := by
-    simp [blockEquiv, finProdFinEquiv]
-  have hq' : ((blockEquiv hcard).symm (i, b)).val = b.val + k * i.val := by
-    simp [blockEquiv, finProdFinEquiv]
-  change ((blockEquiv hcard).symm (i, a)).val <
-      ((blockEquiv hcard).symm (i, b)).val ↔ a < b
-  rw [hp', hq']
-  exact Nat.add_lt_add_iff_right
+  have hlex := blockEquiv_lt_iff hcard ((blockEquiv hcard).symm p) ((blockEquiv hcard).symm q)
+  simpa [h] using hlex
 
 end FiniteIndex
 end Combinatorics
