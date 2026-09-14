@@ -82,5 +82,5 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 
 Add new combinatorial infrastructure only when a downstream theorem exposes a reusable
 statistics-independent statement. Higher-point/source-insertion linked-cluster developments should
-reuse the partition/cumulant and finite-index APIs rather than introduce parallel diagram-specific
-combinatorics.
+reuse the existing partition, cumulant, pairing, shuffle, and finite-index APIs rather than create
+parallel specialized copies.
