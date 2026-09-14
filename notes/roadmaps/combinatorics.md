@@ -70,6 +70,11 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
   identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
+- Mathlib v4.33.1 provides `SimpleGraph.reachableSetoid`, connected components, and
+  `Finpartition.ofSetoid` / `Finpartition.ofSetSetoid`, but no graph-component `Finpartition` facade
+  was found. The finite and ambient-finset graph component API therefore lives in
+  `Combinatorics/SimpleGraphComponentPartition.lean`; diagrammatic layers keep only semantic
+  component definitions and consume these generic graph lemmas directly;
 - Mathlib v4.33.1 supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)` and finite-product sum
   reindexing; the cast-aware fixed-width coordinate/order facts used by the project live in
   `Combinatorics/FiniteIndex/Block.lean`, while generic counting through an equivalence with a finite
