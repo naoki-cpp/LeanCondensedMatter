@@ -1,5 +1,3 @@
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
@@ -8,9 +6,8 @@ set_option linter.style.header false
 # Fixed-width finite block indexing
 
 Mathlib supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)`. This module packages its
-inverse together with an arbitrary equality for the total cardinality and records the coordinate,
-order, and block-counting facts needed when a flat finite index is viewed as a block index plus a
-local index.
+inverse together with an arbitrary equality for the total cardinality and records the coordinate and
+order facts needed when a flat finite index is viewed as a block index plus a local index.
 -/
 
 namespace Combinatorics
@@ -47,19 +44,6 @@ theorem eq_cast_mul_add_blockEquiv {total n k : ℕ} (h : total = n * k) (p : Fi
   have heq := blockEquiv_cast_mul_add h (blockEquiv h p).1 (blockEquiv h p).2
   rw [Prod.mk.eta] at heq
   exact ((blockEquiv h).injective heq).symm
-
-/-- Summing a function of only the block coordinate counts every block value exactly `k` times. -/
-theorem sum_equiv_fst_eq_mul_sum {total n k : ℕ}
-    (e : Fin total ≃ Fin n × Fin k) (f : Fin n → ℕ) :
-    (∑ p : Fin total, f (e p).1) = k * ∑ i : Fin n, f i := by
-  rw [← Equiv.sum_comp e.symm, Fintype.sum_prod_type]
-  simp only [Equiv.apply_symm_apply]
-  calc
-    (∑ i : Fin n, ∑ _j : Fin k, f i) = ∑ i : Fin n, k * f i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      simp
-    _ = k * ∑ i : Fin n, f i := by rw [Finset.mul_sum]
 
 private theorem blockEquiv_reconstruct_val {total n k : ℕ} (h : total = n * k)
     (p : Fin total) :
