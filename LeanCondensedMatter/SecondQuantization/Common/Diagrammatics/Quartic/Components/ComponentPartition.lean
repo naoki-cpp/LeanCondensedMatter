@@ -24,30 +24,34 @@ noncomputable def QuarticDiagram.componentPartition {S : Finset (Fin N)}
 /-- The component containing `v`, viewed as a finite subset of the ambient vertex type. -/
 noncomputable def QuarticDiagram.componentBlock {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) : Finset (Fin N) :=
-  d.vertexGraph.componentBlockOn v
+  d.componentPartition.part (v : Fin N)
 
 theorem QuarticDiagram.mem_componentBlock {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) {x : Fin N} :
     x ∈ d.componentBlock v ↔ ∃ hx : x ∈ S, d.vertexGraph.Reachable ⟨x, hx⟩ v := by
-  simpa only [QuarticDiagram.componentBlock] using d.vertexGraph.mem_componentBlockOn v
+  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
+    SimpleGraph.componentBlockOn] using d.vertexGraph.mem_componentBlockOn v
 
 @[simp]
 theorem QuarticDiagram.self_mem_componentBlock {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) : (v : Fin N) ∈ d.componentBlock v := by
-  simpa only [QuarticDiagram.componentBlock] using d.vertexGraph.self_mem_componentBlockOn v
+  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
+    SimpleGraph.componentBlockOn] using d.vertexGraph.self_mem_componentBlockOn v
 
 /-- Every component block occurs as a part of the component partition. -/
 theorem QuarticDiagram.componentBlock_mem_componentPartition {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) :
     d.componentBlock v ∈ d.componentPartition.parts := by
-  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition] using
+  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
+    SimpleGraph.componentBlockOn] using
     d.vertexGraph.componentBlockOn_mem_componentPartitionOn v
 
 /-- Reachable vertices determine the same component block. -/
 theorem QuarticDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {v w : ↥S} (h : d.vertexGraph.Reachable v w) :
     d.componentBlock v = d.componentBlock w := by
-  simpa only [QuarticDiagram.componentBlock] using
+  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
+    SimpleGraph.componentBlockOn] using
     d.vertexGraph.componentBlockOn_eq_of_reachable h
 
 /-- A vertex belongs to a component part exactly when its component block is that part. -/
@@ -55,7 +59,8 @@ theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
     d.componentBlock v = B ↔ (v : Fin N) ∈ B := by
-  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition] using
+  simpa only [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
+    SimpleGraph.componentBlockOn] using
     d.vertexGraph.componentBlockOn_eq_iff_mem hB v
 
 /-- Every component part is contained in the ambient vertex set. -/
