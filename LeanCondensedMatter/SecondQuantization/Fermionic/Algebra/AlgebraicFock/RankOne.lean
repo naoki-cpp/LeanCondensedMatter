@@ -20,10 +20,8 @@ noncomputable section
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
 /-- Algebraic rank-one endomorphism `g ↦ d(g) f`. -/
-def dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) : 𝓗₁ →ₗ[ℂ] 𝓗₁ where
-  toFun g := d g • f
-  map_add' g h := by simp [add_smul]
-  map_smul' c g := by simp [smul_smul]
+def dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) : 𝓗₁ →ₗ[ℂ] 𝓗₁ :=
+  d.smulRight f
 
 @[simp]
 theorem dualRankOne_apply (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) (g : 𝓗₁) :
