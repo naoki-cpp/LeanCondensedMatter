@@ -71,18 +71,6 @@ theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] �
     _root_.ConservationLaw.linearCommutator_localizedQuantity,
     AlgebraicFock.dGamma_add]
 
-/-- The charge specialization of the generalized many-body balance path agrees with the existing
-charge-density commutator theorem. -/
-theorem dGamma_commutator_manyBodyLocalizedQuantity_smul_id
-    (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
-    (q : ℂ) (f : Test) :
-    ConservationLaw.linearCommutator
-        (AlgebraicFock.dGamma 𝓗₁ h)
-        (manyBodyLocalizedQuantity 𝓗₁ M (q • LinearMap.id) f) =
-      q • AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.linearCommutator h (M f)) := by
-  rw [manyBodyLocalizedQuantity_smul_id]
-  exact dGamma_commutator_chargeDensity 𝓗₁ q M h f
-
 /-- A vanishing one-particle commutator gives conservation of the corresponding total many-body
 quantity. This is a global statement only; no local-current representation is inferred. -/
 theorem oneBodyObservable_commutes_of_commutes (h m : 𝓗₁ →ₗ[ℂ] 𝓗₁)
