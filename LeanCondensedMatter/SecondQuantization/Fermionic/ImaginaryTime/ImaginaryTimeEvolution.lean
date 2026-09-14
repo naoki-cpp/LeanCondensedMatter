@@ -36,11 +36,6 @@ variable {Mode : Type*} [LinearOrder Mode]
 parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
 def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ := ∑ i ∈ n, ε i
 
-omit [LinearOrder Mode] in
-theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : Occupation Mode) :
-    (fermionEnergy ε n : ℂ) = ∑ i ∈ n, (ε i : ℂ) := by
-  simp [fermionEnergy]
-
 /-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
 basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
