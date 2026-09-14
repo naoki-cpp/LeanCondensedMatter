@@ -71,24 +71,6 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
       (system.hbar : ℂ) (q : ℂ) K)
     omega eta mn
 
-omit [Fintype ι] in
-theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn =
-      purePointKuboBastinOccupationResolvedVertexTerm system data interpolation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta mn := by
-  rfl
-
 /-- The complete finite directional conductivity after replacing every discrete probability
 difference by its oriented occupation-derivative integral. The contact term and finite-volume
 normalization remain unchanged. -/
