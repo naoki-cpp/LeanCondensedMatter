@@ -61,7 +61,7 @@ def twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (a b : TwoPointTimedEvent n) : Set (Fin n → ℝ) :=
   {σ | twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b}
 
-theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
+private theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
     (a : TwoPointTimedEvent n) :
     Continuous (fun σ : Fin n → ℝ => twoPointTimedEventTime τ τ' σ a) := by
   cases a with
@@ -72,7 +72,7 @@ theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
       change Continuous (fun σ : Fin n → ℝ => σ v)
       exact continuous_apply v
 
-theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
+private theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (a b : TwoPointTimedEvent n) :
     MeasurableSet (twoPointEventStrictComparisonSet τ τ' a b) := by
   exact measurableSet_lt
