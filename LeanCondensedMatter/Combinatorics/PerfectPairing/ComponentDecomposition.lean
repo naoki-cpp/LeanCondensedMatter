@@ -35,34 +35,6 @@ private theorem Pairing.componentPairEndpointEquiv_apply_one
     Pairing.componentPairEndpointEquiv componentPairing (⟨B, pr⟩, 1) = ⟨B, pr.1.2⟩ := by
   simp [Pairing.componentPairEndpointEquiv]
 
-private noncomputable def Pairing.componentPairMap
-    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
-    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
-    (hpartner : ∀ B p,
-      global.partner (positionEquiv ⟨B, p⟩) =
-        positionEquiv ⟨B, (componentPairing B).partner p⟩)
-    (hmono : ∀ B, StrictMono (fun p => positionEquiv ⟨B, p⟩)) :
-    (Σ B, (componentPairing B).NormalizedPair) → global.NormalizedPair :=
-  fun x => by
-    rcases x with ⟨B, pr⟩
-    refine ⟨(positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩), ?_⟩
-    have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-    exact (global.mem_pairs_iff _ _).2
-      ⟨hmono B hpr.1, by rw [hpartner B pr.1.1, hpr.2]⟩
-
-@[simp]
-private theorem Pairing.componentPairMap_apply
-    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
-    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
-    (hpartner : ∀ B p,
-      global.partner (positionEquiv ⟨B, p⟩) =
-        positionEquiv ⟨B, (componentPairing B).partner p⟩)
-    (hmono : ∀ B, StrictMono (fun p => positionEquiv ⟨B, p⟩))
-    (B : ι) (pr : (componentPairing B).NormalizedPair) :
-    (global.componentPairMap componentPairing positionEquiv hpartner hmono ⟨B, pr⟩).1 =
-      (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) :=
-  rfl
-
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions, preserve local order, and
 intertwine partner maps. -/
@@ -72,42 +44,16 @@ noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
     (hpartner : ∀ B p,
       global.partner (positionEquiv ⟨B, p⟩) =
         positionEquiv ⟨B, (componentPairing B).partner p⟩)
-    (hmono : ∀ B, StrictMono (fun p => positionEquiv ⟨B, p⟩)) :
+    (_hmono : ∀ B, StrictMono (fun p => positionEquiv ⟨B, p⟩)) :
     (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair :=
-  Equiv.ofBijective
-    (global.componentPairMap componentPairing positionEquiv hpartner hmono)
+  global.normalizedPairEquivOfEndpointEquiv
+    (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
     (by
-      have hendpoint : ∀ a : Σ B, (componentPairing B).NormalizedPair,
-          global.partner
-              (positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (a, 0))) =
-            positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (a, 1)) := by
-        rintro ⟨B, pr⟩
-        have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-        rw [Pairing.componentPairEndpointEquiv_apply_zero,
-          Pairing.componentPairEndpointEquiv_apply_one,
-          hpartner B pr.1.1, hpr.2]
-      have hmap :
-          global.componentPairMap componentPairing positionEquiv hpartner hmono =
-            global.normalizedPairOfEndpointEquiv
-              (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv := by
-        funext x
-        rcases x with ⟨B, pr⟩
-        have hrecover := congrArg Prod.fst
-          (global.pairEndpointEquiv.left_inv
-            (global.componentPairMap componentPairing positionEquiv hpartner hmono ⟨B, pr⟩,
-              (0 : Fin 2)))
-        have hrecover' :
-            (global.positionToPairEndpoint (positionEquiv ⟨B, pr.1.1⟩)).1 =
-              global.componentPairMap componentPairing positionEquiv hpartner hmono ⟨B, pr⟩ := by
-          simpa only [Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint_zero,
-            Pairing.componentPairMap_apply] using hrecover
-        symm
-        unfold Pairing.normalizedPairOfEndpointEquiv
-        rw [Pairing.componentPairEndpointEquiv_apply_zero]
-        exact hrecover'
-      rw [hmap]
-      exact (global.normalizedPairEquivOfEndpointEquiv
-        (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv hendpoint).bijective)
+      rintro ⟨B, pr⟩
+      have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
+      rw [Pairing.componentPairEndpointEquiv_apply_zero,
+        Pairing.componentPairEndpointEquiv_apply_one,
+        hpartner B pr.1.1, hpr.2])
 
 @[simp]
 theorem Pairing.normalizedPairSigmaEquiv_apply [Fintype ι]
@@ -120,7 +66,16 @@ theorem Pairing.normalizedPairSigmaEquiv_apply [Fintype ι]
     (B : ι) (pr : (componentPairing B).NormalizedPair) :
     (global.normalizedPairSigmaEquiv componentPairing positionEquiv hpartner hmono ⟨B, pr⟩).1 =
       (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) := by
-  change (global.componentPairMap componentPairing positionEquiv hpartner hmono ⟨B, pr⟩).1 = _
-  rfl
+  change
+    (global.normalizedPairOfEndpointEquiv
+      (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv ⟨B, pr⟩).1 = _
+  unfold Pairing.normalizedPairOfEndpointEquiv
+  rw [Pairing.componentPairEndpointEquiv_apply_zero]
+  have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
+  have hlt :
+      positionEquiv ⟨B, pr.1.1⟩ < global.partner (positionEquiv ⟨B, pr.1.1⟩) := by
+    rw [hpartner B pr.1.1, hpr.2]
+    exact hmono B hpr.1
+  simp [Pairing.positionToPairEndpoint, hlt, hpartner B pr.1.1, hpr.2]
 
 end Combinatorics
