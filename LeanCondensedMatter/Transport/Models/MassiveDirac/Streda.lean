@@ -20,9 +20,9 @@ denominator form. Fixed-cutoff zero-broadening boundaries are exposed for the so
 current and for both the integrated longitudinal and ordered-`xy` responses. Their subsequent
 weak-disorder limits remain separate: the longitudinal response is scaled by `W`, while the ordered
 transverse response retains the first nonvanishing transverse ladder coefficient before cancelling
-the inverse disorder factor. The ordered-`xy` endpoint also exposes one indexed provenance vector
-whose components are the concrete `r_y Γ_x` and `r_x Γ_y` terms, without assigning scattering-
-mechanism labels.
+the inverse disorder factor. The ordered-`xy` endpoint also exposes a theorem-level expansion of the
+canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
+introducing a second public representation or assigning scattering-mechanism labels.
 
 The supplied ladder coefficients are total algebraic values. The shared nonzero in-plane ladder
 determinant is required only when they are interpreted as the solved physical fixed point. Generic
