@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
@@ -70,12 +71,23 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
   rw [Finset.sum_comm]
   refine Finset.dvd_sum fun q _ => ?_
   simp_rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)]
-  rw [← Equiv.sum_comp (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm,
-    Fintype.sum_prod_type]
-  simp only [Equiv.apply_symm_apply]
-  refine Finset.dvd_sum fun i _ => ?_
-  rw [Fin.sum_univ_four]
-  split_ifs <;> omega
+  change 2 ∣ ∑ x, (fun i : Fin (B : Finset (Fin N)).card =>
+    if shuffle.slotEquiv
+          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+        shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
+      ((orderedQuarticLegEquiv (B : Finset (Fin N)).card x).1)
+  rw [Fintype.sum_equiv_fst_eq_card_mul_sum
+    (e := orderedQuarticLegEquiv (B : Finset (Fin N)).card)
+    (f := fun i =>
+      if shuffle.slotEquiv
+            ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+          shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)]
+  simp only [Fintype.card_fin]
+  refine ⟨2 * (∑ i : Fin (B : Finset (Fin N)).card,
+    if shuffle.slotEquiv
+          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+        shuffle.slotEquiv ⟨B, i⟩ then 1 else 0), ?_⟩
+  ring
 
 /-- Both orientations of the crossing count between two distinct components add up to an even
 number. -/
