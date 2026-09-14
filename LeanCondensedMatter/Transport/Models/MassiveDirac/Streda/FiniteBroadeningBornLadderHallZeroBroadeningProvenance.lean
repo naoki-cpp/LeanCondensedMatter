@@ -14,9 +14,10 @@ r_y Γ_x + r_x Γ_y,
 ```
 
 where `r` is the integrated current rung and `Γ` is the solved dressed-current vector. This module
-exposes those two concrete contributions separately and takes their one-sided weak-disorder limits.
-The names record only their algebraic provenance; no intrinsic, side-jump, or skew-scattering
-classification is assigned here.
+packages those two concrete contributions as one indexed in-plane provenance vector and takes its
+one-sided weak-disorder limit. Component `0` is `r_y Γ_x`; component `1` is `r_x Γ_y`. The object
+records only algebraic provenance; no intrinsic, side-jump, or skew-scattering classification is
+assigned here.
 
 The cutoff remains fixed beyond the metallic shell. Conductivity normalization, Hall projection,
 mechanism classification, crossed diagrams, ultraviolet removal, and simultaneous limits remain
@@ -29,58 +30,45 @@ noncomputable section
 
 open Filter QuantumTheory.Transport
 
-/-- Contribution to the ordered `xy` zero-broadening momentum endpoint in which the transverse rung
-component multiplies the longitudinal solved-current component. This is a provenance term, not a
-mechanism definition. -/
-def finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
+/-- The two concrete ordered-`xy` zero-broadening momentum-endpoint provenance contributions,
+packaged as one in-plane vector. Component `0` is `r_y Γ_x` and component `1` is `r_x Γ_y`.
+This is a provenance object, not a mechanism decomposition. -/
+def finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+    (e v m probeEnergy disorderStrength hbar pMax : ℝ) : InPlaneCoefficientVector :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
   let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
-  (-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)
+  inPlaneCoefficientVector
+    ((-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 1 * solved 0))
+    ((-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))
 
-/-- Contribution to the ordered `xy` zero-broadening momentum endpoint in which the longitudinal
-rung component multiplies the transverse solved-current component. This is a provenance term, not a
-mechanism definition. -/
-def finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary
-    (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-  let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
-  let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-    v m probeEnergy disorderStrength hbar pMax
-  let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-    v m probeEnergy disorderStrength hbar pMax
-  (-2 : ℂ) * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)
-
-/-- The completed ordered `xy` zero-broadening Středa momentum endpoint is exactly the sum of its
-two concrete rung/solved-current provenance terms. -/
+/-- The completed ordered `xy` zero-broadening Středa momentum endpoint is exactly the sum of the
+two components of its canonical provenance vector. -/
 theorem finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_eq_provenanceContributions
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
         e v m probeEnergy disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax +
-        finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax := by
+      finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+          e v m probeEnergy disorderStrength hbar pMax 0 +
+        finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+          e v m probeEnergy disorderStrength hbar pMax 1 := by
   simp [finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary,
-    finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary,
-    finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary,
-    inPlaneLadderAction_apply_y]
+    finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary,
+    inPlaneLadderAction_apply_y, inPlaneCoefficientVector]
   ring
 
-/-- The `r_y Γ_x` provenance term has a finite one-sided weak-disorder limit. -/
-theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary_disorder_zero
+private theorem tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun disorderStrength : ℝ =>
-        finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax)
+        finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+          e v m probeEnergy disorderStrength hbar pMax 0)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
@@ -142,21 +130,21 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZ
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
-  unfold finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZeroBroadeningBoundary
+  simp only [finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary,
+    inPlaneCoefficientVector]
   dsimp [q, measure]
   push_cast
   field_simp [hdisorderC, hmeasure]
 
-/-- The `r_x Γ_y` provenance term has a finite one-sided weak-disorder limit. -/
-theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary_disorder_zero
+private theorem tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
     (e v m probeEnergy hbar pMax : ℝ)
     (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
     (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
     Tendsto
       (fun disorderStrength : ℝ =>
-        finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary
-          e v m probeEnergy disorderStrength hbar pMax)
+        finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+          e v m probeEnergy disorderStrength hbar pMax 1)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds
         (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
@@ -224,10 +212,40 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZ
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
   have hdisorderC : (disorderStrength : ℂ) ≠ 0 := by
     exact_mod_cast ne_of_gt hdisorder
-  unfold finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZeroBroadeningBoundary
+  simp only [finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary,
+    inPlaneCoefficientVector]
   dsimp [q, measure]
   push_cast
   field_simp [hdisorderC, hmeasure]
+
+/-- The canonical ordered-`xy` provenance vector has a finite one-sided weak-disorder limit, with
+component `0` carrying the `r_y Γ_x` contribution and component `1` the `r_x Γ_y` contribution. -/
+theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary_disorder_zero
+    (e v m probeEnergy hbar pMax : ℝ)
+    (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0)
+    (hmetal : |m| < probeEnergy)
+    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
+    Tendsto
+      (fun disorderStrength : ℝ =>
+        finiteCutoffContinuumBornDysonOrderedXYProvenanceContributionsZeroBroadeningBoundary
+          e v m probeEnergy disorderStrength hbar pMax)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (inPlaneCoefficientVector
+          (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
+            (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ))
+          (((-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m *
+            (probeEnergy ^ 2 - m ^ 2) /
+            (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 : ℝ) : ℂ)))) := by
+  rw [tendsto_pi_nhds]
+  intro i
+  fin_cases i
+  · simpa [inPlaneCoefficientVector] using
+      tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero
+        e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
+  · simpa [inPlaneCoefficientVector] using
+      tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero
+        e v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
 
 end
 
