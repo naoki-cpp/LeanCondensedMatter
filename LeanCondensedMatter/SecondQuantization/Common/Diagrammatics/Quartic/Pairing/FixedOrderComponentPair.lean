@@ -45,8 +45,9 @@ noncomputable def QuarticDiagram.fixedOrderPairComponent
     (order : QuarticVertexOrder S)
     (pr : (d.pairingInOrder order).NormalizedPair) : d.componentPartition.parts :=
   let q := orderedLegToDiagramLeg S order pr.1.1
-  ⟨d.componentBlock (vertexOfLeg q),
-    d.componentBlock_mem_componentPartition (vertexOfLeg q)⟩
+  ⟨d.componentBlock (vertexOfLeg q), by
+    unfold QuarticDiagram.componentBlock
+    exact d.componentPartition.part_mem.2 (vertexOfLeg q).2⟩
 
 @[simp]
 theorem QuarticDiagram.fixedOrderPairComponent_val
@@ -119,7 +120,8 @@ theorem QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding
     (pr : d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) :
     d.fixedOrderPairComponent order (d.fixedOrderComponentPairEmbedding order C pr) = C := by
   apply Subtype.ext
-  apply (d.componentBlock_eq_iff_mem C.2 _).2
+  unfold QuarticDiagram.componentBlock
+  apply (d.componentPartition.part_eq_iff_mem C.2).2
   let shuffle := d.fixedOrderComponentShuffle order
   let localLeg := orderedLegToDiagramLeg (C : Finset (Fin N))
     (d.componentPartition.partOrdersOfOrder order C) pr.1.1
