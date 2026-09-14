@@ -22,14 +22,6 @@ variable {n : ℕ}
 def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
   FiniteIndex.blockEquiv (by ring)
 
-private theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
-    p < q ↔
-      (pairSlotIndexEquiv n p).1 < (pairSlotIndexEquiv n q).1 ∨
-        ((pairSlotIndexEquiv n p).1 = (pairSlotIndexEquiv n q).1 ∧
-          (pairSlotIndexEquiv n p).2 < (pairSlotIndexEquiv n q).2) := by
-  simpa [pairSlotIndexEquiv] using
-    (FiniteIndex.blockEquiv_lt_iff (by ring : 2 * n = n * 2) p q)
-
 private noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
     Fin n ≃ pairing.NormalizedPair :=
   (Fintype.equivFinOfCardEq pairing.card_normalizedPair).symm
@@ -100,8 +92,9 @@ private theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
 private theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) :
     (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y ↔
       x.1 < y.1 ∨ (x.1 = y.1 ∧ x.2 < y.2) := by
-  rw [pairSlotIndexEquiv_lt_iff n]
-  simp
+  simpa [pairSlotIndexEquiv] using
+    (FiniteIndex.blockEquiv_lt_iff (by ring : 2 * n = n * 2)
+      ((pairSlotIndexEquiv n).symm x) ((pairSlotIndexEquiv n).symm y))
 
 private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
     (if a < b then (1 : ℤˣ) else -1) = (-1) ^ (if b < a then 1 else 0) := by
