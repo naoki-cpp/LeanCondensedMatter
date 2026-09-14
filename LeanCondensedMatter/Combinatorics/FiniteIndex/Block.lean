@@ -17,26 +17,46 @@ namespace FiniteIndex
 def blockEquiv {total n k : ℕ} (h : total = n * k) : Fin total ≃ Fin n × Fin k :=
   (finCongr h).trans (finProdFinEquiv (m := n) (n := k)).symm
 
+/-- The row-major coordinate `i * k + j` lies in the `n * k` flattened block range. -/
+theorem blockCoordinate_lt {n k : ℕ} (i : Fin n) (j : Fin k) :
+    (i : ℕ) * k + (j : ℕ) < n * k := by
+  calc
+    (i : ℕ) * k + (j : ℕ) < (i : ℕ) * k + k := Nat.add_lt_add_left j.isLt _
+    _ = ((i : ℕ) + 1) * k := by rw [Nat.succ_mul]
+    _ ≤ n * k := Nat.mul_le_mul_right k i.isLt
+
 /-- The block equivalence sends the flat coordinate `i * k + j` to `(i, j)`. -/
 @[simp]
 theorem blockEquiv_cast_mul_add {total n k : ℕ} (h : total = n * k)
     (i : Fin n) (j : Fin k) :
-    blockEquiv h (Fin.cast h.symm ⟨(i : ℕ) * k + (j : ℕ), by omega⟩) = (i, j) := by
+    blockEquiv h
+        (Fin.cast h.symm ⟨(i : ℕ) * k + (j : ℕ), blockCoordinate_lt i j⟩) = (i, j) := by
   simp only [blockEquiv, Equiv.trans_apply, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self]
   rw [Equiv.symm_apply_eq]
   apply Fin.ext
   simp only [finProdFinEquiv, Equiv.coe_fn_mk]
-  omega
+  ac_rfl
 
 /-- Every flat finite index is the block coordinate obtained from its block/local projections. -/
 theorem eq_cast_mul_add_blockEquiv {total n k : ℕ} (h : total = n * k) (p : Fin total) :
     p = Fin.cast h.symm
-      ⟨(blockEquiv h p).1 * k + (blockEquiv h p).2, by
-        have := (blockEquiv h p).2.isLt
-        omega⟩ := by
+      ⟨(blockEquiv h p).1 * k + (blockEquiv h p).2,
+        blockCoordinate_lt (blockEquiv h p).1 (blockEquiv h p).2⟩ := by
   have heq := blockEquiv_cast_mul_add h (blockEquiv h p).1 (blockEquiv h p).2
   rw [Prod.mk.eta] at heq
   exact ((blockEquiv h).injective heq).symm
+
+private theorem local_add_block_mul_lt_of_block_lt {n k : ℕ}
+    (i j : Fin n) (a b : Fin k) (hij : i < j) :
+    (a : ℕ) + k * (i : ℕ) < (b : ℕ) + k * (j : ℕ) := by
+  calc
+    (a : ℕ) + k * (i : ℕ) < k + k * (i : ℕ) := Nat.add_lt_add_right a.isLt _
+    _ = ((i : ℕ) + 1) * k := by
+      rw [Nat.succ_mul]
+      ac_rfl
+    _ ≤ (j : ℕ) * k := Nat.mul_le_mul_right k hij
+    _ = k * (j : ℕ) := Nat.mul_comm _ _
+    _ ≤ (b : ℕ) + k * (j : ℕ) := Nat.le_add_left _ _
 
 /-- Flat coordinates in distinct blocks are ordered exactly by their block indices. -/
 theorem blockEquiv_symm_lt_symm_iff_fst_lt_of_ne {total n k : ℕ}
@@ -47,14 +67,15 @@ theorem blockEquiv_symm_lt_symm_iff_fst_lt_of_ne {total n k : ℕ}
   have hq' : ((blockEquiv h).symm (j, b)).val = b.val + k * j.val := by
     simp [blockEquiv, finProdFinEquiv]
   change ((blockEquiv h).symm (i, a)).val <
-      ((blockEquiv h).symm (j, b)).val ↔ i.val < j.val
+      ((blockEquiv h).symm (j, b)).val ↔ i < j
   rw [hp', hq']
-  have ha : a.val < k := a.isLt
-  have hb : b.val < k := b.isLt
-  have hij' : i.val ≠ j.val := by
-    intro hijVal
-    exact hij (Fin.ext hijVal)
-  omega
+  constructor
+  · intro hflat
+    rcases lt_or_gt_of_ne hij with hij' | hji
+    · exact hij'
+    · have hrev := local_add_block_mul_lt_of_block_lt j i b a hji
+      exact (lt_asymm hflat hrev).elim
+  · exact local_add_block_mul_lt_of_block_lt i j a b
 
 /-- Flat coordinates in the same block are ordered exactly by their local indices. -/
 theorem blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq {total n k : ℕ}
@@ -69,9 +90,9 @@ theorem blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq {total n k : ℕ}
   have hq' : ((blockEquiv hcard).symm (i, b)).val = b.val + k * i.val := by
     simp [blockEquiv, finProdFinEquiv]
   change ((blockEquiv hcard).symm (i, a)).val <
-      ((blockEquiv hcard).symm (i, b)).val ↔ a.val < b.val
+      ((blockEquiv hcard).symm (i, b)).val ↔ a < b
   rw [hp', hq']
-  omega
+  exact Nat.add_lt_add_iff_right
 
 end FiniteIndex
 end Combinatorics
