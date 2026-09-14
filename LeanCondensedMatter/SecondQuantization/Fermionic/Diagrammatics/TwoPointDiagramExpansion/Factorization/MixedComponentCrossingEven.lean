@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
@@ -236,25 +237,33 @@ private theorem
   rw [d.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks τ τ' σ B C hVac]
   apply Nat.mod_eq_zero_of_dvd
   refine Finset.dvd_sum fun p _ => ?_
-  refine Finset.dvd_sum fun v _ => ?_
-  have hsum :
-      (∑ l : Fin 4,
-        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1
-        then 1 else 0) =
-      ∑ _l : Fin 4,
-        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1
-        then 1 else 0 := by
-    apply Finset.sum_congr rfl
-    intro l _
-    by_cases h0 : (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1
-    · have hl : (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 := by
-        simpa [h0] using hUniform p v l
-      simp [h0, hl]
-    · have hl : ¬ (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 := by
-        simpa [h0] using hUniform p v l
-      simp [h0, hl]
-  rw [hsum, Fin.sum_univ_four]
-  split_ifs <;> omega
+  let V := ↥(Common.TwoPointDiagram.interactionPart
+    (C : Finset (Common.TwoPointVertex
+      (Finset.univ : Finset (Fin n)))))
+  let f : V → ℕ := fun v =>
+    if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0
+  change 2 ∣ ∑ v : V, ∑ l : Fin 4,
+    if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0
+  have hcount :
+      (∑ v : V, ∑ l : Fin 4,
+        if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0) =
+        4 * ∑ v : V, f v := by
+    calc
+      (∑ v : V, ∑ l : Fin 4,
+          if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1 then 1 else 0) =
+          ∑ v : V, ∑ _l : Fin 4, f v := by
+        apply Finset.sum_congr rfl
+        intro v _
+        apply Finset.sum_congr rfl
+        intro l _
+        simp [f, hUniform p v l]
+      _ = 4 * ∑ v : V, f v := by
+        simpa [Fintype.sum_prod_type] using
+          (Fintype.sum_equiv_fst_eq_card_mul_sum
+            (e := Equiv.refl (V × Fin 4)) (f := f))
+  rw [hcount]
+  refine ⟨2 * ∑ v : V, f v, ?_⟩
+  ring
 
 private def mixedTimeOrderedInteractionLeg {n : ℕ} (v : Fin n) (l : Fin 4) :
     OrderedTwoPointLeg n :=
