@@ -4363,6 +4363,218 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {n k : ℕ} (i : Fin n) (j : Fin k), ↑i * k + ↑j < n * k",
+    "standardAxioms": [],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.blockCoordinate_lt",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "The row-major coordinate `i * k + j` lies in the `n * k` flattened block range. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add",
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add",
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {total n k : ℕ} (h : total = n * k) (i : Fin n) (j : Fin k),\n  (Combinatorics.FiniteIndex.blockEquiv h) (Fin.cast ⋯ ⟨↑i * k + ↑j, ⋯⟩) = (i, j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "The block equivalence sends the flat coordinate `i * k + j` to `(i, j)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockCoordinate_lt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {total n k : ℕ} (h : total = n * k) (p q : Fin total),\n  p < q ↔\n    ((Combinatorics.FiniteIndex.blockEquiv h) p).1 < ((Combinatorics.FiniteIndex.blockEquiv h) q).1 ∨\n      ((Combinatorics.FiniteIndex.blockEquiv h) p).1 = ((Combinatorics.FiniteIndex.blockEquiv h) q).1 ∧\n        ((Combinatorics.FiniteIndex.blockEquiv h) p).2 < ((Combinatorics.FiniteIndex.blockEquiv h) q).2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.blockEquiv_lt_iff",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "Flat order is the lexicographic order on the block index followed by the local index. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne",
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_symm_lt_iff"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val",
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.local_add_block_mul_lt_of_block_lt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne",
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_symm_lt_iff"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {total n k : ℕ} (h : total = n * k) (i j : Fin n) (a b : Fin k),\n  i ≠ j →\n    ((Combinatorics.FiniteIndex.blockEquiv h).symm (i, a) < (Combinatorics.FiniteIndex.blockEquiv h).symm (j, b) ↔\n      i < j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "Flat coordinates in distinct blocks are ordered exactly by their block indices. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {total n k : ℕ} (hcard : total = n * k) (p q : Fin n × Fin k),\n  p.1 = q.1 →\n    ((Combinatorics.FiniteIndex.blockEquiv hcard).symm p < (Combinatorics.FiniteIndex.blockEquiv hcard).symm q ↔\n      p.2 < q.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "Flat coordinates in the same block are ordered exactly by their local indices. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (n : ℕ) (j : Fin (2 * (n + 1))), j ≠ 0 → (Combinatorics.FiniteIndex.deletedPositions n j).card = 2 * n",
     "standardAxioms": [
       "Classical.choice",
@@ -4392,6 +4604,48 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {total n k : ℕ} (h : total = n * k) (p : Fin total),\n  p =\n    Fin.cast ⋯\n      ⟨↑((Combinatorics.FiniteIndex.blockEquiv h) p).1 * k + ↑((Combinatorics.FiniteIndex.blockEquiv h) p).2, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": "Every flat finite index is the block coordinate obtained from its block/local projections. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockCoordinate_lt",
+      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83813,8 +84067,8 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.strictMono",
-      "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne",
-      "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq"
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne",
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -96619,43 +96873,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (p : Fin (2 * (2 * n))) (h : 2 * (2 * n) = n * 4),\n  p =\n    Fin.cast ⋯\n      ⟨↑((SecondQuantization.Common.orderedQuarticLegEquiv n) p).1 * 4 +\n          ↑((SecondQuantization.Common.orderedQuarticLegEquiv n) p).2,\n        ⋯⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.eq_cast_mul_add_orderedQuarticLegEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
-    "externalAxioms": [],
-    "docString": "Every ordered flattened quartic leg is the block coordinate of its vertex and local-leg\nprojections. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedQuarticLegEquiv_cast_mul_add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {s : SecondQuantization.Common.Statistics} {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode]\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config] (i : Mode),\n  SecondQuantization.Common.exchangeCommutator s (SecondQuantization.Common.ExchangeAlgebra.annihilate s i)\n      (SecondQuantization.Common.ExchangeAlgebra.create s i) =\n    LinearMap.id",
     "standardAxioms": [
@@ -102594,11 +102811,11 @@
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti"
     ],
     "dependencies": [
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne",
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
       "List.idxOf_flatMap_block_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
-      "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne",
-      "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
@@ -103326,131 +103543,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (i : Fin n) (j : Fin 4) (h : 2 * (2 * n) = n * 4),\n  (SecondQuantization.Common.orderedQuarticLegEquiv n) (Fin.cast ⋯ ⟨↑i * 4 + ↑j, ⋯⟩) = (i, j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedQuarticLegEquiv_cast_mul_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
-    "externalAxioms": [],
-    "docString": "The ordered quartic-leg equivalence sends the block coordinate `i * 4 + j` to `(i, j)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.eq_cast_mul_add_orderedQuarticLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.eq_cast_mul_add_orderedQuarticLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening.0.SecondQuantization.Fermionic.quarticLegOperatorForSequence_cast_mul_add"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ) (i j : Fin n) (a b : Fin 4),\n  i ≠ j →\n    ((SecondQuantization.Common.orderedQuarticLegEquiv n).symm (i, a) <\n        (SecondQuantization.Common.orderedQuarticLegEquiv n).symm (j, b) ↔\n      i < j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-    "externalAxioms": [],
-    "docString": "Flattened quartic legs in distinct vertex-slot blocks are ordered exactly by their slots. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ) (p q : Fin n × Fin 4),\n  p.1 = q.1 →\n    ((SecondQuantization.Common.orderedQuarticLegEquiv n).symm p <\n        (SecondQuantization.Common.orderedQuarticLegEquiv n).symm q ↔\n      p.2 < q.2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-    "externalAxioms": [],
-    "docString": "Flattened quartic legs in the same vertex-slot block are ordered by their local leg indices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131604,7 +131696,7 @@
     "name": "SecondQuantization.Fermionic.prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
     "externalAxioms": [],
-    "docString": "**`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `nestedVertexOperatorComp_succ`,\n`interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and\n`Common.prodComp_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the Common\n`eq_cast_mul_add_orderedQuarticLegEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
+    "docString": "**`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `nestedVertexOperatorComp_succ`,\n`interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and\n`Common.prodComp_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -138224,6 +138316,85 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {total n k : ℕ} (h : total = n * k) (p : Fin total),\n  ↑p = ↑((Combinatorics.FiniteIndex.blockEquiv h) p).2 + k * ↑((Combinatorics.FiniteIndex.blockEquiv h) p).1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.blockEquiv_reconstruct_val",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "dependencies": [
+      "Combinatorics.FiniteIndex.blockCoordinate_lt",
+      "Combinatorics.FiniteIndex.eq_cast_mul_add_blockEquiv"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n k : ℕ} (i j : Fin n) (a b : Fin k), i < j → ↑a + k * ↑i < ↑b + k * ↑j",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FiniteIndex.Block.0.Combinatorics.FiniteIndex.local_add_block_mul_lt_of_block_lt",
+    "module": "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {R : Type u_1} {α : Type u_2} [inst : Ring R] [inst_1 : PartialOrder α] [inst_2 : LocallyFiniteOrder α]\n  [inst_3 : DecidableEq α] [inst_4 : DecidableLE α] (f : IncidenceAlgebra R α),\n  f * IncidenceAlgebra.zeta R = 1 → f = IncidenceAlgebra.mu R",
     "standardAxioms": [
       "Classical.choice",
@@ -139204,86 +139375,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ) (p q : Fin (2 * n)),\n  p < q ↔\n    ((Combinatorics.pairSlotIndexEquiv n) p).1 < ((Combinatorics.pairSlotIndexEquiv n) q).1 ∨\n      ((Combinatorics.pairSlotIndexEquiv n) p).1 = ((Combinatorics.pairSlotIndexEquiv n) q).1 ∧\n        ((Combinatorics.pairSlotIndexEquiv n) p).2 < ((Combinatorics.pairSlotIndexEquiv n) q).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_lt_iff",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_symm_lt_iff"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_reconstruct_val"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_symm_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (n : ℕ) (p : Fin (2 * n)),\n  ↑p = ↑((Combinatorics.pairSlotIndexEquiv n) p).2 + 2 * ↑((Combinatorics.pairSlotIndexEquiv n) p).1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_reconstruct_val",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_lt_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ) (x y : Fin n × Fin 2),\n  (Combinatorics.pairSlotIndexEquiv n).symm x < (Combinatorics.pairSlotIndexEquiv n).symm y ↔\n    x.1 < y.1 ∨ x.1 = y.1 ∧ x.2 < y.2",
     "standardAxioms": [
       "Classical.choice",
@@ -139308,7 +139399,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.blockFactor_self"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.pairSlotIndexEquiv_lt_iff"
+      "Combinatorics.FiniteIndex.blockEquiv_lt_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -148723,7 +148814,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Common.orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne"
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -151968,7 +152059,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.orderedQuarticLegEquiv_cast_mul_add"
+      "Combinatorics.FiniteIndex.blockEquiv_cast_mul_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
