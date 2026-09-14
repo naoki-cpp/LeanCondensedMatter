@@ -55,23 +55,6 @@ noncomputable def finiteKuboBastinDirectionalTransitionFactor
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
 
-omit [Fintype ι] in
-theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) :
-    finiteKuboBastinDirectionalTransitionFactor
-        system data geometry direction K q omega eta mn =
-      purePointKuboBastinVertexTransitionFactor system data
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        omega eta mn := by
-  rfl
-
 /-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
 by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
