@@ -47,7 +47,8 @@ theorem create_comp_add_swap (f g : 𝓗₁) :
       (create 𝓗₁ g).comp (create 𝓗₁ f) = 0 := by
   simpa only [create, LinearMap.comp_apply, map_add, map_mul, map_zero,
     Module.End.mul_eq_comp] using
-      congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)) (oneParticle_mul_add_swap 𝓗₁ f g)
+      congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)).toLinearMap
+        (oneParticle_mul_add_swap 𝓗₁ f g)
 
 /-- Creating twice in the same one-particle state gives zero. -/
 @[simp]
