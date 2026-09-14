@@ -25,7 +25,9 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.componentPartition.parts :=
-  ⟨d.externalComponent 0, d.componentBlock_mem_componentPartition (Sum.inl 0)⟩
+  ⟨d.externalComponent 0, by
+    change d.vertexGraph.componentBlock (Sum.inl 0) ∈ d.vertexGraph.componentPartition.parts
+    exact d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0)⟩
 
 /-- If the two external vertices were disconnected, external vertex `1` would not lie in the
 component of external vertex `0`. -/
@@ -36,7 +38,10 @@ theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (F
       (d.externalComponentPart : Finset (TwoPointVertex S)) := by
   intro hmem
   apply hExt
-  exact ((d.mem_componentBlock
+  change d.vertexGraph.Reachable
+    (Sum.inl (0 : Fin 2) : TwoPointVertex S)
+    (Sum.inl (1 : Fin 2) : TwoPointVertex S)
+  exact ((d.vertexGraph.mem_componentBlock
     (Sum.inl (0 : Fin 2) : TwoPointVertex S)
     (Sum.inl (1 : Fin 2) : TwoPointVertex S)).1 hmem).symm
 
@@ -66,10 +71,8 @@ noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (
     cases leg with
     | inl e =>
         exact ⟨Sum.inl 0, by
-          change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈ d.externalComponent 0
-          simpa [TwoPointDiagram.externalComponent] using
-            d.self_mem_componentBlock
-              (Sum.inl (0 : Fin 2) : TwoPointVertex S)⟩
+          change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl 0)
+          exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)⟩
     | inr p =>
         let v : ↥S :=
           ⟨p.1.1, TwoPointDiagram.interactionPart_subset
@@ -157,8 +160,9 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.externalComponent 0 = d.externalComponent 1 := by
-  change d.componentBlock (Sum.inl (0 : Fin 2)) = d.componentBlock (Sum.inl (1 : Fin 2))
-  exact (d.componentBlock_eq_iff_reachable
+  change d.vertexGraph.componentBlock (Sum.inl (0 : Fin 2)) =
+    d.vertexGraph.componentBlock (Sum.inl (1 : Fin 2))
+  exact (d.vertexGraph.componentBlock_eq_iff_reachable
     (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).2 d.externalVerticesConnected
 
 /-- Every external vertex lies in the common external component. -/
@@ -167,12 +171,14 @@ theorem TwoPointDiagram.externalVertex_mem_externalComponentPart {S : Finset (Fi
     (Sum.inl e : TwoPointVertex S) ∈
       (d.externalComponentPart : Finset (TwoPointVertex S)) := by
   fin_cases e
-  · simpa [TwoPointDiagram.externalComponentPart, TwoPointDiagram.externalComponent] using
-      d.self_mem_componentBlock (Sum.inl (0 : Fin 2) : TwoPointVertex S)
+  · change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
+      d.vertexGraph.componentBlock (Sum.inl 0)
+    exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
   · rw [show (d.externalComponentPart : Finset (TwoPointVertex S)) =
       d.externalComponent 0 by rfl, d.externalComponent_zero_eq_one]
-    simpa [TwoPointDiagram.externalComponent] using
-      d.self_mem_componentBlock (Sum.inl (1 : Fin 2) : TwoPointVertex S)
+    change (Sum.inl (1 : Fin 2) : TwoPointVertex S) ∈
+      d.vertexGraph.componentBlock (Sum.inl 1)
+    exact d.vertexGraph.self_mem_componentBlock (Sum.inl 1)
 
 /-- For two one-legged external insertions and quartic interaction vertices, external connectedness
 is exactly the absence of vacuum components. -/
