@@ -1,49 +1,62 @@
-# Combinatorics roadmap
+# Combinatorics (Track B)
 
-This roadmap tracks reusable combinatorial infrastructure shared by linked-cluster, diagrammatic,
-and finite-index developments.
+Track B contains physics-independent finite combinatorics used by the thermal and diagrammatic layers.
 
-## Set partitions and cumulants
-
-Status: `proved`.
-
-The project has finite set partitions, Möbius inversion on the partition lattice, cumulants,
-connected-class decompositions, and the moment--cumulant bridge needed by linked-cluster arguments.
-These live under `Combinatorics` and remain independent of Fock-space or statistics-specific
-semantics.
-
-## Pairings and crossing parity
+## Partition-lattice Möbius theory
 
 Status: `proved`.
 
-Perfect pairings, endpoint access, crossing predicates/counts, crossing parity, pair decompositions,
-and component crossing decompositions live under `Combinatorics/PerfectPairing`. Diagrammatic
-layers transport their physical pair data into these general APIs rather than restating crossing
-algebra downstream.
+`Combinatorics/PartitionLattice.lean` and the set-partition modules provide the refinement structure
+needed for incidence-algebra arguments. The key results include:
 
-## Finite index transformations
+- refinement intervals represented as products of partition lattices on the blocks;
+- the corresponding order isomorphism;
+- factorization of the Möbius function over blocks;
+- the explicit partition-lattice formula
 
-Status: `proved`.
+```text
+μ(⊥, ⊤) = (-1)^(n-1) (n-1)!
+```
 
-`Combinatorics/FiniteIndex` owns statistics-independent finite-index transformations that recur in
-operator and diagrammatic proofs, including deletion/reinsertion positions and fixed-width block
-coordinates. Downstream layers should expose only the model-specific meaning of an index and reuse
-these transformations for arithmetic and ordering facts.
+for a nonempty `n`-element set, together with interval/blockwise versions.
 
-## Exchange signs and permutations
+General incidence-algebra support such as invariance under order isomorphism, down-set compatibility,
+and finite dependent-product factorization lives in `Combinatorics/IncidenceAlgebraMu.lean`.
 
-Status: `proved`.
+## Moment--cumulant inversion
 
-Permutation signs and exchange-sign bookkeeping are factored into general combinatorics before
-fermionic or bosonic specializations. This keeps sign algebra separate from operator semantics.
+Status: `proved` in `Combinatorics/MomentCumulant.lean`.
 
-## Finite product decomposition
+For a finite set `S`,
 
-Status: `proved`.
+```text
+momentFromCumulant κ S
+  = ∑ π : Finpartition S, ∏ B ∈ π.parts, κ B,
+```
 
-General finite-product identities and reindexing facts belong upstream of physical amplitudes.
-Diagrammatic factorization proofs should reduce to these generic results once the relevant component
-or slot equivalence has been constructed.
+and
+
+```text
+cumulantFromMoment m S
+  = ∑ π : Finpartition S, μ(π, ⊤) ∏ B ∈ π.parts, m B.
+```
+
+The two constructions are mutual inverses on nonempty sets. The nonempty hypothesis is genuine:
+`momentFromCumulant κ ∅ = 1` independently of `κ ∅`.
+
+The proof uses the refinement-product decomposition to factor partition products and applies Möbius
+inversion on the partition lattice.
+
+## Cumulants and independence
+
+Status: `proved` in `Combinatorics/CumulantFactorization.lean`.
+
+`Finpartition.IsIndependentAcross` expresses factorization of a moment function across two disjoint
+regions. Under that hypothesis, cumulants vanish on finite sets that straddle both regions; in
+particular the cumulant of their nontrivial union is zero.
+
+This is the reusable finite combinatorial independence theorem. Physics-specific notions of state or
+operator independence belong downstream.
 
 ## Formal-log bridge
 
