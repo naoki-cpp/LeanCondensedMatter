@@ -72,10 +72,8 @@ theorem Pairing.normalizedPairSigmaEquiv_apply [Fintype ι]
   unfold Pairing.normalizedPairOfEndpointEquiv
   rw [Pairing.componentPairEndpointEquiv_apply_zero]
   have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-  have hlt :
-      positionEquiv ⟨B, pr.1.1⟩ < global.partner (positionEquiv ⟨B, pr.1.1⟩) := by
-    rw [hpartner B pr.1.1, hpr.2]
-    exact hmono B hpr.1
-  simp [Pairing.positionToPairEndpoint, hlt, hpartner B pr.1.1, hpr.2]
+  have horder : positionEquiv ⟨B, pr.1.1⟩ < positionEquiv ⟨B, pr.1.2⟩ :=
+    hmono B hpr.1
+  simp [Pairing.positionToPairEndpoint, hpartner B pr.1.1, hpr.2, horder]
 
 end Combinatorics
