@@ -99,7 +99,6 @@ theorem TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal
         exact d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩
     obtain ⟨e, he⟩ := h B
     refine ⟨e, ?_⟩
-    change d.vertexGraph.Reachable (Sum.inl e) (Sum.inr v)
     exact (d.vertexGraph.mem_componentBlock (Sum.inr v) (Sum.inl e)).1 he
 
 open Classical in
