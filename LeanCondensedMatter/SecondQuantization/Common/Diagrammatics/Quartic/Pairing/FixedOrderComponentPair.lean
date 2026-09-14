@@ -120,6 +120,10 @@ theorem QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding
     (pr : d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) :
     d.fixedOrderPairComponent order (d.fixedOrderComponentPairEmbedding order C pr) = C := by
   apply Subtype.ext
+  change d.componentBlock
+      (vertexOfLeg (orderedLegToDiagramLeg S order
+        (d.fixedOrderComponentPairEmbedding order C pr).1.1)) =
+    (C : Finset (Fin N))
   unfold QuarticDiagram.componentBlock
   apply (d.componentPartition.part_eq_iff_mem C.2).2
   let shuffle := d.fixedOrderComponentShuffle order
