@@ -39,7 +39,7 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     change d.vertexGraph.componentBlockOn (vertexOfLeg leg) =
       d.vertexGraph.componentBlockOn (vertexOfLeg (d.pairing.partner leg))
     exact d.vertexGraph.componentBlockOn_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)
+      (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
   rw [hEq]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
