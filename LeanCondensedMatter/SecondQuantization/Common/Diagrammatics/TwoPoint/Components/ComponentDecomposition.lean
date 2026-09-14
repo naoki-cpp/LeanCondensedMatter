@@ -124,10 +124,12 @@ theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteract
           (v : Fin N) ∈ TwoPointDiagram.interactionPart
             (B : Finset (TwoPointVertex S)) := by
   let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (Sum.inr v),
-      d.componentBlock_mem_componentPartition (Sum.inr v)⟩
+    ⟨d.componentBlock (Sum.inr v), by
+      change d.vertexGraph.componentBlock (Sum.inr v) ∈ d.vertexGraph.componentPartition.parts
+      exact d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩
   have hvB : (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S)) := by
-    exact d.self_mem_componentBlock (Sum.inr v)
+    change (Sum.inr v : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inr v)
+    exact d.vertexGraph.self_mem_componentBlock (Sum.inr v)
   rcases d.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts B with hB | hB
   · left
     apply (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2
@@ -153,21 +155,34 @@ theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
     · intro w hw
       rw [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.mem_interactionPart]
       refine ⟨hw, ?_⟩
-      obtain ⟨e, he⟩ := hall
-        ⟨d.componentBlock (Sum.inr ⟨w, hw⟩), d.componentBlock_mem_componentPartition _⟩
-      have hblock : d.externalComponent e = d.componentBlock (Sum.inr ⟨w, hw⟩) :=
-        (d.componentBlock_eq_iff_mem
-          (d.componentBlock_mem_componentPartition _) (Sum.inl e)).2 he
+      let C : d.componentPartition.parts :=
+        ⟨d.componentBlock (Sum.inr ⟨w, hw⟩), by
+          change d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩) ∈
+            d.vertexGraph.componentPartition.parts
+          exact d.vertexGraph.componentBlock_mem_componentPartition _⟩
+      obtain ⟨e, he⟩ := hall C
+      have hC : (C : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := by
+        simpa only [TwoPointDiagram.componentPartition] using C.2
+      have hblock : d.externalComponent e = d.componentBlock (Sum.inr ⟨w, hw⟩) := by
+        change d.vertexGraph.componentBlock (Sum.inl e) =
+          d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩)
+        exact (d.vertexGraph.componentBlock_eq_iff_mem hC (Sum.inl e)).2 he
       have hzero : d.externalComponent e = d.externalComponent 0 := by
         fin_cases e
         · rfl
         · exact d.externalComponent_zero_eq_one.symm
       rw [← hzero, hblock]
-      exact d.self_mem_componentBlock _
+      change (Sum.inr ⟨w, hw⟩ : TwoPointVertex S) ∈
+        d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩)
+      exact d.vertexGraph.self_mem_componentBlock _
   · intro hconn B
     obtain ⟨v, -, hv⟩ := d.componentPartition.part_surjOn B.2
     cases v with
-    | inl e => exact ⟨e, hv ▸ d.self_mem_componentBlock (Sum.inl e)⟩
+    | inl e =>
+        refine ⟨e, ?_⟩
+        rw [← hv]
+        change (Sum.inl e : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl e)
+        exact d.vertexGraph.self_mem_componentBlock (Sum.inl e)
     | inr w =>
         have hmem : (w : Fin N) ∈ d.externalInteractionPart := by
           rw [hconn]
@@ -176,13 +191,19 @@ theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
         obtain ⟨hw, hw'⟩ := hmem
         have hvertex : (Sum.inr w : TwoPointVertex S) ∈ d.externalComponent 0 := by
           simpa using hw'
+        have hBgraph : (d.externalComponent 0) ∈ d.vertexGraph.componentPartition.parts := by
+          change d.vertexGraph.componentBlock (Sum.inl 0) ∈ d.vertexGraph.componentPartition.parts
+          exact d.vertexGraph.componentBlock_mem_componentPartition _
         have hB : (B : Finset (TwoPointVertex S)) = d.externalComponent 0 := by
           rw [← hv]
-          exact (d.componentBlock_eq_iff_mem
-            (d.componentBlock_mem_componentPartition (Sum.inl 0)) (Sum.inr w)).2 hvertex
+          change d.vertexGraph.componentBlock (Sum.inr w) =
+            d.vertexGraph.componentBlock (Sum.inl 0)
+          exact (d.vertexGraph.componentBlock_eq_iff_mem hBgraph (Sum.inr w)).2 hvertex
         refine ⟨0, ?_⟩
         rw [hB]
-        exact d.self_mem_componentBlock (Sum.inl 0)
+        change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
+          d.vertexGraph.componentBlock (Sum.inl 0)
+        exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
 
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
 theorem TwoPointDiagram.interactionPart_component_unique
@@ -194,12 +215,16 @@ theorem TwoPointDiagram.interactionPart_component_unique
       (C : Finset (TwoPointVertex S))) :
     B = C := by
   apply Subtype.ext
-  have hB : d.componentBlock (Sum.inr v) = (B : Finset (TwoPointVertex S)) :=
-    (d.componentBlock_eq_iff_mem B.2 (Sum.inr v)).2
+  have hBgraph : (B : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := by
+    simpa only [TwoPointDiagram.componentPartition] using B.2
+  have hCgraph : (C : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := by
+    simpa only [TwoPointDiagram.componentPartition] using C.2
+  have hB : d.vertexGraph.componentBlock (Sum.inr v) = (B : Finset (TwoPointVertex S)) :=
+    (d.vertexGraph.componentBlock_eq_iff_mem hBgraph (Sum.inr v)).2
       ((TwoPointDiagram.mem_interactionPart_subtype
         (B : Finset (TwoPointVertex S)) v).1 hvB)
-  have hC : d.componentBlock (Sum.inr v) = (C : Finset (TwoPointVertex S)) :=
-    (d.componentBlock_eq_iff_mem C.2 (Sum.inr v)).2
+  have hC : d.vertexGraph.componentBlock (Sum.inr v) = (C : Finset (TwoPointVertex S)) :=
+    (d.vertexGraph.componentBlock_eq_iff_mem hCgraph (Sum.inr v)).2
       ((TwoPointDiagram.mem_interactionPart_subtype
         (C : Finset (TwoPointVertex S)) v).1 hvC)
   exact hB.symm.trans hC
