@@ -127,7 +127,7 @@ theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     change d.vertexGraph.componentBlock (twoPointVertexOfLeg leg) =
       d.vertexGraph.componentBlock (twoPointVertexOfLeg (d.pairing.partner leg))
     exact d.vertexGraph.componentBlock_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg)
+      (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg).symm
   rw [hEq]
 
 /-- The partner permutation restricted to the legs of one full component. -/
