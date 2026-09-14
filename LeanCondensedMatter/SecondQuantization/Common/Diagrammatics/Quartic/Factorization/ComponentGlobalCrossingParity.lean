@@ -71,8 +71,17 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
   rw [Finset.sum_comm]
   refine Finset.dvd_sum fun q _ => ?_
   simp_rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)]
+  change 2 ∣ ∑ x, (fun i : Fin (B : Finset (Fin N)).card =>
+    if shuffle.slotEquiv
+          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+        shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
+      ((orderedQuarticLegEquiv (B : Finset (Fin N)).card x).1)
   rw [Fintype.sum_equiv_fst_eq_card_mul_sum
-    (e := orderedQuarticLegEquiv (B : Finset (Fin N)).card)]
+    (e := orderedQuarticLegEquiv (B : Finset (Fin N)).card)
+    (f := fun i =>
+      if shuffle.slotEquiv
+            ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+          shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)]
   simp only [Fintype.card_fin]
   refine ⟨2 * (∑ i : Fin (B : Finset (Fin N)).card,
     if shuffle.slotEquiv
