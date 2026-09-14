@@ -24,6 +24,10 @@ the inverse disorder factor. The ordered-`xy` endpoint also exposes a theorem-le
 canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
 
+Although the real-coordinate pattern matches the imaginary part of ordinary complex multiplication,
+the in-plane coefficients here are already `ℂ`-valued. Therefore the public API remains the `ℂ²`
+ladder action rather than collapsing it to a single complex scalar.
+
 The supplied ladder coefficients are total algebraic values. The shared nonzero in-plane ladder
 determinant is required only when they are interpreted as the solved physical fixed point. Generic
 shared-provenance response matrices, pointwise trace identities, and finite-energy surface/sea
