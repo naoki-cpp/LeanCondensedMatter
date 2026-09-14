@@ -26,7 +26,6 @@ theorem blockCoordinate_lt {n k : ℕ} (i : Fin n) (j : Fin k) :
     _ ≤ n * k := Nat.mul_le_mul_right k i.isLt
 
 /-- The block equivalence sends the flat coordinate `i * k + j` to `(i, j)`. -/
-@[simp]
 theorem blockEquiv_cast_mul_add {total n k : ℕ} (h : total = n * k)
     (i : Fin n) (j : Fin k) :
     blockEquiv h
