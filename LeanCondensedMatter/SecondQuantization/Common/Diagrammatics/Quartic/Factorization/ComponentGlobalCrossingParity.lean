@@ -70,12 +70,15 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
   rw [Finset.sum_comm]
   refine Finset.dvd_sum fun q _ => ?_
   simp_rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)]
-  rw [← Equiv.sum_comp (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm,
-    Fintype.sum_prod_type]
-  simp only [Equiv.apply_symm_apply]
-  refine Finset.dvd_sum fun i _ => ?_
-  rw [Fin.sum_univ_four]
-  split_ifs <;> omega
+  simpa [orderedQuarticLegEquiv] using
+    (FiniteIndex.dvd_sum_indicator_blockEquiv_fst_of_dvd
+      (h := (by ring : 2 * (2 * (B : Finset (Fin N)).card) =
+        (B : Finset (Fin N)).card * 4))
+      (hmk := (by norm_num : 2 ∣ 4))
+      (P := fun i : Fin (B : Finset (Fin N)).card =>
+        shuffle.slotEquiv
+            ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
+          shuffle.slotEquiv ⟨B, i⟩))
 
 /-- Both orientations of the crossing count between two distinct components add up to an even
 number. -/
