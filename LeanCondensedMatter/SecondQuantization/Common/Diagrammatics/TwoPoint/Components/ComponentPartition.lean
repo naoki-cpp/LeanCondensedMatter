@@ -65,7 +65,7 @@ theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent {S : Fin
     have hblock : d.vertexGraph.componentBlock (Sum.inl e) = B :=
       (d.vertexGraph.componentBlock_eq_iff_mem hB (Sum.inl e)).2 he
     simpa only [TwoPointDiagram.externalComponent, TwoPointDiagram.componentBlock,
-      TwoPointDiagram.componentPartition] using hblock.symm
+      TwoPointDiagram.componentPartition, SimpleGraph.componentBlock] using hblock.symm
   · rintro ⟨e, hB⟩
     refine ⟨e, ?_⟩
     rw [hB]
