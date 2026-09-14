@@ -68,7 +68,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
         · unfold QuarticDiagram.restrictComponent
           congr 2
         · have hvComp : (v : Fin N) ∈ S \ T :=
-            vac.componentPart_subset C.2 (e v).2
+            vac.componentPartition.le C.2 (e v).2
           exact (Finset.mem_sdiff.mp hvComp).2
     _ = ∏ v : ↥(C : Finset (Fin N)),
         w ((vac.restrictComponent C.2).vertexLabel v) :=
