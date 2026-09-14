@@ -69,13 +69,12 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 ## Ownership boundary
 
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
-  identities, and fixed-width finite-index block coordinates/order/counting facts belong in
-  `Combinatorics`;
+  identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
 - Mathlib v4.33.1 supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)` and finite-product sum
-  reindexing; the cast-aware fixed-width coordinate/order facts and the exact product-coordinate
-  counting identity used by the project live in `Combinatorics/FiniteIndex/Block.lean`; diagrammatic
-  layers specialize this API and derive parity or divisibility downstream rather than owning
-  separate fixed-leg counting proofs;
+  reindexing; the cast-aware fixed-width coordinate/order facts used by the project live in
+  `Combinatorics/FiniteIndex/Block.lean`, while generic counting through an equivalence with a finite
+  product lives in `Combinatorics/Common/FintypeProduct.lean`; diagrammatic layers specialize these
+  APIs and derive parity or divisibility downstream rather than owning separate fixed-leg proofs;
 - statistics-independent constructions that require Fock/thermal/diagram semantics belong in
   `SecondQuantization.Common`;
 - fermionic or bosonic sign/amplitude specializations stay downstream.
