@@ -1,3 +1,4 @@
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Fin.Basic
 
