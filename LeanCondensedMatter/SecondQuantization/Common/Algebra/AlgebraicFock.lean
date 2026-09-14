@@ -94,11 +94,6 @@ noncomputable def diagonalCoeff {Config : Type*}
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) : ℂ :=
   matrixCoeff A n n
 
-theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
-    diagonalCoeff A n = matrixCoeff A n n :=
-  rfl
-
 /-- **Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the
 `(n, n)` matrix coefficient is exactly `c`. -/
 theorem matrixCoeff_of_smul_basisState {Config : Type*}
