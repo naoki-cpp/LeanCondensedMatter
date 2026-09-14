@@ -190,7 +190,7 @@ theorem interactionPart_externalComponent_ofSlotSplit
   constructor
   · rintro ⟨hv, hmem⟩
     have hreach :=
-      ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+      ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
         (Sum.inl 0) (Sum.inr ⟨v, hv⟩)).1 hmem
     obtain ⟨y, hy, -⟩ :=
       exists_reachable_of_walk_ofSlotSplit h ext vac hreach.symm.some (Sum.inl 0) rfl
@@ -214,7 +214,7 @@ theorem interactionPart_externalComponent_ofSlotSplit
       fin_cases e
       · exact SimpleGraph.Reachable.refl _
       · exact (TwoPointDiagram.ofSlotSplit h ext vac).externalVerticesConnected.symm
-    exact ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+    exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (Sum.inl 0) (Sum.inr ⟨v, h hvT⟩)).2 (hmapped.symm.trans hexternal)
 
 /-- A diagram whose external component has interaction part `T` is split by the corresponding slot
@@ -241,7 +241,7 @@ theorem isExternallyConnected_slotSplitExternal
   have hmem : (Sum.inr ⟨v.1, h v.2⟩ : TwoPointVertex S) ∈ d.externalComponent 0 :=
     (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) ⟨v.1, h v.2⟩).1 hvT
   have hreach : d.vertexGraph.Reachable (Sum.inr ⟨v.1, h v.2⟩) (Sum.inl 0) :=
-    (d.mem_componentBlock (Sum.inl 0) (Sum.inr ⟨v.1, h v.2⟩)).1 hmem
+    (d.vertexGraph.mem_componentBlock (Sum.inl 0) (Sum.inr ⟨v.1, h v.2⟩)).1 hmem
   have hD : TwoPointDiagram.ofSlotSplit h (d.slotSplitExternal h hsplit)
       (d.slotSplitVacuum h hsplit) = d :=
     TwoPointDiagram.ofSlotSplit_slotSplit h d hsplit
