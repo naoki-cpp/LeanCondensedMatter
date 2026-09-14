@@ -1,3 +1,4 @@
+import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
@@ -6,8 +7,9 @@ set_option linter.style.header false
 # Fixed-width finite block indexing
 
 Mathlib supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)`. This module packages its
-inverse together with an arbitrary equality for the total cardinality and records the coordinate and
-order facts needed when a flat finite index is viewed as a block index plus a local index.
+inverse together with an arbitrary equality for the total cardinality and records the coordinate,
+order, and block-counting facts needed when a flat finite index is viewed as a block index plus a
+local index.
 -/
 
 namespace Combinatorics
@@ -44,6 +46,15 @@ theorem eq_cast_mul_add_blockEquiv {total n k : ℕ} (h : total = n * k) (p : Fi
   have heq := blockEquiv_cast_mul_add h (blockEquiv h p).1 (blockEquiv h p).2
   rw [Prod.mk.eta] at heq
   exact ((blockEquiv h).injective heq).symm
+
+/-- A block-invariant indicator is counted once for each local index in every selected block, so
+any divisor of the fixed block width divides the flattened indicator sum. -/
+theorem dvd_sum_indicator_blockEquiv_fst_of_dvd {total n k m : ℕ}
+    (h : total = n * k) (hmk : m ∣ k) (P : Fin n → Prop) [DecidablePred P] :
+    m ∣ ∑ p : Fin total, if P (blockEquiv h p).1 then 1 else 0 := by
+  rw [← Equiv.sum_comp (blockEquiv h).symm, Fintype.sum_prod_type]
+  refine Finset.dvd_sum fun i _ => ?_
+  by_cases hi : P i <;> simp [hi, hmk]
 
 private theorem blockEquiv_reconstruct_val {total n k : ℕ} (h : total = n * k)
     (p : Fin total) :
