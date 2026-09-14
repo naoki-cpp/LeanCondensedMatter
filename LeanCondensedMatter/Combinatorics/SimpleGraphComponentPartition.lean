@@ -13,7 +13,7 @@ is a subtype `↥s`.
 
 namespace SimpleGraph
 
-variable {V : Type*}
+variable {V : Type*} [DecidableEq V]
 
 open Classical in
 /-- The partition of a finite graph's vertex type into connected components. -/
@@ -71,7 +71,7 @@ theorem componentBlock_eq_iff_mem [Fintype V] (G : SimpleGraph V) {B : Finset V}
 
 section AmbientFinset
 
-variable {α : Type*} {s : Finset α}
+variable {α : Type*} [DecidableEq α] {s : Finset α}
 
 /-- Classify an ambient vertex by the connected component of its subtype vertex when it lies in
 `s`. Vertices outside `s` are kept distinct and do not occur in `componentPartitionOn`. -/
