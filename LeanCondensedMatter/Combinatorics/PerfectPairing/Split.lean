@@ -36,9 +36,6 @@ that no pair joins the two parts. -/
 def Pairing.IsSplit (e : PositionSplitting a b n) (P : Pairing n) : Prop :=
   ∀ i : Fin (2 * a), ∃ j : Fin (2 * a), P.partner (e (Sum.inl i)) = e (Sum.inl j)
 
-theorem positionSplitting_inl_ne_inr (e : PositionSplitting a b n) (i : Fin (2 * a))
-    (j : Fin (2 * b)) : e (Sum.inl i) ≠ e (Sum.inr j) := fun h => by simpa using e.injective h
-
 /-- **The right part is closed automatically.** A right position paired to a left one would make
 that left position paired to a right one, contradicting the left closure. -/
 theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P.IsSplit e)
@@ -50,7 +47,7 @@ theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P
       obtain ⟨j, hj⟩ := h k
       have hback : P.partner (e (Sum.inl k)) = e (Sum.inr i) := by
         rw [hy, P.partner_partner]
-      exact absurd (hback.symm.trans hj) (Ne.symm (positionSplitting_inl_ne_inr e j i))
+      exact absurd (hback.symm.trans hj) (fun h => by simpa using e.injective h)
 
 section Left
 
