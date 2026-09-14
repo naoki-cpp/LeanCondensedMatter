@@ -32,20 +32,6 @@ def electromagneticProbabilityCurrentDivergenceValue1D
       (vectorPotentialDerivative * probabilityDensityValue ψ +
         vectorPotential * probabilityDensityTimeDerivativeValue ψ ψx)
 
-/-- Expanded form of the electromagnetic current divergence. -/
-theorem electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded
-    (q ℏ mass vectorPotential vectorPotentialDerivative : ℝ)
-    (ψ ψx ψxx : ℂ) :
-    electromagneticProbabilityCurrentDivergenceValue1D
-        q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx =
-      (ℏ / mass) * (ψ.re * ψxx.im - ψ.im * ψxx.re) -
-        (q / mass) * vectorPotentialDerivative * probabilityDensityValue ψ -
-        (2 * q / mass) * vectorPotential *
-          (ψ.re * ψx.re + ψ.im * ψx.im) := by
-  unfold electromagneticProbabilityCurrentDivergenceValue1D
-  rw [probabilityDensityTimeDerivativeValue_eq_coordinates]
-  ring
-
 /-- Differentiating the gauge-covariant current uses the product rule for the vector potential and
 for the wavefunction coordinates explicitly. -/
 theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
@@ -176,7 +162,8 @@ private theorem electromagnetic_probability_continuity_balance_of_components
       ℏ * (probabilityDensityTimeDerivativeValue ψ ψt +
         electromagneticProbabilityCurrentDivergenceValue1D
           q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx) = 0 := by
-    rw [electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded,
+    unfold electromagneticProbabilityCurrentDivergenceValue1D
+    rw [probabilityDensityTimeDerivativeValue_eq_coordinates,
       probabilityDensityTimeDerivativeValue_eq_coordinates,
       probabilityDensityValue, Complex.normSq_apply]
     field_simp [hmass]
