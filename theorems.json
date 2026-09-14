@@ -6345,6 +6345,7 @@
       "Combinatorics.Pairing.firstPair_mem_pairs",
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.mem_pairs_map_iff",
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder",
@@ -6352,8 +6353,7 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_second_eq_first",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -6364,6 +6364,7 @@
       "Combinatorics.Pairing.firstPair_mem_pairs",
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.mem_pairs_map_iff",
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder",
@@ -6371,8 +6372,7 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_second_eq_first",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs"
     ],
     "compiledConsumerCount": 14,
     "axioms": [
@@ -6501,6 +6501,48 @@
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} {n : ℕ} [inst : Fintype ι] (global : Combinatorics.Pairing n)\n  (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (positionEquiv : (B : ι) × Fin (2 * m B) ≃ Fin (2 * n))\n  (hpartner :\n    ∀ (B : ι) (p : Fin (2 * m B)),\n      global.partner (positionEquiv ⟨B, p⟩) = positionEquiv ⟨B, (componentPairing B).partner p⟩)\n  (hmono : ∀ (B : ι), StrictMono fun p => positionEquiv ⟨B, p⟩) (B : ι) (pr : (componentPairing B).NormalizedPair),\n  ↑((global.normalizedPairSigmaEquiv componentPairing positionEquiv hpartner hmono) ⟨B, pr⟩) =\n    (positionEquiv ⟨B, (↑pr).1⟩, positionEquiv ⟨B, (↑pr).2⟩)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.mem_pairs_iff",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6793,6 +6835,7 @@
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairToRestricted_contains_first_endpoint",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_positionToPairEndpoint_eq"
     ],
@@ -6802,10 +6845,11 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairToRestricted_contains_first_endpoint",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_positionToPairEndpoint_eq"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6838,6 +6882,7 @@
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairToRestricted_contains_first_endpoint",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_positionToPairEndpoint_eq"
     ],
@@ -6847,10 +6892,11 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairToRestricted_contains_first_endpoint",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv.0.SecondQuantization.Common.TwoPointDiagram.mixedPairComponent_positionToPairEndpoint_eq"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84133,45 +84179,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.componentPartition.parts) (p : Fin (2 * (2 * (↑B).card))),\n  (d.componentOrderedLegEquiv shuffle) ⟨B, p⟩ = d.componentOrderedLeg shuffle B p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.componentPartition.parts), StrictMono (d.componentOrderedLeg shuffle B)",
     "standardAxioms": [
       "Classical.choice",
@@ -84224,7 +84231,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": false,
+    "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -84236,16 +84243,20 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.prod_pairKernel_pairs_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_self"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.prod_pairKernel_pairs_eq_prod_components",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85128,8 +85139,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff",
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg"
     ],
     "dependencies": [
       "Combinatorics.Pairing.relabel_partner",
@@ -85141,10 +85151,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff",
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent"
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138682,6 +138691,84 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (B : ι)\n  (pr : (componentPairing B).NormalizedPair),\n  (Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (⟨B, pr⟩, 1) = ⟨B, (↑pr).2⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.pairEndpoint_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (B : ι)\n  (pr : (componentPairing B).NormalizedPair),\n  (Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (⟨B, pr⟩, 0) = ⟨B, (↑pr).1⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.pairEndpoint_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)) (i : Fin (2 * n)),\n  ↑(pairing.eraseZeroOrderIso i) = (((pairing.partner 0).pred ⋯).succAbove i).succ",
     "standardAxioms": [
@@ -148857,6 +148944,7 @@
     "dependencies": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -149042,36 +149130,30 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (pr : d.GlobalOrderedPair orders shuffle),\n  ((d.componentOrderedLegEquiv shuffle).symm (↑pr).1).fst = ((d.componentOrderedLegEquiv shuffle).symm (↑pr).2).fst",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.componentPartition.parts) (p : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle) ⟨B, p⟩ =\n    d.componentOrderedLeg shuffle B p",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPair_sameComponent",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_apply",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_apply",
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct.0.SecondQuantization.Common.QuarticDiagram.globalOrderedPairSubtypeEquiv"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
