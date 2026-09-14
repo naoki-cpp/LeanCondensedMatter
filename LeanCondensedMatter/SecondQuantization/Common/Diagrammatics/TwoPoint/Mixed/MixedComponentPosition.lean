@@ -50,7 +50,11 @@ noncomputable def TwoPointDiagram.mixedPositionComponent {n : ℕ}
     d.componentPartition.parts :=
   ⟨d.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p)),
-    d.componentBlock_mem_componentPartition _⟩
+    by
+      change d.vertexGraph.componentBlock
+          (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p)) ∈
+        d.vertexGraph.componentPartition.parts
+      exact d.vertexGraph.componentBlock_mem_componentPartition _⟩
 
 /-- Equality with a mixed-position component is exactly standard component-leg membership after
 transport back from mixed time order. -/
