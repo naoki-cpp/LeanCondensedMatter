@@ -61,7 +61,7 @@ theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
   rfl
 
 omit [Fintype Mode] in
-theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
+private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (i : Fin n) (j : Fin 4)
     (h : 2 * (2 * n) = n * 4) :
     quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
