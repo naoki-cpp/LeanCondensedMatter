@@ -45,14 +45,9 @@ theorem oneParticle_mul_add_swap (f g : 𝓗₁) :
 theorem create_comp_add_swap (f g : 𝓗₁) :
     (create 𝓗₁ f).comp (create 𝓗₁ g) +
       (create 𝓗₁ g).comp (create 𝓗₁ f) = 0 := by
-  have h := congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁))
-    (oneParticle_mul_add_swap 𝓗₁ f g)
-  change
-    (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ f)).comp
-        (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ g)) +
-      (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ g)).comp
-        (Algebra.lmul ℂ (AlgebraicFock 𝓗₁) (oneParticle 𝓗₁ f)) = 0
-  simpa only [map_add, map_mul, map_zero, Module.End.mul_eq_comp] using h
+  simpa only [create, LinearMap.comp_apply, map_add, map_mul, map_zero,
+    Module.End.mul_eq_comp] using
+      congrArg (Algebra.lmul ℂ (AlgebraicFock 𝓗₁)) (oneParticle_mul_add_swap 𝓗₁ f g)
 
 /-- Creating twice in the same one-particle state gives zero. -/
 @[simp]
