@@ -20132,6 +20132,45 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : Fintype α] [inst_1 : Fintype β] [inst_2 : Fintype γ]\n  (e : α ≃ β × γ) (f : β → ℕ), ∑ x, f (e x).1 = Fintype.card γ * ∑ y, f y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Fintype.sum_equiv_fst_eq_card_mul_sum",
+    "module": "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
+    "externalAxioms": [],
+    "docString": "Reindexing a finite type as `β × γ` counts a first-coordinate summand `card γ` times. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  [Finite ι] (b : HilbertBasis ι ℂ H) (coeff : ι → ℂ), Fredholm.diagonalDet coeff = (1 + b.diagonalOp coeff).det",
     "standardAxioms": [
@@ -148944,6 +148983,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
     ],
     "dependencies": [
+      "Fintype.sum_equiv_fst_eq_card_mul_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
     ],
     "crossModuleDirectWrapper": false,
