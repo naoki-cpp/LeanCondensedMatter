@@ -62,8 +62,8 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
     mixedTimeOrderedAtomicLegPosition τ τ' σ y
   by_cases hslot : pa.1 = pb.1
   · have hlocal : pa.2 < pb.2 :=
-      (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
-        n pa pb hslot).1 hab'
+      (Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
+        (by ring : 2 * (2 * n) = n * 4) pa pb hslot).1 hab'
     have hEvent : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y := by
       simp [x, y, hslot, orderedTwoPointLegEvent]
     let event := orderedTwoPointLegEvent x
@@ -97,8 +97,8 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
     simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
       mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hblock.mpr hidx
   · have hslotLt : pa.1 < pb.1 :=
-      (orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
-        n pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
+      (Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne
+        (by ring : 2 * (2 * n) = n * 4) pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
     have hEventNe : orderedTwoPointLegEvent x ≠ orderedTwoPointLegEvent y := by
       simp [x, y, orderedTwoPointLegEvent, hslot]
     apply (mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt
