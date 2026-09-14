@@ -48,14 +48,18 @@ theorem eq_cast_mul_add_blockEquiv {total n k : ℕ} (h : total = n * k) (p : Fi
   rw [Prod.mk.eta] at heq
   exact ((blockEquiv h).injective heq).symm
 
-/-- A block-invariant indicator is counted once for each local index in every selected block, so
-any divisor of the fixed block width divides the flattened indicator sum. -/
-theorem dvd_sum_indicator_blockEquiv_fst_of_dvd {total n k m : ℕ}
-    (h : total = n * k) (hmk : m ∣ k) (P : Fin n → Prop) [DecidablePred P] :
-    m ∣ ∑ p : Fin total, if P (blockEquiv h p).1 then 1 else 0 := by
-  rw [← Equiv.sum_comp (blockEquiv h).symm, Fintype.sum_prod_type]
-  refine Finset.dvd_sum fun i _ => ?_
-  by_cases hi : P i <;> simp [hi, hmk]
+/-- Summing a function of only the block coordinate counts every block value exactly `k` times. -/
+theorem sum_equiv_fst_eq_mul_sum {total n k : ℕ}
+    (e : Fin total ≃ Fin n × Fin k) (f : Fin n → ℕ) :
+    (∑ p : Fin total, f (e p).1) = k * ∑ i : Fin n, f i := by
+  rw [← Equiv.sum_comp e.symm, Fintype.sum_prod_type]
+  simp only [Equiv.apply_symm_apply]
+  calc
+    (∑ i : Fin n, ∑ _j : Fin k, f i) = ∑ i : Fin n, k * f i := by
+      apply Finset.sum_congr rfl
+      intro i _
+      simp
+    _ = k * ∑ i : Fin n, f i := by rw [Finset.mul_sum]
 
 private theorem blockEquiv_reconstruct_val {total n k : ℕ} (h : total = n * k)
     (p : Fin total) :
