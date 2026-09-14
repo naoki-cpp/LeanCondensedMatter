@@ -32383,47 +32383,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (q ℏ mass vectorPotential vectorPotentialDerivative : ℝ) (ψ ψx ψxx : ℂ),\n  QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D q ℏ mass vectorPotential\n      vectorPotentialDerivative ψ ψx ψxx =\n    ℏ / mass * (ψ.re * ψxx.im - ψ.im * ψxx.re) -\n        q / mass * vectorPotentialDerivative * QuantumMechanics.SingleParticle.Continuum.probabilityDensityValue ψ -\n      2 * q / mass * vectorPotential * (ψ.re * ψx.re + ψ.im * ψx.im)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D",
-    "externalAxioms": [],
-    "docString": "Expanded form of the electromagnetic current divergence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D.0.QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_components"
-    ],
-    "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D.0.QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (q ℏ mass vectorPotential : ℝ) (ψ ψx : ℂ),\n  ℏ ≠ 0 →\n    mass ≠ 0 →\n      QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentValue1D q ℏ mass vectorPotential ψ ψx =\n        ℏ / mass * (ψ.re * ψx.im - ψ.im * ψx.re) -\n          q / mass * vectorPotential * QuantumMechanics.SingleParticle.Continuum.probabilityDensityValue ψ",
     "standardAxioms": [
       "Classical.choice",
@@ -35238,8 +35197,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -35251,17 +35210,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded",
       "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D.0.QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded",
       "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D.0.QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123183,10 +123140,13 @@
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_apply",
-      "SecondQuantization.Fermionic.cancel_cast_smul_smul",
+      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_lt",
+      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt",
       "SecondQuantization.Fermionic.toggleOccupation_comm",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle"
+      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
+      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.cancel_cast_smul_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -123279,12 +123239,17 @@
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_apply",
-      "SecondQuantization.Fermionic.cancel_cast_smul_smul",
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_lt",
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
+      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_lt",
+      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt",
+      "SecondQuantization.Fermionic.fermionSign_sq",
       "SecondQuantization.Fermionic.toggleOccupation_comm",
       "SecondQuantization.Fermionic.toggleOccupation_involutive",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
+      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
+      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.cancel_cast_smul_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "crossModuleDirectWrapper": false,
@@ -123416,9 +123381,12 @@
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_apply",
-      "SecondQuantization.Fermionic.cancel_cast_smul_smul",
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_lt",
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
       "SecondQuantization.Fermionic.toggleOccupation_comm",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
+      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
+      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.cancel_cast_smul_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "crossModuleDirectWrapper": false,
@@ -123466,49 +123434,6 @@
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {a b c d : ℤ},\n  a * b + c * d = 0 → ∀ (v : SecondQuantization.Fermionic.OccupationFock Mode), ↑a • ↑b • v + ↑c • ↑d • v = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.cancel_cast_smul_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": "Two `ℤ`-signed multiples of the same basis vector cancel when the underlying integers do:\nthe arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-\nannihilation, and the off-diagonal case of annihilation-creation). ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
-      "SecondQuantization.Fermionic.anticomm_create_create_basisState"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
-      "SecondQuantization.Fermionic.anticomm_create_create_basisState"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127746,90 +127671,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i j : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ≠ j →\n    i ∈ n →\n      j ∈ n →\n        SecondQuantization.Fermionic.fermionSign j n *\n              SecondQuantization.Fermionic.fermionSign i (SecondQuantization.Fermionic.removeOccupation j n) +\n            SecondQuantization.Fermionic.fermionSign i n *\n              SecondQuantization.Fermionic.fermionSign j (SecondQuantization.Fermionic.removeOccupation i n) =\n          0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": "**The sign-cancellation identity behind `{aᵢ, aⱼ} = 0`.** For distinct, both-occupied modes\n`i, j`, the two orders of removing `i` then `j` (vs. `j` then `i`) pick up opposite signs. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_lt",
-      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i j : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ≠ j →\n    i ∉ n →\n      j ∉ n →\n        SecondQuantization.Fermionic.fermionSign j n *\n              SecondQuantization.Fermionic.fermionSign i (SecondQuantization.Fermionic.insertOccupation j n) +\n            SecondQuantization.Fermionic.fermionSign i n *\n              SecondQuantization.Fermionic.fermionSign j (SecondQuantization.Fermionic.insertOccupation i n) =\n          0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": "**The sign-cancellation identity behind `{aᵢ†, aⱼ†} = 0`.** For distinct, both-unoccupied\nmodes `i, j`, the two orders of inserting `i` then `j` (vs. `j` then `i`) pick up opposite signs.\nCase-split on which of `i`, `j` comes first in the mode order. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_lt",
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i k : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  k ∉ n →\n    k < i →\n      SecondQuantization.Fermionic.fermionSign i (SecondQuantization.Fermionic.insertOccupation k n) =\n        -SecondQuantization.Fermionic.fermionSign i n",
     "standardAxioms": [
       "Classical.choice",
@@ -127849,17 +127690,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -127892,21 +127733,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127937,15 +127776,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -127978,21 +127817,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-      "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.numberOperator_basisState"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-      "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.numberOperator_basisState"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128022,15 +127859,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fermionSign_sq_complex",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same"
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.fermionSign_sq_complex"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fermionSign_sq_complex",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same"
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.fermionSign_sq_complex"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -134734,14 +134571,13 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "dependencies": [],
@@ -134749,17 +134585,16 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134791,14 +134626,13 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
     "dependencies": [],
@@ -134806,17 +134640,16 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
+      "SecondQuantization.Fermionic.anticomm_create_create_basisState",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145797,7 +145630,6 @@
       "QuantumMechanics.SingleParticle.Continuum.electromagnetic_probability_continuity_balance_of_schrodinger"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded",
       "QuantumMechanics.SingleParticle.Continuum.probabilityDensityTimeDerivativeValue_eq_coordinates"
     ],
     "crossModuleDirectWrapper": false,
@@ -152291,137 +152123,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.annihilateCoeff✝ j n *\n        SecondQuantization.Fermionic.annihilateCoeff✝ i (SecondQuantization.Fermionic.toggleOccupation j n) +\n      SecondQuantization.Fermionic.annihilateCoeff✝ i n *\n        SecondQuantization.Fermionic.annihilateCoeff✝ j (SecondQuantization.Fermionic.toggleOccupation i n) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCoeff_cancel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel",
-      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
-      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i j : Mode},\n  i ≠ j →\n    ∀ (n : SecondQuantization.Fermionic.Occupation Mode),\n      SecondQuantization.Fermionic.createCoeff✝ j n *\n            SecondQuantization.Fermionic.annihilateCoeff✝ i (SecondQuantization.Fermionic.toggleOccupation j n) +\n          SecondQuantization.Fermionic.annihilateCoeff✝ i n *\n            SecondQuantization.Fermionic.createCoeff✝ j (SecondQuantization.Fermionic.toggleOccupation i n) =\n        0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
-      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.createCoeff✝ i n *\n        SecondQuantization.Fermionic.annihilateCoeff✝ i (SecondQuantization.Fermionic.toggleOccupation i n) +\n      SecondQuantization.Fermionic.annihilateCoeff✝ i n *\n        SecondQuantization.Fermionic.createCoeff✝ i (SecondQuantization.Fermionic.toggleOccupation i n) =\n    1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_same",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
-      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt",
-      "SecondQuantization.Fermionic.fermionSign_sq",
-      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
-      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.annihilate i) (SecondQuantization.Fermionic.basisState n) =\n    ↑(SecondQuantization.Fermionic.annihilateCoeff✝ i n) •\n      SecondQuantization.Fermionic.basisState (SecondQuantization.Fermionic.toggleOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -152468,38 +152169,38 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.createCoeff✝ j n *\n        SecondQuantization.Fermionic.createCoeff✝ i (SecondQuantization.Fermionic.toggleOccupation j n) +\n      SecondQuantization.Fermionic.createCoeff✝ i n *\n        SecondQuantization.Fermionic.createCoeff✝ j (SecondQuantization.Fermionic.toggleOccupation i n) =\n    0",
+    "statement": "∀ {Mode : Type u_1} {a b c d : ℤ},\n  a * b + c * d = 0 → ∀ (v : SecondQuantization.Fermionic.OccupationFock Mode), ↑a • ↑b • v + ↑c • ↑d • v = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.createCoeff_cancel",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.cancel_cast_smul_smul",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Two `ℤ`-signed multiples of the same basis vector cancel when the underlying integers do:\nthe arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-\nannihilation, and the off-diagonal case of annihilation-creation). ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
       "SecondQuantization.Fermionic.anticomm_create_create_basisState"
     ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_create_create_cancel",
-      "SecondQuantization.Fermionic.toggleOccupation_of_mem",
-      "SecondQuantization.Fermionic.toggleOccupation_of_not_mem"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate_basisState",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
       "SecondQuantization.Fermionic.anticomm_create_create_basisState"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152546,50 +152247,6 @@
       "SecondQuantization.Fermionic.anticomm_create_create_basisState"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i j : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ≠ j →\n    i ∈ n →\n      j ∉ n →\n        SecondQuantization.Fermionic.fermionSign j n *\n              SecondQuantization.Fermionic.fermionSign i (SecondQuantization.Fermionic.insertOccupation j n) +\n            SecondQuantization.Fermionic.fermionSign i n *\n              SecondQuantization.Fermionic.fermionSign j (SecondQuantization.Fermionic.removeOccupation i n) =\n          0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.fermionSign_annihilate_create_cancel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_lt",
-      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
-      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_lt",
-      "SecondQuantization.Fermionic.fermionSign_removeOccupation_of_not_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilateCreateCoeff_cancel_of_ne"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
