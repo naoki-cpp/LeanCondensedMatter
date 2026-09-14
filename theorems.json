@@ -20185,8 +20185,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -20198,15 +20198,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57831,7 +57833,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy =\n        -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) * (m / (2 * probeEnergy))",
     "standardAxioms": [
       "Classical.choice",
@@ -57839,7 +57841,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57850,14 +57852,18 @@
     "docString": "The existing clean intrinsic conductivity is exactly the first term of the Ado et al.\nnon-crossing decomposition, Eq. (12a). ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity_eq_massiveDirac"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57942,6 +57948,43 @@
       "QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity_eq_massiveDirac"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have gaussianSkewType :=\n        -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy + sideJumpType +\n          gaussianSkewType =\n        QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
+    "externalAxioms": [],
+    "docString": "The theorem-level intrinsic, side-jump-type, and Gaussian-skew-type pieces sum to the completed\nnon-crossing Hall conductivity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity_eq_ado_eq12_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58613,7 +58656,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58625,6 +58668,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc"
     ],
     "dependencies": [
@@ -58633,9 +58677,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59276,6 +59321,43 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have gaussianSkewType :=\n        -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n          ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n              (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =\n        QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy +\n              3 / 4 * sideJumpType)\n          ↑(1 / 4 * sideJumpType + gaussianSkewType)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
+    "externalAxioms": [],
+    "docString": "The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms.\nThe side-jump-type term is shared between the two provenance components rather than attached to only\none of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and\ndo not create primitive mechanism APIs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity_eq_ado_eq12a"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0
@@ -62842,7 +62924,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)) (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2))\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have normalization :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.bastinStredaConductivityNormalization hbar);\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)))\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n                ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62854,21 +62936,62 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceConductivity_disorder_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
+    "externalAxioms": [],
+    "docString": "Physical conductivity normalization of the two concrete ordered-`xy` rung/solved provenance\nterms. Component `0` remains the `r_y Γ_x` contribution and component `1` remains the\n`r_x Γ_y` contribution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenance_disorder_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)) (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2))\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenance_disorder_zero",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance",
     "externalAxioms": [],
     "docString": "The two concrete products in the ordered-`xy` ladder-action expansion have a joint finite\none-sided weak-disorder limit. The temporary vector is only a theorem-level packaging of the two\nprovenance terms: component `0` is `r_y Γ_x`, component `1` is `r_x Γ_y`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceConductivity_disorder_zero"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_orderedXYProvenance_rungYSolvedX_disorder_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceConductivity_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153148,6 +153271,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
+      "Fintype.sum_equiv_fst_eq_card_mul_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentCrossingEven.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks"
     ],
     "crossModuleDirectWrapper": false,
