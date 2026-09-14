@@ -47,7 +47,8 @@ private theorem QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt
     have hsigma := shuffle.slotEquiv.injective hslot
     exact hBC (congrArg Sigma.fst hsigma)
   unfold QuarticDiagram.componentOrderedLeg
-  exact orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne S.card
+  exact FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne
+    (by ring : 2 * (2 * S.card) = S.card * 4)
     (shuffle.slotEquiv
       ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩)
     (shuffle.slotEquiv
