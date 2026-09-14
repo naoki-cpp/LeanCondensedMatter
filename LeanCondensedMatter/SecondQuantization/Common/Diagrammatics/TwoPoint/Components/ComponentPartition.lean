@@ -30,7 +30,7 @@ noncomputable def TwoPointDiagram.componentPartition {S : Finset (Fin N)}
 noncomputable def TwoPointDiagram.componentBlock {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v : TwoPointVertex S) :
     Finset (TwoPointVertex S) :=
-  d.vertexGraph.componentBlock v
+  d.componentPartition.part v
 
 /-- A component part contains at least one of the two external vertices. -/
 def TwoPointDiagram.ComponentMeetsExternal {S : Finset (Fin N)}
@@ -64,7 +64,8 @@ theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent {S : Fin
       simpa only [TwoPointDiagram.componentPartition] using B.2
     have hblock : d.vertexGraph.componentBlock (Sum.inl e) = B :=
       (d.vertexGraph.componentBlock_eq_iff_mem hB (Sum.inl e)).2 he
-    simpa only [TwoPointDiagram.externalComponent, TwoPointDiagram.componentBlock] using hblock.symm
+    simpa only [TwoPointDiagram.externalComponent, TwoPointDiagram.componentBlock,
+      TwoPointDiagram.componentPartition] using hblock.symm
   · rintro ⟨e, hB⟩
     refine ⟨e, ?_⟩
     rw [hB]
@@ -95,10 +96,11 @@ theorem TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal
   · intro h v
     let B : d.componentPartition.parts :=
       ⟨d.componentBlock (Sum.inr v), by
-        change d.vertexGraph.componentBlock (Sum.inr v) ∈ d.vertexGraph.componentPartition.parts
-        exact d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩
+        unfold TwoPointDiagram.componentBlock
+        exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
     obtain ⟨e, he⟩ := h B
     refine ⟨e, ?_⟩
+    change (Sum.inl e : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inr v) at he
     exact (d.vertexGraph.mem_componentBlock (Sum.inr v) (Sum.inl e)).1 he
 
 open Classical in
