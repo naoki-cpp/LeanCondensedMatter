@@ -66,7 +66,7 @@ private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode 
     (h : 2 * (2 * n) = n * 4) :
     quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [quarticLegOperatorForSequence, Common.orderedQuarticLegEquiv_cast_mul_add i j h]
+  rw [quarticLegOperatorForSequence, FiniteIndex.blockEquiv_cast_mul_add h i j]
 
 omit [Fintype Mode] in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
@@ -103,8 +103,8 @@ reduces, via `nestedVertexOperatorComp_succ`,
 q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
 (tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
 `4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at
-vertex `0` directly; the `right` branch uses the Common
-`eq_cast_mul_add_orderedQuarticLegEquiv` to express an *arbitrary* position `k` of the smaller
+vertex `0` directly; the `right` branch uses the general finite-block coordinate theorem
+`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller
 `n`-fold piece in `i' * 4 + j'` form, then matches both sides via
 `quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`
 for the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as
@@ -136,7 +136,12 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
           (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
           (Fin.castAdd _ j)
       rw [Fin.append_left, e1, quarticLegOperatorForSequence_cast_mul_add ε q τ 0 j hcard]
-    · have hk := Common.eq_cast_mul_add_orderedQuarticLegEquiv k hcard'
+    · have hk : k = Fin.cast hcard'.symm
+          ⟨(Common.orderedQuarticLegEquiv n k).1 * 4 +
+              (Common.orderedQuarticLegEquiv n k).2, by
+            have := (Common.orderedQuarticLegEquiv n k).2.isLt
+            omega⟩ :=
+        FiniteIndex.eq_cast_mul_add_blockEquiv hcard' k
       have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
           ⟨((Common.orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 +
               ((Common.orderedQuarticLegEquiv n k).2 : ℕ),
