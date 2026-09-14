@@ -140,11 +140,6 @@ theorem componentBlockOn_eq_iff_mem (G : SimpleGraph ↥s) {B : Finset α}
   change G.componentPartitionOn.part (v : α) = B ↔ (v : α) ∈ B
   exact G.componentPartitionOn.part_eq_iff_mem hB
 
-/-- Every ambient component part is contained in the graph's vertex finset. -/
-theorem componentPartOn_subset (G : SimpleGraph ↥s) {B : Finset α}
-    (hB : B ∈ G.componentPartitionOn.parts) : B ⊆ s :=
-  G.componentPartitionOn.le hB
-
 end AmbientFinset
 
 end SimpleGraph
