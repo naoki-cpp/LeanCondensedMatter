@@ -30,7 +30,7 @@ theorem sqrt_natCast_mul_self (k : ℕ) :
 
 /-! ## `[a_i†, a_j†] = 0` -/
 
-theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
+private theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
     LinearMap.zetaCommutator (1 : ℂ) (create i) (create j) (basisState n) = 0 := by
   rw [LinearMap.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
@@ -47,7 +47,7 @@ theorem comm_create_create (i j : Mode) :
 
 /-! ## `[a_i, a_j] = 0` -/
 
-theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
+private theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
     LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (annihilate j) (basisState n) = 0 := by
   rw [LinearMap.zetaCommutator_apply, one_smul]
   rcases eq_or_ne i j with rfl | hij
@@ -92,7 +92,7 @@ theorem create_annihilate_basisState_same (i : Mode) (n : Occupation Mode) :
     rw [annihilate_basisState_of_pos h, map_smul, create_basisState_eq, hscalar,
       createOccupation_removeOccupation_of_pos h, smul_smul, sqrt_natCast_mul_self]
 
-theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
+private theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
     LinearMap.zetaCommutator (1 : ℂ) (annihilate i) (create j) (basisState n) =
       if i = j then basisState n else 0 := by
   rw [LinearMap.zetaCommutator_apply, one_smul]
