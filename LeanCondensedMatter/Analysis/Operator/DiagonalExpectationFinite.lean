@@ -54,15 +54,4 @@ theorem diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
   rw [inner_smul_left, inner_self_eq_norm_sq_to_K]
   simp
 
-/-- The supplied-basis formula specialized to Mathlib's canonical orthonormal eigenbasis. -/
-theorem diagonalExpectationValue_eq_sum_eigenvectorBasis
-    (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) :
-    diagonalExpectationValue T hT x =
-      ∑ i : Fin (Module.finrank ℂ H),
-        hT.isSymmetric.eigenvalues rfl i *
-          ‖(hT.isSymmetric.eigenvectorBasis rfl).repr x i‖ ^ 2 := by
-  apply diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
-  intro i
-  exact hT.isSymmetric.apply_eigenvectorBasis rfl i
-
 end ContinuousLinearMap
