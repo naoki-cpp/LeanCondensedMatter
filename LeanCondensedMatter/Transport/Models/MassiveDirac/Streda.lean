@@ -5,6 +5,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
 
 set_option linter.style.header false
 
@@ -19,7 +20,8 @@ denominator form. Fixed-cutoff zero-broadening boundaries are exposed for the so
 current and for both the integrated longitudinal and ordered-`xy` responses. Their subsequent
 weak-disorder limits remain separate: the longitudinal response is scaled by `W`, while the ordered
 transverse response retains the first nonvanishing transverse ladder coefficient before cancelling
-the inverse disorder factor.
+the inverse disorder factor. The ordered-`xy` endpoint also exposes its two concrete
+`r_y Γ_x` and `r_x Γ_y` provenance terms separately, without assigning scattering-mechanism labels.
 
 The supplied ladder coefficients are total algebraic values. The shared nonzero in-plane ladder
 determinant is required only when they are interpreted as the solved physical fixed point. Generic
