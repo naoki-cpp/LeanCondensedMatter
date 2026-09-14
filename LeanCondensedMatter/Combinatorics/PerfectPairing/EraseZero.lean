@@ -79,14 +79,6 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
       exact congrArg Subtype.val hfixed
     exact pairing.partner_ne (e i) hpartner
 
-theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1))
-    (i : Fin (2 * n)) :
-    (pairing.eraseZeroPair).partner i =
-      let hzero : pairing.partner 0 ≠ (0 : Fin (2 * (n + 1))) := pairing.partner_ne 0
-      let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
-      e.symm (pairing.restrictedPartner (e i)) := by
-  simp [Pairing.eraseZeroPair]
-
 /-- Increasing equivalence used by `eraseZeroPair`. -/
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
@@ -99,7 +91,7 @@ theorem Pairing.eraseZeroOrderIso_partner {n : ℕ} (pairing : Pairing (n + 1))
     ((pairing.eraseZeroOrderIso ((pairing.eraseZeroPair).partner i) :
       Fin (2 * (n + 1)))) =
     pairing.partner (pairing.eraseZeroOrderIso i) := by
-  simp [Pairing.eraseZeroOrderIso, Pairing.eraseZeroPair_partner_apply]
+  simp [Pairing.eraseZeroOrderIso, Pairing.eraseZeroPair]
   rfl
 
 theorem Pairing.eraseZeroPair_mem_pairs_iff {n : ℕ} (pairing : Pairing (n + 1))

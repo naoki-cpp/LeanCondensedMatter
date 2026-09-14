@@ -60,7 +60,7 @@ theorem mem_toggleOccupation (i : Mode) (n : Occupation Mode) :
   · simp [toggleOccupation, h, removeOccupation]
   · simp [toggleOccupation, h, insertOccupation]
 
-theorem mem_toggleOccupation_of_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
+private theorem mem_toggleOccupation_of_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
     j ∈ toggleOccupation i n ↔ j ∈ n := by
   by_cases hi : i ∈ n
   · simp [toggleOccupation, hi, removeOccupation, h]
