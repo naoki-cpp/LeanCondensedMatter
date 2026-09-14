@@ -190,9 +190,6 @@ or consumer structure changes.
   resolvent approximant; it is reusable independently of the downstream slope argument.
 - `LinearPMap.resolventApproximationEvolutionAtScale_dist_eq` — canonical isometry property of the
   totalized bounded resolvent approximants, not merely a transport step in the strong-limit proof.
-- `QuantumMechanics.SingleParticle.Continuum.electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded`
-  — canonical coordinate expansion of the named gauge-covariant current divergence used to expose
-  the local continuity cancellation explicitly.
 - `QuantumTheory.DensityOperator.hasSum_abs_eigenvalues_eq_one` — spectral normalization law for a
   density operator: the absolute eigenvalue weights sum to one independently of the expectation
   norm estimate that currently consumes it.
@@ -238,9 +235,5 @@ or consumer structure changes.
   coefficients to Gibbs-expectation continuity.
 - `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
   estimate bounding truncation error by twice the distance to any fixed point of the truncation.
-- `SecondQuantization.Fermionic.fermionSign_annihilate_annihilate_cancel` — combinatorial sign identity
-  directly expressing the cancellation behind the fermionic relation `{aᵢ, aⱼ} = 0`.
-- `SecondQuantization.Fermionic.fermionSign_create_create_cancel` — combinatorial sign identity directly
-  expressing the cancellation behind the fermionic relation `{aᵢ†, aⱼ†} = 0`.
 - `SecondQuantization.Fermionic.norm_completedToggleLinear` — canonical norm-preservation law for the
   completed occupation-toggle map, stronger and more reusable than its downstream one-sided bound.

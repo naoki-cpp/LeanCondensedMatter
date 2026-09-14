@@ -26,7 +26,7 @@ omit [LinearOrder Mode] in
 /-- Two `ℤ`-signed multiples of the same basis vector cancel when the underlying integers do:
 the arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-
 annihilation, and the off-diagonal case of annihilation-creation). -/
-theorem cancel_cast_smul_smul {a b c d : ℤ} (h : a * b + c * d = 0)
+private theorem cancel_cast_smul_smul {a b c d : ℤ} (h : a * b + c * d = 0)
     (v : OccupationFock Mode) :
     (a : ℂ) • (b : ℂ) • v + (c : ℂ) • (d : ℂ) • v = 0 := by
   rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add, h,
@@ -79,35 +79,6 @@ theorem fermionSign_sq_complex (i : Mode) (n : Occupation Mode) :
     (fermionSign i n : ℂ) * (fermionSign i n : ℂ) = 1 := by
   rw [← Int.cast_mul, fermionSign_sq, Int.cast_one]
 
-/-- **The sign-cancellation identity behind `{aᵢ†, aⱼ†} = 0`.** For distinct, both-unoccupied
-modes `i, j`, the two orders of inserting `i` then `j` (vs. `j` then `i`) pick up opposite signs.
-Case-split on which of `i`, `j` comes first in the mode order. -/
-theorem fermionSign_create_create_cancel {i j : Mode} {n : Occupation Mode} (hij : i ≠ j)
-    (hi : i ∉ n) (hj : j ∉ n) :
-    fermionSign j n * fermionSign i (insertOccupation j n) +
-      fermionSign i n * fermionSign j (insertOccupation i n) = 0 := by
-  rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
-      fermionSign_insertOccupation_of_lt hi h]
-    ring
-  · rw [fermionSign_insertOccupation_of_lt hj h,
-      fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le)]
-    ring
-
-/-- **The sign-cancellation identity behind `{aᵢ, aⱼ} = 0`.** For distinct, both-occupied modes
-`i, j`, the two orders of removing `i` then `j` (vs. `j` then `i`) pick up opposite signs. -/
-theorem fermionSign_annihilate_annihilate_cancel {i j : Mode} {n : Occupation Mode}
-    (hij : i ≠ j) (hi : i ∈ n) (hj : j ∈ n) :
-    fermionSign j n * fermionSign i (removeOccupation j n) +
-      fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
-  rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le),
-      fermionSign_removeOccupation_of_lt hi h]
-    ring
-  · rw [fermionSign_removeOccupation_of_lt hj h,
-      fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
-    ring
-
 /-! ## Uniform signed-toggle form of the ladder operators -/
 
 private def createCoeff (i : Mode) (n : Occupation Mode) : ℤ :=
@@ -134,9 +105,15 @@ private theorem annihilate_basisState_toggle (i : Mode) (n : Occupation Mode) :
   · rw [annihilate_basisState_of_not_mem h]
     simp [annihilateCoeff, h]
 
-private theorem createCoeff_cancel (i j : Mode) (n : Occupation Mode) :
-    createCoeff j n * createCoeff i (toggleOccupation j n) +
-      createCoeff i n * createCoeff j (toggleOccupation i n) = 0 := by
+/-! ## `{aᵢ†, aⱼ†} = 0` -/
+
+theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
+    LinearMap.zetaCommutator (-1) (create i) (create j) (basisState n) = 0 := by
+  rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
+    create_basisState_toggle, map_smul, create_basisState_toggle,
+    create_basisState_toggle, map_smul, create_basisState_toggle,
+    toggleOccupation_comm i j n]
+  apply cancel_cast_smul_smul
   rcases eq_or_ne i j with rfl | hij
   · by_cases hi : i ∈ n
     · simp [createCoeff, hi]
@@ -147,71 +124,17 @@ private theorem createCoeff_cancel (i j : Mode) (n : Occupation Mode) :
       · simp [createCoeff, hi, hj, insertOccupation, hij]
     · by_cases hj : j ∈ n
       · simp [createCoeff, hi, hj, insertOccupation, Ne.symm hij]
-      · simpa [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij] using
-          fermionSign_create_create_cancel hij hi hj
-
-private theorem annihilateCoeff_cancel (i j : Mode) (n : Occupation Mode) :
-    annihilateCoeff j n * annihilateCoeff i (toggleOccupation j n) +
-      annihilateCoeff i n * annihilateCoeff j (toggleOccupation i n) = 0 := by
-  rcases eq_or_ne i j with rfl | hij
-  · by_cases hi : i ∈ n
-    · simp [annihilateCoeff, hi, removeOccupation]
-    · simp [annihilateCoeff, hi]
-  · by_cases hi : i ∈ n
-    · by_cases hj : j ∈ n
-      · simpa [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij] using
-          fermionSign_annihilate_annihilate_cancel hij hi hj
-      · simp [annihilateCoeff, hi, hj, removeOccupation]
-    · by_cases hj : j ∈ n <;>
-        simp [annihilateCoeff, hi, hj, removeOccupation]
-
-private theorem fermionSign_annihilate_create_cancel {i j : Mode} {n : Occupation Mode}
-    (hij : i ≠ j) (hi : i ∈ n) (hj : j ∉ n) :
-    fermionSign j n * fermionSign i (insertOccupation j n) +
-      fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
-  rcases lt_or_lt_iff_ne.mpr hij with h | h
-  · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
-      fermionSign_removeOccupation_of_lt hi h]
-    ring
-  · rw [fermionSign_insertOccupation_of_lt hj h,
-      fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
-    ring
-
-private theorem annihilateCreateCoeff_cancel_of_ne {i j : Mode} (hij : i ≠ j)
-    (n : Occupation Mode) :
-    createCoeff j n * annihilateCoeff i (toggleOccupation j n) +
-      annihilateCoeff i n * createCoeff j (toggleOccupation i n) = 0 := by
-  by_cases hi : i ∈ n
-  · by_cases hj : j ∈ n
-    · simp [createCoeff, annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij]
-    · simpa [createCoeff, annihilateCoeff, hi, hj, insertOccupation, removeOccupation,
-        hij, Ne.symm hij] using fermionSign_annihilate_create_cancel hij hi hj
-  · by_cases hj : j ∈ n <;>
-      simp [createCoeff, annihilateCoeff, hi, hj, insertOccupation, removeOccupation,
-        hij, Ne.symm hij]
-
-private theorem annihilateCreateCoeff_same (i : Mode) (n : Occupation Mode) :
-    createCoeff i n * annihilateCoeff i (toggleOccupation i n) +
-      annihilateCoeff i n * createCoeff i (toggleOccupation i n) = 1 := by
-  by_cases hi : i ∈ n
-  · have hnot : i ∉ removeOccupation i n := by simp [removeOccupation]
-    rw [toggleOccupation_of_mem hi]
-    simp [createCoeff, annihilateCoeff, hi, hnot,
-      fermionSign_removeOccupation_of_not_lt (lt_irrefl i), fermionSign_sq]
-  · have hmem : i ∈ insertOccupation i n := by simp [insertOccupation]
-    rw [toggleOccupation_of_not_mem hi]
-    simp [createCoeff, annihilateCoeff, hi, hmem,
-      fermionSign_insertOccupation_of_not_lt (lt_irrefl i), fermionSign_sq]
-
-/-! ## `{aᵢ†, aⱼ†} = 0` -/
-
-theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
-    LinearMap.zetaCommutator (-1) (create i) (create j) (basisState n) = 0 := by
-  rw [LinearMap.zetaCommutator_apply, neg_one_smul, sub_neg_eq_add,
-    create_basisState_toggle, map_smul, create_basisState_toggle,
-    create_basisState_toggle, map_smul, create_basisState_toggle,
-    toggleOccupation_comm i j n]
-  exact cancel_cast_smul_smul (createCoeff_cancel i j n) _
+      · have hsign :
+            fermionSign j n * fermionSign i (insertOccupation j n) +
+              fermionSign i n * fermionSign j (insertOccupation i n) = 0 := by
+          rcases lt_or_lt_iff_ne.mpr hij with h | h
+          · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
+              fermionSign_insertOccupation_of_lt hi h]
+            ring
+          · rw [fermionSign_insertOccupation_of_lt hj h,
+              fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le)]
+            ring
+        simpa [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij] using hsign
 
 theorem anticomm_create_create (i j : Mode) :
     LinearMap.zetaCommutator (-1) (create i) (create j) = 0 := by
@@ -236,7 +159,27 @@ theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation M
     annihilate_basisState_toggle, map_smul, annihilate_basisState_toggle,
     annihilate_basisState_toggle, map_smul, annihilate_basisState_toggle,
     toggleOccupation_comm i j n]
-  exact cancel_cast_smul_smul (annihilateCoeff_cancel i j n) _
+  apply cancel_cast_smul_smul
+  rcases eq_or_ne i j with rfl | hij
+  · by_cases hi : i ∈ n
+    · simp [annihilateCoeff, hi, removeOccupation]
+    · simp [annihilateCoeff, hi]
+  · by_cases hi : i ∈ n
+    · by_cases hj : j ∈ n
+      · have hsign :
+            fermionSign j n * fermionSign i (removeOccupation j n) +
+              fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
+          rcases lt_or_lt_iff_ne.mpr hij with h | h
+          · rw [fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le),
+              fermionSign_removeOccupation_of_lt hi h]
+            ring
+          · rw [fermionSign_removeOccupation_of_lt hj h,
+              fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
+            ring
+        simpa [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij] using hsign
+      · simp [annihilateCoeff, hi, hj, removeOccupation]
+    · by_cases hj : j ∈ n <;>
+        simp [annihilateCoeff, hi, hj, removeOccupation]
 
 theorem anticomm_annihilate_annihilate (i j : Mode) :
     LinearMap.zetaCommutator (-1) (annihilate i) (annihilate j) = 0 := by
@@ -263,10 +206,40 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
     annihilate_basisState_toggle, map_smul, create_basisState_toggle]
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl, toggleOccupation_involutive i n]
+    have hsame :
+        createCoeff i n * annihilateCoeff i (toggleOccupation i n) +
+          annihilateCoeff i n * createCoeff i (toggleOccupation i n) = 1 := by
+      by_cases hi : i ∈ n
+      · have hnot : i ∉ removeOccupation i n := by simp [removeOccupation]
+        rw [toggleOccupation_of_mem hi]
+        simp [createCoeff, annihilateCoeff, hi, hnot,
+          fermionSign_removeOccupation_of_not_lt (lt_irrefl i), fermionSign_sq]
+      · have hmem : i ∈ insertOccupation i n := by simp [insertOccupation]
+        rw [toggleOccupation_of_not_mem hi]
+        simp [createCoeff, annihilateCoeff, hi, hmem,
+          fermionSign_insertOccupation_of_not_lt (lt_irrefl i), fermionSign_sq]
     rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add,
-      annihilateCreateCoeff_same, Int.cast_one, one_smul]
+      hsame, Int.cast_one, one_smul]
   · rw [if_neg hij, toggleOccupation_comm i j n]
-    exact cancel_cast_smul_smul (annihilateCreateCoeff_cancel_of_ne hij n) _
+    apply cancel_cast_smul_smul
+    by_cases hi : i ∈ n
+    · by_cases hj : j ∈ n
+      · simp [createCoeff, annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij]
+      · have hsign :
+            fermionSign j n * fermionSign i (insertOccupation j n) +
+              fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
+          rcases lt_or_lt_iff_ne.mpr hij with h | h
+          · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
+              fermionSign_removeOccupation_of_lt hi h]
+            ring
+          · rw [fermionSign_insertOccupation_of_lt hj h,
+              fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
+            ring
+        simpa [createCoeff, annihilateCoeff, hi, hj, insertOccupation, removeOccupation,
+          hij, Ne.symm hij] using hsign
+    · by_cases hj : j ∈ n <;>
+        simp [createCoeff, annihilateCoeff, hi, hj, insertOccupation, removeOccupation,
+          hij, Ne.symm hij]
 
 theorem anticomm_annihilate_create (i j : Mode) :
     LinearMap.zetaCommutator (-1) (annihilate i) (create j) =
