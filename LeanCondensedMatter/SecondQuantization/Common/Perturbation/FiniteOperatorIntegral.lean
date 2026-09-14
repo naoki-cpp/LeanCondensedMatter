@@ -38,20 +38,17 @@ noncomputable def operatorIntervalIntegral
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   Finsupp.lift (AlgebraicFock Config) ℂ Config (operatorIntervalIntegralBasis F a b)
 
-theorem operatorIntervalIntegral_basisState
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ) (n : Config) :
-    operatorIntervalIntegral F a b (basisState n) = operatorIntervalIntegralBasis F a b n := by
-  change Finsupp.lift _ ℂ _ (operatorIntervalIntegralBasis F a b) (Finsupp.single n 1) =
-    operatorIntervalIntegralBasis F a b n
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
-
 /-- **The matrix-coefficient formula**: `operatorIntervalIntegral`'s own matrix coefficients are
 exactly the scalar interval integrals of `F`'s matrix coefficients. -/
 theorem matrixCoeff_operatorIntervalIntegral
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ) (m n : Config) :
     matrixCoeff (operatorIntervalIntegral F a b) m n = ∫ τ in a..b, matrixCoeff (F τ) m n := by
-  rw [matrixCoeff, operatorIntervalIntegral_basisState, operatorIntervalIntegralBasis,
-    Finsupp.finsetSum_apply]
+  have hbasis :
+      operatorIntervalIntegral F a b (basisState n) = operatorIntervalIntegralBasis F a b n := by
+    change Finsupp.lift _ ℂ _ (operatorIntervalIntegralBasis F a b) (Finsupp.single n 1) =
+      operatorIntervalIntegralBasis F a b n
+    simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+  rw [matrixCoeff, hbasis, operatorIntervalIntegralBasis, Finsupp.finsetSum_apply]
   rw [Finset.sum_eq_single m]
   · exact smul_basisState_apply_self _ m
   · intro m' _ hne
