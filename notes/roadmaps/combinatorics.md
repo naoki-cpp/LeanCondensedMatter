@@ -68,8 +68,12 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 
 ## Ownership boundary
 
-- set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, and generic finite
-  product identities belong in `Combinatorics`;
+- set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
+  identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
+- Mathlib v4.33.1 supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)`, while the cast-aware
+  fixed-width coordinate and block-order facts used by the project live in
+  `Combinatorics/FiniteIndex/Block.lean`; diagrammatic layers specialize this API rather than owning
+  separate four-leg indexing lemmas;
 - statistics-independent constructions that require Fock/thermal/diagram semantics belong in
   `SecondQuantization.Common`;
 - fermionic or bosonic sign/amplitude specializations stay downstream.
@@ -78,5 +82,5 @@ Dyson/diagrammatic layer consumes this result rather than reimplementing moment-
 
 Add new combinatorial infrastructure only when a downstream theorem exposes a reusable
 statistics-independent statement. Higher-point/source-insertion linked-cluster developments should
-reuse the existing partition, cumulant, pairing, and shuffle APIs rather than create parallel
-specialized copies.
+reuse the existing partition, cumulant, pairing, shuffle, and finite-index APIs rather than create
+parallel specialized copies.

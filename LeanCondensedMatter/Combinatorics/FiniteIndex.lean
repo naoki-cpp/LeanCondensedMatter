@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
