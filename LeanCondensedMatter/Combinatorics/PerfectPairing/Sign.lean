@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
@@ -19,43 +20,15 @@ variable {n : ℕ}
 
 /-- Split an ambient position into the index of its two-element block and the slot inside it. -/
 def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
-  (finCongr (by ring)).trans (finProdFinEquiv (m := n) (n := 2)).symm
-
-private theorem pairSlotIndexEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * n)) :
-    p.val = (pairSlotIndexEquiv n p).2.val + 2 * (pairSlotIndexEquiv n p).1.val := by
-  have h := congrArg (fun q => q.val) ((pairSlotIndexEquiv n).symm_apply_apply p)
-  simpa [pairSlotIndexEquiv, finProdFinEquiv] using h.symm
+  FiniteIndex.blockEquiv (by ring)
 
 private theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
     p < q ↔
       (pairSlotIndexEquiv n p).1 < (pairSlotIndexEquiv n q).1 ∨
         ((pairSlotIndexEquiv n p).1 = (pairSlotIndexEquiv n q).1 ∧
           (pairSlotIndexEquiv n p).2 < (pairSlotIndexEquiv n q).2) := by
-  have hp := pairSlotIndexEquiv_reconstruct_val n p
-  have hq := pairSlotIndexEquiv_reconstruct_val n q
-  have hps := (pairSlotIndexEquiv n p).2.isLt
-  have hqs := (pairSlotIndexEquiv n q).2.isLt
-  constructor
-  · intro h
-    have hval : p.val < q.val := h
-    rcases lt_trichotomy (pairSlotIndexEquiv n p).1 (pairSlotIndexEquiv n q).1 with hlt | heq | hgt
-    · exact Or.inl hlt
-    · refine Or.inr ⟨heq, ?_⟩
-      have hk : (pairSlotIndexEquiv n p).1.val = (pairSlotIndexEquiv n q).1.val :=
-        congrArg Fin.val heq
-      change (pairSlotIndexEquiv n p).2.val < (pairSlotIndexEquiv n q).2.val
-      omega
-    · have hgt' : (pairSlotIndexEquiv n q).1.val < (pairSlotIndexEquiv n p).1.val := hgt
-      omega
-  · rintro (hlt | ⟨heq, hslot⟩)
-    · have hlt' : (pairSlotIndexEquiv n p).1.val < (pairSlotIndexEquiv n q).1.val := hlt
-      change p.val < q.val
-      omega
-    · have hk : (pairSlotIndexEquiv n p).1.val = (pairSlotIndexEquiv n q).1.val :=
-        congrArg Fin.val heq
-      have hs : (pairSlotIndexEquiv n p).2.val < (pairSlotIndexEquiv n q).2.val := hslot
-      change p.val < q.val
-      omega
+  simpa [pairSlotIndexEquiv] using
+    (FiniteIndex.blockEquiv_lt_iff (by ring : 2 * n = n * 2) p q)
 
 private noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
     Fin n ≃ pairing.NormalizedPair :=
