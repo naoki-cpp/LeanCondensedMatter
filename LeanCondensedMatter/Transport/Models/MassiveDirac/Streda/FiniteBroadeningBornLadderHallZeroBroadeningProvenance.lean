@@ -125,7 +125,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungYSolvedXContributionZ
         -8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m /
           (probeEnergy ^ 2 + 3 * m ^ 2) := by
     unfold continuumBornAngularMeasurePrefactor
-    field_simp [hvelocity, hmeasureReal, hsum, hden] <;> ring
+    (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   have htargetCast := congrArg Complex.ofReal htargetReal
   push_cast at htargetCast
   have htarget :
@@ -205,7 +205,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungXSolvedYContributionZ
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 := by
     unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
       continuumBornAngularMeasurePrefactor
-    field_simp [hvelocity, hmeasureReal, hsum, hden] <;> ring
+    (field_simp [hvelocity, hmeasureReal, hsum, hden]; ring)
   have htargetCast := congrArg Complex.ofReal htargetReal
   push_cast at htargetCast
   have htarget :
