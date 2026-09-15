@@ -30,18 +30,5 @@ noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
     exact (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac).trans
       (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac).symm
 
-@[simp]
-theorem TwoPointDiagram.mixedComponentPairTimeEquiv_refl
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    d.mixedComponentPairTimeEquiv τ τ' σ σ B pr = pr := by
-  classical
-  by_cases hB : B = d.externalComponentPart
-  · subst B
-    simp [TwoPointDiagram.mixedComponentPairTimeEquiv]
-  · simp [TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
-
 end Common
 end SecondQuantization
