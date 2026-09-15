@@ -211,7 +211,7 @@ theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
       LinearMap.smul_apply]
     by_cases h : i = c
     · subst i
-      simp [eval, basisState, mul_comm]
+      simp [eval, basisState]
     · simp [eval, basisState, h]
   have hx := congrArg (fun L => L x) hmap
   simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
