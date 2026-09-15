@@ -32,45 +32,6 @@ open scoped BigOperators
 
 noncomputable section
 
-namespace HasAlgebraicDerivAt
-
-variable {V : Type*} [AddCommGroup V] [Module ℂ V]
-
-/-- Multiplying an algebraic-vector-valued family by a constant scalar multiplies its derivative. -/
-theorem const_smul {F : ℂ → V} {F' : V} {A : ℂ}
-    (hF : HasAlgebraicDerivAt F F' A) (c : ℂ) :
-    HasAlgebraicDerivAt (fun z => c • F z) (c • F') A := by
-  intro ℓ
-  simpa only [map_smul, smul_eq_mul] using (hF ℓ).const_mul c
-
-/-- Reparametrizing a family by `z ↦ c z` multiplies its derivative at zero by `c`. -/
-theorem comp_const_mul_zero {F : ℂ → V} {F' : V}
-    (hF : HasAlgebraicDerivAt F F' 0) (c : ℂ) :
-    HasAlgebraicDerivAt (fun z => F (c * z)) (c • F') 0 := by
-  intro ℓ
-  have hcomp := HasDerivAt.comp 0 (by simpa using hF ℓ)
-    (hasDerivAt_const_mul (x := (0 : ℂ)) c)
-  have hcomp' : HasDerivAt (fun z => ℓ (F (c * z))) (ℓ F' * c) 0 := by
-    apply hcomp.congr_of_eventuallyEq
-    exact Filter.Eventually.of_forall (fun _ => rfl)
-  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp'
-
-/-- Finite sums preserve algebraic derivatives. -/
-theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} {A : ℂ}
-    (hF : ∀ i ∈ s, HasAlgebraicDerivAt (F i) (F' i) A) :
-    HasAlgebraicDerivAt (fun z => ∑ i ∈ s, F i z) (∑ i ∈ s, F' i) A := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-      intro ℓ
-      simpa using (hasDerivAt_const (x := A) (c := (0 : ℂ)))
-  | @insert a s ha ih =>
-      have ha' := hF a (Finset.mem_insert_self a s)
-      have hs' := ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))
-      simpa only [Finset.sum_insert ha] using ha'.add hs'
-
-end HasAlgebraicDerivAt
-
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
