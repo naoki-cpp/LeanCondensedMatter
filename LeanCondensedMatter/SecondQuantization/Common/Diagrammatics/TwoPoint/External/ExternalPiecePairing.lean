@@ -75,8 +75,8 @@ private theorem TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap
     ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).normalizedPairOfEndpointEquiv
       (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart)
       (d.externalPieceMixedPositionEquiv τ τ' σ).symm pr).1 = _ ∨ _
-  apply (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).
-    normalizedPairOfEndpointEquiv_pair_eq_or_swap
+  apply Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
   intro q
   rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ,
     d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ d.externalComponentPart q]
