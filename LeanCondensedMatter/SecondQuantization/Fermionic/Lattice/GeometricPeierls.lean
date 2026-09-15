@@ -82,10 +82,15 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
         ((geometry.bondCoordinate direction x y : ℂ) •
           (-boundedBondCurrent ℏ q K x y)) 0 := by
     intro x y
-    exact
-      (hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero K ℏ q x y).comp
-        (hasDerivAt_const_mul (x := (0 : ℂ))
-          (geometry.bondCoordinate direction x y : ℂ))
+    have hbond :
+        HasAlgebraicDerivAt
+          (boundedPeierlsBondHamiltonian K ℏ q x y)
+          (-boundedBondCurrent ℏ q K x y)
+          ((geometry.bondCoordinate direction x y : ℂ) * 0) := by
+      simpa using hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero K ℏ q x y
+    exact hbond.comp
+      (hasDerivAt_const_mul (x := (0 : ℂ))
+        (geometry.bondCoordinate direction x y : ℂ))
   have hy : ∀ x : Site,
       HasAlgebraicDerivAt
         (fun A => ∑ y : Site,
@@ -128,8 +133,14 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
           ((geometry.bondCoordinate direction x y : ℂ) •
             boundedBondContact K ℏ q x y)) 0 := by
     intro x y
+    have hbond :
+        HasAlgebraicDerivAt
+          (boundedPeierlsBondCurrent K ℏ q x y)
+          (boundedBondContact K ℏ q x y)
+          ((geometry.bondCoordinate direction x y : ℂ) * 0) := by
+      simpa using hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero K ℏ q x y
     exact
-      ((hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero K ℏ q x y).comp
+      (hbond.comp
         (hasDerivAt_const_mul (x := (0 : ℂ))
           (geometry.bondCoordinate direction x y : ℂ))).const_smul
           (geometry.bondCoordinate direction x y : ℂ)
