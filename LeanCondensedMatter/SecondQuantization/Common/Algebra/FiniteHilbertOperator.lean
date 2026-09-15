@@ -93,6 +93,14 @@ theorem finiteHilbertOperator_equiv_apply
         (finiteHilbertFockEquiv x) = finiteHilbertFockEquiv (A x)
   simp
 
+/-- Transported algebraic operators act on canonical finite-Hilbert basis vectors by transporting
+the corresponding algebraic basis-state action. -/
+theorem finiteHilbertOperator_basisState
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
+    finiteHilbertOperator A (finiteHilbertBasisState n) =
+      finiteHilbertFockEquiv (A (basisState n)) := by
+  rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
+
 @[simp]
 theorem finiteHilbertOperator_basis_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :

@@ -89,10 +89,9 @@ noncomputable def finiteHilbertAnnihilate (i : Mode) :
 theorem finiteHilbertCreate_basisState_of_mem {i : Mode} {n : Occupation Mode}
     (h : i ∈ n) :
     finiteHilbertCreate i (Common.finiteHilbertBasisState n) = 0 := by
-  rw [← Common.finiteHilbertFockEquiv_basisState]
-  change Common.finiteHilbertOperator (create i)
-      (Common.finiteHilbertFockEquiv (basisState n)) = 0
-  rw [Common.finiteHilbertOperator_equiv_apply, create_basisState_of_mem h, map_zero]
+  rw [finiteHilbertCreate, Common.finiteHilbertOperator_basisState]
+  change Common.finiteHilbertFockEquiv (create i (basisState n)) = 0
+  rw [create_basisState_of_mem h, map_zero]
 
 /-- Bounded creation has the same signed basis action as the algebraic occupation operator. -/
 theorem finiteHilbertCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode}
@@ -100,10 +99,9 @@ theorem finiteHilbertCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
     finiteHilbertCreate i (Common.finiteHilbertBasisState n) =
       (fermionSign i n : ℂ) •
         Common.finiteHilbertBasisState (insertOccupation i n) := by
-  rw [← Common.finiteHilbertFockEquiv_basisState]
-  change Common.finiteHilbertOperator (create i)
-      (Common.finiteHilbertFockEquiv (basisState n)) = _
-  rw [Common.finiteHilbertOperator_equiv_apply, create_basisState_of_not_mem h, map_smul]
+  rw [finiteHilbertCreate, Common.finiteHilbertOperator_basisState]
+  change Common.finiteHilbertFockEquiv (create i (basisState n)) = _
+  rw [create_basisState_of_not_mem h, map_smul]
   simp only [basisState, Common.finiteHilbertFockEquiv_basisState]
 
 /-- Bounded annihilation vanishes on an unoccupied mode of a finite-Hilbert basis state. -/
@@ -111,10 +109,9 @@ theorem finiteHilbertCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
 theorem finiteHilbertAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode}
     (h : i ∉ n) :
     finiteHilbertAnnihilate i (Common.finiteHilbertBasisState n) = 0 := by
-  rw [← Common.finiteHilbertFockEquiv_basisState]
-  change Common.finiteHilbertOperator (annihilate i)
-      (Common.finiteHilbertFockEquiv (basisState n)) = 0
-  rw [Common.finiteHilbertOperator_equiv_apply, annihilate_basisState_of_not_mem h, map_zero]
+  rw [finiteHilbertAnnihilate, Common.finiteHilbertOperator_basisState]
+  change Common.finiteHilbertFockEquiv (annihilate i (basisState n)) = 0
+  rw [annihilate_basisState_of_not_mem h, map_zero]
 
 /-- Bounded annihilation has the same signed basis action as the algebraic occupation operator. -/
 theorem finiteHilbertAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode}
@@ -122,10 +119,9 @@ theorem finiteHilbertAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mod
     finiteHilbertAnnihilate i (Common.finiteHilbertBasisState n) =
       (fermionSign i n : ℂ) •
         Common.finiteHilbertBasisState (removeOccupation i n) := by
-  rw [← Common.finiteHilbertFockEquiv_basisState]
-  change Common.finiteHilbertOperator (annihilate i)
-      (Common.finiteHilbertFockEquiv (basisState n)) = _
-  rw [Common.finiteHilbertOperator_equiv_apply, annihilate_basisState_of_mem h, map_smul]
+  rw [finiteHilbertAnnihilate, Common.finiteHilbertOperator_basisState]
+  change Common.finiteHilbertFockEquiv (annihilate i (basisState n)) = _
+  rw [annihilate_basisState_of_mem h, map_smul]
   simp only [basisState, Common.finiteHilbertFockEquiv_basisState]
 
 /-- Bounded creation and annihilation are mutual Hilbert-space adjoints. -/
