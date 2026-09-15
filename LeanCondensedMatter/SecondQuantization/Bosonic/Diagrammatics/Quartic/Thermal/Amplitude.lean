@@ -40,8 +40,8 @@ noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
   (d.pairingInOrder order).evaluation
     ((d.pairingInOrder order).weight .boson)
     (fun a b => freeThermalPairValue ε β
-      (d.orderedFreeThermalFieldFamily order a)
-      (d.orderedFreeThermalFieldFamily order b))
+      (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
+      (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 
 /-- The coefficientwise scalar amplitude of one ordered bosonic quartic diagram, including the
 Dyson sign and quartic coupling product. -/
@@ -50,7 +50,8 @@ noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
-  (-1 : ℂ) ^ S.card * d.vertexWeight g * d.orderedThermalPairingValue ε β order
+  (-1 : ℂ) ^ S.card * d.vertexWeight g *
+    QuarticDiagram.orderedThermalPairingValue ε β d order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
@@ -60,8 +61,8 @@ noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
   ∑ pairing : Pairing (2 * S.card),
     pairing.evaluation (pairing.weight .boson)
       (fun a b => freeThermalPairValue ε β
-        (d.orderedFreeThermalFieldFamily order a)
-        (d.orderedFreeThermalFieldFamily order b))
+        (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
+        (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 
 variable [Fintype Mode] [DecidableEq Mode]
 
@@ -86,10 +87,11 @@ theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S)
-    (hfields : admissible (2 * S.card) (d.orderedFreeThermalFieldFamily order)) :
+    (hfields : admissible (2 * S.card)
+      (QuarticDiagram.orderedFreeThermalFieldFamily d order)) :
     (freeGibbsFunctional ε β hpos).value
         (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
-      d.orderedThermalWickSum ε β order := by
+      QuarticDiagram.orderedThermalWickSum ε β d order := by
   simpa [QuarticDiagram.orderedFreeThermalFieldFamily,
     QuarticDiagram.orderedThermalWickSum] using
     (freeGibbsQuarticExpectation_eq_sum_pairing ε β hpos admissible hmem herase hrec
