@@ -129,7 +129,6 @@ private def boundaryRules : Array BoundaryRule := #[
     forbiddenConstants := #[`Fintype]
     forbiddenModulePrefixes := #[
       `LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator,
-      `LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperatorAlgebra,
       `LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge,
       `LeanCondensedMatter.QuantumTheory.DensityOperator,
     ]

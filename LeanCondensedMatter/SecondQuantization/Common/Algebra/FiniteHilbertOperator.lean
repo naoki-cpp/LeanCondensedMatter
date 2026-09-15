@@ -133,6 +133,17 @@ theorem finiteHilbertOperator_id :
   rw [← Module.End.one_eq_id, ← ContinuousLinearMap.one_def]
   exact map_one (finiteHilbertOperatorAlgEquiv (Config := Config))
 
+@[simp]
+theorem finiteHilbertOperator_comp
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteHilbertOperator (A.comp B) =
+      (finiteHilbertOperator A).comp (finiteHilbertOperator B) := by
+  change
+    finiteHilbertOperatorAlgEquiv (A.comp B) =
+      (finiteHilbertOperatorAlgEquiv A).comp (finiteHilbertOperatorAlgEquiv B)
+  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
+  exact map_mul (finiteHilbertOperatorAlgEquiv (Config := Config)) A B
+
 /-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, bundled linearly. -/
 noncomputable def finiteHilbertOperatorLinearMap :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ]
