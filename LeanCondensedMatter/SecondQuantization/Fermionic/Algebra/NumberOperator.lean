@@ -63,18 +63,25 @@ theorem annihilate_comp_create_self (i : Mode) :
   rwa [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
     ← sub_eq_add_neg] at h
 
-/-- **`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`, directly from the number-operator eigenvalue equation
-(occupation-number basis states are simultaneous eigenvectors with eigenvalue `0` or `1`). -/
+/-- The number operator vanishes after a same-mode annihilation, by `cᵢ cᵢ = 0`. -/
+private theorem numberOperator_comp_annihilate (i : Mode) :
+    (numberOperator i).comp (annihilate i) = 0 := by
+  rw [numberOperator, LinearMap.comp_assoc, annihilate_comp_self, LinearMap.comp_zero]
+
+/-- **`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`. Algebraically this follows from CAR:
+`cᵢ cᵢ† = id - Nᵢ` and `cᵢ cᵢ = 0`; no occupation-basis expansion is needed. -/
 theorem numberOperator_comp_self (i : Mode) :
     (numberOperator i).comp (numberOperator i) = numberOperator i := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change ((numberOperator i).comp (numberOperator i)) (basisState n) =
-    numberOperator i (basisState n)
-  rw [LinearMap.comp_apply, numberOperator_basisState]
-  split_ifs with h
-  · rw [numberOperator_basisState, if_pos h]
-  · rw [map_zero]
+  apply LinearMap.ext
+  intro x
+  change create i (annihilate i (create i (annihilate i x))) =
+    create i (annihilate i x)
+  have hcar := DFunLike.congr_fun (annihilate_comp_create_self i) (annihilate i x)
+  simp only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply] at hcar
+  rw [hcar, map_sub]
+  have hz := DFunLike.congr_fun (numberOperator_comp_annihilate i) x
+  simp only [LinearMap.comp_apply, LinearMap.zero_apply] at hz
+  rw [hz, map_zero, sub_zero]
 
 /-- **`cᵢ cᵢ†` is idempotent**: `(cᵢ cᵢ†)(cᵢ cᵢ†) = cᵢ cᵢ†`, from `cᵢ cᵢ† = id - Nᵢ`
 (`annihilate_comp_create_self`) and `Nᵢ`'s idempotency. -/
