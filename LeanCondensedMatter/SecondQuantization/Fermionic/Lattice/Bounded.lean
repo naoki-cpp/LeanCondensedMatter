@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperatorAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 
 set_option linter.style.header false
 
