@@ -93304,7 +93304,8 @@
       "SecondQuantization.Common.algebraicToCompleted_basisState",
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Common.diagonalOperator_basisState"
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -94639,7 +94640,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
-      "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore"
+      "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -95683,7 +95685,8 @@
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalOperator_basisState"
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100518,7 +100521,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  {f g : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config},\n  (∀ (c : Config), f (SecondQuantization.Common.basisState c) = g (SecondQuantization.Common.basisState c)) → f = g",
+    "statement": "∀ {Config : Type u_1} {W : Type u_2} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W]\n  {f g : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] W},\n  (∀ (c : Config), f (SecondQuantization.Common.basisState c) = g (SecondQuantization.Common.basisState c)) → f = g",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100533,18 +100536,24 @@
     "name": "SecondQuantization.Common.linearMap_ext_basisState",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
     "externalAxioms": [],
-    "docString": "Two linear maps out of `AlgebraicFock Config` that agree on every basis state are equal. ",
+    "docString": "Two linear maps out of `AlgebraicFock Config` into any complex module that agree on every basis\nstate are equal. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
+      "SecondQuantization.Common.diagonalOperator_apply",
       "SecondQuantization.Common.matrixCoeff_ext",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
+      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.occupationProjector_singleton",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
@@ -100555,15 +100564,21 @@
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
+      "SecondQuantization.Common.diagonalOperator_apply",
       "SecondQuantization.Common.matrixCoeff_ext",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
+      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.occupationProjector_singleton",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109717,6 +109732,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : LinearOrder Mode] [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁)\n  (A B : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ →ₗ[ℂ] SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b (A ∘ₗ B) =\n    SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b A ∘ₗ\n      SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
+    "externalAxioms": [],
+    "docString": "Conjugation by the occupation/exterior equivalence preserves composition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : LinearOrder Mode] [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv b) (SecondQuantization.Fermionic.basisState n) =\n    b.ExteriorAlgebra n",
     "standardAxioms": [
       "Classical.choice",
@@ -109783,6 +109837,7 @@
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_create"
     ],
     "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState"
     ],
     "crossModuleDirectWrapper": false,
@@ -109823,7 +109878,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationAnnihilateFromField_eq_annihilate",
-      "SecondQuantization.Fermionic.Lattice.occupationConjugate_comp",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_create"
     ],
     "dependencies": [],
@@ -109831,10 +109885,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationAnnihilateFromField_eq_annihilate",
-      "SecondQuantization.Fermionic.Lattice.occupationConjugate_comp",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_create"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114474,47 +114527,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁)\n  (A B : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁ →ₗ[ℂ] SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b (A ∘ₗ B) =\n    SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b A ∘ₗ\n      SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.occupationConjugate_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
-    "externalAxioms": [],
-    "docString": "Conjugation by the occupation/exterior equivalence preserves composition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_occupationConjugate_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {𝓗₁ : Type u_2} [inst_1 : AddCommGroup 𝓗₁] [inst_2 : _root_.Module ℂ 𝓗₁]\n  (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode),\n  SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate b\n      ((SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) (b i)) =\n    SecondQuantization.Fermionic.create i",
     "standardAxioms": [
       "Classical.choice",
@@ -114580,9 +114592,9 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationAnnihilateFromField_eq_annihilate",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
       "SecondQuantization.Fermionic.Lattice.latticeBasis_apply_eq_latticeKet",
-      "SecondQuantization.Fermionic.Lattice.occupationConjugate_comp",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.latticeBasis_coord_eq_lapply"
     ],
@@ -122056,6 +122068,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedAnnihilate_algebraicToCompleted"
     ],
     "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.algebraicToCompleted_basisState",
       "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
@@ -122658,6 +122671,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedCreate_algebraicToCompleted"
     ],
     "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.algebraicToCompleted_basisState",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
@@ -125658,27 +125672,29 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
     "externalAxioms": [],
     "docString": "Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.carriesEnergyShift_create"
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.carriesEnergyShift_create"
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125697,27 +125713,29 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
     "externalAxioms": [],
     "docString": "Removing an occupied mode lowers the free energy by that mode's one-particle energy. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127415,6 +127433,7 @@
       "SecondQuantization.Fermionic.completedFreeHamiltonian_create_commutator_apply"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
       "SecondQuantization.Fermionic.toggleOccupation_of_mem"
     ],
     "crossModuleDirectWrapper": false,
@@ -127458,6 +127477,7 @@
       "SecondQuantization.Fermionic.completedFreeHamiltonian_annihilate_commutator_apply"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
       "SecondQuantization.Fermionic.toggleOccupation_of_not_mem"
     ],
     "crossModuleDirectWrapper": false,
@@ -127478,7 +127498,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.freeHamiltonian ε) (SecondQuantization.Fermionic.basisState n) =\n    (∑ i ∈ n, ↑(ε i)) • SecondQuantization.Fermionic.basisState n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.freeHamiltonian ε) (SecondQuantization.Fermionic.basisState n) =\n    ↑(SecondQuantization.Fermionic.fermionEnergy ε n) • SecondQuantization.Fermionic.basisState n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128032,7 +128052,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (τ : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.imaginaryTimeEvolveFree ε τ) (SecondQuantization.Fermionic.basisState n) =\n    Complex.exp (↑τ * ∑ i ∈ n, ↑(ε i)) • SecondQuantization.Fermionic.basisState n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (τ : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.imaginaryTimeEvolveFree ε τ) (SecondQuantization.Fermionic.basisState n) =\n    Complex.exp ↑(τ * SecondQuantization.Fermionic.fermionEnergy ε n) • SecondQuantization.Fermionic.basisState n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
