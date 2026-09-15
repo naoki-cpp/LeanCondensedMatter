@@ -83,8 +83,9 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero
           (-boundedBondCurrent ℏ q K x y)) 0 := by
     intro x y
     exact
-      (hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero K ℏ q x y).comp_const_mul_zero
-        (geometry.bondCoordinate direction x y : ℂ)
+      (hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero K ℏ q x y).comp
+        (hasDerivAt_const_mul (x := (0 : ℂ))
+          (geometry.bondCoordinate direction x y : ℂ))
   have hy : ∀ x : Site,
       HasAlgebraicDerivAt
         (fun A => ∑ y : Site,
@@ -128,8 +129,9 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
             boundedBondContact K ℏ q x y)) 0 := by
     intro x y
     exact
-      ((hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero K ℏ q x y).comp_const_mul_zero
-        (geometry.bondCoordinate direction x y : ℂ)).const_smul
+      ((hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero K ℏ q x y).comp
+        (hasDerivAt_const_mul (x := (0 : ℂ))
+          (geometry.bondCoordinate direction x y : ℂ))).const_smul
           (geometry.bondCoordinate direction x y : ℂ)
   have hy : ∀ x : Site,
       HasAlgebraicDerivAt
