@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic
+import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
 set_option linter.style.header false
@@ -68,6 +69,19 @@ noncomputable def occupationConjugate
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (occupationEquiv b).symm.toLinearMap.comp
     (A.comp (occupationEquiv b).toLinearMap)
+
+/-- Conjugation by the occupation/exterior equivalence preserves composition. -/
+theorem occupationConjugate_comp
+    (b : Module.Basis Mode ℂ 𝓗₁)
+    (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
+    occupationConjugate b (A.comp B) =
+      (occupationConjugate b A).comp (occupationConjugate b B) := by
+  change
+    ((occupationEquiv b).symm.conjAlgEquiv ℂ) (A.comp B) =
+      (((occupationEquiv b).symm.conjAlgEquiv ℂ) A).comp
+        (((occupationEquiv b).symm.conjAlgEquiv ℂ) B)
+  rw [← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp]
+  exact map_mul ((occupationEquiv b).symm.conjAlgEquiv ℂ) A B
 
 @[simp]
 theorem occupationEquiv_occupationConjugate_apply

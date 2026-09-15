@@ -35,27 +35,6 @@ noncomputable section
 variable {Mode : Type*} [LinearOrder Mode]
 variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Conjugation by the occupation/exterior equivalence preserves composition. -/
-theorem occupationConjugate_comp
-    (b : Module.Basis Mode ℂ 𝓗₁)
-    (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
-    AlgebraicFock.occupationConjugate b (A.comp B) =
-      (AlgebraicFock.occupationConjugate b A).comp (AlgebraicFock.occupationConjugate b B) := by
-  apply LinearMap.ext
-  intro Ψ
-  apply (AlgebraicFock.occupationEquiv b).injective
-  calc
-    AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b (A.comp B) Ψ) =
-        (A.comp B) (AlgebraicFock.occupationEquiv b Ψ) :=
-      AlgebraicFock.occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
-    _ = A (B (AlgebraicFock.occupationEquiv b Ψ)) := rfl
-    _ = A (AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b B Ψ)) := by
-      rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
-    _ = AlgebraicFock.occupationEquiv b
-        (AlgebraicFock.occupationConjugate b A (AlgebraicFock.occupationConjugate b B Ψ)) :=
-      (AlgebraicFock.occupationEquiv_occupationConjugate_apply b A
-        (AlgebraicFock.occupationConjugate b B Ψ)).symm
-
 /-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
 mode. -/
 theorem occupationConjugate_create
@@ -95,7 +74,7 @@ theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
         (SecondQuantization.Fermionic.annihilate y) := by
   change AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
       (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) = _
-  rw [dGamma_matrixUnit, occupationConjugate_comp]
+  rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
   rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
     ← latticeBasis_coord_eq_lapply (Site := Site) y]
   rw [occupationConjugate_create]
