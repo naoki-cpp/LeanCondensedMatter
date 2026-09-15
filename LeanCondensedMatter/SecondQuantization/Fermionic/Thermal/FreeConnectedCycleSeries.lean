@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeExchangeCycleSeries
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
@@ -29,13 +29,13 @@ boundary; it is not a second exchange-statistics backend. -/
 theorem freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel
     [LinearOrder Mode] [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β =
-      Matrix.det (1 + Common.freeBoltzmannModeKernel ε β) := by
+      Matrix.det (1 + QuantumTheory.freeBoltzmannModeKernel ε β) := by
   classical
   rw [freePartitionFunction_eq_prod]
   have hdiag :
-      (1 + Common.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
+      (1 + QuantumTheory.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
         Matrix.diagonal (fun i => 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-    rw [Common.freeBoltzmannModeKernel_eq_diagonal]
+    rw [QuantumTheory.freeBoltzmannModeKernel_eq_diagonal]
     ext i j
     by_cases hij : i = j
     · subst j
@@ -76,10 +76,10 @@ theorem logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries
     [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     PowerSeries.logOf (freeGrandPartitionSeries ε β) =
       Combinatorics.permutationConnectedCycleSeries (-1)
-        (Common.freeBoltzmannModeKernel ε β) := by
+        (QuantumTheory.freeBoltzmannModeKernel ε β) := by
   rw [logOf_freeGrandPartitionSeries_eq_sum_log]
   simpa using
-    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
+    (QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
       (-1 : ℂ) (by norm_num) ε β).symm
 
 end Fermionic
