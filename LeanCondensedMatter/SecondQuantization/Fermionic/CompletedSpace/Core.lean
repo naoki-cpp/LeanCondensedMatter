@@ -22,12 +22,9 @@ variable [LinearOrder Mode]
 theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
     (completedCreate i).toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp (create i) := by
-  apply Finsupp.lhom_ext
-  intro n c
-  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
-    (Finsupp.smul_single_one n c).symm
-  rw [hc]
-  simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+  apply Common.linearMap_ext_basisState
+  intro n
+  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
@@ -37,12 +34,9 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
     (completedAnnihilate i).toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp (annihilate i) := by
-  apply Finsupp.lhom_ext
-  intro n c
-  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
-    (Finsupp.smul_single_one n c).symm
-  rw [hc]
-  simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+  apply Common.linearMap_ext_basisState
+  intro n
+  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
       fermionPhase]
