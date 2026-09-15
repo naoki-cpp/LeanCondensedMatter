@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport
 
 set_option linter.style.header false
@@ -7,15 +7,258 @@ set_option linter.style.header false
 # Component-locality of mixed pair crossings and order chambers
 
 Canonical component pair transport preserves normalized endpoints when component position order is
-preserved. Transporting the three inequalities in `Crosses` therefore makes crossing locality a
-purely statistics-independent two-point diagram statement. The same transport specializes directly
-to fixed mixed-order chambers, where endpoint legs and exchange-statistics weights are constant.
+preserved. The endpoint bookkeeping is proof-local to this module; the public API exposes crossing,
+endpoint-leg, and exchange-weight locality inside fixed mixed-order chambers.
 -/
 
 namespace SecondQuantization
 namespace Common
 
 open Combinatorics
+
+@[simp]
+private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart) :
+    d.mixedExternalComponentPairEquiv τ τ' υ
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ d.externalComponentPart pr) =
+      d.mixedExternalComponentPairEquiv τ τ' σ pr := by
+  simp [TwoPointDiagram.mixedComponentPairTimeEquiv]
+
+@[simp]
+private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hVac : d.ComponentIsVacuum B)
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    d.mixedVacuumComponentPairEquiv τ τ' υ B hVac
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr) =
+      d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr := by
+  have hB : B ≠ d.externalComponentPart :=
+    (d.componentIsVacuum_iff_ne_externalComponentPart B).1 hVac
+  simp [TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
+
+private theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
+    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (localPairing : Pairing m)
+    (hpartner : ∀ pos,
+      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
+          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
+      (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
+          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
+  change
+    (localPairing.normalizedPairOfEndpointEquiv
+      (d.mixedComponentPairEndpointEquiv τ τ' σ B) e pr).1 = _ ∨ _
+  apply localPairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+  intro q
+  rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
+
+@[simp]
+private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart) :
+    d.mixedExternalPositionEquiv τ τ' υ
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p) =
+      d.mixedExternalPositionEquiv τ τ' σ p := by
+  change d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
+    d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
+  exact congrArg d.externalComponentLegEquiv.symm
+    (d.mixedComponentPositionEquiv_timeEquiv τ τ' σ υ d.externalComponentPart p)
+
+@[simp]
+private theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hVac : d.ComponentIsVacuum B)
+    (p : d.MixedComponentPosition τ τ' σ B) :
+    d.mixedVacuumPositionEquiv τ τ' υ B hVac
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
+      d.mixedVacuumPositionEquiv τ τ' σ B hVac p := by
+  simp [TwoPointDiagram.mixedVacuumPositionEquiv,
+    TwoPointDiagram.mixedComponentPositionTimeEquiv]
+
+private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
+      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
+  classical
+  dsimp only
+  by_cases hB : B = d.externalComponentPart
+  · subst B
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ d.externalComponentPart pr
+    have hlocal :
+        d.mixedExternalComponentPairEquiv τ τ' υ q =
+          d.mixedExternalComponentPairEquiv τ τ' σ pr := by
+      simpa [q] using d.mixedExternalComponentPairEquiv_pairTimeEquiv τ τ' σ υ pr
+    have hlocalVal :
+        (d.mixedExternalComponentPairEquiv τ τ' υ q).1 =
+          (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 :=
+      congrArg Subtype.val hlocal
+    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ
+        d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
+        d.externalVacuumSplit.1.pairing
+        (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr with hp | hp <;>
+      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ
+          d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' υ)
+          d.externalVacuumSplit.1.pairing
+          (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' υ) q with hq | hq
+    · left
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.fst hcoords
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.snd hcoords
+    · right
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.snd hcoords
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.fst hcoords
+    · right
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.fst hcoords
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.snd hcoords
+    · left
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.snd hcoords
+      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+        simpa using congrArg Prod.fst hcoords
+  · have hVac : d.ComponentIsVacuum B :=
+      (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    have hlocal :
+        d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q =
+          d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr := by
+      simpa [q] using d.mixedVacuumComponentPairEquiv_pairTimeEquiv τ τ' σ υ B hVac pr
+    have hlocalVal :
+        (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q).1 =
+          (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 :=
+      congrArg Subtype.val hlocal
+    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ B
+        (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+        (d.restrictedVacuumPairing B hVac)
+        (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
+      with hp | hp <;>
+      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ B
+          (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
+          (d.restrictedVacuumPairing B hVac)
+          (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' υ B hVac) q
+        with hq | hq
+    · left
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.fst hcoords
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.snd hcoords
+    · right
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.snd hcoords
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.fst hcoords
+    · right
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.fst hcoords
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.snd hcoords
+    · left
+      have hcoords := hq.symm.trans (hlocalVal.trans hp)
+      constructor
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.snd hcoords
+      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+        simpa using congrArg Prod.fst hcoords
+
+private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
+      p.1 < q.1 ↔
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
+      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
+  classical
+  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+  change d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) = _ ∧
+    d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) = _
+  have hCases :
+      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
+      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
+    simpa [q] using d.mixedComponentPairTimeEquiv_endpoints_eq_or_swap τ τ' σ υ B pr
+  rcases hCases with hSame | hSwap
+  · exact hSame
+  · have hSource :
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)).1 <
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
+    have hTransport :=
+      (hOrder (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))).1 hSource
+    have hTarget :
+        (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0)).1 <
+          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff q.1.1.1 q.1.1.2).mp q.1.2 |>.1
+    rw [hSwap.1, hSwap.2] at hTarget
+    exact (lt_asymm hTarget hTransport).elim
 
 /-- Preservation of strict mixed order by component position transport implies preservation and
 reflection of every crossing between pairs of that component. -/
