@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
@@ -12,15 +12,16 @@ This module contains the bosonic imaginary-time layer:
 
 - the free-energy eigenvalue and diagonal free Hamiltonian;
 - algebraic free and Heisenberg imaginary-time evolution;
-- evolved creation and annihilation operators;
+- fixed energy shifts and evolved creation/annihilation operators;
 - the algebraic interaction-picture operator.
 
 All constructions are algebraic. No operator exponential, Hilbert-space completion, positivity
 assumption on the dispersion, or convergence theorem is used.
 
 Generic semigroup, inverse, zero-time, and composition laws for diagonal/Heisenberg evolution are
-owned by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution`. Generic interaction-picture
-matrix-coefficient, continuity, and interval-integrability facts are owned by
+owned by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution`. Fixed energy-shift
+eigenoperator laws are owned by `SecondQuantization.Common.ImaginaryTime.EnergyShift`. Generic
+interaction-picture matrix-coefficient, continuity, and interval-integrability facts are owned by
 `SecondQuantization.Common.ImaginaryTime.InteractionPicture`; Bosonic keeps only the physical
 `freeEigenvalue` specialization and statistics-specific operator statements.
 -/
@@ -97,73 +98,94 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     Common.heisenbergEvolve_diagonalOperator (freeEigenvalue ε) τ
       (fun n : Occupation Mode => (freeEigenvalue ε n : ℂ))
 
+/-! ## Energy shifts of creation and annihilation -/
+
+/-- Annihilation at mode `i` has fixed free-energy shift `-ε i`. -/
+theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
+    Common.HasEnergyShift (freeEigenvalue ε) (-ε i) (annihilate i) := by
+  intro m n hmn
+  change annihilate i (basisState n) m ≠ 0 at hmn
+  by_cases hi : n i = 0
+  · exfalso
+    apply hmn
+    rw [annihilate_basisState_of_zero hi]
+    rfl
+  · have hm : m = removeOccupation i n := by
+      by_contra hne
+      apply hmn
+      rw [annihilate_basisState_of_pos hi]
+      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
+    subst m
+    rw [freeEigenvalue_removeOccupation_of_pos hi]
+    ring
+
+/-- Creation at mode `i` has fixed free-energy shift `+ε i`. -/
+theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
+    Common.HasEnergyShift (freeEigenvalue ε) (ε i) (create i) := by
+  intro m n hmn
+  change create i (basisState n) m ≠ 0 at hmn
+  have hm : m = createOccupation i n := by
+    by_contra hne
+    apply hmn
+    rw [create_basisState_eq]
+    exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
+  subst m
+  rw [freeEigenvalue_createOccupation]
+  ring
+
 /-- The annihilation operator evolves with energy shift `-ε i`. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (annihilate i) (basisState n) =
-    (Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) (basisState n)
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
-  by_cases hi : n i = 0
-  · rw [annihilate_basisState_of_zero hi, smul_zero, map_zero, smul_zero]
-  · have hexp : -τ * freeEigenvalue ε n + τ * (freeEigenvalue ε n - ε i) = -τ * ε i := by
-      ring
-    have hcast : (-(τ : ℂ)) * (ε i : ℂ) = ((-τ * ε i : ℝ) : ℂ) := by
-      push_cast
-      ring
-    rw [annihilate_basisState_of_pos hi, smul_smul, map_smul,
-      imaginaryTimeEvolveFree_basisState, smul_smul, freeEigenvalue_removeOccupation_of_pos hi,
-      mul_right_comm, hcast, ← Complex.exp_add, ← Complex.ofReal_add, hexp, smul_smul]
+  change Common.heisenbergEvolve (freeEigenvalue ε) τ (annihilate i) = _
+  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
+    (freeEigenvalue ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
+    push_cast
+    ring
+  rw [hcast] at h
+  exact h
 
 /-- The creation operator evolves with energy shift `ε i`. -/
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (create i) (basisState n) =
-    (Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i) (basisState n)
-  have hexp : -τ * freeEigenvalue ε n + τ * (freeEigenvalue ε n + ε i) = τ * ε i := by
-    ring
-  have hcast : (τ : ℂ) * (ε i : ℂ) = ((τ * ε i : ℝ) : ℂ) := by
+  change Common.heisenbergEvolve (freeEigenvalue ε) τ (create i) = _
+  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
+    (freeEigenvalue ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply, create_basisState_eq,
-    smul_smul, map_smul, imaginaryTimeEvolveFree_basisState, smul_smul,
-    freeEigenvalue_createOccupation, mul_right_comm, hcast, ← Complex.exp_add,
-    ← Complex.ofReal_add, hexp, smul_smul]
+  rw [hcast] at h
+  exact h
 
 /-- Move an annihilation operator through the free diagonal evolution. -/
 theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) •
         ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
-  have hcast : ((-ε i * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
+  change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (annihilate i) = _
+  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
+    (freeEigenvalue ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
-  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
-    (freeEigenvalue ε) τ (-ε i) (annihilate i) (by
-      rw [hcast]
-      exact imaginaryTimeEvolve_annihilate ε τ i)
-  rwa [hcast] at h
+  rw [hcast] at h
+  exact h
 
 /-- Move a creation operator through the free diagonal evolution. -/
 theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     (imaginaryTimeEvolveFree ε τ).comp (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) •
         ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
+  change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (create i) = _
+  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
+    (freeEigenvalue ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
   have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
-  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
-    (freeEigenvalue ε) τ (ε i) (create i) (by
-      rw [hcast]
-      exact imaginaryTimeEvolve_create ε τ i)
-  rwa [hcast] at h
+  rw [hcast] at h
+  exact h
 
 /-- The interaction-picture operator `V_I(τ) = e^{τH₀} V e^{-τH₀}`. -/
 noncomputable def interactionPicture (ε : Mode → ℝ)
