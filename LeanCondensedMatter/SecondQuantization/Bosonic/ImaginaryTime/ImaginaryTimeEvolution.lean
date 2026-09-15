@@ -100,9 +100,9 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
 
 /-! ## Energy shifts of creation and annihilation -/
 
-/-- Annihilation at mode `i` has fixed free-energy shift `-ε i`. -/
-theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
-    Common.HasEnergyShift (freeEigenvalue ε) (-ε i) (annihilate i) := by
+/-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
+theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
+    Common.CarriesShift (freeEigenvalue ε) (annihilate i) (-ε i) := by
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
   by_cases hi : n i = 0
@@ -119,9 +119,9 @@ theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
     rw [freeEigenvalue_removeOccupation_of_pos hi]
     ring
 
-/-- Creation at mode `i` has fixed free-energy shift `+ε i`. -/
-theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
-    Common.HasEnergyShift (freeEigenvalue ε) (ε i) (create i) := by
+/-- Creation at mode `i` carries free-energy shift `+ε i`. -/
+theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
+    Common.CarriesShift (freeEigenvalue ε) (create i) (ε i) := by
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
   have hm : m = createOccupation i n := by
@@ -131,15 +131,14 @@ theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
     exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
   subst m
   rw [freeEigenvalue_createOccupation]
-  ring
 
 /-- The annihilation operator evolves with energy shift `-ε i`. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
   change Common.heisenbergEvolve (freeEigenvalue ε) τ (annihilate i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
-    (freeEigenvalue ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
+    (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
   have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -151,8 +150,8 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
   change Common.heisenbergEvolve (freeEigenvalue ε) τ (create i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
-    (freeEigenvalue ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
+    (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
   have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -165,8 +164,8 @@ theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) •
         ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (annihilate i) = _
-  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
-    (freeEigenvalue ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have h := Common.diagonalEvolution_comp_of_carriesShift
+    (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
   have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -179,8 +178,8 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) •
         ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (create i) = _
-  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
-    (freeEigenvalue ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have h := Common.diagonalEvolution_comp_of_carriesShift
+    (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
   have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring

@@ -101,9 +101,9 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
 
 /-! ## Energy shifts of creation and annihilation -/
 
-/-- Annihilation at mode `i` has fixed free-energy shift `-ε i`. -/
-theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
-    Common.HasEnergyShift (fermionEnergy ε) (-ε i) (annihilate i) := by
+/-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
+theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
+    Common.CarriesShift (fermionEnergy ε) (annihilate i) (-ε i) := by
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
   by_cases hi : i ∈ n
@@ -120,9 +120,9 @@ theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
     rw [annihilate_basisState_of_not_mem hi]
     rfl
 
-/-- Creation at mode `i` has fixed free-energy shift `+ε i`. -/
-theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
-    Common.HasEnergyShift (fermionEnergy ε) (ε i) (create i) := by
+/-- Creation at mode `i` carries free-energy shift `+ε i`. -/
+theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
+    Common.CarriesShift (fermionEnergy ε) (create i) (ε i) := by
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
   by_cases hi : i ∈ n
@@ -137,7 +137,6 @@ theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
       exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
     subst m
     rw [fermionEnergy_insertOccupation_of_not_mem hi]
-    ring
 
 /-! ## Evolved creation and annihilation operators -/
 
@@ -145,8 +144,8 @@ theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
   change Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
-    (fermionEnergy ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
+    (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
   have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -157,8 +156,8 @@ theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) = Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
   change Common.heisenbergEvolve (fermionEnergy ε) τ (create i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
-    (fermionEnergy ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
+    (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
   have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -172,8 +171,8 @@ theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (
     (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (annihilate i) = _
-  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
-    (fermionEnergy ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have h := Common.diagonalEvolution_comp_of_carriesShift
+    (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
   have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
@@ -185,8 +184,8 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
     (imaginaryTimeEvolveFree ε τ).comp (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (create i) = _
-  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
-    (fermionEnergy ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have h := Common.diagonalEvolution_comp_of_carriesShift
+    (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
   have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
     ring
