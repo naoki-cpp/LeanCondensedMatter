@@ -71,7 +71,6 @@ noncomputable def occupationConjugate
     (A.comp (occupationEquiv b).toLinearMap)
 
 /-- Conjugation by the occupation/exterior equivalence preserves composition. -/
-@[simp]
 theorem occupationConjugate_comp
     (b : Module.Basis Mode ℂ 𝓗₁)
     (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
