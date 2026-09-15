@@ -49,18 +49,9 @@ noncomputable def QuarticDiagram.fixedOrderPairComponent
     unfold QuarticDiagram.componentBlock
     exact d.componentPartition.part_mem.2 (vertexOfLeg q).2⟩
 
-@[simp]
-theorem QuarticDiagram.fixedOrderPairComponent_val
-    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (order : QuarticVertexOrder S)
-    (pr : (d.pairingInOrder order).NormalizedPair) :
-    (d.fixedOrderPairComponent order pr : Finset (Fin N)) =
-      d.componentBlock (vertexOfLeg (orderedLegToDiagramLeg S order pr.1.1)) :=
-  rfl
-
 /-- In a fixed global vertex order, the component ordered-leg embedding intertwines the restricted
 and global pairing partner maps. -/
-theorem QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg
+private theorem QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) (C : d.componentPartition.parts)
     (p : Fin (2 * (2 * (C : Finset (Fin N)).card))) :
@@ -88,7 +79,7 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
     (d.pairingInOrder_partner_fixedOrderComponentOrderedLeg order C)
 
 @[simp]
-theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
+private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) (C : d.componentPartition.parts)
     (pr : d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) :
@@ -105,12 +96,11 @@ theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
     Crosses (d.fixedOrderComponentPairEmbedding order C p).1
         (d.fixedOrderComponentPairEmbedding order C q).1 ↔
       Crosses p.1 q.1 := by
-  simpa only [QuarticDiagram.fixedOrderComponentPairEmbedding] using
-    ((d.restrictComponent C.2).pairingInOrder
-      (d.componentPartition.partOrdersOfOrder order C)).normalizedPairEmbedding_crosses_iff
-      (d.pairingInOrder order)
-      (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)
-      (d.pairingInOrder_partner_fixedOrderComponentOrderedLeg order C) p q
+  rw [d.fixedOrderComponentPairEmbedding_apply, d.fixedOrderComponentPairEmbedding_apply]
+  exact crosses_map_iff
+    (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C)
+    (d.componentOrderedLeg_strictMono (d.fixedOrderComponentShuffle order) C)
+    p.1.1 p.1.2 q.1.1 q.1.2
 
 /-- A component-local normalized pair remains assigned to that component after embedding into the
 fixed global quartic order. -/
