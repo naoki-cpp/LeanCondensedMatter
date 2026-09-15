@@ -57,7 +57,7 @@ noncomputable def TwoPointDiagram.externalPieceComponentPairEquiv
 
 /-- Before using normalized order, the external-piece pair equivalence transports the two ambient
 component endpoints either in their original order or swapped. -/
-theorem TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap
+private theorem TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : d.MixedComponentPair τ τ' σ d.externalComponentPart) :
@@ -70,11 +70,16 @@ theorem TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap
         ((d.externalPieceMixedPositionEquiv τ τ' σ).symm
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)),
           (d.externalPieceMixedPositionEquiv τ τ' σ).symm
-            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0))) :=
-  d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ d.externalComponentPart
-    (d.externalPieceMixedPositionEquiv τ τ' σ).symm
+            (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0))) := by
+  change
+    ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).normalizedPairOfEndpointEquiv
+      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart)
+      (d.externalPieceMixedPositionEquiv τ τ' σ).symm pr).1 = _ ∨ _
+  apply Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
     (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
-    (d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ) pr
+  intro q
+  rw [d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ,
+    d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ d.externalComponentPart q]
 
 /-- Mapping the normalized standalone external-piece pair back to ambient mixed positions recovers
 the normalized ambient component pair endpoints in their original order. -/

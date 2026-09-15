@@ -43,6 +43,17 @@ private theorem QuarticDiagram.componentOrderedLegEquiv_apply {S : Finset (Fin N
     d.componentOrderedLegEquiv shuffle ⟨B, p⟩ = d.componentOrderedLeg shuffle B p :=
   rfl
 
+private theorem QuarticDiagram.componentOrderedLegEquiv_partner {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
+    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
+        (d.componentOrderedLegEquiv shuffle ⟨B, p⟩) =
+      d.componentOrderedLegEquiv shuffle
+        ⟨B, ((d.restrictComponent B.2).pairingInOrder (orders B)).partner p⟩ := by
+  simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
+    d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p
+
 /-- Component-local normalized pairs are equivalent to the normalized pairs of the assembled global
 pairing. -/
 noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
@@ -53,13 +64,7 @@ noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
   (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPairSigmaEquiv
     (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
     (d.componentOrderedLegEquiv shuffle)
-    (by
-      intro B p
-      simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
-        d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p)
-    (fun B => by
-      simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
-        d.componentOrderedLeg_strictMono shuffle B)
+    (d.componentOrderedLegEquiv_partner orders shuffle)
 
 @[simp]
 theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
@@ -69,8 +74,17 @@ theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
     (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1 =
       (d.componentOrderedLeg shuffle B pr.1.1,
         d.componentOrderedLeg shuffle B pr.1.2) := by
-  simp only [QuarticDiagram.componentPairEquiv, Pairing.normalizedPairSigmaEquiv_apply,
-    QuarticDiagram.componentOrderedLegEquiv_apply]
+  simpa only [QuarticDiagram.componentPairEquiv,
+      QuarticDiagram.componentOrderedLegEquiv_apply] using
+    (Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+      (fun C => (d.restrictComponent C.2).pairingInOrder (orders C))
+      (d.componentOrderedLegEquiv shuffle)
+      (d.componentOrderedLegEquiv_partner orders shuffle)
+      (fun C => by
+        simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
+          d.componentOrderedLeg_strictMono shuffle C)
+      B pr)
 
 end Common
 end SecondQuantization

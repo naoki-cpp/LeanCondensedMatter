@@ -156,6 +156,49 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
   exact Equiv.ofBijective (pairing.normalizedPairOfEndpointEquiv endpointEquiv e)
     ((Fintype.bijective_iff_surjective_and_card _).2 ⟨hsurj, hcard⟩)
 
+/-- Normalizing a transported endpoint-zero position preserves the two source endpoints up to the
+normalized order chosen by the target pairing. -/
+theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+    (hpartner : ∀ a : A,
+      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
+    (a : A) :
+    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
+        (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) ∨
+      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
+        (e (endpointEquiv (a, 1)), e (endpointEquiv (a, 0))) := by
+  classical
+  unfold Pairing.normalizedPairOfEndpointEquiv
+  by_cases h : e (endpointEquiv (a, 0)) < pairing.partner (e (endpointEquiv (a, 0)))
+  · have horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
+      simpa only [hpartner a] using h
+    left
+    simp [Pairing.positionToPairEndpoint, hpartner a, horder]
+  · have horder : ¬ e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
+      simpa only [hpartner a] using h
+    right
+    simp [Pairing.positionToPairEndpoint, hpartner a, horder]
+
+/-- If the transported endpoint order is already increasing, normalization does not swap the two
+endpoints. -/
+theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
+    (hpartner : ∀ a : A,
+      pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
+    (a : A)
+    (horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))) :
+    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
+      (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) := by
+  rcases pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+      endpointEquiv e hpartner a with h | h
+  · exact h
+  · have hnormalized := pairing.pairs_normalized
+      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).2
+    rw [h] at hnormalized
+    exact (lt_asymm horder hnormalized).elim
+
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
 theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairing n)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) (i j : Fin 2) :
