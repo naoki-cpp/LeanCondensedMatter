@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport
 
@@ -7,8 +8,8 @@ set_option linter.style.header false
 # Component-locality of mixed pair crossings and order chambers
 
 Canonical component pair transport preserves normalized endpoints when component position order is
-preserved. The endpoint bookkeeping is proof-local to this module; the public API exposes crossing,
-endpoint-leg, and exchange-weight locality inside fixed mixed-order chambers.
+preserved. Endpoint bookkeeping and crossing-count reindexing are proof-local to this module; the
+public API exposes endpoint-leg and exchange-weight locality inside fixed mixed-order chambers.
 -/
 
 namespace SecondQuantization
@@ -260,19 +261,20 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_posi
     rw [hSwap.1, hSwap.2] at hTarget
     exact (lt_asymm hTarget hTransport).elim
 
-/-- Preservation of strict mixed order by component position transport implies preservation and
-reflection of every crossing between pairs of that component. -/
-theorem TwoPointDiagram.mixedComponentCrossingPreserving_of_positionOrder
+private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
     (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1) :
-    d.MixedComponentCrossingPreserving τ τ' σ υ B := by
+          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
+    (p q : d.MixedComponentPair τ τ' σ B) :
+    Crosses p.1.1 q.1.1 ↔
+      Crosses
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1.1
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B q).1.1 := by
   classical
-  intro p q
   let tp := d.mixedComponentPairTimeEquiv τ τ' σ υ B p
   let tq := d.mixedComponentPairTimeEquiv τ τ' σ υ B q
   let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 0)
@@ -342,6 +344,36 @@ theorem TwoPointDiagram.mixedComponentCrossingPreserving_of_positionOrder
     · simpa [q0, p1] using h01.mpr ht01
     · simpa [p1, q1] using h11.mpr ht11
 
+private theorem TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
+      p.1 < q.1 ↔
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1) :
+    d.mixedComponentCrossingCount τ τ' σ B =
+      d.mixedComponentCrossingCount τ τ' υ B := by
+  classical
+  let e := d.mixedComponentPairTimeEquiv τ τ' σ υ B
+  let ee := Equiv.prodCongr e e
+  unfold TwoPointDiagram.mixedComponentCrossingCount
+    TwoPointDiagram.mixedComponentOrientedCrossingCount
+  calc
+    (∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ B,
+        if Crosses x.1.1.1 x.2.1.1 then 1 else 0) =
+      ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ B,
+        if Crosses (e x.1).1.1 (e x.2).1.1 then 1 else 0 := by
+      apply Fintype.sum_congr
+      intro x
+      exact if_congr
+        (d.mixedComponentCrosses_iff_of_positionOrder τ τ' σ υ B hOrder x.1 x.2) rfl rfl
+    _ = ∑ y : d.MixedComponentPair τ τ' υ B × d.MixedComponentPair τ τ' υ B,
+        if Crosses y.1.1.1 y.2.1.1 then 1 else 0 := by
+      exact Equiv.sum_comp ee
+        (fun y : d.MixedComponentPair τ τ' υ B × d.MixedComponentPair τ τ' υ B =>
+          if Crosses y.1.1.1 y.2.1.1 then 1 else 0)
+
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
 theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
@@ -390,11 +422,11 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (B : d.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
-      d.mixedComponentWeight s τ τ' υ B :=
-  d.mixedComponentWeight_eq_of_timeTransport s τ τ' σ υ B
-    (d.mixedComponentCrossingPreserving_of_positionOrder τ τ' σ υ B
-      (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-        τ τ' σ υ B hChamber))
+      d.mixedComponentWeight s τ τ' υ B := by
+  unfold TwoPointDiagram.mixedComponentWeight
+  rw [d.mixedComponentCrossingCount_eq_of_positionOrder τ τ' σ υ B
+    (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
+      τ τ' σ υ B hChamber)]
 
 end Common
 end SecondQuantization
