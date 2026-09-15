@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentPairingValue
@@ -139,7 +140,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
                 mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                   d.vertexLabelSequence pr.1.1 pr.1.2)
     rw [hpairProduct,
-      d.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional]
+      d.1.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
       FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
