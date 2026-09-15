@@ -7,7 +7,7 @@ and mention an identifier only when the implementation matters.
 |---|---|---|
 | Algebraic Fock space | Finite-support linear combinations of occupation configurations. It is not a completed Hilbert space. | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
 | Finite Hilbert Fock realization | `EuclideanSpace ℂ Config` for finite `Config`, used to interpret algebraic operators as bounded finite-dimensional operators. | `SecondQuantization/Common/Thermal/FiniteHilbertOperator.lean` |
-| Mode index type | A type of one-particle labels. It does not by itself carry a one-particle Hilbert-space structure. | `SecondQuantization/Common/Algebra/OneParticleSpace.lean` |
+| Mode index type | A type of one-particle labels. It does not by itself carry a one-particle Hilbert-space structure. | generic `Mode` parameters in `SecondQuantization/Common/Algebra/` |
 | Occupation configuration | Fermionic or bosonic occupation data. The zero configuration is not yet the vacuum vector until embedded in Fock space. | `SecondQuantization/Fermionic/Algebra/Occupation.lean`, `SecondQuantization/Bosonic/Algebra/Occupation.lean` |
 | Basis state | The algebraic Fock vector associated with one occupation configuration. | `basisState` |
 | Matrix coefficient | Coordinate evaluation of an algebraic operator between basis states. Do not call it a Hilbert-space matrix element until a Hilbert realization is specified. | `matrixCoeff` |

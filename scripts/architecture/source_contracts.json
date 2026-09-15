@@ -175,7 +175,6 @@
     {
       "id": "dimensionIndependentModeOwners",
       "paths": [
-        "LeanCondensedMatter/SecondQuantization/Common/Algebra/OneParticleSpace.lean",
         "LeanCondensedMatter/SecondQuantization/Common/Algebra/OccupationBasis.lean",
         "LeanCondensedMatter/SecondQuantization/Common/Algebra/AlgebraicFock.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/Occupation.lean",
