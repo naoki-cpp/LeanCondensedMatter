@@ -111,6 +111,7 @@ private theorem create_exteriorBasis
         exact hcar
       · have hiInsert : i ∉ insert a s := by
           simp [hia, his]
+        rw [if_neg hiInsert]
         rcases lt_or_gt_of_ne hia with hlt | hgt
         · rw [hbase]
           have hmin' : ∀ x ∈ insert a s, i < x := by
