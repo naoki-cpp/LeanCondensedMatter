@@ -182,17 +182,9 @@ theorem occupationEquiv_create
     (occupationEquiv b).toLinearMap.comp
         (SecondQuantization.Fermionic.create i) =
       (create 𝓗₁ (b i)).comp (occupationEquiv b).toLinearMap := by
-  apply Finsupp.lhom_ext
-  intro n c
-  have hsingle : Finsupp.single n c = c • basisState n := by
-    ext m
-    by_cases hmn : n = m
-    · subst m
-      simp [basisState, Common.basisState]
-    · simp [basisState, Common.basisState, hmn]
-  rw [hsingle]
-  simp only [map_smul, LinearMap.comp_apply]
-  exact congrArg (fun Ψ => c • Ψ) (occupationEquiv_create_basisState b i n)
+  apply Common.linearMap_ext_basisState
+  intro n
+  simpa only [LinearMap.comp_apply] using occupationEquiv_create_basisState b i n
 
 private theorem eq_annihilate_of_vacuum_of_mixedCAR
     (B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (i : Mode)
