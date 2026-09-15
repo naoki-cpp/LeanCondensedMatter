@@ -86052,76 +86052,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  {d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ}\n  {B : ↥d.componentPartition.parts} {σ υ : Fin n → ℝ}, d.ComponentTimeEq B σ υ → d.ComponentTimeEq B υ σ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.ComponentTimeEq.symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  {d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ}\n  {B : ↥d.componentPartition.parts} {σ υ ω : Fin n → ℝ},\n  d.ComponentTimeEq B σ υ → d.ComponentTimeEq B υ ω → d.ComponentTimeEq B σ ω",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.ComponentTimeEq.trans",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ)\n  (leg : SecondQuantization.Common.OrderedTwoPointLeg d.externalInteractionPart.card),\n  d.atomicLegPartner\n      (SecondQuantization.Common.orderedTwoPointLegMap (⇑(d.externalInteractionPart.orderEmbOfFin ⋯)) leg) =\n    SecondQuantization.Common.orderedTwoPointLegMap (⇑(d.externalInteractionPart.orderEmbOfFin ⋯))\n      (d.externalPiece.atomicLegPartner leg)",
     "standardAxioms": [
@@ -86416,41 +86346,6 @@
       "SecondQuantization.Common.TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ)\n  (B : ↥d.componentPartition.parts) (σ : Fin n → ℝ), d.ComponentTimeEq B σ σ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentTimeEq_refl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88964,8 +88859,8 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
     ],
     "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88974,76 +88869,6 @@
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (p : d.MixedComponentPosition τ τ' σ B),\n  (d.mixedComponentPositionTimeEquiv τ τ' σ σ B) p = p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_refl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (p : d.MixedComponentPosition τ τ' σ B),\n  (d.mixedComponentPositionTimeEquiv τ τ' υ σ B) ((d.mixedComponentPositionTimeEquiv τ τ' σ υ B) p) = p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_symm_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101868,7 +101693,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
     ],
     "dependencies": [
       "List.idxOf_flatMap_block_lt_iff",
@@ -101881,7 +101706,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -101924,48 +101749,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y ↔\n      SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
-    "externalAxioms": [],
-    "docString": "Atomic-leg order is unchanged across assignments in the same mixed-event order chamber. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
-      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -103608,7 +103391,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -103621,7 +103404,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff",
@@ -103630,7 +103413,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -150072,6 +149855,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : SecondQuantization.Common.OrderedTwoPointLeg n),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    (SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' σ y ↔\n      SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ x <\n        SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition τ τ' υ y)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport",
+    "externalAxioms": [],
+    "docString": "Atomic-leg order is unchanged across assignments in the same mixed-event order chamber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff",
+      "SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
