@@ -94,8 +94,10 @@ theorem TwoPointDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     {B : Finset (TwoPointVertex S)} (hB : B ∈ d.componentPartition.parts)
     (leg : Fin (2 * (2 * S.card + 1))) :
-    d.legInComponent B leg ↔ twoPointVertexOfLeg leg ∈ B :=
-  d.componentBlock_eq_iff_mem hB _
+    d.legInComponent B leg ↔ twoPointVertexOfLeg leg ∈ B := by
+  unfold TwoPointDiagram.legInComponent TwoPointDiagram.componentBlock
+  apply d.vertexGraph.componentBlock_eq_iff_mem
+  simpa only [TwoPointDiagram.componentPartition] using hB
 
 /-- Membership of an unflattened leg in a component part. -/
 def TwoPointDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
@@ -119,8 +121,14 @@ theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold TwoPointDiagram.legInComponent
-  rw [d.componentBlock_eq_of_reachable
-    (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg)]
+  have hEq :
+      d.componentBlock (twoPointVertexOfLeg leg) =
+        d.componentBlock (twoPointVertexOfLeg (d.pairing.partner leg)) := by
+    change d.vertexGraph.componentBlock (twoPointVertexOfLeg leg) =
+      d.vertexGraph.componentBlock (twoPointVertexOfLeg (d.pairing.partner leg))
+    exact d.vertexGraph.componentBlock_eq_of_reachable
+      (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg).symm
+  rw [hEq]
 
 /-- The partner permutation restricted to the legs of one full component. -/
 noncomputable def TwoPointDiagram.restrictedPartner {S : Finset (Fin N)}

@@ -39,8 +39,9 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
     (v : ↥(S \ T)) :
     let d := TwoPointDiagram.ofSlotSplit h ext vac
     let B : d.componentPartition.parts :=
-      ⟨d.componentBlock (slotSplitVacuumVertex v),
-        d.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
+      ⟨d.componentBlock (slotSplitVacuumVertex v), by
+        unfold TwoPointDiagram.componentBlock
+        exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
     B ∈ d.vacuumComponentParts := by
   dsimp only
   rw [TwoPointDiagram.mem_vacuumComponentParts]
@@ -49,7 +50,7 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
   have hreach :
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
         (Sum.inl e) (slotSplitVacuumVertex v) :=
-    ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+    ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (slotSplitVacuumVertex v) (Sum.inl e)).1 he
   obtain ⟨p⟩ := hreach.symm
   obtain ⟨w, hw, -⟩ :=
@@ -63,8 +64,9 @@ noncomputable def slotSplitVacuumComponentPart
   let v := vac.componentRepresentative C
   let d := TwoPointDiagram.ofSlotSplit h ext vac
   let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (slotSplitVacuumVertex v),
-      d.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
+    ⟨d.componentBlock (slotSplitVacuumVertex v), by
+      unfold TwoPointDiagram.componentBlock
+      exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
   ⟨B, componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts h ext vac v⟩
 
 /-- The ambient interaction part of the image component is exactly the original quartic component. -/
@@ -106,12 +108,14 @@ theorem not_mem_left_of_mem_vacuumComponentPart
     simpa [slotSplitVertex] using
       reachable_ofSlotSplit_of_reachable h ext vac he
   have hblock :
-      (TwoPointDiagram.ofSlotSplit h ext vac).componentBlock (Sum.inr w) = B.1.1 :=
-    ((TwoPointDiagram.ofSlotSplit h ext vac).componentBlock_eq_iff_mem B.1.2
-      (Sum.inr w)).2 hwB
+      (TwoPointDiagram.ofSlotSplit h ext vac).componentBlock (Sum.inr w) = B.1.1 := by
+    unfold TwoPointDiagram.componentBlock
+    exact ((TwoPointDiagram.ofSlotSplit h ext vac).componentPartition.part_eq_iff_mem B.1.2).2 hwB
   have heB : (Sum.inl e : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S)) := by
     rw [← hblock]
-    exact ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+    change (Sum.inl e : TwoPointVertex S) ∈
+      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock (Sum.inr w)
+    exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (Sum.inr w) (Sum.inl e)).2 hamb
   have hVac :
       (TwoPointDiagram.ofSlotSplit h ext vac).ComponentIsVacuum B.1 :=
@@ -137,13 +141,18 @@ theorem slotSplitVacuumComponentPart_surjective
         not_mem_left_of_mem_vacuumComponentPart h ext vac hext B w hxB
       let v : ↥(S \ T) := ⟨w.1, Finset.mem_sdiff.mpr ⟨w.2, hwNot⟩⟩
       let C : vac.componentPartition.parts :=
-        ⟨vac.componentBlock v, vac.componentBlock_mem_componentPartition v⟩
+        ⟨vac.componentBlock v, by
+          unfold QuarticDiagram.componentBlock
+          exact vac.componentPartition.part_mem.2 v.2⟩
       refine ⟨C, ?_⟩
       apply Subtype.ext
       apply TwoPointDiagram.interactionPart_component_unique
         (d := TwoPointDiagram.ofSlotSplit h ext vac) w
       · rw [interactionPart_slotSplitVacuumComponentPart]
-        exact vac.self_mem_componentBlock v
+        change (w : Fin N) ∈ vac.componentPartition.part (v : Fin N)
+        have hwv : (w : Fin N) = (v : Fin N) := rfl
+        rw [hwv]
+        exact vac.componentPartition.mem_part v.2
       · exact (TwoPointDiagram.mem_interactionPart_subtype
           (B.1 : Finset (TwoPointVertex S)) w).2 hxB
 

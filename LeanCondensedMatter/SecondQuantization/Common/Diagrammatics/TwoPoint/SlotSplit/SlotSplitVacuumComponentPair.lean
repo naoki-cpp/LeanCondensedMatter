@@ -44,8 +44,9 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
   rw [TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
   let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (slotSplitVacuumVertex v),
-      d.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
+    ⟨d.componentBlock (slotSplitVacuumVertex v), by
+      unfold TwoPointDiagram.componentBlock
+      exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
   let D : d.componentPartition.parts :=
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   change B = D
@@ -53,13 +54,15 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
   apply d.interactionPart_component_unique w B D
   · apply (TwoPointDiagram.mem_interactionPart_subtype
       (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) w).2
-    exact d.self_mem_componentBlock (slotSplitVacuumVertex v)
+    change slotSplitVacuumVertex v ∈ d.vertexGraph.componentBlock (slotSplitVacuumVertex v)
+    exact d.vertexGraph.self_mem_componentBlock (slotSplitVacuumVertex v)
   · rw [show D = (slotSplitVacuumComponentPart
         (Finset.subset_univ T) ext vac C).1 by rfl,
       interactionPart_slotSplitVacuumComponentPart]
     change (v.1 : Fin n) ∈ (C : Finset (Fin n))
     change (v.1 : Fin n) ∈ vac.componentBlock v
-    exact vac.self_mem_componentBlock v
+    unfold QuarticDiagram.componentBlock
+    exact vac.componentPartition.mem_part v.2
 
 /-- Embed one restricted quartic component's normalized pairs into the corresponding ambient mixed
 vacuum-component pair fiber. -/

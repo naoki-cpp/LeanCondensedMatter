@@ -184,10 +184,13 @@ theorem interactionPart_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
   constructor
   · intro hx
     obtain ⟨hxS, hxBlock⟩ := (TwoPointDiagram.mem_interactionPart _ x).1 hx
+    change (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) ∈
+      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
+        (slotSplitVacuumVertex v) at hxBlock
     have hreach :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
           (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) (slotSplitVacuumVertex v) :=
-      ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+      ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
         (slotSplitVacuumVertex v) (Sum.inr ⟨x, hxS⟩)).1 hxBlock
     have hreach' :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
@@ -202,17 +205,22 @@ theorem interactionPart_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
             ⟨y.1, (Finset.mem_sdiff.mp y.2).1⟩ := by
         exact Sum.inr.inj hy
       exact congrArg (fun z : ↥S => (z : Fin N)) hs
-    have hymem : (y : Fin N) ∈ vac.componentBlock v :=
-      (vac.mem_componentBlock v).2
+    have hymem : (y : Fin N) ∈ vac.componentBlock v := by
+      change (y : Fin N) ∈ vac.vertexGraph.componentBlockOn v
+      exact (vac.vertexGraph.mem_componentBlockOn v).2
         ⟨y.2, (vac.vertexGraph.reachable_comm).1 hvy⟩
     simpa [hxy] using hymem
   · intro hx
-    obtain ⟨hxST, hreach⟩ := (vac.mem_componentBlock v).1 hx
+    change x ∈ vac.vertexGraph.componentBlockOn v at hx
+    obtain ⟨hxST, hreach⟩ := (vac.vertexGraph.mem_componentBlockOn v).1 hx
     let xv : ↥(S \ T) := ⟨x, hxST⟩
     have hamb := reachable_ofSlotSplitVacuum_of_reachable h ext vac hreach
     apply (TwoPointDiagram.mem_interactionPart _ x).2
     refine ⟨(Finset.mem_sdiff.mp hxST).1, ?_⟩
-    apply ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
+    change (Sum.inr ⟨x, (Finset.mem_sdiff.mp hxST).1⟩ : TwoPointVertex S) ∈
+      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
+        (slotSplitVacuumVertex v)
+    apply ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (slotSplitVacuumVertex v)
       (Sum.inr ⟨x, (Finset.mem_sdiff.mp hxST).1⟩)).2
     simpa [xv, slotSplitVacuumVertex] using hamb

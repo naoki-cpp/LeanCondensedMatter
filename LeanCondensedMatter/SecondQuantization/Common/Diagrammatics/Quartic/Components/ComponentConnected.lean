@@ -19,21 +19,21 @@ variable {Label : Type*} {N : ℕ}
 noncomputable def QuarticDiagram.blockVertex {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) : ↥S :=
-  ((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
+  ((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})
 
 theorem QuarticDiagram.blockVertex_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
     (d.blockVertex hB v : Fin N) ∈ B :=
-  (((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
+  (((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})).2
 
 private theorem QuarticDiagram.blockVertex_injective {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     Function.Injective (d.blockVertex hB) := fun _v _w h =>
-  (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm.injective
+  (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)).symm.injective
     (Subtype.ext h)
 
 /-- `blockLegEquiv` maps a leg to vertex `v` exactly when its ambient vertex is `blockVertex v`. -/
@@ -65,8 +65,8 @@ theorem QuarticDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fin N)
       rwa [d.restrictedPartner_val] at hw
   · rintro ⟨hne, leg0, hu0, hw0⟩
     have hleg0 : d.legInBlock B leg0 := by
-      unfold QuarticDiagram.legInBlock
-      apply (d.componentBlock_eq_iff_mem hB _).mpr
+      unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
+      apply (d.componentPartition.part_eq_iff_mem hB).mpr
       rw [hu0]
       exact d.blockVertex_mem hB u
     refine ⟨fun h => hne (congrArg (d.blockVertex hB) h),
@@ -82,14 +82,14 @@ theorem QuarticDiagram.blockVertex_subtypeMemBlockEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) (hv : (v : Fin N) ∈ B) :
     d.blockVertex hB
-        (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨v, hv⟩) = v := by
+        (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB) ⟨v, hv⟩) = v := by
   unfold QuarticDiagram.blockVertex
   rw [Equiv.symm_apply_apply]
 
 theorem QuarticDiagram.subtypeMemBlockEquiv_blockVertex {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
-    QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
+    QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)
         ⟨d.blockVertex hB v, d.blockVertex_mem hB v⟩ = v :=
   Equiv.apply_symm_apply _ v
 
@@ -97,17 +97,20 @@ private theorem QuarticDiagram.mem_of_adj_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) {v w : ↥S}
     (h : d.vertexGraph.Adj v w) (hv : (v : Fin N) ∈ B) : (w : Fin N) ∈ B := by
-  rw [← d.componentBlock_eq_iff_mem hB] at hv ⊢
-  rw [← d.componentBlock_eq_of_reachable h.reachable]
-  exact hv
+  have hvPart : d.componentPartition.part (v : Fin N) = B :=
+    (d.componentPartition.part_eq_iff_mem hB).2 hv
+  have hEq : d.componentPartition.part (v : Fin N) = d.componentPartition.part (w : Fin N) := by
+    change d.vertexGraph.componentBlockOn v = d.vertexGraph.componentBlockOn w
+    exact d.vertexGraph.componentBlockOn_eq_of_reachable h.reachable
+  exact (d.componentPartition.part_eq_iff_mem hB).1 (hEq.symm.trans hvPart)
 
 private theorem QuarticDiagram.reachable_restrictComponent_of_walk {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) {v w : ↥S}
     (p : d.vertexGraph.Walk v w) (hv : (v : Fin N) ∈ B) :
     ∃ hw : (w : Fin N) ∈ B, (d.restrictComponent hB).vertexGraph.Reachable
-      (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨v, hv⟩)
-      (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨w, hw⟩) := by
+      (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB) ⟨v, hv⟩)
+      (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB) ⟨w, hw⟩) := by
   induction p with
   | nil => exact ⟨hv, SimpleGraph.Reachable.refl _⟩
   | cons hadj p' ih =>
@@ -125,12 +128,15 @@ theorem QuarticDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     (d.restrictComponent hB).IsConnected := by
   refine ⟨fun u w => ?_, ?_⟩
-  · have hw : d.componentBlock (d.blockVertex hB w) = B :=
-      (d.componentBlock_eq_iff_mem hB _).2 (d.blockVertex_mem hB w)
+  · have hw : d.componentBlock (d.blockVertex hB w) = B := by
+      unfold QuarticDiagram.componentBlock
+      exact (d.componentPartition.part_eq_iff_mem hB).2 (d.blockVertex_mem hB w)
     have hmem : (d.blockVertex hB u : Fin N) ∈ d.componentBlock (d.blockVertex hB w) := by
       rw [hw]
       exact d.blockVertex_mem hB u
-    obtain ⟨hx, hreach⟩ := (d.mem_componentBlock (d.blockVertex hB w)).1 hmem
+    change (d.blockVertex hB u : Fin N) ∈
+      d.vertexGraph.componentBlockOn (d.blockVertex hB w) at hmem
+    obtain ⟨_, hreach⟩ := (d.vertexGraph.mem_componentBlockOn (d.blockVertex hB w)).1 hmem
     obtain ⟨p⟩ :=
       (hreach : d.vertexGraph.Reachable (d.blockVertex hB u) (d.blockVertex hB w))
     obtain ⟨hw', hreach2⟩ :=

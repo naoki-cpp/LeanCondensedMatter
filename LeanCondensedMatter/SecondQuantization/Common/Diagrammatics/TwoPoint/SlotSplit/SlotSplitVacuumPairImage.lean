@@ -43,8 +43,9 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
     d.mixedPairComponent τ τ' σ
         (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
           T ext vac τ τ' σ hσ pr) =
-      ⟨d.componentBlock (slotSplitVacuumVertex (vertexOfLeg q)),
-        d.componentBlock_mem_componentPartition (slotSplitVacuumVertex (vertexOfLeg q))⟩ := by
+      ⟨d.componentBlock (slotSplitVacuumVertex (vertexOfLeg q)), by
+        unfold TwoPointDiagram.componentBlock
+        exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩ := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let p := pr.1.1
   let q := orderedLegToDiagramLeg
