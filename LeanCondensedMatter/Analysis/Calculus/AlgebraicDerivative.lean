@@ -1,4 +1,5 @@
-import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
