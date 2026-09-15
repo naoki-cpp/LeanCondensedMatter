@@ -42,6 +42,28 @@ private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
     (d.componentIsVacuum_iff_ne_externalComponentPart B).1 hVac
   simp [TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
 
+private theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
+    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (localPairing : Pairing m)
+    (hpartner : ∀ pos,
+      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
+          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
+      (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
+          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
+  change
+    (localPairing.normalizedPairOfEndpointEquiv
+      (d.mixedComponentPairEndpointEquiv τ τ' σ B) e pr).1 = _ ∨ _
+  apply localPairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+  intro q
+  rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
+
 /-- Pair-time transport sends endpoints to the position-time transports of the original endpoints,
 either in the same normalized order or swapped. -/
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
