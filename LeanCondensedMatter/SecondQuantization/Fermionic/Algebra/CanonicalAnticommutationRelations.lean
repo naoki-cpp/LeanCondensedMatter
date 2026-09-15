@@ -32,52 +32,17 @@ private theorem cancel_cast_smul_smul {a b c d : ℤ} (h : a * b + c * d = 0)
   rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add, h,
     Int.cast_zero, zero_smul]
 
-/-! ## Sign lemmas: how `fermionSign` changes under inserting/removing an unrelated mode -/
-
-theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : Occupation Mode}
-    (hk : k ∉ n) (h : k < i) :
-    fermionSign i (insertOccupation k n) = -fermionSign i n := by
-  have hfilter : (insertOccupation k n).filter (· < i) = insert k (n.filter (· < i)) := by
-    rw [insertOccupation, Finset.filter_insert, if_pos h]
-  have hknotmem : k ∉ n.filter (· < i) := fun hmem => hk (Finset.mem_of_mem_filter k hmem)
-  rw [fermionSign, fermionSign, hfilter, Finset.card_insert_of_notMem hknotmem, pow_succ']
-  ring
-
-theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
-    (h : ¬k < i) :
-    fermionSign i (insertOccupation k n) = fermionSign i n := by
-  have hfilter : (insertOccupation k n).filter (· < i) = n.filter (· < i) := by
-    rw [insertOccupation, Finset.filter_insert, if_neg h]
-  rw [fermionSign, fermionSign, hfilter]
-
-theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : Occupation Mode}
-    (hk : k ∈ n) (h : k < i) :
-    fermionSign i (removeOccupation k n) = -fermionSign i n := by
-  have hfilter : (removeOccupation k n).filter (· < i) = (n.filter (· < i)).erase k := by
-    rw [removeOccupation, Finset.filter_erase]
-  have hkmem : k ∈ n.filter (· < i) := Finset.mem_filter.2 ⟨hk, h⟩
-  have hcard : ((n.filter (· < i)).erase k).card + 1 = (n.filter (· < i)).card :=
-    Finset.card_erase_add_one hkmem
-  rw [fermionSign, fermionSign, hfilter, ← hcard, pow_succ]
-  ring
-
-theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
-    (h : ¬k < i) :
-    fermionSign i (removeOccupation k n) = fermionSign i n := by
-  have hfilter : (removeOccupation k n).filter (· < i) = n.filter (· < i) := by
-    rw [removeOccupation, Finset.filter_erase, Finset.erase_eq_of_notMem]
-    exact fun hmem => h (Finset.mem_filter.1 hmem).2
-  rw [fermionSign, fermionSign, hfilter]
-
-theorem fermionSign_sq (i : Mode) (n : Occupation Mode) :
-    fermionSign i n * fermionSign i n = 1 := by
-  rw [fermionSign, ← pow_add, ← two_mul, pow_mul]
-  norm_num
-
-@[simp]
-theorem fermionSign_sq_complex (i : Mode) (n : Occupation Mode) :
-    (fermionSign i n : ℂ) * (fermionSign i n : ℂ) = 1 := by
-  rw [← Int.cast_mul, fermionSign_sq, Int.cast_one]
+/-- For two distinct modes, the two possible toggle orders acquire opposite Jordan-Wigner signs. -/
+private theorem fermionSign_toggleOccupation_exchange {i j : Mode} (hij : i ≠ j)
+    (n : Occupation Mode) :
+    fermionSign j n * fermionSign i (toggleOccupation j n) +
+      fermionSign i n * fermionSign j (toggleOccupation i n) = 0 := by
+  rw [fermionSign_toggleOccupation, fermionSign_toggleOccupation]
+  rcases lt_or_lt_iff_ne.mpr hij with h | h
+  · rw [if_neg (not_lt.mpr h.le), if_pos h]
+    ring
+  · rw [if_pos h, if_neg (not_lt.mpr h.le)]
+    ring
 
 /-! ## Uniform signed-toggle form of the ladder operators -/
 
@@ -124,16 +89,8 @@ private theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation M
       · simp [createCoeff, hi, hj, insertOccupation, hij]
     · by_cases hj : j ∈ n
       · simp [createCoeff, hi, hj, insertOccupation, Ne.symm hij]
-      · have hsign :
-            fermionSign j n * fermionSign i (insertOccupation j n) +
-              fermionSign i n * fermionSign j (insertOccupation i n) = 0 := by
-          rcases lt_or_lt_iff_ne.mpr hij with h | h
-          · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
-              fermionSign_insertOccupation_of_lt hi h]
-            ring
-          · rw [fermionSign_insertOccupation_of_lt hj h,
-              fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le)]
-            ring
+      · have hsign := fermionSign_toggleOccupation_exchange hij n
+        rw [toggleOccupation_of_not_mem hj, toggleOccupation_of_not_mem hi] at hsign
         simpa [createCoeff, hi, hj, insertOccupation, hij, Ne.symm hij] using hsign
 
 theorem anticomm_create_create (i j : Mode) :
@@ -166,16 +123,8 @@ private theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occu
     · simp [annihilateCoeff, hi]
   · by_cases hi : i ∈ n
     · by_cases hj : j ∈ n
-      · have hsign :
-            fermionSign j n * fermionSign i (removeOccupation j n) +
-              fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
-          rcases lt_or_lt_iff_ne.mpr hij with h | h
-          · rw [fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le),
-              fermionSign_removeOccupation_of_lt hi h]
-            ring
-          · rw [fermionSign_removeOccupation_of_lt hj h,
-              fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
-            ring
+      · have hsign := fermionSign_toggleOccupation_exchange hij n
+        rw [toggleOccupation_of_mem hj, toggleOccupation_of_mem hi] at hsign
         simpa [annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij] using hsign
       · simp [annihilateCoeff, hi, hj, removeOccupation]
     · by_cases hj : j ∈ n <;>
@@ -225,16 +174,8 @@ theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode)
     by_cases hi : i ∈ n
     · by_cases hj : j ∈ n
       · simp [createCoeff, annihilateCoeff, hi, hj, removeOccupation, hij, Ne.symm hij]
-      · have hsign :
-            fermionSign j n * fermionSign i (insertOccupation j n) +
-              fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
-          rcases lt_or_lt_iff_ne.mpr hij with h | h
-          · rw [fermionSign_insertOccupation_of_not_lt (not_lt.mpr h.le),
-              fermionSign_removeOccupation_of_lt hi h]
-            ring
-          · rw [fermionSign_insertOccupation_of_lt hj h,
-              fermionSign_removeOccupation_of_not_lt (not_lt.mpr h.le)]
-            ring
+      · have hsign := fermionSign_toggleOccupation_exchange hij n
+        rw [toggleOccupation_of_not_mem hj, toggleOccupation_of_mem hi] at hsign
         simpa [createCoeff, annihilateCoeff, hi, hj, insertOccupation, removeOccupation,
           hij, Ne.symm hij] using hsign
     · by_cases hj : j ∈ n <;>

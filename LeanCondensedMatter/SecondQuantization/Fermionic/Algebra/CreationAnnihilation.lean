@@ -31,11 +31,73 @@ which operation is being performed). -/
 def fermionSign (i : Mode) (n : Occupation Mode) : ℤ :=
   (-1) ^ (n.filter (· < i)).card
 
-
 @[simp]
 theorem fermionSign_vacuum (i : Mode) :
     fermionSign i (vacuum : Occupation Mode) = 1 := by
   simp [fermionSign, vacuum]
+
+/-- Inserting an unoccupied mode before `i` flips the fermionic sign at `i`. -/
+theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : Occupation Mode}
+    (hk : k ∉ n) (h : k < i) :
+    fermionSign i (insertOccupation k n) = -fermionSign i n := by
+  have hfilter : (insertOccupation k n).filter (· < i) = insert k (n.filter (· < i)) := by
+    rw [insertOccupation, Finset.filter_insert, if_pos h]
+  have hknotmem : k ∉ n.filter (· < i) := fun hmem => hk (Finset.mem_of_mem_filter k hmem)
+  rw [fermionSign, fermionSign, hfilter, Finset.card_insert_of_notMem hknotmem, pow_succ']
+  ring
+
+/-- Inserting a mode not before `i` leaves the fermionic sign at `i` unchanged. -/
+theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
+    (h : ¬k < i) :
+    fermionSign i (insertOccupation k n) = fermionSign i n := by
+  have hfilter : (insertOccupation k n).filter (· < i) = n.filter (· < i) := by
+    rw [insertOccupation, Finset.filter_insert, if_neg h]
+  rw [fermionSign, fermionSign, hfilter]
+
+/-- Removing an occupied mode before `i` flips the fermionic sign at `i`. -/
+theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : Occupation Mode}
+    (hk : k ∈ n) (h : k < i) :
+    fermionSign i (removeOccupation k n) = -fermionSign i n := by
+  have hfilter : (removeOccupation k n).filter (· < i) = (n.filter (· < i)).erase k := by
+    rw [removeOccupation, Finset.filter_erase]
+  have hkmem : k ∈ n.filter (· < i) := Finset.mem_filter.2 ⟨hk, h⟩
+  have hcard : ((n.filter (· < i)).erase k).card + 1 = (n.filter (· < i)).card :=
+    Finset.card_erase_add_one hkmem
+  rw [fermionSign, fermionSign, hfilter, ← hcard, pow_succ]
+  ring
+
+/-- Removing a mode not before `i` leaves the fermionic sign at `i` unchanged. -/
+theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
+    (h : ¬k < i) :
+    fermionSign i (removeOccupation k n) = fermionSign i n := by
+  have hfilter : (removeOccupation k n).filter (· < i) = n.filter (· < i) := by
+    rw [removeOccupation, Finset.filter_erase, Finset.erase_eq_of_notMem]
+    exact fun hmem => h (Finset.mem_filter.1 hmem).2
+  rw [fermionSign, fermionSign, hfilter]
+
+/-- Toggling mode `k` flips the fermionic sign at `i` exactly when `k` lies before `i`. -/
+theorem fermionSign_toggleOccupation (i k : Mode) (n : Occupation Mode) :
+    fermionSign i (toggleOccupation k n) =
+      if k < i then -fermionSign i n else fermionSign i n := by
+  by_cases hk : k ∈ n
+  · rw [toggleOccupation_of_mem hk]
+    by_cases hki : k < i
+    · rw [if_pos hki, fermionSign_removeOccupation_of_lt hk hki]
+    · rw [if_neg hki, fermionSign_removeOccupation_of_not_lt hki]
+  · rw [toggleOccupation_of_not_mem hk]
+    by_cases hki : k < i
+    · rw [if_pos hki, fermionSign_insertOccupation_of_lt hk hki]
+    · rw [if_neg hki, fermionSign_insertOccupation_of_not_lt hki]
+
+theorem fermionSign_sq (i : Mode) (n : Occupation Mode) :
+    fermionSign i n * fermionSign i n = 1 := by
+  rw [fermionSign, ← pow_add, ← two_mul, pow_mul]
+  norm_num
+
+@[simp]
+theorem fermionSign_sq_complex (i : Mode) (n : Occupation Mode) :
+    (fermionSign i n : ℂ) * (fermionSign i n : ℂ) = 1 := by
+  rw [← Int.cast_mul, fermionSign_sq, Int.cast_one]
 
 /-- **Creation, on a basis state.** `0` if `i` is already occupied (Pauli exclusion); otherwise
 the signed basis state with `i` newly occupied. -/
