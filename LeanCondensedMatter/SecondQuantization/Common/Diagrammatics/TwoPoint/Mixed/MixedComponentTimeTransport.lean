@@ -30,31 +30,6 @@ noncomputable def TwoPointDiagram.ComponentTimeEq {n : ℕ}
       (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) →
       σ v = υ v
 
-@[refl]
-theorem TwoPointDiagram.componentTimeEq_refl {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (B : d.componentPartition.parts) (σ : Fin n → ℝ) :
-    d.ComponentTimeEq B σ σ := by
-  intro v hv
-  rfl
-
-@[symm]
-theorem TwoPointDiagram.ComponentTimeEq.symm {n : ℕ}
-    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))}
-    {B : d.componentPartition.parts} {σ υ : Fin n → ℝ}
-    (h : d.ComponentTimeEq B σ υ) : d.ComponentTimeEq B υ σ := by
-  intro v hv
-  exact (h v hv).symm
-
-@[trans]
-theorem TwoPointDiagram.ComponentTimeEq.trans {n : ℕ}
-    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))}
-    {B : d.componentPartition.parts} {σ υ ω : Fin n → ℝ}
-    (hσυ : d.ComponentTimeEq B σ υ) (hυω : d.ComponentTimeEq B υ ω) :
-    d.ComponentTimeEq B σ ω := by
-  intro v hv
-  exact (hσυ v hv).trans (hυω v hv)
-
 /-- Canonical comparison of mixed positions of one full component at two interaction-time
 assignments. The comparison passes through the fixed standard component-leg fiber. -/
 noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : ℕ}
@@ -63,23 +38,6 @@ noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : ℕ}
     d.MixedComponentPosition τ τ' σ B ≃ d.MixedComponentPosition τ τ' υ B :=
   (d.mixedComponentPositionEquiv τ τ' σ B).trans
     (d.mixedComponentPositionEquiv τ τ' υ B).symm
-
-@[simp]
-theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_refl {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (p : d.MixedComponentPosition τ τ' σ B) :
-    d.mixedComponentPositionTimeEquiv τ τ' σ σ B p = p := by
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
-
-@[simp]
-theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_symm_apply {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (p : d.MixedComponentPosition τ τ' σ B) :
-    d.mixedComponentPositionTimeEquiv τ τ' υ σ B
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) = p := by
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
 
 /-- Reading the standard component leg after time transport recovers the original standard
 component leg. -/
@@ -212,7 +170,7 @@ theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff {n : ℕ}
       (d.componentPosition_eventTime_eq τ τ' σ υ B hTime q))
 
 /-- Atomic-leg order is unchanged across assignments in the same mixed-event order chamber. -/
-theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
+private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
