@@ -209,8 +209,6 @@ theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
           e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
   apply localPairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
     (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
-  intro q
-  rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
 
 end Common
 end SecondQuantization
