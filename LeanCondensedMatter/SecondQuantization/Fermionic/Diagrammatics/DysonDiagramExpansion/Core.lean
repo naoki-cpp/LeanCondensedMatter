@@ -4,7 +4,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.QuarticInteraction
 
 set_option linter.style.header false
 

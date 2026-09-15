@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 
 set_option linter.style.header false
 
