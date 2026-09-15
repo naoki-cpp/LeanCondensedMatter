@@ -23,6 +23,12 @@ open Combinatorics
 
 variable {Label : Type*} {N : ℕ}
 
+/-- The normalized ordered pairs of one restricted component. -/
+abbrev QuarticDiagram.LocalOrderedPair {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
+    (B : d.componentPartition.parts) :=
+  ((d.restrictComponent B.2).pairingInOrder (orders B)).NormalizedPair
+
 /-- Embed a component-local ordered flattened leg into the assembled global ordered-leg
 enumeration. -/
 noncomputable def QuarticDiagram.componentOrderedLeg {S : Finset (Fin N)}
