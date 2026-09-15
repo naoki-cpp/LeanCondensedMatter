@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
 
@@ -18,9 +19,10 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Occupation energy used by the free Hamiltonian. -/
+/-- Complex weight of the completed free Hamiltonian, obtained from the canonical real occupation
+energy `fermionEnergy`. -/
 noncomputable def freeHamiltonianWeight (ε : Mode → ℝ) (n : Occupation Mode) : ℂ :=
-  ∑ i ∈ n, (ε i : ℂ)
+  (fermionEnergy ε n : ℂ)
 
 /-- Natural weighted `ℓ²` domain of the free Hamiltonian. -/
 noncomputable def completedFreeHamiltonianDomain (ε : Mode → ℝ) :
