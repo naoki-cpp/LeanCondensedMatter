@@ -11,7 +11,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Compo
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentEvaluation
@@ -26,8 +25,8 @@ set_option linter.style.header false
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
 connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence
 and generic connected-decomposition adapter, component-local orders and pairing compatibility,
-component-pair equivalence and product reindexing, fixed-global-order component-pair embeddings,
-mixed two-point leg embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and
-the corresponding scalar `Pairing.evaluation` factorization endpoint. Ordered-simplex shuffle
-analysis is consumed directly from `Analysis/OrderedSimplex` by the fermionic amplitude layer.
+component-pair equivalence, fixed-global-order component-pair embeddings, mixed two-point leg
+embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and the corresponding
+scalar `Pairing.evaluation` factorization endpoint. Ordered-simplex shuffle analysis is consumed
+directly from `Analysis/OrderedSimplex` by the fermionic amplitude layer.
 -/
