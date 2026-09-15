@@ -60,17 +60,14 @@ theorem const_smul {F : ℂ → V} {F' : V} {A : ℂ}
   intro ℓ
   simpa only [map_smul, smul_eq_mul] using (hF ℓ).const_mul c
 
-/-- Reparametrizing a family by `z ↦ c z` multiplies its derivative at zero by `c`. -/
-theorem comp_const_mul_zero {F : ℂ → V} {F' : V}
-    (hF : HasAlgebraicDerivAt F F' 0) (c : ℂ) :
-    HasAlgebraicDerivAt (fun z => F (c * z)) (c • F') 0 := by
+/-- Reparametrizing an algebraic-vector-valued family by a scalar differentiable map obeys the
+chain rule. -/
+theorem comp {F : ℂ → V} {F' : V} {g : ℂ → ℂ} {g' A : ℂ}
+    (hF : HasAlgebraicDerivAt F F' (g A)) (hg : HasDerivAt g g' A) :
+    HasAlgebraicDerivAt (fun z => F (g z)) (g' • F') A := by
   intro ℓ
-  have hcomp := HasDerivAt.comp 0 (by simpa using hF ℓ)
-    (hasDerivAt_const_mul (x := (0 : ℂ)) c)
-  have hcomp' : HasDerivAt (fun z => ℓ (F (c * z))) (ℓ F' * c) 0 := by
-    apply hcomp.congr_of_eventuallyEq
-    exact Filter.Eventually.of_forall (fun _ => rfl)
-  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp'
+  simpa only [Function.comp_apply, map_smul, smul_eq_mul, mul_comm] using
+    HasDerivAt.comp A (hF ℓ) hg
 
 /-- Finite sums preserve algebraic derivatives. -/
 theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} {A : ℂ}
