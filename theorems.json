@@ -9792,7 +9792,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
     ],
     "dependencies": [
       "Combinatorics.formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log",
@@ -9801,7 +9801,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -73129,6 +73129,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.freeBoltzmannModeKernel ε β = Matrix.diagonal fun i => Complex.exp (-↑β * ↑(ε i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.freeBoltzmannModeKernel_eq_diagonal",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel",
+    "externalAxioms": [],
+    "docString": "The free Boltzmann kernel is the diagonal matrix of one-particle Boltzmann weights. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
+      "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel",
+      "SecondQuantization.Fermionic.freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
+      "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel",
+      "SecondQuantization.Fermionic.freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ) {v : H} {E : ℝ},\n  ↑↑Hop v = ↑E • v → (QuantumTheory.gibbsOp Hop β) v = ↑(Real.exp (-β * E)) • v",
     "standardAxioms": [
       "Classical.choice",
@@ -74159,6 +74202,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ),\n  ζ ≠ 0 →\n    ∀ (ε : Mode → ℝ) (β : ℝ),\n      Combinatorics.permutationConnectedCycleSeries ζ (QuantumTheory.freeBoltzmannModeKernel ε β) =\n        -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
+    "externalAxioms": [],
+    "docString": "For the diagonal free Boltzmann kernel and nonzero exchange weight `ζ`, the connected-cycle\nseries is the modewise formal trace-log\n\n`-(1/ζ) Σᵢ log(1 - ζ qᵢ t)`, where `qᵢ = exp(-β εᵢ)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
+      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "dependencies": [
+      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
+      "QuantumTheory.freeBoltzmannModeKernel_eq_diagonal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
+      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80774,7 +80861,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Bosonic.freeGrandPartitionSeries ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries 1 (SecondQuantization.Common.freeBoltzmannModeKernel ε β)",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Bosonic.freeGrandPartitionSeries ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries 1 (QuantumTheory.freeBoltzmannModeKernel ε β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80794,8 +80881,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
+      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -82847,7 +82934,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ↑(∑' (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Bosonic.boltzmannWeight ε β n) =\n      (1 - SecondQuantization.Common.freeBoltzmannModeKernel ε β).det⁻¹",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ↑(∑' (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Bosonic.boltzmannWeight ε β n) =\n      (1 - QuantumTheory.freeBoltzmannModeKernel ε β).det⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82867,8 +82954,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight",
-      "SecondQuantization.Common.freeBoltzmannModeKernel_eq_diagonal"
+      "QuantumTheory.freeBoltzmannModeKernel_eq_diagonal",
+      "SecondQuantization.Bosonic.tsum_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98459,49 +98546,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Common.freeBoltzmannModeKernel ε β = Matrix.diagonal fun i => Complex.exp (-↑β * ↑(ε i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.freeBoltzmannModeKernel_eq_diagonal",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel",
-    "externalAxioms": [],
-    "docString": "The shared free Boltzmann mode kernel is the diagonal matrix of mode Boltzmann weights. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel",
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel",
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam)\n    (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n        -(lam • SecondQuantization.Common.finiteContinuousOperator V) *\n      NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam))\n    τ",
     "standardAxioms": [
       "Classical.choice",
@@ -103509,50 +103553,6 @@
       "SecondQuantization.Common.finiteGibbsExpectation_peelSum_eq_sum"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ),\n  ζ ≠ 0 →\n    ∀ (ε : Mode → ℝ) (β : ℝ),\n      Combinatorics.permutationConnectedCycleSeries ζ (SecondQuantization.Common.freeBoltzmannModeKernel ε β) =\n        -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeExchangeCycleSeries",
-    "externalAxioms": [],
-    "docString": "For the shared diagonal free Boltzmann kernel and nonzero exchange weight `ζ`, the connected-cycle\nseries is the modewise formal trace-log\n\n`-(1/ζ) Σᵢ log(1 - ζ qᵢ t)`, where `qᵢ = exp(-β εᵢ)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "dependencies": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
-      "SecondQuantization.Common.freeBoltzmannModeKernel_eq_diagonal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127521,7 +127521,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.freePartitionFunction ε β =\n    (1 + SecondQuantization.Common.freeBoltzmannModeKernel ε β).det",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.freePartitionFunction ε β = (1 + QuantumTheory.freeBoltzmannModeKernel ε β).det",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127541,7 +127541,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.freeBoltzmannModeKernel_eq_diagonal",
+      "QuantumTheory.freeBoltzmannModeKernel_eq_diagonal",
       "SecondQuantization.Fermionic.freePartitionFunction_eq_prod"
     ],
     "crossModuleDirectWrapper": false,
@@ -129002,7 +129002,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Fermionic.freeGrandPartitionSeries ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries (-1) (SecondQuantization.Common.freeBoltzmannModeKernel ε β)",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Fermionic.freeGrandPartitionSeries ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries (-1) (QuantumTheory.freeBoltzmannModeKernel ε β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129022,7 +129022,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
       "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
     ],
     "crossModuleDirectWrapper": false,
