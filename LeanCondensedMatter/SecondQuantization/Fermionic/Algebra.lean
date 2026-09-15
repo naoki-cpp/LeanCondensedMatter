@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
@@ -14,6 +15,7 @@ set_option linter.style.header false
 /-!
 # Fermionic algebra
 
-Occupation states, the algebraic fermionic Fock space, creation and annihilation operators, CAR,
-the Common exchange-algebra instance, number operators, and free/interacting Hamiltonians.
+Occupation states, fermionic field labels, the algebraic fermionic Fock space, creation and
+annihilation operators, CAR, the Common exchange-algebra instance, number operators, and
+free/interacting Hamiltonians.
 -/

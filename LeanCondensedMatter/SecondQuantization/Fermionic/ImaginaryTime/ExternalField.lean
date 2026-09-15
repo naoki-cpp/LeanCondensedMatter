@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 
@@ -8,10 +8,9 @@ set_option linter.style.header false
 /-!
 # Fermionic external fields in imaginary time
 
-This module connects the external labels used by two-point Wick diagrams to free imaginary-time
-evolved creation and annihilation operators. It defines time ordering for arbitrary labelled
-external fields and identifies the canonical annihilation/creation label pair with
-`twoPointTimeOrderedProduct`.
+This module connects the fermionic external-field labels to free imaginary-time evolved creation and
+annihilation operators. It defines time ordering for arbitrary labelled external fields and
+identifies the canonical annihilation/creation label pair with `twoPointTimeOrderedProduct`.
 
 For `τ < τ'`, reordering two odd external fields contributes the fermionic exchange sign through
 `Common.timeOrderedProduct Statistics.fermion`.
