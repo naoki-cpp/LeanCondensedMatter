@@ -194,5 +194,35 @@ theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamb
   d.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff τ τ' σ υ B p q
     (mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber τ τ' σ υ _ _ hChamber)
 
+/-- External-component restricted position coordinates are unchanged by time transport. -/
+@[simp]
+theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (p : d.MixedComponentPosition τ τ' σ d.externalComponentPart) :
+    d.mixedExternalPositionEquiv τ τ' υ
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p) =
+      d.mixedExternalPositionEquiv τ τ' σ p := by
+  change d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
+    d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
+  exact congrArg d.externalComponentLegEquiv.symm
+    (d.mixedComponentPositionEquiv_timeEquiv τ τ' σ υ d.externalComponentPart p)
+
+/-- Vacuum-component restricted position coordinates are unchanged by time transport. -/
+@[simp]
+theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hVac : d.ComponentIsVacuum B)
+    (p : d.MixedComponentPosition τ τ' σ B) :
+    d.mixedVacuumPositionEquiv τ τ' υ B hVac
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
+      d.mixedVacuumPositionEquiv τ τ' σ B hVac p := by
+  simp [TwoPointDiagram.mixedVacuumPositionEquiv,
+    TwoPointDiagram.mixedComponentPositionTimeEquiv]
+
 end Common
 end SecondQuantization
