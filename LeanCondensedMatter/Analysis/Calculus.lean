@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative
 import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
 import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
 import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
@@ -13,6 +14,6 @@ set_option linter.style.header false
 /-!
 # Analysis calculus
 
-Public routing module for the interval-localization, current-representation, and balance-law
-infrastructure exported by `LeanCondensedMatter.Analysis`.
+Public routing module for the algebraic-derivative, interval-localization, current-representation,
+and balance-law infrastructure exported by `LeanCondensedMatter.Analysis`.
 -/
