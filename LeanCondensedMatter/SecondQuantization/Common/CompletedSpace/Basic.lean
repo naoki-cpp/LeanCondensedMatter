@@ -148,13 +148,9 @@ theorem continuousLinearMap_ext_completedBasis
   have hcore :
       A.toLinearMap.comp algebraicToCompleted =
         B.toLinearMap.comp algebraicToCompleted := by
-    apply Finsupp.lhom_ext
-    intro c a
-    have ha : (Finsupp.single c a : AlgebraicFock Config) = a • basisState c :=
-      (Finsupp.smul_single_one c a).symm
-    rw [ha]
-    simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-    exact congrArg (fun y : E => a • y) (h c)
+    apply linearMap_ext_basisState
+    intro c
+    simpa only [LinearMap.comp_apply, algebraicToCompleted_basisState] using h c
   exact congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] E => f x) hcore
 
 end
