@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel
 import Mathlib.Data.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
@@ -31,12 +31,12 @@ theorem tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel
     [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
     (hpos : ∀ i, 0 < β * ε i) :
     ((∑' n, boltzmannWeight ε β n : ℝ) : ℂ) =
-      (Matrix.det (1 - Common.freeBoltzmannModeKernel ε β))⁻¹ := by
+      (Matrix.det (1 - QuantumTheory.freeBoltzmannModeKernel ε β))⁻¹ := by
   rw [tsum_boltzmannWeight ε β hpos]
   have hdiag :
-      (1 - Common.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
+      (1 - QuantumTheory.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
         Matrix.diagonal (fun i => 1 - Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-    rw [Common.freeBoltzmannModeKernel_eq_diagonal]
+    rw [QuantumTheory.freeBoltzmannModeKernel_eq_diagonal]
     ext i j
     by_cases hij : i = j
     · subst j

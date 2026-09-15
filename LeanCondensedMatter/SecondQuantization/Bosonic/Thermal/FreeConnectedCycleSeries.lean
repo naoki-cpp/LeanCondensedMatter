@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeExchangeCycleSeries
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 
 set_option linter.style.header false
 
@@ -71,10 +71,10 @@ theorem logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries
     [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     PowerSeries.logOf (freeGrandPartitionSeries ε β) =
       Combinatorics.permutationConnectedCycleSeries 1
-        (Common.freeBoltzmannModeKernel ε β) := by
+        (QuantumTheory.freeBoltzmannModeKernel ε β) := by
   rw [logOf_freeGrandPartitionSeries_eq_neg_sum_log]
   simpa using
-    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
+    (QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
       (1 : ℂ) (by norm_num) ε β).symm
 
 end Bosonic

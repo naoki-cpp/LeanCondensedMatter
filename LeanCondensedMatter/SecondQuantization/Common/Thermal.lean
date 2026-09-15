@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
@@ -14,7 +13,7 @@ set_option linter.style.header false
 
 This umbrella exposes five distinct layers:
 
-- shared one-particle free Boltzmann kernels and lower algebraic diagonal-trace infrastructure;
+- algebraic diagonal-trace and weighted-functional infrastructure;
 - finite Hilbert realization and transport of algebraic Fock operators;
 - finite unnormalized and temporary normalized occupation-basis formulas;
 - the generic `QuantumTheory.Gibbs.PurePoint` density state with the finite Gibbs expectation adapter;

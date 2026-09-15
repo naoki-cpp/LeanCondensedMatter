@@ -4,28 +4,28 @@ import Mathlib.Data.Matrix.Diagonal
 set_option linter.style.header false
 
 /-!
-# Statistics-independent free Boltzmann mode kernel
+# Statistics-independent free Boltzmann kernel
 
-For a finite or infinite mode type with one-particle energies `ε`, the free one-particle Boltzmann
-weights define a diagonal complex matrix kernel
+For a one-particle label type with energies `ε`, the free Boltzmann weights define the diagonal
+complex matrix kernel
 
 `Kᵢⱼ = δᵢⱼ exp(-β εᵢ)`.
 
-The kernel itself is independent of Bose/Fermi statistics. Statistics enter only in downstream
-exchange-cycle and physical partition-function consumers.
+This is a Gibbs-level one-particle object. It does not depend on occupation configurations, Fock
+space, creation/annihilation operators, or particle statistics, so it lives upstream of second
+quantization.
 -/
 
-namespace SecondQuantization
-namespace Common
+namespace QuantumTheory
 
 variable {Mode : Type*}
 
-/-- The diagonal one-particle Boltzmann kernel, shared by free fermion and free boson consumers. -/
+/-- The diagonal one-particle Boltzmann kernel. -/
 noncomputable def freeBoltzmannModeKernel (ε : Mode → ℝ) (β : ℝ) : Matrix Mode Mode ℂ := by
   classical
   exact Matrix.diagonal fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
 
-/-- The shared free Boltzmann mode kernel is the diagonal matrix of mode Boltzmann weights. -/
+/-- The free Boltzmann kernel is the diagonal matrix of one-particle Boltzmann weights. -/
 theorem freeBoltzmannModeKernel_eq_diagonal [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) :
     freeBoltzmannModeKernel ε β =
@@ -36,5 +36,4 @@ theorem freeBoltzmannModeKernel_eq_diagonal [DecidableEq Mode]
     simp [freeBoltzmannModeKernel]
   · simp [freeBoltzmannModeKernel, hij]
 
-end Common
-end SecondQuantization
+end QuantumTheory
