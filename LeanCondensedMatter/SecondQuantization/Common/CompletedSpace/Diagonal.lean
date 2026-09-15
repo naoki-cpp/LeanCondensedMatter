@@ -177,12 +177,9 @@ configuration-diagonal operator. -/
 theorem completedDiagonalOperator_comp_algebraicCore (w : Config → ℂ) :
     (completedDiagonalOperator w).toFun.comp (algebraicToCompletedDiagonalDomain w) =
       algebraicToCompleted.comp (diagonalOperator w) := by
-  apply Finsupp.lhom_ext
-  intro c a
-  have ha : (Finsupp.single c a : AlgebraicFock Config) = a • basisState c :=
-    (Finsupp.smul_single_one c a).symm
-  rw [ha]
-  simp only [LinearMap.comp_apply, map_smul]
+  apply linearMap_ext_basisState
+  intro c
+  simp only [LinearMap.comp_apply]
   have hdomain :
       algebraicToCompletedDiagonalDomain w (basisState c) =
         ⟨completedBasisState c, completedBasisState_mem_completedDiagonalDomain w c⟩ := by
@@ -197,7 +194,7 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Config → ℂ) :
       algebraicToCompleted (diagonalOperator w (basisState c)) =
         w c • completedBasisState c := by
     rw [diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
-  exact congrArg (fun y : CompletedFock Config => a • y) (hleft.trans hright.symm)
+  exact hleft.trans hright.symm
 
 end
 end Common
