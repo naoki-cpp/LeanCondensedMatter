@@ -24,7 +24,9 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
       algebraicToCompleted.comp (create i) := by
   apply Common.linearMap_ext_basisState
   intro n
-  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState]
+  change completedCreate i (algebraicToCompleted (basisState n)) =
+    algebraicToCompleted (create i (basisState n))
+  rw [algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
@@ -36,7 +38,9 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
       algebraicToCompleted.comp (annihilate i) := by
   apply Common.linearMap_ext_basisState
   intro n
-  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState]
+  change completedAnnihilate i (algebraicToCompleted (basisState n)) =
+    algebraicToCompleted (annihilate i (basisState n))
+  rw [algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
       fermionPhase]
