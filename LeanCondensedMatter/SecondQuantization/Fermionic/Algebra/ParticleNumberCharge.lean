@@ -1,17 +1,17 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift
 
 set_option linter.style.header false
 
 /-!
 # Fermionic particle-number charge
 
-This module instantiates `Common.CarriesGradingDegree` for fermionic creation and annihilation
-operators, with the occupation particle number as grading. An annihilation operator carries degree
-`-1`, while a creation operator carries degree `+1`.
+This module instantiates `Common.CarriesShift` for fermionic creation and annihilation operators,
+with the occupation particle number as an integer-valued grading. An annihilation operator carries
+shift `-1`, while a creation operator carries shift `+1`.
 
 As an algebraic consequence, products of two annihilation operators or two creation operators carry
-nonzero degree and therefore have vanishing diagonal occupation-basis coefficients. Thermal modules
+nonzero shift and therefore have vanishing diagonal occupation-basis coefficients. Thermal modules
 may lift these basis-level statements to weighted traces and time-ordered correlators.
 -/
 
@@ -24,7 +24,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 `m` to a basis state `n` with one fewer particle, `particleNumber m = particleNumber
 n - 1`. -/
 theorem carriesParticleNumberCharge_annihilate (i : Mode) :
-    Common.CarriesGradingDegree
+    Common.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (annihilate i) (-1) := by
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
@@ -44,7 +44,7 @@ theorem carriesParticleNumberCharge_annihilate (i : Mode) :
 a basis state `n` with one more particle, `particleNumber m = particleNumber n +
 1`. -/
 theorem carriesParticleNumberCharge_create (i : Mode) :
-    Common.CarriesGradingDegree
+    Common.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (create i) 1 := by
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn
@@ -66,7 +66,7 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
 particle-number charge `-2`. -/
 theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
-  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+  Common.diagonalCoeff_eq_zero_of_carriesShift
     ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
     (by norm_num) n
 
@@ -74,7 +74,7 @@ theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode
 particle-number charge `+2`. -/
 theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((create i).comp (create j)) n n = 0 :=
-  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+  Common.diagonalCoeff_eq_zero_of_carriesShift
     ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
     (by norm_num) n
 
