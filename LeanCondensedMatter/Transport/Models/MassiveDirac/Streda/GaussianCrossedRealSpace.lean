@@ -39,14 +39,16 @@ def gaussianCrossedFourierPhase
       (((p * (r 0 * Real.cos θ + r 1 * Real.sin θ) / hbar : ℝ) : ℂ)))
 
 /-- Finite-cutoff polar Fourier transform of a matrix-valued momentum field, including the physical
-momentum measure `d²p / (2πℏ)²`. Kept private because the current consumer is the crossed massive-
-Dirac realization below rather than a repository-wide Fourier API. -/
+momentum measure `d²p / (2πℏ)²`. Since `Matrix2` is finite, the transform is defined entrywise as a
+complex interval integral; no additional normed-space structure on the matrix representation is
+introduced. Kept private because the current consumer is the crossed massive-Dirac realization below
+rather than a repository-wide Fourier API. -/
 private noncomputable def finiteCutoffPolarFourierMatrix
     (hbar pMax : ℝ) (field : ℝ → ℝ → Matrix2) (r : Fin 2 → ℝ) : Matrix2 :=
-  (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) •
+  fun i j => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
     ∫ p in (0 : ℝ)..pMax,
       ∫ θ in (0 : ℝ)..(2 * Real.pi),
-        ((((p : ℝ) : ℂ)) * gaussianCrossedFourierPhase hbar p θ r) • field p θ
+        ((p : ℂ) * gaussianCrossedFourierPhase hbar p θ r) * field p θ i j
 
 /-- Finite-cutoff finite-`η` real-space Born-Dyson Green matrix. -/
 noncomputable def finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
