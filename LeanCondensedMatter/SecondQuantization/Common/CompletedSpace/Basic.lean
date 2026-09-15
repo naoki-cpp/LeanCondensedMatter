@@ -150,7 +150,10 @@ theorem continuousLinearMap_ext_completedBasis
         B.toLinearMap.comp algebraicToCompleted := by
     apply linearMap_ext_basisState
     intro c
-    simpa only [LinearMap.comp_apply, algebraicToCompleted_basisState] using h c
+    change A (algebraicToCompleted (basisState c)) =
+      B (algebraicToCompleted (basisState c))
+    rw [algebraicToCompleted_basisState]
+    exact h c
   exact congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] E => f x) hcore
 
 end
