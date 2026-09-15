@@ -35,16 +35,39 @@ theorem totalNumberOperator_basisState (n : Occupation Mode) :
   Common.diagonalOperator_basisState _ n
 
 omit [LinearOrder Mode] in
+/-- **The free Hamiltonian's real occupation energy**, `E(n) := Σᵢ∈n ε(i)`.
+This is the canonical eigenvalue function shared by the algebraic Hamiltonian, imaginary-time
+evolution, Gibbs constructions, and completed-space realization. -/
+def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
+  ∑ i ∈ n, ε i
+
+/-- Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. -/
+theorem fermionEnergy_insertOccupation_of_not_mem {ε : Mode → ℝ} {i : Mode}
+    {n : Occupation Mode} (h : i ∉ n) :
+    fermionEnergy ε (insertOccupation i n) = fermionEnergy ε n + ε i := by
+  unfold fermionEnergy insertOccupation
+  rw [Finset.sum_insert h, add_comm]
+
+/-- Removing an occupied mode lowers the free energy by that mode's one-particle energy. -/
+theorem fermionEnergy_removeOccupation_of_mem {ε : Mode → ℝ} {i : Mode}
+    {n : Occupation Mode} (h : i ∈ n) :
+    fermionEnergy ε (removeOccupation i n) = fermionEnergy ε n - ε i := by
+  unfold fermionEnergy removeOccupation
+  have hsum : ε i + ∑ x ∈ n.erase i, ε x = ∑ x ∈ n, ε x :=
+    Finset.add_sum_erase n ε h
+  exact eq_sub_iff_add_eq.mpr (by simpa [add_comm] using hsum)
+
+omit [LinearOrder Mode] in
 /-- **The free (non-interacting) Hamiltonian** for a dispersion `ε : Mode → ℝ`,
-`H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n ε(i)` at each occupation
-state `n`. -/
+`H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `fermionEnergy ε n` at each
+occupation state `n`. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ))
+  Common.diagonalOperator fun n : Occupation Mode => (fermionEnergy ε n : ℂ)
 
 omit [LinearOrder Mode] in
 theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
-    freeHamiltonian ε (basisState n) = (∑ i ∈ n, (ε i : ℂ)) • basisState n :=
+    freeHamiltonian ε (basisState n) = (fermionEnergy ε n : ℂ) • basisState n :=
   Common.diagonalOperator_basisState _ n
 
 omit [LinearOrder Mode] in
