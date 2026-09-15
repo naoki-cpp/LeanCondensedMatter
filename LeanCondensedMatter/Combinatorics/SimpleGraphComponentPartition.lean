@@ -115,30 +115,12 @@ theorem mem_componentBlockOn (G : SimpleGraph ↥s) (v : ↥s) {x : α} :
   · rintro ⟨hx, hreach⟩
     exact ⟨v.2, hx, (G.componentSetoidOn_rel_iff_reachable v ⟨x, hx⟩).2 hreach.symm⟩
 
-@[simp]
-theorem self_mem_componentBlockOn (G : SimpleGraph ↥s) (v : ↥s) :
-    (v : α) ∈ G.componentBlockOn v :=
-  (G.mem_componentBlockOn v).2 ⟨v.2, Reachable.refl _⟩
-
-/-- Every ambient component block occurs as a part of the component partition. -/
-theorem componentBlockOn_mem_componentPartitionOn (G : SimpleGraph ↥s) (v : ↥s) :
-    G.componentBlockOn v ∈ G.componentPartitionOn.parts := by
-  change G.componentPartitionOn.part (v : α) ∈ G.componentPartitionOn.parts
-  exact G.componentPartitionOn.part_mem.2 v.2
-
 /-- Reachable subtype vertices determine the same ambient component block. -/
 theorem componentBlockOn_eq_of_reachable (G : SimpleGraph ↥s) {v w : ↥s}
     (h : G.Reachable v w) : G.componentBlockOn v = G.componentBlockOn w := by
   change G.componentPartitionOn.part (v : α) = G.componentPartitionOn.part (w : α)
   exact (G.componentPartitionOn.mem_part_iff_part_eq_part v.2 w.2).1
     ((G.mem_componentBlockOn w).2 ⟨v.2, h⟩)
-
-/-- An ambient vertex belongs to a component part exactly when its component block is that part. -/
-theorem componentBlockOn_eq_iff_mem (G : SimpleGraph ↥s) {B : Finset α}
-    (hB : B ∈ G.componentPartitionOn.parts) (v : ↥s) :
-    G.componentBlockOn v = B ↔ (v : α) ∈ B := by
-  change G.componentPartitionOn.part (v : α) = B ↔ (v : α) ∈ B
-  exact G.componentPartitionOn.part_eq_iff_mem hB
 
 end AmbientFinset
 
