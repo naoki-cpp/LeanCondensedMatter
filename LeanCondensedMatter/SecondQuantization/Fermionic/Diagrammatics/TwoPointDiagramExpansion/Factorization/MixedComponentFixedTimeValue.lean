@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentPairingValue
 
@@ -105,17 +107,42 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
         ∏ B : d.1.componentPartition.parts,
           d.mixedComponentPairingValue ε β τ τ' σ B := by
     unfold orderedTwoPointPairingValue Combinatorics.Pairing.evaluation
-    rw [d.1.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ,
+    have hpairProduct :
+        (∏ pr ∈ (d.1.pairingInMixedOrder τ τ' σ).pairs,
+          mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence pr.1 pr.2) =
+          ∏ B : d.1.componentPartition.parts,
+            ∏ pr : d.1.MixedComponentPair τ τ' σ B,
+              mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+                pr.1.1.1 pr.1.1.2 := by
+      classical
+      calc
+        (∏ pr ∈ (d.1.pairingInMixedOrder τ τ' σ).pairs,
+            mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+              d.vertexLabelSequence pr.1 pr.2) =
+            ∏ pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair,
+              mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+                d.vertexLabelSequence pr.1.1 pr.1.2 :=
+          Finset.prod_subtype (d.1.pairingInMixedOrder τ τ' σ).pairs
+            (fun _ => Iff.rfl)
+            (fun pr =>
+              mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+                d.vertexLabelSequence pr.1 pr.2)
+        _ = ∏ B : d.1.componentPartition.parts,
+            ∏ pr : d.1.MixedComponentPair τ τ' σ B,
+              mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+                pr.1.1.1 pr.1.1.2 := by
+          simpa only [Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
+            (d.1.pairingInMixedOrder τ τ' σ).prod_componentDecomposition
+              (d.1.mixedComponentPairSigmaEquiv τ τ' σ)
+              (fun pr =>
+                mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+                  d.vertexLabelSequence pr.1.1 pr.1.2)
+    rw [hpairProduct,
       d.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
       FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
       (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ)]
-    rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
-      (fun B =>
-        ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-          mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
-            pr.1.1.1 pr.1.1.2)]
     rw [Finset.prod_mul_distrib]
   rw [hvertex, hpairing]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
