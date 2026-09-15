@@ -50,9 +50,10 @@ theorem basisState_linearIndependent {Config : Type*} :
   change LinearIndependent ℂ (fun c => Finsupp.single c (1 : ℂ))
   exact Finsupp.basisSingleOne.linearIndependent
 
-/-- Two linear maps out of `AlgebraicFock Config` that agree on every basis state are equal. -/
-theorem linearMap_ext_basisState {Config : Type*}
-    {f g : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+/-- Two linear maps out of `AlgebraicFock Config` into any complex module that agree on every basis
+state are equal. -/
+theorem linearMap_ext_basisState {Config W : Type*} [AddCommGroup W] [Module ℂ W]
+    {f g : AlgebraicFock Config →ₗ[ℂ] W}
     (h : ∀ c, f (basisState c) = g (basisState c)) : f = g := by
   apply Finsupp.lhom_ext
   intro c b
@@ -204,11 +205,9 @@ theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
     diagonalOperator a x c = a c * x c := by
   let eval : AlgebraicFock Config →ₗ[ℂ] ℂ := Finsupp.lapply c
   have hmap : eval.comp (diagonalOperator a) = a c • eval := by
-    apply Finsupp.lhom_ext
-    intro i b
-    have hb : (Finsupp.single i b : AlgebraicFock Config) = b • basisState i :=
-      (Finsupp.smul_single_one i b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, diagonalOperator_basisState, map_smul,
+    apply linearMap_ext_basisState
+    intro i
+    simp only [LinearMap.comp_apply, diagonalOperator_basisState, map_smul,
       LinearMap.smul_apply]
     by_cases h : i = c
     · subst i
