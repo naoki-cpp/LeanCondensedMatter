@@ -84025,9 +84025,7 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -84067,150 +84065,13 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)}, B ∈ d.componentPartition.parts → ∀ (v : ↥S), d.componentBlock v = B ↔ ↑v ∈ B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "A vertex belongs to a component part exactly when its component block is that part. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S) {v w : ↥S},\n  d.vertexGraph.Reachable v w → d.componentBlock v = d.componentBlock w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_of_reachable",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Reachable vertices determine the same component block. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S) (v : ↥S),\n  d.componentBlock v ∈ d.componentPartition.parts",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.componentBlock_mem_componentPartition",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Every component block occurs as a part of the component partition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentPartition_reassemble",
-      "SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentPartition_reassemble",
-      "SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84391,86 +84252,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)}, B ∈ d.componentPartition.parts → B ⊆ S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Every component part is contained in the ambient vertex set. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeMemBlockEquiv",
-      "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts",
-      "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_blockVertex",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeMemBlockEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_equivSigmaParts_snd",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_equivSigmaParts_snd"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.blockVertex",
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeMemBlockEquiv",
-      "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts",
-      "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_blockVertex",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeMemBlockEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_equivSigmaParts_snd",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_equivSigmaParts_snd"
-    ],
-    "compiledConsumerCount": 23,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B),\n  (SecondQuantization.Common.QuarticDiagram.reassemble π F).componentPartition = π",
     "standardAxioms": [
       "Classical.choice",
@@ -84494,7 +84275,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv.0.SecondQuantization.Common.QuarticDiagram.componentFamily_reassemble_heq"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_mem_componentPartition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "crossModuleDirectWrapper": false,
@@ -84744,7 +84524,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
       "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply",
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val"
@@ -84824,7 +84603,7 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_of_reachable"
+      "SimpleGraph.componentBlockOn_eq_of_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -84913,7 +84692,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.localLegOfLeg_legOfVertexLocal"
     ],
     "crossModuleDirectWrapper": false,
@@ -84964,57 +84742,6 @@
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S) (v : ↥S)\n  {x : Fin N}, x ∈ d.componentBlock v ↔ ∃ (hx : x ∈ S), d.vertexGraph.Reachable ⟨x, hx⟩ v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.mem_componentBlock",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition.0.SecondQuantization.Common.QuarticDiagram.componentSetoid_rel_iff_reachable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
-    ],
-    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85522,10 +85249,8 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock",
       "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_blockVertex",
+      "SimpleGraph.mem_componentBlockOn",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
     ],
     "crossModuleDirectWrapper": false,
@@ -85654,7 +85379,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_pairing",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
@@ -85701,8 +85425,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentPairValue.0.SecondQuantization.Fermionic.orderedQuarticLegOperator_componentOrderedLeg"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset"
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85745,7 +85468,6 @@
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_val"
     ],
     "crossModuleDirectWrapper": false,
@@ -85862,49 +85584,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S) (v : ↥S),\n  ↑v ∈ d.componentBlock v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.self_mem_componentBlock",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (v : ↥B),\n  (SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv B ⋯) ⟨d.blockVertex hB v, ⋯⟩ = v",
     "standardAxioms": [
       "Classical.choice",
@@ -85926,9 +85605,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -86054,7 +85731,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal"
     ],
     "crossModuleDirectWrapper": false,
@@ -86098,8 +85774,6 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv"
     ],
     "crossModuleDirectWrapper": false,
@@ -86142,8 +85816,6 @@
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv"
     ],
     "crossModuleDirectWrapper": false,
@@ -86574,194 +86246,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  {B : Finset (SecondQuantization.Common.TwoPointVertex S)},\n  B ∈ d.componentPartition.parts → ∀ (v : SecondQuantization.Common.TwoPointVertex S), d.componentBlock v = B ↔ v ∈ B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "A vertex belongs to a component part exactly when its component block is that part. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
-      "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem",
-      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
-      "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem",
-      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (v w : SecondQuantization.Common.TwoPointVertex S),\n  d.componentBlock v = d.componentBlock w ↔ d.vertexGraph.Reachable v w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Two component blocks are equal exactly when their base vertices are reachable. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  {v w : SecondQuantization.Common.TwoPointVertex S},\n  d.vertexGraph.Reachable v w → d.componentBlock v = d.componentBlock w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Reachable vertices determine the same component block. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (v : SecondQuantization.Common.TwoPointVertex S), d.componentBlock v ∈ d.componentPartition.parts",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Every component block occurs as a part of the component partition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts",
-      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts",
-      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "compiledConsumerCount": 7,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (B : ↥d.componentPartition.parts),\n  d.ComponentIsVacuum B ↔ B ≠ d.externalComponentPart",
     "standardAxioms": [
       "Classical.choice",
@@ -86833,8 +86317,8 @@
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock"
+      "SimpleGraph.componentBlock_eq_iff_mem",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87243,8 +86727,8 @@
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87320,7 +86804,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock"
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87904,7 +87388,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one"
+      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87995,9 +87480,8 @@
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock"
+      "SimpleGraph.mem_componentBlock",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88123,8 +87607,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype"
+      "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
+      "SimpleGraph.componentBlock_eq_iff_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88260,8 +87744,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty"
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88298,14 +87782,14 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
       "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock"
+      "SimpleGraph.componentBlock_eq_iff_mem",
+      "SimpleGraph.componentBlock_mem_componentPartition",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88560,15 +88044,15 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction",
     "externalAxioms": [],
     "docString": "For an actual component-partition part, a leg belongs to the component exactly when its incident\nvertex belongs to that part. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "directWrapperOf": "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem"
+      "SimpleGraph.componentBlock_eq_iff_mem"
     ],
-    "crossModuleDirectWrapper": true,
+    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened"
@@ -88611,7 +88095,7 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable"
+      "SimpleGraph.componentBlock_eq_of_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -88623,63 +88107,6 @@
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
     "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (v w : SecondQuantization.Common.TwoPointVertex S), w ∈ d.componentBlock v ↔ d.vertexGraph.Reachable w v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": "Membership in a two-point component block is graph reachability. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
-      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
-      "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit",
-      "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
-      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
-      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
-      "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit",
-      "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
-      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
-    ],
-    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88711,10 +88138,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
       "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock"
+      "SimpleGraph.componentBlock_mem_componentPartition",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90077,8 +89504,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_of_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
+      "SimpleGraph.componentBlock_eq_of_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90379,7 +89806,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
       "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight",
@@ -90424,7 +89850,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts"
     ],
@@ -91278,7 +90703,6 @@
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem",
       "SecondQuantization.Common.interactionPart_slotSplitVacuumComponentPart"
@@ -91695,57 +91119,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (v : SecondQuantization.Common.TwoPointVertex S), v ∈ d.componentBlock v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_reachable",
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
-    ],
-    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94764,10 +94137,9 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts",
-      "SecondQuantization.Common.exists_reachable_of_walk_ofSlotSplitVacuum"
+      "SecondQuantization.Common.exists_reachable_of_walk_ofSlotSplitVacuum",
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100474,11 +99846,11 @@
       "SecondQuantization.Common.interactionPart_slotSplitVacuumComponentPart"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart",
       "SecondQuantization.Common.exists_reachable_of_walk_ofSlotSplitVacuum",
-      "SecondQuantization.Common.reachable_ofSlotSplitVacuum_of_reachable"
+      "SecondQuantization.Common.reachable_ofSlotSplitVacuum_of_reachable",
+      "SimpleGraph.mem_componentBlock",
+      "SimpleGraph.mem_componentBlockOn"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100518,10 +99890,10 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart",
       "SecondQuantization.Common.exists_reachable_of_walk_ofSlotSplit",
-      "SecondQuantization.Common.reachable_ofSlotSplit_of_reachable"
+      "SecondQuantization.Common.reachable_ofSlotSplit_of_reachable",
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -101298,10 +100670,10 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit",
-      "SecondQuantization.Common.reachable_ofSlotSplit_iff"
+      "SecondQuantization.Common.reachable_ofSlotSplit_iff",
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103640,10 +103012,9 @@
       "SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.TwoPointDiagram.mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts",
-      "SecondQuantization.Common.reachable_ofSlotSplit_of_reachable"
+      "SecondQuantization.Common.reachable_ofSlotSplit_of_reachable",
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -105489,8 +104860,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_mem_componentPartition",
-      "SecondQuantization.Common.QuarticDiagram.self_mem_componentBlock",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
       "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts",
@@ -134867,6 +134236,384 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_2} [inst : DecidableEq α] {s : Finset α} (G : SimpleGraph ↥s) {v w : ↥s},\n  G.Reachable v w → G.componentBlockOn v = G.componentBlockOn w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.componentBlockOn_eq_of_reachable",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Reachable subtype vertices determine the same ambient component block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
+    ],
+    "dependencies": [
+      "SimpleGraph.mem_componentBlockOn"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) {B : Finset V},\n  B ∈ G.componentPartition.parts → ∀ (v : V), G.componentBlock v = B ↔ v ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.componentBlock_eq_iff_mem",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "A vertex belongs to a component part exactly when its component block is that part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) (v w : V),\n  G.componentBlock v = G.componentBlock w ↔ G.Reachable v w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.componentBlock_eq_iff_reachable",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Two component blocks are equal exactly when their base vertices are reachable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
+    ],
+    "dependencies": [
+      "SimpleGraph.componentBlock_eq_of_reachable",
+      "SimpleGraph.mem_componentBlock",
+      "SimpleGraph.self_mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) {v w : V},\n  G.Reachable v w → G.componentBlock v = G.componentBlock w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.componentBlock_eq_of_reachable",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Reachable vertices determine the same connected-component block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
+    ],
+    "dependencies": [
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "SimpleGraph.componentBlock_eq_iff_reachable"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) (v : V),\n  G.componentBlock v ∈ G.componentPartition.parts",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.componentBlock_mem_componentPartition",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Every connected-component block occurs as a part of the component partition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) (v w : V),\n  w ∈ G.componentBlock v ↔ G.Reachable w v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.mem_componentBlock",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Membership in a connected-component block is graph reachability. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
+      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
+      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
+      "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit",
+      "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
+      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
+      "SimpleGraph.componentBlock_eq_iff_reachable",
+      "SimpleGraph.componentBlock_eq_of_reachable",
+      "SimpleGraph.self_mem_componentBlock"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
+      "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
+      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
+      "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit",
+      "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
+      "SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
+      "SimpleGraph.componentBlock_eq_iff_reachable",
+      "SimpleGraph.componentBlock_eq_of_reachable",
+      "SimpleGraph.self_mem_componentBlock"
+    ],
+    "compiledConsumerCount": 10,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_2} [inst : DecidableEq α] {s : Finset α} (G : SimpleGraph ↥s) (v : ↥s) {x : α},\n  x ∈ G.componentBlockOn v ↔ ∃ (hx : x ∈ s), G.Reachable ⟨x, hx⟩ v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.mem_componentBlockOn",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": "Ambient membership in a component block is reachability from a vertex of `s`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
+      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
+      "SimpleGraph.componentBlockOn_eq_of_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition.0.SimpleGraph.componentSetoidOn_rel_iff_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
+      "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
+      "SimpleGraph.componentBlockOn_eq_of_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) (v : V), v ∈ G.componentBlock v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SimpleGraph.self_mem_componentBlock",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
+      "SimpleGraph.componentBlock_eq_iff_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
+    ],
+    "dependencies": [
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
+      "SimpleGraph.componentBlock_eq_iff_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {κ : Type u_2} {f : κ → ℝ},\n  Summable f →\n    (∀ (k : κ), 0 ≤ f k) →\n      ∀ (e : ι → κ), Function.Injective e → ∀ {j : κ}, j ∉ Set.range e → 0 < f j → ∑' (i : ι), f (e i) < ∑' (k : κ), f k",
     "standardAxioms": [
       "Classical.choice",
@@ -140993,6 +140740,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.cumulantFromMoment_atomMoment_eq_mu"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_2} [inst : DecidableEq α] {s : Finset α} (G : SimpleGraph ↥s) (v w : ↥s),\n  (SimpleGraph.componentSetoidOn✝ G) ↑v ↑w ↔ G.Reachable v w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition.0.SimpleGraph.componentSetoidOn_rel_iff_reachable",
+    "module": "LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SimpleGraph.mem_componentBlockOn"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SimpleGraph.mem_componentBlockOn"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -147818,9 +147604,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -147860,8 +147644,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_of_reachable"
+      "SimpleGraph.componentBlockOn_eq_of_reachable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -147903,7 +147686,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeMemBlockEquiv",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.mem_of_adj_mem"
     ],
@@ -147993,45 +147775,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.componentDecompose_reassemble"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S) (v w : ↥S),\n  (SecondQuantization.Common.QuarticDiagram.componentSetoid✝ d) ↑v ↑w ↔ d.vertexGraph.Reachable v w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition.0.SecondQuantization.Common.QuarticDiagram.componentSetoid_rel_iff_reachable",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -148180,7 +147923,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeMemBlockEquiv_symm"
     ],
     "crossModuleDirectWrapper": false,
@@ -148263,7 +148005,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_val"
     ],
     "crossModuleDirectWrapper": false,
@@ -148305,7 +148046,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock",
+      "SimpleGraph.mem_componentBlockOn",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
     ],
     "crossModuleDirectWrapper": false,
@@ -148514,7 +148255,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.mem_componentBlock",
+      "SimpleGraph.mem_componentBlockOn",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
     ],
     "crossModuleDirectWrapper": false,
@@ -148558,8 +148299,6 @@
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-      "SecondQuantization.Common.QuarticDiagram.componentBlock_eq_iff_mem",
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
       "SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg",
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
@@ -148611,7 +148350,6 @@
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_val"
     ],
     "crossModuleDirectWrapper": false,
@@ -148900,7 +148638,6 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeMemBlockEquiv_symm"
     ],
     "crossModuleDirectWrapper": false,
@@ -148942,7 +148679,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_equivSigmaParts_snd"
     ],
     "crossModuleDirectWrapper": false,
@@ -148984,7 +148720,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_equivSigmaParts_snd"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.componentPart_subset",
       "SecondQuantization.Common.QuarticDiagram.subtypeMemBlockEquiv_symm_val"
     ],
     "crossModuleDirectWrapper": false,
@@ -150235,13 +149970,11 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.TwoPointDiagram.componentBlock_mem_componentPartition",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.self_mem_componentBlock",
-      "SecondQuantization.Common.interactionPart_slotSplitVacuumComponentPart"
+      "SecondQuantization.Common.interactionPart_slotSplitVacuumComponentPart",
+      "SimpleGraph.self_mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
