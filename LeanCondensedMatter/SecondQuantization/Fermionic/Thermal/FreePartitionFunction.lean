@@ -29,13 +29,11 @@ theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
   simpa [Common.weightSum, freePartitionFunction] using freePartitionFunction_ne_zero ε β
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- The fermionic free Boltzmann weight agrees with the Common weight at `fermionEnergy`. -/
+/-- The fermionic free Boltzmann weight is definitionally the Common weight at `fermionEnergy`. -/
 theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n := by
-  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
-  push_cast
-  ring_nf
+    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n :=
+  rfl
 
 omit [LinearOrder Mode] in
 /-- The free-fermion diagonal Gibbs evolution has nonzero algebraic-Fock trace. -/
@@ -53,7 +51,9 @@ omit [LinearOrder Mode] [Fintype Mode] in
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
 theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
-  rw [freeBoltzmannWeight, Finset.mul_sum, Complex.exp_sum]
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy, Finset.mul_sum]
+  push_cast
+  rw [Complex.exp_sum]
 
 omit [Fintype Mode] in
 /-- **The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as
