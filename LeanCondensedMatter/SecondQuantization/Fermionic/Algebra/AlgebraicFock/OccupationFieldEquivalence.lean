@@ -111,7 +111,6 @@ private theorem create_exteriorBasis
         exact hcar
       · have hiInsert : i ∉ insert a s := by
           simp [hia, his]
-        rw [if_neg hiInsert]
         rcases lt_or_gt_of_ne hia with hlt | hgt
         · rw [hbase]
           have hmin' : ∀ x ∈ insert a s, i < x := by
@@ -184,7 +183,10 @@ theorem occupationEquiv_create
       (create 𝓗₁ (b i)).comp (occupationEquiv b).toLinearMap := by
   apply Common.linearMap_ext_basisState
   intro n
-  simpa only [LinearMap.comp_apply] using occupationEquiv_create_basisState b i n
+  change
+    occupationEquiv b (SecondQuantization.Fermionic.create i (basisState n)) =
+      create 𝓗₁ (b i) (occupationEquiv b (basisState n))
+  exact occupationEquiv_create_basisState b i n
 
 private theorem eq_annihilate_of_vacuum_of_mixedCAR
     (B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (i : Mode)
