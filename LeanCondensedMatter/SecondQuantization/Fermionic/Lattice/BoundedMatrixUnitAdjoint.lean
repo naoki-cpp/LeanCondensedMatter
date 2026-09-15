@@ -32,22 +32,6 @@ namespace Lattice
 
 noncomputable section
 
-variable {Mode : Type*} [LinearOrder Mode]
-variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
-
-/-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
-mode. -/
-theorem occupationConjugate_create
-    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    AlgebraicFock.occupationConjugate b (AlgebraicFock.create 𝓗₁ (b i)) =
-      SecondQuantization.Fermionic.create i := by
-  apply LinearMap.ext
-  intro Ψ
-  apply (AlgebraicFock.occupationEquiv b).injective
-  rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
-  have h := LinearMap.congr_fun (AlgebraicFock.occupationEquiv_create b i) Ψ
-  simpa [LinearMap.comp_apply] using h.symm
-
 variable {Site : Type*}
 
 @[simp]
@@ -77,11 +61,8 @@ theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
   rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
   rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
     ← latticeBasis_coord_eq_lapply (Site := Site) y]
-  rw [occupationConjugate_create]
-  change
-    (SecondQuantization.Fermionic.create x).comp
-        (AlgebraicFock.occupationAnnihilateFromField (latticeBasis (Site := Site)) y) = _
-  rw [AlgebraicFock.occupationAnnihilateFromField_eq_annihilate]
+  rw [AlgebraicFock.occupationConjugate_create,
+    AlgebraicFock.occupationConjugate_annihilateDual]
 
 section Finite
 

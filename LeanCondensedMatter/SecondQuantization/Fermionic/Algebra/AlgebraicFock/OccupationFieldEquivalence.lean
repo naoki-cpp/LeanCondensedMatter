@@ -189,6 +189,19 @@ theorem occupationEquiv_create
       create 𝓗₁ (b i) (occupationEquiv b (basisState n))
   exact occupationEquiv_create_basisState b i n
 
+/-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
+mode. -/
+theorem occupationConjugate_create
+    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
+    occupationConjugate b (create 𝓗₁ (b i)) =
+      SecondQuantization.Fermionic.create i := by
+  apply LinearMap.ext
+  intro Ψ
+  apply (occupationEquiv b).injective
+  rw [occupationEquiv_occupationConjugate_apply]
+  have h := LinearMap.congr_fun (occupationEquiv_create b i) Ψ
+  simpa [LinearMap.comp_apply] using h.symm
+
 private theorem eq_annihilate_of_vacuum_of_mixedCAR
     (B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (i : Mode)
     (hVac : B (basisState (∅ : Occupation Mode)) = 0)
@@ -229,17 +242,11 @@ private theorem eq_annihilate_of_vacuum_of_mixedCAR
               (SecondQuantization.Fermionic.create j (basisState n)) := by
           exact (eq_sub_of_add_eq hA).symm
 
-/-- Coordinate contraction transported to the occupation representation. -/
-noncomputable def occupationAnnihilateFromField
+/-- Coordinate contraction by a basis covector conjugates to occupation annihilation in the
+corresponding mode. -/
+theorem occupationConjugate_annihilateDual
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
-
-/-- Transported coordinate contraction is the occupation annihilation operator in the matching
-mode. -/
-theorem occupationAnnihilateFromField_eq_annihilate
-    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    occupationAnnihilateFromField b i =
+    occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) =
       SecondQuantization.Fermionic.annihilate i := by
   apply eq_annihilate_of_vacuum_of_mixedCAR
   · apply (occupationEquiv b).injective
@@ -254,7 +261,6 @@ theorem occupationAnnihilateFromField_eq_annihilate
   · intro j n
     apply (occupationEquiv b).injective
     rw [map_add]
-    unfold occupationAnnihilateFromField
     have hCreateBasis := occupationEquiv_create_basisState b j n
     have hCreateGeneral := LinearMap.congr_fun (occupationEquiv_create b j)
       (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) (basisState n))
