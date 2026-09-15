@@ -57,9 +57,6 @@ noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
       intro B p
       simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
         d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p)
-    (fun B => by
-      simpa only [QuarticDiagram.componentOrderedLegEquiv_apply] using
-        d.componentOrderedLeg_strictMono shuffle B)
 
 @[simp]
 theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
@@ -71,6 +68,7 @@ theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
         d.componentOrderedLeg shuffle B pr.1.2) := by
   simp only [QuarticDiagram.componentPairEquiv, Pairing.normalizedPairSigmaEquiv_apply,
     QuarticDiagram.componentOrderedLegEquiv_apply]
+  exact d.componentOrderedLeg_strictMono shuffle B
 
 end Common
 end SecondQuantization
