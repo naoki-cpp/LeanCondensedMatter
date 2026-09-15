@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace
 
 set_option linter.style.header false
 
@@ -23,6 +24,11 @@ transverse response retains the first nonvanishing transverse ladder coefficient
 the inverse disorder factor. The ordered-`xy` endpoint also exposes a theorem-level expansion of the
 canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
+
+The leading Gaussian crossed sector is a separate Středa-level real-space trace boundary. Its `X` and
+`Psi` topologies are represented by one indexed kernel before continuum integration or conductivity
+normalization. The current-block input is Ado's real-space `J_r` object from Eq. (14), not the local
+RA dressed source-current vertex `Γ`; constructing that Fourier-transformed block remains downstream.
 
 Although the real-coordinate pattern matches the imaginary part of ordinary complex multiplication,
 the in-plane coefficients here are already `ℂ`-valued. Therefore the public API remains the `ℂ²`
