@@ -149,17 +149,6 @@ theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
   rw [d.mixedRestrictedPartner_val]
   exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
 
-/-- Transport a mixed component pair through a component-position equivalence and normalize it in a
-local pairing. -/
-noncomputable def TwoPointDiagram.mixedComponentPairToRestricted
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m) :
-    d.MixedComponentPair τ τ' σ B → localPairing.NormalizedPair :=
-  localPairing.normalizedPairOfEndpointEquiv (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
-
 /-- Mixed component pairs are equivalent to normalized pairs of a local pairing obtained by
 transporting the mixed restricted partner through the supplied position equivalence. -/
 noncomputable def TwoPointDiagram.mixedComponentPairRestrictedEquiv
@@ -201,77 +190,6 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     (d.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
 
-/-- The local normalized pair containing the transported first endpoint contains it as either its
-first or second entry. -/
-theorem TwoPointDiagram.mixedComponentPairToRestricted_contains_first_endpoint
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m) (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1.1 =
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∨
-      (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1.2 =
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) := by
-  let a := e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))
-  let x := localPairing.positionToPairEndpoint a
-  have hx : localPairing.pairEndpoint x = a := localPairing.pairEndpointEquiv.right_inv a
-  change x.1.1.1 = a ∨ x.1.1.2 = a
-  rcases x with ⟨localPr, k⟩
-  fin_cases k
-  · left
-    simpa using hx
-  · right
-    simpa using hx
-
-/-- Transporting one mixed component pair to a local pairing preserves its endpoints up to swapping
-their normalized order. -/
-theorem TwoPointDiagram.mixedComponentPairToRestricted_pair_eq_or_swap
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m)
-    (hpartner : ∀ pos,
-      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
-  let localPr := d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr
-  have hcontains :=
-    d.mixedComponentPairToRestricted_contains_first_endpoint τ τ' σ B e localPairing pr
-  have hab :
-      localPairing.partner (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) =
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
-    rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B pr]
-  have hpair := (localPairing.mem_pairs_iff localPr.1.1 localPr.1.2).1 localPr.2
-  rcases hcontains with hfirst | hsecond
-  · left
-    apply Prod.ext
-    · exact hfirst
-    · calc
-        localPr.1.2 = localPairing.partner localPr.1.1 := hpair.2.symm
-        _ = localPairing.partner
-            (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by rw [hfirst]
-        _ = e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := hab
-  · right
-    apply Prod.ext
-    · have hpartnerSecond : localPairing.partner localPr.1.2 = localPr.1.1 := by
-        calc
-          localPairing.partner localPr.1.2 =
-              localPairing.partner (localPairing.partner localPr.1.1) := by rw [hpair.2]
-          _ = localPr.1.1 := localPairing.partner_partner localPr.1.1
-      calc
-        localPr.1.1 = localPairing.partner localPr.1.2 := hpartnerSecond.symm
-        _ = localPairing.partner
-            (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by rw [hsecond]
-        _ = e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := hab
-    · exact hsecond
-
 /-- The generic mixed local-pairing equivalence maps each pair to its transported endpoint pair or
 its swap. -/
 theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
@@ -289,14 +207,10 @@ theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
       (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
         (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
           e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
-  change
-    (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)))
-  exact d.mixedComponentPairToRestricted_pair_eq_or_swap τ τ' σ B e localPairing hpartner pr
+  apply localPairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
+    (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
+  intro q
+  rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
 
 end Common
 end SecondQuantization
