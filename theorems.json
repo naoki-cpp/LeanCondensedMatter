@@ -20681,6 +20681,219 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F G : ℂ → V} {F' G' : V} {A : ℂ},\n  HasAlgebraicDerivAt F F' A → HasAlgebraicDerivAt G G' A → HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HasAlgebraicDerivAt.add",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "Algebraic derivatives are additive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "HasAlgebraicDerivAt.sum",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "HasAlgebraicDerivAt.sum",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F : ℂ → V} {F' : V} {g : ℂ → ℂ} {g' A : ℂ},\n  HasAlgebraicDerivAt F F' (g A) → HasDerivAt g g' A → HasAlgebraicDerivAt (fun z => F (g z)) (g' • F') A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HasAlgebraicDerivAt.comp",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "Reparametrizing an algebraic-vector-valued family by a scalar differentiable map obeys the\nchain rule. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F : ℂ → V} {F' : V} {A : ℂ},\n  HasAlgebraicDerivAt F F' A → ∀ (c : ℂ), HasAlgebraicDerivAt (fun z => c • F z) (c • F') A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HasAlgebraicDerivAt.const_smul",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "Multiplying an algebraic-vector-valued family by a constant scalar multiplies its derivative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} {W : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] {F : ℂ → V} {F' : V} {A : ℂ},\n  HasAlgebraicDerivAt F F' A → ∀ (T : V →ₗ[ℂ] W), HasAlgebraicDerivAt (fun z => T (F z)) (T F') A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HasAlgebraicDerivAt.map",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "A complex-linear map transports algebraic derivatives. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {ι : Type u_3} (s : Finset ι) {F : ι → ℂ → V}\n  {F' : ι → V} {A : ℂ},\n  (∀ i ∈ s, HasAlgebraicDerivAt (F i) (F' i) A) → HasAlgebraicDerivAt (fun z => ∑ i ∈ s, F i z) (∑ i ∈ s, F' i) A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HasAlgebraicDerivAt.sum",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "Finite sums preserve algebraic derivatives. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "dependencies": [
+      "HasAlgebraicDerivAt.add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (b : HilbertBasis ι ℂ H) (a : ι → ℝ),\n  (Summable fun i => ‖a i‖) → (∀ (i : ι), 0 ≤ a i) → (b.diagonalOp fun i => ↑(a i)).SpectralTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -56576,6 +56789,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (greenRetarded greenAdvanced : (Fin 2 → ℝ) → QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (realSpaceCurrentBlock : Fin 2 → (Fin 2 → ℝ) → QuantumTheory.Transport.Models.MassiveDirac.Matrix2) (r : Fin 2 → ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi greenRetarded greenAdvanced\n        realSpaceCurrentBlock r).im =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py =\n    ↑(v * px) •\n          QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n            QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n        ↑(v * py) •\n          QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n            QuantumTheory.Transport.Models.MassiveDirac.sigmaY +\n      ↑m • QuantumTheory.Transport.Models.MassiveDirac.matrixOperator QuantumTheory.Transport.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
@@ -61612,6 +61860,41 @@
       "QuantumTheory.Transport.Models.MassiveDirac.sum_bandProjectorOperator_eq_one"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram → M),\n  ∑ diagram, f diagram =\n    f QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x +\n      f QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.sum_gaussianCrossedDiagram",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "A finite sum over the two Gaussian crossed topologies is the `X` contribution plus the `Psi`\ncontribution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88552,41 +88835,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B),\n  (d.mixedComponentPairTimeEquiv τ τ' σ σ B) pr = pr",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_refl",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B), d.mixedPositionComponent τ τ' σ (↑↑pr).1 = B",
     "standardAxioms": [
@@ -97930,7 +98178,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.finiteHilbertOperator_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperatorAlgebra",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -111914,219 +112162,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F G : ℂ → V} {F' G' : V} {A : ℂ},\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt F F' A →\n    SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt G G' A →\n      SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls",
-    "externalAxioms": [],
-    "docString": "Algebraic derivatives are additive. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.sum",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.sum",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F : ℂ → V} {F' : V},\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt F F' 0 →\n    ∀ (c : ℂ), SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => F (c * z)) (c • F') 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.comp_const_mul_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls",
-    "externalAxioms": [],
-    "docString": "Reparametrizing a family by `z ↦ c z` multiplies its derivative at zero by `c`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {F : ℂ → V} {F' : V} {A : ℂ},\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt F F' A →\n    ∀ (c : ℂ), SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => c • F z) (c • F') A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.const_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls",
-    "externalAxioms": [],
-    "docString": "Multiplying an algebraic-vector-valued family by a constant scalar multiplies its derivative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} {W : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] {F : ℂ → V} {F' : V} {A : ℂ},\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt F F' A →\n    ∀ (T : V →ₗ[ℂ] W), SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => T (F z)) (T F') A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.map",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls",
-    "externalAxioms": [],
-    "docString": "A complex-linear map transports algebraic derivatives. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {ι : Type u_2} (s : Finset ι) {F : ι → ℂ → V}\n  {F' : ι → V} {A : ℂ},\n  (∀ i ∈ s, SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (F i) (F' i) A) →\n    SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => ∑ i ∈ s, F i z) (∑ i ∈ s, F' i) A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls",
-    "externalAxioms": [],
-    "docString": "Finite sums preserve algebraic derivatives. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : AddCommGroup E] [inst_1 : _root_.Module ℝ E]\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (x : Site),\n  geometry.bondCoordinate direction x x = 0",
     "standardAxioms": [
@@ -112470,7 +112505,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (K.peierlsBondCurrentOperator ℏ q x y)\n    (K.oneParticleBondContact ℏ q x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (K.peierlsBondCurrentOperator ℏ q x y) (K.oneParticleBondContact ℏ q x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112492,10 +112527,10 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.add",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_smul_const",
+      "HasAlgebraicDerivAt.add",
       "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsForwardPhase_zero",
-      "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero"
+      "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero",
+      "hasAlgebraicDerivAt_smul_const"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -112514,7 +112549,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_3} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (K.peierlsBondHamiltonian ℏ q x y)\n    (-K.oneParticleBondCurrent ℏ q x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site), HasAlgebraicDerivAt (K.peierlsBondHamiltonian ℏ q x y) (-K.oneParticleBondCurrent ℏ q x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112536,10 +112571,10 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.add",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_smul_const",
+      "HasAlgebraicDerivAt.add",
       "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsForwardPhase_zero",
-      "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero"
+      "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero",
+      "hasAlgebraicDerivAt_smul_const"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -112811,7 +112846,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_3} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  K.peierlsBondHamiltonian ℏ q x y 0 =\n    K.amplitude x y • SecondQuantization.Fermionic.Lattice.matrixUnit x y +\n      K.amplitude y x • SecondQuantization.Fermionic.Lattice.matrixUnit y x",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  K.peierlsBondHamiltonian ℏ q x y 0 =\n    K.amplitude x y • SecondQuantization.Fermionic.Lattice.matrixUnit x y +\n      K.amplitude y x • SecondQuantization.Fermionic.Lattice.matrixUnit y x",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113783,7 +113818,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (ℏ q : ℂ) (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsCurrent geometry direction ℏ q K)\n    (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction ℏ q K) 0",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (ℏ q : ℂ) (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsCurrent geometry direction ℏ q K)\n    (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction ℏ q K) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113803,9 +113838,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.comp_const_mul_zero",
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.const_smul",
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.sum",
+      "HasAlgebraicDerivAt.comp",
+      "HasAlgebraicDerivAt.const_smul",
+      "HasAlgebraicDerivAt.sum",
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113823,7 +113858,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (ℏ q : ℂ) (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsHamiltonian geometry direction ℏ q K)\n    (-SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction ℏ q K) 0",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (ℏ q : ℂ) (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site),\n  HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsHamiltonian geometry direction ℏ q K)\n    (-SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction ℏ q K) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113843,9 +113878,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.comp_const_mul_zero",
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.const_smul",
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.sum",
+      "HasAlgebraicDerivAt.comp",
+      "HasAlgebraicDerivAt.const_smul",
+      "HasAlgebraicDerivAt.sum",
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113863,7 +113898,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent K ℏ q x y)\n    (SecondQuantization.Fermionic.Lattice.boundedBondContact K ℏ q x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent K ℏ q x y)\n    (SecondQuantization.Fermionic.Lattice.boundedBondContact K ℏ q x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113885,7 +113920,7 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.map",
+      "HasAlgebraicDerivAt.map",
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113905,7 +113940,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.boundedPeierlsBondHamiltonian K ℏ q x y)\n    (-SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.boundedPeierlsBondHamiltonian K ℏ q x y)\n    (-SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113927,7 +113962,7 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.map",
+      "HasAlgebraicDerivAt.map",
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113947,7 +113982,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock K ℏ q x y)\n    (SecondQuantization.Fermionic.Lattice.bondContact K ℏ q x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock K ℏ q x y)\n    (SecondQuantization.Fermionic.Lattice.bondContact K ℏ q x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113969,7 +114004,7 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.map",
+      "HasAlgebraicDerivAt.map",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -113989,7 +114024,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_3} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt\n    (SecondQuantization.Fermionic.Lattice.peierlsBondHamiltonianFock K ℏ q x y)\n    (-SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y) 0",
+    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.peierlsBondHamiltonianFock K ℏ q x y)\n    (-SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114011,7 +114046,7 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt.map",
+      "HasAlgebraicDerivAt.map",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -114020,47 +114055,6 @@
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {f : ℂ → ℂ} {f' A : ℂ},\n  HasDerivAt f f' A → ∀ (v : V), SecondQuantization.Fermionic.Lattice.HasAlgebraicDerivAt (fun z => f z • v) (f' • v) A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_smul_const",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls",
-    "externalAxioms": [],
-    "docString": "A scalar differentiable coefficient multiplying a fixed algebraic vector has the expected\nalgebraic derivative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160803,6 +160797,47 @@
       "negMulLog_bound_eq_iff"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {f : ℂ → ℂ} {f' A : ℂ},\n  HasDerivAt f f' A → ∀ (v : V), HasAlgebraicDerivAt (fun z => f z • v) (f' • v) A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "hasAlgebraicDerivAt_smul_const",
+    "module": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
+    "externalAxioms": [],
+    "docString": "A scalar differentiable coefficient multiplying a fixed algebraic vector has the expected\nalgebraic derivative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
