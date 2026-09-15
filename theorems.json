@@ -7386,14 +7386,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum"
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum"
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -88472,7 +88472,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairProduct",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -90412,7 +90412,6 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum",
-      "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
@@ -90426,12 +90425,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum",
-      "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90471,48 +90469,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : CommMonoid M] {ExternalLabel : Type u_2} {InternalLabel : Type u_3} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (F : Fin (2 * (2 * n + 1)) × Fin (2 * (2 * n + 1)) → M),\n  ∏ pr ∈ (d.pairingInMixedOrder τ τ' σ).pairs, F pr = (∏ pr, F ↑↑pr) * ∏ B ∈ d.vacuumComponentParts, ∏ pr, F ↑↑pr",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairProduct",
-    "externalAxioms": [],
-    "docString": "Nested-Finset form of the mixed pair-product factorization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.prod_componentDecomposition",
-      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112020,9 +111976,9 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum"
     ],
     "dependencies": [
+      "Combinatorics.Pairing.prod_componentDecomposition",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
-      "SecondQuantization.Common.TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional"
     ],
