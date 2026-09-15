@@ -14,7 +14,7 @@ groundwork provides on its own. This file is step 1: an algebraic, basis-diagona
 free evolution for `H₀ = freeHamiltonian ε` only.
 
 This file defines the scalar action of free evolution directly on each basis vector:
-`Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := Σᵢ∈n ε(i) : ℝ`. This is an algebraic,
+`Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := fermionEnergy ε n`. This is an algebraic,
 basis-diagonal realization, not an analytic operator exponential: `FockSpace Mode` has
 no topology or Hilbert completion in this development. The construction does not require an
 operator-norm limit, but that is because no operator exponential is being constructed here. This
@@ -32,28 +32,6 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-/-- **The free Hamiltonian's eigenvalue** on an occupation state, `E(n) := Σᵢ∈n ε(i) : ℝ`
-(`freeHamiltonian_basisState`). Real-valued, matching `Common.DiagonalEvolution`'s `energy`
-parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
-def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ := ∑ i ∈ n, ε i
-
-/-- Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. -/
-theorem fermionEnergy_insertOccupation_of_not_mem {ε : Mode → ℝ} {i : Mode}
-    {n : Occupation Mode} (h : i ∉ n) :
-    fermionEnergy ε (insertOccupation i n) = fermionEnergy ε n + ε i := by
-  unfold fermionEnergy insertOccupation
-  rw [Finset.sum_insert h]
-  ring
-
-/-- Removing an occupied mode lowers the free energy by that mode's one-particle energy. -/
-theorem fermionEnergy_removeOccupation_of_mem {ε : Mode → ℝ} {i : Mode}
-    {n : Occupation Mode} (h : i ∈ n) :
-    fermionEnergy ε (removeOccupation i n) = fermionEnergy ε n - ε i := by
-  unfold fermionEnergy removeOccupation
-  have hsum : ε i + ∑ x ∈ n.erase i, ε x = ∑ x ∈ n, ε x :=
-    Finset.add_sum_erase n ε h
-  linarith
-
 /-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
 basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
@@ -63,12 +41,9 @@ noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
 omit [LinearOrder Mode] in
 theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
     imaginaryTimeEvolveFree ε τ (basisState n) =
-      Complex.exp (τ * ∑ i ∈ n, (ε i : ℂ)) • basisState n := by
+      Complex.exp ((τ * fermionEnergy ε n : ℝ) : ℂ) • basisState n := by
   simp only [imaginaryTimeEvolveFree, basisState]
-  rw [Common.diagonalEvolution_basisState]
-  congr 2
-  push_cast [fermionEnergy]
-  ring
+  exact Common.diagonalEvolution_basisState (fermionEnergy ε) τ n
 
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
@@ -97,7 +72,7 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
   simpa only [imaginaryTimeEvolve, freeHamiltonian] using
     Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
-      (fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ)))
+      (fun n : Occupation Mode => (fermionEnergy ε n : ℂ))
 
 /-! ## Energy shifts of creation and annihilation -/
 
