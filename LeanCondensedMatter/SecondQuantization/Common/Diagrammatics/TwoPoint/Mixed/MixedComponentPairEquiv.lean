@@ -190,25 +190,5 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     (d.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
 
-/-- The generic mixed local-pairing equivalence maps each pair to its transported endpoint pair or
-its swap. -/
-theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m)
-    (hpartner : ∀ pos,
-      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
-        (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
-          e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
-  apply localPairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
-
 end Common
 end SecondQuantization
