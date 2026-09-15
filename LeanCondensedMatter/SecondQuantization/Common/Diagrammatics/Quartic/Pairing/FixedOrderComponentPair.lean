@@ -1,6 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
 
@@ -49,15 +49,21 @@ noncomputable def QuarticDiagram.fixedOrderPairComponent
     unfold QuarticDiagram.componentBlock
     exact d.componentPartition.part_mem.2 (vertexOfLeg q).2⟩
 
-private noncomputable def QuarticDiagram.fixedOrderComponentPairEquiv
+/-- In a fixed global vertex order, the component ordered-leg embedding intertwines the restricted
+and global pairing partner maps. -/
+private theorem QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (order : QuarticVertexOrder S) :
-    (Σ C : d.componentPartition.parts,
-      d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) ≃
-      (d.pairingInOrder order).NormalizedPair := by
+    (order : QuarticVertexOrder S) (C : d.componentPartition.parts)
+    (p : Fin (2 * (2 * (C : Finset (Fin N)).card))) :
+    (d.pairingInOrder order).partner
+        (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C p) =
+      d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C
+        (((d.restrictComponent C.2).pairingInOrder
+          (d.componentPartition.partOrdersOfOrder order C)).partner p) := by
   simpa only [d.assembleVertexOrder_fixedOrderComponentShuffle order] using
-    d.componentPairEquiv (d.componentPartition.partOrdersOfOrder order)
-      (d.fixedOrderComponentShuffle order)
+    d.pairingInOrder_partner_componentOrderedLeg
+      (d.componentPartition.partOrdersOfOrder order)
+      (d.fixedOrderComponentShuffle order) C p
 
 /-- Embed the normalized pairs of one restricted component into the normalized pairs of the global
 pairing in the fixed vertex order. -/
@@ -65,13 +71,12 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) (C : d.componentPartition.parts) :
     d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C ↪
-      (d.pairingInOrder order).NormalizedPair where
-  toFun pr := d.fixedOrderComponentPairEquiv order ⟨C, pr⟩
-  inj' := by
-    intro p q hpq
-    have h := (d.fixedOrderComponentPairEquiv order).injective hpq
-    cases h
-    rfl
+      (d.pairingInOrder order).NormalizedPair :=
+  ((d.restrictComponent C.2).pairingInOrder
+      (d.componentPartition.partOrdersOfOrder order C)).normalizedPairEmbedding
+    (d.pairingInOrder order)
+    (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)
+    (d.pairingInOrder_partner_fixedOrderComponentOrderedLeg order C)
 
 @[simp]
 private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
@@ -80,13 +85,8 @@ private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
     (pr : d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) :
     (d.fixedOrderComponentPairEmbedding order C pr).1 =
       (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.1,
-        d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.2) := by
-  change (d.fixedOrderComponentPairEquiv order ⟨C, pr⟩).1 = _
-  simpa only [QuarticDiagram.fixedOrderComponentPairEquiv,
-    d.assembleVertexOrder_fixedOrderComponentShuffle order] using
-    d.componentPairEquiv_apply
-      (d.componentPartition.partOrdersOfOrder order)
-      (d.fixedOrderComponentShuffle order) C pr
+        d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.2) :=
+  rfl
 
 /-- The fixed-order component-pair embedding preserves and reflects crossings. -/
 theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
