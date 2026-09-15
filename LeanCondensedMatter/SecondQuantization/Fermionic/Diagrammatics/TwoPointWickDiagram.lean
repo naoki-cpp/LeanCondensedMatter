@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 
 set_option linter.style.header false
 

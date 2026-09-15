@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 
 set_option linter.style.header false

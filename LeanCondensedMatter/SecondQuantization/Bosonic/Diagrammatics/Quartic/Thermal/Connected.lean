@@ -32,13 +32,16 @@ variable {Mode : Type*} [DecidableEq Mode] {N : ℕ}
 /-- Diagram-level coefficientwise thermal amplitude, defined as the average over all vertex orders. -/
 noncomputable def QuarticDiagram.thermalAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) : ℂ :=
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) : ℂ :=
   (S.card.factorial : ℂ)⁻¹ *
-    ∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order
+    ∑ order : Common.QuarticVertexOrder S,
+      QuarticDiagram.orderedThermalAmplitude ε β g d order
 
 omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentVertexOrders
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
     Fintype.card d.ComponentVertexOrders =
       ∏ B : d.componentPartition.parts, (B : Finset (Fin N)).card.factorial := by
   classical
@@ -47,55 +50,61 @@ private theorem QuarticDiagram.card_componentVertexOrders
 
 omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
     Fintype.card d.ComponentShuffle *
         (∏ B : d.componentPartition.parts, (B : Finset (Fin N)).card.factorial) =
       S.card.factorial := by
   classical
   have hcard := Fintype.card_congr d.componentOrderDecompositionEquiv
   rw [Common.card_quarticVertexOrder, Fintype.card_prod,
-    d.card_componentVertexOrders] at hcard
+    QuarticDiagram.card_componentVertexOrders d] at hcard
   simpa [Nat.mul_comm] using hcard.symm
 
 private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
-    (∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order) =
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
+    (∑ order : Common.QuarticVertexOrder S,
+      QuarticDiagram.orderedThermalAmplitude ε β g d order) =
       (Fintype.card d.ComponentShuffle : ℂ) *
         ∏ B : d.componentPartition.parts,
           ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order := by
   classical
   let F : d.ComponentVertexOrders × d.ComponentShuffle → ℂ := fun x =>
-    d.orderedThermalAmplitude ε β g (d.assembleVertexOrder x.1 x.2)
+    QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder x.1 x.2)
   have hreindex := Equiv.sum_comp d.componentOrderDecompositionEquiv F
   have hleft :
-      (∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order) =
+      (∑ order : Common.QuarticVertexOrder S,
+        QuarticDiagram.orderedThermalAmplitude ε β g d order) =
         ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := by
     calc
-      (∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order) =
+      (∑ order : Common.QuarticVertexOrder S,
+        QuarticDiagram.orderedThermalAmplitude ε β g d order) =
           ∑ order : Common.QuarticVertexOrder S,
             F (d.componentOrderDecompositionEquiv order) := by
         apply Finset.sum_congr rfl
         intro order _
-        change d.orderedThermalAmplitude ε β g order =
-          d.orderedThermalAmplitude ε β g
+        change QuarticDiagram.orderedThermalAmplitude ε β g d order =
+          QuarticDiagram.orderedThermalAmplitude ε β g d
             ((d.componentOrderDecompositionEquiv).symm
               (d.componentOrderDecompositionEquiv order))
-        exact congrArg (d.orderedThermalAmplitude ε β g)
+        exact congrArg (QuarticDiagram.orderedThermalAmplitude ε β g d)
           ((d.componentOrderDecompositionEquiv).symm_apply_apply order).symm
       _ = ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := hreindex
   rw [hleft, Fintype.sum_prod_type]
   simp only [F]
   have hfactor : ∀ orders : d.ComponentVertexOrders,
       (∑ shuffle : d.ComponentShuffle,
-        d.orderedThermalAmplitude ε β g (d.assembleVertexOrder orders shuffle)) =
+        QuarticDiagram.orderedThermalAmplitude ε β g d
+          (d.assembleVertexOrder orders shuffle)) =
         (Fintype.card d.ComponentShuffle : ℂ) *
           ∏ B : d.componentPartition.parts,
             QuarticDiagram.orderedThermalAmplitude ε β g
               (d.restrictComponent B.2) (orders B) := by
     intro orders
-    simp_rw [d.orderedThermalAmplitude_eq_prod_components ε β g orders]
+    simp_rw [QuarticDiagram.orderedThermalAmplitude_eq_prod_components ε β g d orders]
     simp
   simp_rw [hfactor]
   rw [← Finset.mul_sum]
@@ -112,17 +121,18 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
 thermal amplitude factors exactly over connected components. -/
 theorem QuarticDiagram.thermalAmplitude_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
-    d.thermalAmplitude ε β g =
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
+    QuarticDiagram.thermalAmplitude ε β g d =
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
   rw [QuarticDiagram.thermalAmplitude,
-    d.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums ε β g]
+    QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums ε β g d]
   simp only [QuarticDiagram.thermalAmplitude,
     Common.QuarticDiagram.restrictComponentConnected]
   rw [Finset.prod_mul_distrib]
-  have hcard := d.card_componentShuffle_mul_componentFactorials
+  have hcard := QuarticDiagram.card_componentShuffle_mul_componentFactorials d
   have hshuffle : (Fintype.card d.ComponentShuffle : ℂ) ≠ 0 := by
     let order := Common.someVertexOrder S
     letI : Nonempty d.ComponentShuffle :=
@@ -181,16 +191,16 @@ theorem quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (hS : S ≠ ∅) :
     quarticThermalCumulant (N := N) ε β g S =
-      ∑ d : ConnectedQuarticDiagram Mode N S,
+      ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
         QuarticDiagram.thermalAmplitude ε β g d.1 := by
   let W := quarticThermalDiagramMultiplicativeWeight (N := N) ε β g
   change Finpartition.cumulantFromMoment W.objectMoment S =
-    ∑ d : ConnectedQuarticDiagram Mode N S,
+    ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
       QuarticDiagram.thermalAmplitude ε β g d.1
   calc
     Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S :=
       W.cumulantFromMoment_objectMoment hS
-    _ = ∑ d : ConnectedQuarticDiagram Mode N S,
+    _ = ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
         QuarticDiagram.thermalAmplitude ε β g d.1 := rfl
 
 end
