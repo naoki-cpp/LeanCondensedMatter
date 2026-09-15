@@ -25,7 +25,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Exte
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEndpointTimeTransport
@@ -43,6 +43,6 @@ products, slot-split vacuum pairing transport, vacuum-pair image/component equiv
 componentwise pair/crossing transport, interaction-time ordered-simplex shuffles and their canonical
 representative, ambient shuffle permutations, interaction-slot relabeling and mixed-order covariance,
 mixed-time component-position transport, generic mixed-order pairings, standalone external-piece
-transport and pair equivalence, component pair fibers, commutative pair products, crossing
+transport and pair equivalence, component pair fibers and their dependent-sum decomposition, crossing
 decomposition, pair transport, and fixed-order chamber locality.
 -/
