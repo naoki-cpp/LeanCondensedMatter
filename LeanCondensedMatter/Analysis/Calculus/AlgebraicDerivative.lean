@@ -66,8 +66,11 @@ theorem comp {F : ℂ → V} {F' : V} {g : ℂ → ℂ} {g' A : ℂ}
     (hF : HasAlgebraicDerivAt F F' (g A)) (hg : HasDerivAt g g' A) :
     HasAlgebraicDerivAt (fun z => F (g z)) (g' • F') A := by
   intro ℓ
-  simpa only [Function.comp_apply, map_smul, smul_eq_mul, mul_comm] using
-    HasDerivAt.comp A (hF ℓ) hg
+  have hcomp := HasDerivAt.comp A (hF ℓ) hg
+  have hcomp' : HasDerivAt (fun z => ℓ (F (g z))) (ℓ F' * g') A := by
+    apply hcomp.congr_of_eventuallyEq
+    exact Filter.Eventually.of_forall (fun _ => rfl)
+  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp'
 
 /-- Finite sums preserve algebraic derivatives. -/
 theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} {A : ℂ}
