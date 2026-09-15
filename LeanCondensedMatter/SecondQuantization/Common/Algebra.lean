@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
@@ -11,6 +10,10 @@ set_option linter.style.header false
 /-!
 # Statistics-independent second-quantization algebra
 
-One-particle labels, particle statistics, occupation-basis interfaces, algebraic Fock spaces,
-fixed support shifts, and the common CAR/CCR exchange-algebra interface.
+Particle statistics, occupation-basis interfaces, algebraic Fock spaces, fixed support shifts, and
+the common CAR/CCR exchange-algebra interface.
+
+Mode labels are represented by an arbitrary type. The common algebra imposes no project-wide
+finiteness or decidable-equality requirement on that type; such assumptions belong only on the
+operations that need them.
 -/

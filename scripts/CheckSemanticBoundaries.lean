@@ -71,7 +71,6 @@ private def boundedDimensionIndependentModules : Array Name := #[
 ]
 
 private def modeFoundationModules : Array Name := #[
-  `LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace,
   `LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis,
   `LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock,
   `LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation,
@@ -106,12 +105,6 @@ private def boundaryRules : Array BoundaryRule := #[
     id := "mode foundation finiteness independence"
     modulePrefixes := modeFoundationModules
     forbiddenConstants := #[`Fintype, `Finite]
-    forbiddenModulePrefixes := #[]
-  },
-  {
-    id := "one-particle space decidable-equality independence"
-    modulePrefixes := #[`LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace]
-    forbiddenConstants := #[`DecidableEq]
     forbiddenModulePrefixes := #[]
   },
   {
