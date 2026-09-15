@@ -36,6 +36,22 @@ private theorem Pairing.componentPairEndpointEquiv_apply_one
     Pairing.componentPairEndpointEquiv componentPairing (⟨B, pr⟩, 1) = ⟨B, pr.1.2⟩ := by
   simp [Pairing.componentPairEndpointEquiv]
 
+private theorem Pairing.componentPairEndpointEquiv_partner
+    (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
+    (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
+    (hpartner : ∀ B p,
+      global.partner (positionEquiv ⟨B, p⟩) =
+        positionEquiv ⟨B, (componentPairing B).partner p⟩)
+    (x : Σ B, (componentPairing B).NormalizedPair) :
+    global.partner
+        (positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (x, 0))) =
+      positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (x, 1)) := by
+  rcases x with ⟨B, pr⟩
+  have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
+  rw [Pairing.componentPairEndpointEquiv_apply_zero,
+    Pairing.componentPairEndpointEquiv_apply_one,
+    hpartner B pr.1.1, hpr.2]
+
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions and intertwine partner maps. -/
 noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
@@ -47,12 +63,7 @@ noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
     (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair :=
   global.normalizedPairEquivOfEndpointEquiv
     (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
-    (by
-      rintro ⟨B, pr⟩
-      have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-      rw [Pairing.componentPairEndpointEquiv_apply_zero,
-        Pairing.componentPairEndpointEquiv_apply_one,
-        hpartner B pr.1.1, hpr.2])
+    (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
 
 /-- If each component position map is strictly monotone, the component-pair equivalence preserves
 normalized endpoint order exactly. -/
@@ -66,9 +77,12 @@ theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono [Fintype ι]
     (B : ι) (pr : (componentPairing B).NormalizedPair) :
     (global.normalizedPairSigmaEquiv componentPairing positionEquiv hpartner ⟨B, pr⟩).1 =
       (positionEquiv ⟨B, pr.1.1⟩, positionEquiv ⟨B, pr.1.2⟩) := by
-  apply global.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt
+  change
+    (global.normalizedPairOfEndpointEquiv
+      (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv ⟨B, pr⟩).1 = _
+  apply global.normalizedPairOfEndpointEquiv_pair_eq_of_lt
     (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
-  have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-  exact hmono B hpr.1
+    (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
+  exact hmono B (((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1
 
 end Combinatorics
