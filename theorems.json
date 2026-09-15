@@ -133082,7 +133082,6 @@
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i j : Mode),\n  SecondQuantization.Fermionic.twoPointExternalLabels i j 1 = SecondQuantization.Fermionic.ExternalFieldLabel.creation j",
     "standardAxioms": [
-      "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
@@ -133092,7 +133091,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.twoPointExternalLabels_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -133108,7 +133107,6 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
-      "Quot.sound",
       "propext"
     ],
     "definitionallyEquivalentTo": [],
@@ -133128,7 +133126,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.twoPointExternalLabels_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
