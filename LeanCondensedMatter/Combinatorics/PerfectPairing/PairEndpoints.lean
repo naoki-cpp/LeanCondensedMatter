@@ -156,21 +156,19 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
   exact Equiv.ofBijective (pairing.normalizedPairOfEndpointEquiv endpointEquiv e)
     ((Fintype.bijective_iff_surjective_and_card _).2 ⟨hsurj, hcard⟩)
 
-/-- Transporting an abstract paired endpoint fiber preserves its two endpoints up to the normalized
-order chosen by the target pairing. -/
-theorem Pairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
-    {A P : Type*} [Fintype A] [Finite P] {n : ℕ} (pairing : Pairing n)
+/-- Normalizing a transported endpoint-zero position preserves the two source endpoints up to the
+normalized order chosen by the target pairing. -/
+theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
     (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
     (a : A) :
-    (pairing.normalizedPairEquivOfEndpointEquiv endpointEquiv e hpartner a).1 =
+    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
         (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) ∨
-      (pairing.normalizedPairEquivOfEndpointEquiv endpointEquiv e hpartner a).1 =
+      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
         (e (endpointEquiv (a, 1)), e (endpointEquiv (a, 0))) := by
   classical
-  change (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 = _ ∨
-    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 = _
   unfold Pairing.normalizedPairOfEndpointEquiv
   by_cases h : e (endpointEquiv (a, 0)) < pairing.partner (e (endpointEquiv (a, 0)))
   · have horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
@@ -184,20 +182,20 @@ theorem Pairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
-theorem Pairing.normalizedPairEquivOfEndpointEquiv_pair_eq_of_lt
-    {A P : Type*} [Fintype A] [Finite P] {n : ℕ} (pairing : Pairing n)
+theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_of_lt
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
     (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n))
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1)))
     (a : A)
     (horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1))) :
-    (pairing.normalizedPairEquivOfEndpointEquiv endpointEquiv e hpartner a).1 =
+    (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).1 =
       (e (endpointEquiv (a, 0)), e (endpointEquiv (a, 1))) := by
-  rcases pairing.normalizedPairEquivOfEndpointEquiv_pair_eq_or_swap
+  rcases pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
       endpointEquiv e hpartner a with h | h
   · exact h
   · have hnormalized := pairing.pairs_normalized
-      (pairing.normalizedPairEquivOfEndpointEquiv endpointEquiv e hpartner a).2
+      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e a).2
     rw [h] at hnormalized
     exact (lt_asymm horder hnormalized).elim
 
