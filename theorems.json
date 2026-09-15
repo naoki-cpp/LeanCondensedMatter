@@ -77231,10 +77231,10 @@
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -77251,10 +77251,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -77297,10 +77297,10 @@
       "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -77318,10 +77318,10 @@
       "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_removeOccupation",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -77514,7 +77514,98 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.CarriesGradingDegree (fun n => ↑(SecondQuantization.Bosonic.particleNumber n))\n    (SecondQuantization.Bosonic.annihilate i) (-1)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.CarriesShift (SecondQuantization.Bosonic.freeEigenvalue ε)\n    (SecondQuantization.Bosonic.annihilate i) (-ε i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Annihilation at mode `i` carries free-energy shift `-ε i`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
+      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
+      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
+      "SecondQuantization.Common.smul_basisState_apply_of_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.CarriesShift (SecondQuantization.Bosonic.freeEigenvalue ε)\n    (SecondQuantization.Bosonic.create i) (ε i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.carriesEnergyShift_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Creation at mode `i` carries free-energy shift `+ε i`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Bosonic.freeEigenvalue_createOccupation",
+      "SecondQuantization.Common.smul_basisState_apply_of_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Bosonic.particleNumber n))\n    (SecondQuantization.Bosonic.annihilate i) (-1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77558,7 +77649,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.CarriesGradingDegree (fun n => ↑(SecondQuantization.Bosonic.particleNumber n))\n    (SecondQuantization.Bosonic.create i) 1",
+    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Bosonic.particleNumber n))\n    (SecondQuantization.Bosonic.create i) 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78212,12 +78303,12 @@
     "directWrapperOf": "SecondQuantization.Bosonic.create_basisState",
     "dependents": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -78234,12 +78325,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
       "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -78639,8 +78730,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.hasEnergyShift_create"
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
+      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeEigenvalue_add",
@@ -78649,8 +78740,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.hasEnergyShift_create"
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
+      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -78722,7 +78813,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate"
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
@@ -78731,7 +78822,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate"
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -80129,97 +80220,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.HasEnergyShift (SecondQuantization.Bosonic.freeEigenvalue ε) (-ε i)\n    (SecondQuantization.Bosonic.annihilate i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
-    "externalAxioms": [],
-    "docString": "Annihilation at mode `i` has fixed free-energy shift `-ε i`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
-      "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.HasEnergyShift (SecondQuantization.Bosonic.freeEigenvalue ε) (ε i)\n    (SecondQuantization.Bosonic.create i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.hasEnergyShift_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
-    "externalAxioms": [],
-    "docString": "Creation at mode `i` has fixed free-energy shift `+ε i`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.freeEigenvalue_createOccupation",
-      "SecondQuantization.Common.smul_basisState_apply_of_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    HasSum (SecondQuantization.Bosonic.boltzmannWeight ε β) (∏ i, (1 - Real.exp (-β * ε i))⁻¹)",
     "standardAxioms": [
       "Classical.choice",
@@ -80424,8 +80424,8 @@
       "SecondQuantization.Bosonic.freeGibbsTsum_annihilate_rotate"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift"
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80466,8 +80466,8 @@
       "SecondQuantization.Bosonic.freeGibbsTsum_create_rotate"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift"
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80511,8 +80511,8 @@
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift"
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80591,8 +80591,8 @@
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_quarticLocalLegOperator"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift"
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80836,8 +80836,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesGradingDegree"
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80974,8 +80974,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesGradingDegree"
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -83739,7 +83739,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} {grading : Config → ℤ}\n  {A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config}\n  {qA qB : ℤ},\n  SecondQuantization.Common.CarriesGradingDegree grading A qA →\n    SecondQuantization.Common.CarriesGradingDegree grading B qB →\n      SecondQuantization.Common.CarriesGradingDegree grading (A ∘ₗ B) (qA + qB)",
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config}\n  {qA qB : G},\n  SecondQuantization.Common.CarriesShift grading A qA →\n    SecondQuantization.Common.CarriesShift grading B qB →\n      SecondQuantization.Common.CarriesShift grading (A ∘ₗ B) (qA + qB)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83751,10 +83751,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.CarriesGradingDegree.comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule",
+    "name": "SecondQuantization.Common.CarriesShift.comp",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift",
     "externalAxioms": [],
-    "docString": "Grading degrees compose additively under `LinearMap.comp`: if `A` carries degree `qA` and `B`\ncarries degree `qB`, their composite `A.comp B` carries degree `qA + qB`. ",
+    "docString": "Fixed support shifts compose additively under `LinearMap.comp`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -94845,7 +94845,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} {grading : Config → ℤ}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : ℤ},\n  SecondQuantization.Common.CarriesGradingDegree grading A q →\n    q ≠ 0 → ∀ (n : Config), SecondQuantization.Common.diagonalCoeff A n = 0",
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 → ∀ (n : Config), SecondQuantization.Common.diagonalCoeff A n = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94857,10 +94857,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesGradingDegree",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule",
+    "name": "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift",
     "externalAxioms": [],
-    "docString": "**The particle-number selection rule.** An operator that carries a nonzero grading degree has\nvanishing diagonal matrix coefficients everywhere: it can never map a basis state back to a\nmultiple of itself, since that would force its degree to be `0`. ",
+    "docString": "An operator carrying a nonzero shift has vanishing diagonal matrix coefficients. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -95078,7 +95078,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.comp_diagonalEvolution_eq_smul_diagonalEvolution_comp",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift"
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_neg_comp",
@@ -95088,7 +95088,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.comp_diagonalEvolution_eq_smul_diagonalEvolution_comp",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift"
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -95146,7 +95146,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.HasEnergyShift energy q A →\n    SecondQuantization.Common.diagonalEvolution energy τ ∘ₗ A =\n      Complex.exp ↑(q * τ) • A ∘ₗ SecondQuantization.Common.diagonalEvolution energy τ",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    SecondQuantization.Common.diagonalEvolution energy τ ∘ₗ A =\n      Complex.exp ↑(q * τ) • A ∘ₗ SecondQuantization.Common.diagonalEvolution energy τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95158,10 +95158,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift",
+    "name": "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift",
     "externalAxioms": [],
-    "docString": "Energy-shift eigenoperators satisfy the corresponding KMS-type commutation relation with the\ndiagonal evolution. ",
+    "docString": "Real support-shift eigenoperators satisfy the corresponding KMS-type commutation relation with\nthe diagonal evolution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -95172,7 +95172,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98982,7 +98982,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.HasEnergyShift energy q A →\n    (SecondQuantization.Common.heisenbergEvolve energy τ) A = Complex.exp ↑(τ * q) • A",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    (SecondQuantization.Common.heisenbergEvolve energy τ) A = Complex.exp ↑(τ * q) • A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98994,16 +98994,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
+    "name": "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift",
     "externalAxioms": [],
-    "docString": "A fixed support-level energy shift makes an operator an eigenoperator of diagonal Heisenberg\nevolution. ",
+    "docString": "A fixed real support shift makes an operator an eigenoperator of diagonal Heisenberg evolution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift",
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
     ],
@@ -99017,7 +99017,7 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift",
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
     ],
@@ -100423,13 +100423,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -100515,7 +100515,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
+      "SecondQuantization.Common.CarriesShift.comp",
       "SecondQuantization.Common.matrixCoeff_comp",
       "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
       "SecondQuantization.Common.tsumTrace_comp_comm"
@@ -100524,7 +100524,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
+      "SecondQuantization.Common.CarriesShift.comp",
       "SecondQuantization.Common.matrixCoeff_comp",
       "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
       "SecondQuantization.Common.tsumTrace_comp_comm"
@@ -100785,7 +100785,7 @@
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
@@ -100801,7 +100801,7 @@
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
@@ -100838,7 +100838,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_interactionPicture"
     ],
     "dependencies": [
@@ -100849,7 +100849,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_interactionPicture"
     ],
     "compiledConsumerCount": 2,
@@ -104629,10 +104629,10 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -104641,10 +104641,10 @@
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_create_of_ne"
     ],
     "dependencies": [],
@@ -104652,10 +104652,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Bosonic.hasEnergyShift_annihilate",
-      "SecondQuantization.Bosonic.hasEnergyShift_create",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -104664,10 +104664,10 @@
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_create_of_ne"
     ],
     "compiledConsumerCount": 18,
@@ -120790,10 +120790,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate",
@@ -120805,10 +120805,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate",
@@ -120846,10 +120846,10 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_fockVacuum",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
@@ -120863,10 +120863,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_fockVacuum",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.annihilate_basisState_toggle",
@@ -121374,7 +121374,99 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.CarriesGradingDegree (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.annihilate i) (-1)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.CarriesShift (SecondQuantization.Fermionic.fermionEnergy ε)\n    (SecondQuantization.Fermionic.annihilate i) (-ε i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Annihilation at mode `i` carries free-energy shift `-ε i`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_annihilate",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.smul_basisState_apply_of_ne",
+      "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
+      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
+      "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_annihilate",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.CarriesShift (SecondQuantization.Fermionic.fermionEnergy ε)\n    (SecondQuantization.Fermionic.create i) (ε i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.carriesEnergyShift_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Creation at mode `i` carries free-energy shift `+ε i`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_create",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.smul_basisState_apply_of_ne",
+      "SecondQuantization.Fermionic.create_basisState_of_mem",
+      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
+      "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_create",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.annihilate i) (-1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121418,7 +121510,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.CarriesGradingDegree (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.create i) 1",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Common.CarriesShift (fun n => ↑(SecondQuantization.Fermionic.particleNumber n))\n    (SecondQuantization.Fermionic.create i) 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124384,11 +124476,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate",
@@ -124400,11 +124492,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.create_basisState_toggle",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate",
@@ -124441,12 +124533,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.create_fockVacuum",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
@@ -124460,12 +124552,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.create_create_basisState_self",
       "SecondQuantization.Fermionic.create_fockVacuum",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.hasEnergyShift_create",
       "SecondQuantization.Fermionic.numberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create_basisState",
@@ -125584,13 +125676,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.hasEnergyShift_create"
+      "SecondQuantization.Fermionic.carriesEnergyShift_create"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasEnergyShift_create"
+      "SecondQuantization.Fermionic.carriesEnergyShift_create"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -125623,13 +125715,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate"
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate"
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -127561,98 +127653,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.HasEnergyShift (SecondQuantization.Fermionic.fermionEnergy ε) (-ε i)\n    (SecondQuantization.Fermionic.annihilate i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasEnergyShift_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
-    "externalAxioms": [],
-    "docString": "Annihilation at mode `i` has fixed free-energy shift `-ε i`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_annihilate",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_annihilate",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Common.HasEnergyShift (SecondQuantization.Fermionic.fermionEnergy ε) (ε i)\n    (SecondQuantization.Fermionic.create i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasEnergyShift_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
-    "externalAxioms": [],
-    "docString": "Creation at mode `i` has fixed free-energy shift `+ε i`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_create",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.smul_basisState_apply_of_ne",
-      "SecondQuantization.Fermionic.create_basisState_of_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.imaginaryTimeEvolveFree_comp_create",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n      HasFPowerSeriesAt (SecondQuantization.Fermionic.analyticDysonPartitionFunction ε β V)\n        (SecondQuantization.Fermionic.dysonPartitionFPowerSeries ε β V) 0",
     "standardAxioms": [
       "Classical.choice",
@@ -128095,8 +128095,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate"
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128133,8 +128133,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_comp_of_hasEnergyShift",
-      "SecondQuantization.Fermionic.hasEnergyShift_create"
+      "SecondQuantization.Common.diagonalEvolution_comp_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesEnergyShift_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128182,8 +128182,8 @@
       "SecondQuantization.Fermionic.traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
-      "SecondQuantization.Fermionic.hasEnergyShift_annihilate"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesEnergyShift_annihilate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128276,8 +128276,8 @@
       "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
     ],
     "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_hasEnergyShift",
-      "SecondQuantization.Fermionic.hasEnergyShift_create"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesEnergyShift_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -129105,8 +129105,8 @@
       "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate"
     ],
     "dependencies": [
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesGradingDegree",
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate"
     ],
     "crossModuleDirectWrapper": false,
@@ -129150,8 +129150,8 @@
       "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
     ],
     "dependencies": [
-      "SecondQuantization.Common.CarriesGradingDegree.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesGradingDegree",
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
     ],
     "crossModuleDirectWrapper": false,
