@@ -109,17 +109,11 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
       d.mixedExternalDysonFixedTimeValue ε β g τ τ' σ *
         d.1.vacuumComponentParts.prod
           (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) := by
-  unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
-  have hsign :
-      (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod d.mixedComponentDysonSign :=
-    d.dysonSign_eq_external_mul_prod_vacuum_mixed
-  rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components,
+  rw [d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components,
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]
   unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
-  rw [Finset.prod_mul_distrib]
   ring
 
 end Fermionic
