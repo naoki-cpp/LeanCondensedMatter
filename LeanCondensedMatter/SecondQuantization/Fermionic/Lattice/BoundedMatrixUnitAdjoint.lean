@@ -49,21 +49,6 @@ private theorem latticeBasis_coord_eq_lapply (y : Site) :
 
 variable [LinearOrder Site]
 
-/-- In occupation representation, a second-quantized lattice matrix unit is the standard
-creation-annihilation bilinear. -/
-theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
-    occupationOperator
-        (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) =
-      (SecondQuantization.Fermionic.create x).comp
-        (SecondQuantization.Fermionic.annihilate y) := by
-  change AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
-      (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) = _
-  rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
-  rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
-    ← latticeBasis_coord_eq_lapply (Site := Site) y]
-  rw [AlgebraicFock.occupationConjugate_create,
-    AlgebraicFock.occupationConjugate_annihilateDual]
-
 section Finite
 
 variable [Fintype Site]
@@ -78,8 +63,14 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
     boundedDgammaMatrixUnit x y =
       (finiteHilbertCreate x).comp (finiteHilbertAnnihilate y) := by
   change Common.finiteHilbertOperator
-      (occupationOperator (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
-  rw [occupationOperator_dGamma_matrixUnit, Common.finiteHilbertOperator_comp]
+      (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
+        (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
+  rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
+  rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
+    ← latticeBasis_coord_eq_lapply (Site := Site) y]
+  rw [AlgebraicFock.occupationConjugate_create,
+    AlgebraicFock.occupationConjugate_annihilateDual,
+    Common.finiteHilbertOperator_comp]
   rfl
 
 /-- On the one-particle occupation basis, the bounded second-quantized matrix unit sends the
