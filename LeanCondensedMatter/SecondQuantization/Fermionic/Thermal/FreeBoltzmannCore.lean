@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 
 set_option linter.style.header false
 
@@ -14,17 +15,16 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The free Boltzmann weight `e^{-βE(n)}` for `E(n) = Σᵢ∈n ε(i)`. -/
+/-- The free Boltzmann weight `e^{-βE(n)}` specialized from the canonical Common weight at
+`fermionEnergy`. -/
 noncomputable def freeBoltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℂ :=
-  Complex.exp (-(β : ℂ) * ∑ i ∈ n, (ε i : ℂ))
+  Common.boltzmannWeight (fermionEnergy ε) β n
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The free Boltzmann weight is a cast of a positive real number. -/
 theorem freeBoltzmannWeight_eq_ofReal (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ((Real.exp (-β * ∑ i ∈ n, ε i) : ℝ) : ℂ) := by
-  rw [freeBoltzmannWeight,
-    show -(β : ℂ) * ∑ i ∈ n, (ε i : ℂ) = ((-β * ∑ i ∈ n, ε i : ℝ) : ℂ) by push_cast; ring,
-    Complex.ofReal_exp]
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy, Complex.ofReal_exp]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 theorem freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
