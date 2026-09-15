@@ -26,7 +26,8 @@ variable {Mode : Type*} {N : ℕ}
 /-- The ordered free thermal field family is local under the Common component ordered-leg
 embedding. -/
 theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
@@ -43,7 +44,8 @@ variable [DecidableEq Mode]
 assembled global order. -/
 theorem QuarticDiagram.freeThermalPairValue_componentOrderedLeg
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
-    (d : QuarticDiagram Mode N S) (orders : d.ComponentVertexOrders)
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
     (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     freeThermalPairValue ε β
@@ -61,7 +63,8 @@ theorem QuarticDiagram.freeThermalPairValue_componentOrderedLeg
 contraction values of its connected-component restrictions. -/
 theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
-    (d : QuarticDiagram Mode N S) (orders : d.ComponentVertexOrders)
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
     d.orderedThermalPairingValue ε β (d.assembleVertexOrder orders shuffle) =
       ∏ B : d.componentPartition.parts,
@@ -80,7 +83,8 @@ theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
 /-- The coefficientwise bosonic ordered thermal amplitude factors over connected components. -/
 theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     d.orderedThermalAmplitude ε β g (d.assembleVertexOrder orders shuffle) =
       ∏ B : d.componentPartition.parts,

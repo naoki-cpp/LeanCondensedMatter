@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
@@ -28,14 +27,16 @@ variable {Mode : Type*} {N : ℕ}
 
 /-- The flattened free thermal fields of a bosonic quartic diagram in a chosen vertex order. -/
 noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin N)}
-    (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) :
     Fin (2 * (2 * S.card)) → FreeThermalField Mode :=
   quarticFreeThermalFieldFamily (fun i => d.vertexLabel (order i))
 
 /-- The convergence-aware free thermal contraction value of one ordered bosonic quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
-    (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) : ℂ :=
   (d.pairingInOrder order).evaluation
     ((d.pairingInOrder order).weight .boson)
     (fun a b => freeThermalPairValue ε β
@@ -46,14 +47,16 @@ noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
 Dyson sign and quartic coupling product. -/
 noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
   (-1 : ℂ) ^ S.card * d.vertexWeight g * d.orderedThermalPairingValue ε β order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
-    (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) : ℂ :=
   ∑ pairing : Pairing (2 * S.card),
     pairing.evaluation (pairing.weight .boson)
       (fun a b => freeThermalPairValue ε β
@@ -80,7 +83,8 @@ theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum
             (freeGibbsFunctional ε β hpos).value
               (FreeThermalField.orderedProduct
                 (List.ofFn fun i : Fin (2 * r) => C ((j.succAbove i).succ))))
-    {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S)
     (hfields : admissible (2 * S.card) (d.orderedFreeThermalFieldFamily order)) :
     (freeGibbsFunctional ε β hpos).value
