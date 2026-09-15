@@ -33,8 +33,9 @@ theorem freeHamiltonianWeight_toggle_of_mem (ε : Mode → ℝ)
     freeHamiltonianWeight ε n =
       freeHamiltonianWeight ε (toggleOccupation i n) + (ε i : ℂ) := by
   rw [toggleOccupation_of_mem h]
-  simp only [freeHamiltonianWeight, removeOccupation]
-  exact (Finset.sum_erase_add n (fun j => (ε j : ℂ)) h).symm
+  have hE : fermionEnergy ε n = fermionEnergy ε (removeOccupation i n) + ε i :=
+    (sub_eq_iff_eq_add.mp (fermionEnergy_removeOccupation_of_mem (ε := ε) h).symm)
+  simpa [freeHamiltonianWeight] using congrArg (fun x : ℝ => (x : ℂ)) hE
 
 /-- Adding an unoccupied mode raises the free occupation energy by exactly that one-particle
 energy. -/
@@ -43,7 +44,8 @@ theorem freeHamiltonianWeight_toggle_of_not_mem (ε : Mode → ℝ)
     freeHamiltonianWeight ε (toggleOccupation i n) =
       freeHamiltonianWeight ε n + (ε i : ℂ) := by
   rw [toggleOccupation_of_not_mem h]
-  simp [freeHamiltonianWeight, insertOccupation, h, add_comm]
+  simpa [freeHamiltonianWeight] using
+    congrArg (fun x : ℝ => (x : ℂ)) (fermionEnergy_insertOccupation_of_not_mem (ε := ε) h)
 
 /-- Bounded fermionic creation preserves the maximal domain of the completed free Hamiltonian. -/
 theorem completedCreate_mem_completedFreeHamiltonianDomain
