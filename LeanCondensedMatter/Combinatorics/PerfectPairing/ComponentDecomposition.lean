@@ -54,8 +54,9 @@ noncomputable def Pairing.normalizedPairSigmaEquiv [Fintype ι]
         Pairing.componentPairEndpointEquiv_apply_one,
         hpartner B pr.1.1, hpr.2])
 
-@[simp]
-theorem Pairing.normalizedPairSigmaEquiv_apply [Fintype ι]
+/-- If each component position map is strictly monotone, the component-pair equivalence preserves
+normalized endpoint order exactly. -/
+theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono [Fintype ι]
     (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
     (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
     (hpartner : ∀ B p,
