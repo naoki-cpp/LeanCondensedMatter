@@ -206,20 +206,13 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
     Pairing.crossingCount_eq_sum_sum_crosses]
   simp only [TwoPointDiagram.mixedComponentPairSigmaEquiv_apply]
   symm
-  refine Fintype.sum_equiv e
-    (fun p : LocalPair => ∑ q : LocalPair, if Crosses p.1 q.1 then 1 else 0)
-    (fun p' : AmbientPair => ∑ q' : AmbientPair, if Crosses p'.1.1 q'.1.1 then 1 else 0) ?_
-  intro p
-  refine Fintype.sum_equiv e
-    (fun q : LocalPair => if Crosses p.1 q.1 then 1 else 0)
-    (fun q' : AmbientPair => if Crosses (e p).1.1 q'.1.1 then 1 else 0) ?_
-  intro q
-  have hcross : Crosses (e p).1.1 (e q).1.1 ↔ Crosses p.1 q.1 :=
-    TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
-      T ext vac C τ τ' σ hσ p q
-  by_cases h : Crosses p.1 q.1
-  · rw [if_pos h, if_pos (hcross.mpr h)]
-  · rw [if_neg h, if_neg (fun h' => h (hcross.mp h'))]
+  exact sum_sum_crosses_eq_of_equiv
+    (fun p : LocalPair => p.1)
+    (fun p : AmbientPair => p.1.1)
+    e
+    (fun p q =>
+      (TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
+        T ext vac C τ τ' σ hσ p q).symm)
 
 end Common
 end SecondQuantization
