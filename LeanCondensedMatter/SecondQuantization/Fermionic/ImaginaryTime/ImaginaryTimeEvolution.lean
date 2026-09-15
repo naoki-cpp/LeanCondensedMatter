@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -23,7 +23,8 @@ diagonal definition is specific to a *diagonal* Hamiltonian; it does not extend 
 beyond the free theory).
 
 Generic semigroup, inverse, zero-time laws for the diagonal and Heisenberg evolutions are owned
-by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution` and consumed directly from there.
+by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution`. Fixed energy-shift eigenoperator
+laws are owned by `SecondQuantization.Common.ImaginaryTime.EnergyShift`.
 -/
 
 namespace SecondQuantization
@@ -35,6 +36,23 @@ variable {Mode : Type*} [LinearOrder Mode]
 (`freeHamiltonian_basisState`). Real-valued, matching `Common.DiagonalEvolution`'s `energy`
 parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
 def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ := ∑ i ∈ n, ε i
+
+/-- Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. -/
+theorem fermionEnergy_insertOccupation_of_not_mem {ε : Mode → ℝ} {i : Mode}
+    {n : Occupation Mode} (h : i ∉ n) :
+    fermionEnergy ε (insertOccupation i n) = fermionEnergy ε n + ε i := by
+  unfold fermionEnergy insertOccupation
+  rw [Finset.sum_insert h]
+  ring
+
+/-- Removing an occupied mode lowers the free energy by that mode's one-particle energy. -/
+theorem fermionEnergy_removeOccupation_of_mem {ε : Mode → ℝ} {i : Mode}
+    {n : Occupation Mode} (h : i ∈ n) :
+    fermionEnergy ε (removeOccupation i n) = fermionEnergy ε n - ε i := by
+  unfold fermionEnergy removeOccupation
+  have hsum : ε i + ∑ x ∈ n.erase i, ε x = ∑ x ∈ n, ε x :=
+    Finset.add_sum_erase n ε h
+  linarith
 
 /-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
 basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
@@ -81,82 +99,99 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
       (fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ)))
 
+/-! ## Energy shifts of creation and annihilation -/
+
+/-- Annihilation at mode `i` has fixed free-energy shift `-ε i`. -/
+theorem hasEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
+    Common.HasEnergyShift (fermionEnergy ε) (-ε i) (annihilate i) := by
+  intro m n hmn
+  change annihilate i (basisState n) m ≠ 0 at hmn
+  by_cases hi : i ∈ n
+  · have hm : m = removeOccupation i n := by
+      by_contra hne
+      apply hmn
+      rw [annihilate_basisState_of_mem hi]
+      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
+    subst m
+    rw [fermionEnergy_removeOccupation_of_mem hi]
+    ring
+  · exfalso
+    apply hmn
+    rw [annihilate_basisState_of_not_mem hi]
+    rfl
+
+/-- Creation at mode `i` has fixed free-energy shift `+ε i`. -/
+theorem hasEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
+    Common.HasEnergyShift (fermionEnergy ε) (ε i) (create i) := by
+  intro m n hmn
+  change create i (basisState n) m ≠ 0 at hmn
+  by_cases hi : i ∈ n
+  · exfalso
+    apply hmn
+    rw [create_basisState_of_mem hi]
+    rfl
+  · have hm : m = insertOccupation i n := by
+      by_contra hne
+      apply hmn
+      rw [create_basisState_of_not_mem hi]
+      exact Common.smul_basisState_apply_of_ne _ (Ne.symm hne)
+    subst m
+    rw [fermionEnergy_insertOccupation_of_not_mem hi]
+    ring
+
 /-! ## Evolved creation and annihilation operators -/
 
-/-- **The imaginary-time-evolved annihilation operator**: `c_i(τ) = e^{-τε_i} c_i`. The physical
-content of the free-theory Heisenberg equation of motion `d/dτ c_i(τ) = [H₀, c_i(τ)] = -ε_i c_i(τ)`,
-proved here directly from the basis-level action rather than by solving that ODE. -/
+/-- **The imaginary-time-evolved annihilation operator**: `c_i(τ) = e^{-τε_i} c_i`. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (annihilate i) (basisState n) =
-    (Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) (basisState n)
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
-  by_cases hi : i ∈ n
-  · rw [annihilate_basisState_of_mem hi, smul_smul, map_smul, imaginaryTimeEvolveFree_basisState,
-      smul_smul, smul_smul]
-    simp only [removeOccupation]
+  change Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) = _
+  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
+    (fermionEnergy ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
     push_cast
-    have hsum : (ε i : ℂ) + ∑ x ∈ n.erase i, (ε x : ℂ) = ∑ x ∈ n, (ε x : ℂ) :=
-      Finset.add_sum_erase n (fun x => (ε x : ℂ)) hi
-    have hexp : -(τ : ℂ) * ∑ x ∈ n, (ε x : ℂ) + (τ : ℂ) * ∑ x ∈ n.erase i, (ε x : ℂ) =
-        -(τ : ℂ) * (ε i : ℂ) := by
-      linear_combination (τ : ℂ) * hsum
-    rw [mul_right_comm, ← Complex.exp_add, hexp]
-  · rw [annihilate_basisState_of_not_mem hi, smul_zero, map_zero, smul_zero]
+    ring
+  rw [hcast] at h
+  exact h
 
 /-- **The imaginary-time-evolved creation operator**: `c_i†(τ) = e^{τε_i} c_i†`. -/
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) = Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-  apply Common.linearMap_ext_basisState
-  intro n
-  change imaginaryTimeEvolve ε τ (create i) (basisState n) =
-    (Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i) (basisState n)
-  rw [imaginaryTimeEvolve_apply,
-    imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
-  by_cases hi : i ∈ n
-  · rw [create_basisState_of_mem hi, smul_zero, map_zero, smul_zero]
-  · rw [create_basisState_of_not_mem hi, smul_smul, map_smul, imaginaryTimeEvolveFree_basisState,
-      smul_smul, smul_smul]
-    simp only [insertOccupation]
+  change Common.heisenbergEvolve (fermionEnergy ε) τ (create i) = _
+  have h := Common.heisenbergEvolve_eq_smul_of_hasEnergyShift
+    (fermionEnergy ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
     push_cast
-    have hsum : (ε i : ℂ) + ∑ x ∈ n, (ε x : ℂ) = ∑ x ∈ insert i n, (ε x : ℂ) := by
-      rw [Finset.sum_insert hi]
-    have hexp : -(τ : ℂ) * ∑ x ∈ n, (ε x : ℂ) + (τ : ℂ) * ∑ x ∈ insert i n, (ε x : ℂ) =
-        (τ : ℂ) * (ε i : ℂ) := by
-      linear_combination (-(τ : ℂ)) * hsum
-    rw [mul_right_comm, ← Complex.exp_add, hexp]
+    ring
+  rw [hcast] at h
+  exact h
 
 /-! ## The KMS-type commutation relation with `e^{τH₀}` -/
 
-/-- **The KMS-type relation for the annihilation operator**: `e^{τH₀} c_i = e^{-τε_i} c_i e^{τH₀}`
-— an instance of `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`, from
-`imaginaryTimeEvolve_annihilate`'s eigenvalue-shift `q := -ε_i`. Setting `τ := -β` and rearranging
-gives the physics reference notes' `ĉ_i e^{-βĤ} = e^{-βε_i} e^{-βĤ} ĉ_i}`
-(`quantum-statistical-mechanics.tex`'s "product-of-KMS-state-and-ladder-op"), the algebraic
-ingredient the finite-temperature Bloch–de Dominicis theorem's induction needs to move a ladder
-operator through the (would-be) Gibbs weight `e^{-βH₀}`. -/
+/-- **The KMS-type relation for the annihilation operator**: `e^{τH₀} c_i = e^{-τε_i} c_i e^{τH₀}`. -/
 theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
-  have hcast : ((-ε i * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by push_cast; ring
-  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
-    (fermionEnergy ε) τ (-ε i) (annihilate i) (by
-      rw [hcast]; exact imaginaryTimeEvolve_annihilate ε τ i)
-  rwa [hcast] at h
+  change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (annihilate i) = _
+  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
+    (fermionEnergy ε) (-ε i) τ (annihilate i) (hasEnergyShift_annihilate ε i)
+  have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
+    push_cast
+    ring
+  rw [hcast] at h
+  exact h
 
-/-- **The KMS-type relation for the creation operator**: `e^{τH₀} c_i† = e^{τε_i} c_i† e^{τH₀}`,
-the creation-side mirror of `imaginaryTimeEvolveFree_comp_annihilate`. -/
+/-- **The KMS-type relation for the creation operator**: `e^{τH₀} c_i† = e^{τε_i} c_i† e^{τH₀}`. -/
 theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     (imaginaryTimeEvolveFree ε τ).comp (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
-  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by push_cast; ring
-  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
-    (fermionEnergy ε) τ (ε i) (create i) (by
-      rw [hcast]; exact imaginaryTimeEvolve_create ε τ i)
-  rwa [hcast] at h
+  change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (create i) = _
+  have h := Common.diagonalEvolution_comp_of_hasEnergyShift
+    (fermionEnergy ε) (ε i) τ (create i) (hasEnergyShift_create ε i)
+  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
+    push_cast
+    ring
+  rw [hcast] at h
+  exact h
 
 end Fermionic
 end SecondQuantization
