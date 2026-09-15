@@ -40,6 +40,27 @@ theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : Stri
   · rintro ⟨hac, hcb, hbe⟩
     exact ⟨hf hac, hf hcb, hf hbe⟩
 
+/-- A crossing-preserving equivalence of finite pair families preserves the double crossing count. -/
+theorem sum_sum_crosses_eq_of_equiv {n m : ℕ} {A B : Type*}
+    [Fintype A] [Fintype B]
+    (pairA : A → Fin (2 * n) × Fin (2 * n))
+    (pairB : B → Fin (2 * m) × Fin (2 * m))
+    (e : A ≃ B)
+    (hcross : ∀ p q, Crosses (pairA p) (pairA q) ↔
+      Crosses (pairB (e p)) (pairB (e q))) :
+    (∑ p : A, ∑ q : A, if Crosses (pairA p) (pairA q) then 1 else 0) =
+      ∑ p : B, ∑ q : B, if Crosses (pairB p) (pairB q) then 1 else 0 := by
+  classical
+  refine Fintype.sum_equiv e
+    (fun p : A => ∑ q : A, if Crosses (pairA p) (pairA q) then 1 else 0)
+    (fun p : B => ∑ q : B, if Crosses (pairB p) (pairB q) then 1 else 0) ?_
+  intro p
+  refine Fintype.sum_equiv e
+    (fun q : A => if Crosses (pairA p) (pairA q) then 1 else 0)
+    (fun q : B => if Crosses (pairB (e p)) (pairB q) then 1 else 0) ?_
+  intro q
+  exact if_congr (hcross p q) rfl rfl
+
 /-- The number of geometric crossings. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
