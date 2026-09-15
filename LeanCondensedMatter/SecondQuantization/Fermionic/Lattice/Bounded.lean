@@ -64,20 +64,6 @@ noncomputable def occupationOperator
     OccupationFock Site →ₗ[ℂ] OccupationFock Site :=
   occupationOperatorAlgEquiv A
 
-/-- Occupation-representation transport bundled as a complex-linear map. -/
-noncomputable def occupationOperatorLinearMap :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
-      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
-  (occupationOperatorAlgEquiv (Site := Site)).toLinearMap
-
-/-- Occupation-representation transport viewed as a complex algebra homomorphism. -/
-noncomputable def occupationOperatorAlgHom :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
-      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
-  (occupationOperatorAlgEquiv (Site := Site)).toAlgHom
-
 section FiniteLattice
 
 variable [Fintype Site]
@@ -98,14 +84,6 @@ noncomputable def boundedLatticeOperatorLinearMap :
         AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap
-
-/-- The multiplicative bridge from basis-independent algebraic Fock endomorphisms to bounded
-operators on the finite-lattice Hilbert Fock space. -/
-noncomputable def boundedLatticeOperatorAlgHom :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
-      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (boundedLatticeOperatorAlgEquiv (Site := Site)).toAlgHom
 
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
