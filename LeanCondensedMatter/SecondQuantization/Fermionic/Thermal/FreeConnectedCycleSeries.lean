@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
