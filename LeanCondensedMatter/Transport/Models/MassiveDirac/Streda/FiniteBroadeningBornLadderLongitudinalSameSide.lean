@@ -1,5 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Tactic
@@ -170,9 +169,7 @@ theorem tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero
     finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary, mul_assoc] using
     (hconst.mul hA).mul ((hDMax.inv₀ hdenMax).sub (hD0.inv₀ hden0))
 
-/-- With the metallic shell strictly inside the fixed cutoff, the zero-broadening same-side endpoint
-is continuous at zero disorder. -/
-theorem continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero
+private theorem continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero
     (side : SpectralSide) (v m probeEnergy hbar pMax : ℝ)
     (hmetal : |m| < probeEnergy)
     (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
