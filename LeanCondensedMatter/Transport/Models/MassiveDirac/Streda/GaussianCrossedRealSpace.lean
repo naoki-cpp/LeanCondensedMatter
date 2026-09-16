@@ -18,9 +18,10 @@ current from Eq. (11). Accordingly the current block below resums only the longi
 coordinate and applies that common scalar to the requested Cartesian Pauli direction. The transverse
 `F² B` part of the full local retarded-advanced dressed current, and the corresponding higher-order
 feedback into the exact two-component fixed point, are deliberately not inserted into `J_r`.
-The finite momentum cutoff and external broadening remain explicit; no cutoff removal,
-zero-broadening limit, weak-disorder reduction, real-space `r` integration, Bessel-function
-representation, or crossed conductivity value is claimed here.
+On the positive real-space radial axis the quadratic angular product is reduced exactly to the
+zeroth, first-cosine, and second-cosine full-angle radial Fourier kernels. The finite momentum cutoff
+and external broadening remain explicit; no cutoff removal, zero-broadening limit, weak-disorder
+reduction, real-space `r` integration, or crossed conductivity value is claimed here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -47,6 +48,72 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder
   simp [finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor,
     finiteCutoffContinuumBornDysonCurrentRungVector]
 
+private def gaussianCrossedCurrentConstantAngularCoefficient
+    (factor aA bA dA aR bR dR : ℂ) : Fin 2 → Matrix2 :=
+  ![
+    (factor * (aA * aR - dA * dR)) • sigmaX +
+      (factor * Complex.I * (aR * dA - aA * dR)) • sigmaY,
+    (-(factor * Complex.I * (aR * dA - aA * dR))) • sigmaX +
+      (factor * (aA * aR - dA * dR)) • sigmaY]
+
+private def gaussianCrossedCurrentFirstCosineAngularCoefficient
+    (factor aA bA dA aR bR dR : ℂ) : Fin 2 → Matrix2 :=
+  ![
+    (factor * (aR * bA + aA * bR)) • (1 : Matrix2) +
+      (factor * (bR * dA + bA * dR)) • sigmaZ,
+    (-(factor * Complex.I * (bR * dA - bA * dR))) • (1 : Matrix2) +
+      (-(factor * Complex.I * (aA * bR - aR * bA))) • sigmaZ]
+
+private def gaussianCrossedCurrentFirstSineAngularCoefficient
+    (factor aA bA dA aR bR dR : ℂ) : Fin 2 → Matrix2 :=
+  ![
+    (factor * Complex.I * (bR * dA - bA * dR)) • (1 : Matrix2) +
+      (factor * Complex.I * (aA * bR - aR * bA)) • sigmaZ,
+    (factor * (aR * bA + aA * bR)) • (1 : Matrix2) +
+      (factor * (bR * dA + bA * dR)) • sigmaZ]
+
+private def gaussianCrossedCurrentSecondCosineAngularCoefficient
+    (factor bA bR : ℂ) : Fin 2 → Matrix2 :=
+  ![
+    (factor * bA * bR) • sigmaX,
+    (-(factor * bA * bR)) • sigmaY]
+
+private def gaussianCrossedCurrentSecondMixedAngularCoefficient
+    (factor bA bR : ℂ) : Fin 2 → Matrix2 :=
+  ![
+    (2 * factor * bA * bR) • sigmaY,
+    (2 * factor * bA * bR) • sigmaX]
+
+private theorem polarPauliMatrix_gaussianCrossedCurrent_eq_harmonics
+    (source : Fin 2) (factor aA bA dA aR bR dR : ℂ) (θ : ℝ) :
+    polarPauliMatrix aA bA dA θ * (factor • directionPauli source) *
+        polarPauliMatrix aR bR dR θ =
+      gaussianCrossedCurrentConstantAngularCoefficient
+          factor aA bA dA aR bR dR source +
+        ((Real.cos θ : ℝ) : ℂ) •
+          gaussianCrossedCurrentFirstCosineAngularCoefficient
+            factor aA bA dA aR bR dR source +
+        ((Real.sin θ : ℝ) : ℂ) •
+          gaussianCrossedCurrentFirstSineAngularCoefficient
+            factor aA bA dA aR bR dR source +
+        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
+          gaussianCrossedCurrentSecondCosineAngularCoefficient factor bA bR source +
+        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) •
+          gaussianCrossedCurrentSecondMixedAngularCoefficient factor bA bR source := by
+  fin_cases source <;>
+    ext i j <;>
+    fin_cases i <;>
+    fin_cases j <;>
+    simp [polarPauliMatrix, directionPauli,
+      gaussianCrossedCurrentConstantAngularCoefficient,
+      gaussianCrossedCurrentFirstCosineAngularCoefficient,
+      gaussianCrossedCurrentFirstSineAngularCoefficient,
+      gaussianCrossedCurrentSecondCosineAngularCoefficient,
+      gaussianCrossedCurrentSecondMixedAngularCoefficient,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
+      Matrix.mul_apply] <;>
+    ring
+
 /-- Source-indexed finite-cutoff finite-`η` Gaussian-crossed real-space current block.
 
 This is the regularized massive-Dirac realization of the `J_r` object entering the crossed trace
@@ -71,6 +138,155 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentB
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) i j)
       r
+
+/-- One-dimensional radial-kernel representation of the Gaussian crossed current block on the
+positive real-space radial axis. Only the zeroth, first-cosine, and second-cosine channels survive. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : Matrix2 :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let aA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let c0 : ℝ → Matrix2 := fun p =>
+    gaussianCrossedCurrentConstantAngularCoefficient
+      factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source
+  let c1 : ℝ → Matrix2 := fun p =>
+    gaussianCrossedCurrentFirstCosineAngularCoefficient
+      factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source
+  let c2 : ℝ → Matrix2 := fun p =>
+    gaussianCrossedCurrentSecondCosineAngularCoefficient factor (bA p) (bR p) source
+  fun i j =>
+    (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      ∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierZerothAngularKernel (p * radius / hbar) * c0 p i j +
+            polarFourierFirstCosineAngularKernel (p * radius / hbar) * c1 p i j +
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) * c2 p i j)
+
+/-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
+the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius 0) =
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let aA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonScalarCoefficient
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR : ℝ → ℂ := fun p =>
+    finiteCutoffContinuumBornDysonPauliCoefficient .z
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  have hA (p θ : ℝ) :
+      finiteCutoffContinuumBornDysonGreenMatrix
+          .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax =
+        polarPauliMatrix (aA p) (bA p) (dA p) θ := by
+    apply (Matrix.toEuclideanCLM :
+      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
+      matrixOperator, aA, bA, dA] using
+      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+        .advanced v m p θ probeEnergy broadening disorderStrength hbar pMax)
+  have hR (p θ : ℝ) :
+      finiteCutoffContinuumBornDysonGreenMatrix
+          .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax =
+        polarPauliMatrix (aR p) (bR p) (dR p) θ := by
+    apply (Matrix.toEuclideanCLM :
+      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
+      matrixOperator, aR, bR, dR] using
+      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+        .retarded v m p θ probeEnergy broadening disorderStrength hbar pMax)
+  ext i j
+  have hfield :
+      (fun p θ =>
+        (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax *
+          (factor • directionPauli source) *
+          finiteCutoffContinuumBornDysonGreenMatrix
+            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) i j) =
+        fun p θ =>
+          gaussianCrossedCurrentConstantAngularCoefficient
+              factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j +
+            ((Real.cos θ : ℝ) : ℂ) *
+              gaussianCrossedCurrentFirstCosineAngularCoefficient
+                factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j +
+            ((Real.sin θ : ℝ) : ℂ) *
+              gaussianCrossedCurrentFirstSineAngularCoefficient
+                factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j +
+            ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
+              gaussianCrossedCurrentSecondCosineAngularCoefficient
+                factor (bA p) (bR p) source i j +
+            (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
+              gaussianCrossedCurrentSecondMixedAngularCoefficient
+                factor (bA p) (bR p) source i j := by
+    funext p θ
+    rw [hA, hR, polarPauliMatrix_gaussianCrossedCurrent_eq_harmonics]
+    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+  dsimp only
+  change finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+      (fun p θ =>
+        (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax *
+          (factor • directionPauli source) *
+          finiteCutoffContinuumBornDysonGreenMatrix
+            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
+            probeEnergy broadening disorderStrength hbar pMax) i j)
+      (polarPoint2D radius 0) = _
+  rw [hfield]
+  simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
+    factor, aA, bA, dA, aR, bR, dR] using
+    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
+      hbar pMax radius
+      (fun p => gaussianCrossedCurrentConstantAngularCoefficient
+        factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j)
+      (fun p => gaussianCrossedCurrentFirstCosineAngularCoefficient
+        factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j)
+      (fun p => gaussianCrossedCurrentFirstSineAngularCoefficient
+        factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j)
+      (fun p => gaussianCrossedCurrentSecondCosineAngularCoefficient
+        factor (bA p) (bR p) source i j)
+      (fun p => gaussianCrossedCurrentSecondMixedAngularCoefficient
+        factor (bA p) (bR p) source i j))
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
