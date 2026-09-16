@@ -68,6 +68,18 @@ noncomputable def timeDependentPropagatorFirstVariation
   (-(Complex.I / (system.hbar : ℂ))) •
     ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s
 
+private theorem timeDependentDysonBoundedInteraction
+    {V : ℝ → (H →L[ℂ] H)} {β M : ℝ} (hM : 0 ≤ M)
+    (hV : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system V s‖ ≤ M) :
+    Dyson.BoundedInteraction (timeDependentInteractionPerturbation system V) β M := by
+  exact
+    { norm_one_le := by
+        change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+        exact ContinuousLinearMap.norm_id_le
+      bound_nonneg := hM
+      interaction_norm_le := hV }
+
 @[simp]
 theorem timeDependentInteractionPropagator_zero_coupling
     (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
@@ -95,12 +107,14 @@ theorem timeDependentInteractionPropagator_eq_one_sub_integral_of_bound
         ∫ s in (0 : ℝ)..t,
           timeDependentInteractionPerturbation system V s *
             timeDependentInteractionPropagator system V lam s := by
-  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
-    exact ContinuousLinearMap.norm_id_le
+  have hDyson : Dyson.ContinuousBoundedInteraction
+      (timeDependentInteractionPerturbation system V) β M := by
+    exact
+      { toBoundedInteraction := timeDependentDysonBoundedInteraction system hM hV
+        interaction_continuous := hVcont }
   simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling] using
     (Dyson.evolution_eq_one_sub_integral_of_bound
-      hVcont hOne hM hV ht (timeDependentPhysicalDysonCoupling system lam))
+      hDyson ht (timeDependentPhysicalDysonCoupling system lam))
 
 /-- The exact first weighted Dyson term for `H₀ + λ V(t)`. -/
 theorem timeDependentDysonTerm_one
@@ -124,11 +138,8 @@ theorem norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound
         (1 + ((lam : ℂ) * (-(Complex.I / (system.hbar : ℂ)))) •
           ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s)‖ ≤
       ∑' n : ℕ, Dyson.majorant ((|lam| / system.hbar) * M) t (n + 2) := by
-  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
-    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_of_bound
-    (timeDependentInteractionPerturbation system V) hOne hM hV
+    (timeDependentDysonBoundedInteraction system hM hV)
     (timeDependentPhysicalDysonCoupling system lam) ht
   simpa only [timeDependentInteractionPropagator, timeDependentDysonTerm_one,
     norm_timeDependentPhysicalDysonCoupling] using h
@@ -146,11 +157,8 @@ theorem norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_boun
           ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s)‖ ≤
       (|lam| / system.hbar) ^ 2 *
         ∑' n : ℕ, Dyson.majorant M t (n + 2) := by
-  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
-    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
-    (timeDependentInteractionPerturbation system V) hOne hM hV
+    (timeDependentDysonBoundedInteraction system hM hV)
     (timeDependentPhysicalDysonCoupling system lam)
     (by simpa [norm_timeDependentPhysicalDysonCoupling] using hlam) ht
   simpa only [timeDependentInteractionPropagator, timeDependentDysonTerm_one,
@@ -166,13 +174,10 @@ theorem hasDerivAt_timeDependentInteractionPropagator_zero_of_bound
       (fun lam : ℝ => timeDependentInteractionPropagator system V lam t)
       (timeDependentPropagatorFirstVariation system V t)
       0 := by
-  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
-    exact ContinuousLinearMap.norm_id_le
   simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling,
     timeDependentPropagatorFirstVariation] using
     Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound
-      (timeDependentInteractionPerturbation system V) hOne hM hV ht
+      (timeDependentDysonBoundedInteraction system hM hV) ht
       (Complex.I / (system.hbar : ℂ))
 
 end

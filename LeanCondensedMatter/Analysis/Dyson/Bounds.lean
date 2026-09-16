@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Dyson.Basic
+import LeanCondensedMatter.Analysis.Dyson.Hypotheses
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Topology.Algebra.InfiniteSum.TsumUniformlyOn
 
@@ -8,12 +8,13 @@ set_option linter.style.header false
 # Bounds and convergence for generic bounded Dyson coefficients
 
 This module proves the analytic estimates for the dimension-independent Dyson recursion from
-`Analysis.Dyson.Basic`. The interaction family is controlled by an explicit uniform norm bound on
-a compact nonnegative time interval; no finite-dimensional realization or choice-based operator
-bound is used here.
+`Analysis.Dyson.Basic`. The interaction family is controlled by the canonical bounded-interaction
+hypotheses on a compact nonnegative time interval; no finite-dimensional realization or choice-based
+operator bound is used here.
 
-The bound theorems assume `‖1‖ ≤ 1` explicitly. This is weaker than requiring `NormOneClass` and
-also covers bounded-operator algebras on a trivial space, where the identity operator has norm zero.
+The bound theorems retain the explicit weak assumption `‖1‖ ≤ 1` through
+`Dyson.BoundedInteraction`. This is weaker than requiring `NormOneClass` and also covers
+bounded-operator algebras on a trivial space, where the identity operator has norm zero.
 -/
 
 namespace Dyson
@@ -53,15 +54,13 @@ theorem continuous_term {V : ℝ → A} (hV : Continuous V) (lam : ℂ) (n : ℕ
   exact continuous_const.smul (continuous_coeff hV n)
 
 omit [CompleteSpace A] in
-/-- An explicit uniform bound on the interaction family implies the standard factorial estimate for
-all generic Dyson coefficients on `[0, β]`. -/
-theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
-    (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
+/-- The canonical bounded-interaction hypotheses imply the standard factorial estimate for all
+generic Dyson coefficients on `[0, β]`. -/
+theorem norm_coeff_le_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : BoundedInteraction V β M) (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖coeff V n τ‖ ≤ majorant M τ n := by
   induction n generalizing τ with
-  | zero => simpa using hOne
+  | zero => simpa using h.norm_one_le
   | succ n ih =>
       rw [coeff_succ, norm_neg]
       calc
@@ -73,7 +72,8 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
             calc
               ‖V σ * coeff V n σ‖ ≤ ‖V σ‖ * ‖coeff V n σ‖ := norm_mul_le _ _
               _ ≤ M * majorant M σ n :=
-                mul_le_mul (hV σ hσβ) (ih hσβ) (norm_nonneg _) hM
+                mul_le_mul (h.interaction_norm_le σ hσβ) (ih hσβ)
+                  (norm_nonneg _) h.bound_nonneg
           · have hcont : Continuous (fun σ : ℝ => M * majorant M σ n) := by
               unfold majorant
               fun_prop
@@ -83,69 +83,64 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
 omit [CompleteSpace A] in
 /-- The weighted `n`th coefficient is controlled by the factorial majorant with interaction bound
 `‖λ‖ M`. -/
-theorem norm_term_le_of_bound (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+theorem norm_term_le_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : BoundedInteraction V β M)
     (lam : ℂ) (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖term V lam τ n‖ ≤ majorant (‖lam‖ * M) τ n := by
   calc
     ‖term V lam τ n‖ = ‖lam‖ ^ n * ‖coeff V n τ‖ := by
       rw [term, norm_smul, norm_pow]
     _ ≤ ‖lam‖ ^ n * majorant M τ n :=
-      mul_le_mul_of_nonneg_left (norm_coeff_le_of_bound V hOne hM hV n hτ)
+      mul_le_mul_of_nonneg_left (norm_coeff_le_of_bound h n hτ)
         (pow_nonneg (norm_nonneg lam) n)
     _ = majorant (‖lam‖ * M) τ n := by
       simp only [majorant]
       ring_nf
 
 /-- The weighted generic Dyson coefficients are summable at each time in a bounded interval. -/
-theorem summable_term_of_bound (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+theorem summable_term_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : BoundedInteraction V β M)
     (lam : ℂ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     Summable (term V lam τ) := by
   have hnorm : Summable (fun n : ℕ => ‖term V lam τ n‖) :=
     (summable_majorant (‖lam‖ * M) τ).of_nonneg_of_le
       (fun n => norm_nonneg _)
-      (fun n => norm_term_le_of_bound V hOne hM hV lam n hτ)
+      (fun n => norm_term_le_of_bound h lam n hτ)
   exact hnorm.of_norm
 
 /-- The defining series has sum `evolution` whenever the interaction is uniformly bounded. -/
-theorem hasSum_evolution_of_bound (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+theorem hasSum_evolution_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : BoundedInteraction V β M)
     (lam : ℂ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     HasSum (term V lam τ) (evolution V lam τ) := by
-  exact (summable_term_of_bound V hOne hM hV lam hτ).hasSum
+  exact (summable_term_of_bound h lam hτ).hasSum
 
 /-- On a bounded nonnegative interval, the generic Dyson series converges uniformly in norm. -/
-theorem hasSumUniformlyOn_evolution_of_bound (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
-    (lam : ℂ) :
+theorem hasSumUniformlyOn_evolution_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : BoundedInteraction V β M) (lam : ℂ) :
     HasSumUniformlyOn
       (fun n τ => term V lam τ n)
       (fun τ => evolution V lam τ)
       (Icc (0 : ℝ) β) := by
-  have hWeighted : 0 ≤ ‖lam‖ * M := mul_nonneg (norm_nonneg lam) hM
+  have hWeighted : 0 ≤ ‖lam‖ * M := mul_nonneg (norm_nonneg lam) h.bound_nonneg
   simpa only [evolution] using
     (HasSumUniformlyOn.of_norm_le_summable
       (f := fun n τ => term V lam τ n)
       (u := majorant (‖lam‖ * M) β)
       (summable_majorant (‖lam‖ * M) β)
       (fun n τ hτ =>
-        (norm_term_le_of_bound V hOne hM hV lam n hτ).trans
+        (norm_term_le_of_bound h lam n hτ).trans
           (majorant_mono_time hWeighted hτ.1 hτ.2 n)))
 
 /-- A continuous bounded interaction family has a continuous Dyson evolution on the compact
 nonnegative interval where the uniform bound is available. -/
-theorem continuousOn_evolution_of_bound {V : ℝ → A} (hVcont : Continuous V)
-    {β M : ℝ} (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M) (lam : ℂ) :
+theorem continuousOn_evolution_of_bound {V : ℝ → A} {β M : ℝ}
+    (h : ContinuousBoundedInteraction V β M) (lam : ℂ) :
     ContinuousOn (fun τ => evolution V lam τ) (Icc (0 : ℝ) β) := by
-  apply (hasSumUniformlyOn_evolution_of_bound V hOne hM hV lam).tendstoUniformlyOn.continuousOn
+  apply (hasSumUniformlyOn_evolution_of_bound h.toBoundedInteraction lam).tendstoUniformlyOn.continuousOn
   exact (Filter.Eventually.of_forall fun s =>
-    (continuous_finsetSum s fun n _ => continuous_term hVcont lam n).continuousOn).frequently
+    (continuous_finsetSum s fun n _ =>
+      continuous_term h.interaction_continuous lam n).continuousOn).frequently
 
 end
 end Dyson

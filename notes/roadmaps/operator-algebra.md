@@ -67,8 +67,13 @@ This does not yet define a Fredholm determinant for arbitrary trace-class operat
 Gibbs and entropy constructions.
 
 `Analysis/Dyson/` owns generic Banach-algebra Dyson coefficients, factorial bounds, summability,
-Volterra equations, uniqueness, and constant-generator exponential identification. Quantum and
-SecondQuantization modules instantiate these results rather than duplicating the analytic series.
+Volterra equations, uniqueness, and constant-generator exponential identification. Its canonical
+analytic seam is `Dyson.BoundedInteraction`, which keeps the weak identity estimate `‖1‖ ≤ 1`, a
+nonnegative majorant, and the interaction norm bound explicitly scoped to `[0, β]`;
+`Dyson.ContinuousBoundedInteraction` adds the global continuity required by the Volterra theory.
+Neither structure asserts a bound outside the finite interval or strengthens the ambient norm
+classes. Quantum and SecondQuantization modules instantiate these hypotheses rather than duplicating
+the analytic proof wiring.
 
 ## Domain-aware and completed-space analysis
 

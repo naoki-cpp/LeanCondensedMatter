@@ -43,11 +43,7 @@ theorem analyticDysonEvolution_eq_one_sub_integral (energy : Config → ℝ)
       continuousInteractionPicture energy V σ * analyticDysonEvolution energy V σ lam
   simpa only [analyticDysonEvolution_eq_evolution] using
     (Dyson.evolution_eq_one_sub_integral_of_bound
-      (continuous_continuousInteractionPicture energy V)
-      ContinuousLinearMap.norm_id_le
-      (interactionPictureNormBound_nonneg energy V hβ)
-      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
-      hτ lam)
+      (continuousInteractionPicture_boundedInteraction energy V hβ) hτ lam)
 
 end
 end Common

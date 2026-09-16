@@ -30,9 +30,7 @@ variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
 /-- The part of the bounded Dyson evolution beyond first order is controlled by the corresponding
 shifted factorial-majorant series. -/
 theorem norm_evolution_sub_one_add_term_one_le_of_bound
-    (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    {V : ℝ → A} {β M : ℝ} (h : BoundedInteraction V β M)
     (lam : ℂ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖evolution V lam τ - (1 + term V lam τ 1)‖ ≤
       ∑' n : ℕ, majorant (‖lam‖ * M) τ (n + 2) := by
@@ -40,12 +38,12 @@ theorem norm_evolution_sub_one_add_term_one_le_of_bound
       HasSum (fun n : ℕ => term V lam τ (n + 2))
         (evolution V lam τ - ∑ n ∈ Finset.range 2, term V lam τ n) :=
     (hasSum_nat_add_iff' 2).2
-      (hasSum_evolution_of_bound V hOne hM hV lam hτ)
+      (hasSum_evolution_of_bound h lam hτ)
   have hmajorant :
       Summable (fun n : ℕ => majorant (‖lam‖ * M) τ (n + 2)) :=
     (summable_nat_add_iff 2).2 (summable_majorant (‖lam‖ * M) τ)
   have hbound := htail.norm_le_of_bounded hmajorant.hasSum fun n =>
-    norm_term_le_of_bound V hOne hM hV lam (n + 2) hτ
+    norm_term_le_of_bound h lam (n + 2) hτ
   simpa [Finset.sum_range_succ] using hbound
 
 /-- On the unit coupling ball, each shifted majorant term factors out two powers of the coupling
@@ -74,14 +72,11 @@ theorem majorant_norm_mul_le_sq_mul_majorant
 /-- On the unit coupling ball, the complete Dyson remainder beyond first order is quadratic in the
 coupling norm, with an explicit coupling-independent factorial tail. -/
 theorem norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
-    (V : ℝ → A) {β M : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    {V : ℝ → A} {β M : ℝ} (h : BoundedInteraction V β M)
     (lam : ℂ) (hlam : ‖lam‖ ≤ 1) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖evolution V lam τ - (1 + term V lam τ 1)‖ ≤
       ‖lam‖ ^ 2 * ∑' n : ℕ, majorant M τ (n + 2) := by
-  refine (norm_evolution_sub_one_add_term_one_le_of_bound
-    V hOne hM hV lam hτ).trans ?_
+  refine (norm_evolution_sub_one_add_term_one_le_of_bound h lam hτ).trans ?_
   have hleft : Summable (fun n : ℕ => majorant (‖lam‖ * M) τ (n + 2)) :=
     (summable_nat_add_iff 2).2 (summable_majorant (‖lam‖ * M) τ)
   have hbase : Summable (fun n : ℕ => majorant M τ (n + 2)) :=
@@ -93,7 +88,7 @@ theorem norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
         ∑' n : ℕ, ‖lam‖ ^ 2 * majorant M τ (n + 2) :=
       hleft.tsum_le_tsum
         (fun n => majorant_norm_mul_le_sq_mul_majorant
-          (norm_nonneg lam) hlam hM hτ.1 n)
+          (norm_nonneg lam) hlam h.bound_nonneg hτ.1 n)
         hright
     _ = ‖lam‖ ^ 2 * ∑' n : ℕ, majorant M τ (n + 2) := by
       rw [tsum_mul_left]
@@ -102,9 +97,7 @@ theorem norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
 differentiable at zero. The derivative is the exact first Dyson coefficient multiplied by the
 linear coupling constant. -/
 theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
-    (V : ℝ → A) {β M τ : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    {V : ℝ → A} {β M τ : ℝ} (h : BoundedInteraction V β M)
     (hτ : τ ∈ Icc (0 : ℝ) β) (κ : ℂ) :
     HasDerivAt
       (fun lam : ℝ => evolution V ((lam : ℂ) * κ) τ)
@@ -129,7 +122,7 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
     have hlam' : ‖((lam : ℂ) * κ)‖ ≤ 1 := by
       simpa using hlam
     have hrem := norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
-      V hOne hM hV ((lam : ℂ) * κ) hlam' hτ
+      h ((lam : ℂ) * κ) hlam' hτ
     have hscalar : lam • (-κ) = -((lam : ℂ) * κ) := by
       simpa [Algebra.smul_def] using (mul_neg (lam : ℂ) κ)
     have hlin :

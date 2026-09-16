@@ -73,11 +73,16 @@ theorem evolution_const_eq_exp_of_nonneg (K : A) (lam : ℂ) {τ : ℝ}
     (hτ : 0 ≤ τ) (hOne : ‖(1 : A)‖ ≤ 1) :
     evolution (fun _ : ℝ => K) lam τ =
       NormedSpace.exp (-(((τ : ℝ) • lam) • K)) := by
+  have hBound : ContinuousBoundedInteraction (fun _ : ℝ => K) τ ‖K‖ := by
+    exact
+      { toBoundedInteraction :=
+          { norm_one_le := hOne
+            bound_nonneg := norm_nonneg K
+            interaction_norm_le := fun _ _ => le_rfl }
+        interaction_continuous := continuous_const }
   have hEq := eqOn_evolution_of_volterra_of_bound
     (V := fun _ : ℝ => K) (U := constantExponential K lam)
-    (β := τ) (M := ‖K‖)
-    continuous_const hτ hOne (norm_nonneg K)
-    (fun _ _ => le_rfl) lam
+    hτ hBound lam
     (continuous_constantExponential K lam).continuousOn
     (fun t _ => by
       simpa only using constantExponential_eq_one_sub_integral K lam t)
