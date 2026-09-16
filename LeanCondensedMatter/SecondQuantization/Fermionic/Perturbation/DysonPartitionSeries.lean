@@ -1,6 +1,6 @@
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
-import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 
 set_option linter.style.header false
 
@@ -53,6 +53,15 @@ theorem constantCoeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (Common.constantCoeff_dysonTraceSeries (fermionEnergy ε) β V)
 
 omit [LinearOrder Mode] in
+/-- The Dyson partition series has nonzero constant coefficient, so canonical normalization is
+available. -/
+theorem constantCoeff_dysonPartitionSeries_ne_zero (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    PowerSeries.constantCoeff (dysonPartitionSeries ε β V) ≠ 0 := by
+  rw [constantCoeff_dysonPartitionSeries]
+  exact freePartitionFunction_ne_zero ε β
+
+omit [LinearOrder Mode] in
 @[simp]
 theorem dysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
@@ -67,22 +76,14 @@ noncomputable def dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
 
 omit [LinearOrder Mode] in
-theorem constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    PowerSeries.constantCoeff
-        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1 :=
-  PowerSeries.constantCoeff_normalizeByConstantCoeff
-    (constantCoeff_dysonPartitionSeries ε β V ▸ freePartitionFunction_ne_zero ε β)
-
-omit [LinearOrder Mode] in
 /-- The formal logarithm has vanishing constant coefficient. -/
 theorem constantCoeff_dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     PowerSeries.constantCoeff (dysonFormalLogPartitionFunction ε β V) = 0 := by
   rw [dysonFormalLogPartitionFunction]
   exact PowerSeries.constantCoeff_logOf
-    (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V)
+    (PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β V))
 
 end Fermionic
 end SecondQuantization
