@@ -23,6 +23,10 @@ noncomputable section
 
 variable {Mode : Type*} {N : ℕ}
 
+/-- File-local classical equality matches the concrete free-thermal kernel. -/
+local instance instDecidableEqQuarticThermalComponentFactorization : DecidableEq Mode :=
+  Classical.decEq Mode
+
 /-- The ordered free thermal field family is local under the Common component ordered-leg
 embedding. -/
 theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
@@ -37,8 +41,6 @@ theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
   unfold QuarticDiagram.orderedFreeThermalFieldFamily quarticFreeThermalFieldFamily
   simp only [d.orderedQuarticLegEquiv_componentOrderedLeg]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
-
-variable [DecidableEq Mode]
 
 /-- The free thermal pair kernel agrees between a component-local ordered pair and its image in an
 assembled global order. -/
