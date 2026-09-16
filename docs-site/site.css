@@ -385,6 +385,7 @@ select:disabled {
 .badge.zero { color: var(--danger); border-color: rgba(255, 152, 168, 0.34); }
 .badge.single { color: var(--warning); border-color: rgba(242, 197, 124, 0.34); }
 .badge.wrapper { color: var(--accent-strong); border-color: rgba(192, 158, 255, 0.34); }
+
 .detail-actions { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 4px; }
 .focus-button, .source-link { display: grid; width: 100%; place-items: center; color: var(--cyan); }
 .relation-section { margin-top: 22px; }
