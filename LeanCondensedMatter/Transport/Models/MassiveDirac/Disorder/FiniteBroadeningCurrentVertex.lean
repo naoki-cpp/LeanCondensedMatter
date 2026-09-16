@@ -216,7 +216,7 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
       i j v m probeEnergy broadening 0 hbar pMax = 0 := by
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
-    continuumBornRetardedAdvancedCurrentRungPrefactor]
+    continuumBornDisorderMeasurePrefactor]
 
 /-- Canonical finite-`η` source-`σₓ` current rung as one in-plane coefficient vector. -/
 noncomputable def finiteCutoffContinuumBornDysonCurrentRungVector
