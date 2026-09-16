@@ -20371,7 +20371,6 @@
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
@@ -20385,11 +20384,10 @@
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78188,52 +78186,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ((SecondQuantization.Bosonic.annihilate i) x) n = ↑√(↑(n i) + 1) * x (SecondQuantization.Bosonic.createOccupation i n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.annihilate_apply_coord",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-    "externalAxioms": [],
-    "docString": "Coordinate action of annihilation on an arbitrary algebraic-Fock vector. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
-      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
-      "SecondQuantization.Common.linearMap_ext_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.annihilate i) (SecondQuantization.Bosonic.basisState n) =\n    SecondQuantization.Bosonic.annihilateBasis i n",
     "standardAxioms": [
       "Classical.choice",
@@ -78340,7 +78292,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
@@ -78352,6 +78303,7 @@
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -78360,7 +78312,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
@@ -78372,6 +78323,7 @@
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 13,
@@ -78405,7 +78357,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
@@ -78418,6 +78369,7 @@
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -78426,7 +78378,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_eq",
       "SecondQuantization.Bosonic.annihilate_fockVacuum",
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
@@ -78439,6 +78390,7 @@
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 14,
@@ -78598,7 +78550,6 @@
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "dependencies": [
@@ -78610,10 +78561,9 @@
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
       "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79086,10 +79036,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -79097,16 +79045,16 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
@@ -79114,6 +79062,8 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 12,
@@ -79186,12 +79136,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos"
+      "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -79202,12 +79152,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.freeEigenvalue_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
-      "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos"
+      "SecondQuantization.Bosonic.particleNumber_removeOccupation_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -79258,94 +79208,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  n i ≠ 0 → ((SecondQuantization.Bosonic.create i) x) n = ↑√↑(n i) * x (SecondQuantization.Bosonic.removeOccupation i n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-    "externalAxioms": [],
-    "docString": "Coordinate action of creation on a positive-occupation target. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
-      "SecondQuantization.Common.linearMap_ext_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode), n i = 0 → ((SecondQuantization.Bosonic.create i) x) n = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.create_apply_coord_of_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-    "externalAxioms": [],
-    "docString": "Creation has zero coordinate on a zero-occupation target. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Common.linearMap_ext_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79419,8 +79281,6 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -79429,6 +79289,8 @@
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [
@@ -79441,8 +79303,6 @@
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
       "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_create_self",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
@@ -79451,6 +79311,8 @@
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_create_create_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 15,
@@ -81538,18 +81400,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
-      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
+      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.hasSum_boltzmannWeight",
-      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
-      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
+      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83270,12 +83130,12 @@
     "dependents": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [],
@@ -83284,12 +83144,12 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.create_annihilate_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create_of_ne",
       "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation",
       "SecondQuantization.Bosonic.removeOccupation_comm",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 9,
@@ -83365,11 +83225,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "SecondQuantization.Bosonic.tsumTrace_create_comp"
+      "SecondQuantization.Bosonic.tsumTrace_create_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -83380,12 +83240,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_create_basisState_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.createOccupationEquivPositive"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.createOccupationEquivPositive",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -83690,7 +83550,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (power : Mode → ℕ), Summable fun n => (∏ i, ↑(n i) ^ power i) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
     "standardAxioms": [
       "Classical.choice",
@@ -83698,7 +83558,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83706,18 +83566,22 @@
     "name": "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
     "externalAxioms": [],
-    "docString": "Every finite-mode occupation monomial is summable against the free bosonic Boltzmann weight.\n\n`power i` is the exponent of the occupation number in mode `i`.  This is the reusable polynomial\nmajorant needed for arbitrary fixed-length products of creation and annihilation operators. ",
+    "docString": "Every finite-mode occupation monomial is summable against the free bosonic Boltzmann weight.\n\n`power i` is the exponent of the occupation number in mode `i`.  This is the canonical finite-mode\npolynomial majorant used by lower-degree specializations and arbitrary fixed-length products of\ncreation and annihilation operators. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
+    ],
     "dependencies": [
       "Finsupp.hasSum_prod_nonneg",
       "SecondQuantization.Bosonic.boltzmannWeight_eq_prod"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83868,9 +83732,7 @@
       "SecondQuantization.Bosonic.summable_particleNumber_mul_particleNumber_boltzmannWeight"
     ],
     "dependencies": [
-      "Finsupp.hasSum_prod_nonneg",
-      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod",
-      "SecondQuantization.Bosonic.hasSum_oneModeBoltzmannWeight"
+      "SecondQuantization.Bosonic.summable_occupationMonomial_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -84026,7 +83888,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
     "externalAxioms": [],
     "docString": "Diagonal `tsumTrace` cyclicity for one annihilation operator, proved by occupation reindexing. ",
     "directWrapperTargetModule": null,
@@ -84035,11 +83897,11 @@
       "SecondQuantization.Bosonic.freeGibbsTsum_annihilate_rotate"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
       "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation"
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -84071,7 +83933,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.tsumTrace_create_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
     "externalAxioms": [],
     "docString": "Diagonal `tsumTrace` cyclicity for one creation operator, proved by occupation reindexing. ",
     "directWrapperTargetModule": null,
@@ -84081,10 +83943,10 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Bosonic.create_basisState_eq",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation"
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -100794,12 +100656,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -100815,18 +100674,18 @@
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.occupationProjector_singleton",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
-      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
-      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -100842,6 +100701,9 @@
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.occupationProjector_singleton",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
     "compiledConsumerCount": 22,
@@ -145977,6 +145839,140 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.comm_create_create"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ((SecondQuantization.Bosonic.annihilate i) x) n = ↑√(↑(n i) + 1) * x (SecondQuantization.Bosonic.createOccupation i n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
+    "externalAxioms": [],
+    "docString": "Coordinate action of annihilation on an arbitrary algebraic-Fock vector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
+      "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Common.linearMap_ext_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  n i ≠ 0 → ((SecondQuantization.Bosonic.create i) x) n = ↑√↑(n i) * x (SecondQuantization.Bosonic.removeOccupation i n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
+    "externalAxioms": [],
+    "docString": "Coordinate action of creation on a positive-occupation target. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.tsumTrace_create_comp"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
+      "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Bosonic.removeOccupation_apply_same",
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Common.linearMap_ext_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.tsumTrace_create_comp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (i : Mode) (x : SecondQuantization.Bosonic.FockSpace Mode)\n  (n : SecondQuantization.Bosonic.Occupation Mode), n i = 0 → ((SecondQuantization.Bosonic.create i) x) n = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity",
+    "externalAxioms": [],
+    "docString": "Creation has zero coordinate on a zero-occupation target. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.tsumTrace_create_comp"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.createOccupation_apply_same",
+      "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Common.linearMap_ext_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.tsumTrace_create_comp"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
