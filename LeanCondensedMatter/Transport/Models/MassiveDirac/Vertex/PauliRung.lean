@@ -64,21 +64,14 @@ def polarPauliInPlaneHarmonics
         (2 * bL * bR * coefficients 0) • sigmaY
   }
 
-/-- Pointwise decomposition of a polar-Pauli sandwich into the constant, first, and second angular
-harmonics. This is the canonical matrix-level algebra used before either ordinary full-angle
-integration or Fourier-weighted radial reduction. -/
+/-- Pointwise decomposition of a polar-Pauli sandwich into the canonical constant, first, and second
+angular-harmonic evaluation used by ordinary and Fourier-weighted reduction. -/
 theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) (θ : ℝ) :
     polarPauliMatrix aL bL dL θ *
         (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
         polarPauliMatrix aR bR dR θ =
-      let harmonics := polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients
-      harmonics.constant +
-        ((Real.cos θ : ℝ) : ℂ) • harmonics.firstCosine +
-        ((Real.sin θ : ℝ) : ℂ) • harmonics.firstSine +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
-          harmonics.secondCosine +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) • harmonics.secondMixed := by
+      (polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients).eval θ := by
   let uL : PauliAxis → ℂ
     | .x => ((Real.cos θ : ℝ) : ℂ) * bL
     | .y => ((Real.sin θ : ℝ) : ℂ) * bL
@@ -111,7 +104,8 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     InternalSpace.pauliAffine_mul_pauliAffine,
     InternalSpace.pauliAffine_mul_pauliAffine]
   simp [uL, uR, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics]
+    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
+    AngularHarmonicCoefficients.eval]
   ring_nf
   simp [hI]
   module
@@ -180,7 +174,8 @@ theorem integral_polarPauliOperator_inPlane_eq
             yCoefficient θ • sigmaY +
             zCoefficient θ • sigmaZ := by
       rw [polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-      simp [polarPauliInPlaneHarmonics, scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
+      simp [polarPauliInPlaneHarmonics, AngularHarmonicCoefficients.eval,
+        scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
       module
     have hVertexOperator :
         coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY =
