@@ -43,27 +43,6 @@ variable {Site : Type*} [LinearOrder Site]
 noncomputable def latticeBasis : Module.Basis Site ℂ (LatticeState Site) :=
   Finsupp.basisSingleOne
 
-/-- The canonical equivalence from occupation-subset Fock space to the exterior-algebra Fock space
-for an ordered site type. -/
-noncomputable def latticeOccupationEquiv :
-    OccupationFock Site ≃ₗ[ℂ] AlgebraicFock (LatticeState Site) :=
-  AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))
-
-/-- Conjugation by `latticeOccupationEquiv`, as the canonical algebra equivalence from exterior-Fock
-endomorphisms to occupation-representation endomorphisms. -/
-noncomputable def occupationOperatorAlgEquiv :
-    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-        AlgebraicFock (LatticeState Site)) ≃ₐ[ℂ]
-      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
-  (latticeOccupationEquiv (Site := Site)).symm.conjAlgEquiv ℂ
-
-/-- Conjugate an exterior-Fock endomorphism into the occupation-subset representation. -/
-noncomputable def occupationOperator
-    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site)) :
-    OccupationFock Site →ₗ[ℂ] OccupationFock Site :=
-  occupationOperatorAlgEquiv A
-
 section FiniteLattice
 
 variable [Fintype Site]
@@ -74,7 +53,7 @@ noncomputable def boundedLatticeOperatorAlgEquiv :
     (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
         AlgebraicFock (LatticeState Site)) ≃ₐ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (occupationOperatorAlgEquiv (Site := Site)).trans
+  ((AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))).symm.conjAlgEquiv ℂ).trans
     (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
 
 /-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
