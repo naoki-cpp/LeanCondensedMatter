@@ -34,11 +34,6 @@ noncomputable section
 
 variable {Site : Type*}
 
-@[simp]
-theorem latticeBasis_apply_eq_latticeKet (x : Site) :
-    latticeBasis (Site := Site) x = latticeKet x := by
-  rfl
-
 private theorem latticeBasis_coord_eq_lapply (y : Site) :
     (latticeBasis (Site := Site)).coord y =
       (Finsupp.lapply y : Module.Dual ℂ (LatticeState Site)) := by
@@ -66,8 +61,8 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
       (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
         (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
   rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
-  rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
-    ← latticeBasis_coord_eq_lapply (Site := Site) y]
+  have hx : latticeBasis (Site := Site) x = latticeKet x := rfl
+  rw [← hx, ← latticeBasis_coord_eq_lapply (Site := Site) y]
   rw [AlgebraicFock.occupationConjugate_create,
     AlgebraicFock.occupationConjugate_annihilateDual,
     Common.finiteHilbertOperator_comp]
