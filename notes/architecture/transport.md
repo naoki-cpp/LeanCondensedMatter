@@ -110,6 +110,18 @@ side-indexed objects are retained only at reusable physical boundaries such as b
 Born-Dyson dressing, and RA vertex calculations. Physical-side specializations consume the canonical
 `SpectralSide.regulator` conversion rather than depending on the sign representation directly.
 
+The massive-Dirac continuum normalization keeps each physical factor at the narrowest model-local
+stage that owns it. `Disorder.Born.SelfEnergy` owns the full-angle radial measure used by the Born
+self-energy; `Disorder.ContinuumMeasurePrefactor` owns the external scalar-disorder line times one
+bare physical-momentum measure after angular reduction; and `Conductivity.Normalization` separately
+owns the Bastin/Středa trace prefactor and the combined trace-plus-measure normalization.
+`MassiveDirac.ContinuumMeasureProvenance` records the bridge equalities between these stages,
+including the placement of the angular `2π`. Momentum-space non-crossing responses consume the
+combined conductivity normalization only after their response integral is formed. Real-space
+crossed Fourier blocks already contain their physical momentum measures upstream, so a later crossed
+conductivity boundary must consume only the remaining trace/current normalization rather than attach
+another momentum measure.
+
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in the model subtree.
 
