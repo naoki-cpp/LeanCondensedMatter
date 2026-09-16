@@ -23,8 +23,7 @@ variable {Config : Type*} [Fintype Config] [Nonempty Config]
 /-- The finite Gibbs expectation, together with its KMS first-pair recurrence, as an implementation
 of the generic Bloch–de Dominicis recursion contract. -/
 noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
-    (energy : Config → ℝ) (β : ℝ)
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0) :
+    (energy : Config → ℝ) (β : ℝ) :
     ExpectationPairingRecursion
       (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) s where
   expectation := fun l => finiteGibbsExpectation energy β (prodComp l)
@@ -74,7 +73,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       rw [hzl]
       exact hne 0
     have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
-      (hC 0) hcommL hZ hne0
+      (hC 0) hcommL hne0
     rw [hlmap] at hpeel
     let hcast : Fin l.length ≃ Fin (2 * m + 1) :=
       ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
@@ -104,7 +103,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
         c 0 j.succ / (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) :=
       finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β (q 0) (s.zetaInt : ℂ)
         (c 0 j.succ) (C 0) (C j.succ) (hC 0)
-        (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) hZ (hne 0)
+        (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) (hne 0)
     rw [hljfst, hljsnd, h2]
     ring
 
