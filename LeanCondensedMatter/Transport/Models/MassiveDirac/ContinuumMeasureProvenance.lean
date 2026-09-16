@@ -60,14 +60,6 @@ theorem disorder_mul_continuumBornAngularMeasurePrefactor_eq_two_pi_mul_currentR
     continuumBornRetardedAdvancedCurrentRungPrefactor
   ring
 
-/-- The standard non-crossing Bastin/Středa conductivity normalization attaches the trace factor and
-one physical-momentum measure, in that order. -/
-theorem bastinStredaConductivityNormalization_eq_trace_mul_momentumMeasure
-    (hbar : ℝ) :
-    bastinStredaConductivityNormalization hbar =
-      bastinTraceConductivityPrefactor hbar * momentumMeasurePrefactor hbar := by
-  rfl
-
 /-- For a radial response whose full polar angle has not yet been accounted for, restoring the
 trace prefactor and angular-reduced measure is equivalent to one angular `2π` multiplying the
 canonical non-crossing Bastin/Středa normalization. -/
