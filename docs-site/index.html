@@ -55,11 +55,12 @@
       <div class="control-grid">
         <label>
           Direction
-          <select id="direction">
+          <select id="direction" aria-describedby="direction-hint">
             <option value="both">Dependencies + consumers</option>
             <option value="dependencies">Dependencies (outgoing)</option>
             <option value="consumers">Consumers (incoming)</option>
           </select>
+          <span id="direction-hint" class="control-help">A → B means A depends on B. Colors group the same first-hop branch.</span>
         </label>
         <label>
           Depth
