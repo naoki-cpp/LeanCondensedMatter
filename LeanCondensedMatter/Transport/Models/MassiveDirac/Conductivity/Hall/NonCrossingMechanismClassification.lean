@@ -44,7 +44,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
         let pref : ℂ :=
-          (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -69,7 +69,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
         (fun disorderStrength : ℝ =>
           let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
           let pref : ℂ :=
-            (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
           let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax
           let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -85,7 +85,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
         (fun disorderStrength : ℝ =>
           let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
           let pref : ℂ :=
-            (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
           let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax
           let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
