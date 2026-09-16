@@ -45,12 +45,12 @@ theorem norm_continuousInteractionPicture_le_conj (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
     ‖continuousInteractionPicture energy V τ‖ ≤
       ‖continuousDiagonalEvolution energy τ‖ *
-        (‖finiteContinuousOperator V‖ * ‖continuousDiagonalEvolution energy (-τ)‖) := by
+        (‖finiteContinuousOperatorAlgEquiv V‖ * ‖continuousDiagonalEvolution energy (-τ)‖) := by
   rw [continuousInteractionPicture_eq_conj]
   exact (continuousDiagonalEvolution energy τ).opNorm_comp_le
-    ((finiteContinuousOperator V).comp (continuousDiagonalEvolution energy (-τ)))
+    ((finiteContinuousOperatorAlgEquiv V).comp (continuousDiagonalEvolution energy (-τ)))
     |>.trans (mul_le_mul_of_nonneg_left
-      ((finiteContinuousOperator V).opNorm_comp_le
+      ((finiteContinuousOperatorAlgEquiv V).opNorm_comp_le
         (continuousDiagonalEvolution energy (-τ)))
       (norm_nonneg _))
 
