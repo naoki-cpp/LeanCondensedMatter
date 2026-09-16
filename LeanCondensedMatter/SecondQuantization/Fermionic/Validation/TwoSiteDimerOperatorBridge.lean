@@ -139,7 +139,7 @@ theorem twoSiteDimerCurrent_one_apply_bonding :
 This is an operator identity on the complete finite Fock space, not only on the one-particle sector. -/
 theorem twoSiteDimerContact_one_eq_hamiltonian :
     twoSiteDimerContact 1 = twoSiteDimerHamiltonian 1 := by
-  unfold twoSiteDimerContact Lattice.boundedBondContact Lattice.bondContact
+  unfold twoSiteDimerContact Lattice.boundedBondContact
   simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling,
     LocallyFiniteHopping.amplitude_eq, AlgebraicFock.dGamma_add,
     boundedDgammaMatrixUnit, twoSiteDimerHamiltonian, add_comm]
