@@ -56,7 +56,7 @@ theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config → �
       simp only [neg_zero] at h
       rw [h, integral_pow, zero_pow (Nat.succ_ne_zero k)]
       ring
-    have hcint : (∫ σ in (0 : ℝ)..τ, ((-σ : ℂ) ^ k / (k.factorial : ℂ))) =
+    have hcint : (∫ σ in (0 : ℝ)..τ, ((-σ : ℂ)) ^ k / (k.factorial : ℂ)) =
         - ((-τ : ℂ) ^ (k + 1) / ((k + 1).factorial : ℂ)) := by
       rw [intervalIntegral.integral_div]
       have hcast : (∫ σ in (0 : ℝ)..τ, ((-σ : ℂ)) ^ k) =
@@ -79,10 +79,10 @@ theorem analyticDysonTerm_eq_of_time_independent (energy : Config → ℝ)
     (τ : ℝ) (lam : ℂ) (n : ℕ) :
     analyticDysonTerm energy V τ lam n =
       ((((-τ : ℂ) * lam) ^ n) / n.factorial) •
-        (finiteContinuousOperator V) ^ n := by
+        (finiteContinuousOperatorAlgEquiv V) ^ n := by
   rw [analyticDysonTerm, continuousDysonCoeff,
     dysonCoeff_eq_of_time_independent energy V hV n τ,
-    finiteContinuousOperator_smul, finiteContinuousOperator_pow, smul_smul]
+    map_smul, map_pow, smul_smul]
   congr 1
   ring
 
@@ -93,15 +93,15 @@ theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → �
     (hV : ∀ τ, interactionPicture energy V τ = V)
     {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
     analyticDysonEvolution energy V τ lam =
-      NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperator V) := by
+      NormedSpace.exp (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) := by
   have hDyson := hasSum_analyticDysonEvolution
     (β := τ) (τ := τ) energy V hτ ⟨hτ, le_rfl⟩ lam
   have hExp := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (((-τ : ℂ) * lam) • finiteContinuousOperator V)
+    (((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V)
   have hterms :
       (fun n : ℕ => analyticDysonTerm energy V τ lam n) =
       (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) •
-        ((((-τ : ℂ) * lam) • finiteContinuousOperator V) ^ n)) := by
+        ((((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) ^ n)) := by
     funext n
     rw [analyticDysonTerm_eq_of_time_independent energy V hV τ lam n]
     simp only [smul_pow, smul_smul]
@@ -109,7 +109,7 @@ theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → �
     field_simp
   have hDyson' : HasSum
       (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) •
-        ((((-τ : ℂ) * lam) • finiteContinuousOperator V) ^ n))
+        ((((-τ : ℂ) * lam) • finiteContinuousOperatorAlgEquiv V) ^ n))
       (analyticDysonEvolution energy V τ lam) := by
     rw [← hterms]
     exact hDyson
