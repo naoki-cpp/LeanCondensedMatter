@@ -26,11 +26,6 @@ def continuumBornDisorderMeasurePrefactor
     (disorderStrength hbar : ℝ) : ℝ :=
   disorderStrength * momentumMeasurePrefactor hbar
 
-/-- RA current-rung specialization of the canonical continuum Born disorder-measure factor.
-The name records that the full angular factor is already carried by the rung coefficient. -/
-abbrev continuumBornRetardedAdvancedCurrentRungPrefactor :=
-  continuumBornDisorderMeasurePrefactor
-
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
