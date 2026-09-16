@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
@@ -23,10 +24,10 @@ Angular and radial rung coefficients are indexed by their output/input direction
 specific consumers specialize those indices, while the ladder consumes the complete source-`x`
 rung vector. The solved bare-`σₓ` ladder is owned here as one `Fin 2 → ℂ` coefficient vector;
 downstream consumers preserve that vector until a concrete measured coordinate is required. Radial
-integration attaches the polar Jacobian `p dp`, one scalar-disorder line, and the physical momentum
-measure `momentumMeasurePrefactor hbar` exactly once. This module also owns the common RA denominator
-form and the determinant condition that licenses interpreting the algebraic vector as the actual
-ladder fixed point.
+integration attaches the polar Jacobian `p dp` and consumes the shared external scalar-disorder-line
+plus physical-momentum-measure prefactor exactly once. This module also owns the common RA
+denominator form and the determinant condition that licenses interpreting the algebraic vector as
+the actual ladder fixed point.
 
 This module does not insert the vertex into Kubo/Středa, take broadening or disorder limits, or
 identify the Born-Dyson approximation with an exact disorder average.
@@ -192,11 +193,12 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
 /-! ## Radial normalization -/
 
 /-- Normalized finite-`η` radial current-rung entry `(i,j)`. The angular `2π` is already included
-upstream, so the normalization attaches the scalar-disorder line and `d²p/(2πℏ)²` prefactor once. -/
+upstream, so the shared external prefactor attaches one scalar-disorder line and one
+`d²p/(2πℏ)²` measure factor. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand
     (i j : Fin 2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       i j v m p probeEnergy broadening disorderStrength hbar pMax
 
@@ -213,7 +215,8 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient
       i j v m probeEnergy broadening 0 hbar pMax = 0 := by
   simp [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient,
-    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand]
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
+    continuumBornRetardedAdvancedCurrentRungPrefactor]
 
 /-- Canonical finite-`η` source-`σₓ` current rung as one in-plane coefficient vector. -/
 noncomputable def finiteCutoffContinuumBornDysonCurrentRungVector
