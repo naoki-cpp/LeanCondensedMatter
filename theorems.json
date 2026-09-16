@@ -55017,6 +55017,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
@@ -55026,9 +55027,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55223,6 +55225,44 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix side v m probeEnergy\n      broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius 0) =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n      probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The two-dimensional polar Fourier representation of the finite-cutoff Born-Dyson Green matrix\nreduces exactly to the one-dimensional zeroth/first angular kernels on the positive real-space\nradial axis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68280,6 +68320,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (hbar pMax radius : ℝ) (a b c : ℝ → ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax\n      (fun p θ => a p + ↑(Real.cos θ) * b p + ↑(Real.sin θ) * c p) (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * a p +\n            QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Radial-axis reduction of the finite-cutoff transform for a field with only constant and first\nangular harmonics. The full angular integral is replaced exactly by the zeroth and first-cosine\nradial kernels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+      "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H),\n  QuantumTheory.Transport.finiteDimensionalOperatorTrace operator = (LinearMap.trace ℂ H) ↑operator",
     "standardAxioms": [
       "Classical.choice",
@@ -69561,6 +69643,86 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z p : ℝ) (a b c : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Full-angle reduction for a scalar field containing only constant and first sine/cosine\nharmonics. The sine harmonic drops out on the radial axis, leaving the zeroth and first-cosine\nkernels that later become the `J₀` and `J₁` channels. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℝ), ∫ (θ : ℝ) in 0..2 * Real.pi, QuantumTheory.Transport.polarFourierRadialPhase z θ * ↑(Real.sin θ) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The sine first harmonic vanishes against the radial Fourier phase over one full angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (mn : ι × ι),\n  ∫ (energy : ℝ),\n      QuantumTheory.Transport.purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation measured\n        source omega eta mn energy =\n    QuantumTheory.Transport.purePointKuboBastinOccupationResolvedVertexTerm system data interpolation measured source\n      omega eta mn",
     "standardAxioms": [
       "Classical.choice",
@@ -70208,6 +70370,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (hbar p θ radius angle : ℝ),\n  QuantumTheory.Transport.physicalMomentumPolarFourierPhase hbar p θ\n      (QuantumTheory.Transport.polarPoint2D radius angle) =\n    QuantumTheory.Transport.polarFourierRadialPhase (p * radius / hbar) (θ - angle)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The physical polar Fourier phase at a polar real-space point depends only on the angular\ndifference `θ - φ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -74808,6 +75009,7 @@
     "dependents": [
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos",
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_eq_one",
       "SecondQuantization.Fermionic.sum_negMulLog_freeGibbsConfigurationProbability"
@@ -74819,11 +75021,12 @@
       "QuantumTheory.finitePurePointGibbsDensityOperator",
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos",
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_eq_one",
       "SecondQuantization.Fermionic.sum_negMulLog_freeGibbsConfigurationProbability"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74858,6 +75061,7 @@
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos",
       "SecondQuantization.Fermionic.sum_negMulLog_freeGibbsConfigurationProbability",
@@ -74877,13 +75081,14 @@
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos",
       "SecondQuantization.Fermionic.sum_negMulLog_freeGibbsConfigurationProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77419,7 +77624,8 @@
       "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation"
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -78498,7 +78704,8 @@
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.create_basisState_eq",
       "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "SecondQuantization.Bosonic.removeOccupation_createOccupation"
+      "SecondQuantization.Bosonic.removeOccupation_createOccupation",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -78540,7 +78747,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "SecondQuantization.Bosonic.create_basisState_eq"
+      "SecondQuantization.Bosonic.create_basisState_eq",
+      "SecondQuantization.Common.linearMap_ext_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -83646,7 +83854,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ),\n  SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n    ∀ (n : ℕ)\n      (C :\n        Fin (2 * n) →\n          SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n      (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n      (∀ (i : Fin (2 * n)),\n          (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n        (∀ (i j : Fin (2 * n)), i ≠ j → LinearMap.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n          (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n            SecondQuantization.Common.finiteGibbsExpectation energy β\n                (SecondQuantization.Common.prodComp (List.ofFn C)) =\n              ∑ pairing,\n                Combinatorics.Pairing.weight s pairing *\n                  ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → LinearMap.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.prodComp (List.ofFn C)) =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96000,7 +96208,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonCoeff_basisState"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -97200,7 +97411,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (ζ c12 c13 c14 : ℂ)\n  (C1 C2 C3 C4 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    C1 ∘ₗ C2 - ζ • C2 ∘ₗ C1 = c12 • LinearMap.id →\n      C1 ∘ₗ C3 - ζ • C3 ∘ₗ C1 = c13 • LinearMap.id →\n        C1 ∘ₗ C4 - ζ • C4 ∘ₗ C1 = c14 • LinearMap.id →\n          SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n            1 - ζ ^ 3 * Complex.exp ↑(q1 * β) ≠ 0 →\n              SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2 ∘ₗ C3 ∘ₗ C4) =\n                (c12 * SecondQuantization.Common.finiteGibbsExpectation energy β (C3 ∘ₗ C4) +\n                      ζ * c13 * SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C4) +\n                    ζ ^ 2 * c14 * SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C3)) /\n                  (1 - ζ ^ 3 * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (ζ c12 c13 c14 : ℂ)\n  (C1 C2 C3 C4 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    C1 ∘ₗ C2 - ζ • C2 ∘ₗ C1 = c12 • LinearMap.id →\n      C1 ∘ₗ C3 - ζ • C3 ∘ₗ C1 = c13 • LinearMap.id →\n        C1 ∘ₗ C4 - ζ • C4 ∘ₗ C1 = c14 • LinearMap.id →\n          1 - ζ ^ 3 * Complex.exp ↑(q1 * β) ≠ 0 →\n            SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2 ∘ₗ C3 ∘ₗ C4) =\n              (c12 * SecondQuantization.Common.finiteGibbsExpectation energy β (C3 ∘ₗ C4) +\n                    ζ * c13 * SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C4) +\n                  ζ ^ 2 * c14 * SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C3)) /\n                (1 - ζ ^ 3 * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97223,7 +97434,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel"
+      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97242,7 +97454,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (s : SecondQuantization.Common.Statistics) (c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    SecondQuantization.Common.exchangeCommutator s C1 Cj = c1j • LinearMap.id →\n      SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n        1 - ↑s.zetaInt * Complex.exp ↑(q1 * β) ≠ 0 →\n          SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) =\n            c1j / (1 - ↑s.zetaInt * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (s : SecondQuantization.Common.Statistics) (c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    SecondQuantization.Common.exchangeCommutator s C1 Cj = c1j • LinearMap.id →\n      1 - ↑s.zetaInt * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) =\n          c1j / (1 - ↑s.zetaInt * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97279,7 +97491,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    LinearMap.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n        1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n          SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) = c1j / (1 - ζ * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)\n  (C1 Cj : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    LinearMap.zetaCommutator ζ C1 Cj = c1j • LinearMap.id →\n      1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ Cj) = c1j / (1 - ζ * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97303,7 +97515,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point"
+      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_two_point",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97451,7 +97664,8 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_eq_weightedTrace",
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
       "SecondQuantization.Common.weightedTrace_eq_sum_matrixCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointBoltzmannWeight_cast_eq_boltzmannWeight"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointBoltzmannWeight_cast_eq_boltzmannWeight",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointPartitionFunction_cast_eq_sum_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97474,7 +97688,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (ζ c12 c13 c14 : ℂ)\n  (C1 C2 C3 C4 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    C1 ∘ₗ C2 - ζ • C2 ∘ₗ C1 = c12 • LinearMap.id →\n      C1 ∘ₗ C3 - ζ • C3 ∘ₗ C1 = c13 • LinearMap.id →\n        C1 ∘ₗ C4 - ζ • C4 ∘ₗ C1 = c14 • LinearMap.id →\n          ζ ^ 2 = 1 →\n            SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n              1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n                SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2 ∘ₗ C3 ∘ₗ C4) =\n                  SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2) *\n                        SecondQuantization.Common.finiteGibbsExpectation energy β (C3 ∘ₗ C4) +\n                      ζ * SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C3) *\n                        SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C4) +\n                    SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C4) *\n                      SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C3)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ)\n  (ζ c12 c13 c14 : ℂ)\n  (C1 C2 C3 C4 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    C1 ∘ₗ C2 - ζ • C2 ∘ₗ C1 = c12 • LinearMap.id →\n      C1 ∘ₗ C3 - ζ • C3 ∘ₗ C1 = c13 • LinearMap.id →\n        C1 ∘ₗ C4 - ζ • C4 ∘ₗ C1 = c14 • LinearMap.id →\n          ζ ^ 2 = 1 →\n            1 - ζ * Complex.exp ↑(q1 * β) ≠ 0 →\n              SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2 ∘ₗ C3 ∘ₗ C4) =\n                SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C2) *\n                      SecondQuantization.Common.finiteGibbsExpectation energy β (C3 ∘ₗ C4) +\n                    ζ * SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C3) *\n                      SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C4) +\n                  SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ C4) *\n                    SecondQuantization.Common.finiteGibbsExpectation energy β (C2 ∘ₗ C3)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97597,7 +97811,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n        1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n          SecondQuantization.Common.finiteGibbsExpectation energy β\n              (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n            SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n              (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β\n            (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n          SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97620,7 +97834,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel"
+      "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97681,7 +97896,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0 →\n        1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n          SecondQuantization.Common.finiteGibbsExpectation energy β\n              (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n            (∑ j,\n                ζ ^ ↑j * l[↑j].2 *\n                  SecondQuantization.Common.finiteGibbsExpectation energy β\n                    (SecondQuantization.Common.prodComp (List.map Prod.fst (l.eraseIdx ↑j)))) /\n              (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β\n            (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β\n                  (SecondQuantization.Common.prodComp (List.map Prod.fst (l.eraseIdx ↑j)))) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100244,15 +100459,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
       "SecondQuantization.Common.diagonalOperator_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.matrixCoeff_ext",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_comp_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.siteProjector_comp_operator",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
@@ -100265,15 +100486,21 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.annihilate_apply_coord",
       "SecondQuantization.Bosonic.comm_annihilate_annihilate",
       "SecondQuantization.Bosonic.comm_annihilate_create",
       "SecondQuantization.Bosonic.comm_create_create",
+      "SecondQuantization.Bosonic.create_apply_coord_of_pos",
+      "SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
       "SecondQuantization.Common.diagonalOperator_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.matrixCoeff_ext",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_comp_siteProjector",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.siteProjector_comp_operator",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
       "SecondQuantization.Fermionic.anticomm_annihilate_create",
       "SecondQuantization.Fermionic.anticomm_create_create",
@@ -100282,7 +100509,7 @@
       "SecondQuantization.Fermionic.occupationProjector_singleton",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 16,
+    "compiledConsumerCount": 22,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105600,8 +105827,8 @@
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero"
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
+      "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution",
@@ -105613,10 +105840,58 @@
       "SecondQuantization.Common.dysonTraceCoeff_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero"
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
+      "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [Nonempty Config] (energy : Config → ℝ) (β : ℝ),\n  SecondQuantization.Common.traceFock (SecondQuantization.Common.diagonalEvolution energy (-β)) ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core",
+    "externalAxioms": [],
+    "docString": "The finite Gibbs partition trace is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_peel"
+    ],
+    "dependencies": [
+      "QuantumTheory.purePointGibbsSummable_of_finite",
+      "QuantumTheory.purePointPartitionFunction_pos",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointPartitionFunction_cast_eq_sum_boltzmannWeight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_peel"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112371,6 +112646,7 @@
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
     ],
     "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.column_eq_sum_single",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_single",
       "SecondQuantization.Fermionic.Lattice.matrixUnit_apply",
@@ -112655,6 +112931,7 @@
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.linearCommutator_siteProjector"
     ],
     "dependencies": [
+      "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_single",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.outside_incident",
       "SecondQuantization.Fermionic.Lattice.matrixUnit_apply",
@@ -124201,7 +124478,6 @@
       "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
       "SecondQuantization.Fermionic.prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
       "intervalIntegral.orderedSimplexIntegral_congr",
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
@@ -125633,7 +125909,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
     ],
     "dependencies": [],
@@ -125641,10 +125916,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126180,7 +126454,6 @@
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.ofFn_mixedTimeOrderedAtomicOperatorFamily_eq"
     ],
@@ -131742,51 +132015,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Common.traceFock\n      (SecondQuantization.Common.diagonalEvolution (SecondQuantization.Fermionic.fermionEnergy ε) (-β)) ≠\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "The free-fermion diagonal Gibbs evolution has nonzero algebraic-Fock trace. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
-      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy",
-      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (i j : Mode),\n  (1 + Complex.exp ↑(-ε i * β)) *\n      SecondQuantization.Common.traceFock\n        (SecondQuantization.Fermionic.imaginaryTimeEvolveFree ε (-β) ∘ₗ\n          SecondQuantization.Fermionic.annihilate i ∘ₗ SecondQuantization.Fermionic.create j) =\n    (if i = j then 1 else 0) *\n      SecondQuantization.Common.traceFock (SecondQuantization.Fermionic.imaginaryTimeEvolveFree ε (-β))",
     "standardAxioms": [
@@ -132576,8 +132804,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -132589,7 +132817,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self"
     ],
     "dependencies": [
@@ -132598,10 +132825,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.traceFock_diagonalEvolution_fermionEnergy_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150968,6 +151194,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport"
     ],
     "dependencies": [],
@@ -150975,9 +151202,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.dysonCoeff_zero",
       "SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151079,7 +151307,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -151091,15 +151319,60 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointPartitionFunction_cast_eq_sum_boltzmannWeight"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointPartitionFunction_cast_eq_sum_boltzmannWeight"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β : ℝ),\n  ↑(QuantumTheory.purePointPartitionFunction energy β) = ∑ n, SecondQuantization.Common.boltzmannWeight energy β n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointPartitionFunction_cast_eq_sum_boltzmannWeight",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core.0.SecondQuantization.Common.purePointBoltzmannWeight_cast_eq_boltzmannWeight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
