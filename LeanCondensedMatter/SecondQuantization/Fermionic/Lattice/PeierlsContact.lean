@@ -126,7 +126,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
       ((boundedLatticeOperatorLinearMap (Site := Site)).comp
         (AlgebraicFock.dGammaLinear (LatticeState Site)))
   simpa only [boundedPeierlsBondCurrent, boundedBondContact,
-    AlgebraicFock.dGammaLinear_apply] using h
+    LinearMap.comp_apply, AlgebraicFock.dGammaLinear_apply,
+    boundedLatticeOperatorLinearMap, boundedLatticeOperator] using h
 
 end Bounded
 
