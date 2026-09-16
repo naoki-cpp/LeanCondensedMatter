@@ -125,6 +125,7 @@ noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     have h := hA.mul_left c
     simpa only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
 
+omit [Fintype Mode] in
 /-- Membership in the free-Gibbs analytic domain is exactly summability of the infinite occupation
 basis numerator.  This is the canonical conversion between caller-facing convergence proofs and the
 submodule consumed by partial-linear APIs. -/
