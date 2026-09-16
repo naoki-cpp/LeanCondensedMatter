@@ -67,9 +67,26 @@ series; it does not mean that the thermal state is a vacuum state. Schematically
 The public API should expose these physical/combinatorial endpoints; proof-only reindexing and
 transport declarations remain private/local unless independently reusable.
 
+## Formal source-functional layer
+
+`Common.Perturbation.GeneratingFunctional` now provides a statistics-independent boundary for the
+higher-point program.  `SourceGeneratingFunctional` stores formal source moments indexed by finite
+sets of external insertions and the nonzero zero-source series.  Its `vacuumNormalized` family
+divides out vacuum components, while `connected` applies the finite-set cumulant transform.  The
+identity
+
+```lean
+SourceGeneratingFunctional.connected_moment
+```
+
+records that connected source coefficients reconstruct the vacuum-normalised moments.  Concrete
+fermionic external-insertion diagrams still need to supply the unnormalised moments and their
+signs; this layer intentionally does not introduce Grassmann variables or claim the arbitrary
+`n`-point diagram theorem.
+
 ## Open work
 
-- arbitrary higher-point and source-insertion connected expansions;
+- arbitrary higher-point and source-insertion connected expansions using the formal source-functional layer;
 - convergence-aware bosonic Dyson and linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
 - infinite-mode and thermodynamic limits under explicit analytic hypotheses.

@@ -1,0 +1,92 @@
+import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
+import Mathlib.RingTheory.PowerSeries.Inverse
+
+set_option linter.style.header false
+
+/-!
+# Formal source generating functionals
+
+This module packages the source-side part of a finite linked-cluster expansion.  A source
+generating functional is represented by its formal perturbation-series moments on finite sets of
+external insertions, together with the nonzero zero-source (vacuum) series.  Dividing by that
+vacuum series produces vacuum-normalised moments; taking their finite-set cumulant gives the
+connected source coefficients.
+
+The representation is deliberately statistics-independent and does not introduce Grassmann
+variables.  Fermionic signs and diagram amplitudes remain in the concrete external-insertion
+layers that supply the unnormalised moments.
+-/
+
+namespace SecondQuantization
+namespace Common
+
+open Combinatorics
+
+/--
+A finite source generating functional before vacuum normalisation.
+
+`unnormalizedMoment S` is the formal perturbation series with the finite set `S` of external insertions.
+The empty source set is the vacuum partition series, whose nonzero constant coefficient makes its
+formal inverse available.
+-/
+structure SourceGeneratingFunctional (Source : Type*) [DecidableEq Source] where
+  /-- Formal series of the unnormalised source moments. -/
+  unnormalizedMoment : Finset Source → PowerSeries ℂ
+  /-- The zero-source series has a nonzero constant coefficient. -/
+  constantCoeff_vacuum_ne_zero :
+    PowerSeries.constantCoeff (unnormalizedMoment ∅) ≠ 0
+
+namespace SourceGeneratingFunctional
+
+variable {Source : Type*} [DecidableEq Source]
+
+/-- The zero-source (vacuum) series of a source generating functional. -/
+noncomputable def vacuum (Z : SourceGeneratingFunctional Source) : PowerSeries ℂ :=
+  Z.unnormalizedMoment ∅
+
+theorem vacuum_constantCoeff_ne_zero (Z : SourceGeneratingFunctional Source) :
+    PowerSeries.constantCoeff Z.vacuum ≠ 0 := by
+  exact Z.constantCoeff_vacuum_ne_zero
+
+/-- Divide every source moment by the zero-source series. -/
+noncomputable def vacuumNormalized (Z : SourceGeneratingFunctional Source) :
+    NormalizedSetFunction Source (PowerSeries ℂ) where
+  toFun S := Z.unnormalizedMoment S * Z.vacuum⁻¹
+  map_empty := by
+    simpa [vacuum] using
+      PowerSeries.mul_inv_cancel Z.vacuum Z.vacuum_constantCoeff_ne_zero
+
+@[simp]
+theorem vacuumNormalized_apply (Z : SourceGeneratingFunctional Source)
+    (S : Finset Source) :
+    Z.vacuumNormalized S = Z.unnormalizedMoment S * Z.vacuum⁻¹ :=
+  rfl
+
+theorem vacuumNormalized_empty (Z : SourceGeneratingFunctional Source) :
+    Z.vacuumNormalized ∅ = 1 :=
+  Z.vacuumNormalized.map_empty
+
+/-- The connected source coefficients, obtained by the finite-set cumulant transform. -/
+noncomputable def connected (Z : SourceGeneratingFunctional Source) :
+    NormalizedSetFunction Source (PowerSeries ℂ) :=
+  Z.vacuumNormalized.cumulant
+
+@[simp]
+theorem connected_apply (Z : SourceGeneratingFunctional Source) (S : Finset Source) :
+    Z.connected S =
+      Finpartition.cumulantFromMoment Z.vacuumNormalized S := by
+  rfl
+
+theorem connected_empty (Z : SourceGeneratingFunctional Source) :
+    Z.connected ∅ = 1 :=
+  Z.connected.map_empty
+
+/-- The connected source coefficients reconstruct the vacuum-normalised source moments. -/
+theorem connected_moment (Z : SourceGeneratingFunctional Source) :
+    Z.connected.moment = Z.vacuumNormalized := by
+  exact NormalizedSetFunction.moment_cumulant Z.vacuumNormalized
+
+end SourceGeneratingFunctional
+end Common
+end SecondQuantization
