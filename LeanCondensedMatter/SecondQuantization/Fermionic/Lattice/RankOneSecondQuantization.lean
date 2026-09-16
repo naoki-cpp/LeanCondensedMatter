@@ -19,8 +19,7 @@ noncomputable section
 
 variable {Site : Type*}
 
-/-- A lattice matrix unit is the corresponding algebraic rank-one map. -/
-theorem dualRankOne_latticeKet_lapply (x y : Site) :
+private theorem dualRankOne_latticeKet_lapply (x y : Site) :
     AlgebraicFock.dualRankOne (LatticeState Site) (latticeKet x) (Finsupp.lapply y) =
       matrixUnit x y := by
   apply LinearMap.ext
