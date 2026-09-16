@@ -188,7 +188,10 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     const entries = catalog.filter((entry) => moduleParts(entry.module)[0] === domain);
     const tree = makeTree(domain, entries);
     const node = resolveNode(tree, path);
-    if (!node || renderVersion !== hierarchyRenderVersion) return false;
+    if (!node) return false;
+    // A superseded valid request is handled by the newer render, so it must not
+    // trigger the owner's invalid-target fallback even when the browse value is unchanged.
+    if (renderVersion !== hierarchyRenderVersion) return true;
 
     const children = [...node.children.values()].sort(
       (a, b) => b.declarationCount - a.declarationCount || a.name.localeCompare(b.name),
@@ -197,7 +200,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
       loadModuleDescription(node.fullName),
       ...children.map((child) => loadModuleDescription(child.fullName)),
     ]);
-    if (renderVersion !== hierarchyRenderVersion) return false;
+    if (renderVersion !== hierarchyRenderVersion) return true;
 
     overview.replaceChildren();
     overview.append(renderBreadcrumb(domain, path));
