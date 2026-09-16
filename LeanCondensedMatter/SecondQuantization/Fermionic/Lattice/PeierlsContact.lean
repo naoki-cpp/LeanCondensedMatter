@@ -121,13 +121,16 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondCurrent K ℏ q x y)
       (boundedBondContact K ℏ q x y) 0 := by
-  have h :=
-    (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
-      ((boundedLatticeOperatorLinearMap (Site := Site)).comp
-        (AlgebraicFock.dGammaLinear (LatticeState Site)))
-  simpa only [boundedPeierlsBondCurrent, boundedBondContact,
-    LinearMap.comp_apply, AlgebraicFock.dGammaLinear_apply,
-    boundedLatticeOperatorLinearMap, boundedLatticeOperator] using h
+  have hFock :
+      HasAlgebraicDerivAt
+        (fun A => AlgebraicFock.dGamma (LatticeState Site)
+          (K.peierlsBondCurrentOperator ℏ q x y A))
+        (AlgebraicFock.dGamma (LatticeState Site)
+          (K.oneParticleBondContact ℏ q x y)) 0 := by
+    exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
+      (AlgebraicFock.dGammaLinear (LatticeState Site))
+  unfold boundedPeierlsBondCurrent boundedBondContact
+  exact hFock.map (boundedLatticeOperatorLinearMap (Site := Site))
 
 end Bounded
 
