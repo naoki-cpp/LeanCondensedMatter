@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
 
 set_option linter.style.header false
 
@@ -6,13 +6,14 @@ set_option linter.style.header false
 # Polynomial occupation moments of the free bosonic Gibbs weight
 
 Fixed finite products of bosonic ladder operators have occupation-basis coefficients with polynomial
-growth.  For the multi-point Gibbs/KMS recursion we therefore need more than the linear and
-quadratic special cases: every finite occupation monomial must remain summable against the free
-Boltzmann weight.
+growth.  This module owns the reusable finite-mode polynomial majorants for the genuinely infinite
+bosonic occupation space.  Quadratic and total-particle-number estimates specialize this layer;
+they do not supply analytic input back to it.
 
-On a finite mode type this follows directly from the product structure of the free weight.  Each
-mode contributes a one-dimensional series `k^p r^k`, which is summable for `|r| < 1`; the existing
-`Finsupp.hasSum_prod_nonneg` theorem then reconstructs the genuinely infinite occupation-space sum.
+On a finite mode type, each mode contributes a one-dimensional series `k^p r^k`, which is summable
+for `|r| < 1`; `Finsupp.hasSum_prod_nonneg` then reconstructs the infinite occupation-space sum.
+The shifted-power interface uses the same analytic boundary for the tails produced by finite ladder
+products.
 -/
 
 namespace SecondQuantization
@@ -24,8 +25,9 @@ variable {Mode : Type*} [Fintype Mode]
 
 /-- Every finite-mode occupation monomial is summable against the free bosonic Boltzmann weight.
 
-`power i` is the exponent of the occupation number in mode `i`.  This is the reusable polynomial
-majorant needed for arbitrary fixed-length products of creation and annihilation operators. -/
+`power i` is the exponent of the occupation number in mode `i`.  This is the canonical finite-mode
+polynomial majorant used by lower-degree specializations and arbitrary fixed-length products of
+creation and annihilation operators. -/
 theorem summable_occupationMonomial_boltzmannWeight
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (power : Mode → ℕ) :
     Summable (fun n : Occupation Mode =>
