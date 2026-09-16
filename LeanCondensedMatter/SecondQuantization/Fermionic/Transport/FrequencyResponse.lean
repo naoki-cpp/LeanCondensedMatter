@@ -86,22 +86,6 @@ noncomputable def finiteTimeAdiabaticDirectionalCoefficient
     boundedDirectionalContactExpectation
       system expectation geometry direction K q T
 
-/-- The total regularized coefficient exposes the retarded and contact contributions separately. -/
-theorem finiteTimeAdiabaticDirectionalCoefficient_eq
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η T : ℝ) :
-    finiteTimeAdiabaticDirectionalCoefficient
-        system expectation geometry direction K q ω η T =
-      finiteTimeAdiabaticDirectionalRetardedCoefficient
-          system expectation geometry direction K q ω η T +
-        boundedDirectionalContactExpectation
-          system expectation geometry direction K q T := by
-  rfl
-
 end
 end Transport
 end Fermionic
