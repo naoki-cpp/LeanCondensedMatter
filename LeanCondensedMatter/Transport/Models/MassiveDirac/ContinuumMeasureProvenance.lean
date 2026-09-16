@@ -11,19 +11,18 @@ This module is the model-local theorem seam relating the scalar prefactors that 
 owned by different physical stages:
 
 - `Transport.Core.ContinuumMeasure` owns the bare physical-momentum measure `d²p/(2πℏ)²`;
+- the disorder measure owner binds one continuum Born disorder line to exactly one copy of that
+  measure through `continuumBornDisorderMeasurePrefactor`;
 - the Born self-energy owns the full-angle radial reduction `continuumBornAngularMeasurePrefactor`;
-- the disorder measure owner supplies the external scalar-disorder-line factor
-  `continuumBornRetardedAdvancedCurrentRungPrefactor` after a rung angular coefficient has already
-  absorbed `2π`;
 - `Conductivity.Normalization` owns the Bastin/Středa trace prefactor and the combined
   trace-plus-momentum-measure normalization.
 
 The bridge equalities below make the placement of the angular `2π`, disorder line, continuum
 measure, and trace normalization explicit without moving model-specific factors into generic
-Transport. In particular, the self-energy and current-rung routes differ only in when the angular
-factor is introduced, while both attach the physical momentum measure exactly once. Crossed
-real-space Fourier blocks already contain the momentum measure upstream, so their eventual
-conductivity boundary must use the trace prefactor rather than the combined normalization.
+Transport. In particular, angular reduction and the shared disorder-measure stage compose to exactly
+one physical momentum measure. Crossed real-space Fourier blocks already contain the momentum
+measure upstream, so their eventual conductivity boundary must use the trace prefactor rather than
+the combined normalization.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -40,24 +39,22 @@ theorem continuumBornAngularMeasurePrefactor_eq_two_pi_mul_momentumMeasurePrefac
       (2 * Real.pi) * momentumMeasurePrefactor hbar := by
   rfl
 
-/-- The external retarded-advanced current-rung factor contains exactly one disorder line and one
-unreduced physical-momentum measure. Its angular `2π` is already present in the rung coefficient. -/
-theorem continuumBornRetardedAdvancedCurrentRungPrefactor_eq_disorder_mul_momentumMeasure
+/-- The shared continuum Born disorder-measure factor contains exactly one disorder line and one
+unreduced physical-momentum measure. -/
+theorem continuumBornDisorderMeasurePrefactor_eq_disorder_mul_momentumMeasure
     (disorderStrength hbar : ℝ) :
-    continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar =
+    continuumBornDisorderMeasurePrefactor disorderStrength hbar =
       disorderStrength * momentumMeasurePrefactor hbar := by
   rfl
 
-/-- The Born self-energy and retarded-advanced current-rung conventions differ only by the location
-of the full-angle `2π` factor. Thus the disorder line and physical-momentum measure occur exactly
-once in either route. -/
-theorem disorder_mul_continuumBornAngularMeasurePrefactor_eq_two_pi_mul_currentRungPrefactor
+/-- Attaching the disorder line to the self-energy angular-reduced measure is exactly one full-angle
+`2π` multiplying the canonical disorder-measure stage. Thus the physical momentum measure occurs
+exactly once. -/
+theorem disorder_mul_continuumBornAngularMeasurePrefactor_eq_two_pi_mul_disorderMeasurePrefactor
     (disorderStrength hbar : ℝ) :
     disorderStrength * continuumBornAngularMeasurePrefactor hbar =
-      (2 * Real.pi) *
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar := by
-  unfold continuumBornAngularMeasurePrefactor
-    continuumBornRetardedAdvancedCurrentRungPrefactor
+      (2 * Real.pi) * continuumBornDisorderMeasurePrefactor disorderStrength hbar := by
+  unfold continuumBornAngularMeasurePrefactor continuumBornDisorderMeasurePrefactor
   ring
 
 /-- For a radial response whose full polar angle has not yet been accounted for, restoring the
