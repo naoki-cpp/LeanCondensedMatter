@@ -43,7 +43,8 @@ private theorem intervalIntegral_im_eq_zero_of_forall
     {f : ℝ → ℂ} {a b : ℝ} (h : ∀ x, (f x).im = 0) :
     (∫ x in a..b, f x).im = 0 := by
   by_cases hf : IntervalIntegrable f volume a b
-  · rw [← intervalIntegral.intervalIntegral_im hf]
+  · change RCLike.im (∫ x in a..b, f x) = 0
+    rw [← intervalIntegral.intervalIntegral_im hf]
     simp [h]
   · rw [intervalIntegral.integral_undef hf]
     simp
@@ -97,7 +98,10 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpace
     (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) :
     (finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
       .psi v m probeEnergy broadening disorderStrength hbar pMax rMax).im = 0 := by
-  simp [finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral, Complex.mul_im]
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
+  rw [Complex.mul_im,
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im]
+  simp only [Complex.ofReal_im, mul_zero, zero_mul, add_zero]
 
 /-- With the two crossed disorder correlators explicit, the regulated crossed contribution vanishes
 identically at zero disorder strength. -/
