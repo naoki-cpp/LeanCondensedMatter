@@ -51,8 +51,12 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
     (hbar p θ radius angle : ℝ) :
     physicalMomentumPolarFourierPhase hbar p θ (polarPoint2D radius angle) =
       polarFourierRadialPhase (p * radius / hbar) (θ - angle) := by
-  unfold physicalMomentumPolarFourierPhase polarFourierRadialPhase polarPoint2D
-  simp only [Fin.cases_zero, Fin.cases_succ, Real.cos_sub]
+  have hr0 : polarPoint2D radius angle 0 = radius * Real.cos angle := by
+    simp [polarPoint2D]
+  have hr1 : polarPoint2D radius angle 1 = radius * Real.sin angle := by
+    simp [polarPoint2D]
+  unfold physicalMomentumPolarFourierPhase polarFourierRadialPhase
+  rw [hr0, hr1, Real.cos_sub]
   apply congrArg Complex.exp
   push_cast
   ring
@@ -88,7 +92,17 @@ theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
           ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), -f θ := by
             apply intervalIntegral.integral_congr
             intro θ _
-            simp [f, polarFourierRadialPhase]
+            change
+              Complex.exp
+                    (Complex.I *
+                      (((z * Real.cos (2 * Real.pi - θ) : ℝ) : ℂ))) *
+                  (((Real.sin (2 * Real.pi - θ) : ℝ) : ℂ)) =
+                -(Complex.exp
+                    (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) *
+                  (((Real.sin θ : ℝ) : ℂ)))
+            rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
+            push_cast
+            ring
       _ = -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
         rw [intervalIntegral.integral_neg]
   have hself :
