@@ -119,25 +119,17 @@ theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
   change Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-    (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
-  have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa [mul_neg, neg_mul] using
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
+      (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
 
 /-- **The imaginary-time-evolved creation operator**: `c_i†(τ) = e^{τε_i} c_i†`. -/
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) = Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
   change Common.heisenbergEvolve (fermionEnergy ε) τ (create i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-    (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
-  have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa using
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
+      (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
 /-! ## The KMS-type commutation relation with `e^{τH₀}` -/
 
@@ -146,26 +138,18 @@ theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (
     (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (annihilate i) = _
-  have h := Common.diagonalEvolution_comp_of_carriesShift
-    (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
-  have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa [mul_neg, neg_mul] using
+    Common.diagonalEvolution_comp_of_carriesShift
+      (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
 
 /-- **The KMS-type relation for the creation operator**: `e^{τH₀} c_i† = e^{τε_i} c_i† e^{τH₀}`. -/
 theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     (imaginaryTimeEvolveFree ε τ).comp (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (create i) = _
-  have h := Common.diagonalEvolution_comp_of_carriesShift
-    (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
-  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa using
+    Common.diagonalEvolution_comp_of_carriesShift
+      (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
 end Fermionic
 end SecondQuantization
