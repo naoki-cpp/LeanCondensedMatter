@@ -19,6 +19,7 @@ conductivity benchmark. It is intentionally separate from the root `LeanCondense
 umbrella so consumers that only need the core, resolvent, Kubo–Bastin, Středa, or generic disorder
 interfaces do not acquire these analytical utilities transitively.
 
-The leaves remain directly importable for low-level consumers that need only one narrow utility;
-higher-level consumers spanning several of these utilities should prefer this package boundary.
+The individual leaves remain canonical narrow imports for implementation modules that need only one
+utility. Callers that want the complete generic analysis surface can import this package without
+pulling in any model-specific code.
 -/
