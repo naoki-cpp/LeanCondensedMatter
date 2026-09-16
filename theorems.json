@@ -49180,6 +49180,100 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℂ E] [CompleteSpace E]\n  (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients E),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, coefficients.eval θ = (2 * Real.pi) • coefficients.constant",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval",
+    "module": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+    "externalAxioms": [],
+    "docString": "Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.\nAll nonconstant channels vanish. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
+      "QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi",
+      "QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
+      "QuantumTheory.Transport.integral_complex_sin_zero_two_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients ℂ) (z p : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi, ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * coefficients.secondCosine)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Phase-weighted full-angle integration of the canonical constant/first/second harmonic\ndecomposition. The first-sine and mixed-second channels vanish on the radial axis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_cos_mul_sin_zero",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ι : Type u_1} (conductivity : QuantumTheory.Transport.ConductivityTensor ι) (i : ι),\n  conductivity.hallComponent i i = 0",
     "standardAxioms": [
@@ -52319,8 +52413,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPolarRadialKernelOfRegulator_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq",
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55068,7 +55162,7 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector_vertex"
     ],
     "crossModuleDirectWrapper": false,
@@ -55551,7 +55645,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -60823,7 +60917,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (aL bL dL aR bR dR : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector) (θ : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix aL bL dL θ *\n        (coefficients 0 • QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n          coefficients 1 • QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix aR bR dR θ =\n    have harmonics :=\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients;\n    harmonics.constant + ↑(Real.cos θ) • harmonics.firstCosine + ↑(Real.sin θ) • harmonics.firstSine +\n        (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) • harmonics.secondCosine +\n      (↑(Real.cos θ) * ↑(Real.sin θ)) • harmonics.secondMixed",
+    "statement": "∀ (aL bL dL aR bR dR : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector) (θ : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix aL bL dL θ *\n        (coefficients 0 • QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n          coefficients 1 • QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix aR bR dR θ =\n    (QuantumTheory.Transport.Models.MassiveDirac.polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients).eval θ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60838,7 +60932,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
     "externalAxioms": [],
-    "docString": "Pointwise decomposition of a polar-Pauli sandwich into the constant, first, and second angular\nharmonics. This is the canonical matrix-level algebra used before either ordinary full-angle\nintegration or Fourier-weighted radial reduction. ",
+    "docString": "Pointwise decomposition of a polar-Pauli sandwich into the canonical constant, first, and second\nangular-harmonic evaluation used by ordinary and Fourier-weighted reduction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -68781,7 +68875,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (hbar pMax radius : ℝ) (a b c : ℝ → ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax\n      (fun p θ => a p + ↑(Real.cos θ) * b p + ↑(Real.sin θ) * c p) (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * a p +\n            QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p)",
     "standardAxioms": [
       "Classical.choice",
@@ -68789,7 +68883,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68800,19 +68894,14 @@
     "docString": "Radial-axis reduction of the finite-cutoff transform for a field with only constant and first\nangular harmonics. The full angular integral is replaced exactly by the zeroth and first-cosine\nradial kernels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68824,6 +68913,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (hbar pMax radius : ℝ) (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax (fun p θ => (coefficients p).eval θ)\n      (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                (coefficients p).firstCosine +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n              (coefficients p).secondCosine)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Radial-axis reduction of the finite-cutoff transform for the canonical harmonic coefficient\nfield. This is the shared coefficient adapter consumed by model-specific real-space reductions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
+      "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (hbar pMax radius : ℝ) (a b c d e : ℝ → ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax\n      (fun p θ =>\n        a p + ↑(Real.cos θ) * b p + ↑(Real.sin θ) * c p + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d p +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e p)\n      (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * a p +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) * d p)",
     "standardAxioms": [
       "Classical.choice",
@@ -68831,7 +68968,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68842,19 +68979,14 @@
     "docString": "Radial-axis reduction of the finite-cutoff transform through second angular harmonics. The\nremaining one-dimensional integral has only the zeroth, first-cosine, and second-cosine kernels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics",
-      "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69661,7 +69793,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -69674,13 +69806,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -69700,7 +69832,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -69713,13 +69845,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polar_inPlane_modes"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -69752,13 +69884,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -69791,13 +69923,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_const_add_complex_cos_smul_add_complex_sin_smul"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -69818,7 +69950,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -69830,20 +69962,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_complex_cos_zero_two_pi",
-      "QuantumTheory.Transport.integral_complex_sin_zero_two_pi"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70146,7 +70275,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (z p : ℝ) (a b c : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b)",
     "standardAxioms": [
       "Classical.choice",
@@ -70154,7 +70283,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70165,18 +70294,14 @@
     "docString": "Full-angle reduction for a scalar field containing only constant and first sine/cosine\nharmonics. The sine harmonic drops out on the radial axis, leaving the zeroth and first-cosine\nkernels that later become the `J₀` and `J₁` channels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70207,13 +70332,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -70234,7 +70359,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70246,17 +70371,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70267,7 +70390,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (z p : ℝ) (a b c d e : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ *\n        (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * d)",
     "standardAxioms": [
       "Classical.choice",
@@ -70275,7 +70398,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70286,19 +70409,14 @@
     "docString": "Full-angle reduction through second angular harmonics. The odd first-sine and mixed\n`cos θ sin θ` channels vanish on the radial axis, leaving exactly the zeroth, first-cosine, and\nsecond-cosine kernels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_cos_mul_sin_zero",
-      "QuantumTheory.Transport.integral_polarFourierRadialPhase_mul_sin_zero"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70977,7 +71095,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70989,17 +71107,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159746,8 +159862,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.integral_complex_cos_mul_sin_zero_two_pi",
-      "QuantumTheory.Transport.integral_complex_cos_sq_sub_sin_sq_zero_two_pi"
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
