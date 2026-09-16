@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
 import Mathlib.Tactic
@@ -381,11 +382,11 @@ theorem finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq
   rw [intervalIntegral.integral_smul]
 
 /-- Continuum Born self-energy written directly from the explicit polar-angle Green integral and the
-original physical-momentum measure prefactor `1/(2πℏ)²`. -/
+canonical external disorder-line × physical-momentum-measure prefactor. -/
 noncomputable def finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator
     (v m probeEnergy regulator disorderStrength hbar pMax : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ) •
+  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) •
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator
       v m probeEnergy regulator pMax
 
@@ -400,6 +401,7 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_eq_polarIntegral
   rw [finiteCutoffContinuumBornSelfEnergyFromPolarIntegralOfRegulator,
     finiteCutoffContinuumBornPolarGreenIntegralOfRegulator_eq]
   unfold finiteCutoffContinuumBornSelfEnergyOfRegulator continuumBornAngularMeasurePrefactor
+    continuumBornDisorderMeasurePrefactor
   rw [← algebraMap_smul ℂ (2 * Real.pi)
     (finiteCutoffContinuumBornGreenIntegralOfRegulator
       v m probeEnergy regulator pMax)]
