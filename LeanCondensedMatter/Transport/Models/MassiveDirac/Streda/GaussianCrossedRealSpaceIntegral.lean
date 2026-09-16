@@ -20,7 +20,10 @@ one factor of `disorderStrength`, so the crossed pair contributes `disorderStren
 finite-regulator counterpart of the squared disorder factor in Ado et al., EPL 111, 37004 (2015),
 Eq. (13), before restoring the remaining physical conductivity normalization. The Fourier blocks
 upstream already include the physical momentum measure `d²p / (2πℏ)²`, so downstream conductivity
-normalization must not attach `momentumMeasurePrefactor hbar` a second time.
+normalization must not attach `momentumMeasurePrefactor hbar` a second time. In the massive-Dirac
+normalization API the remaining scalar boundary is therefore the trace-only
+`bastinTraceConductivityPrefactor`, not `bastinStredaConductivityNormalization`, which would attach a
+second momentum measure.
 
 No infinite-radius limit, momentum-cutoff removal, zero-broadening or weak-disorder limit,
 Bessel-function reduction, or closed crossed conductivity is claimed here.
