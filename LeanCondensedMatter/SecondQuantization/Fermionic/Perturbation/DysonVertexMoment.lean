@@ -44,15 +44,10 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     normalizedDysonPartitionCoeff ε β V n =
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator (Common.dysonCoeff (fermionEnergy ε) V n β)) := by
-  have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β := by
-    funext m
-    rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
-    push_cast
-    ring_nf
   have hZ : Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) =
       freePartitionFunction ε β := by
-    rw [Common.traceFock_diagonalEvolution_eq_weightSum, ← hw,
-      Common.weightSum, freePartitionFunction]
+    simpa [Common.weightSum, freePartitionFunction, freeBoltzmannWeight] using
+      (Common.traceFock_diagonalEvolution_eq_weightSum (fermionEnergy ε) β)
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_trace_div,
     normalizedDysonPartitionCoeff, hZ]
