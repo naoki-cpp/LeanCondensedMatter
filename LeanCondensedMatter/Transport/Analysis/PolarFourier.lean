@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Core.ContinuumMeasure
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -277,6 +277,119 @@ theorem integral_polarFourierRadialPhase_second_harmonics
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
     coefficients.integral_polarFourierRadialPhase z p
 
+private theorem intervalIntegral_fullPeriod_comp_sub_eq
+    (f : ℝ → ℂ) (hf : Function.Periodic f (2 * Real.pi)) (angle : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle)) =
+      ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
+  rw [intervalIntegral.integral_comp_sub_right]
+  have h := hf.intervalIntegral_add_eq (-angle) 0
+  simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
+
+private theorem angular_second_harmonics_add
+    (angle θ : ℝ) (a b c d e : ℂ) :
+    a + ((Real.cos (θ + angle) : ℝ) : ℂ) * b +
+          ((Real.sin (θ + angle) : ℝ) : ℂ) * c +
+          ((((Real.cos (θ + angle) : ℝ) : ℂ) ^ 2) -
+            (((Real.sin (θ + angle) : ℝ) : ℂ) ^ 2)) * d +
+          (((Real.cos (θ + angle) : ℝ) : ℂ) *
+            ((Real.sin (θ + angle) : ℝ) : ℂ)) * e =
+      a + ((Real.cos θ : ℝ) : ℂ) *
+            (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c) +
+          ((Real.sin θ : ℝ) : ℂ) *
+            (-((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c) +
+          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
+            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
+              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e) +
+          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
+            ((-4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) * d +
+              (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * e)) := by
+  rw [Real.cos_add, Real.sin_add]
+  push_cast
+  ring
+
+private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
+    (z p angle : ℝ) (a b c d e : ℂ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((p : ℂ) * polarFourierRadialPhase z (θ - angle)) *
+        (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c +
+          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * d +
+          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * e)) =
+      (p : ℂ) *
+        (polarFourierZerothAngularKernel z * a +
+          polarFourierFirstCosineAngularKernel z *
+            (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c) +
+          polarFourierSecondCosineAngularKernel z *
+            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
+              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)) := by
+  let f : ℝ → ℂ := fun α =>
+    ((p : ℂ) * polarFourierRadialPhase z α) *
+      (a + ((Real.cos (α + angle) : ℝ) : ℂ) * b +
+        ((Real.sin (α + angle) : ℝ) : ℂ) * c +
+        ((((Real.cos (α + angle) : ℝ) : ℂ) ^ 2) -
+          (((Real.sin (α + angle) : ℝ) : ℂ) ^ 2)) * d +
+        (((Real.cos (α + angle) : ℝ) : ℂ) *
+          ((Real.sin (α + angle) : ℝ) : ℂ)) * e)
+  have hf : Function.Periodic f (2 * Real.pi) := by
+    intro α
+    simp only [f, polarFourierRadialPhase]
+    rw [Real.cos_add_two_pi]
+    have hangle : α + 2 * Real.pi + angle = (α + angle) + 2 * Real.pi := by
+      ring
+    rw [hangle, Real.cos_add_two_pi, Real.sin_add_two_pi]
+  calc
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+        ((p : ℂ) * polarFourierRadialPhase z (θ - angle)) *
+          (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c +
+            ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * d +
+            (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * e)) =
+        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle) := by
+          apply intervalIntegral.integral_congr
+          intro θ _
+          simp [f]
+    _ = ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ :=
+      intervalIntegral_fullPeriod_comp_sub_eq f hf angle
+    _ = (p : ℂ) *
+        (polarFourierZerothAngularKernel z * a +
+          polarFourierFirstCosineAngularKernel z *
+            (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c) +
+          polarFourierSecondCosineAngularKernel z *
+            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
+              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)) := by
+      simp_rw [f, angular_second_harmonics_add]
+      exact integral_polarFourierRadialPhase_second_harmonics
+        z p a
+        (((Real.cos angle : ℝ) : ℂ) * b + ((Real.sin angle : ℝ) : ℂ) * c)
+        (-((Real.sin angle : ℝ) : ℂ) * b + ((Real.cos angle : ℝ) : ℂ) * c)
+        (((((Real.cos angle : ℝ) : ℂ) ^ 2) - (((Real.sin angle : ℝ) : ℂ) ^ 2)) * d +
+          (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) * e)
+        ((-4 * (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ))) * d +
+          (((((Real.cos angle : ℝ) : ℂ) ^ 2) - (((Real.sin angle : ℝ) : ℂ) ^ 2)) * e))
+
+/-- Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary
+real-space polar angle. -/
+theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted
+    (coefficients : AngularHarmonicCoefficients ℂ) (z p angle : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((p : ℂ) * polarFourierRadialPhase z (θ - angle)) * coefficients.eval θ) =
+      (p : ℂ) *
+        (polarFourierZerothAngularKernel z * coefficients.constant +
+          polarFourierFirstCosineAngularKernel z *
+            (((Real.cos angle : ℝ) : ℂ) * coefficients.firstCosine +
+              ((Real.sin angle : ℝ) : ℂ) * coefficients.firstSine) +
+          polarFourierSecondCosineAngularKernel z *
+            (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                (((Real.sin angle : ℝ) : ℂ) ^ 2)) * coefficients.secondCosine +
+              (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+                coefficients.secondMixed)) := by
+  simpa [AngularHarmonicCoefficients.eval, smul_eq_mul] using
+    (integral_polarFourierRadialPhase_shifted_second_harmonics
+      z p angle coefficients.constant coefficients.firstCosine coefficients.firstSine
+      coefficients.secondCosine coefficients.secondMixed)
+
 /-- Finite-cutoff polar Fourier transform of a complex scalar momentum field with the physical
 momentum measure `d²p / (2πℏ)²` included exactly once. -/
 noncomputable def finiteCutoffPhysicalMomentumPolarFourier
@@ -286,77 +399,31 @@ noncomputable def finiteCutoffPhysicalMomentumPolarFourier
       ∫ θ in (0 : ℝ)..(2 * Real.pi),
         ((p : ℂ) * physicalMomentumPolarFourierPhase hbar p θ r) * field p θ
 
-/-- Radial-axis reduction of the finite-cutoff transform for the canonical harmonic coefficient
-field. This is the shared coefficient adapter consumed by model-specific real-space reductions. -/
-theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-    (hbar pMax radius : ℝ) (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
+/-- Finite-cutoff polar Fourier reduction of canonical harmonic coefficients at an arbitrary polar
+real-space point. -/
+theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+    (hbar pMax radius angle : ℝ) (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
     finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-        (fun p θ => (coefficients p).eval θ) (polarPoint2D radius 0) =
+        (fun p θ => (coefficients p).eval θ) (polarPoint2D radius angle) =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
         ∫ p in (0 : ℝ)..pMax,
           (p : ℂ) *
             (polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +
               polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-                (coefficients p).firstCosine +
+                (((Real.cos angle : ℝ) : ℂ) * (coefficients p).firstCosine +
+                  ((Real.sin angle : ℝ) : ℂ) * (coefficients p).firstSine) +
               polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-                (coefficients p).secondCosine) := by
+                (((((Real.cos angle : ℝ) : ℂ) ^ 2) -
+                    (((Real.sin angle : ℝ) : ℂ) ^ 2)) * (coefficients p).secondCosine +
+                  (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+                    (coefficients p).secondMixed)) := by
   unfold finiteCutoffPhysicalMomentumPolarFourier
   apply congrArg (((momentumMeasurePrefactor hbar : ℝ) : ℂ) * ·)
   apply intervalIntegral.integral_congr
   intro p _
   simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
-  simp only [sub_zero]
-  exact (coefficients p).integral_polarFourierRadialPhase (p * radius / hbar) p
-
-/-- Radial-axis reduction of the finite-cutoff transform for a field with only constant and first
-angular harmonics. The full angular integral is replaced exactly by the zeroth and first-cosine
-radial kernels. -/
-theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
-    (hbar pMax radius : ℝ) (a b c : ℝ → ℂ) :
-    finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-        (fun p θ =>
-          a p + ((Real.cos θ : ℝ) : ℂ) * b p + ((Real.sin θ : ℝ) : ℂ) * c p)
-        (polarPoint2D radius 0) =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) *
-            (polarFourierZerothAngularKernel (p * radius / hbar) * a p +
-              polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p) := by
-  let coefficients : ℝ → AngularHarmonicCoefficients ℂ := fun p =>
-    { constant := a p
-      firstCosine := b p
-      firstSine := c p
-      secondCosine := 0
-      secondMixed := 0 }
-  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-      hbar pMax radius coefficients)
-
-/-- Radial-axis reduction of the finite-cutoff transform through second angular harmonics. The
-remaining one-dimensional integral has only the zeroth, first-cosine, and second-cosine kernels. -/
-theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
-    (hbar pMax radius : ℝ) (a b c d e : ℝ → ℂ) :
-    finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-        (fun p θ =>
-          a p + ((Real.cos θ : ℝ) : ℂ) * b p + ((Real.sin θ : ℝ) : ℂ) * c p +
-            ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * d p +
-            (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * e p)
-        (polarPoint2D radius 0) =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) *
-            (polarFourierZerothAngularKernel (p * radius / hbar) * a p +
-              polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p +
-              polarFourierSecondCosineAngularKernel (p * radius / hbar) * d p) := by
-  let coefficients : ℝ → AngularHarmonicCoefficients ℂ := fun p =>
-    { constant := a p
-      firstCosine := b p
-      firstSine := c p
-      secondCosine := d p
-      secondMixed := e p }
-  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
-    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-      hbar pMax radius coefficients)
+  exact (coefficients p).integral_polarFourierRadialPhase_shifted
+    (p * radius / hbar) p angle
 
 end
 

@@ -226,8 +226,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
     factor, coefficients, harmonics, entryHarmonics, aA, bA, dA, aR, bR, dR] using
-    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-      hbar pMax radius (entryHarmonics i j))
+    (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+      hbar pMax radius 0 (entryHarmonics i j))
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
