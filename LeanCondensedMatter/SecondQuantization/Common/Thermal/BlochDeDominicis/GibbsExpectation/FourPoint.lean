@@ -27,7 +27,6 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
       c13 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hcomm14 : C1.comp C4 - ζ • (C4.comp C1) =
       c14 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
       (c12 * finiteGibbsExpectation energy β (C3.comp C4) +
@@ -46,6 +45,7 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
     (traceFock (Config := Config)).map_zero
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
     [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
+  have hZ := traceFock_diagonalEvolution_ne_zero energy β
   simp only [prodComp, peelSum, List.map_cons, List.map_nil, List.length_cons, List.length_nil,
     LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
     map_add, map_smul, smul_eq_mul, hz, mul_zero] at h
@@ -67,7 +67,6 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
     (hcomm14 : C1.comp C4 - ζ • (C4.comp C1) =
       c14 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hζ2 : ζ ^ 2 = 1)
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
       finiteGibbsExpectation energy β (C1.comp C2) *
@@ -81,14 +80,14 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
     rw [h32, hζ2, one_mul]
   have hne3 : (1 : ℂ) - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0 := by rwa [hζ3]
   have h4 := finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator energy β q1 ζ c12
-    c13 c14 C1 C2 C3 C4 hC1 hcomm12 hcomm13 hcomm14 hZ hne3
+    c13 c14 C1 C2 C3 C4 hC1 hcomm12 hcomm13 hcomm14 hne3
   rw [hζ3, hζ2] at h4
   have h12 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c12 C1 C2 hC1
-    hcomm12 hZ hne
+    hcomm12 hne
   have h13 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c13 C1 C3 hC1
-    hcomm13 hZ hne
+    hcomm13 hne
   have h14 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c14 C1 C4 hC1
-    hcomm14 hZ hne
+    hcomm14 hne
   rw [h4, h12, h13, h14]
   field_simp
 

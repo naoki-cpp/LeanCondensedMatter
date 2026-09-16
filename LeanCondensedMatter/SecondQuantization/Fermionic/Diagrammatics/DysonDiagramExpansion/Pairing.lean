@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
@@ -132,8 +132,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
           ← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
         have hgen :=
           Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
-            Common.Statistics.fermion (fermionEnergy ε) β
-            (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * S.card)
+            Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
             (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
             (flatVertexLegCommutatorCoeff ε q τ)
             (fun p => heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β

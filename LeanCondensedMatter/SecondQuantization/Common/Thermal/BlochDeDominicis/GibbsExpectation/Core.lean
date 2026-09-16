@@ -68,7 +68,24 @@ theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β :
   rw [matrixCoeff_diagonalEvolution]
   simp
 
+private theorem purePointPartitionFunction_cast_eq_sum_boltzmannWeight
+    (energy : Config → ℝ) (β : ℝ) :
+    ((purePointPartitionFunction energy β : ℝ) : ℂ) =
+      ∑ n : Config, boltzmannWeight energy β n := by
+  rw [purePointPartitionFunction, tsum_fintype]
+  push_cast
+  exact Finset.sum_congr rfl fun n _ =>
+    purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n
+
 variable [Nonempty Config]
+
+/-- The finite Gibbs partition trace is nonzero. -/
+theorem traceFock_diagonalEvolution_ne_zero (energy : Config → ℝ) (β : ℝ) :
+    traceFock (diagonalEvolution energy (-β)) ≠ 0 := by
+  rw [traceFock_diagonalEvolution_eq_weightSum, weightSum,
+    ← purePointPartitionFunction_cast_eq_sum_boltzmannWeight]
+  exact_mod_cast (ne_of_gt
+    (purePointPartitionFunction_pos energy β (purePointGibbsSummable_of_finite energy β)))
 
 /-- The canonical finite Gibbs expectation is the normalized physical trace
 `Tr[e^{-βH₀}A] / Tr[e^{-βH₀}]`. -/
@@ -81,11 +98,8 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
     traceFock_diagonalEvolution_eq_weightSum, weightedTrace_eq_sum_matrixCoeff, weightSum]
   simp_rw [purePointGibbsProbability]
   have hZcast : ((purePointPartitionFunction energy β : ℝ) : ℂ) =
-      ∑ n : Config, boltzmannWeight energy β n := by
-    rw [purePointPartitionFunction, tsum_fintype]
-    push_cast
-    exact Finset.sum_congr rfl fun n _ =>
-      purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n
+      ∑ n : Config, boltzmannWeight energy β n :=
+    purePointPartitionFunction_cast_eq_sum_boltzmannWeight energy β
   have hZne : ((purePointPartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
     exact_mod_cast (ne_of_gt
       (purePointPartitionFunction_pos energy β (purePointGibbsSummable_of_finite energy β)))

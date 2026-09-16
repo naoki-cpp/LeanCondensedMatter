@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
@@ -338,8 +338,7 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
     Common.finiteGibbsExpectation_smul]
   have hgen :=
     Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
-      Common.Statistics.fermion (fermionEnergy ε) β
-      (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n + 1)
+      Common.Statistics.fermion (fermionEnergy ε) β (2 * n + 1)
       (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ)
       (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
       (mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ)
