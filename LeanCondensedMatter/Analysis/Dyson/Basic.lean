@@ -58,7 +58,7 @@ theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
 omit [CompleteSpace A] in
 private theorem coeff_neg (V : ℝ → A) (n : ℕ) (τ : ℝ) :
     coeff (fun σ => -V σ) n τ = (-1 : ℂ) ^ n • coeff V n τ := by
-  induction n with
+  induction n generalizing τ with
   | zero => simp
   | succ n ih =>
       rw [coeff_succ, coeff_succ, smul_neg, ← intervalIntegral.integral_smul]
