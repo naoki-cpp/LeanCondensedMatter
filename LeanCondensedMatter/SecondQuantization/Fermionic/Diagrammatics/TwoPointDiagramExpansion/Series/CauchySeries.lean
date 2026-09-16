@@ -78,15 +78,20 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
       connectedTwoPointDysonSeries ε β g i j τ τ' := by
   let Z := PowerSeries.normalizeByConstantCoeff
     (dysonPartitionSeries ε β (quarticInteraction g))
+  have hZconst : PowerSeries.constantCoeff Z = 1 := by
+    simpa [Z] using
+      PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
   have hZ : Z ≠ 0 := by
     intro hz
     have hcoeff := congrArg PowerSeries.constantCoeff hz
-    simpa [Z, constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries] using hcoeff
+    rw [hZconst] at hcoeff
+    simpa using hcoeff
   apply mul_right_cancel₀ hZ
-  dsimp [Z] at hZ ⊢
+  dsimp [Z] at hZconst hZ ⊢
   rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
     PowerSeries.inv_mul_cancel _ (by
-      rw [constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries]
+      rw [hZconst]
       exact one_ne_zero),
     mul_one]
   ext n
