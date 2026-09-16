@@ -66,16 +66,32 @@ theorem siteProjector_apply (x : Site) (ψ : LatticeState Site) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
   rfl
 
-/-- The diagonal one-particle observable associated with a finitely supported lattice scalar field:
-`f ↦ ∑ₓ fₓ |x⟩⟨x|`. -/
+/-- The canonical diagonal one-particle observable for a finitely supported lattice scalar field.
+This is the restriction of `Common.diagonalOperator` to finitely supported eigenvalue functions. -/
 noncomputable def diagonalObservable :
-    LatticeState Site →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site) :=
-  (Finsupp.lift (LatticeState Site →ₗ[ℂ] LatticeState Site) ℂ Site) siteProjector
+    LatticeState Site →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site) where
+  toFun f := Common.diagonalOperator (fun x => f x)
+  map_add' f g := by
+    exact map_add (Common.diagonalOperator (Config := Site)) (fun x => f x) (fun x => g x)
+  map_smul' c f := by
+    exact map_smul (Common.diagonalOperator (Config := Site)).toLinearMap c (fun x => f x)
+
+@[simp]
+theorem diagonalObservable_apply (f ψ : LatticeState Site) (x : Site) :
+    diagonalObservable f ψ x = f x * ψ x := by
+  exact Common.diagonalOperator_apply (fun x => f x) ψ x
 
 @[simp]
 theorem diagonalObservable_latticeKet (x : Site) :
     diagonalObservable (latticeKet x) = siteProjector x := by
-  simp [diagonalObservable, latticeKet, Finsupp.lift_apply]
+  classical
+  apply LinearMap.ext
+  intro ψ
+  ext y
+  by_cases h : y = x
+  · subst y
+    simp [latticeKet]
+  · simp [latticeKet, h]
 
 variable [DecidableEq Site]
 
