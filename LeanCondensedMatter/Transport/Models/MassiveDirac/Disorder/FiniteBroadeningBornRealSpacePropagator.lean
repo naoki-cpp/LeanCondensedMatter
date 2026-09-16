@@ -137,8 +137,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simp_rw [hentry 0 0]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       entryHarmonics, harmonics, a, b, d] using
-      (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-        hbar pMax radius (entryHarmonics 0 0))
+      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+        hbar pMax radius 0 (entryHarmonics 0 0))
   · change
       finiteCutoffPhysicalMomentumPolarFourier hbar pMax
           (fun p θ =>
@@ -149,8 +149,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simp_rw [hentry 0 1]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       entryHarmonics, harmonics, a, b, d] using
-      (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-        hbar pMax radius (entryHarmonics 0 1))
+      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+        hbar pMax radius 0 (entryHarmonics 0 1))
   · change
       finiteCutoffPhysicalMomentumPolarFourier hbar pMax
           (fun p θ =>
@@ -161,8 +161,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simp_rw [hentry 1 0]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       entryHarmonics, harmonics, a, b, d] using
-      (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-        hbar pMax radius (entryHarmonics 1 0))
+      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+        hbar pMax radius 0 (entryHarmonics 1 0))
   · change
       finiteCutoffPhysicalMomentumPolarFourier hbar pMax
           (fun p θ =>
@@ -173,8 +173,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simp_rw [hentry 1 1]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
       entryHarmonics, harmonics, a, b, d, sub_eq_add_neg] using
-      (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
-        hbar pMax radius (entryHarmonics 1 1))
+      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+        hbar pMax radius 0 (entryHarmonics 1 1))
 
 end
 
