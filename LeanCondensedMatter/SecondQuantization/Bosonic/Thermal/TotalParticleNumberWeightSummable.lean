@@ -7,8 +7,9 @@ set_option linter.unusedFintypeInType false
 # Summability of the squared total particle number
 
 The quartic bosonic ladder amplitude can be controlled uniformly by a quadratic polynomial in the
-total particle number.  This file converts the modewise quadratic Gibbs estimates into the global
-estimate for `particleNumber n ^ 2` by expanding the square as a finite double sum over modes.
+total particle number.  This file converts the mode-pair specializations of the canonical polynomial
+Gibbs majorant into the global estimate for `particleNumber n ^ 2` by expanding the square as a
+finite double sum over modes.
 -/
 
 namespace SecondQuantization
