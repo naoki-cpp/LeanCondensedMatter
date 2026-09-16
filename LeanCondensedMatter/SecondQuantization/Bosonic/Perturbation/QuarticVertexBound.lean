@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -20,12 +19,6 @@ open Common
 noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
-
-/-- Every mode occupation is bounded by the total particle number. -/
-private theorem occupation_le_particleNumber (n : Occupation Mode) (i : Mode) :
-    n i ≤ particleNumber n := by
-  rw [particleNumber_eq_sum_univ]
-  exact Finset.single_le_sum (fun j _ => Nat.zero_le (n j)) (Finset.mem_univ i)
 
 /-- Four square-root ladder factors bounded by the same nonnegative number have product bounded by
 its square. -/
