@@ -29,16 +29,6 @@ variable {Mode : Type*} [Fintype Mode]
 /-- File-local classical decidable equality for the concrete pair kernel. -/
 local instance instDecidableEqConcreteExpectationRecursion : DecidableEq Mode := Classical.decEq Mode
 
-/-- On an explicitly summable observable, the totalized functional is the concrete free-Gibbs
-expectation. -/
-private theorem freeGibbsFunctional_value_eq_freeGibbsExpectation
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (hA : A ∈ freeGibbsDomain ε β) :
-    (freeGibbsFunctional ε β hpos).value A = freeGibbsExpectation ε β A := by
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem hA]
-  rfl
-
 namespace FreeThermalField
 
 /-- Concrete normalized free-Gibbs first-pair recurrence for an arbitrary even field family. -/
@@ -112,7 +102,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
       intro n C _
       have hfull := FreeThermalField.freeGibbsSummable_orderedProduct
         ε β hpos (List.ofFn C)
-      rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hfull]
+      rw [freeGibbsFunctional_value_of_summable ε β hpos hfull]
       have hrec := FreeThermalField.freeGibbsExpectation_firstPair_recursion
         ε β hpos n C
       calc
@@ -132,7 +122,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
           have htail := FreeThermalField.freeGibbsSummable_orderedProduct
             ε β hpos
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))
-          rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos htail])
+          rw [freeGibbsFunctional_value_of_summable ε β hpos htail])
 
 /-- Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic
 hypothesis is positivity of every one-mode Boltzmann exponent. -/
@@ -153,7 +143,7 @@ theorem freeGibbsExpectation_eq_sum_pairing_concrete
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) at h
   have hmem := FreeThermalField.freeGibbsSummable_orderedProduct
     ε β hpos (List.ofFn C)
-  rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hmem] at h
+  rw [freeGibbsFunctional_value_of_summable ε β hpos hmem] at h
   exact h
 
 end
