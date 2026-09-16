@@ -31,7 +31,7 @@ theorem freeGibbsExpectation_annihilate_comp_create
       (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
           freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
         if i = j then (1 : ℂ) else 0 := by
-  refine ⟨hSumm, ?_⟩
+  refine ⟨(mem_freeGibbsDomain_iff ε β ((annihilate i).comp (create j))).2 hSumm, ?_⟩
   have htrace :=
     tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create ε β hpos i j
   have hZ := freeGibbsPartition_ne_zero ε β hpos
@@ -41,16 +41,15 @@ theorem freeGibbsExpectation_annihilate_comp_create
   simpa [freeGibbsPartition] using htrace
 
 /-- The same normalized two-point equation stated through the convergence-aware functional adapter.
-The domain witness is consumed by `value_of_mem`, so no out-of-domain totalization branch is used. -/
+The explicit summability witness selects the in-domain value, so no out-of-domain totalization
+branch is used. -/
 theorem freeGibbsFunctional_value_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode)
     (hSumm : freeGibbsSummable ε β ((annihilate i).comp (create j))) :
     (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
         (freeGibbsFunctional ε β hpos).value ((annihilate i).comp (create j)) =
       if i = j then (1 : ℂ) else 0 := by
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem hSumm]
-  change (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
-      freeGibbsExpectation ε β ((annihilate i).comp (create j)) = _
+  rw [freeGibbsFunctional_value_of_summable ε β hpos hSumm]
   exact (freeGibbsExpectation_annihilate_comp_create ε β hpos i j hSumm).2
 
 /-- The free two-point value in divided form.  The denominator's nonvanishing is kept explicit so
@@ -75,7 +74,7 @@ theorem freeGibbsFunctional_value_annihilate_comp_create_eq
     (freeGibbsFunctional ε β hpos).value ((annihilate i).comp (create j)) =
       (if i = j then (1 : ℂ) else 0) /
         (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) := by
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem hSumm]
+  rw [freeGibbsFunctional_value_of_summable ε β hpos hSumm]
   exact freeGibbsExpectation_annihilate_comp_create_eq ε β hpos i j hSumm hden
 
 end
