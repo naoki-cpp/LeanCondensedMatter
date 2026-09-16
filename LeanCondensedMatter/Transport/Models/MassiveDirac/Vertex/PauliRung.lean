@@ -36,10 +36,15 @@ def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Fin 2 → ℂ :=
 
 /-- Canonical angular-harmonic data of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
 structure PolarPauliInPlaneHarmonics where
+  /-- Constant angular harmonic. -/
   constant : Matrix2
+  /-- First cosine angular harmonic. -/
   firstCosine : Matrix2
+  /-- First sine angular harmonic. -/
   firstSine : Matrix2
+  /-- Second cosine angular harmonic. -/
   secondCosine : Matrix2
+  /-- Mixed second angular harmonic. -/
   secondMixed : Matrix2
 
 /-- Constant, first, and second angular harmonics of
