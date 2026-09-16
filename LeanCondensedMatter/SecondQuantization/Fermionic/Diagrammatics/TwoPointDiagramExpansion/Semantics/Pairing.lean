@@ -311,7 +311,7 @@ noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (a b : Fin (2 * (2 * n + 1))) : ℂ :=
   (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
+    (Common.finiteHilbertOperatorAlgEquiv
       ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
         (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b)))
 
@@ -329,7 +329,7 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
+        (Common.finiteHilbertOperatorAlgEquiv (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
