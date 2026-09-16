@@ -54,6 +54,8 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
     apply Common.linearMap_ext_basisState
     intro a
     simp only [LinearMap.comp_apply, LinearMap.smul_apply]
+    change evalN (annihilate i (basisState a)) =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) • evalC (basisState a)
     by_cases ha : a i = 0
     · rw [annihilate_basisState_of_zero ha]
       have hne : a ≠ createOccupation i n := by
@@ -98,6 +100,7 @@ theorem create_apply_coord_of_zero (i : Mode) (x : FockSpace Mode) (n : Occupati
     apply Common.linearMap_ext_basisState
     intro a
     simp only [LinearMap.comp_apply, LinearMap.zero_apply]
+    change evalN (create i (basisState a)) = 0
     rw [create_basisState_eq]
     have hne : createOccupation i a ≠ n := by
       intro h
@@ -120,6 +123,8 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
     apply Common.linearMap_ext_basisState
     intro a
     simp only [LinearMap.comp_apply, LinearMap.smul_apply]
+    change evalN (create i (basisState a)) =
+      (Real.sqrt (n i : ℝ) : ℂ) • evalR (basisState a)
     rw [create_basisState_eq]
     by_cases hca : createOccupation i a = n
     · have ha : a = removeOccupation i n := by
