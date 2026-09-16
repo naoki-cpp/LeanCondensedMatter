@@ -25,7 +25,7 @@ private def finiteBroadeningLongitudinalMomentumEndpointForm
     (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
   let rung := finiteCutoffContinuumBornDysonCurrentRungVector
@@ -42,7 +42,7 @@ def finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMome
     (e v m probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
     v m probeEnergy disorderStrength hbar pMax
   let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -64,7 +64,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         e v m probeEnergy broadening disorderStrength hbar pMax := by
   let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
   let pref : ℂ :=
-    (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)
+    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
   let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
     v m probeEnergy broadening disorderStrength hbar pMax
   let rx : ℝ → ℂ := fun p => finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand
@@ -79,7 +79,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
         finiteCutoffContinuumBornEffectiveMass
           side v m probeEnergy broadening disorderStrength hbar pMax ^ 2)
   have hpref : pref ≠ 0 := by
-    dsimp [pref, continuumBornRetardedAdvancedCurrentRungPrefactor, momentumMeasurePrefactor]
+    dsimp [pref, continuumBornDisorderMeasurePrefactor, momentumMeasurePrefactor]
     exact_mod_cast mul_ne_zero (ne_of_gt hdisorder)
       (one_div_ne_zero (pow_ne_zero 2
         (mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) hhbar)))
@@ -102,7 +102,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     rw [mul_inv_rev]
     have hprefEq :
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) = pref := by
+        (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) = pref := by
       rfl
     rw [hprefEq]
     set dRinv : ℂ :=
@@ -200,7 +200,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDresse
   have htotal :=
     ((tendsto_pi_nhds.mp hAction 0).const_mul
       (2 * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2 *
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ)⁻¹)).sub
+        (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)⁻¹)).sub
     ((hRR.add hAA).const_mul
       ((((2 * Real.pi : ℝ) : ℂ)) * ((((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))) ^ 2))
   have hEndpoint :
