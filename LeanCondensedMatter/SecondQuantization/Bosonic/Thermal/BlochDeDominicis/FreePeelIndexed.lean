@@ -92,10 +92,12 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
     C₁.operatorPeelSum l ∈ freeGibbsDomain ε β := by
   rw [operatorPeelSum_eq_operatorPeelTerms_sum, operatorPeelTerms_eq_ofFn,
-    List.sum_ofFn]
-  exact Submodule.sum_mem (freeGibbsDomain ε β) fun j _ =>
-    (freeGibbsDomain ε β).smul_mem _
-      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j))
+    List.sum_ofFn, mem_freeGibbsDomain_iff]
+  exact freeGibbsSummable_sum ε β
+    (fun j : Fin l.length =>
+      C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
+    (fun j => freeGibbsSummable_smul ε β _
+      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j)))
 
 /-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
 theorem freeGibbsExpectation_operatorPeelSum_eq_sum
@@ -107,34 +109,23 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
   rw [operatorPeelSum_eq_operatorPeelTerms_sum, operatorPeelTerms_eq_ofFn,
     List.sum_ofFn]
-  let terms : Fin l.length → freeGibbsDomain ε β := fun j =>
-    ⟨C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j),
-      (freeGibbsDomain ε β).smul_mem _
-        (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j))⟩
-  have hcoe :
-      ((↑(∑ j, terms j) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) =
-        ∑ j : Fin l.length,
-          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
-    rw [Submodule.coe_sum]
-  rw [← hcoe]
-  have hmap :
-      freeGibbsExpectation ε β
-          ((∑ j, terms j : freeGibbsDomain ε β).1) =
-        ∑ j, freeGibbsExpectation ε β (terms j).1 := by
-    change (freeGibbsExpectationLinear ε β) (∑ j, terms j) =
-      ∑ j, (freeGibbsExpectationLinear ε β) (terms j)
-    simpa using map_sum (freeGibbsExpectationLinear ε β) terms Finset.univ
   calc
     freeGibbsExpectation ε β
-        ((∑ j, terms j : freeGibbsDomain ε β).1) =
-        ∑ j, freeGibbsExpectation ε β (terms j).1 := hmap
+        (∑ j : Fin l.length,
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) =
+        ∑ j : Fin l.length,
+          freeGibbsExpectation ε β
+            (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) :=
+      freeGibbsExpectation_sum_of_summable ε β
+        (fun j : Fin l.length =>
+          C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
+        (fun j => freeGibbsSummable_smul ε β _
+          (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j)))
     _ = ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
       apply Finset.sum_congr rfl
       intro j _
-      change freeGibbsExpectation ε β
-          (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) = _
       rw [freeGibbsExpectation_smul]
 
 end FreeThermalField
