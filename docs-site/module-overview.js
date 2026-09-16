@@ -252,6 +252,9 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
   }
 
   return {
+    cancel() {
+      hierarchyRenderVersion += 1;
+    },
     hasModule(moduleName) {
       return moduleNames.has(shortModule(moduleName));
     },
