@@ -118,11 +118,11 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
       ∫ p in (0 : ℝ)..pMax,
         (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * radius / hbar) * harmonics p |>.constant i j +
+          (polarFourierZerothAngularKernel (p * radius / hbar) * (harmonics p).constant i j +
             polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              harmonics p |>.firstCosine i j +
+              (harmonics p).firstCosine i j +
             polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-              harmonics p |>.secondCosine i j)
+              (harmonics p).secondCosine i j)
 
 /-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
 the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
@@ -211,16 +211,16 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) i j) =
         fun p θ =>
-          harmonics p |>.constant i j +
-            ((Real.cos θ : ℝ) : ℂ) * (harmonics p |>.firstCosine i j) +
-            ((Real.sin θ : ℝ) : ℂ) * (harmonics p |>.firstSine i j) +
+          (harmonics p).constant i j +
+            ((Real.cos θ : ℝ) : ℂ) * (harmonics p).firstCosine i j +
+            ((Real.sin θ : ℝ) : ℂ) * (harmonics p).firstSine i j +
             ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-              (harmonics p |>.secondCosine i j) +
+              (harmonics p).secondCosine i j +
             (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-              (harmonics p |>.secondMixed i j) := by
+              (harmonics p).secondMixed i j := by
     funext p θ
     rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-    simpa [harmonics] using congrArg (fun M : Matrix2 => M i j) rfl
+    simp [harmonics, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
     factor, coefficients, harmonics, aA, bA, dA, aR, bR, dR] using
