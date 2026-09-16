@@ -137,26 +137,18 @@ theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
     imaginaryTimeEvolve ε τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
   change Common.heisenbergEvolve (freeEigenvalue ε) τ (annihilate i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-    (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
-  have hcast : ((τ * (-ε i) : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa [mul_neg, neg_mul] using
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
+      (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
 
 /-- The creation operator evolves with energy shift `ε i`. -/
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
   change Common.heisenbergEvolve (freeEigenvalue ε) τ (create i) = _
-  have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-    (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
-  have hcast : ((τ * ε i : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa using
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
+      (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
 /-- Move an annihilation operator through the free diagonal evolution. -/
 theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
@@ -164,13 +156,9 @@ theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) •
         ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (annihilate i) = _
-  have h := Common.diagonalEvolution_comp_of_carriesShift
-    (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
-  have hcast : (((-ε i) * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa [mul_neg, neg_mul] using
+    Common.diagonalEvolution_comp_of_carriesShift
+      (freeEigenvalue ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
 
 /-- Move a creation operator through the free diagonal evolution. -/
 theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
@@ -178,13 +166,9 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) •
         ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (freeEigenvalue ε) τ).comp (create i) = _
-  have h := Common.diagonalEvolution_comp_of_carriesShift
-    (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
-  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by
-    push_cast
-    ring
-  rw [hcast] at h
-  exact h
+  simpa using
+    Common.diagonalEvolution_comp_of_carriesShift
+      (freeEigenvalue ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
 /-- The interaction-picture operator `V_I(τ) = e^{τH₀} V e^{-τH₀}`. -/
 noncomputable def interactionPicture (ε : Mode → ℝ)
