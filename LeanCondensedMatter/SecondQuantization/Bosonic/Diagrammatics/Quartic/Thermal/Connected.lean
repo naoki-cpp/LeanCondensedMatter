@@ -27,7 +27,7 @@ open Combinatorics
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] {N : ℕ}
+variable {Mode : Type*} {N : ℕ}
 
 /-- Diagram-level coefficientwise thermal amplitude, defined as the average over all vertex orders. -/
 noncomputable def QuarticDiagram.thermalAmplitude
@@ -38,7 +38,6 @@ noncomputable def QuarticDiagram.thermalAmplitude
     ∑ order : Common.QuarticVertexOrder S,
       QuarticDiagram.orderedThermalAmplitude ε β g d order
 
-omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentVertexOrders
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
@@ -48,7 +47,6 @@ private theorem QuarticDiagram.card_componentVertexOrders
   simp only [Common.QuarticDiagram.ComponentVertexOrders, Fintype.card_pi,
     Common.card_quarticVertexOrder]
 
-omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S) :
