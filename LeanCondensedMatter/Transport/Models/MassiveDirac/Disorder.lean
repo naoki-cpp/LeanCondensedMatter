@@ -20,6 +20,8 @@ the weak-disorder propagator and owns its retarded-advanced radial denominator p
 `TransportRate` owns the microscopic upper-band single-particle and transport scattering scales. The
 finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
 effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
+`FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
+renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
 `FiniteBroadeningBornPropagator` owns the Cartesian-to-polar representation used by the finite-
 external-broadening current rung. `FiniteBroadeningBornRealSpacePropagator` owns the corresponding
@@ -29,15 +31,16 @@ in-plane rung, its common RA denominator form, radial normalization, solved coef
 determinant condition that licenses interpreting that pair as the actual ladder fixed point. Its
 fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero
 boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses
-dominated convergence. At fixed positive disorder, an explicit real-renormalization bound below one
-makes the boundary RA denominator nonzero and discharges the compact radial regularity needed for the
-integrated limit. The resulting integrated-rung boundary is propagated through the canonical
-two-component ladder under an explicit nonzero boundary determinant. The subsequent fixed-cutoff
-weak-disorder limit is taken only after this zero-broadening boundary is formed, retaining both the
-finite longitudinal rung and the first nonvanishing disorder-scaled transverse coefficient needed by
-ordered Hall response. For the zero-external-broadening Born route, `BornCurrentVertexRung` owns the
-exact normalized finite-cutoff longitudinal rung, while its fixed-cutoff weak-disorder and
-infinite-cutoff limits remain separate downstream routes.
+dominated convergence and consumes propagator regularity from the common Born-Dyson boundary. At
+fixed positive disorder, an explicit real-renormalization bound below one makes the boundary RA
+denominator nonzero and discharges the compact radial regularity needed for the integrated limit. The
+resulting integrated-rung boundary is propagated through the canonical two-component ladder under an
+explicit nonzero boundary determinant. The subsequent fixed-cutoff weak-disorder limit is taken only
+after this zero-broadening boundary is formed, retaining both the finite longitudinal rung and the
+first nonvanishing disorder-scaled transverse coefficient needed by ordered Hall response. For the
+zero-external-broadening Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff
+longitudinal rung, while its fixed-cutoff weak-disorder and infinite-cutoff limits remain separate
+downstream routes.
 
 Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
 crossed diagrams, and simultaneous thermodynamic, UV, disorder, and zero-broadening limits are not
