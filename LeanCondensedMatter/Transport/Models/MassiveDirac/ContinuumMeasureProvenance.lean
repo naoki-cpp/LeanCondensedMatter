@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Normalization
 
 set_option linter.style.header false
@@ -12,8 +12,8 @@ owned by different physical stages:
 
 - `Transport.Core.ContinuumMeasure` owns the bare physical-momentum measure `d²p/(2πℏ)²`;
 - the Born self-energy owns the full-angle radial reduction `continuumBornAngularMeasurePrefactor`;
-- the retarded-advanced current rung owns the external scalar-disorder-line factor
-  `continuumBornRetardedAdvancedCurrentRungPrefactor` after its angular coefficient has already
+- the disorder measure owner supplies the external scalar-disorder-line factor
+  `continuumBornRetardedAdvancedCurrentRungPrefactor` after a rung angular coefficient has already
   absorbed `2π`;
 - `Conductivity.Normalization` owns the Bastin/Středa trace prefactor and the combined
   trace-plus-momentum-measure normalization.
