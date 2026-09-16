@@ -34,6 +34,108 @@ def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Fin 2 → ℂ :=
   ![(((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA),
     (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)]
 
+/-- Constant angular coefficient of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
+def polarPauliInPlaneConstantAngularCoefficient
+    (aL dL aR dR : ℂ) (coefficients : InPlaneCoefficientVector) : Matrix2 :=
+  let c0 := aL * aR - dL * dR
+  let cxy := Complex.I * (aR * dL - aL * dR)
+  (c0 * coefficients 0 - cxy * coefficients 1) • sigmaX +
+    (cxy * coefficients 0 + c0 * coefficients 1) • sigmaY
+
+/-- First-cosine angular coefficient of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
+def polarPauliInPlaneFirstCosineAngularCoefficient
+    (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) : Matrix2 :=
+  let scalar := aR * bL + aL * bR
+  let scalarMix := bR * dL - bL * dR
+  let mass := bR * dL + bL * dR
+  let massMix := aL * bR - aR * bL
+  (scalar * coefficients 0 - Complex.I * scalarMix * coefficients 1) • (1 : Matrix2) +
+    (mass * coefficients 0 - Complex.I * massMix * coefficients 1) • sigmaZ
+
+/-- First-sine angular coefficient of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
+def polarPauliInPlaneFirstSineAngularCoefficient
+    (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) : Matrix2 :=
+  let scalar := aR * bL + aL * bR
+  let scalarMix := bR * dL - bL * dR
+  let mass := bR * dL + bL * dR
+  let massMix := aL * bR - aR * bL
+  (Complex.I * scalarMix * coefficients 0 + scalar * coefficients 1) • (1 : Matrix2) +
+    (Complex.I * massMix * coefficients 0 + mass * coefficients 1) • sigmaZ
+
+/-- Second-cosine angular coefficient of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
+def polarPauliInPlaneSecondCosineAngularCoefficient
+    (bL bR : ℂ) (coefficients : InPlaneCoefficientVector) : Matrix2 :=
+  (bL * bR * coefficients 0) • sigmaX -
+    (bL * bR * coefficients 1) • sigmaY
+
+/-- Mixed second-harmonic angular coefficient of a polar-Pauli sandwich with an arbitrary in-plane
+vertex. -/
+def polarPauliInPlaneSecondMixedAngularCoefficient
+    (bL bR : ℂ) (coefficients : InPlaneCoefficientVector) : Matrix2 :=
+  (2 * bL * bR * coefficients 1) • sigmaX +
+    (2 * bL * bR * coefficients 0) • sigmaY
+
+/-- Pointwise decomposition of a polar-Pauli sandwich into the constant, first, and second angular
+harmonics. This is the canonical matrix-level algebra used before either ordinary full-angle
+integration or Fourier-weighted radial reduction. -/
+theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
+    (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) (θ : ℝ) :
+    polarPauliMatrix aL bL dL θ *
+        (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
+        polarPauliMatrix aR bR dR θ =
+      polarPauliInPlaneConstantAngularCoefficient aL dL aR dR coefficients +
+        ((Real.cos θ : ℝ) : ℂ) •
+          polarPauliInPlaneFirstCosineAngularCoefficient
+            aL bL dL aR bR dR coefficients +
+        ((Real.sin θ : ℝ) : ℂ) •
+          polarPauliInPlaneFirstSineAngularCoefficient
+            aL bL dL aR bR dR coefficients +
+        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
+          polarPauliInPlaneSecondCosineAngularCoefficient bL bR coefficients +
+        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) •
+          polarPauliInPlaneSecondMixedAngularCoefficient bL bR coefficients := by
+  let uL : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bL
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bL
+    | .z => dL
+  let uR : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bR
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bR
+    | .z => dR
+  let vertex : PauliAxis → ℂ
+    | .x => coefficients 0
+    | .y => coefficients 1
+    | .z => 0
+  have hL :
+      polarPauliMatrix aL bL dL θ =
+        aL • (1 : Matrix2) + InternalSpace.pauliCombination uL := by
+    simp [polarPauliMatrix, uL, InternalSpace.pauliCombination]
+    module
+  have hR :
+      polarPauliMatrix aR bR dR θ =
+        aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
+    simp [polarPauliMatrix, uR, InternalSpace.pauliCombination]
+    module
+  have hVertex :
+      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
+        (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
+    simp [vertex, InternalSpace.pauliCombination]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [hL, hVertex, hR,
+    InternalSpace.pauliAffine_mul_pauliAffine,
+    InternalSpace.pauliAffine_mul_pauliAffine]
+  simp [uL, uR, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
+    InternalSpace.pauliCombination,
+    polarPauliInPlaneConstantAngularCoefficient,
+    polarPauliInPlaneFirstCosineAngularCoefficient,
+    polarPauliInPlaneFirstSineAngularCoefficient,
+    polarPauliInPlaneSecondCosineAngularCoefficient,
+    polarPauliInPlaneSecondMixedAngularCoefficient]
+  ring_nf
+  simp [hI]
+  module
+
 private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       c0 +
