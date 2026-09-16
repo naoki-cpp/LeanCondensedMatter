@@ -313,7 +313,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     simpa [numeratorBoundary] using (Metric.tendsto_nhds.1 hnum) 1 zero_lt_one
   let cDen : ℝ := cR * cA
   let boundValue : ℝ :=
-    ‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * pMax *
+    ‖((continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℝ) : ℂ)‖ * pMax *
       ‖(((2 * Real.pi : ℝ) : ℂ))‖ * cDen⁻¹ * (‖numeratorBoundary‖ + 1)
   have hcDen : 0 < cDen := mul_pos hcR hcA
   have hMeasurable :
@@ -414,20 +414,20 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       simpa [mul_assoc] using
         (mul_le_mul_of_nonneg_left hinvNum (norm_nonneg (((2 * Real.pi : ℝ) : ℂ))))
     have hprefP :
-        ‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * ‖(p : ℂ)‖ ≤
-          ‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * pMax :=
+        ‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * ‖(p : ℂ)‖ ≤
+          ‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax :=
       mul_le_mul_of_nonneg_left hpNorm (norm_nonneg _)
     have hradial :
-        (‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * ‖(p : ℂ)‖) *
+        (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * ‖(p : ℂ)‖) *
             (‖(((2 * Real.pi : ℝ) : ℂ))‖ *
               ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
                 v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
               ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
                 i j v m probeEnergy broadening disorderStrength hbar pMax‖) ≤
-          (‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * pMax) *
+          (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax) *
             (‖(((2 * Real.pi : ℝ) : ℂ))‖ * cDen⁻¹ * (‖numeratorBoundary‖ + 1)) := by
       calc
-        _ ≤ (‖(((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ))‖ * pMax) *
+        _ ≤ (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax) *
             (‖(((2 * Real.pi : ℝ) : ℂ))‖ *
               ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
                 v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
