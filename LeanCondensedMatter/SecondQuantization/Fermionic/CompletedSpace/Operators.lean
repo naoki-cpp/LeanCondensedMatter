@@ -71,37 +71,6 @@ private noncomputable def completedAnnihilateMap (i : Mode) :
   (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∉ n)).comp
     (completedSignedToggle i)
 
-/-- The completed fermionic creation map before continuity is bundled. At output occupation `n`,
-creation reads the amplitude at the toggled (hence unoccupied) source configuration, multiplies by
-the source fermionic phase, and vanishes unless `i` is occupied in `n`. -/
-noncomputable def completedCreateLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedCreateMap i).toLinearMap
-
-@[simp]
-theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
-    (n : Occupation Mode) :
-    completedCreateLinear i ψ n =
-      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 := by
-  classical
-  simp [completedCreateLinear, completedCreateMap, completedSignedToggle_apply,
-    Common.completedCoordinateProjection_apply]
-
-/-- The completed fermionic annihilation map before continuity is bundled. It is the complementary
-output-sector restriction of the same signed occupation toggle. -/
-noncomputable def completedAnnihilateLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedAnnihilateMap i).toLinearMap
-
-@[simp]
-theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
-    (n : Occupation Mode) :
-    completedAnnihilateLinear i ψ n =
-      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
-  classical
-  simp [completedAnnihilateLinear, completedAnnihilateMap, completedSignedToggle_apply,
-    Common.completedCoordinateProjection_apply]
-
 /-- Bounded fermionic creation on completed Fock space. -/
 noncomputable def completedCreate (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
