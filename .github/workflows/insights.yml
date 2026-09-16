@@ -1,0 +1,175 @@
+name: Lean Insights
+
+on:
+  workflow_run:
+    workflows: [Lean Action CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+# Advisory generation is deliberately outside the required-CI cancellation domain. Serialize main
+# runs instead of cancelling an in-flight catalog when another commit lands.
+concurrency:
+  group: lean-insights-main
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.detect.outputs.run }}
+      sha: ${{ steps.detect.outputs.sha }}
+
+    steps:
+      - name: Detect successful compiled main build
+        id: detect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          DISPATCH_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = workflow_dispatch ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$DISPATCH_SHA" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "sha=$RUN_HEAD_SHA" >> "$GITHUB_OUTPUT"
+          if [ "$RUN_CONCLUSION" != success ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          build_conclusion="$(gh api --paginate "/repos/$REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100" \
+            --jq '[.jobs[] | select(.name == "build")][0].conclusion // "skipped"')"
+          if [ "$build_conclusion" = success ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  insights:
+    needs: detect
+    if: needs.detect.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.detect.outputs.sha }}
+          persist-credentials: true
+
+      - name: Restore project build cache
+        id: project-cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .lake/build
+          key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ needs.detect.outputs.sha }}
+
+      - name: Set up Lean and dependency cache
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          build: ${{ steps.project-cache.outputs.cache-hit != 'true' }}
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: auto
+
+      - name: Audit potentially unused theorem hypotheses
+        run: lake env lean scripts/CheckUnusedHypotheses.lean
+
+      - name: Add unused hypothesis audit summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f unused-hypotheses.md ]; then
+            cat unused-hypotheses.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Generate theorem catalog
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
+
+      - name: Audit proof-guided theorem replacements
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/TheoremReplacementAudit.lean 2>&1 | tee theorem-replacement-audit.log
+
+      - name: Merge theorem replacement findings
+        run: python3 scripts/merge_theorem_replacements.py
+
+      - name: Add theorem catalog summary
+        if: success()
+        shell: bash
+        run: |
+          echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Theorems|Retained audit declarations|Retained re-audit queue|Priority terminal review queue with no compiled project consumers|Single-consumer theorem review queue|Direct-wrapper review queue|Cross-module direct-wrapper review queue|Definitionally equivalent proof-dependency targets|Replacement-candidate targets):' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload theorem catalog
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-catalog
+          path: |
+            docs/generated/theorems.md
+            docs/generated/theorems.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload theorem catalog logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-catalog-log
+          path: |
+            theorem-catalog.log
+            theorem-replacement-audit.log
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Publish declaration graph data
+        if: success()
+        env:
+          TARGET_SHA: ${{ needs.detect.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current_main="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$current_main" != "$TARGET_SHA" ]; then
+            echo "Skipping graph-data publication because main advanced to $current_main."
+            exit 0
+          fi
+
+          graph_data_dir="$(mktemp -d)"
+          git fetch origin graph-data
+          git worktree add "$graph_data_dir" origin/graph-data
+          cp docs/generated/theorems.json "$graph_data_dir/theorems.json"
+
+          git -C "$graph_data_dir" config user.name "github-actions[bot]"
+          git -C "$graph_data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$graph_data_dir" add theorems.json
+
+          if git -C "$graph_data_dir" diff --cached --quiet; then
+            echo "Declaration graph data is unchanged."
+            exit 0
+          fi
+
+          git -C "$graph_data_dir" commit -m "chore(graph-data): update theorem catalog"
+          git -C "$graph_data_dir" push origin HEAD:graph-data
