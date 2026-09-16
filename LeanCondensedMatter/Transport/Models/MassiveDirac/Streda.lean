@@ -7,6 +7,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
 
 set_option linter.style.header false
 
@@ -26,9 +27,13 @@ canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x 
 introducing a second public representation or assigning scattering-mechanism labels.
 
 The leading Gaussian crossed sector is a separate Středa-level real-space trace boundary. Its `X` and
-`Psi` topologies are represented by one indexed kernel before continuum integration or conductivity
-normalization. The current-block input is Ado's real-space `J_r` object from Eq. (14), not the local
-RA dressed source-current vertex `Γ`; constructing that Fourier-transformed block remains downstream.
+`Psi` topologies are represented by one indexed kernel, and the massive-Dirac finite-cutoff finite-`η`
+realization now supplies the corresponding polar-Fourier real-space Green matrices and Eq. (14)-style
+`Gᴬ (F σ_source) Gᴿ` current blocks. Here `F` is the diagonal resummation `(1 - A)⁻¹` built only from
+the longitudinal current-rung coefficient, matching the leading crossed-diagram approximation; the
+transverse part of the full local RA dressed source-current vertex and its feedback are deliberately
+excluded from `J_r`. Real-space `r` integration, regulator limits, Bessel-function reduction, and
+physical crossed conductivity remain downstream.
 
 Although the real-coordinate pattern matches the imaginary part of ordinary complex multiplication,
 the in-plane coefficients here are already `ℂ`-valued. Therefore the public API remains the `ℂ²`
