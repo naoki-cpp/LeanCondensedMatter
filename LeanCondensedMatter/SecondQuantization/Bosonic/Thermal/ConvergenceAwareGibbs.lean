@@ -12,10 +12,17 @@ algebraic Fock-space endomorphisms therefore cannot be presented as an unrestric
 sum.  This module records the smallest partial-linear interface needed by the perturbative thermal
 line:
 
+- an explicit summability predicate for the genuinely infinite occupation-basis numerator;
 - an explicit submodule of observables whose Gibbs numerator is summable;
+- canonical adapters from summability to domain membership, finite linear closure, and evaluation;
 - a linear expectation on that submodule;
 - a distinguished unit observable with normalized expectation;
 - the canonical free-boson realization under `0 < β ε i`.
+
+Callers must still provide the relevant summability witness.  A composition or integral belongs to
+the domain only when its own analytic theorem proves that fact; the adapter does not manufacture
+product or integral closure.  The positive one-mode Boltzmann hypothesis is likewise kept explicit
+where the normalized functional needs a nonzero partition series.
 
 No boundedness, trace-class, or completed-Fock-space claim is made here.  Those analytic upgrades
 belong to the completed representation and domain program.
@@ -118,6 +125,36 @@ noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     have h := hA.mul_left c
     simpa only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
 
+/-- Membership in the free-Gibbs analytic domain is exactly summability of the infinite occupation
+basis numerator.  This is the canonical conversion between caller-facing convergence proofs and the
+submodule consumed by partial-linear APIs. -/
+@[simp]
+theorem mem_freeGibbsDomain_iff
+    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    A ∈ freeGibbsDomain ε β ↔ freeGibbsSummable ε β A :=
+  Iff.rfl
+
+/-- Scalar multiplication preserves free-Gibbs summability through the canonical analytic domain. -/
+theorem freeGibbsSummable_smul
+    (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+    {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
+    (hA : freeGibbsSummable ε β A) :
+    freeGibbsSummable ε β (c • A) := by
+  apply (mem_freeGibbsDomain_iff ε β (c • A)).1
+  exact (freeGibbsDomain ε β).smul_mem c ((mem_freeGibbsDomain_iff ε β A).2 hA)
+
+/-- A finite family of explicitly summable observables has a summable free-Gibbs numerator. -/
+theorem freeGibbsSummable_sum
+    {ι : Type*} [Fintype ι]
+    (ε : Mode → ℝ) (β : ℝ)
+    (A : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (hA : ∀ i, freeGibbsSummable ε β (A i)) :
+    freeGibbsSummable ε β (∑ i, A i) := by
+  classical
+  apply (mem_freeGibbsDomain_iff ε β (∑ i, A i)).1
+  exact Submodule.sum_mem (freeGibbsDomain ε β) fun i _ =>
+    (mem_freeGibbsDomain_iff ε β (A i)).2 (hA i)
+
 /-- The unnormalized free bosonic partition series, expressed as a summability-aware diagonal trace.
 -/
 noncomputable def freeGibbsPartition (ε : Mode → ℝ) (β : ℝ) : ℂ :=
@@ -170,6 +207,27 @@ noncomputable def freeGibbsExpectationLinear (ε : Mode → ℝ) (β : ℝ) :
   map_smul' := by
     intro c A
     exact freeGibbsExpectation_smul ε β c A.1
+
+/-- The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an
+explicit summability witness.  The subtype construction and linear-map evaluation stay inside this
+analytic adapter. -/
+theorem freeGibbsExpectation_sum_of_summable
+    {ι : Type*} [Fintype ι]
+    (ε : Mode → ℝ) (β : ℝ)
+    (A : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (hA : ∀ i, freeGibbsSummable ε β (A i)) :
+    freeGibbsExpectation ε β (∑ i, A i) =
+      ∑ i, freeGibbsExpectation ε β (A i) := by
+  classical
+  let terms : ι → freeGibbsDomain ε β := fun i =>
+    ⟨A i, (mem_freeGibbsDomain_iff ε β (A i)).2 (hA i)⟩
+  have hcoe :
+      ((↑(∑ i, terms i) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = ∑ i, A i := by
+    rw [Submodule.coe_sum]
+  rw [← hcoe]
+  change (freeGibbsExpectationLinear ε β) (∑ i, terms i) =
+    ∑ i, (freeGibbsExpectationLinear ε β) (terms i)
+  simpa using map_sum (freeGibbsExpectationLinear ε β) terms Finset.univ
 
 /-- Under positive one-mode Boltzmann exponents, the free diagonal trace equals the convergent real
 Boltzmann partition sum embedded in `ℂ`. -/
@@ -225,6 +283,18 @@ noncomputable def freeGibbsFunctional (ε : Mode → ℝ) (β : ℝ)
   unit := LinearMap.id
   unit_mem := linearMap_id_mem_freeGibbsDomain ε β hpos
   expectation_unit := freeGibbsExpectation_id ε β hpos
+
+/-- A summability witness is the complete analytic adapter from the totalized free-Gibbs functional
+to the concrete normalized expectation.  In particular, callers do not reconstruct a domain subtype
+or unfold `freeGibbsExpectationLinear`. -/
+theorem freeGibbsFunctional_value_of_summable
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
+    (hA : freeGibbsSummable ε β A) :
+    (freeGibbsFunctional ε β hpos).value A = freeGibbsExpectation ε β A := by
+  rw [(freeGibbsFunctional ε β hpos).value_of_mem
+    ((mem_freeGibbsDomain_iff ε β A).2 hA)]
+  rfl
 
 end
 end Bosonic
