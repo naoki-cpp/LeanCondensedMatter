@@ -3,6 +3,7 @@ import Mathlib.Algebra.BigOperators.Finsupp.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Bosonic occupation-number states
@@ -39,6 +40,27 @@ theorem particleNumber_vacuum : particleNumber (vacuum : Occupation Mode) = 0 :=
 theorem particleNumber_add (m n : Occupation Mode) :
     particleNumber (m + n) = particleNumber m + particleNumber n :=
   Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
+
+section FiniteMode
+
+variable [Fintype Mode]
+
+/-- On a finite mode type, the total particle number is the sum of the mode occupations. -/
+theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
+    particleNumber n = ∑ i, n i := by
+  simp only [particleNumber, Finsupp.sum]
+  apply Finset.sum_subset (Finset.subset_univ _)
+  intro i _ hi
+  simp only [Finsupp.mem_support_iff, not_not] at hi
+  simp [hi]
+
+/-- Every mode occupation is bounded by the total particle number on a finite mode type. -/
+theorem occupation_le_particleNumber (n : Occupation Mode) (i : Mode) :
+    n i ≤ particleNumber n := by
+  rw [particleNumber_eq_sum_univ]
+  exact Finset.single_le_sum (fun j _ => Nat.zero_le (n j)) (Finset.mem_univ i)
+
+end FiniteMode
 
 /-- The occupation state with one particle in mode `i`. -/
 noncomputable def singleOccupation (i : Mode) : Occupation Mode := Finsupp.single i 1
