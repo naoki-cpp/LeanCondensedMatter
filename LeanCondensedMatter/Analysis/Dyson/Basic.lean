@@ -55,6 +55,21 @@ theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
   | zero => simp
   | succ n => simp [coeff_succ]
 
+omit [CompleteSpace A] in
+private theorem coeff_neg (V : ℝ → A) (n : ℕ) (τ : ℝ) :
+    coeff (fun σ => -V σ) n τ = (-1 : ℂ) ^ n • coeff V n τ := by
+  induction n generalizing τ with
+  | zero => simp
+  | succ n ih =>
+      rw [coeff_succ, coeff_succ, smul_neg, ← intervalIntegral.integral_smul]
+      congr 1
+      apply intervalIntegral.integral_congr
+      intro σ _
+      change -V σ * coeff (fun x => -V x) n σ =
+        (-1 : ℂ) ^ (n + 1) • (V σ * coeff V n σ)
+      rw [ih σ]
+      simp [pow_succ']
+
 /-- The `n`th perturbatively weighted Dyson coefficient. -/
 noncomputable def term (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) : A :=
   lam ^ n • coeff V n τ
@@ -80,6 +95,14 @@ theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
     simp [term]
   · simp [term, coeff_at_zero, hn]
 
+omit [CompleteSpace A] in
+private theorem term_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) :
+    term (fun σ => -V σ) (-lam) τ n = term V lam τ n := by
+  rw [term, term, coeff_neg, smul_smul]
+  congr 1
+  rw [← mul_pow]
+  simp
+
 /-- The formal norm-topological Dyson evolution, defined as the `tsum` of weighted coefficients. -/
 noncomputable def evolution (V : ℝ → A) (lam : ℂ) (τ : ℝ) : A :=
   ∑' n : ℕ, term V lam τ n
@@ -101,6 +124,16 @@ theorem evolution_zero_coupling (V : ℝ → A) (τ : ℝ) : evolution V 0 τ = 
   · simp [term]
   · intro n hn
     simp [term, hn]
+
+omit [CompleteSpace A] in
+/-- Simultaneously reversing the interaction and scalar coupling leaves the Dyson evolution
+unchanged. -/
+theorem evolution_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) :
+    evolution (fun σ => -V σ) (-lam) τ = evolution V lam τ := by
+  rw [evolution, evolution]
+  apply tsum_congr
+  intro n
+  exact term_neg_neg V lam τ n
 
 /-- The scalar exponential-series majorant `(M τ)ⁿ / n!`. -/
 noncomputable def majorant (M τ : ℝ) (n : ℕ) : ℝ :=

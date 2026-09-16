@@ -54,6 +54,27 @@ theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
   simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation,
     heisenbergEvolution, mul_assoc]
 
+/-- Moving the source minus sign from the interaction family into the Dyson scalar coupling leaves
+the interaction-picture propagator unchanged. -/
+theorem sourceCoupledInteractionPropagator_eq_positiveSourceDyson
+    (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ) :
+    timeDependentInteractionPropagator system (sourceCoupledPerturbation f B) lam t =
+      Dyson.evolution
+        (fun s => (f s : ℂ) • heisenbergEvolution system B s)
+        (-(timeDependentPhysicalDysonCoupling system lam)) t := by
+  let W : ℝ → (H →L[ℂ] H) :=
+    fun s => (f s : ℂ) • heisenbergEvolution system B s
+  have hinteraction :
+      timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) =
+        fun s => -W s := by
+    funext s
+    rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
+    simp [W]
+  unfold timeDependentInteractionPropagator
+  rw [hinteraction]
+  simpa [W] using
+    (Dyson.evolution_neg_neg W (-(timeDependentPhysicalDysonCoupling system lam)) t)
+
 /-- Substituting `V(t) = -f(t) B` into the general response integral produces the conventional
 positive `i/ℏ` prefactor. -/
 theorem sourceCoupled_responseIntegral_eq

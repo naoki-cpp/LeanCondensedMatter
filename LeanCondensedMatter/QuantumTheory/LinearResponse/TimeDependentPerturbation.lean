@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation
+import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
@@ -8,7 +9,8 @@ set_option linter.style.header false
 /-!
 # General bounded time-dependent perturbations
 
-This module treats a general bounded time-dependent perturbation
+This module owns the bounded interaction-picture time evolution for a general time-dependent
+perturbation
 
 `H_λ(t) = H₀ + λ V(t)`
 
@@ -17,7 +19,8 @@ without assuming a separated source form such as `f(t) B`. Its interaction-pictu
 `V_I(t) = U₀(-t) V(t) U₀(t)`.
 
 The generic Dyson recursion uses `Dₙ₊₁(t) = -∫₀ᵗ V_I(s) Dₙ(s) ds`, so the physical scalar coupling
-is `λ i / ℏ`. Consequently the first propagator variation is
+is `λ i / ℏ`. Consequently the propagator solves the corresponding Volterra equation and its first
+variation is
 
 `K_V(t) = -(i / ℏ) ∫₀ᵗ V_I(s) ds`.
 
@@ -71,6 +74,33 @@ theorem timeDependentInteractionPropagator_zero_coupling
     timeDependentInteractionPropagator system V 0 t = 1 := by
   simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling] using
     Dyson.evolution_zero_coupling (timeDependentInteractionPerturbation system V) t
+
+@[simp]
+theorem timeDependentInteractionPropagator_zero_time
+    (V : ℝ → (H →L[ℂ] H)) (lam : ℝ) :
+    timeDependentInteractionPropagator system V lam 0 = 1 := by
+  simp [timeDependentInteractionPropagator]
+
+/-- Under explicit continuity and uniform boundedness hypotheses, the general interaction-picture
+propagator satisfies the Volterra equation with the sign dictated by `H_λ(t) = H₀ + λ V(t)`. -/
+theorem timeDependentInteractionPropagator_eq_one_sub_integral_of_bound
+    {V : ℝ → (H →L[ℂ] H)}
+    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    {β M t : ℝ} (hM : 0 ≤ M)
+    (hV : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+    (ht : t ∈ Icc (0 : ℝ) β) (lam : ℝ) :
+    timeDependentInteractionPropagator system V lam t =
+      1 - ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
+        ∫ s in (0 : ℝ)..t,
+          timeDependentInteractionPerturbation system V s *
+            timeDependentInteractionPropagator system V lam s := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
+  simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling] using
+    (Dyson.evolution_eq_one_sub_integral_of_bound
+      hVcont hOne hM hV ht (timeDependentPhysicalDysonCoupling system lam))
 
 /-- The exact first weighted Dyson term for `H₀ + λ V(t)`. -/
 theorem timeDependentDysonTerm_one
