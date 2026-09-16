@@ -137,7 +137,7 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     mixedTimeOrderedAtomicPairValue orderedQuarticPairValue
   change (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperator
+      (Common.finiteHilbertOperatorAlgEquiv
         ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
             (mixedTimeOrderedQuarticLegMapPosition
               (slotSplitVacuumSlot T) τ τ' σ pr.1.1)).comp

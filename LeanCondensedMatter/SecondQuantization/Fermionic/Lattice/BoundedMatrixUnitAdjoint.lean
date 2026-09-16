@@ -57,7 +57,7 @@ noncomputable def boundedDgammaMatrixUnit (x y : Site) :
 theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
     boundedDgammaMatrixUnit x y =
       (finiteHilbertCreate x).comp (finiteHilbertAnnihilate y) := by
-  change Common.finiteHilbertOperator
+  change Common.finiteHilbertOperatorAlgEquiv
       (AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
         (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
   rw [dGamma_matrixUnit, AlgebraicFock.occupationConjugate_comp]
@@ -65,8 +65,10 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
   rw [← hx, ← latticeBasis_coord_eq_lapply (Site := Site) y]
   rw [AlgebraicFock.occupationConjugate_create,
     AlgebraicFock.occupationConjugate_annihilateDual,
-    Common.finiteHilbertOperator_comp]
-  rfl
+    finiteHilbertCreate, finiteHilbertAnnihilate]
+  simpa only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def] using
+    map_mul (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
+      (create x) (annihilate y)
 
 /-- On the one-particle occupation basis, the bounded second-quantized matrix unit sends the
 singleton state at `y` to the singleton state at `x`. -/

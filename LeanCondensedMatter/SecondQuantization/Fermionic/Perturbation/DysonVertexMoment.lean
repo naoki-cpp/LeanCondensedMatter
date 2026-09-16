@@ -43,7 +43,8 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     (ε : Mode → ℝ) (β : ℝ) (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n =
       (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator (Common.dysonCoeff (fermionEnergy ε) V n β)) := by
+        (Common.finiteHilbertOperatorAlgEquiv
+          (Common.dysonCoeff (fermionEnergy ε) V n β)) := by
   have hZ : Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) =
       freePartitionFunction ε β := by
     simpa [Common.weightSum, freePartitionFunction, freeBoltzmannWeight] using
@@ -75,7 +76,7 @@ theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperator
+          (Common.finiteHilbertOperatorAlgEquiv
             (Common.dysonCoeff (fermionEnergy ε) V S.card β)) := by
   rw [dysonVertexMoment,
     normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation]

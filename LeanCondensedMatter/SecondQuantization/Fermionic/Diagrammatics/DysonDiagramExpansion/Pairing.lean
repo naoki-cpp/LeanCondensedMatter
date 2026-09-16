@@ -29,7 +29,7 @@ noncomputable def flatVertexLegPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
   (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
+    (Common.finiteHilbertOperatorAlgEquiv
       ((quarticLegOperatorForSequence ε q τ a).comp
         (quarticLegOperatorForSequence ε q τ b)))
 
@@ -72,7 +72,7 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
       Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
         Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperator
+          (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
   simpa only [flatVertexLegPairValue,
@@ -116,7 +116,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
         intervalIntegral.orderedSimplexIntegral S.card β
           (fun τ => (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperator
+            (Common.finiteHilbertOperatorAlgEquiv
               (nestedVertexOperatorComp ε S.card q τ))) =
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
         ∑ pairing : Pairing (2 * S.card),
@@ -125,7 +125,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
     Finset.sum_congr rfl fun q _ => by
       have hpoint (τ : Fin S.card → ℝ) :
           (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperator (nestedVertexOperatorComp ε S.card q τ)) =
+              (Common.finiteHilbertOperatorAlgEquiv (nestedVertexOperatorComp ε S.card q τ)) =
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
         rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,

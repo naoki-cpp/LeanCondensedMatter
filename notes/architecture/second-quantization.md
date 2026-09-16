@@ -244,6 +244,21 @@ This algebraic coordinate layer is dimension-independent. Ordinary `LinearMap.tr
 for finite configuration types; possibly infinite occupation bases use `tsumTrace` together with
 explicit summability hypotheses.
 
+## Finite operator realizations
+
+Finite-dimensional operator transport has two intentionally distinct canonical realizations. Analytic
+Dyson and Bochner-integral code uses
+`Common.finiteContinuousOperatorAlgEquiv`, which transports algebraic Fock endomorphisms to bounded
+operators on `Config → ℂ`. Hilbert-space adjoints and density-operator expectations use
+`Common.finiteHilbertOperatorAlgEquiv`, which transports to bounded operators on
+`EuclideanSpace ℂ Config`.
+
+Consumers use these bundled algebra equivalences directly, including their standard `map_*` laws.
+Representation-specific semantic bridges remain at their owners: basis and coordinate formulas and
+the operator-integral compatibility theorem on the analytic side, and basis, adjoint, and
+self-adjointness criteria on the Hilbert side. The two realizations are not identified merely because
+they are finite-dimensional.
+
 ## Bosonic boundary
 
 Bosonic algebraic and free thermal results may reuse Common infrastructure, but finite fermionic trace

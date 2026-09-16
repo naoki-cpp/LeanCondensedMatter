@@ -35,7 +35,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   - (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperator (twoPointTimeOrderedProduct ε i j τ τ'))
+      (Common.finiteHilbertOperatorAlgEquiv (twoPointTimeOrderedProduct ε i j τ τ'))
 
 /-! ## Private coordinate lemmas for off-diagonal mixed contractions -/
 
@@ -97,7 +97,7 @@ omit [LinearOrder Mode] in
 private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
     (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A =
-      (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperator A) := by
+      (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) := by
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
     funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
@@ -114,7 +114,7 @@ theorem freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction
 private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_self
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator ((annihilate i).comp (create i))) =
+        (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create i))) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
   rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
     annihilate_comp_create_self,
@@ -198,12 +198,12 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
 theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator ((create j).comp (annihilate i))) =
+        (Common.finiteHilbertOperatorAlgEquiv ((create j).comp (annihilate i))) =
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
     change (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperator (numberOperator i)) = _
+      (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) = _
     exact freeGibbsDensityOperator_expectation_numberOperator ε β i
   · rw [if_neg hij, ← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
     exact normalizedWeightedDiagonal_create_comp_annihilate_of_ne (freeBoltzmannWeight ε β) hij
@@ -212,7 +212,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
 theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator ((annihilate i).comp (create j))) =
+        (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create j))) =
       if i = j then
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
       else 0 := by
@@ -241,7 +241,7 @@ operator with an annihilation operator. -/
 theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator ((annihilate i).comp (annihilate j))) = 0 := by
+        (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (annihilate j))) = 0 := by
   rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
   exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
     (matrixCoeff_annihilate_comp_annihilate i j)
@@ -251,7 +251,7 @@ same particle-number selection rule. -/
 theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator ((create i).comp (create j))) = 0 := by
+        (Common.finiteHilbertOperatorAlgEquiv ((create i).comp (create j))) = 0 := by
   rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
   exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
     (matrixCoeff_create_comp_create i j)

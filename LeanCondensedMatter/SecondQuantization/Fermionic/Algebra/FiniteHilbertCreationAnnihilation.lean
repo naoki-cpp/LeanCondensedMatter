@@ -76,13 +76,13 @@ variable [Fintype Mode]
 noncomputable def finiteHilbertCreate (i : Mode) :
     Common.FiniteHilbertFock (Occupation Mode) →L[ℂ]
       Common.FiniteHilbertFock (Occupation Mode) :=
-  Common.finiteHilbertOperator (create i)
+  Common.finiteHilbertOperatorAlgEquiv (create i)
 
 /-- Bounded annihilation on the canonical finite-Hilbert fermionic Fock space. -/
 noncomputable def finiteHilbertAnnihilate (i : Mode) :
     Common.FiniteHilbertFock (Occupation Mode) →L[ℂ]
       Common.FiniteHilbertFock (Occupation Mode) :=
-  Common.finiteHilbertOperator (annihilate i)
+  Common.finiteHilbertOperatorAlgEquiv (annihilate i)
 
 /-- Bounded creation still obeys Pauli exclusion on the canonical finite-Hilbert occupation basis. -/
 @[simp]

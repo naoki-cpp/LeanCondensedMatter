@@ -42,11 +42,10 @@ omit [LinearOrder Mode] in
 canonical finite Gibbs expectation at `fermionEnergy ε`. -/
 theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperator A) =
+    (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) =
       Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   rw [freeGibbsDensityOperator, Common.finiteGibbsExpectation,
-    Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
-    Common.finiteHilbertOperatorLinearMap_apply]
+    Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
 
 end Fermionic

@@ -124,7 +124,7 @@ theorem continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperato
     (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Continuous (fun τ : Fin n → ℝ =>
       (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator
+        (Common.finiteHilbertOperatorAlgEquiv
           (L.comp (nestedVertexOperatorComp ε n q τ)))) := by
   simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
     finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp ε β n q L
@@ -314,12 +314,12 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     ∀ (n : ℕ) (t : ℝ) (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode),
       (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperator
+          (Common.finiteHilbertOperatorAlgEquiv
             (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t))) =
         (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
             (fun τ => (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperator
+              (Common.finiteHilbertOperatorAlgEquiv
                 (L.comp (nestedVertexOperatorComp ε n q τ)))) := by
   intro n t L
   simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using

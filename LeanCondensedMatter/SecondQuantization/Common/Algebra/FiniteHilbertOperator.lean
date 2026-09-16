@@ -77,16 +77,11 @@ noncomputable def finiteHilbertOperatorAlgEquiv :
   ((finiteHilbertFockEquiv (Config := Config)).conjAlgEquiv ℂ).trans
     (Module.End.toContinuousLinearMap (FiniteHilbertFock Config))
 
-/-- The bounded operator induced by an algebraic Fock endomorphism in finite dimensions. -/
-noncomputable def finiteHilbertOperator
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    FiniteHilbertFock Config →L[ℂ] FiniteHilbertFock Config :=
-  finiteHilbertOperatorAlgEquiv A
-
 @[simp]
 theorem finiteHilbertOperator_equiv_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (x : AlgebraicFock Config) :
-    finiteHilbertOperator A (finiteHilbertFockEquiv x) = finiteHilbertFockEquiv (A x) := by
+    finiteHilbertOperatorAlgEquiv A (finiteHilbertFockEquiv x) =
+      finiteHilbertFockEquiv (A x) := by
   change
     ((finiteHilbertFockEquiv (Config := Config)).toLinearMap.comp
       (A.comp (finiteHilbertFockEquiv (Config := Config)).symm.toLinearMap))
@@ -97,63 +92,15 @@ theorem finiteHilbertOperator_equiv_apply
 the corresponding algebraic basis-state action. -/
 theorem finiteHilbertOperator_basisState
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
-    finiteHilbertOperator A (finiteHilbertBasisState n) =
+    finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n) =
       finiteHilbertFockEquiv (A (basisState n)) := by
   rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
 
 @[simp]
 theorem finiteHilbertOperator_basis_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    finiteHilbertOperator A (finiteHilbertBasisState n) m = matrixCoeff A m n := by
+    finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n) m = matrixCoeff A m n := by
   rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
-  rfl
-
-@[simp]
-theorem finiteHilbertOperator_add
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteHilbertOperator (A + B) = finiteHilbertOperator A + finiteHilbertOperator B := by
-  simpa [finiteHilbertOperator] using
-    map_add (finiteHilbertOperatorAlgEquiv (Config := Config)) A B
-
-@[simp]
-theorem finiteHilbertOperator_smul (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteHilbertOperator (c • A) = c • finiteHilbertOperator A := by
-  simpa [finiteHilbertOperator] using
-    map_smul (finiteHilbertOperatorAlgEquiv (Config := Config)) c A
-
-@[simp]
-theorem finiteHilbertOperator_id :
-    finiteHilbertOperator (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
-      ContinuousLinearMap.id ℂ (FiniteHilbertFock Config) := by
-  change
-    finiteHilbertOperatorAlgEquiv
-        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
-      ContinuousLinearMap.id ℂ (FiniteHilbertFock Config)
-  rw [← Module.End.one_eq_id, ← ContinuousLinearMap.one_def]
-  exact map_one (finiteHilbertOperatorAlgEquiv (Config := Config))
-
-@[simp]
-theorem finiteHilbertOperator_comp
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteHilbertOperator (A.comp B) =
-      (finiteHilbertOperator A).comp (finiteHilbertOperator B) := by
-  change
-    finiteHilbertOperatorAlgEquiv (A.comp B) =
-      (finiteHilbertOperatorAlgEquiv A).comp (finiteHilbertOperatorAlgEquiv B)
-  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
-  exact map_mul (finiteHilbertOperatorAlgEquiv (Config := Config)) A B
-
-/-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, bundled linearly. -/
-noncomputable def finiteHilbertOperatorLinearMap :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ]
-      (FiniteHilbertFock Config →L[ℂ] FiniteHilbertFock Config) :=
-  (finiteHilbertOperatorAlgEquiv (Config := Config)).toLinearMap
-
-@[simp]
-theorem finiteHilbertOperatorLinearMap_apply
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteHilbertOperatorLinearMap A = finiteHilbertOperator A :=
   rfl
 
 end

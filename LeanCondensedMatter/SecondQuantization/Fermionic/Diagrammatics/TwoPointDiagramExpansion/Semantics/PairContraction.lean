@@ -27,7 +27,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 noncomputable def timedFieldPairContraction
     (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) : ℂ :=
   (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
+    (Common.finiteHilbertOperatorAlgEquiv
       ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
 
 /-- Closed form of a density-state pair contraction after extracting the two imaginary-time
@@ -38,7 +38,7 @@ theorem timedFieldPairContraction_eq
       Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
         Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
           (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperator
+            (Common.finiteHilbertOperatorAlgEquiv
               ((bareExternalFieldOperator A.label).comp
                 (bareExternalFieldOperator B.label))) := by
   simp only [timedFieldPairContraction,

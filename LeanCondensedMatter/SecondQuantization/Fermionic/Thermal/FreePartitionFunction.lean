@@ -70,7 +70,7 @@ theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
 theorem freeGibbsDensityOperator_expectation_numberOperator
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator (numberOperator i)) =
+        (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) =
       1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
   set f : Mode → ℂ := fun j => Complex.exp (-(β : ℂ) * (ε j : ℂ)) with hf
   set P : ℂ := ∏ j ∈ Finset.univ.erase i, (1 + f j) with hP

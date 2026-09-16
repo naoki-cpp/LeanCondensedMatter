@@ -40,7 +40,7 @@ noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Fi
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
   (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
+    (Common.finiteHilbertOperatorAlgEquiv
       ((orderedQuarticLegOperator ε d order τ a).comp
         (orderedQuarticLegOperator ε d order τ b)))
 
@@ -52,7 +52,7 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
     (a b : Fin (2 * (2 * S.card))) :
     orderedQuarticPairValue ε β d order τ a b =
       (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator
+        (Common.finiteHilbertOperatorAlgEquiv
           ((orderedQuarticLegOperator ε d order τ a).comp
             (orderedQuarticLegOperator ε d order τ b))) :=
   rfl
@@ -97,7 +97,7 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperator
+          (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
                 (Common.orderedQuarticLegEquiv S.card a).2).comp

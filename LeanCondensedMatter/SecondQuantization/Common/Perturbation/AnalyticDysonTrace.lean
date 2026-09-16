@@ -39,7 +39,7 @@ theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
 theorem finiteOperatorTrace_finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteOperatorTrace (finiteContinuousOperator A) = traceFock A := by
+    finiteOperatorTrace (finiteContinuousOperatorAlgEquiv A) = traceFock A := by
   simp [finiteOperatorTrace_apply, traceFock_eq_sum_matrixCoeff,
     finiteContinuousOperator_basis_apply]
 
@@ -75,9 +75,10 @@ theorem finiteOperatorTraceLeft_continuousDysonCoeff (energy : Config → ℝ) (
         (continuousDysonCoeff energy V n β) =
       dysonTraceCoeff energy β V n := by
   change finiteOperatorTrace
-      ((finiteContinuousOperator (diagonalEvolution energy (-β))).comp
-        (finiteContinuousOperator (dysonCoeff energy V n β))) = _
-  rw [← finiteContinuousOperator_comp, finiteOperatorTrace_finiteContinuousOperator]
+      ((finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-β))).comp
+        (finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n β))) = _
+  rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
+    finiteOperatorTrace_finiteContinuousOperator]
   rfl
 
 /-- The scalar Dyson trace series converges to the trace of the free evolution composed with the
