@@ -130,24 +130,49 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
           ((Real.sin θ : ℝ) : ℂ) * 0 := by
     rw [hpolar]
     simp [polarPauliMatrix]
-  ext i j
+    ring
+  funext i j
   fin_cases i <;> fin_cases j
-  · unfold finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+  · change
+      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+          (fun p θ =>
+            finiteCutoffContinuumBornDysonGreenMatrix
+              side v m (p * Real.cos θ) (p * Real.sin θ)
+              probeEnergy broadening disorderStrength hbar pMax 0 0)
+          (polarPoint2D radius 0) = _
     simp_rw [h00]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix, a, b, d] using
       (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
         hbar pMax radius (fun p => a p + d p) (fun _ => 0) (fun _ => 0))
-  · unfold finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+  · change
+      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+          (fun p θ =>
+            finiteCutoffContinuumBornDysonGreenMatrix
+              side v m (p * Real.cos θ) (p * Real.sin θ)
+              probeEnergy broadening disorderStrength hbar pMax 0 1)
+          (polarPoint2D radius 0) = _
     simp_rw [h01]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix, a, b, d] using
       (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
         hbar pMax radius (fun _ => 0) b (fun p => -Complex.I * b p))
-  · unfold finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+  · change
+      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+          (fun p θ =>
+            finiteCutoffContinuumBornDysonGreenMatrix
+              side v m (p * Real.cos θ) (p * Real.sin θ)
+              probeEnergy broadening disorderStrength hbar pMax 1 0)
+          (polarPoint2D radius 0) = _
     simp_rw [h10]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix, a, b, d] using
       (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
         hbar pMax radius (fun _ => 0) b (fun p => Complex.I * b p))
-  · unfold finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+  · change
+      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+          (fun p θ =>
+            finiteCutoffContinuumBornDysonGreenMatrix
+              side v m (p * Real.cos θ) (p * Real.sin θ)
+              probeEnergy broadening disorderStrength hbar pMax 1 1)
+          (polarPoint2D radius 0) = _
     simp_rw [h11]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix, a, b, d] using
       (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
