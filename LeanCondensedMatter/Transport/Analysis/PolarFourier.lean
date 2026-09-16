@@ -88,7 +88,10 @@ theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
           ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), -f θ := by
             apply intervalIntegral.integral_congr
             intro θ _
-            simp [f, polarFourierRadialPhase]
+            unfold f polarFourierRadialPhase
+            rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
+            push_cast
+            ring
       _ = -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
         rw [intervalIntegral.integral_neg]
   have hself :
