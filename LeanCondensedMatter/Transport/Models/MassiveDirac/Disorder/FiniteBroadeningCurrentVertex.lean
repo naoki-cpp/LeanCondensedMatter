@@ -198,7 +198,7 @@ upstream, so the shared external prefactor attaches one scalar-disorder line and
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand
     (i j : Fin 2)
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
     finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       i j v m p probeEnergy broadening disorderStrength hbar pMax
 
