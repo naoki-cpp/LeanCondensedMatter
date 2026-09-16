@@ -9,8 +9,9 @@ set_option linter.style.header false
 # Clean Bastin Hall conductivity for the massive Dirac benchmark
 
 The Bastin analysis upstream produces an occupation-weighted clean pair integral without attaching
-physical conductivity units. This file restores the Bastin trace prefactor `ℏ/(2π)`, the angular
-factor `2π`, and the physical-momentum measure `d²p/(2πℏ)²`.
+physical conductivity units. This file restores the canonical combined Bastin/Středa trace and
+physical-momentum normalization together with the remaining angular factor `2π` of the radial
+integral.
 
 The resulting finite-cutoff quantity agrees with the independently normalized intrinsic Hall
 conductivity, and its ultraviolet limit gives the clean metallic massive-Dirac benchmark.
@@ -23,13 +24,12 @@ noncomputable section
 open Filter QuantumTheory.Transport
 
 /-- Finite-cutoff Hall response obtained from the canonical occupation-weighted clean Bastin-pair
-radial integral, the Bastin trace normalization, the angular integral, and the physical-momentum
-measure. -/
+radial integral. `bastinStredaConductivityNormalization` attaches the trace factor and physical
+momentum measure exactly once; only the radial reduction's angular `2π` remains explicit here. -/
 def bastinCleanHallConductivityCutoff
     (e hbar m εF Λ : ℝ) : ℝ :=
-  bastinTraceConductivityPrefactor hbar *
-    (2 * Real.pi * momentumMeasurePrefactor hbar) *
-      zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ
+  (2 * Real.pi * bastinStredaConductivityNormalization hbar) *
+    zeroTemperatureOccupiedCleanInterbandBastinPairCutoff e m εF Λ
 
 /-- The canonical clean radial Bastin-pair integral has exactly the same finite-cutoff normalization
 as the canonical occupation-derived intrinsic Hall conductivity. -/
@@ -39,8 +39,8 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
       intrinsicHallConductivityCutoff e hbar m εF Λ := by
   unfold bastinCleanHallConductivityCutoff
   rw [zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq]
-  unfold bastinTraceConductivityPrefactor intrinsicHallConductivityCutoff
-    intrinsicHallPrefactorFromMomentumMeasure
+  unfold bastinStredaConductivityNormalization bastinTraceConductivityPrefactor
+    intrinsicHallConductivityCutoff intrinsicHallPrefactorFromMomentumMeasure
   field_simp [Real.pi_ne_zero]
 
 /-- Removing the finite radial UV cutoff from the integrated occupation-weighted clean Bastin-pair
