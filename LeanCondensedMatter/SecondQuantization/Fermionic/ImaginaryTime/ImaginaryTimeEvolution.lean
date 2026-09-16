@@ -138,7 +138,7 @@ theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (
     (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (annihilate i) = _
-  simpa [mul_neg, neg_mul] using
+  simpa [imaginaryTimeEvolveFree, mul_neg, neg_mul] using
     Common.diagonalEvolution_comp_of_carriesShift
       (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
 
@@ -147,7 +147,7 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
     (imaginaryTimeEvolveFree ε τ).comp (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
   change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (create i) = _
-  simpa using
+  simpa [imaginaryTimeEvolveFree] using
     Common.diagonalEvolution_comp_of_carriesShift
       (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
