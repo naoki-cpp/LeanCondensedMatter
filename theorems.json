@@ -18631,13 +18631,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder"
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder"
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -85260,8 +85260,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg"
     ],
     "dependencies": [
-      "Finpartition.partOrdersCompatible_partOrdersOfOrder",
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder"
+      "Finpartition.assembleOrder_shuffleOfOrder",
+      "Finpartition.partOrdersCompatible_partOrdersOfOrder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -85271,47 +85271,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_fixedOrderComponentOrderedLeg"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S) (orders : d.ComponentVertexOrders)\n  (h : d.ComponentOrdersCompatible order orders),\n  d.assembleVertexOrder orders (d.shuffleOfVertexOrder order orders h) = order",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
-    "externalAxioms": [],
-    "docString": "Reassembling a global order from its compatible component-local orders and extracted shuffle is\nidentity. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
-    "directWrapperOf": "Finpartition.assembleOrder_shuffleOfOrder",
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
-    ],
-    "dependencies": [
-      "Finpartition.assembleOrder_shuffleOfOrder"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
