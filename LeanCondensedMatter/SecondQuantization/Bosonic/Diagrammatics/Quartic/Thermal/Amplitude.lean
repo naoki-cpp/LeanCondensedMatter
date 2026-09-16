@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
@@ -80,10 +81,10 @@ theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum
     freeGibbsExpectation ε β
         (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
       QuarticDiagram.orderedThermalWickSum ε β d order := by
-  simpa [QuarticDiagram.orderedFreeThermalFieldFamily,
-    QuarticDiagram.orderedThermalWickSum] using
-    (freeGibbsQuarticExpectation_eq_sum_pairing ε β hpos
-      S.card (fun i => d.vertexLabel (order i)))
+  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete ε β hpos
+    (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
+  simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
+    QuarticDiagram.orderedThermalWickSum, Combinatorics.Pairing.evaluation] using hwick
 
 end
 end Bosonic
