@@ -162,15 +162,17 @@ theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
     K.operator.comp (siteProjector x) =
       ∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x := by
   classical
-  apply Finsupp.lhom_ext
-  intro z c
+  apply Common.linearMap_ext_basisState
+  intro z
+  change K.operator.comp (siteProjector x) (Finsupp.single z 1) =
+    (∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x) (Finsupp.single z 1)
   by_cases hzx : z = x
   · subst z
     simp only [LinearMap.comp_apply, siteProjector_apply, Finsupp.single_eq_same]
     rw [LinearMap.sum_apply]
-    change K.operator (Finsupp.single x c) =
+    change K.operator (Finsupp.single x 1) =
       ∑ y ∈ K.incident x,
-        (K.amplitude y x • matrixUnit y x) (Finsupp.single x c)
+        (K.amplitude y x • matrixUnit y x) (Finsupp.single x 1)
     rw [K.operator_single, K.column_eq_sum_single]
     simp only [Finset.smul_sum]
     apply Finset.sum_congr rfl
@@ -184,13 +186,15 @@ theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
     (siteProjector x).comp K.operator =
       ∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y := by
   classical
-  apply Finsupp.lhom_ext
-  intro z c
+  apply Common.linearMap_ext_basisState
+  intro z
+  change (siteProjector x).comp K.operator (Finsupp.single z 1) =
+    (∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
   simp only [LinearMap.comp_apply, operator_single, siteProjector_apply, Finsupp.smul_apply]
   rw [LinearMap.sum_apply]
-  change Finsupp.single x (c • K.column z x) =
+  change Finsupp.single x ((1 : ℂ) • K.column z x) =
     ∑ y ∈ K.incident x,
-      (K.amplitude x y • matrixUnit x y) (Finsupp.single z c)
+      (K.amplitude x y • matrixUnit x y) (Finsupp.single z 1)
   by_cases hz : z ∈ K.incident x
   · rw [Finset.sum_eq_single z]
     · simp [amplitude, smul_eq_mul, mul_comm]

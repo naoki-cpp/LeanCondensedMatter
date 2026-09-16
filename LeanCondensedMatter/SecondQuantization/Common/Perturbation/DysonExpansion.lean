@@ -88,10 +88,9 @@ private theorem dysonCoeff_basisState (energy : Config → ℝ)
 theorem dysonCoeff_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
     dysonCoeff energy V 0 τ = LinearMap.id := by
-  apply Finsupp.lhom_ext
-  intro n c
-  simp only [dysonCoeff, dysonBasis, Finsupp.lift_apply, LinearMap.id_apply]
-  simpa [basisState] using (Finsupp.smul_single_one n c).symm
+  apply linearMap_ext_basisState
+  intro n
+  simp [dysonCoeff_basisState, dysonBasis]
 
 /-- Matrix-coordinate form of the recursive Dyson equation on a basis input. -/
 theorem dysonCoeff_succ_basisState_apply (energy : Config → ℝ)

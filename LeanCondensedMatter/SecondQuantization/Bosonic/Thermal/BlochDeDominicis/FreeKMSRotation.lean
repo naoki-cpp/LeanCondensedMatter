@@ -51,11 +51,11 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
   let evalC : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply (createOccupation i n)
   have hmap : evalN.comp (annihilate i) =
       (Real.sqrt (n i + 1 : ℝ) : ℂ) • evalC := by
-    apply Finsupp.lhom_ext
-    intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
-      (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, LinearMap.smul_apply]
+    apply Common.linearMap_ext_basisState
+    intro a
+    simp only [LinearMap.comp_apply, LinearMap.smul_apply]
+    change evalN (annihilate i (basisState a)) =
+      (Real.sqrt (n i + 1 : ℝ) : ℂ) • evalC (basisState a)
     by_cases ha : a i = 0
     · rw [annihilate_basisState_of_zero ha]
       have hne : a ≠ createOccupation i n := by
@@ -79,11 +79,9 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
         have hevalC : evalC (basisState (createOccupation i n)) = 1 := by
           simp [evalC, basisState, Common.basisState]
         simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
-          Complex.coe_smul, map_smul, LinearMap.map_smul_of_tower,
+          Complex.coe_smul, LinearMap.map_smul_of_tower,
           Complex.real_smul, smul_eq_mul]
         rw [hevalN, hevalC]
-        simp only [mul_one]
-        exact mul_comm b (Real.sqrt (n i + 1 : ℝ) : ℂ)
       · have hne : a ≠ createOccupation i n := by
           intro h
           apply hrem
@@ -98,11 +96,11 @@ theorem create_apply_coord_of_zero (i : Mode) (x : FockSpace Mode) (n : Occupati
     (hi : n i = 0) : create i x n = 0 := by
   let evalN : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
   have hmap : evalN.comp (create i) = 0 := by
-    apply Finsupp.lhom_ext
-    intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
-      (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, create_basisState_eq]
+    apply Common.linearMap_ext_basisState
+    intro a
+    simp only [LinearMap.comp_apply, LinearMap.zero_apply]
+    change evalN (create i (basisState a)) = 0
+    rw [create_basisState_eq]
     have hne : createOccupation i a ≠ n := by
       intro h
       have hcoord := congrArg (fun m : Occupation Mode => m i) h
@@ -121,12 +119,12 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
   let evalR : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply (removeOccupation i n)
   have hmap : evalN.comp (create i) =
       (Real.sqrt (n i : ℝ) : ℂ) • evalR := by
-    apply Finsupp.lhom_ext
-    intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
-      (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, create_basisState_eq,
-      LinearMap.smul_apply]
+    apply Common.linearMap_ext_basisState
+    intro a
+    simp only [LinearMap.comp_apply, LinearMap.smul_apply]
+    change evalN (create i (basisState a)) =
+      (Real.sqrt (n i : ℝ) : ℂ) • evalR (basisState a)
+    rw [create_basisState_eq]
     by_cases hca : createOccupation i a = n
     · have ha : a = removeOccupation i n := by
         calc
@@ -142,11 +140,9 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
         simp [evalN, basisState, Common.basisState]
       have hevalR : evalR (basisState (removeOccupation i n)) = 1 := by
         simp [evalR, basisState, Common.basisState]
-      simp only [removeOccupation_apply_same, Complex.coe_smul, map_smul,
+      simp only [removeOccupation_apply_same, Complex.coe_smul,
         LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
       rw [hcast, hevalN, hevalR]
-      simp only [mul_one]
-      exact mul_comm b (Real.sqrt (n i : ℝ) : ℂ)
     · have hane : a ≠ removeOccupation i n := by
         intro h
         apply hca
