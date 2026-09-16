@@ -15,13 +15,15 @@ LeanCondensedMatter.Transport
         ├── Streda
         └── Disorder
 
+LeanCondensedMatter.Transport.Analysis   (opt-in analytical utilities)
+
 LeanCondensedMatter.Transport.Models
         └── MassiveDirac
 ```
 
-`LeanCondensedMatter.Transport` does not import the concrete `Transport.Models` track.
-Representation-independent analysis such as finite-dimensional trace, generic spectral resolvent
-algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
+`LeanCondensedMatter.Transport` does not import the concrete `Transport.Models` track or the opt-in
+`Transport.Analysis` package. Representation-independent analysis such as finite-dimensional trace,
+generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 
 ## Generic owners
 
@@ -29,7 +31,7 @@ algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
 Transport/
 ├── Core/          physical volume, continuum measure, normalization, conductivity tensor
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
-├── Analysis/      transport-specific occupation analysis
+├── Analysis/      occupations, angular harmonics, polar Fourier reduction, relaxation time
 ├── KuboBastin/    Lehmann-to-resolvent and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
@@ -45,8 +47,11 @@ The main semantic boundaries are:
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
 `Core.ContinuumMeasure` owns the two-dimensional physical-momentum convention
-`d²p/(2πℏ)²`. Model-specific angular or radial reductions remain downstream until a reduced measure
-normalization has genuine reuse beyond one concrete derivation.
+`d²p/(2πℏ)²`. `Analysis.AngularHarmonics` owns the reusable constant/first/second harmonic
+coefficient decomposition and ordinary full-angle cancellation laws. `Analysis.PolarFourier`
+consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
+zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
+Pauli algebra, propagator data, and radial physics remain model-owned.
 
 ## Resolvent and response boundary
 
