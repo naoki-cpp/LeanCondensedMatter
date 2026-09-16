@@ -55,6 +55,19 @@ theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
   | zero => simp
   | succ n => simp [coeff_succ]
 
+omit [CompleteSpace A] in
+private theorem coeff_neg (V : ℝ → A) (n : ℕ) (τ : ℝ) :
+    coeff (fun σ => -V σ) n τ = (-1 : ℂ) ^ n • coeff V n τ := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [coeff_succ, coeff_succ, smul_neg, ← intervalIntegral.integral_smul]
+      congr 1
+      apply intervalIntegral.integral_congr
+      intro σ _
+      rw [ih]
+      simp [pow_succ', mul_smul_comm, smul_smul]
+
 /-- The `n`th perturbatively weighted Dyson coefficient. -/
 noncomputable def term (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) : A :=
   lam ^ n • coeff V n τ
@@ -80,6 +93,14 @@ theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
     simp [term]
   · simp [term, coeff_at_zero, hn]
 
+omit [CompleteSpace A] in
+private theorem term_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) :
+    term (fun σ => -V σ) (-lam) τ n = term V lam τ n := by
+  rw [term, term, coeff_neg, smul_smul]
+  congr 1
+  rw [← mul_pow]
+  simp
+
 /-- The formal norm-topological Dyson evolution, defined as the `tsum` of weighted coefficients. -/
 noncomputable def evolution (V : ℝ → A) (lam : ℂ) (τ : ℝ) : A :=
   ∑' n : ℕ, term V lam τ n
@@ -102,7 +123,44 @@ theorem evolution_zero_coupling (V : ℝ → A) (τ : ℝ) : evolution V 0 τ = 
   · intro n hn
     simp [term, hn]
 
+omit [CompleteSpace A] in
+/-- Simultaneously reversing the interaction and scalar coupling leaves the Dyson evolution
+unchanged. -/
+theorem evolution_neg_neg (V : ℝ → A) (lam : ℂ) (τ : ℝ) :
+    evolution (fun σ => -V σ) (-lam) τ = evolution V lam τ := by
+  rw [evolution, evolution]
+  apply tsum_congr
+  intro n
+  exact term_neg_neg V lam τ n
+
 /-- The scalar exponential-series majorant `(M τ)ⁿ / n!`. -/
+noncomputable def majorant (M τ : ℝ) (n : ℕ) : ℝ :=
+  (n.factorial : ℝ)⁻¹ * (M * τ) ^ n
+
+@[simp]
+theorem majorant_zero (M τ : ℝ) : majorant M τ 0 = 1 := by
+  simp [majorant]
+
+/-- The Dyson majorant is nonnegative for nonnegative `M` and `τ`. -/
+theorem majorant_nonneg {M τ : ℝ} (hM : 0 ≤ M) (hτ : 0 ≤ τ) (n : ℕ) :
+    0 ≤ majorant M τ n := by
+  exact mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _))
+    (pow_nonneg (mul_nonneg hM hτ) n)
+
+/-- Integrating one more bounded interaction factor advances the factorial majorant by one order. -/
+theorem integral_mul_majorant (M τ : ℝ) (n : ℕ) :
+    ∫ σ in (0 : ℝ)..τ, M * majorant M σ n = majorant M τ (n + 1) := by
+  have hfun : (fun σ : ℝ => M * majorant M σ n) =
+      fun σ : ℝ => ((n.factorial : ℝ)⁻¹ * M ^ (n + 1)) * σ ^ n := by
+    funext σ
+    simp only [majorant, mul_pow]
+    ring
+  rw [hfun, intervalIntegral.integral_const_mul, integral_pow]
+  simp only [zero_pow (Nat.succ_ne_zero n), sub_zero, majorant,
+    Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, mul_pow]
+  field_simp [Nat.factorial_ne_zero]
+
+/-- The scalar factorial majorant is summable for every real `M` and `τ`. -/
 noncomputable def majorant (M τ : ℝ) (n : ℕ) : ℝ :=
   (n.factorial : ℝ)⁻¹ * (M * τ) ^ n
 
