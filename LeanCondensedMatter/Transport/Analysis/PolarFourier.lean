@@ -31,7 +31,7 @@ open scoped Interval
 
 /-- Two-dimensional polar point `(ρ cos φ, ρ sin φ)`. -/
 def polarPoint2D (radius angle : ℝ) : Fin 2 → ℝ :=
-  fun i => Fin.cases (radius * Real.cos angle) (fun _ => radius * Real.sin angle) i
+  ![radius * Real.cos angle, radius * Real.sin angle]
 
 /-- Fourier phase `exp(i p·r / ℏ)` for polar momentum `(p cos θ, p sin θ)` in two dimensions. -/
 def physicalMomentumPolarFourierPhase
@@ -51,15 +51,11 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
     (hbar p θ radius angle : ℝ) :
     physicalMomentumPolarFourierPhase hbar p θ (polarPoint2D radius angle) =
       polarFourierRadialPhase (p * radius / hbar) (θ - angle) := by
-  have hr0 : polarPoint2D radius angle 0 = radius * Real.cos angle := by
-    simp [polarPoint2D]
-  have hr1 : polarPoint2D radius angle 1 = radius * Real.sin angle := by
-    simp [polarPoint2D]
   unfold physicalMomentumPolarFourierPhase polarFourierRadialPhase
-  rw [hr0, hr1, Real.cos_sub]
+  simp only [polarPoint2D, Matrix.cons_val_zero, Matrix.cons_val_one, Real.cos_sub]
   apply congrArg Complex.exp
   push_cast
-  ring
+  ring_nf
 
 /-- Zeroth full-angle radial Fourier kernel. At a Mathlib revision with Bessel support this is the
 integral representation that can be identified with `2π J₀(z)`. -/
@@ -92,17 +88,7 @@ theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
           ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), -f θ := by
             apply intervalIntegral.integral_congr
             intro θ _
-            change
-              Complex.exp
-                    (Complex.I *
-                      (((z * Real.cos (2 * Real.pi - θ) : ℝ) : ℂ))) *
-                  (((Real.sin (2 * Real.pi - θ) : ℝ) : ℂ)) =
-                -(Complex.exp
-                    (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) *
-                  (((Real.sin θ : ℝ) : ℂ)))
-            rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
-            push_cast
-            ring
+            simp [f, polarFourierRadialPhase]
       _ = -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
         rw [intervalIntegral.integral_neg]
   have hself :
