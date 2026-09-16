@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
@@ -16,6 +17,7 @@ set_option linter.style.header false
 /-!
 # Bosonic Bloch–de Dominicis theory
 
-Public routing module for the concrete free-boson Bloch–de Dominicis stack. It collects the
-endpoints previously imported directly by `Bosonic.Thermal` without widening that public surface.
+Public routing module for the concrete free-boson Bloch–de Dominicis stack. The low-level bosonic
+ladder `tsumTrace` cyclicity is exposed separately from the Gibbs/KMS adapter, while the higher
+recursion endpoints remain collected here without widening lower-level dependencies.
 -/
