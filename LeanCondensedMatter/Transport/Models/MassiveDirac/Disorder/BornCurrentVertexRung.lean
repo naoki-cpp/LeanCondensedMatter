@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
@@ -231,13 +232,6 @@ private theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_eq_closed
     continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed]
   push_cast
   ring
-
-/-- External scalar-disorder line and physical-momentum measure factor for the continuum RA current
-rung. The `2π` angle factor is already contained in the angular coefficients above, so this uses
-`momentumMeasurePrefactor hbar` directly rather than `continuumBornAngularMeasurePrefactor hbar`. -/
-def continuumBornRetardedAdvancedCurrentRungPrefactor
-    (disorderStrength hbar : ℝ) : ℝ :=
-  disorderStrength * momentumMeasurePrefactor hbar
 
 /-- Full continuum radial current-rung integrand in the selected output direction, including the
 external disorder line and physical momentum measure but not the radial integral. -/
