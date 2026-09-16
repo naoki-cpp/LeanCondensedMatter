@@ -20826,20 +20826,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55056,6 +55052,198 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n      broadening 0 hbar pMax =\n    1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_zero_disorder"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening\n        disorderStrength hbar pMax rMax).im =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "The finite-radius `Psi` integral remains real because its pointwise trace kernel is real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_psi_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegral_im_eq_zero_of_forall"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) (r : Fin 2 → ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening\n        disorderStrength hbar pMax r).im =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_psi_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The model-specific finite-cutoff `Psi` trace kernel remains real by the same trace-level\nHermitian-conjugate construction as the abstract crossed boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening\n        disorderStrength hbar pMax rMax).im =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "The explicit real disorder-pair weight preserves the reality of the regulated `Psi` integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (diagram : QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening hbar pMax rMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral\n      diagram v m probeEnergy broadening 0 hbar pMax rMax =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_zero_disorder",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "With the two crossed disorder correlators explicit, the regulated crossed contribution vanishes\nidentically at zero disorder strength. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator side v m (p * Real.cos θ)\n      (p * Real.sin θ) probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient side v m p 0\n        probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient\n        InternalSpace.PauliAxis.x side v m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient\n        InternalSpace.PauliAxis.z side v m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      θ",
     "standardAxioms": [
@@ -55367,6 +55555,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder"
     ],
@@ -55374,10 +55563,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular_zero_disorder",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -56789,7 +56979,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (greenRetarded greenAdvanced : (Fin 2 → ℝ) → QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (realSpaceCurrentBlock : Fin 2 → (Fin 2 → ℝ) → QuantumTheory.Transport.Models.MassiveDirac.Matrix2) (r : Fin 2 → ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi greenRetarded greenAdvanced\n        realSpaceCurrentBlock r).im =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -56797,7 +56987,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -56808,12 +56998,16 @@
     "docString": "The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_psi_im"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_psi_im"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93061,9 +93255,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedAnnihilateLinear_apply",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
-      "SecondQuantization.Fermionic.completedCreateLinear_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.completedModeTruncation_apply",
       "SecondQuantization.Fermionic.completedNumberOperator_apply"
@@ -93074,14 +93266,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnnihilateLinear_apply",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
-      "SecondQuantization.Fermionic.completedCreateLinear_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.completedModeTruncation_apply",
       "SecondQuantization.Fermionic.completedNumberOperator_apply"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95038,43 +95228,6 @@
       "SecondQuantization.Common.continuous_continuousInteractionPicture"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (m n : Config), Continuous fun τ => SecondQuantization.Common.firstDysonMatrixCoeff energy V τ m n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuous_firstDysonMatrixCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": "Every first-order Dyson matrix coefficient is continuous in the upper imaginary-time bound. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.intervalIntegrable_matrixCoeff_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98645,158 +98798,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (n : Config),\n  (SecondQuantization.Common.firstDysonCoeff energy V τ) (SecondQuantization.Common.basisState n) =\n    SecondQuantization.Common.firstDysonBasis energy V τ n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.firstDysonCoeff_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.firstDysonCoeff energy V 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.firstDysonCoeff_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.firstDysonMatrixCoeff_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (m n : Config),\n  SecondQuantization.Common.firstDysonMatrixCoeff energy V τ m n =\n    -∫ (σ : ℝ) in 0..τ, Complex.exp ↑(σ * (energy m - energy n)) * SecondQuantization.Common.matrixCoeff V m n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.firstDysonMatrixCoeff_eq_phase_integral",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": "The first coefficient is the integral of the explicit interaction-picture phase times the\noriginal matrix coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_interactionPicture"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (m n : Config), SecondQuantization.Common.firstDysonMatrixCoeff energy V 0 m n = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.firstDysonMatrixCoeff_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.firstDysonCoeff_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.firstDysonCoeff_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (lam : ℂ),\n  HasDerivAt (fun σ => SecondQuantization.Common.analyticDysonExponentialCandidate energy V σ lam)\n    (NormedSpace.exp (τ • SecondQuantization.Common.continuousDiagonalHamiltonian energy) *\n        -(lam • SecondQuantization.Common.finiteContinuousOperator V) *\n      NormedSpace.exp (τ • -SecondQuantization.Common.continuousInteractingHamiltonian energy V lam))\n    τ",
     "standardAxioms": [
       "Classical.choice",
@@ -100397,7 +100398,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (m n : Config) (a b : ℝ),\n  IntervalIntegrable\n    (fun τ => SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.interactionPicture energy V τ) m n)\n    MeasureTheory.volume a b",
     "standardAxioms": [
       "Classical.choice",
@@ -100405,7 +100406,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -100416,18 +100417,14 @@
     "docString": "Every interaction-picture matrix coefficient is interval-integrable. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuous_firstDysonMatrixCoeff"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuous_firstDysonMatrixCoeff"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101194,7 +101191,6 @@
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
-      "SecondQuantization.Common.firstDysonMatrixCoeff_eq_phase_integral",
       "SecondQuantization.Common.support_interactionPicture_basisState_subset"
     ],
     "dependencies": [
@@ -101207,10 +101203,9 @@
       "SecondQuantization.Bosonic.matrixCoeff_freeGibbs_interactionPicture_self",
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
-      "SecondQuantization.Common.firstDysonMatrixCoeff_eq_phase_integral",
       "SecondQuantization.Common.support_interactionPicture_basisState_subset"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105252,7 +105247,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105264,17 +105259,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset_reachableSupport_one",
       "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset_reachableSupport_one",
       "SecondQuantization.Common.support_interactionPicture_basisState_subset_reachableSupport_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105358,85 +105351,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.support_dysonBasis_subset_reachableSupport"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (n : Config),\n  ((SecondQuantization.Common.firstDysonCoeff energy V τ) (SecondQuantization.Common.basisState n)).support ⊆\n    (V (SecondQuantization.Common.basisState n)).support",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson",
-    "externalAxioms": [],
-    "docString": "The first Dyson image of `basisState n` is supported inside the original finite output support\nof `V (basisState n)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset_reachableSupport_one"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.firstDysonCoeff_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset_reachableSupport_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (n : Config),\n  ((SecondQuantization.Common.firstDysonCoeff energy V τ) (SecondQuantization.Common.basisState n)).support ⊆\n    SecondQuantization.Common.reachableSupport V 1 n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset_reachableSupport_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport",
-    "externalAxioms": [],
-    "docString": "The reconstructed first Dyson basis image remains in the same first reachable support. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.support_basisImage_subset_reachableSupport_one",
-      "SecondQuantization.Common.support_firstDysonCoeff_basisState_subset"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108704,7 +108618,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : AddCommGroup 𝓗₁] [inst_1 : _root_.Module ℂ 𝓗₁] (T : 𝓗₁ →ₗ[ℂ] 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear 𝓗₁) T =\n    SecondQuantization.Fermionic.AlgebraicFock.dGamma 𝓗₁ T",
     "standardAxioms": [
       "Classical.choice",
@@ -108712,7 +108626,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108723,16 +108637,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109047,7 +108957,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id"
+      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id",
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
@@ -109058,9 +108969,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear",
       "SecondQuantization.Fermionic.Field.manyBodyLocalizedQuantity_smul_id",
-      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id"
+      "SecondQuantization.Fermionic.Field.oneBodyObservable_smul_id",
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109169,7 +109081,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -109182,13 +109094,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112619,7 +112531,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
     ],
     "dependencies": [
       "HasAlgebraicDerivAt.add",
@@ -112630,7 +112542,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112663,7 +112575,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "dependencies": [
       "HasAlgebraicDerivAt.add",
@@ -112674,7 +112586,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112918,7 +112830,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.Lattice.peierlsForwardPhase_zero",
@@ -112927,7 +112839,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -113257,6 +113169,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate",
+      "SecondQuantization.Fermionic.fermionSign_insertOccupation_of_not_lt",
+      "SecondQuantization.Fermionic.fermionSign_vacuum",
       "SecondQuantization.Fermionic.finiteHilbertAnnihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.finiteHilbertCreate_basisState_of_not_mem"
     ],
@@ -113363,7 +113277,6 @@
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
-      "SecondQuantization.Fermionic.Lattice.latticeBasis_apply_eq_latticeKet",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.latticeBasis_coord_eq_lapply"
     ],
     "crossModuleDirectWrapper": false,
@@ -113732,7 +113645,8 @@
       "SecondQuantization.Fermionic.Lattice.boundedDirectionalPeierlsCurrent_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul",
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.peierlsBondCurrentOperator_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113816,7 +113730,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113863,48 +113777,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.bounded_discrete_continuity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} (x y : Site),\n  SecondQuantization.Fermionic.AlgebraicFock.dualRankOne (SecondQuantization.Fermionic.Lattice.LatticeState Site)\n      (SecondQuantization.Fermionic.Lattice.latticeKet x) (Finsupp.lapply y) =\n    SecondQuantization.Fermionic.Lattice.matrixUnit x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
-    "externalAxioms": [],
-    "docString": "A lattice matrix unit is the corresponding algebraic rank-one map. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dualRankOne_apply",
-      "SecondQuantization.Fermionic.Lattice.matrixUnit_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -114021,7 +113893,7 @@
     ],
     "dependencies": [
       "HasAlgebraicDerivAt.map",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114063,96 +113935,12 @@
     ],
     "dependencies": [
       "HasAlgebraicDerivAt.map",
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock K ℏ q x y)\n    (SecondQuantization.Fermionic.Lattice.bondContact K ℏ q x y) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondCurrentFock_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact",
-    "externalAxioms": [],
-    "docString": "The Fock-space Peierls current has algebraic derivative equal to the contact operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
-    ],
-    "dependencies": [
-      "HasAlgebraicDerivAt.map",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  HasAlgebraicDerivAt (SecondQuantization.Fermionic.Lattice.peierlsBondHamiltonianFock K ℏ q x y)\n    (-SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls",
-    "externalAxioms": [],
-    "docString": "The continuity-derived many-particle bond current is minus the algebraic link derivative of the\nPeierls-coupled Fock-space Hamiltonian contribution. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
-    ],
-    "dependencies": [
-      "HasAlgebraicDerivAt.map",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero"
+      "SecondQuantization.Fermionic.Lattice.hasAlgebraicDerivAt_boundedDirectionalPeierlsHamiltonian_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -114422,45 +114210,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} (x : Site),\n  SecondQuantization.Fermionic.Lattice.latticeBasis x = SecondQuantization.Fermionic.Lattice.latticeKet x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.latticeBasis_apply_eq_latticeKet",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Site : Type u_1} (x y : Site) (ψ : SecondQuantization.Fermionic.Lattice.LatticeState Site),\n  (SecondQuantization.Fermionic.Lattice.matrixUnit x y) ψ = fun₀ | x => ψ y",
     "standardAxioms": [
       "Classical.choice",
@@ -114482,7 +114231,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_comp_siteProjector",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.siteProjector_comp_operator",
-      "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -114490,7 +114239,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.operator_comp_siteProjector",
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.siteProjector_comp_operator",
-      "SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -114563,48 +114312,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : DecidableEq Site] (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site)\n  (ℏ q : ℂ) (x y : Site),\n  SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock K ℏ q x y 0 =\n    SecondQuantization.Fermionic.Lattice.bondCurrent ℏ q K x y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.peierlsBondCurrentFock_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact",
-    "externalAxioms": [],
-    "docString": "The Peierls current family agrees with the existing bond current at zero source. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.dGammaLinear_apply",
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.peierlsBondCurrentOperator_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedPeierlsBondCurrent_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115253,45 +114960,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n      (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q T : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation system expectation geometry direction\n          K q T =\n        expectation.toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation_eq_of_stationary",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "In a stationary state, the evolved directional contact has the same expectation as the\nunevolved contact operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116153,45 +115821,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q ω η T : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry direction\n      K q ω η T =\n    SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation geometry\n        direction K q ω η T +\n      SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation system expectation geometry direction\n        K q T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
-    "externalAxioms": [],
-    "docString": "The total regularized coefficient exposes the retarded and contact contributions separately. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n      (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry\n            direction K q ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (SecondQuantization.Fermionic.Transport.stationaryDirectionalCurrentKernel system expectation geometry\n                direction K q)\n              ω η T +\n            expectation.toContinuousLinearMap\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
     "standardAxioms": [
       "Classical.choice",
@@ -116214,8 +115843,6 @@
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation_eq_of_stationary",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq",
       "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
     ],
     "crossModuleDirectWrapper": false,
@@ -121826,44 +121453,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedAnnihilateLinear i) ψ) n =\n    if i ∈ n then 0\n    else\n      SecondQuantization.Fermionic.fermionPhase i (SecondQuantization.Fermionic.toggleOccupation i n) *\n        ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedAnnihilateLinear_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedCoordinateProjection_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedAnnihilate i) ψ) n =\n    if i ∈ n then 0\n    else\n      SecondQuantization.Fermionic.fermionPhase i (SecondQuantization.Fermionic.toggleOccupation i n) *\n        ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)",
     "standardAxioms": [
@@ -122414,44 +122003,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.completedBasisState_apply_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedCreateLinear i) ψ) n =\n    if i ∈ n then\n      SecondQuantization.Fermionic.fermionPhase i (SecondQuantization.Fermionic.toggleOccupation i n) *\n        ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)\n    else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedCreateLinear_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedCoordinateProjection_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125766,6 +125317,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_apply_singleton",
       "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
       "SecondQuantization.Fermionic.fermionSign_toggleOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
@@ -125774,11 +125326,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_apply_singleton",
       "SecondQuantization.Fermionic.anticomm_annihilate_create_basisState",
       "SecondQuantization.Fermionic.fermionSign_toggleOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126007,7 +125560,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -126019,15 +125572,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_apply_singleton",
       "SecondQuantization.Fermionic.create_fockVacuum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_apply_singleton",
       "SecondQuantization.Fermionic.create_fockVacuum"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152771,9 +152326,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedAnnihilateLinear_apply",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
-      "SecondQuantization.Fermionic.completedCreateLinear_apply",
       "SecondQuantization.Fermionic.completedCreate_apply"
     ],
     "dependencies": [
@@ -152782,12 +152335,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnnihilateLinear_apply",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
-      "SecondQuantization.Fermionic.completedCreateLinear_apply",
       "SecondQuantization.Fermionic.completedCreate_apply"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154448,6 +153999,48 @@
       "SecondQuantization.Fermionic.Lattice.hasDerivAt_peierlsReversePhase_zero"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} (x y : Site),\n  SecondQuantization.Fermionic.AlgebraicFock.dualRankOne (SecondQuantization.Fermionic.Lattice.LatticeState Site)\n      (SecondQuantization.Fermionic.Lattice.latticeKet x) (Finsupp.lapply y) =\n    SecondQuantization.Fermionic.Lattice.matrixUnit x y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization.0.SecondQuantization.Fermionic.Lattice.dualRankOne_latticeKet_lapply",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dualRankOne_apply",
+      "SecondQuantization.Fermionic.Lattice.matrixUnit_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159897,6 +159490,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {f : ℝ → ℂ} {a b : ℝ}, (∀ (x : ℝ), (f x).im = 0) → (∫ (x : ℝ) in a..b, f x).im = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegral_im_eq_zero_of_forall",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "An interval integral of a pointwise real complex-valued field is again real. Kept private because\nit is only proof infrastructure for the crossed `Psi` reality statements below. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
