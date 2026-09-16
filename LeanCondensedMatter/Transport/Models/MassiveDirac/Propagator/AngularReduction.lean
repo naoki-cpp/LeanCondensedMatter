@@ -113,10 +113,15 @@ theorem continuumAngularGreenIntegralOfRegulator_eq
   let yPart : DiracHilbert →L[ℂ] DiracHilbert :=
     pauliGreenPauliCoefficientOfRegulator .x v m p 0 probeEnergy regulator •
       matrixOperator sigmaY
+  let harmonics : AngularHarmonicCoefficients (DiracHilbert →L[ℂ] DiracHilbert) :=
+    { constant := even
+      firstCosine := xPart
+      firstSine := yPart
+      secondCosine := 0
+      secondMixed := 0 }
   unfold continuumAngularGreenIntegralOfRegulator
   simp_rw [pauliGreenOperatorOfRegulator_polar_eq v m p _ probeEnergy regulator]
-  simpa [even] using
-    integral_const_add_complex_cos_smul_add_complex_sin_smul even xPart yPart
+  simpa [harmonics, AngularHarmonicCoefficients.eval, even] using harmonics.integral_eval
 
 end
 
