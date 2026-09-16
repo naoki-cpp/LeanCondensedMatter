@@ -33,10 +33,6 @@ noncomputable section
 open MeasureTheory
 open scoped Interval
 
-/-- Cartesian point `(ρ cos φ, ρ sin φ)` used by the finite polar real-space integral. -/
-private def gaussianCrossedPolarRealSpacePoint (radius angle : ℝ) : Fin 2 → ℝ :=
-  fun i => Fin.cases (radius * Real.cos angle) (fun _ => radius * Real.sin angle) i
-
 /-- An interval integral of a pointwise real complex-valued field is again real. Kept private because
 it is only proof infrastructure for the crossed `Psi` reality statements below. -/
 private theorem intervalIntegral_im_eq_zero_of_forall
@@ -55,7 +51,7 @@ private noncomputable def finiteRadiusPolarRealSpaceIntegral
     (rMax : ℝ) (field : (Fin 2 → ℝ) → ℂ) : ℂ :=
   ∫ radius in (0 : ℝ)..rMax,
     ∫ angle in (0 : ℝ)..(2 * Real.pi),
-      ((radius : ℂ) * field (gaussianCrossedPolarRealSpacePoint radius angle))
+      ((radius : ℂ) * field (polarPoint2D radius angle))
 
 /-- Finite-radius integral of the model-specific finite-cutoff finite-`η` Gaussian crossed trace
 kernel. This is the regulated real-space integral underlying Ado et al. Eq. (13), before the two
