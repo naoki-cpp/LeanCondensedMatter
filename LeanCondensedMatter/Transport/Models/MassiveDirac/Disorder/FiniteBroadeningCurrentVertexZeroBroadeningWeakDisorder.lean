@@ -246,13 +246,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       exact div_ne_zero (ne_of_gt hdisorder)
         (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 2 hhbar))
           (pow_ne_zero 2 hvelocity))
-    have hpref := continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
+    have hpref := continuumBornDisorderMeasurePrefactor_eq_dampingScale
       v disorderStrength hbar hvelocity hhbar
     dsimp [scale, width, Q]
     unfold boundaryRAWidth
-    rw [show continuumBornDisorderMeasurePrefactor disorderStrength hbar =
-        continuumBornDampingScale v disorderStrength hbar * v ^ 2 / Real.pi ^ 2 by
-      simpa [continuumBornRetardedAdvancedCurrentRungPrefactor] using hpref]
+    rw [hpref]
     field_simp [hvelocity, hgammaNe, ne_of_gt hQPos, Real.pi_ne_zero]
   have hkernel := tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
     v pMax hvelocity hcenter0 hgap hcenterMax (by linarith) hwidth hscale
