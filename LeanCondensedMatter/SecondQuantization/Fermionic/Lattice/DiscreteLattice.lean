@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import Mathlib.LinearAlgebra.Finsupp.LSum
 
 set_option linter.style.header false
@@ -65,6 +65,17 @@ noncomputable def siteProjector (x : Site) :
 theorem siteProjector_apply (x : Site) (ψ : LatticeState Site) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
   rfl
+
+/-- The diagonal one-particle observable associated with a finitely supported lattice scalar field:
+`f ↦ ∑ₓ fₓ |x⟩⟨x|`. -/
+noncomputable def diagonalObservable :
+    LatticeState Site →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site) :=
+  (Finsupp.lift (LatticeState Site →ₗ[ℂ] LatticeState Site) ℂ Site) siteProjector
+
+@[simp]
+theorem diagonalObservable_latticeKet (x : Site) :
+    diagonalObservable (latticeKet x) = siteProjector x := by
+  simp [diagonalObservable, latticeKet, Finsupp.lift_apply]
 
 variable [DecidableEq Site]
 
@@ -225,11 +236,17 @@ noncomputable def hoppingHamiltonian (K : LocallyFiniteHopping Site) :
       AlgebraicFock (LatticeState Site) :=
   AlgebraicFock.dGamma (LatticeState Site) K.operator
 
-/-- Many-particle charge localized at one lattice site. -/
+/-- Many-particle charge localized at one lattice site, obtained by evaluating the canonical smeared
+lattice charge density on the site ket. -/
 noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  q • AlgebraicFock.dGamma (LatticeState Site) (siteProjector x)
+  Field.chargeDensity (LatticeState Site) q diagonalObservable (latticeKet x)
+
+@[simp]
+theorem siteChargeDensity_eq (q : ℂ) (x : Site) :
+    siteChargeDensity q x = q • AlgebraicFock.dGamma (LatticeState Site) (siteProjector x) := by
+  rw [siteChargeDensity, Field.chargeDensity_apply, diagonalObservable_latticeKet]
 
 /-- The oriented many-particle bond current. The convention is
 
@@ -262,8 +279,8 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
         ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
       -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
   unfold hoppingHamiltonian siteChargeDensity
-  rw [ConservationLaw.linearCommutator_smul_right]
-  rw [AlgebraicFock.dGamma_linearCommutator]
+  rw [Field.heisenberg_commutator_chargeDensity]
+  rw [diagonalObservable_latticeKet]
   rw [K.linearCommutator_siteProjector]
   have hdGamma :
       AlgebraicFock.dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
@@ -276,12 +293,7 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
     rw [map_neg, map_sum]
   rw [hdGamma]
   unfold bondCurrent
-  simp only [smul_smul, smul_neg, Finset.smul_sum]
-  apply congrArg Neg.neg
-  apply Finset.sum_congr rfl
-  intro y _
-  congr 1
-  ring
+  simp only [smul_neg, Finset.smul_sum]
 
 /-- The algebraic discrete continuity equation on an arbitrary locally finite lattice. -/
 theorem discrete_continuity (ℏ q : ℂ)
