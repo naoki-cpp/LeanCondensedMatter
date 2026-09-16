@@ -751,13 +751,15 @@ function renderOverviewContent() {
     renderDomainOverview();
     return;
   }
-  moduleOverview?.render(state.browse).then((rendered) => {
-    if (!rendered && state.browse) {
+  const requestedBrowse = state.browse;
+  moduleOverview?.render(requestedBrowse).then((rendered) => {
+    if (!rendered && state.browse === requestedBrowse) {
       state.browse = null;
       renderDomainOverview();
       writeLocation(false);
     }
   }).catch((error) => {
+    if (state.browse !== requestedBrowse) return;
     console.error(error);
     ui.overview.replaceChildren(element("p", "error-message", error instanceof Error ? error.message : String(error)));
   });
