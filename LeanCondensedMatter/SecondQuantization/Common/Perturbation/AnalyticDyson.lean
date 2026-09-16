@@ -60,10 +60,7 @@ theorem norm_analyticDysonTerm_le (energy : Config → ℝ)
         (‖lam‖ * interactionPictureNormBound energy V β) τ n := by
   rw [analyticDysonTerm_eq_term]
   exact Dyson.norm_term_le_of_bound
-    (continuousInteractionPicture energy V)
-    ContinuousLinearMap.norm_id_le
-    (interactionPictureNormBound_nonneg energy V hβ)
-    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    (continuousInteractionPicture_boundedInteraction energy V hβ).toBoundedInteraction
     lam n hτ
 
 /-- On every nonnegative compact imaginary-time interval, the analytic Dyson terms are summable
@@ -78,10 +75,7 @@ theorem summable_analyticDysonTerm (energy : Config → ℝ)
     exact analyticDysonTerm_eq_term energy V τ lam n
   rw [hterm]
   exact Dyson.summable_term_of_bound
-    (continuousInteractionPicture energy V)
-    ContinuousLinearMap.norm_id_le
-    (interactionPictureNormBound_nonneg energy V hβ)
-    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    (continuousInteractionPicture_boundedInteraction energy V hβ).toBoundedInteraction
     lam hτ
 
 /-- The defining operator series has sum `analyticDysonEvolution`. -/
@@ -96,10 +90,7 @@ theorem hasSum_analyticDysonEvolution (energy : Config → ℝ)
     exact analyticDysonTerm_eq_term energy V τ lam n
   rw [hterm, analyticDysonEvolution_eq_evolution]
   exact Dyson.hasSum_evolution_of_bound
-    (continuousInteractionPicture energy V)
-    ContinuousLinearMap.norm_id_le
-    (interactionPictureNormBound_nonneg energy V hβ)
-    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    (continuousInteractionPicture_boundedInteraction energy V hβ).toBoundedInteraction
     lam hτ
 
 /-- The analytic Dyson series converges uniformly in operator norm on every compact interval
@@ -113,10 +104,7 @@ theorem hasSumUniformlyOn_analyticDysonEvolution (energy : Config → ℝ)
       (Set.Icc (0 : ℝ) β) := by
   simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
     (Dyson.hasSumUniformlyOn_evolution_of_bound
-      (continuousInteractionPicture energy V)
-      ContinuousLinearMap.norm_id_le
-      (interactionPictureNormBound_nonneg energy V hβ)
-      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+      (continuousInteractionPicture_boundedInteraction energy V hβ).toBoundedInteraction
       lam)
 
 /-- At zero imaginary time only the zeroth Dyson coefficient survives. -/

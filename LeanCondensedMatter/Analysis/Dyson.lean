@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Dyson.Basic
+import LeanCondensedMatter.Analysis.Dyson.Hypotheses
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation
 import LeanCondensedMatter.Analysis.Dyson.Volterra

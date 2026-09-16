@@ -139,17 +139,17 @@ theorem eqOn_of_volterra_of_bound {V U W : ℝ → A} (hVcont : Continuous V)
 
 /-- The generic Dyson evolution is the unique continuous solution of its bounded Volterra equation
 on `[0, β]`. -/
-theorem eqOn_evolution_of_volterra_of_bound {V U : ℝ → A} (hVcont : Continuous V)
-    {β M : ℝ} (hβ : 0 ≤ β) (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M) (lam : ℂ)
+theorem eqOn_evolution_of_volterra_of_bound {V U : ℝ → A}
+    {β M : ℝ} (hβ : 0 ≤ β) (h : ContinuousBoundedInteraction V β M) (lam : ℂ)
     (hU : ContinuousOn U (Icc (0 : ℝ) β))
     (hUEq : ∀ t ∈ Icc (0 : ℝ) β,
       U t = 1 - lam • ∫ σ in (0 : ℝ)..t, V σ * U σ) :
     EqOn U (fun t => evolution V lam t) (Icc (0 : ℝ) β) := by
-  apply eqOn_of_volterra_of_bound hVcont hβ hV lam hU
-    (continuousOn_evolution_of_bound hVcont hOne hM hV lam) hUEq
+  apply eqOn_of_volterra_of_bound h.interaction_continuous hβ
+    h.toBoundedInteraction.interaction_norm_le lam hU
+    (continuousOn_evolution_of_bound h lam) hUEq
   intro t ht
-  exact evolution_eq_one_sub_integral_of_bound hVcont hOne hM hV ht lam
+  exact evolution_eq_one_sub_integral_of_bound h ht lam
 
 end
 end Dyson

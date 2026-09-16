@@ -88,6 +88,20 @@ theorem norm_continuousInteractionPicture_le (energy : Config → ℝ)
   rw [interactionPictureNormBound, dif_pos hβ]
   exact (Classical.choose_spec (exists_interactionPictureNormBound energy V hβ)).2 τ hτ
 
+/-- The finite interaction-picture family supplies the canonical generic bounded-Dyson hypotheses
+on every nonnegative compact interval. -/
+theorem continuousInteractionPicture_boundedInteraction (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β : ℝ} (hβ : 0 ≤ β) :
+    Dyson.ContinuousBoundedInteraction
+      (continuousInteractionPicture energy V) β (interactionPictureNormBound energy V β) := by
+  refine
+    { toBoundedInteraction :=
+        { norm_one_le := ContinuousLinearMap.norm_id_le
+          bound_nonneg := interactionPictureNormBound_nonneg energy V hβ
+          interaction_norm_le := fun τ hτ =>
+            norm_continuousInteractionPicture_le energy V hβ hτ }
+      interaction_continuous := continuous_continuousInteractionPicture energy V }
+
 end
 end Common
 end SecondQuantization

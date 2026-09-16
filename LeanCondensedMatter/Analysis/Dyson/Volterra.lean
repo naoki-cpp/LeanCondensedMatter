@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Generic Volterra equation for bounded Dyson evolutions
 
 This module exchanges the generic Dyson series with its Bochner interval integral and proves the
-interaction-picture Volterra equation. The only quantitative input is an explicit uniform bound
-for the interaction family on a compact nonnegative time interval.
+interaction-picture Volterra equation. The quantitative and continuity obligations are supplied
+through the canonical bounded-interaction hypotheses on a compact nonnegative time interval.
 -/
 
 namespace Dyson
@@ -36,13 +36,12 @@ theorem continuous_integrand {V : ℝ → A} (hV : Continuous V) (lam : ℂ) (n 
 
 /-- Left multiplication by the interaction and scalar multiplication carry the Dyson sum to the
 pointwise Volterra integrand. -/
-theorem hasSum_integrand_of_bound (V : ℝ → A) {β M σ : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M)
+theorem hasSum_integrand_of_bound {V : ℝ → A} {β M σ : ℝ}
+    (h : BoundedInteraction V β M)
     (hσ : σ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum (fun n => integrand V lam n σ)
       (lam • (V σ * evolution V lam σ)) := by
-  have hmul := (hasSum_evolution_of_bound V hOne hM hV lam hσ).mul_left (V σ)
+  have hmul := (hasSum_evolution_of_bound h lam hσ).mul_left (V σ)
   simpa only [integrand] using hmul.const_smul lam
 
 /-- The generic Volterra-integrand majorant is summable. -/
@@ -52,31 +51,31 @@ theorem summable_integrandMajorant (M β : ℝ) (lam : ℂ) :
 
 omit [CompleteSpace A] in
 /-- Uniform pointwise norm control of every generic Volterra-integrand term on `[0, β]`. -/
-theorem norm_integrand_le_of_bound (V : ℝ → A) {β M σ : ℝ}
-    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M)
+theorem norm_integrand_le_of_bound {V : ℝ → A} {β M σ : ℝ}
+    (h : BoundedInteraction V β M)
     (hσ : σ ∈ Icc (0 : ℝ) β) (lam : ℂ) (n : ℕ) :
     ‖integrand V lam n σ‖ ≤ integrandMajorant M β lam n := by
-  have hweighted : 0 ≤ ‖lam‖ * M := mul_nonneg (norm_nonneg lam) hM
+  have hweighted : 0 ≤ ‖lam‖ * M := mul_nonneg (norm_nonneg lam) h.bound_nonneg
   have hterm : ‖term V lam σ n‖ ≤ majorant (‖lam‖ * M) β n :=
-    (norm_term_le_of_bound V hOne hM hV lam n hσ).trans
+    (norm_term_le_of_bound h lam n hσ).trans
       (majorant_mono_time hweighted hσ.1 hσ.2 n)
   calc
     ‖integrand V lam n σ‖ = ‖lam‖ * ‖V σ * term V lam σ n‖ := by
       rw [integrand, norm_smul]
     _ ≤ ‖lam‖ * (‖V σ‖ * ‖term V lam σ n‖) :=
       mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg lam)
-    _ ≤ ‖lam‖ * (M * majorant (‖lam‖ * M) β n) := by
-      gcongr
-      exact hV σ hσ
+    _ ≤ ‖lam‖ * (M * majorant (‖lam‖ * M) β n) :=
+      mul_le_mul_of_nonneg_left
+        (mul_le_mul (h.interaction_norm_le σ hσ) hterm
+          (norm_nonneg _) h.bound_nonneg)
+        (norm_nonneg lam)
     _ = integrandMajorant M β lam n := by
       rw [integrandMajorant]
       ring
 
 /-- The generic Volterra integrand series may be exchanged with the Bochner interval integral. -/
-theorem hasSum_intervalIntegral_integrand_of_bound {V : ℝ → A} (hVcont : Continuous V)
-    {β M τ : ℝ} (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M)
+theorem hasSum_intervalIntegral_integrand_of_bound {V : ℝ → A} {β M τ : ℝ}
+    (h : ContinuousBoundedInteraction V β M)
     (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum
       (fun n => ∫ σ in (0 : ℝ)..τ, integrand V lam n σ)
@@ -84,19 +83,19 @@ theorem hasSum_intervalIntegral_integrand_of_bound {V : ℝ → A} (hVcont : Con
   apply intervalIntegral.hasSum_integral_of_dominated_convergence
     (bound := fun n _ => integrandMajorant M β lam n)
   · intro n
-    exact (continuous_integrand hVcont lam n).aestronglyMeasurable
+    exact (continuous_integrand h.interaction_continuous lam n).aestronglyMeasurable
   · intro n
     exact Filter.Eventually.of_forall fun σ hσ => by
       have hσ' : σ ∈ Icc (0 : ℝ) τ := by
         simpa [uIcc_of_le hτ.1] using (uIoc_subset_uIcc hσ)
-      exact norm_integrand_le_of_bound V hOne hM hV
+      exact norm_integrand_le_of_bound h.toBoundedInteraction
         ⟨hσ'.1, hσ'.2.trans hτ.2⟩ lam n
   · exact Filter.Eventually.of_forall fun _ _ => summable_integrandMajorant M β lam
   · exact intervalIntegrable_const
   · exact Filter.Eventually.of_forall fun σ hσ => by
       have hσ' : σ ∈ Icc (0 : ℝ) τ := by
         simpa [uIcc_of_le hτ.1] using (uIoc_subset_uIcc hσ)
-      exact hasSum_integrand_of_bound V hOne hM hV
+      exact hasSum_integrand_of_bound h.toBoundedInteraction
         ⟨hσ'.1, hσ'.2.trans hτ.2⟩ lam
 
 omit [CompleteSpace A] in
@@ -110,28 +109,26 @@ theorem intervalIntegral_integrand (V : ℝ → A) (τ : ℝ) (lam : ℂ) (n : �
   simp [integrand, term, pow_succ', smul_smul]
 
 /-- The positive-order generic Dyson tail sums to the negative Volterra integral. -/
-theorem hasSum_tail_of_bound {V : ℝ → A} (hVcont : Continuous V)
-    {β M τ : ℝ} (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M)
+theorem hasSum_tail_of_bound {V : ℝ → A} {β M τ : ℝ}
+    (h : ContinuousBoundedInteraction V β M)
     (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum (fun n => term V lam τ (n + 1))
       (- ∫ σ in (0 : ℝ)..τ, lam • (V σ * evolution V lam σ)) := by
   simpa only [neg_neg] using
     (HasSum.congr_fun
-      (hasSum_intervalIntegral_integrand_of_bound hVcont hOne hM hV hτ lam)
+      (hasSum_intervalIntegral_integrand_of_bound h hτ lam)
       (fun n => (intervalIntegral_integrand V τ lam n).symm)).neg
 
 /-- The generic Dyson evolution solves the interaction-picture Volterra equation. -/
-theorem evolution_eq_one_sub_integral_of_bound {V : ℝ → A} (hVcont : Continuous V)
-    {β M τ : ℝ} (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
-    (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M)
+theorem evolution_eq_one_sub_integral_of_bound {V : ℝ → A} {β M τ : ℝ}
+    (h : ContinuousBoundedInteraction V β M)
     (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     evolution V lam τ = 1 - lam • ∫ σ in (0 : ℝ)..τ, V σ * evolution V lam σ := by
-  have hfull := hasSum_evolution_of_bound V hOne hM hV lam hτ
+  have hfull := hasSum_evolution_of_bound h.toBoundedInteraction lam hτ
   have hdecomp : HasSum (term V lam τ)
       (term V lam τ 0 +
         (- ∫ σ in (0 : ℝ)..τ, lam • (V σ * evolution V lam σ))) :=
-    (hasSum_tail_of_bound hVcont hOne hM hV hτ lam).zero_add
+    (hasSum_tail_of_bound h hτ lam).zero_add
   have heq := hfull.unique hdecomp
   simpa [term, sub_eq_add_neg, intervalIntegral.integral_smul] using heq
 
