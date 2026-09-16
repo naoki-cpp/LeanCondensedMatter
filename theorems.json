@@ -54367,6 +54367,87 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          IntervalIntegrable\n              (fun p =>\n                ↑p *\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2))\n              MeasureTheory.volume 0 pMax ∧\n            ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2) =\n              QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSideRadialEndpoint side v m probeEnergy\n                broadening disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+    "externalAxioms": [],
+    "docString": "The finite-broadening bare-source same-side radial integrand is integrable and evaluates to the\ncanonical endpoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_and_integral_radialQuadraticInverseSquare"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n          probeEnergy pMax).re =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n      disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "The real Born renormalization is independent of the retarded/advanced side used to read the\nreal part of the common complex boundary value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n        probeEnergy pMax).im =\n    -(2 * v ^ 2)⁻¹ * (side.sign * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
@@ -54773,26 +54854,26 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Positive disorder and a real-renormalization bound below one keep the side-indexed fixed-cutoff\nzero-broadening Born-Dyson denominator away from zero at every radial momentum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor_pos",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor_pos",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -54825,8 +54906,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_eq_matrix",
@@ -54835,8 +54916,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -55572,6 +55653,47 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                probeEnergy disorderStrength hbar pMax <\n              1 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                v m p probeEnergy disorderStrength hbar pMax ≠\n              0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": "Under the same propagator-boundary hypotheses, the retarded-advanced zero-broadening denominator\nproduct is nonzero at every radial momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62716,12 +62838,97 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy hbar pMax : ℝ),\n  |m| < probeEnergy →\n    probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n      Filter.Tendsto\n        (fun disorderStrength =>\n          ↑disorderStrength *\n            QuantumTheory.Transport.Models.MassiveDirac.zeroBroadeningSameSideRadialEndpoint side v m probeEnergy\n              disorderStrength hbar pMax)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+    "externalAxioms": [],
+    "docString": "The zero-broadening same-side endpoint stays finite as disorder vanishes, so multiplying it by\nthe disorder strength sends it to zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide.0.QuantumTheory.Transport.Models.MassiveDirac.continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side\n              v m 0 probeEnergy disorderStrength hbar pMax ≠\n            0 →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                side v m pMax probeEnergy disorderStrength hbar pMax ≠\n              0 →\n            Filter.Tendsto\n              (fun broadening =>\n                QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSideRadialEndpoint side v m probeEnergy\n                  broadening disorderStrength hbar pMax)\n              (nhdsWithin 0 (Set.Ioi 0))\n              (nhds\n                (QuantumTheory.Transport.Models.MassiveDirac.zeroBroadeningSameSideRadialEndpoint side v m probeEnergy\n                  disorderStrength hbar pMax))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+    "externalAxioms": [],
+    "docString": "At fixed disorder and cutoff, the finite-broadening same-side endpoint converges to its\nzero-broadening boundary along positive broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveMass_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -63069,9 +63276,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero",
@@ -63080,9 +63287,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -63387,11 +63594,11 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_inPlaneLadderAction",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -63768,8 +63975,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVector_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -64138,9 +64345,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero"
@@ -64148,9 +64355,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -64183,9 +64390,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_broadening_zero"
@@ -64193,9 +64400,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -157744,6 +157951,84 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v m\n        p probeEnergy disorderStrength hbar pMax).im =\n    -2 * (disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar) *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n            probeEnergy pMax).im *\n      (probeEnergy ^ 2 + m ^ 2 -\n        disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n            (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side\n                v m probeEnergy pMax).re *\n          (probeEnergy ^ 2 - m ^ 2))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  (∀ p ∈ Set.Icc 0 pMax,\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n          v m p probeEnergy disorderStrength hbar pMax ≠\n        0) →\n    ∀ p ∈ Set.Icc 0 pMax,\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v\n          m p probeEnergy disorderStrength hbar pMax ≠\n        0",
     "standardAxioms": [
       "Classical.choice",
@@ -157822,45 +158107,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar : ℝ), hbar ≠ 0 → 0 < QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor_pos",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          (∀ p ∈ Set.Icc 0 pMax,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                  side v m p probeEnergy disorderStrength hbar pMax ≠\n                0) →\n            ∃ c,\n              0 < c ∧\n                ∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                  ∀ p ∈ Set.Icc 0 pMax,\n                    c ≤\n                      ‖QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p\n                          0 probeEnergy broadening disorderStrength hbar pMax‖",
     "standardAxioms": [
       "Classical.choice",
@@ -157904,84 +158150,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n          probeEnergy pMax).re =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n      disorderStrength hbar pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization_eq_side",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v m\n        p probeEnergy disorderStrength hbar pMax).im =\n    -2 * (disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar) *\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m\n            probeEnergy pMax).im *\n      (probeEnergy ^ 2 + m ^ 2 -\n        disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar *\n            (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side\n                v m probeEnergy pMax).re *\n          (probeEnergy ^ 2 - m ^ 2))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_im_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n        broadening disorderStrength hbar pMax -\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v\n        m p probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m 0 0 probeEnergy\n        broadening disorderStrength hbar pMax -\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side v\n        m 0 probeEnergy disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -158008,47 +158176,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_bound"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m p probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      0 < disorderStrength →\n        |m| < probeEnergy →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                probeEnergy disorderStrength hbar pMax <\n              1 →\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary\n                v m p probeEnergy disorderStrength hbar pMax ≠\n              0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -158907,35 +159034,71 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          IntervalIntegrable\n              (fun p =>\n                ↑p *\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2))\n              MeasureTheory.volume 0 pMax ∧\n            ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m\n                        probeEnergy broadening disorderStrength hbar pMax ^\n                      2) =\n              QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSideRadialEndpoint✝ side v m probeEnergy\n                broadening disorderStrength hbar pMax",
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy hbar pMax : ℝ),\n  |m| < probeEnergy →\n    probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n      ContinuousAt\n        (fun disorderStrength =>\n          QuantumTheory.Transport.Models.MassiveDirac.zeroBroadeningSameSideRadialEndpoint side v m probeEnergy\n            disorderStrength hbar pMax)\n        0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral",
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide.0.QuantumTheory.Transport.Models.MassiveDirac.continuousAt_zeroBroadeningSameSideRadialEndpoint_disorder_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero"
     ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_and_integral_radialQuadraticInverseSquare"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_zeroBroadeningSameSideRadialEndpoint_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v pMax : ℝ) (A : ℂ),\n  v ≠ 0 →\n    (∀ (p : ℝ), A - ↑(v ^ 2 * p ^ 2) ≠ 0) →\n      IntervalIntegrable (fun p => ↑p * A * (A - ↑(v ^ 2 * p ^ 2))⁻¹ ^ 2) MeasureTheory.volume 0 pMax ∧\n        ∫ (p : ℝ) in 0..pMax, ↑p * A * (A - ↑(v ^ 2 * p ^ 2))⁻¹ ^ 2 =\n          (↑(2 * v ^ 2))⁻¹ * A * ((A - ↑(v ^ 2 * pMax ^ 2))⁻¹ - A⁻¹)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_and_integral_radialQuadraticInverseSquare",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -158972,95 +159135,13 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v pMax : ℝ) (A : ℂ),\n  v ≠ 0 →\n    (∀ (p : ℝ), A - ↑(v ^ 2 * p ^ 2) ≠ 0) →\n      IntervalIntegrable (fun p => ↑p * A * (A - ↑(v ^ 2 * p ^ 2))⁻¹ ^ 2) MeasureTheory.volume 0 pMax ∧\n        ∫ (p : ℝ) in 0..pMax, ↑p * A * (A - ↑(v ^ 2 * p ^ 2))⁻¹ ^ 2 =\n          (↑(2 * v ^ 2))⁻¹ * A * ((A - ↑(v ^ 2 * pMax ^ 2))⁻¹ - A⁻¹)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_and_integral_radialQuadraticInverseSquare",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary side\n              v m 0 probeEnergy disorderStrength hbar pMax ≠\n            0 →\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominatorZeroBroadeningBoundary\n                side v m pMax probeEnergy disorderStrength hbar pMax ≠\n              0 →\n            Filter.Tendsto\n              (fun broadening =>\n                QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSideRadialEndpoint✝ side v m probeEnergy\n                  broadening disorderStrength hbar pMax)\n              (nhdsWithin 0 (Set.Ioi 0))\n              (nhds\n                (QuantumTheory.Transport.Models.MassiveDirac.zeroBroadeningSameSideRadialEndpoint✝ side v m probeEnergy\n                  disorderStrength hbar pMax))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteBroadeningSameSideRadialEndpoint_broadening_zero",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_broadening_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveMass_broadening_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
