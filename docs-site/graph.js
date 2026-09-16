@@ -1,3 +1,5 @@
+import { createModuleOverview } from "./module-overview.js";
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
@@ -14,6 +16,7 @@ const state = {
   byName: new Map(),
   root: null,
   selected: null,
+  browse: null,
   direction: "both",
   depth: 2,
   module: "*",
@@ -43,6 +46,8 @@ const ui = {
   fitView: document.querySelector("#fit-view"),
   highlightInputs: [...document.querySelectorAll("[data-highlight]")],
 };
+
+let moduleOverview = null;
 
 function svg(tag, attributes = {}) {
   const node = document.createElementNS(SVG_NS, tag);
@@ -404,11 +409,19 @@ function appendNodeLabel(nodes, name, position, color, branch, root, selected, s
   nodes.append(text);
 }
 
+function setModuleFilterEnabled(enabled) {
+  ui.module.disabled = !enabled;
+  ui.module.title = enabled
+    ? "Filter the current dependency graph by exact module."
+    : "Browse modules through the overview hierarchy.";
+}
+
 function renderGraph({ preserveView = false } = {}) {
   if (!state.root || !state.byName.has(state.root)) return;
   ui.overview.hidden = true;
   ui.viewport.hidden = false;
   setGraphActionsEnabled(true);
+  setModuleFilterEnabled(true);
 
   const previousView = preserveView ? state.viewBox : null;
   const { levels, truncated } = collectNeighborhood();
@@ -663,6 +676,8 @@ function writeLocation(push) {
   else url.searchParams.set("depth", String(state.depth));
   if (state.module === "*") url.searchParams.delete("module");
   else url.searchParams.set("module", state.module);
+  if (!state.root && state.browse) url.searchParams.set("browse", state.browse);
+  else url.searchParams.delete("browse");
   url.hash = state.root ?? "";
   const next = `${url.pathname}${url.search}${url.hash}`;
   if (push) history.pushState(null, "", next);
@@ -671,8 +686,10 @@ function writeLocation(push) {
 
 function focusRoot(name, { historyEntry = true } = {}) {
   if (!state.byName.has(name)) return;
+  moduleOverview?.cancel();
   state.root = name;
   state.selected = name;
+  state.browse = null;
   ui.search.value = name;
   hideSearchResults();
   renderDetails(name);
@@ -692,6 +709,7 @@ function summaryChip(text) {
 }
 
 function renderDomainOverview() {
+  moduleOverview?.cancel();
   ui.overview.replaceChildren();
   ui.overview.append(overviewHeader(
     "Explore LeanCondensedMatter",
@@ -720,90 +738,51 @@ function renderDomainOverview() {
     button.type = "button";
     button.append(element("strong", "", domain));
     button.append(element("small", "", `${entries.length} theorems · ${moduleCount} modules`));
-    button.addEventListener("click", () => renderDomain(domain));
+    button.addEventListener("click", () => showOverview({ browse: domain }));
     grid.append(button);
   }
   section.append(grid);
   ui.overview.append(section);
+  moduleOverview?.hydrateDomainDescriptions().catch((error) => console.error(error));
 }
 
-function renderDomain(domain) {
-  const entries = state.catalog.filter((entry) => domainName(entry.module) === domain);
-  const modules = new Map();
-  for (const entry of entries) {
-    if (!modules.has(entry.module)) modules.set(entry.module, []);
-    modules.get(entry.module).push(entry);
+function renderOverviewContent() {
+  if (!state.browse) {
+    renderDomainOverview();
+    return;
   }
-  ui.overview.replaceChildren();
-  ui.overview.append(overviewHeader(domain, `${entries.length} theorems across ${modules.size} modules.`));
-  const section = element("section", "overview-section");
-  const head = element("div", "overview-section-head");
-  head.append(element("h3", "", "Modules"));
-  const back = element("button", "overview-back", "All areas");
-  back.type = "button";
-  back.addEventListener("click", renderDomainOverview);
-  head.append(back);
-  section.append(head);
-  const grid = element("div", "module-grid");
-  for (const [moduleName, moduleEntries] of [...modules.entries()].sort(([a], [b]) => a.localeCompare(b))) {
-    const button = element("button", "module-card");
-    button.type = "button";
-    button.append(element("strong", "", shortModule(moduleName)));
-    button.append(element("small", "", `${moduleEntries.length} theorems`));
-    button.addEventListener("click", () => renderModule(moduleName));
-    grid.append(button);
-  }
-  section.append(grid);
-  ui.overview.append(section);
+  const requestedBrowse = state.browse;
+  moduleOverview?.render(requestedBrowse).then((rendered) => {
+    if (!rendered && state.browse === requestedBrowse) {
+      state.browse = null;
+      renderDomainOverview();
+      writeLocation(false);
+    }
+  }).catch((error) => {
+    if (state.browse !== requestedBrowse) return;
+    console.error(error);
+    ui.overview.replaceChildren(element("p", "error-message", error instanceof Error ? error.message : String(error)));
+  });
 }
 
-function renderModule(moduleName) {
-  const entries = state.catalog
-    .filter((entry) => entry.module === moduleName)
-    .sort((a, b) => a.name.localeCompare(b.name));
-  ui.overview.replaceChildren();
-  ui.overview.append(overviewHeader(shortModule(moduleName), `${entries.length} theorems in this module.`));
-  const section = element("section", "overview-section");
-  const head = element("div", "overview-section-head");
-  head.append(element("h3", "", "Declarations"));
-  const back = element("button", "overview-back", domainName(moduleName));
-  back.type = "button";
-  back.addEventListener("click", () => renderDomain(domainName(moduleName)));
-  head.append(back);
-  section.append(head);
-  const list = element("div", "declaration-list");
-  for (const entry of entries) {
-    const button = element("button", "declaration-card");
-    button.type = "button";
-    button.append(element("strong", "", declarationBaseName(entry.name)));
-    const context = entry.docString?.trim() || entry.statement;
-    button.append(element("small", "", context.slice(0, 150)));
-    button.addEventListener("click", () => focusRoot(entry.name));
-    list.append(button);
-  }
-  section.append(list);
-  ui.overview.append(section);
-}
-
-function showOverview({ historyEntry = true, resetModule = true } = {}) {
+function showOverview({ historyEntry = true, browse = null } = {}) {
   state.root = null;
   state.selected = null;
   state.viewBox = null;
   state.graphBounds = null;
-  if (resetModule) {
-    state.module = "*";
-    ui.module.value = "*";
-  }
+  state.module = "*";
+  ui.module.value = "*";
+  state.browse = browse && moduleOverview?.hasModule(browse) ? shortModule(browse) : null;
   ui.search.value = "";
   hideSearchResults();
   ui.viewport.hidden = true;
   ui.overview.hidden = false;
   setGraphActionsEnabled(false);
+  setModuleFilterEnabled(false);
   const moduleCount = new Set(state.catalog.map((entry) => entry.module)).size;
   ui.graphStatus.textContent = `${state.catalog.length} theorems · ${moduleCount} modules`;
   ui.detail.replaceChildren(element("p", "muted", "Choose a declaration from the overview or search to inspect its statement and relationships."));
-  if (!resetModule && state.module !== "*" && state.catalog.some((entry) => entry.module === state.module)) renderModule(state.module);
-  else renderDomainOverview();
+  renderOverviewContent();
   if (historyEntry) writeLocation(true);
 }
 
@@ -903,7 +882,10 @@ function restoreLocation() {
   const depth = Number(params.get("depth"));
   state.depth = [1, 2, 3, 4].includes(depth) ? depth : 2;
   const requestedModule = params.get("module");
-  state.module = requestedModule && state.catalog.some((entry) => entry.module === requestedModule) ? requestedModule : "*";
+  const graphModule = requestedModule && state.catalog.some((entry) => entry.module === requestedModule)
+    ? requestedModule
+    : "*";
+  state.module = graphModule;
   ui.direction.value = state.direction;
   ui.depth.value = String(state.depth);
   ui.module.value = state.module;
@@ -911,8 +893,20 @@ function restoreLocation() {
   let requested = "";
   try { requested = decodeURIComponent(location.hash.slice(1)); }
   catch { requested = location.hash.slice(1); }
-  if (requested && state.byName.has(requested)) focusRoot(requested, { historyEntry: false });
-  else showOverview({ historyEntry: false, resetModule: false });
+  if (requested && state.byName.has(requested)) {
+    focusRoot(requested, { historyEntry: false });
+    return;
+  }
+
+  const requestedBrowse = params.get("browse");
+  const browse = requestedBrowse && moduleOverview?.hasModule(requestedBrowse)
+    ? shortModule(requestedBrowse)
+    : graphModule !== "*" && moduleOverview?.hasModule(graphModule)
+      ? shortModule(graphModule)
+      : null;
+  const legacyModuleRoute = !requestedBrowse && browse !== null && graphModule !== "*";
+  showOverview({ historyEntry: false, browse });
+  if (legacyModuleRoute) writeLocation(false);
 }
 
 function bindGraphNavigation() {
@@ -986,10 +980,9 @@ function bindEvents() {
     writeLocation(false);
   });
   ui.module.addEventListener("change", () => {
+    if (!state.root) return;
     state.module = ui.module.value;
-    if (state.root) renderGraph();
-    else if (state.module === "*") renderDomainOverview();
-    else renderModule(state.module);
+    renderGraph();
     writeLocation(false);
   });
   for (const input of ui.highlightInputs) {
@@ -1009,6 +1002,12 @@ async function main() {
   state.catalog = (await response.json()).map(normalizeEntry).sort((a, b) => a.name.localeCompare(b.name));
   state.byName = new Map(state.catalog.map((entry) => [entry.name, entry]));
   if (state.catalog.length === 0) throw new Error("theorem catalog is empty");
+  moduleOverview = createModuleOverview({
+    catalog: state.catalog,
+    overview: ui.overview,
+    onBrowse: (moduleName) => showOverview({ browse: moduleName }),
+    onOpenDeclaration: (name) => focusRoot(name),
+  });
   populateControls();
   bindEvents();
   restoreLocation();
