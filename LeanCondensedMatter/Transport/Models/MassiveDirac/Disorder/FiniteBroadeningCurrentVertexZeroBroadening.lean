@@ -90,7 +90,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
     (i j : Fin 2)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
     ((((2 * Real.pi : ℝ) : ℂ)) *
       (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
         v m p probeEnergy disorderStrength hbar pMax)⁻¹ *
@@ -140,7 +140,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialI
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary] using
     hcoefficient.const_mul
-      ((continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ))
+      ((continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ))
 
 end
 
