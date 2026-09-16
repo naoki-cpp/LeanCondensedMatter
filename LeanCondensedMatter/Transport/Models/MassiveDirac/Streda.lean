@@ -8,6 +8,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedTrace
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 
 set_option linter.style.header false

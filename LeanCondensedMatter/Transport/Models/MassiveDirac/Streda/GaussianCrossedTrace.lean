@@ -12,7 +12,9 @@ corresponding to Ado et al., EPL 111, 37004 (2015), Eq. (13a,b), before any real
 conductivity prefactor, or Bessel-function evaluation is introduced.
 
 The two crossed topologies are kept in one indexed API. They remain separate from the non-crossing
-ladder abstraction and from any later non-Gaussian `C3` contribution.
+ladder abstraction and from any later non-Gaussian `C3` contribution. The trace topology is
+parameterized by an arbitrary negatable separation type, so Cartesian real-space and radial
+specializations share the same canonical `X` / `Psi` construction.
 
 For a real-space separation `r`, the `realSpaceCurrentBlock` input represents Ado et al. Eq. (14),
 namely the Fourier-transformed current block `J_r` built from a current vertex between advanced and
@@ -49,7 +51,10 @@ theorem sum_gaussianCrossedDiagram {M : Type*} [AddCommMonoid M]
   change ∑ diagram ∈ ({.x, .psi} : Finset GaussianCrossedDiagram), f diagram = _
   simp
 
-/-- Pointwise real-space trace kernel for the two leading crossed Gaussian Hall topologies.
+/-- Pointwise trace kernel for the two leading crossed Gaussian Hall topologies.
+
+The separation type is required only to support `r ↦ -r`, allowing the same topology to be reused
+for Cartesian real-space vectors and scalar radial coordinates.
 
 The `realSpaceCurrentBlock` argument is Ado's `J_r` block from Eq. (14), not the local dressed vertex
 `Γ`. For `x` this is
@@ -59,11 +64,11 @@ For `psi` the traced amplitude is
 `Tr(Jˣ(r) Gᴿ(-r) Gᴿ(r) Jʸ(-r)) + h.c.`;
 the Hermitian-conjugate contribution is represented after taking the trace as complex conjugation.
 -/
-def gaussianCrossedTraceKernel
+def gaussianCrossedTraceKernel {R : Type*} [Neg R]
     (diagram : GaussianCrossedDiagram)
-    (greenRetarded greenAdvanced : (Fin 2 → ℝ) → Matrix2)
-    (realSpaceCurrentBlock : Fin 2 → (Fin 2 → ℝ) → Matrix2)
-    (r : Fin 2 → ℝ) : ℂ :=
+    (greenRetarded greenAdvanced : R → Matrix2)
+    (realSpaceCurrentBlock : Fin 2 → R → Matrix2)
+    (r : R) : ℂ :=
   match diagram with
   | .x =>
       Matrix.trace
@@ -77,10 +82,10 @@ def gaussianCrossedTraceKernel
       amplitude + (starRingEnd ℂ) amplitude
 
 /-- The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. -/
-@[simp] theorem gaussianCrossedTraceKernel_psi_im
-    (greenRetarded greenAdvanced : (Fin 2 → ℝ) → Matrix2)
-    (realSpaceCurrentBlock : Fin 2 → (Fin 2 → ℝ) → Matrix2)
-    (r : Fin 2 → ℝ) :
+@[simp] theorem gaussianCrossedTraceKernel_psi_im {R : Type*} [Neg R]
+    (greenRetarded greenAdvanced : R → Matrix2)
+    (realSpaceCurrentBlock : Fin 2 → R → Matrix2)
+    (r : R) :
     (gaussianCrossedTraceKernel .psi greenRetarded greenAdvanced realSpaceCurrentBlock r).im = 0 := by
   simp [gaussianCrossedTraceKernel]
 
