@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterRecurrence
 
 set_option linter.style.header false
@@ -36,7 +36,8 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumul
     PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)
   have hZ : PowerSeries.constantCoeff Z = 1 := by
     simpa [Z] using
-      constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V
+      PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β V)
   induction n using Nat.strong_induction_on with
   | h n ih =>
       cases n with
