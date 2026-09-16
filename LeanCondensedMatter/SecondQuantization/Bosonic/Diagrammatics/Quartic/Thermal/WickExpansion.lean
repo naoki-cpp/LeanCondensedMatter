@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.C
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Free-boson Wick expansion for quartic vertex legs
@@ -26,6 +27,9 @@ open Common Combinatorics
 noncomputable section
 
 variable {Mode : Type*}
+
+/-- File-local classical equality keeps the concrete thermal kernel independent of caller choices. -/
+local instance instDecidableEqQuarticWickExpansion : DecidableEq Mode := Classical.decEq Mode
 
 /-- Interpret one bosonic quartic local leg as the corresponding free thermal field label. -/
 def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeThermalField Mode :=
@@ -53,7 +57,7 @@ noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   FreeThermalField.orderedProduct (List.ofFn (quarticFreeThermalFieldFamily q))
 
-variable [Fintype Mode] [DecidableEq Mode]
+variable [Fintype Mode]
 
 /-- Finite-order quartic specialization of the concrete free-boson Wick expansion.
 
