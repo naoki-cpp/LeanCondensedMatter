@@ -118,7 +118,8 @@ private theorem polarPauliMatrix_gaussianCrossedCurrent_eq_harmonics
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
       Matrix.mul_apply] <;>
     ring_nf <;>
-    simp [hI2, hI3]
+    simp [hI2, hI3] <;>
+    ring
 
 /-- Source-indexed finite-cutoff finite-`η` Gaussian-crossed real-space current block.
 
