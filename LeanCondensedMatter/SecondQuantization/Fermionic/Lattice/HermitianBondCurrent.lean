@@ -89,30 +89,19 @@ theorem boundedBondCurrent_eq_peierlsCoupling_smul
   unfold boundedBondCurrent bondCurrent LocallyFiniteHopping.boundedBondOperator peierlsCoupling
   rw [boundedLatticeOperator_smul]
 
-/-- A Peierls coefficient formed from real charge and real Planck constant is pure imaginary. -/
-theorem star_peierlsCoupling_ofReal (ℏ q : ℝ) :
-    star (peierlsCoupling (ℏ : ℂ) (q : ℂ)) =
-      -peierlsCoupling (ℏ : ℂ) (q : ℂ) := by
-  simp [peierlsCoupling]
-  ring
-
-/-- A pure-imaginary multiple of the skew-adjoint oriented hopping difference is self-adjoint. -/
-theorem isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling
-    (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes)
-    (ℏ q : ℂ) (hc : star (peierlsCoupling ℏ q) = -peierlsCoupling ℏ q)
-    (x y : Site) :
-    IsSelfAdjoint (boundedBondCurrent ℏ q K x y) := by
-  rw [isSelfAdjoint_iff, boundedBondCurrent_eq_peierlsCoupling_smul]
-  rw [star_smul, hc, K.star_boundedBondOperator hK]
-  simp
-
 /-- Physical real parameters automatically give a self-adjoint bounded bond current. -/
 theorem isSelfAdjoint_boundedBondCurrent_ofReal
     (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes)
     (ℏ q : ℝ) (x y : Site) :
-    IsSelfAdjoint (boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y) :=
-  isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling K hK
-    (ℏ : ℂ) (q : ℂ) (star_peierlsCoupling_ofReal ℏ q) x y
+    IsSelfAdjoint (boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y) := by
+  rw [isSelfAdjoint_iff, boundedBondCurrent_eq_peierlsCoupling_smul]
+  rw [star_smul, K.star_boundedBondOperator hK]
+  have hc : star (peierlsCoupling (ℏ : ℂ) (q : ℂ)) =
+      -peierlsCoupling (ℏ : ℂ) (q : ℂ) := by
+    simp [peierlsCoupling]
+    ring
+  rw [hc]
+  simp
 
 end
 end Lattice
