@@ -85,43 +85,6 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
 
 end LocallyFiniteHopping
 
-/-- Peierls-dependent current after algebraic second quantization. -/
-noncomputable def peierlsBondCurrentFock (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site) :=
-  AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A)
-
-/-- Many-particle contact operator obtained by second-quantizing the one-particle current
-variation. -/
-noncomputable def bondContact (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) :
-    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
-      AlgebraicFock (LatticeState Site) :=
-  AlgebraicFock.dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y)
-
-/-- The Peierls current family agrees with the existing bond current at zero source. -/
-@[simp]
-theorem peierlsBondCurrentFock_zero (K : LocallyFiniteHopping Site)
-    (ℏ q : ℂ) (x y : Site) :
-    peierlsBondCurrentFock K ℏ q x y 0 = bondCurrent ℏ q K x y := by
-  unfold peierlsBondCurrentFock
-  rw [K.peierlsBondCurrentOperator_zero]
-  unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
-  change AlgebraicFock.dGammaLinear (LatticeState Site)
-      (((Complex.I * q) / ℏ) • K.bondOperator x y) =
-    ((Complex.I * q) / ℏ) • AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)
-  rw [map_smul, AlgebraicFock.dGammaLinear_apply]
-
-/-- The Fock-space Peierls current has algebraic derivative equal to the contact operator. -/
-theorem hasAlgebraicDerivAt_peierlsBondCurrentFock_zero
-    (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
-    HasAlgebraicDerivAt (peierlsBondCurrentFock K ℏ q x y)
-      (bondContact K ℏ q x y) 0 := by
-  unfold peierlsBondCurrentFock bondContact
-  exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
-    (AlgebraicFock.dGammaLinear (LatticeState Site))
-
 end Algebraic
 
 section Bounded
@@ -132,13 +95,15 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 noncomputable def boundedPeierlsBondCurrent (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (peierlsBondCurrentFock K ℏ q x y A)
+  boundedLatticeOperator
+    (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A))
 
 /-- Bounded contact operator on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (bondContact K ℏ q x y)
+  boundedLatticeOperator
+    (AlgebraicFock.dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y))
 
 /-- At zero source, the bounded Peierls current is the bounded continuity-derived current. -/
 @[simp]
@@ -147,16 +112,25 @@ theorem boundedPeierlsBondCurrent_zero (K : LocallyFiniteHopping Site)
     boundedPeierlsBondCurrent K ℏ q x y 0 =
       boundedBondCurrent ℏ q K x y := by
   unfold boundedPeierlsBondCurrent boundedBondCurrent
-  rw [peierlsBondCurrentFock_zero]
+  rw [K.peierlsBondCurrentOperator_zero]
+  unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
+  rw [AlgebraicFock.dGamma_smul]
 
 /-- The bounded transport preserves the weak algebraic derivative of the Peierls current family. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondCurrent K ℏ q x y)
       (boundedBondContact K ℏ q x y) 0 := by
+  have hFock :
+      HasAlgebraicDerivAt
+        (fun A => AlgebraicFock.dGamma (LatticeState Site)
+          (K.peierlsBondCurrentOperator ℏ q x y A))
+        (AlgebraicFock.dGamma (LatticeState Site)
+          (K.oneParticleBondContact ℏ q x y)) 0 := by
+    exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
+      (AlgebraicFock.dGammaLinear (LatticeState Site))
   unfold boundedPeierlsBondCurrent boundedBondContact
-  exact (hasAlgebraicDerivAt_peierlsBondCurrentFock_zero K ℏ q x y).map
-    (boundedLatticeOperatorLinearMap (Site := Site))
+  exact hFock.map (boundedLatticeOperatorLinearMap (Site := Site))
 
 end Bounded
 
