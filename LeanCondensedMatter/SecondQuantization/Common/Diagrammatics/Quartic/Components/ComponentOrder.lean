@@ -55,15 +55,6 @@ noncomputable def QuarticDiagram.shuffleOfVertexOrder {S : Finset (Fin N)}
     d.ComponentShuffle :=
   d.componentPartition.shuffleOfOrder order orders h
 
-/-- Reassembling a global order from its compatible component-local orders and extracted shuffle is
-identity. -/
-@[simp]
-theorem QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
-    (orders : d.ComponentVertexOrders) (h : d.ComponentOrdersCompatible order orders) :
-    d.assembleVertexOrder orders (d.shuffleOfVertexOrder order orders h) = order :=
-  d.componentPartition.assembleOrder_shuffleOfOrder order orders h
-
 /-- A global vertex order is equivalent to component-local orders together with an
 order-preserving shuffle of their slots. -/
 noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (Fin N)}

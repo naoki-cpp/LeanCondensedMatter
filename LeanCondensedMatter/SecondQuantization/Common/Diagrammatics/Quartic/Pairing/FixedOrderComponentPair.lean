@@ -34,7 +34,7 @@ theorem QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle
     (order : QuarticVertexOrder S) :
     d.assembleVertexOrder (d.componentPartition.partOrdersOfOrder order)
         (d.fixedOrderComponentShuffle order) = order :=
-  d.assembleVertexOrder_shuffleOfVertexOrder order
+  d.componentPartition.assembleOrder_shuffleOfOrder order
     (d.componentPartition.partOrdersOfOrder order)
     (d.componentPartition.partOrdersCompatible_partOrdersOfOrder order)
 
