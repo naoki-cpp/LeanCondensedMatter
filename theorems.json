@@ -109703,7 +109703,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
@@ -109718,7 +109718,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -109751,13 +109751,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -109790,7 +109790,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
@@ -109799,7 +109799,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -113359,7 +113359,12 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteHilbertOperator_comp",
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
+      "SecondQuantization.Fermionic.Lattice.latticeBasis_apply_eq_latticeKet",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.latticeBasis_coord_eq_lapply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113807,7 +113812,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
@@ -113816,7 +113821,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -114436,13 +114441,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -114558,52 +114563,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] (x y : Site),\n  SecondQuantization.Fermionic.Lattice.occupationOperator\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma (SecondQuantization.Fermionic.Lattice.LatticeState Site)\n        (SecondQuantization.Fermionic.Lattice.matrixUnit x y)) =\n    SecondQuantization.Fermionic.create x ∘ₗ SecondQuantization.Fermionic.annihilate y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
-    "externalAxioms": [],
-    "docString": "In occupation representation, a second-quantized lattice matrix unit is the standard\ncreation-annihilation bilinear. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_comp",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
-      "SecondQuantization.Fermionic.Lattice.latticeBasis_apply_eq_latticeKet",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.latticeBasis_coord_eq_lapply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126566,7 +126525,7 @@
     "name": "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
     "externalAxioms": [],
-    "docString": "The fermionic free Boltzmann weight agrees with the Common weight at `fermionEnergy`. ",
+    "docString": "The fermionic free Boltzmann weight is definitionally the Common weight at `fermionEnergy`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -154439,13 +154398,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.occupationOperator_dGamma_matrixUnit"
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
