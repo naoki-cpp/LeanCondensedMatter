@@ -39,7 +39,7 @@ theorem twoSiteDimerCurrent_zero_hopping :
 @[simp]
 theorem twoSiteDimerContact_zero_hopping :
     twoSiteDimerContact 0 = 0 := by
-  unfold twoSiteDimerContact boundedBondContact bondContact
+  unfold twoSiteDimerContact boundedBondContact
   simp [LocallyFiniteHopping.oneParticleBondContact,
     LocallyFiniteHopping.amplitude_eq, peierlsCoupling]
 
@@ -54,7 +54,7 @@ theorem twoSiteDimerBondCurrent_zero_charge (t : ℂ) :
 @[simp]
 theorem twoSiteDimerBondContact_zero_charge (t : ℂ) :
     boundedBondContact (twoSiteDimerHopping t) (1 : ℂ) 0 0 1 = 0 := by
-  unfold boundedBondContact bondContact
+  unfold boundedBondContact
   simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling]
 
 end
