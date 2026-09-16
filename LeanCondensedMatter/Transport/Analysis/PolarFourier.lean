@@ -89,6 +89,7 @@ theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
             apply intervalIntegral.integral_congr
             intro θ _
             unfold f polarFourierRadialPhase
+            dsimp
             rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
             push_cast
             ring
