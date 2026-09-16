@@ -6,8 +6,9 @@ set_option linter.style.header false
 /-!
 # Intrinsic transport balance laws
 
-This module separates the transport content of a local balance law from a chosen extension of that
-transport to all one-form-like test data.
+This module is the semantic owner of representation-independent local balance identities. It
+separates the transport content of a local balance law from a chosen extension of that transport to
+all one-form-like test data.
 
 For
 
@@ -34,7 +35,8 @@ A full current functional `J : OneForm → Obs` is downstream representation dat
 on exact differential data; an extension of that flux away from `range d` need not be unique.
 
 `ConservationLaw.BalanceLaw` is retained as the represented form carrying such a chosen `J`.
-`IntrinsicBalanceLaw` records only the representation-independent transport and source split.
+`IntrinsicBalanceLaw` records the representation-independent transport and source split and owns
+the generic evolution, source-free, uniqueness, and scaling results.
 -/
 
 namespace ConservationLaw
@@ -127,6 +129,16 @@ theorem evolution_eq_source_of_differential_eq_zero
     (B : IntrinsicBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
     δ (Q f) = B.source f := by
   rw [B.balance f, B.transport_eq_zero_of_differential_eq_zero hf, zero_add]
+
+/-- A test object in the kernel of `d` gives a conserved quantity when its source also vanishes. -/
+theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
+    {δ : Obs →ₗ[𝕜] Obs}
+    {Q : Test →ₗ[𝕜] Obs}
+    {d : Test →ₗ[𝕜] OneForm}
+    (B : IntrinsicBalanceLaw δ Q d) {f : Test}
+    (hf : d f = 0) (hsource : B.source f = 0) :
+    δ (Q f) = 0 := by
+  rw [B.evolution_eq_source_of_differential_eq_zero hf, hsource]
 
 /-- In a source-free law, intrinsic flux is exactly the localized evolution. -/
 theorem sourceFreeFlux_eq_evolution
