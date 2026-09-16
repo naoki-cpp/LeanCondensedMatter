@@ -94,25 +94,6 @@ theorem finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
         (intervalIntegral.integral_comp_sub_left
           (a := (0 : ℝ)) (b := T) g T)
 
-/-- In a stationary state, the evolved directional contact has the same expectation as the
-unevolved contact operator. -/
-theorem boundedDirectionalContactExpectation_eq_of_stationary
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (hstationary : QuantumTheory.LinearResponse.IsStationary system expectation)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q T : ℝ) :
-    boundedDirectionalContactExpectation
-        system expectation geometry direction K q T =
-      expectation
-        (boundedDirectionalContact geometry direction
-          (system.hbar : ℂ) (q : ℂ) K) := by
-  exact hstationary T
-    (boundedDirectionalContact geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-
 /-- Exact stationary finite-time coefficient: a positive-lag transform plus the unevolved contact
 expectation. This remains a finite-volume, finite-`T`, finite-`η` identity. -/
 theorem finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag
@@ -132,11 +113,13 @@ theorem finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag
         expectation
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  rw [finiteTimeAdiabaticDirectionalCoefficient_eq]
+  unfold finiteTimeAdiabaticDirectionalCoefficient
   rw [finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
     system expectation hstationary geometry direction K q ω η hT]
-  rw [boundedDirectionalContactExpectation_eq_of_stationary
-    system expectation hstationary geometry direction K q T]
+  unfold boundedDirectionalContactExpectation
+  rw [hstationary T
+    (boundedDirectionalContact geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)]
 
 end
 end Transport
