@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder
@@ -20,9 +21,11 @@ the weak-disorder propagator and owns its retarded-advanced radial denominator p
 finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
 effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 
-`FiniteBroadeningBornPropagator` also owns the Cartesian-to-polar representation used by the finite-
-external-broadening current rung. `FiniteBroadeningCurrentVertex` owns the direction-indexed in-plane
-rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
+`FiniteBroadeningBornPropagator` owns the Cartesian-to-polar representation used by the finite-
+external-broadening current rung. `FiniteBroadeningBornRealSpacePropagator` owns the corresponding
+finite-cutoff real-space Born-Dyson Green matrix, using the generic physical-momentum polar Fourier
+transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
+in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
 determinant condition that licenses interpreting that pair as the actual ladder fixed point. Its
 fixed-radial-momentum positive-broadening boundary is exposed separately, under the explicit nonzero
 boundary denominator hypothesis needed by the inverse. The zero-broadening integral bridge uses

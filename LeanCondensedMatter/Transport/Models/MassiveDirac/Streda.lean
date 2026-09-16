@@ -28,15 +28,16 @@ canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x 
 introducing a second public representation or assigning scattering-mechanism labels.
 
 The leading Gaussian crossed sector is a separate Středa-level real-space trace boundary. Its `X` and
-`Psi` topologies are represented by one indexed kernel, and the massive-Dirac finite-cutoff finite-`η`
-realization supplies the corresponding polar-Fourier real-space Green matrices and Eq. (14)-style
-`Gᴬ (F σ_source) Gᴿ` current blocks. Here `F` is the diagonal resummation `(1 - A)⁻¹` built only from
-the longitudinal current-rung coefficient, matching the leading crossed-diagram approximation; the
-transverse part of the full local RA dressed source-current vertex and its feedback are deliberately
-excluded from `J_r`. The crossed kernel is integrated over a finite-radius polar real-space domain,
-and a separate boundary attaches the two scalar Gaussian disorder correlators as an explicit `W²`
-factor. Infinite-radius and momentum-cutoff removal, zero-broadening and weak-disorder limits,
-Bessel-function reduction, and physical crossed conductivity remain downstream.
+`Psi` topologies are represented by one indexed kernel. The massive-Dirac finite-cutoff finite-`η`
+real-space Green matrices are owned upstream by the disorder propagator layer, while this Středa
+sector owns the Eq. (14)-style `Gᴬ (F σ_source) Gᴿ` crossed current blocks and trace realization. Here
+`F` is the diagonal resummation `(1 - A)⁻¹` built only from the longitudinal current-rung coefficient,
+matching the leading crossed-diagram approximation; the transverse part of the full local RA dressed
+source-current vertex and its feedback are deliberately excluded from `J_r`. The crossed kernel is
+integrated over a finite-radius polar real-space domain, and a separate boundary attaches the two
+scalar Gaussian disorder correlators as an explicit `W²` factor. Infinite-radius and momentum-cutoff
+removal, zero-broadening and weak-disorder limits, Bessel-function reduction, and physical crossed
+conductivity remain downstream.
 
 Although the real-coordinate pattern matches the imaginary part of ordinary complex multiplication,
 the in-plane coefficients here are already `ℂ`-valued. Therefore the public API remains the `ℂ²`
@@ -47,8 +48,11 @@ determinant is required only when they are interpreted as the solved physical fi
 shared-provenance response matrices, pointwise trace identities, and finite-energy surface/sea
 integration are consumed directly from `Transport.Streda`.
 
-Physical conductivity remains downstream: only `MassiveDirac.Conductivity` attaches the common
-Bastin/Středa conductivity prefactor and physical continuum momentum normalization. Bounded-operator
-and spectral/resolvent infrastructure is owned by `MassiveDirac.Model`; ladder and Born-Dyson Green
-construction remain owned by `MassiveDirac.Disorder`.
+Physical conductivity remains downstream. For the non-crossing Středa momentum integral,
+`MassiveDirac.Conductivity` attaches the common Bastin/Středa trace prefactor together with the
+physical continuum momentum normalization. The crossed real-space Fourier blocks already include
+`d²p / (2πℏ)²` in each Fourier transform, so their later conductivity boundary must restore only the
+remaining current/trace prefactor and must not attach `momentumMeasurePrefactor hbar` again.
+Bounded-operator and spectral/resolvent infrastructure is owned by `MassiveDirac.Model`; ladder and
+Born-Dyson Green construction remain owned by `MassiveDirac.Disorder`.
 -/
