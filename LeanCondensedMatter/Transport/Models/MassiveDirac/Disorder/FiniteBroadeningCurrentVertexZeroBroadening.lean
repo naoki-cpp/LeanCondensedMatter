@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -89,7 +90,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_b
 def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
     (i j : Fin 2)
     (v m p probeEnergy disorderStrength hbar pMax : ℝ) : ℂ :=
-  (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
     ((((2 * Real.pi : ℝ) : ℂ)) *
       (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
         v m p probeEnergy disorderStrength hbar pMax)⁻¹ *
@@ -139,7 +140,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialI
   simpa [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary] using
     hcoefficient.const_mul
-      ((((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ))
+      ((continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) * (p : ℂ))
 
 end
 
