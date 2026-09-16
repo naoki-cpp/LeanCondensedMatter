@@ -66,8 +66,9 @@ theorem firstDysonIntegrand_mem_freeGibbsDomain
     (hV : V ∈ freeGibbsDomain ε β) :
     (interactionPicture ε V σ).comp
         (Common.dysonCoeff (freeEigenvalue ε) V 0 σ) ∈ freeGibbsDomain ε β := by
-  rw [Common.dysonCoeff_zero, LinearMap.comp_id]
-  exact (freeGibbsSummable_interactionPicture_iff ε β σ V).2 hV
+  rw [Common.dysonCoeff_zero, LinearMap.comp_id, mem_freeGibbsDomain_iff]
+  exact (freeGibbsSummable_interactionPicture_iff ε β σ V).2
+    ((mem_freeGibbsDomain_iff ε β V).1 hV)
 
 end
 end Bosonic

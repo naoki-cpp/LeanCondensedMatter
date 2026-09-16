@@ -101,8 +101,10 @@ theorem freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue
     (f g : FreeThermalField Mode) :
     (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct [f, g]) =
       freeThermalPairValue ε β f g := by
-  let hmem := FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain ε β hpos f g
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem hmem]
+  have hSumm : freeGibbsSummable ε β (FreeThermalField.orderedProduct [f, g]) :=
+    (mem_freeGibbsDomain_iff ε β (FreeThermalField.orderedProduct [f, g])).1
+      (FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain ε β hpos f g)
+  rw [freeGibbsFunctional_value_of_summable ε β hpos hSumm]
   exact freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue ε β hpos f g
 
 end

@@ -82,9 +82,11 @@ theorem dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteractionOn support g) 1 t ∈
-      freeGibbsDomain ε β :=
-  freeGibbsSummable_dysonCoeff_one ε β (quarticInteractionOn support g) t
-    (quarticInteractionOn_mem_freeGibbsDomain support ε β hpos g)
+      freeGibbsDomain ε β := by
+  rw [mem_freeGibbsDomain_iff]
+  exact freeGibbsSummable_dysonCoeff_one ε β (quarticInteractionOn support g) t
+    ((mem_freeGibbsDomain_iff ε β (quarticInteractionOn support g)).1
+      (quarticInteractionOn_mem_freeGibbsDomain support ε β hpos g))
 
 /-- On a finite mode type, the first Dyson coefficient of the all-label bosonic quartic interaction
 belongs to the free-Gibbs domain. -/
@@ -92,9 +94,11 @@ theorem dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) 1 t ∈
-      freeGibbsDomain ε β :=
-  freeGibbsSummable_dysonCoeff_one ε β (quarticInteraction g) t
-    (quarticInteraction_mem_freeGibbsDomain ε β hpos g)
+      freeGibbsDomain ε β := by
+  rw [mem_freeGibbsDomain_iff]
+  exact freeGibbsSummable_dysonCoeff_one ε β (quarticInteraction g) t
+    ((mem_freeGibbsDomain_iff ε β (quarticInteraction g)).1
+      (quarticInteraction_mem_freeGibbsDomain ε β hpos g))
 
 end
 end Bosonic
