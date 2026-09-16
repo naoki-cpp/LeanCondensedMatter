@@ -112940,7 +112940,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling"
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.boundedBondOperator_eq",
@@ -112949,7 +112949,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling"
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -113023,7 +113023,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondCurrent_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_one_eq_matrixUnits",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_zero_hopping"
@@ -113034,7 +113034,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling",
+      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerBondCurrent_zero_charge",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_one_eq_matrixUnits",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_zero_hopping"
@@ -114057,8 +114057,8 @@
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_selfAdjoint"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling",
-      "SecondQuantization.Fermionic.Lattice.star_peierlsCoupling_ofReal"
+      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.star_boundedBondOperator",
+      "SecondQuantization.Fermionic.Lattice.boundedBondCurrent_eq_peierlsCoupling_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114067,48 +114067,6 @@
       "SecondQuantization.Fermionic.Validation.twoSiteDimerCurrent_selfAdjoint"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site),\n  K.HasHermitianAmplitudes →\n    ∀ (ℏ q : ℂ),\n      star (SecondQuantization.Fermionic.Lattice.peierlsCoupling ℏ q) =\n          -SecondQuantization.Fermionic.Lattice.peierlsCoupling ℏ q →\n        ∀ (x y : Site), IsSelfAdjoint (SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent",
-    "externalAxioms": [],
-    "docString": "A pure-imaginary multiple of the skew-adjoint oriented hopping difference is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping.star_boundedBondOperator",
-      "SecondQuantization.Fermionic.Lattice.boundedBondCurrent_eq_peierlsCoupling_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114431,45 +114389,6 @@
       "SecondQuantization.Fermionic.Validation.twoSiteDimerHamiltonian_selfAdjoint"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ℏ q : ℝ),\n  star (SecondQuantization.Fermionic.Lattice.peierlsCoupling ↑ℏ ↑q) =\n    -SecondQuantization.Fermionic.Lattice.peierlsCoupling ↑ℏ ↑q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Lattice.star_peierlsCoupling_ofReal",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent",
-    "externalAxioms": [],
-    "docString": "A Peierls coefficient formed from real charge and real Planck constant is pure imaginary. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
