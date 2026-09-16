@@ -50,12 +50,11 @@
       <div class="control-grid">
         <label>
           Direction
-          <select id="direction" aria-describedby="direction-hint">
+          <select id="direction">
             <option value="both">Dependencies + consumers</option>
             <option value="dependencies">Dependencies (outgoing)</option>
             <option value="consumers">Consumers (incoming)</option>
           </select>
-          <span id="direction-hint" class="control-help">A → B: A depends on B · color: first-hop branch</span>
         </label>
         <label>
           Depth
@@ -86,8 +85,8 @@
 
       <div class="legend" aria-label="Graph legend">
         <span><i class="legend-node root"></i> focused theorem</span>
-        <span><i class="legend-node branch"></i> first-hop branch</span>
-        <span><i class="legend-edge"></i> dependency</span>
+        <span><i class="legend-node branch"></i> color: first-hop branch</span>
+        <span class="legend-dependency"><i class="legend-edge"></i> dependency · <strong>A → B</strong>: A depends on B</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
       </div>
