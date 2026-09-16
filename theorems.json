@@ -8875,7 +8875,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
       "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment",
@@ -8884,7 +8884,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -30300,7 +30300,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [],
@@ -30308,7 +30308,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 3,
@@ -49248,7 +49248,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
     ],
@@ -49259,11 +49258,51 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_first_harmonics",
       "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (coefficients : QuantumTheory.Transport.AngularHarmonicCoefficients ℂ) (z p angle : ℝ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z (θ - angle) * coefficients.eval θ =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * coefficients.constant +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n            (↑(Real.cos angle) * coefficients.firstCosine + ↑(Real.sin angle) * coefficients.firstSine) +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * coefficients.secondCosine +\n            ↑(Real.cos angle) * ↑(Real.sin angle) * coefficients.secondMixed))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Phase-weighted full-angle reduction of canonical harmonic coefficients at an arbitrary\nreal-space polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55162,7 +55201,7 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Transport.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector_vertex"
     ],
     "crossModuleDirectWrapper": false,
@@ -55645,7 +55684,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -68875,45 +68914,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (hbar pMax radius : ℝ) (a b c : ℝ → ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax\n      (fun p θ => a p + ↑(Real.cos θ) * b p + ↑(Real.sin θ) * c p) (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * a p +\n            QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Radial-axis reduction of the finite-cutoff transform for a field with only constant and first\nangular harmonics. The full angular integral is replaced exactly by the zeroth and first-cosine\nradial kernels. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ (hbar pMax radius : ℝ) (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax (fun p θ => (coefficients p).eval θ)\n      (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                (coefficients p).firstCosine +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n              (coefficients p).secondCosine)",
+    "statement": "∀ (hbar pMax radius angle : ℝ) (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax (fun p θ => (coefficients p).eval θ)\n      (QuantumTheory.Transport.polarPoint2D radius angle) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                (↑(Real.cos angle) * (coefficients p).firstCosine + ↑(Real.sin angle) * (coefficients p).firstSine) +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n              ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * (coefficients p).secondCosine +\n                ↑(Real.cos angle) * ↑(Real.sin angle) * (coefficients p).secondMixed))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68925,68 +68927,27 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics",
+    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics",
     "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
     "externalAxioms": [],
-    "docString": "Radial-axis reduction of the finite-cutoff transform for the canonical harmonic coefficient\nfield. This is the shared coefficient adapter consumed by model-specific real-space reductions. ",
+    "docString": "Finite-cutoff polar Fourier reduction of canonical harmonic coefficients at an arbitrary polar\nreal-space point. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase",
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted",
       "QuantumTheory.Transport.physicalMomentumPolarFourierPhase_polarPoint2D"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (hbar pMax radius : ℝ) (a b c d e : ℝ → ℂ),\n  QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier hbar pMax\n      (fun p θ =>\n        a p + ↑(Real.cos θ) * b p + ↑(Real.sin θ) * c p + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d p +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e p)\n      (QuantumTheory.Transport.polarPoint2D radius 0) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p *\n          (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * a p +\n              QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p +\n            QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) * d p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Radial-axis reduction of the finite-cutoff transform through second angular harmonics. The\nremaining one-dimensional integral has only the zeroth, first-cosine, and second-cosine kernels. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70390,15 +70351,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z p : ℝ) (a b c d e : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ *\n        (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z * d)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70409,14 +70370,18 @@
     "docString": "Full-angle reduction through second angular harmonics. The odd first-sine and mixed\n`cos θ sin θ` channels vanish on the radial axis, leaving exactly the zeroth, first-cosine, and\nsecond-cosine kernels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71107,13 +71072,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics"
+      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -121466,7 +121431,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.coeff_normalizedDysonPartitionFPowerSeries_eq_formal",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
@@ -121481,7 +121446,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.coeff_normalizedDysonPartitionFPowerSeries_eq_formal",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
@@ -123626,7 +123591,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
@@ -123641,7 +123606,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
@@ -125033,51 +124998,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  n ≠ 0 →\n    ↑n.factorial * (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β V) =\n      SecondQuantization.Fermionic.dysonVertexCumulant ε β V Finset.univ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem",
-    "externalAxioms": [],
-    "docString": "The factorial-normalized coefficient of the formal logarithm of the normalized Dyson partition\nseries is its finite-set Dyson vertex cumulant. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "dependencies": [
-      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
-      "PowerSeries.coeff_normalizeByConstantCoeff",
-      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.fin_univ_ne_empty"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ),\n  n ≠ 0 →\n    ↑n.factorial *\n        (PowerSeries.coeff n)\n          (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β\n            (SecondQuantization.Fermionic.quarticInteraction g)) =\n      ∑ d, SecondQuantization.Fermionic.quarticWickDiagramAmplitude ε β g ↑d",
     "standardAxioms": [
       "Classical.choice",
@@ -125103,8 +125023,11 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
+      "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
+      "PowerSeries.coeff_normalizeByConstantCoeff",
+      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.fin_univ_ne_empty"
     ],
     "crossModuleDirectWrapper": false,
@@ -152967,7 +152890,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -152979,17 +152902,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156029,6 +155950,127 @@
       "SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_eigenvector"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle θ : ℝ) (a b c d e : ℂ),\n  a + ↑(Real.cos (θ + angle)) * b + ↑(Real.sin (θ + angle)) * c +\n        (↑(Real.cos (θ + angle)) ^ 2 - ↑(Real.sin (θ + angle)) ^ 2) * d +\n      ↑(Real.cos (θ + angle)) * ↑(Real.sin (θ + angle)) * e =\n    a + ↑(Real.cos θ) * (↑(Real.cos angle) * b + ↑(Real.sin angle) * c) +\n          ↑(Real.sin θ) * (-↑(Real.sin angle) * b + ↑(Real.cos angle) * c) +\n        (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * d + ↑(Real.cos angle) * ↑(Real.sin angle) * e) +\n      ↑(Real.cos θ) * ↑(Real.sin θ) *\n        (-4 * (↑(Real.cos angle) * ↑(Real.sin angle)) * d + (↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * e)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.angular_second_harmonics_add",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z p angle : ℝ) (a b c d e : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z (θ - angle) *\n        (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c + (↑(Real.cos θ) ^ 2 - ↑(Real.sin θ) ^ 2) * d +\n          ↑(Real.cos θ) * ↑(Real.sin θ) * e) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n          QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n            (↑(Real.cos angle) * b + ↑(Real.sin angle) * c) +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z *\n          ((↑(Real.cos angle) ^ 2 - ↑(Real.sin angle) ^ 2) * d + ↑(Real.cos angle) * ↑(Real.sin angle) * e))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierRadialPhase_second_harmonics",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.angular_second_harmonics_add",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : ℝ → ℂ),\n  Function.Periodic f (2 * Real.pi) →\n    ∀ (angle : ℝ), ∫ (θ : ℝ) in 0..2 * Real.pi, f (θ - angle) = ∫ (θ : ℝ) in 0..2 * Real.pi, f θ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
