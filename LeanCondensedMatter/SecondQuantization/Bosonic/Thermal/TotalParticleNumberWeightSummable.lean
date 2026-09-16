@@ -18,15 +18,6 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
-/-- On a finite mode type, the total particle number is the sum of the mode occupations. -/
-theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
-    particleNumber n = ∑ i, n i := by
-  simp only [particleNumber, Finsupp.sum]
-  apply Finset.sum_subset (Finset.subset_univ _)
-  intro i _ hi
-  simp only [Finsupp.mem_support_iff, not_not] at hi
-  simp [hi]
-
 /-- The square of the total particle number remains summable against the free bosonic Boltzmann
 weight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. -/
 theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
