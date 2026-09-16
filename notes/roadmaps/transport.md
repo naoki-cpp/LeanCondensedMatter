@@ -54,6 +54,12 @@ arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadeni
 or RA vertex consumers require physical branch semantics, and those specializations consume
 `SpectralSide.regulator` rather than reconstructing the sign representation where practical.
 
+Finite-cutoff real-space Fourier reduction uses explicit full-angle zeroth and first-cosine kernels
+as the canonical radial intermediate. The pinned Mathlib revision does not provide the Bessel
+special-function module, so the repository does not maintain a parallel local Bessel implementation;
+a later deliberate Mathlib upgrade should identify these kernels with the standard `J₀` / `J₁` API
+by theorem.
+
 ## SCBA and ladder boundary
 
 SCBA stores supplied self-consistent approximation data using the same exact second-moment action

@@ -38,11 +38,6 @@
 
   <main class="app-shell">
     <aside class="controls" aria-label="Graph controls">
-      <div>
-        <p class="eyebrow">Explore the proof graph</p>
-        <h1>Find a declaration and follow its structure.</h1>
-      </div>
-
       <form id="search-form" class="search-form" role="search">
         <label for="theorem-search">Declaration</label>
         <div class="search-row">
@@ -60,7 +55,7 @@
             <option value="dependencies">Dependencies (outgoing)</option>
             <option value="consumers">Consumers (incoming)</option>
           </select>
-          <span id="direction-hint" class="control-help">A → B means A depends on B. Colors group the same first-hop branch.</span>
+          <span id="direction-hint" class="control-help">A → B: A depends on B · color: first-hop branch</span>
         </label>
         <label>
           Depth
@@ -78,7 +73,7 @@
         <select id="module-filter" aria-describedby="module-filter-hint" disabled>
           <option value="*">All modules</option>
         </select>
-        <span id="module-filter-hint" class="control-help">Browse modules through Overview; this filter becomes available after opening a declaration graph.</span>
+        <span id="module-filter-hint" class="control-help">Available after opening a declaration.</span>
       </label>
 
       <fieldset class="highlight-controls">
@@ -91,14 +86,13 @@
 
       <div class="legend" aria-label="Graph legend">
         <span><i class="legend-node root"></i> focused theorem</span>
-        <span><i class="legend-node branch"></i> same first-hop branch</span>
-        <span><i class="legend-edge"></i> branch dependency</span>
+        <span><i class="legend-node branch"></i> first-hop branch</span>
+        <span><i class="legend-edge"></i> dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
-        <span class="legend-direction"><strong>A → B</strong> A depends on B</span>
       </div>
 
-      <p class="hint">Arrows always point to dependencies. Colors group declarations by the same first hop from the focused theorem; they do not encode theorem type or dependency direction. Click a node to inspect it; double-click or use <strong>Focus graph here</strong> to re-center. Hover or focus a node to isolate its branch.</p>
+      <p class="hint">Click to inspect · double-click to re-center · hover/focus to isolate a branch.</p>
     </aside>
 
     <section class="graph-panel" aria-label="Declaration dependency graph">
@@ -118,7 +112,7 @@
     </section>
 
     <aside id="detail" class="detail-panel" aria-live="polite">
-      <p class="muted">Choose a declaration from the overview or search to inspect its statement and relationships.</p>
+      <p class="muted">Select a declaration.</p>
     </aside>
   </main>
 

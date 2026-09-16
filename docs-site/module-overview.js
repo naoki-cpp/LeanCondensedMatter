@@ -149,7 +149,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     return breadcrumb;
   }
 
-  function moduleCard(child, description) {
+  function moduleCard(child) {
     const button = element("button", "module-tree-card");
     button.type = "button";
 
@@ -162,7 +162,6 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     details.push(`${child.declarationCount} declaration${child.declarationCount === 1 ? "" : "s"}`);
     if (child.moduleCount > 1) details.push(`${child.moduleCount} modules`);
     button.append(element("small", "", details.join(" · ")));
-    if (description) button.append(element("span", "module-description module-card-description", description));
 
     button.addEventListener("click", () => onBrowse(child.fullName));
     return button;
@@ -196,10 +195,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     const children = [...node.children.values()].sort(
       (a, b) => b.declarationCount - a.declarationCount || a.name.localeCompare(b.name),
     );
-    const descriptions = await Promise.all([
-      loadModuleDescription(node.fullName),
-      ...children.map((child) => loadModuleDescription(child.fullName)),
-    ]);
+    const description = await loadModuleDescription(node.fullName);
     if (renderVersion !== hierarchyRenderVersion) return true;
 
     overview.replaceChildren();
@@ -208,7 +204,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     const header = element("div", "overview-header module-overview-header");
     header.append(element("p", "module-overview-eyebrow", "Module hierarchy"));
     header.append(element("h2", "", node.fullName));
-    if (descriptions[0]) header.append(element("p", "module-description module-header-description", descriptions[0]));
+    if (description) header.append(element("p", "module-description module-header-description", description));
     const summary = element("div", "overview-summary");
     summary.append(summaryChip(`${node.declarationCount} declarations`));
     summary.append(summaryChip(`${node.moduleCount} module${node.moduleCount === 1 ? "" : "s"}`));
@@ -220,7 +216,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
       const section = element("section", "overview-section");
       section.append(element("h3", "", "Direct submodules"));
       const grid = element("div", "module-tree-grid");
-      children.forEach((child, index) => grid.append(moduleCard(child, descriptions[index + 1])));
+      children.forEach((child) => grid.append(moduleCard(child)));
       section.append(grid);
       overview.append(section);
     }
@@ -239,20 +235,7 @@ export function createModuleOverview({ catalog, overview, onBrowse, onOpenDeclar
     return true;
   }
 
-  async function hydrateDomainDescriptions() {
-    const cards = [...overview.querySelectorAll(".domain-card")];
-    await Promise.all(cards.map(async (card) => {
-      if (card.dataset.moduleDescriptionHydrated) return;
-      const domain = card.querySelector("strong")?.textContent?.trim();
-      if (!domain) return;
-      card.dataset.moduleDescriptionHydrated = "pending";
-      const description = await loadModuleDescription(domain);
-      if (description && card.isConnected && !card.querySelector(".domain-description")) {
-        card.append(element("span", "module-description domain-description", description));
-      }
-      card.dataset.moduleDescriptionHydrated = "true";
-    }));
-  }
+  async function hydrateDomainDescriptions() {}
 
   return {
     cancel() {
