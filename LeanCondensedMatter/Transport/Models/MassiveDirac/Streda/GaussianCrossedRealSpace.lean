@@ -111,21 +111,18 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
   let dR : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonPauliCoefficient .z
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let c0 : ℝ → Matrix2 := fun p =>
-    polarPauliInPlaneConstantAngularCoefficient
-      (aA p) (dA p) (aR p) (dR p) coefficients
-  let c1 : ℝ → Matrix2 := fun p =>
-    polarPauliInPlaneFirstCosineAngularCoefficient
+  let harmonics : ℝ → PolarPauliInPlaneHarmonics := fun p =>
+    polarPauliInPlaneHarmonics
       (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
-  let c2 : ℝ → Matrix2 := fun p =>
-    polarPauliInPlaneSecondCosineAngularCoefficient (bA p) (bR p) coefficients
   fun i j =>
     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
       ∫ p in (0 : ℝ)..pMax,
         (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * radius / hbar) * c0 p i j +
-            polarFourierFirstCosineAngularKernel (p * radius / hbar) * c1 p i j +
-            polarFourierSecondCosineAngularKernel (p * radius / hbar) * c2 p i j)
+          (polarFourierZerothAngularKernel (p * radius / hbar) * harmonics p |>.constant i j +
+            polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+              harmonics p |>.firstCosine i j +
+            polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              harmonics p |>.secondCosine i j)
 
 /-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
 the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
@@ -158,6 +155,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
   let dR : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonPauliCoefficient .z
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let harmonics : ℝ → PolarPauliInPlaneHarmonics := fun p =>
+    polarPauliInPlaneHarmonics
+      (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
   have hA (p θ : ℝ) :
       finiteCutoffContinuumBornDysonGreenMatrix
           .advanced v m (p * Real.cos θ) (p * Real.sin θ)
@@ -211,38 +211,26 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) i j) =
         fun p θ =>
-          polarPauliInPlaneConstantAngularCoefficient
-              (aA p) (dA p) (aR p) (dR p) coefficients i j +
-            ((Real.cos θ : ℝ) : ℂ) *
-              polarPauliInPlaneFirstCosineAngularCoefficient
-                (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j +
-            ((Real.sin θ : ℝ) : ℂ) *
-              polarPauliInPlaneFirstSineAngularCoefficient
-                (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j +
+          harmonics p |>.constant i j +
+            ((Real.cos θ : ℝ) : ℂ) * (harmonics p |>.firstCosine i j) +
+            ((Real.sin θ : ℝ) : ℂ) * (harmonics p |>.firstSine i j) +
             ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-              polarPauliInPlaneSecondCosineAngularCoefficient
-                (bA p) (bR p) coefficients i j +
+              (harmonics p |>.secondCosine i j) +
             (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-              polarPauliInPlaneSecondMixedAngularCoefficient
-                (bA p) (bR p) coefficients i j := by
+              (harmonics p |>.secondMixed i j) := by
     funext p θ
     rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-    simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+    simpa [harmonics] using congrArg (fun M : Matrix2 => M i j) rfl
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
-    factor, coefficients, aA, bA, dA, aR, bR, dR] using
+    factor, coefficients, harmonics, aA, bA, dA, aR, bR, dR] using
     (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
       hbar pMax radius
-      (fun p => polarPauliInPlaneConstantAngularCoefficient
-        (aA p) (dA p) (aR p) (dR p) coefficients i j)
-      (fun p => polarPauliInPlaneFirstCosineAngularCoefficient
-        (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j)
-      (fun p => polarPauliInPlaneFirstSineAngularCoefficient
-        (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j)
-      (fun p => polarPauliInPlaneSecondCosineAngularCoefficient
-        (bA p) (bR p) coefficients i j)
-      (fun p => polarPauliInPlaneSecondMixedAngularCoefficient
-        (bA p) (bR p) coefficients i j))
+      (fun p => (harmonics p).constant i j)
+      (fun p => (harmonics p).firstCosine i j)
+      (fun p => (harmonics p).firstSine i j)
+      (fun p => (harmonics p).secondCosine i j)
+      (fun p => (harmonics p).secondMixed i j))
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
