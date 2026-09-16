@@ -34,6 +34,100 @@ def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Fin 2 → ℂ :=
   ![(((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA),
     (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)]
 
+/-- Canonical angular-harmonic data of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
+structure PolarPauliInPlaneHarmonics where
+  /-- Constant angular harmonic. -/
+  constant : Matrix2
+  /-- First cosine angular harmonic. -/
+  firstCosine : Matrix2
+  /-- First sine angular harmonic. -/
+  firstSine : Matrix2
+  /-- Second cosine angular harmonic. -/
+  secondCosine : Matrix2
+  /-- Mixed second angular harmonic. -/
+  secondMixed : Matrix2
+
+/-- Constant, first, and second angular harmonics of
+`polarPauliMatrix aL bL dL θ * Γ * polarPauliMatrix aR bR dR θ` for an arbitrary in-plane `Γ`. -/
+def polarPauliInPlaneHarmonics
+    (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) :
+    PolarPauliInPlaneHarmonics :=
+  let c0 := aL * aR - dL * dR
+  let cxy := Complex.I * (aR * dL - aL * dR)
+  let scalar := aR * bL + aL * bR
+  let scalarMix := bR * dL - bL * dR
+  let mass := bR * dL + bL * dR
+  let massMix := aL * bR - aR * bL
+  {
+    constant :=
+      (c0 * coefficients 0 - cxy * coefficients 1) • sigmaX +
+        (cxy * coefficients 0 + c0 * coefficients 1) • sigmaY
+    firstCosine :=
+      (scalar * coefficients 0 - Complex.I * scalarMix * coefficients 1) • (1 : Matrix2) +
+        (mass * coefficients 0 - Complex.I * massMix * coefficients 1) • sigmaZ
+    firstSine :=
+      (Complex.I * scalarMix * coefficients 0 + scalar * coefficients 1) • (1 : Matrix2) +
+        (Complex.I * massMix * coefficients 0 + mass * coefficients 1) • sigmaZ
+    secondCosine :=
+      (bL * bR * coefficients 0) • sigmaX -
+        (bL * bR * coefficients 1) • sigmaY
+    secondMixed :=
+      (2 * bL * bR * coefficients 1) • sigmaX +
+        (2 * bL * bR * coefficients 0) • sigmaY
+  }
+
+/-- Pointwise decomposition of a polar-Pauli sandwich into the constant, first, and second angular
+harmonics. This is the canonical matrix-level algebra used before either ordinary full-angle
+integration or Fourier-weighted radial reduction. -/
+theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
+    (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) (θ : ℝ) :
+    polarPauliMatrix aL bL dL θ *
+        (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
+        polarPauliMatrix aR bR dR θ =
+      let harmonics := polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients
+      harmonics.constant +
+        ((Real.cos θ : ℝ) : ℂ) • harmonics.firstCosine +
+        ((Real.sin θ : ℝ) : ℂ) • harmonics.firstSine +
+        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
+          harmonics.secondCosine +
+        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) • harmonics.secondMixed := by
+  let uL : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bL
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bL
+    | .z => dL
+  let uR : PauliAxis → ℂ
+    | .x => ((Real.cos θ : ℝ) : ℂ) * bR
+    | .y => ((Real.sin θ : ℝ) : ℂ) * bR
+    | .z => dR
+  let vertex : PauliAxis → ℂ
+    | .x => coefficients 0
+    | .y => coefficients 1
+    | .z => 0
+  have hL :
+      polarPauliMatrix aL bL dL θ =
+        aL • (1 : Matrix2) + InternalSpace.pauliCombination uL := by
+    simp [polarPauliMatrix, uL, InternalSpace.pauliCombination]
+    module
+  have hR :
+      polarPauliMatrix aR bR dR θ =
+        aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
+    simp [polarPauliMatrix, uR, InternalSpace.pauliCombination]
+    module
+  have hVertex :
+      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
+        (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
+    simp [vertex, InternalSpace.pauliCombination]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [hL, hVertex, hR,
+    InternalSpace.pauliAffine_mul_pauliAffine,
+    InternalSpace.pauliAffine_mul_pauliAffine]
+  simp [uL, uR, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
+    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics]
+  ring_nf
+  simp [hI]
+  module
+
 private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       c0 +
@@ -102,35 +196,6 @@ theorem integral_polarPauliOperator_inPlane_eq
           yCoefficient θ • matrixOperator sigmaY +
           zCoefficient θ • matrixOperator sigmaZ := by
     funext θ
-    unfold inPlanePauliVertexOperator
-    let uR : PauliAxis → ℂ
-      | .x => ((Real.cos θ : ℝ) : ℂ) * bR
-      | .y => ((Real.sin θ : ℝ) : ℂ) * bR
-      | .z => dR
-    let uA : PauliAxis → ℂ
-      | .x => ((Real.cos θ : ℝ) : ℂ) * bA
-      | .y => ((Real.sin θ : ℝ) : ℂ) * bA
-      | .z => dA
-    let vertex : PauliAxis → ℂ
-      | .x => coefficients 0
-      | .y => coefficients 1
-      | .z => 0
-    have hR :
-        polarPauliMatrix aR bR dR θ =
-          aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
-      simp [polarPauliMatrix, uR, InternalSpace.pauliCombination]
-      module
-    have hA :
-        polarPauliMatrix aA bA dA θ =
-          aA • (1 : Matrix2) + InternalSpace.pauliCombination uA := by
-      simp [polarPauliMatrix, uA, InternalSpace.pauliCombination]
-      module
-    have hVertex :
-        coefficients 0 • sigmaX + coefficients 1 • sigmaY =
-          (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
-      simp [vertex, InternalSpace.pauliCombination]
-    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-      simpa [pow_two] using Complex.I_mul_I
     have hmatrix :
         polarPauliMatrix aR bR dR θ *
             (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
@@ -139,19 +204,14 @@ theorem integral_polarPauliOperator_inPlane_eq
             xCoefficient θ • sigmaX +
             yCoefficient θ • sigmaY +
             zCoefficient θ • sigmaZ := by
-      rw [hR, hVertex, hA,
-        InternalSpace.pauliAffine_mul_pauliAffine,
-        InternalSpace.pauliAffine_mul_pauliAffine]
-      simp [uR, uA, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
-        InternalSpace.pauliCombination, scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
-      ring_nf
-      simp [hI]
+      rw [polarPauliMatrix_inPlane_sandwich_eq_harmonics]
+      simp [polarPauliInPlaneHarmonics, scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
       module
     have hVertexOperator :
         coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY =
           matrixOperator (coefficients 0 • sigmaX + coefficients 1 • sigmaY) := by
       simp [matrixOperator]
-    unfold polarPauliOperator
+    unfold inPlanePauliVertexOperator polarPauliOperator
     rw [hVertexOperator]
     change
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
