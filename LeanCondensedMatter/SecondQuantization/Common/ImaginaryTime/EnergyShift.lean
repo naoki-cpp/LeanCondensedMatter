@@ -38,6 +38,7 @@ theorem heisenbergEvolve_eq_smul_of_carriesShift
     have hdiff : energy m - energy n = q := by linarith
     rw [hdiff]
     push_cast
+    simp [smul_eq_mul]
 
 /-- Real support-shift eigenoperators satisfy the corresponding KMS-type commutation relation with
 the diagonal evolution. -/
