@@ -64,7 +64,7 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
       ∑ q : Fin n → QuarticVertexLabel Mode,
         orderedTwoPointVertexWeight g q *
           (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperator
+            (Common.finiteHilbertOperatorAlgEquiv
               (mixedTimeOrderedVertexComp ε i j τ τ' q σ)))
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
