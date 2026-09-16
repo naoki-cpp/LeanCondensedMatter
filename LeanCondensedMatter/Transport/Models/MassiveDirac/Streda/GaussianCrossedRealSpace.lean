@@ -18,10 +18,11 @@ current from Eq. (11). Accordingly the current block below resums only the longi
 coordinate and applies that common scalar to the requested Cartesian Pauli direction. The transverse
 `F² B` part of the full local retarded-advanced dressed current, and the corresponding higher-order
 feedback into the exact two-component fixed point, are deliberately not inserted into `J_r`.
-On the positive real-space radial axis the quadratic angular product is reduced exactly to the
-zeroth, first-cosine, and second-cosine full-angle radial Fourier kernels. The finite momentum cutoff
-and external broadening remain explicit; no cutoff removal, zero-broadening limit, weak-disorder
-reduction, real-space `r` integration, or crossed conductivity value is claimed here.
+On the positive real-space radial axis the quadratic angular product is represented by the shared
+`AngularHarmonicCoefficients` adapter and reduced exactly to the zeroth, first-cosine, and
+second-cosine full-angle radial Fourier kernels. The finite momentum cutoff and external broadening
+remain explicit; no cutoff removal, zero-broadening limit, weak-disorder reduction, real-space `r`
+integration, or crossed conductivity value is claimed here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -111,7 +112,7 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
   let dR : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonPauliCoefficient .z
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let harmonics : ℝ → PolarPauliInPlaneHarmonics := fun p =>
+  let harmonics : ℝ → AngularHarmonicCoefficients Matrix2 := fun p =>
     polarPauliInPlaneHarmonics
       (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
   fun i j =>
@@ -155,9 +156,16 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
   let dR : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonPauliCoefficient .z
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let harmonics : ℝ → PolarPauliInPlaneHarmonics := fun p =>
+  let harmonics : ℝ → AngularHarmonicCoefficients Matrix2 := fun p =>
     polarPauliInPlaneHarmonics
       (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
+  let entryHarmonics : Fin 2 → Fin 2 → ℝ → AngularHarmonicCoefficients ℂ :=
+    fun i j p =>
+      { constant := (harmonics p).constant i j
+        firstCosine := (harmonics p).firstCosine i j
+        firstSine := (harmonics p).firstSine i j
+        secondCosine := (harmonics p).secondCosine i j
+        secondMixed := (harmonics p).secondMixed i j }
   have hA (p θ : ℝ) :
       finiteCutoffContinuumBornDysonGreenMatrix
           .advanced v m (p * Real.cos θ) (p * Real.sin θ)
@@ -210,27 +218,16 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
           finiteCutoffContinuumBornDysonGreenMatrix
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) i j) =
-        fun p θ =>
-          (harmonics p).constant i j +
-            ((Real.cos θ : ℝ) : ℂ) * (harmonics p).firstCosine i j +
-            ((Real.sin θ : ℝ) : ℂ) * (harmonics p).firstSine i j +
-            ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-              (harmonics p).secondCosine i j +
-            (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-              (harmonics p).secondMixed i j := by
+        fun p θ => (entryHarmonics i j p).eval θ := by
     funext p θ
     rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-    simp [harmonics, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+    simp [entryHarmonics, harmonics, AngularHarmonicCoefficients.eval,
+      Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
-    factor, coefficients, harmonics, aA, bA, dA, aR, bR, dR] using
-    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
-      hbar pMax radius
-      (fun p => (harmonics p).constant i j)
-      (fun p => (harmonics p).firstCosine i j)
-      (fun p => (harmonics p).firstSine i j)
-      (fun p => (harmonics p).secondCosine i j)
-      (fun p => (harmonics p).secondMixed i j))
+    factor, coefficients, harmonics, entryHarmonics, aA, bA, dA, aR, bR, dR] using
+    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
+      hbar pMax radius (entryHarmonics i j))
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/

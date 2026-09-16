@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Core.ContinuumMeasure
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
@@ -12,10 +13,10 @@ physical-momentum integral is written in polar coordinates with a finite radial 
 includes the physical continuum normalization `d²p / (2πℏ)²` and the polar Jacobian `p`, while the
 consumer supplies the momentum-space scalar field.
 
-The full-angle kernels below are the canonical intermediate for radial Fourier reduction. They are
-kept as explicit finite interval integrals rather than identified with Bessel functions here; the
-pinned Mathlib revision does not yet provide its Bessel-function module. Model layers consume these
-kernels without introducing a parallel special-function implementation.
+The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
+first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
+ordinary angular integration. The kernels remain explicit finite interval integrals rather than
+being identified with Bessel functions; the pinned Mathlib revision does not provide that API.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -149,6 +150,90 @@ theorem integral_polarFourierRadialPhase_mul_cos_mul_sin_zero (z : ℝ) :
     CharZero.neg_eq_self_iff.mp hself
   simpa [f] using hz
 
+/-- Phase-weighted full-angle integration of the canonical constant/first/second harmonic
+decomposition. The first-sine and mixed-second channels vanish on the radial axis. -/
+theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
+    (coefficients : AngularHarmonicCoefficients ℂ) (z p : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
+      (p : ℂ) *
+        (polarFourierZerothAngularKernel z * coefficients.constant +
+          polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
+          polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
+  have hphase : Continuous fun θ : ℝ => polarFourierRadialPhase z θ := by
+    unfold polarFourierRadialPhase
+    fun_prop
+  have hcos : Continuous fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) := by
+    fun_prop
+  have hsin : Continuous fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) := by
+    fun_prop
+  have hA : IntervalIntegrable
+      (fun θ : ℝ => polarFourierRadialPhase z θ * coefficients.constant)
+      volume 0 (2 * Real.pi) :=
+    (hphase.mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
+  have hB : IntervalIntegrable
+      (fun θ : ℝ =>
+        (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * coefficients.firstCosine)
+      volume 0 (2 * Real.pi) :=
+    ((hphase.mul hcos).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
+  have hC : IntervalIntegrable
+      (fun θ : ℝ =>
+        (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * coefficients.firstSine)
+      volume 0 (2 * Real.pi) :=
+    ((hphase.mul hsin).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
+  have hD : IntervalIntegrable
+      (fun θ : ℝ =>
+        (polarFourierRadialPhase z θ *
+          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) *
+            coefficients.secondCosine) volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  have hE : IntervalIntegrable
+      (fun θ : ℝ =>
+        (polarFourierRadialPhase z θ *
+          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) * coefficients.secondMixed)
+      volume 0 (2 * Real.pi) := by
+    apply Continuous.intervalIntegrable
+    fun_prop
+  calc
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+        ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
+        (p : ℂ) *
+          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+            polarFourierRadialPhase z θ * coefficients.constant +
+              (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) *
+                coefficients.firstCosine +
+              (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) *
+                coefficients.firstSine +
+              (polarFourierRadialPhase z θ *
+                ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) *
+                coefficients.secondCosine +
+              (polarFourierRadialPhase z θ *
+                (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) *
+                coefficients.secondMixed := by
+          rw [← intervalIntegral.integral_const_mul]
+          apply intervalIntegral.integral_congr
+          intro θ _
+          simp only [AngularHarmonicCoefficients.eval, smul_eq_mul]
+          ring
+    _ = (p : ℂ) *
+        (polarFourierZerothAngularKernel z * coefficients.constant +
+          polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
+          polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
+      rw [intervalIntegral.integral_add (((hA.add hB).add hC).add hD) hE,
+        intervalIntegral.integral_add ((hA.add hB).add hC) hD,
+        intervalIntegral.integral_add (hA.add hB) hC,
+        intervalIntegral.integral_add hA hB,
+        intervalIntegral.integral_mul_const,
+        intervalIntegral.integral_mul_const,
+        intervalIntegral.integral_mul_const,
+        intervalIntegral.integral_mul_const,
+        intervalIntegral.integral_mul_const,
+        integral_polarFourierRadialPhase_mul_sin_zero,
+        integral_polarFourierRadialPhase_mul_cos_mul_sin_zero]
+      simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel,
+        polarFourierSecondCosineAngularKernel]
+
 /-- Full-angle reduction for a scalar field containing only constant and first sine/cosine
 harmonics. The sine harmonic drops out on the radial axis, leaving the zeroth and first-cosine
 kernels that later become the `J₀` and `J₁` channels. -/
@@ -160,49 +245,14 @@ theorem integral_polarFourierRadialPhase_first_harmonics
       (p : ℂ) *
         (polarFourierZerothAngularKernel z * a +
           polarFourierFirstCosineAngularKernel z * b) := by
-  have hphase : Continuous fun θ : ℝ => polarFourierRadialPhase z θ := by
-    unfold polarFourierRadialPhase
-    fun_prop
-  have hcos : Continuous fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) := by
-    fun_prop
-  have hsin : Continuous fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) := by
-    fun_prop
-  have hA : IntervalIntegrable
-      (fun θ : ℝ => polarFourierRadialPhase z θ * a) volume 0 (2 * Real.pi) :=
-    (hphase.mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hB : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * b)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hcos).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hC : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * c)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hsin).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((p : ℂ) * polarFourierRadialPhase z θ) *
-          (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c)) =
-        (p : ℂ) *
-          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-            polarFourierRadialPhase z θ * a +
-              (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * b +
-              (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * c := by
-          rw [← intervalIntegral.integral_const_mul]
-          apply intervalIntegral.integral_congr
-          intro θ _
-          ring
-    _ = (p : ℂ) *
-        (polarFourierZerothAngularKernel z * a +
-          polarFourierFirstCosineAngularKernel z * b) := by
-      rw [intervalIntegral.integral_add (hA.add hB) hC,
-        intervalIntegral.integral_add hA hB,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        integral_polarFourierRadialPhase_mul_sin_zero]
-      simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel]
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := a
+      firstCosine := b
+      firstSine := c
+      secondCosine := 0
+      secondMixed := 0 }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+    coefficients.integral_polarFourierRadialPhase z p
 
 /-- Full-angle reduction through second angular harmonics. The odd first-sine and mixed
 `cos θ sin θ` channels vanish on the radial axis, leaving exactly the zeroth, first-cosine, and
@@ -218,76 +268,14 @@ theorem integral_polarFourierRadialPhase_second_harmonics
         (polarFourierZerothAngularKernel z * a +
           polarFourierFirstCosineAngularKernel z * b +
           polarFourierSecondCosineAngularKernel z * d) := by
-  have hphase : Continuous fun θ : ℝ => polarFourierRadialPhase z θ := by
-    unfold polarFourierRadialPhase
-    fun_prop
-  have hcos : Continuous fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) := by
-    fun_prop
-  have hsin : Continuous fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) := by
-    fun_prop
-  have hA : IntervalIntegrable
-      (fun θ : ℝ => polarFourierRadialPhase z θ * a) volume 0 (2 * Real.pi) :=
-    (hphase.mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hB : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * b)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hcos).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hC : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * c)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hsin).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hD : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ *
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) * d)
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  have hE : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ *
-          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) * e)
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((p : ℂ) * polarFourierRadialPhase z θ) *
-          (a + ((Real.cos θ : ℝ) : ℂ) * b + ((Real.sin θ : ℝ) : ℂ) * c +
-            ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * d +
-            (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * e)) =
-        (p : ℂ) *
-          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-            polarFourierRadialPhase z θ * a +
-              (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * b +
-              (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * c +
-              (polarFourierRadialPhase z θ *
-                ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) * d +
-              (polarFourierRadialPhase z θ *
-                (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) * e := by
-          rw [← intervalIntegral.integral_const_mul]
-          apply intervalIntegral.integral_congr
-          intro θ _
-          ring
-    _ = (p : ℂ) *
-        (polarFourierZerothAngularKernel z * a +
-          polarFourierFirstCosineAngularKernel z * b +
-          polarFourierSecondCosineAngularKernel z * d) := by
-      rw [intervalIntegral.integral_add (((hA.add hB).add hC).add hD) hE,
-        intervalIntegral.integral_add ((hA.add hB).add hC) hD,
-        intervalIntegral.integral_add (hA.add hB) hC,
-        intervalIntegral.integral_add hA hB,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        intervalIntegral.integral_mul_const,
-        integral_polarFourierRadialPhase_mul_sin_zero,
-        integral_polarFourierRadialPhase_mul_cos_mul_sin_zero]
-      simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel,
-        polarFourierSecondCosineAngularKernel]
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := a
+      firstCosine := b
+      firstSine := c
+      secondCosine := d
+      secondMixed := e }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+    coefficients.integral_polarFourierRadialPhase z p
 
 /-- Finite-cutoff polar Fourier transform of a complex scalar momentum field with the physical
 momentum measure `d²p / (2πℏ)²` included exactly once. -/
@@ -297,6 +285,28 @@ noncomputable def finiteCutoffPhysicalMomentumPolarFourier
     ∫ p in (0 : ℝ)..pMax,
       ∫ θ in (0 : ℝ)..(2 * Real.pi),
         ((p : ℂ) * physicalMomentumPolarFourierPhase hbar p θ r) * field p θ
+
+/-- Radial-axis reduction of the finite-cutoff transform for the canonical harmonic coefficient
+field. This is the shared coefficient adapter consumed by model-specific real-space reductions. -/
+theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
+    (hbar pMax radius : ℝ) (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
+    finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+        (fun p θ => (coefficients p).eval θ) (polarPoint2D radius 0) =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (polarFourierZerothAngularKernel (p * radius / hbar) * (coefficients p).constant +
+              polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+                (coefficients p).firstCosine +
+              polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+                (coefficients p).secondCosine) := by
+  unfold finiteCutoffPhysicalMomentumPolarFourier
+  apply congrArg (((momentumMeasurePrefactor hbar : ℝ) : ℂ) * ·)
+  apply intervalIntegral.integral_congr
+  intro p _
+  simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
+  simp only [sub_zero]
+  exact (coefficients p).integral_polarFourierRadialPhase (p * radius / hbar) p
 
 /-- Radial-axis reduction of the finite-cutoff transform for a field with only constant and first
 angular harmonics. The full angular integral is replaced exactly by the zeroth and first-cosine
@@ -312,14 +322,15 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_first_harmonics
           (p : ℂ) *
             (polarFourierZerothAngularKernel (p * radius / hbar) * a p +
               polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p) := by
-  unfold finiteCutoffPhysicalMomentumPolarFourier
-  apply congrArg (((momentumMeasurePrefactor hbar : ℝ) : ℂ) * ·)
-  apply intervalIntegral.integral_congr
-  intro p _
-  simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
-  simp only [sub_zero]
-  exact integral_polarFourierRadialPhase_first_harmonics
-    (p * radius / hbar) p (a p) (b p) (c p)
+  let coefficients : ℝ → AngularHarmonicCoefficients ℂ := fun p =>
+    { constant := a p
+      firstCosine := b p
+      firstSine := c p
+      secondCosine := 0
+      secondMixed := 0 }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
+      hbar pMax radius coefficients)
 
 /-- Radial-axis reduction of the finite-cutoff transform through second angular harmonics. The
 remaining one-dimensional integral has only the zeroth, first-cosine, and second-cosine kernels. -/
@@ -337,14 +348,15 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
             (polarFourierZerothAngularKernel (p * radius / hbar) * a p +
               polarFourierFirstCosineAngularKernel (p * radius / hbar) * b p +
               polarFourierSecondCosineAngularKernel (p * radius / hbar) * d p) := by
-  unfold finiteCutoffPhysicalMomentumPolarFourier
-  apply congrArg (((momentumMeasurePrefactor hbar : ℝ) : ℂ) * ·)
-  apply intervalIntegral.integral_congr
-  intro p _
-  simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
-  simp only [sub_zero]
-  exact integral_polarFourierRadialPhase_second_harmonics
-    (p * radius / hbar) p (a p) (b p) (c p) (d p) (e p)
+  let coefficients : ℝ → AngularHarmonicCoefficients ℂ := fun p =>
+    { constant := a p
+      firstCosine := b p
+      firstSine := c p
+      secondCosine := d p
+      secondMixed := e p }
+  simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
+    (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
+      hbar pMax radius coefficients)
 
 end
 

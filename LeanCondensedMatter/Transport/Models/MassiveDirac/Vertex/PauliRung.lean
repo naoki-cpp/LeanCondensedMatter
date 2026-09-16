@@ -16,9 +16,10 @@ full-angle action on an arbitrary in-plane vertex `Γ = α σₓ + β σᵧ` clo
 (α, β) ↦ (X α - Y β, Y α + X β),
 ```
 
-where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients. Concrete propagators
-remain responsible for supplying those coefficients and for proving that their polar form matches
-the shared model representation.
+where `X` and `Y` depend only on the scalar and `σ_z` radial coefficients. The pointwise Pauli
+sandwich supplies the generic `AngularHarmonicCoefficients Matrix2` representation shared by
+ordinary and Fourier-weighted angular reduction. Concrete propagators remain responsible for
+supplying the radial coefficients.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -34,24 +35,11 @@ def pauliRungAngularCoefficient (aR aA dR dA : ℂ) : Fin 2 → ℂ :=
   ![(((2 * Real.pi : ℝ) : ℂ)) * (aR * aA - dR * dA),
     (((2 * Real.pi : ℝ) : ℂ)) * Complex.I * (aA * dR - aR * dA)]
 
-/-- Canonical angular-harmonic data of a polar-Pauli sandwich with an arbitrary in-plane vertex. -/
-structure PolarPauliInPlaneHarmonics where
-  /-- Constant angular harmonic. -/
-  constant : Matrix2
-  /-- First cosine angular harmonic. -/
-  firstCosine : Matrix2
-  /-- First sine angular harmonic. -/
-  firstSine : Matrix2
-  /-- Second cosine angular harmonic. -/
-  secondCosine : Matrix2
-  /-- Mixed second angular harmonic. -/
-  secondMixed : Matrix2
-
 /-- Constant, first, and second angular harmonics of
 `polarPauliMatrix aL bL dL θ * Γ * polarPauliMatrix aR bR dR θ` for an arbitrary in-plane `Γ`. -/
 def polarPauliInPlaneHarmonics
     (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) :
-    PolarPauliInPlaneHarmonics :=
+    AngularHarmonicCoefficients Matrix2 :=
   let c0 := aL * aR - dL * dR
   let cxy := Complex.I * (aR * dL - aL * dR)
   let scalar := aR * bL + aL * bR
@@ -76,21 +64,14 @@ def polarPauliInPlaneHarmonics
         (2 * bL * bR * coefficients 0) • sigmaY
   }
 
-/-- Pointwise decomposition of a polar-Pauli sandwich into the constant, first, and second angular
-harmonics. This is the canonical matrix-level algebra used before either ordinary full-angle
-integration or Fourier-weighted radial reduction. -/
+/-- Pointwise decomposition of a polar-Pauli sandwich into the canonical constant, first, and second
+angular-harmonic evaluation used by ordinary and Fourier-weighted reduction. -/
 theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     (aL bL dL aR bR dR : ℂ) (coefficients : InPlaneCoefficientVector) (θ : ℝ) :
     polarPauliMatrix aL bL dL θ *
         (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
         polarPauliMatrix aR bR dR θ =
-      let harmonics := polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients
-      harmonics.constant +
-        ((Real.cos θ : ℝ) : ℂ) • harmonics.firstCosine +
-        ((Real.sin θ : ℝ) : ℂ) • harmonics.firstSine +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
-          harmonics.secondCosine +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) • harmonics.secondMixed := by
+      (polarPauliInPlaneHarmonics aL bL dL aR bR dR coefficients).eval θ := by
   let uL : PauliAxis → ℂ
     | .x => ((Real.cos θ : ℝ) : ℂ) * bL
     | .y => ((Real.sin θ : ℝ) : ℂ) * bL
@@ -123,7 +104,8 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     InternalSpace.pauliAffine_mul_pauliAffine,
     InternalSpace.pauliAffine_mul_pauliAffine]
   simp [uL, uR, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics]
+    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
+    AngularHarmonicCoefficients.eval]
   ring_nf
   simp [hI]
   module
@@ -134,26 +116,13 @@ private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
         ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * c2 +
         (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * cMix) =
       (((2 * Real.pi : ℝ) : ℂ)) * c0 := by
-  have hconst : IntervalIntegrable (fun _θ : ℝ => c0) volume 0 (2 * Real.pi) := by
-    exact continuous_const.intervalIntegrable 0 (2 * Real.pi)
-  have hquad : IntervalIntegrable
-      (fun θ : ℝ =>
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * c2)
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  have hmix : IntervalIntegrable
-      (fun θ : ℝ =>
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * cMix)
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  rw [intervalIntegral.integral_add (hconst.add hquad) hmix,
-    intervalIntegral.integral_add hconst hquad,
-    intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const,
-    integral_complex_cos_sq_sub_sin_sq_zero_two_pi,
-    integral_complex_cos_mul_sin_zero_two_pi]
-  simp
+  let harmonics : AngularHarmonicCoefficients ℂ :=
+    { constant := c0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := c2
+      secondMixed := cMix }
+  simpa [harmonics, AngularHarmonicCoefficients.eval, smul_eq_mul] using harmonics.integral_eval
 
 /-- The full-angle retarded-advanced polar Pauli rung acts through the canonical in-plane ladder
 action, preserving the complete coefficient vector until the operator boundary. -/
@@ -205,7 +174,8 @@ theorem integral_polarPauliOperator_inPlane_eq
             yCoefficient θ • sigmaY +
             zCoefficient θ • sigmaZ := by
       rw [polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-      simp [polarPauliInPlaneHarmonics, scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
+      simp [polarPauliInPlaneHarmonics, AngularHarmonicCoefficients.eval,
+        scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
       module
     have hVertexOperator :
         coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY =
