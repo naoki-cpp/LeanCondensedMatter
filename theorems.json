@@ -76859,22 +76859,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_unit",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.freeGibbsFunctional_value_eq_freeGibbsExpectation"
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_unit",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
-      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.freeGibbsFunctional_value_eq_freeGibbsExpectation"
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77293,7 +77287,9 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_eq_operatorPeelTerms_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_smul"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -77598,7 +77594,10 @@
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_eq_operatorPeelTerms_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+      "SecondQuantization.Bosonic.freeGibbsSummable_sum",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -79656,6 +79655,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
       "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
@@ -79694,6 +79694,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsSummable_dysonCoeff_one",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
       "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
@@ -79769,6 +79770,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsSummable_interactionPicture_iff",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
       "SecondQuantization.Common.dysonCoeff_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -80131,6 +80133,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
       "SecondQuantization.Bosonic.tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -80511,8 +80514,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.freeGibbsFunctional_value_eq_freeGibbsExpectation"
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable",
+      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80750,6 +80753,47 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {ι : Type u_2} [inst : Fintype ι] (ε : Mode → ℝ) (β : ℝ)\n  (A : ι → SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  (∀ (i : ι), SecondQuantization.Bosonic.freeGibbsSummable ε β (A i)) →\n    SecondQuantization.Bosonic.freeGibbsExpectation ε β (∑ i, A i) =\n      ∑ i, SecondQuantization.Bosonic.freeGibbsExpectation ε β (A i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+    "externalAxioms": [],
+    "docString": "The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an\nexplicit summability witness.  The subtype construction and linear-map evaluation stay inside this\nanalytic adapter. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (k : Mode), 0 < β * ε k) (i j : Mode),\n  SecondQuantization.Bosonic.freeGibbsSummable ε β\n      (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) →\n    (1 - Complex.exp ↑(-ε i * β)) *\n        (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n          (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.create j) =\n      if i = j then 1 else 0",
     "standardAxioms": [
@@ -80766,13 +80810,13 @@
     "name": "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
     "externalAxioms": [],
-    "docString": "The same normalized two-point equation stated through the convergence-aware functional adapter.\nThe domain witness is consumed by `value_of_mem`, so no out-of-domain totalization branch is used. ",
+    "docString": "The same normalized two-point equation stated through the convergence-aware functional adapter.\nThe explicit summability witness selects the in-domain value, so no out-of-domain totalization\nbranch is used. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_of_mem",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80809,13 +80853,61 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_of_mem",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create_eq",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ (i : Mode), 0 < β * ε i)\n  {A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode},\n  SecondQuantization.Bosonic.freeGibbsSummable ε β A →\n    (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value A =\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+    "externalAxioms": [],
+    "docString": "A summability witness is the complete analytic adapter from the totalized free-Gibbs functional\nto the concrete normalized expectation.  In particular, callers do not reconstruct a domain subtype\nor unfold `freeGibbsExpectationLinear`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_of_mem",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_annihilate_comp_create_eq",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80847,9 +80939,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_of_mem",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable",
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -81115,6 +81208,90 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (c : ℂ)\n  {A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode},\n  SecondQuantization.Bosonic.freeGibbsSummable ε β A → SecondQuantization.Bosonic.freeGibbsSummable ε β (c • A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+    "externalAxioms": [],
+    "docString": "Scalar multiplication preserves free-Gibbs summability through the canonical analytic domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {ι : Type u_2} [inst : Fintype ι] (ε : Mode → ℝ) (β : ℝ)\n  (A : ι → SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  (∀ (i : ι), SecondQuantization.Bosonic.freeGibbsSummable ε β (A i)) →\n    SecondQuantization.Bosonic.freeGibbsSummable ε β (∑ i, A i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsSummable_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+    "externalAxioms": [],
+    "docString": "A finite family of explicitly summable observables has a summable free-Gibbs numerator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -82329,6 +82506,63 @@
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  A ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β ↔ SecondQuantization.Bosonic.freeGibbsSummable ε β A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.mem_freeGibbsDomain_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+    "externalAxioms": [],
+    "docString": "Membership in the free-Gibbs analytic domain is exactly summability of the infinite occupation\nbasis numerator.  This is the canonical conversion between caller-facing convergence proofs and the\nsubmodule consumed by partial-linear APIs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.firstDysonIntegrand_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+      "SecondQuantization.Bosonic.freeGibbsSummable_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_one_quarticInteraction_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.firstDysonIntegrand_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_annihilate_comp_create",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_of_summable",
+      "SecondQuantization.Bosonic.freeGibbsFunctional_value_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.freeGibbsSummable_smul",
+      "SecondQuantization.Bosonic.freeGibbsSummable_sum"
+    ],
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96218,7 +96452,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    SecondQuantization.Common.diagonalEvolution energy τ ∘ₗ A =\n      Complex.exp ↑(q * τ) • A ∘ₗ SecondQuantization.Common.diagonalEvolution energy τ",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    SecondQuantization.Common.diagonalEvolution energy τ ∘ₗ A =\n      Complex.exp (↑τ * ↑q) • A ∘ₗ SecondQuantization.Common.diagonalEvolution energy τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99309,7 +99543,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    (SecondQuantization.Common.heisenbergEvolve energy τ) A = Complex.exp ↑(τ * q) • A",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (q τ : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.CarriesShift energy A q →\n    (SecondQuantization.Common.heisenbergEvolve energy τ) A = Complex.exp (↑τ * ↑q) • A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145906,47 +146140,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.norm_matrixCoeff_quarticVertexOperator_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ (i : Mode), 0 < β * ε i)\n  {A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode},\n  A ∈ SecondQuantization.Bosonic.freeGibbsDomain ε β →\n    (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value A =\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.freeGibbsFunctional_value_eq_freeGibbsExpectation",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
-    "externalAxioms": [],
-    "docString": "On an explicitly summable observable, the totalized functional is the concrete free-Gibbs\nexpectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.ConvergenceAwareGibbsFunctional.value_of_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
