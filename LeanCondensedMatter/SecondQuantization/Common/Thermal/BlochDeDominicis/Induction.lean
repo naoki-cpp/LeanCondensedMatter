@@ -26,8 +26,7 @@ variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- **The general finite-temperature Bloch–de Dominicis theorem.** -/
 theorem finiteGibbsExpectation_prodComp_eq_sum_pairing (s : Statistics)
-    (energy : Config → ℝ) (β : ℝ)
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0) :
+    (energy : Config → ℝ) (β : ℝ) :
     ∀ (n : ℕ) (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
       (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
       (∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) →
@@ -40,7 +39,7 @@ theorem finiteGibbsExpectation_prodComp_eq_sum_pairing (s : Statistics)
             ∏ pr ∈ pairing.pairs,
               finiteGibbsExpectation energy β ((C pr.1).comp (C pr.2)) := by
   intro n C q c hC hcomm hne
-  exact (finiteGibbsExpectationRecursion s energy β hZ).expectation_eq_sum_pairing
+  exact (finiteGibbsExpectationRecursion s energy β).expectation_eq_sum_pairing
     n C ⟨q, c, hC, hcomm, hne⟩
 
 end BlochDeDominicis
