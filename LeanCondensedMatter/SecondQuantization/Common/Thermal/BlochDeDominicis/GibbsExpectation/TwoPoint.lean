@@ -28,11 +28,11 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
     (hcomm : LinearMap.zetaCommutator ζ C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp Cj) =
       c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := traceFock_diagonalEvolution_comp_two_point energy β q1 ζ c1j C1 Cj hC1 hcomm
+  have hZ := traceFock_diagonalEvolution_ne_zero energy β
   rw [finiteGibbsExpectation_eq_trace_div, div_eq_div_iff hZ hne]
   linear_combination h
 
@@ -43,12 +43,11 @@ theorem finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator (energy : Confi
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
     (hcomm : exchangeCommutator s C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp Cj) =
       c1j / (1 - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ)) :=
   finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 (s.zetaInt : ℂ) c1j C1 Cj hC1
-    hcomm hZ hne
+    hcomm hne
 
 end Common
 end SecondQuantization
