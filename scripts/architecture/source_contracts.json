@@ -162,7 +162,6 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinTrace.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboGreenwood.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
