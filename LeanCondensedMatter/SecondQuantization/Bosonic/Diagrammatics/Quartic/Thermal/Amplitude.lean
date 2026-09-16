@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
@@ -9,7 +9,7 @@ set_option linter.unusedFintypeInType false
 /-!
 # Concrete bosonic quartic diagram amplitudes
 
-This module places the free-boson thermal pair kernel from the concrete Wick layer on the existing
+This module places the free-boson thermal pair kernel from the concrete thermal layer on the existing
 ordered quartic-diagram structure.  A vertex order turns the diagram labels into a finite ordered
 list, and `pairingInOrder` selects one perfect pairing of the resulting local thermal fields.  The
 scalar diagram value is evaluated through `Combinatorics.Pairing.evaluation`.
