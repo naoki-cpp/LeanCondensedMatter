@@ -65,7 +65,9 @@ private theorem coeff_neg (V : ℝ → A) (n : ℕ) (τ : ℝ) :
       congr 1
       apply intervalIntegral.integral_congr
       intro σ _
-      rw [ih]
+      change -V σ * coeff (fun x => -V x) n σ =
+        (-1 : ℂ) ^ (n + 1) • (V σ * coeff V n σ)
+      rw [ih σ]
       simp [pow_succ', mul_smul_comm, smul_smul]
 
 /-- The `n`th perturbatively weighted Dyson coefficient. -/
