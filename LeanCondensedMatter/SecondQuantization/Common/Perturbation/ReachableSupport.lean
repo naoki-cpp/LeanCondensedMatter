@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -93,14 +93,6 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
       exact hmk (Finsupp.mem_support_iff.mpr hne)
     simp [hcol]
   exact (Finsupp.mem_support_iff.mp hm) hzero
-
-/-- The reconstructed first Dyson basis image remains in the same first reachable support. -/
-theorem support_firstDysonCoeff_basisState_subset_reachableSupport_one
-    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (τ : ℝ) (n : Config) :
-    (firstDysonCoeff energy V τ (basisState n)).support ⊆ reachableSupport V 1 n :=
-  (support_firstDysonCoeff_basisState_subset energy V τ n).trans
-    (support_basisImage_subset_reachableSupport_one V n)
 
 end Common
 end SecondQuantization
