@@ -1,35 +1,29 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
 
 /-!
-# Free-boson Wick expansion for quartic vertex legs
+# Free-boson thermal fields for quartic vertex legs
 
-This module connects the concrete free-boson Gibbs Wick theorem to the quartic diagrammatic leg
-convention.  A finite list of quartic vertices is flattened to `4 n = 2 (2 n)` local thermal fields
-using the Common quartic-leg equivalence, and the inherited Wick theorem evaluates its normalized
-Gibbs expectation as a sum over `Pairing (2 * n)`.
+This module connects the bosonic quartic diagrammatic leg convention to the free thermal-field
+representation.  A finite list of quartic vertices is flattened to `4 n = 2 (2 n)` local thermal
+fields using the Common quartic-leg equivalence, and their ordered algebraic product is exposed for
+downstream thermal expectations.
 
-For finite `Mode`, the concrete thermal layer already proves summability and the first-pair
-recurrence for every finite ordered field product.  The only analytic hypothesis exposed here is
-positivity of each one-mode Boltzmann exponent.
+The concrete Gibbs/Wick theorem is owned by the bosonic thermal layer and is consumed directly at
+the diagram-amplitude boundary rather than being wrapped here.
 -/
 
 namespace SecondQuantization
 namespace Bosonic
 
-open Common Combinatorics
+open Common
 
 noncomputable section
 
 variable {Mode : Type*}
-
-/-- File-local classical equality keeps the concrete thermal kernel independent of caller choices. -/
-local instance instDecidableEqQuarticWickExpansion : DecidableEq Mode := Classical.decEq Mode
 
 /-- Interpret one bosonic quartic local leg as the corresponding free thermal field label. -/
 def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeThermalField Mode :=
@@ -56,24 +50,6 @@ noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
 noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   FreeThermalField.orderedProduct (List.ofFn (quarticFreeThermalFieldFamily q))
-
-variable [Fintype Mode]
-
-/-- Finite-order quartic specialization of the concrete free-boson Wick expansion.
-
-The `n` quartic vertices contribute `4 n` local fields, hence the perfect pairings are indexed by
-`Pairing (2 * n)`.  The right-hand side uses the shared statistics-independent pairing evaluator. -/
-theorem freeGibbsQuarticExpectation_eq_sum_pairing
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
-    freeGibbsExpectation ε β (quarticFreeThermalOrderedProduct q) =
-      ∑ pairing : Pairing (2 * n),
-        pairing.evaluation (pairing.weight .boson)
-          (fun a b => freeThermalPairValue ε β
-            (quarticFreeThermalFieldFamily q a) (quarticFreeThermalFieldFamily q b)) := by
-  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete ε β hpos
-    (2 * n) (quarticFreeThermalFieldFamily q)
-  simpa [quarticFreeThermalOrderedProduct, Combinatorics.Pairing.evaluation] using hwick
 
 end
 end Bosonic
