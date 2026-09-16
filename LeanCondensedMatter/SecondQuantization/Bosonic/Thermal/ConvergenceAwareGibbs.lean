@@ -135,6 +135,7 @@ theorem mem_freeGibbsDomain_iff
     A ∈ freeGibbsDomain ε β ↔ freeGibbsSummable ε β A :=
   Iff.rfl
 
+omit [Fintype Mode] in
 /-- Scalar multiplication preserves free-Gibbs summability through the canonical analytic domain. -/
 theorem freeGibbsSummable_smul
     (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
@@ -144,6 +145,7 @@ theorem freeGibbsSummable_smul
   apply (mem_freeGibbsDomain_iff ε β (c • A)).1
   exact (freeGibbsDomain ε β).smul_mem c ((mem_freeGibbsDomain_iff ε β A).2 hA)
 
+omit [Fintype Mode] in
 /-- A finite family of explicitly summable observables has a summable free-Gibbs numerator. -/
 theorem freeGibbsSummable_sum
     {ι : Type*} [Fintype ι]
@@ -209,6 +211,7 @@ noncomputable def freeGibbsExpectationLinear (ε : Mode → ℝ) (β : ℝ) :
     intro c A
     exact freeGibbsExpectation_smul ε β c A.1
 
+omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an
 explicit summability witness.  The subtype construction and linear-map evaluation stay inside this
 analytic adapter. -/
