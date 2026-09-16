@@ -172,7 +172,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
           (polarPoint2D radius 0) = _
     simp_rw [hentry 1 1]
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      entryHarmonics, harmonics, a, b, d] using
+      entryHarmonics, harmonics, a, b, d, sub_eq_add_neg] using
       (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_harmonics
         hbar pMax radius (entryHarmonics 1 1))
 
