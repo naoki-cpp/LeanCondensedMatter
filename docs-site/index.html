@@ -10,6 +10,17 @@
   <link rel="stylesheet" href="./module-overview.css">
 </head>
 <body>
+  <svg class="graph-definitions" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <marker id="dependency-arrow" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#dce5ff" fill-opacity="0.72"></path>
+      </marker>
+      <marker id="dependency-arrow-muted" viewBox="0 0 10 10" refX="19" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+        <path d="M 0 1 L 8 5 L 0 9 Z" fill="#94a3b8" fill-opacity="0.35"></path>
+      </marker>
+    </defs>
+  </svg>
+
   <header class="site-header">
     <a class="brand" href="./" aria-label="LeanCondensedMatter declaration explorer home">
       <span class="brand-mark" aria-hidden="true">LCM</span>
@@ -46,8 +57,8 @@
           Direction
           <select id="direction">
             <option value="both">Dependencies + consumers</option>
-            <option value="dependencies">Dependencies</option>
-            <option value="consumers">Consumers</option>
+            <option value="dependencies">Dependencies (outgoing)</option>
+            <option value="consumers">Consumers (incoming)</option>
           </select>
         </label>
         <label>
@@ -79,13 +90,14 @@
 
       <div class="legend" aria-label="Graph legend">
         <span><i class="legend-node root"></i> focused theorem</span>
-        <span><i class="legend-node branch"></i> theorem branch</span>
-        <span><i class="legend-edge"></i> tree dependency</span>
+        <span><i class="legend-node branch"></i> same first-hop branch</span>
+        <span><i class="legend-edge"></i> branch dependency</span>
         <span><i class="legend-edge cross"></i> cross-link</span>
         <span><i class="legend-edge wrapper"></i> direct wrapper</span>
+        <span class="legend-direction"><strong>A → B</strong> A depends on B</span>
       </div>
 
-      <p class="hint">Start from the overview or search. Click a node to inspect it; double-click or use <strong>Focus graph here</strong> to re-center. Hover or focus a node to isolate its branch.</p>
+      <p class="hint">Arrows always point to dependencies. Colors group declarations by the same first hop from the focused theorem; they do not encode theorem type or dependency direction. Click a node to inspect it; double-click or use <strong>Focus graph here</strong> to re-center. Hover or focus a node to isolate its branch.</p>
     </aside>
 
     <section class="graph-panel" aria-label="Declaration dependency graph">
