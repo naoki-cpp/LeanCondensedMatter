@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Concrete bosonic quartic diagram amplitudes
@@ -25,6 +26,9 @@ noncomputable section
 
 variable {Mode : Type*} {N : ℕ}
 
+/-- File-local classical equality matches the concrete free-thermal kernel. -/
+local instance instDecidableEqQuarticThermalAmplitude : DecidableEq Mode := Classical.decEq Mode
+
 /-- The flattened free thermal fields of a bosonic quartic diagram in a chosen vertex order. -/
 noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
@@ -33,7 +37,7 @@ noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin 
   quarticFreeThermalFieldFamily (fun i => d.vertexLabel (order i))
 
 /-- The concrete free thermal contraction value of one ordered bosonic quartic diagram. -/
-noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalPairingValue
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
@@ -45,7 +49,7 @@ noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
 
 /-- The coefficientwise scalar amplitude of one ordered bosonic quartic diagram, including the
 Dyson sign and quartic coupling product. -/
-noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
@@ -54,7 +58,7 @@ noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
     QuarticDiagram.orderedThermalPairingValue ε β d order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
-noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalWickSum
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
@@ -64,7 +68,7 @@ noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
         (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
         (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 
-variable [Fintype Mode] [DecidableEq Mode]
+variable [Fintype Mode]
 
 /-- The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over
 the pairing amplitudes carried by the existing quartic diagram combinatorics. -/
