@@ -68,7 +68,7 @@ private theorem coeff_neg (V : ℝ → A) (n : ℕ) (τ : ℝ) :
       change -V σ * coeff (fun x => -V x) n σ =
         (-1 : ℂ) ^ (n + 1) • (V σ * coeff V n σ)
       rw [ih σ]
-      simp [pow_succ', mul_smul_comm, smul_smul]
+      simp [pow_succ']
 
 /-- The `n`th perturbatively weighted Dyson coefficient. -/
 noncomputable def term (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) : A :=
