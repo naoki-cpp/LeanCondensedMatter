@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
+import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 
 set_option linter.style.header false
@@ -13,8 +13,9 @@ This module supplies only the quantum-mechanical normalization of algebraic comm
 ```
 
 It does not choose a localization map, transported quantity, position observable, velocity, or
-current representation. Any algebraic `BalanceLaw` for commutator evolution can be scaled into its
-Heisenberg form.
+current representation. Any algebraic represented balance law is forgotten to its intrinsic
+transport semantics, scaled there, and then represented again using the correspondingly scaled
+chosen current extension.
 -/
 
 namespace QuantumTheory
@@ -39,8 +40,8 @@ theorem heisenbergEvolution_apply
       heisenbergScale ℏ • _root_.ConservationLaw.linearCommutator h A :=
   rfl
 
-/-- Any balance law for algebraic commutator evolution acquires the physical Heisenberg
-normalization by scaling both its current and source. -/
+/-- Any represented balance law for algebraic commutator evolution acquires the physical Heisenberg
+normalization by scaling its intrinsic transport/source semantics and the chosen current extension. -/
 noncomputable def heisenbergBalanceLaw
     {Test OneForm : Type*}
     [AddCommGroup Test] [Module ℂ Test]
@@ -53,7 +54,12 @@ noncomputable def heisenbergBalanceLaw
     _root_.ConservationLaw.BalanceLaw (heisenbergEvolution V ℏ h) Q d := by
   change _root_.ConservationLaw.BalanceLaw
     (heisenbergScale ℏ • _root_.ConservationLaw.commutatorEvolution h) Q d
-  exact B.scaleEvolution (heisenbergScale ℏ)
+  refine
+    ((_root_.ConservationLaw.IntrinsicBalanceLaw.ofRepresented B).scaleEvolution
+      (heisenbergScale ℏ)).toRepresented
+      (heisenbergScale ℏ • B.current) ?_
+  exact _root_.ConservationLaw.FactorsThroughDifferential.smul
+    (d := d) (Φ := B.current.comp d) (J := B.current) (fun _ => rfl) (heisenbergScale ℏ)
 
 end ConservationLaw
 end QuantumTheory
