@@ -158,19 +158,38 @@ noncomputable def boundedBondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Sit
 noncomputable def boundedPeierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (peierlsBondHamiltonianFock K ℏ q x y A)
+  boundedLatticeOperator
+    (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A))
 
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondHamiltonian K ℏ q x y)
       (-boundedBondCurrent ℏ q K x y) 0 := by
-  have h :=
-    (hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero K ℏ q x y).map
-      (boundedLatticeOperatorLinearMap (Site := Site))
+  have hFock :
+      HasAlgebraicDerivAt
+        (fun A => AlgebraicFock.dGamma (LatticeState Site)
+          (K.peierlsBondHamiltonian ℏ q x y A))
+        (-bondCurrent ℏ q K x y) 0 := by
+    have h :=
+      (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
+        (AlgebraicFock.dGammaLinear (LatticeState Site))
+    convert h using 1
+    · rfl
+    · change
+        -bondCurrent ℏ q K x y =
+          AlgebraicFock.dGammaLinear (LatticeState Site)
+            (-K.oneParticleBondCurrent ℏ q x y)
+      symm
+      rw [map_neg]
+      unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
+      rw [map_smul]
+      rfl
+  unfold boundedPeierlsBondHamiltonian boundedBondCurrent
+  have h := hFock.map (boundedLatticeOperatorLinearMap (Site := Site))
   change HasAlgebraicDerivAt
     (fun A => boundedLatticeOperatorLinearMap
-      (peierlsBondHamiltonianFock K ℏ q x y A))
+      (AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A)))
     (-boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)) 0
   simpa only [map_neg] using h
 
