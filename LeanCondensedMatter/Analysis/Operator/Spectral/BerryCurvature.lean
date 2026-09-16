@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Pointwise Berry curvature and force-matrix representation
 
-This module extends the one-direction spectral data in `BerryConnection` to a family of parameter
-directions sharing one Hamiltonian, eigenbasis, and spectrum. Each direction reduces to the
-existing `DirectionalEigenbasisData`, so Hellmann--Feynman and Born--Fock are reused rather than
-reproved.
+This module uses the direction-indexed pointwise spectral data from `BerryConnection`. Berry
+connection, Hellmann--Feynman, and Born--Fock identities are already stated directionwise on the
+same `PointwiseEigenbasisData`, so curvature proofs specialize them directly without constructing a
+second one-direction record.
 
 The pointwise Berry curvature convention is
 
@@ -18,8 +18,10 @@ The pointwise Berry curvature convention is
 ```
 
 For self-adjoint Hamiltonian derivatives and a nondegenerate band `n`, completeness plus the
-Born--Fock formula give the finite-band force-matrix representation. No global gauge choice,
-parameter-space topology, transport response, or disorder is introduced here.
+Born--Fock formula give the finite-band force-matrix representation. Self-adjointness of the
+Hamiltonian derivatives is kept as an explicit curvature-side hypothesis rather than strengthening
+the shared pointwise spectral-data owner. No global gauge choice, parameter-space topology,
+transport response, or disorder is introduced here.
 -/
 
 namespace BerryGeometry
@@ -30,73 +32,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*} [Fintype ι]
 variable {κ : Type*}
 
-/-- Pointwise differentiated spectral data for several parameter directions.
+namespace PointwiseEigenbasisData
 
-All directions share the same self-adjoint Hamiltonian, finite orthonormal eigenbasis, and real
-spectrum. The derivative of the Hamiltonian is required to be self-adjoint in every direction;
-this is the pointwise property needed to convert conjugated derivative matrix elements into the
-standard interband force-matrix ordering. -/
-structure MultidirectionalEigenbasisData (κ ι H : Type*) [Fintype ι]
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] where
-  /-- Hamiltonian at the chosen parameter point. -/
-  hamiltonian : H →L[ℂ] H
-  /-- Self-adjointness of the Hamiltonian. -/
-  hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian
-  /-- Complete finite orthonormal eigenbasis. -/
-  eigenbasis : OrthonormalBasis ι ℂ H
-  /-- Real eigenenergy of each band. -/
-  energy : ι → ℝ
-  /-- Eigenpair equation at the chosen parameter point. -/
-  hamiltonian_eigenvector :
-    ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n
-  /-- Directional derivatives of the Hamiltonian. -/
-  hamiltonianDerivative : κ → H →L[ℂ] H
-  /-- Every directional Hamiltonian derivative is self-adjoint. -/
-  hamiltonianDerivative_selfAdjoint : ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ)
-  /-- Directional derivatives of the eigenvectors in a chosen local gauge. -/
-  eigenvectorDerivative : κ → ι → H
-  /-- Directional derivatives of the real eigenenergies. -/
-  energyDerivative : κ → ι → ℝ
-  /-- Differentiated eigenpair equation in every parameter direction. -/
-  differentiatedEigenpair :
-    ∀ μ n,
-      hamiltonianDerivative μ (eigenbasis n) + hamiltonian (eigenvectorDerivative μ n) =
-        ((energyDerivative μ n : ℝ) : ℂ) • eigenbasis n +
-          ((energy n : ℝ) : ℂ) • eigenvectorDerivative μ n
-  /-- Differentiated orthonormality relation in every parameter direction. -/
-  differentiatedOrthonormality :
-    ∀ μ m n,
-      inner ℂ (eigenvectorDerivative μ m) (eigenbasis n) +
-        inner ℂ (eigenbasis m) (eigenvectorDerivative μ n) = 0
-
-namespace MultidirectionalEigenbasisData
-
-variable (data : MultidirectionalEigenbasisData κ ι H)
-
-/-- Restrict multidirectional data to one parameter direction. -/
-noncomputable def direction (μ : κ) : DirectionalEigenbasisData ι H where
-  hamiltonian := data.hamiltonian
-  hamiltonian_selfAdjoint := data.hamiltonian_selfAdjoint
-  eigenbasis := data.eigenbasis
-  energy := data.energy
-  hamiltonian_eigenvector := data.hamiltonian_eigenvector
-  hamiltonianDerivative := data.hamiltonianDerivative μ
-  eigenvectorDerivative := data.eigenvectorDerivative μ
-  energyDerivative := data.energyDerivative μ
-  differentiatedEigenpair := data.differentiatedEigenpair μ
-  differentiatedOrthonormality := data.differentiatedOrthonormality μ
-
-/-- Hamiltonian-derivative matrix element in direction `μ`. -/
-noncomputable def hamiltonianDerivativeMatrixElement (μ : κ) (m n : ι) : ℂ :=
-  inner ℂ (data.eigenbasis m) (data.hamiltonianDerivative μ (data.eigenbasis n))
-
-@[simp]
-theorem direction_hamiltonianDerivativeMatrixElement (μ : κ) (m n : ι) :
-    (data.direction μ).hamiltonianDerivativeMatrixElement m n =
-      data.hamiltonianDerivativeMatrixElement μ m n := rfl
+variable (data : PointwiseEigenbasisData κ ι H)
 
 /-- Self-adjointness of `∂_μ H` makes its band matrix Hermitian. -/
-theorem star_hamiltonianDerivativeMatrixElement (μ : κ) (m n : ι) :
+theorem star_hamiltonianDerivativeMatrixElement
+    (μ : κ) (hself : IsSelfAdjoint (data.hamiltonianDerivative μ)) (m n : ι) :
     (starRingEnd ℂ) (data.hamiltonianDerivativeMatrixElement μ m n) =
       data.hamiltonianDerivativeMatrixElement μ n m := by
   calc
@@ -104,7 +46,7 @@ theorem star_hamiltonianDerivativeMatrixElement (μ : κ) (m n : ι) :
         inner ℂ (data.hamiltonianDerivative μ (data.eigenbasis n)) (data.eigenbasis m) := by
       simp [hamiltonianDerivativeMatrixElement, inner_conj_symm]
     _ = inner ℂ (data.eigenbasis n) (data.hamiltonianDerivative μ (data.eigenbasis m)) := by
-      exact (data.hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
+      exact hself.isSymmetric.apply_clm _ _
     _ = data.hamiltonianDerivativeMatrixElement μ n m := rfl
 
 /-- Pointwise Berry curvature from two eigenvector derivatives. -/
@@ -178,18 +120,12 @@ theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
 
 /-- The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. -/
 theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
-    (μ : κ) {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
+    (μ : κ) (hself : IsSelfAdjoint (data.hamiltonianDerivative μ))
+    {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
     inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =
       data.hamiltonianDerivativeMatrixElement μ n m /
         (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-  have hbf := (data.direction μ).bornFock_inner hmn henergy
-  have hbf' :
-      inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative μ n) =
-        data.hamiltonianDerivativeMatrixElement μ m n /
-          (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-    simpa [direction,
-      BerryGeometry.DirectionalEigenbasisData.hamiltonianDerivativeMatrixElement,
-      hamiltonianDerivativeMatrixElement] using hbf
+  have hbf := data.bornFock_inner μ hmn henergy
   calc
     inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =
         (starRingEnd ℂ)
@@ -198,32 +134,28 @@ theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
     _ = (starRingEnd ℂ)
           (data.hamiltonianDerivativeMatrixElement μ m n /
             (((data.energy n - data.energy m : ℝ) : ℂ))) := by
-      rw [hbf']
+      rw [hbf]
     _ = data.hamiltonianDerivativeMatrixElement μ n m /
         (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-      simp [data.star_hamiltonianDerivativeMatrixElement]
+      simp [data.star_hamiltonianDerivativeMatrixElement μ hself]
 
 /-- An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.
 The two real level-spacing factors are intentionally kept separate here; a downstream consumer may
 normalize them to a squared denominator if desired. -/
 theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
-    (μ ν : κ) {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
+    (μ ν : κ)
+    (hselfμ : IsSelfAdjoint (data.hamiltonianDerivative μ))
+    (hselfν : IsSelfAdjoint (data.hamiltonianDerivative ν))
+    {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
     -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
       inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im =
       2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
         (((data.energy n - data.energy m : ℝ) : ℂ))) *
         (data.hamiltonianDerivativeMatrixElement ν n m /
           (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
-  have hbfν := (data.direction ν).bornFock_inner hmn henergy
-  have hbfν' :
-      inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n) =
-        data.hamiltonianDerivativeMatrixElement ν m n /
-          (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-    simpa [direction,
-      BerryGeometry.DirectionalEigenbasisData.hamiltonianDerivativeMatrixElement,
-      hamiltonianDerivativeMatrixElement] using hbfν
-  rw [data.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div μ hmn henergy]
-  rw [hbfν']
+  have hbfν := data.bornFock_inner ν hmn henergy
+  rw [data.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div μ hselfμ hmn henergy]
+  rw [hbfν]
   let z : ℂ :=
     (data.hamiltonianDerivativeMatrixElement μ n m /
       (((data.energy n - data.energy m : ℝ) : ℂ))) *
@@ -236,7 +168,8 @@ theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
         (data.hamiltonianDerivativeMatrixElement ν n m /
           (((data.energy n - data.energy m : ℝ) : ℂ))) := by
     dsimp [z]
-    simp [data.star_hamiltonianDerivativeMatrixElement]
+    simp [data.star_hamiltonianDerivativeMatrixElement μ hselfμ,
+      data.star_hamiltonianDerivativeMatrixElement ν hselfν]
   have him :
       -z.im =
         ((data.hamiltonianDerivativeMatrixElement μ m n /
@@ -260,9 +193,11 @@ theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
 /-- Force/Hamiltonian-derivative matrix-element representation of Berry curvature for a
 nondegenerate band.
 
-This is the finite-dimensional pointwise formula needed by the clean anomalous-Hall consumer. -/
+This is the finite-dimensional pointwise formula needed by the clean anomalous-Hall consumer.
+Self-adjointness of all directional Hamiltonian derivatives is an explicit hypothesis. -/
 theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq ι]
     (μ ν : κ) (n : ι)
+    (hself : ∀ ρ, IsSelfAdjoint (data.hamiltonianDerivative ρ))
     (hnondegenerate : ∀ m, m ≠ n → data.energy m ≠ data.energy n) :
     data.berryCurvature μ ν n =
       ∑ m : ι, if m = n then 0 else
@@ -279,10 +214,10 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
     rw [data.diagonal_innerProduct_im_eq_zero]
     ring
   · rw [if_neg hmn]
-    exact data.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements μ ν hmn
-      (hnondegenerate m hmn)
+    exact data.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
+      μ ν (hself μ) (hself ν) hmn (hnondegenerate m hmn)
 
-end MultidirectionalEigenbasisData
+end PointwiseEigenbasisData
 
 end
 end BerryGeometry
