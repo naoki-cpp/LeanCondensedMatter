@@ -85,7 +85,7 @@ General cautions distilled from past sessions; detailed incident records live in
 ## Branch and PR workflow
 
 - **One branch per unit of work**, cut from up-to-date `main`, named `type/short-slug` matching the commit type.
-- **A PR is created for every unit of work.** Lean-code changes must build with no `sorry` before the PR is opened; documentation-only changes do not require a Lean build.
+- **A PR is created for every unit of work.**
 - **Merging requires an explicit instruction from the user** and passing required CI; merges are squash merges with branch deletion, followed by syncing local `main`.
 
 ## Commit conventions
