@@ -48,78 +48,17 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor_zero_disorder
   simp [finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor,
     finiteCutoffContinuumBornDysonCurrentRungVector]
 
-private def gaussianCrossedCurrentConstantAngularCoefficient
-    (factor aA dA aR dR : ℂ) : Fin 2 → Matrix2 :=
-  ![
-    (factor * (aA * aR - dA * dR)) • sigmaX +
-      (factor * Complex.I * (aR * dA - aA * dR)) • sigmaY,
-    (-(factor * Complex.I * (aR * dA - aA * dR))) • sigmaX +
-      (factor * (aA * aR - dA * dR)) • sigmaY]
+private def gaussianCrossedCurrentCoefficientVector
+    (source : Fin 2) (factor : ℂ) : InPlaneCoefficientVector :=
+  fun direction => if direction = source then factor else 0
 
-private def gaussianCrossedCurrentFirstCosineAngularCoefficient
-    (factor aA bA dA aR bR dR : ℂ) : Fin 2 → Matrix2 :=
-  ![
-    (factor * (aR * bA + aA * bR)) • (1 : Matrix2) +
-      (factor * (bR * dA + bA * dR)) • sigmaZ,
-    (-(factor * Complex.I * (bR * dA - bA * dR))) • (1 : Matrix2) +
-      (-(factor * Complex.I * (aA * bR - aR * bA))) • sigmaZ]
-
-private def gaussianCrossedCurrentFirstSineAngularCoefficient
-    (factor aA bA dA aR bR dR : ℂ) : Fin 2 → Matrix2 :=
-  ![
-    (factor * Complex.I * (bR * dA - bA * dR)) • (1 : Matrix2) +
-      (factor * Complex.I * (aA * bR - aR * bA)) • sigmaZ,
-    (factor * (aR * bA + aA * bR)) • (1 : Matrix2) +
-      (factor * (bR * dA + bA * dR)) • sigmaZ]
-
-private def gaussianCrossedCurrentSecondCosineAngularCoefficient
-    (factor bA bR : ℂ) : Fin 2 → Matrix2 :=
-  ![
-    (factor * bA * bR) • sigmaX,
-    (-(factor * bA * bR)) • sigmaY]
-
-private def gaussianCrossedCurrentSecondMixedAngularCoefficient
-    (factor bA bR : ℂ) : Fin 2 → Matrix2 :=
-  ![
-    (2 * factor * bA * bR) • sigmaY,
-    (2 * factor * bA * bR) • sigmaX]
-
-private theorem polarPauliMatrix_gaussianCrossedCurrent_eq_harmonics
-    (source : Fin 2) (factor aA bA dA aR bR dR : ℂ) (θ : ℝ) :
-    polarPauliMatrix aA bA dA θ * (factor • directionPauli source) *
-        polarPauliMatrix aR bR dR θ =
-      gaussianCrossedCurrentConstantAngularCoefficient
-          factor aA dA aR dR source +
-        ((Real.cos θ : ℝ) : ℂ) •
-          gaussianCrossedCurrentFirstCosineAngularCoefficient
-            factor aA bA dA aR bR dR source +
-        ((Real.sin θ : ℝ) : ℂ) •
-          gaussianCrossedCurrentFirstSineAngularCoefficient
-            factor aA bA dA aR bR dR source +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) •
-          gaussianCrossedCurrentSecondCosineAngularCoefficient factor bA bR source +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) •
-          gaussianCrossedCurrentSecondMixedAngularCoefficient factor bA bR source := by
-  have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  have hI3 : Complex.I ^ 3 = -Complex.I := by
-    rw [pow_succ, hI2]
-    ring
+private theorem gaussianCrossedCurrentCoefficientVector_vertex
+    (source : Fin 2) (factor : ℂ) :
+    gaussianCrossedCurrentCoefficientVector source factor 0 • sigmaX +
+        gaussianCrossedCurrentCoefficientVector source factor 1 • sigmaY =
+      factor • directionPauli source := by
   fin_cases source <;>
-    ext i j <;>
-    fin_cases i <;>
-    fin_cases j <;>
-    simp [polarPauliMatrix, directionPauli,
-      gaussianCrossedCurrentConstantAngularCoefficient,
-      gaussianCrossedCurrentFirstCosineAngularCoefficient,
-      gaussianCrossedCurrentFirstSineAngularCoefficient,
-      gaussianCrossedCurrentSecondCosineAngularCoefficient,
-      gaussianCrossedCurrentSecondMixedAngularCoefficient,
-      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
-      Matrix.mul_apply] <;>
-    ring_nf <;>
-    simp [hI2, hI3] <;>
-    ring
+    simp [gaussianCrossedCurrentCoefficientVector, directionPauli]
 
 /-- Source-indexed finite-cutoff finite-`η` Gaussian-crossed real-space current block.
 
@@ -153,6 +92,7 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : Matrix2 :=
   let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
     v m probeEnergy broadening disorderStrength hbar pMax
+  let coefficients := gaussianCrossedCurrentCoefficientVector source factor
   let aA : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonScalarCoefficient
       .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -172,13 +112,13 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
     finiteCutoffContinuumBornDysonPauliCoefficient .z
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
   let c0 : ℝ → Matrix2 := fun p =>
-    gaussianCrossedCurrentConstantAngularCoefficient
-      factor (aA p) (dA p) (aR p) (dR p) source
+    polarPauliInPlaneConstantAngularCoefficient
+      (aA p) (dA p) (aR p) (dR p) coefficients
   let c1 : ℝ → Matrix2 := fun p =>
-    gaussianCrossedCurrentFirstCosineAngularCoefficient
-      factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source
+    polarPauliInPlaneFirstCosineAngularCoefficient
+      (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
   let c2 : ℝ → Matrix2 := fun p =>
-    gaussianCrossedCurrentSecondCosineAngularCoefficient factor (bA p) (bR p) source
+    polarPauliInPlaneSecondCosineAngularCoefficient (bA p) (bR p) coefficients
   fun i j =>
     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
       ∫ p in (0 : ℝ)..pMax,
@@ -199,6 +139,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
         source v m probeEnergy broadening disorderStrength hbar pMax radius := by
   let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
     v m probeEnergy broadening disorderStrength hbar pMax
+  let coefficients := gaussianCrossedCurrentCoefficientVector source factor
   let aA : ℝ → ℂ := fun p =>
     finiteCutoffContinuumBornDysonScalarCoefficient
       .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -239,6 +180,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
       matrixOperator, aR, bR, dR] using
       (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
         .retarded v m p θ probeEnergy broadening disorderStrength hbar pMax)
+  have hvertex :
+      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
+        factor • directionPauli source := by
+    simpa [coefficients] using
+      (gaussianCrossedCurrentCoefficientVector_vertex source factor)
   change
     (fun i j =>
       finiteCutoffPhysicalMomentumPolarFourier hbar pMax
@@ -265,38 +211,38 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radia
             .retarded v m (p * Real.cos θ) (p * Real.sin θ)
             probeEnergy broadening disorderStrength hbar pMax) i j) =
         fun p θ =>
-          gaussianCrossedCurrentConstantAngularCoefficient
-              factor (aA p) (dA p) (aR p) (dR p) source i j +
+          polarPauliInPlaneConstantAngularCoefficient
+              (aA p) (dA p) (aR p) (dR p) coefficients i j +
             ((Real.cos θ : ℝ) : ℂ) *
-              gaussianCrossedCurrentFirstCosineAngularCoefficient
-                factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j +
+              polarPauliInPlaneFirstCosineAngularCoefficient
+                (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j +
             ((Real.sin θ : ℝ) : ℂ) *
-              gaussianCrossedCurrentFirstSineAngularCoefficient
-                factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j +
+              polarPauliInPlaneFirstSineAngularCoefficient
+                (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j +
             ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) *
-              gaussianCrossedCurrentSecondCosineAngularCoefficient
-                factor (bA p) (bR p) source i j +
+              polarPauliInPlaneSecondCosineAngularCoefficient
+                (bA p) (bR p) coefficients i j +
             (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
-              gaussianCrossedCurrentSecondMixedAngularCoefficient
-                factor (bA p) (bR p) source i j := by
+              polarPauliInPlaneSecondMixedAngularCoefficient
+                (bA p) (bR p) coefficients i j := by
     funext p θ
-    rw [hA, hR, polarPauliMatrix_gaussianCrossedCurrent_eq_harmonics]
+    rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
     simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
-    factor, aA, bA, dA, aR, bR, dR] using
+    factor, coefficients, aA, bA, dA, aR, bR, dR] using
     (finiteCutoffPhysicalMomentumPolarFourier_radialAxis_second_harmonics
       hbar pMax radius
-      (fun p => gaussianCrossedCurrentConstantAngularCoefficient
-        factor (aA p) (dA p) (aR p) (dR p) source i j)
-      (fun p => gaussianCrossedCurrentFirstCosineAngularCoefficient
-        factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j)
-      (fun p => gaussianCrossedCurrentFirstSineAngularCoefficient
-        factor (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) source i j)
-      (fun p => gaussianCrossedCurrentSecondCosineAngularCoefficient
-        factor (bA p) (bR p) source i j)
-      (fun p => gaussianCrossedCurrentSecondMixedAngularCoefficient
-        factor (bA p) (bR p) source i j))
+      (fun p => polarPauliInPlaneConstantAngularCoefficient
+        (aA p) (dA p) (aR p) (dR p) coefficients i j)
+      (fun p => polarPauliInPlaneFirstCosineAngularCoefficient
+        (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j)
+      (fun p => polarPauliInPlaneFirstSineAngularCoefficient
+        (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients i j)
+      (fun p => polarPauliInPlaneSecondCosineAngularCoefficient
+        (bA p) (bR p) coefficients i j)
+      (fun p => polarPauliInPlaneSecondMixedAngularCoefficient
+        (bA p) (bR p) coefficients i j))
 
 /-- Massive-Dirac finite-cutoff finite-`η` realization of the pointwise Gaussian crossed trace
 kernel. The remaining real-space integral and conductivity normalization stay downstream. -/
