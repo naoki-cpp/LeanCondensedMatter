@@ -82,4 +82,35 @@ theorem factorial_mul_coeff_logOf_three_eq {Z : PowerSeries ℂ}
   ring_nf at h ⊢
   exact h
 
+/-- First low-order logarithm formula after normalization by a nonzero constant coefficient. -/
+theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq
+    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0) :
+    ((1 : ℕ).factorial : ℂ) *
+        PowerSeries.coeff 1 (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff Z)) =
+      PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff Z) :=
+  factorial_mul_coeff_logOf_one_eq
+    (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ)
+
+/-- Second low-order logarithm formula after normalization by a nonzero constant coefficient. -/
+theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq
+    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0) :
+    ((2 : ℕ).factorial : ℂ) *
+        PowerSeries.coeff 2 (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff Z)) =
+      2 * PowerSeries.coeff 2 (PowerSeries.normalizeByConstantCoeff Z) -
+        PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff Z) ^ 2 :=
+  factorial_mul_coeff_logOf_two_eq
+    (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ)
+
+/-- Third low-order logarithm formula after normalization by a nonzero constant coefficient. -/
+theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq
+    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0) :
+    ((3 : ℕ).factorial : ℂ) *
+        PowerSeries.coeff 3 (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff Z)) =
+      6 * PowerSeries.coeff 3 (PowerSeries.normalizeByConstantCoeff Z) -
+        6 * PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff Z) *
+          PowerSeries.coeff 2 (PowerSeries.normalizeByConstantCoeff Z) +
+        2 * PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff Z) ^ 3 :=
+  factorial_mul_coeff_logOf_three_eq
+    (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ)
+
 end Combinatorics

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 
 set_option linter.style.header false

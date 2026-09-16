@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.ConnectedDiagramExpansion
 
 set_option linter.style.header false
@@ -55,8 +55,8 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumula
               (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)))
         Finset.univ := by
       simpa using
-        (Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment
-          (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V)
+        (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment
+          (constantCoeff_dysonPartitionSeries_ne_zero ε β V)
           (s := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))
     _ = Finpartition.cumulantFromMoment (dysonVertexMoment ε β V)
         (Finset.univ : Finset (Fin n)) := by
