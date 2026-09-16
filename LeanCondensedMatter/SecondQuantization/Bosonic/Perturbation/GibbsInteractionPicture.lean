@@ -58,6 +58,7 @@ theorem freeGibbsExpectation_interactionPicture
   congr 1
   exact tsum_congr fun n => matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n
 
+omit [Fintype Mode] in
 /-- At first Dyson order, summability of the bare interaction automatically supplies the recursive
 Gibbs-domain closure condition because the zeroth Dyson coefficient is the identity. -/
 theorem firstDysonIntegrand_mem_freeGibbsDomain
