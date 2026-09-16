@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderZeroBroadening
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
@@ -19,12 +20,15 @@ Public umbrella for the finite-`η` Born-Dyson RA-dressed/bare-same-side Středa
 bare measured current fixed along `x` and the source direction indexed by `Fin 2`. The generic
 path is exposed from the pointwise trace bridge through finite-cutoff polar momentum integration;
 the ordered `xy` specialization additionally exposes the explicit Hall radial reduction and common
-denominator form. Fixed-cutoff zero-broadening boundaries are exposed for the source-indexed dressed
-current and for both the integrated longitudinal and ordered-`xy` responses. Their subsequent
-weak-disorder limits remain separate: the longitudinal response is scaled by `W`, while the ordered
-transverse response retains the first nonvanishing transverse ladder coefficient before cancelling
-the inverse disorder factor. The ordered-`xy` endpoint also exposes a theorem-level expansion of the
-canonical `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
+denominator form. The longitudinal same-side RR/AA radial remainder has one model-local owner for
+its finite-broadening evaluation, fixed-disorder zero-broadening endpoint, and subsequent
+weak-disorder behavior, while the singular RA ladder action remains separate. Fixed-cutoff
+zero-broadening boundaries are exposed for the source-indexed dressed current and for both the
+integrated longitudinal and ordered-`xy` responses. Their subsequent weak-disorder limits remain
+separate: the longitudinal response is scaled by `W`, while the ordered transverse response retains
+the first nonvanishing transverse ladder coefficient before cancelling the inverse disorder factor.
+The ordered-`xy` endpoint also exposes a theorem-level expansion of the canonical
+`inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
 
 The leading Gaussian crossed sector is a separate Středa-level real-space trace boundary. Its `X` and
