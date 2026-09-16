@@ -5767,7 +5767,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {R : Type u_1} [inst : CommMonoid R] {n : ℕ} (pairing : Combinatorics.Pairing n)\n  (pairValue : Fin (2 * n) → Fin (2 * n) → R),\n  pairing.evaluation 1 pairValue = ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2",
     "standardAxioms": [
       "Classical.choice",
@@ -5775,7 +5775,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -5786,16 +5786,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77211,7 +77207,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.FreeThermalField.operator_quarticFreeThermalField",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField",
     "externalAxioms": [],
     "docString": "The thermal-field realization agrees with the existing quartic local-leg operator. ",
     "directWrapperTargetModule": null,
@@ -77398,7 +77394,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (i : Mode), 0 < β * ε i)\n  (admissible : (r : ℕ) → (Fin (2 * r) → SecondQuantization.Bosonic.FreeThermalField Mode) → Prop),\n  (∀ (r : ℕ) (C : Fin (2 * r) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      admissible r C →\n        SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C) ∈\n          SecondQuantization.Bosonic.freeGibbsDomain ε β) →\n    (∀ (r : ℕ) (C : Fin (2 * (r + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n        admissible (r + 1) C → ∀ (j : Fin (2 * r + 1)), admissible r fun i => C (j.succAbove i).succ) →\n      (∀ (r : ℕ) (C : Fin (2 * (r + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible (r + 1) C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ j,\n                SecondQuantization.Bosonic.freeThermalPairValue ε β (C 0) (C j.succ) *\n                  (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                    (SecondQuantization.Bosonic.FreeThermalField.orderedProduct\n                      (List.ofFn fun i => C (j.succAbove i).succ))) →\n        ∀ {S : Finset (Fin N)}\n          (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n          (order : SecondQuantization.Common.QuarticVertexOrder S),\n          admissible (2 * S.card) (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily d order) →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct fun i => d.vertexLabel (order i)) =\n              SecondQuantization.Bosonic.QuarticDiagram.orderedThermalWickSum ε β d order",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ {S : Finset (Fin N)}\n      (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n      (order : SecondQuantization.Common.QuarticVertexOrder S),\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β\n          (SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct fun i => d.vertexLabel (order i)) =\n        SecondQuantization.Bosonic.QuarticDiagram.orderedThermalWickSum ε β d order",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77413,13 +77409,12 @@
     "name": "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
     "externalAxioms": [],
-    "docString": "The convergence-aware Gibbs expectation of the ordered quartic local-leg product is exactly the\nsum over the pairing amplitudes carried by the existing quartic diagram combinatorics. ",
+    "docString": "The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over\nthe pairing amplitudes carried by the existing quartic diagram combinatorics. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.Pairing.evaluation_one",
-      "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing",
+      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_boson"
     ],
     "crossModuleDirectWrapper": false,
@@ -77437,7 +77432,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.componentPartition.parts)\n  (a b : Fin (2 * (2 * (↑B).card))),\n  SecondQuantization.Bosonic.freeThermalPairValue ε β\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily d (d.assembleVertexOrder orders shuffle)\n        (d.componentOrderedLeg shuffle B a))\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily d (d.assembleVertexOrder orders shuffle)\n        (d.componentOrderedLeg shuffle B b)) =\n    SecondQuantization.Bosonic.freeThermalPairValue ε β\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent ⋯) (orders B) a)\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent ⋯) (orders B) b)",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.componentPartition.parts)\n  (a b : Fin (2 * (2 * (↑B).card))),\n  SecondQuantization.Bosonic.freeThermalPairValue ε β\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily d (d.assembleVertexOrder orders shuffle)\n        (d.componentOrderedLeg shuffle B a))\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily d (d.assembleVertexOrder orders shuffle)\n        (d.componentOrderedLeg shuffle B b)) =\n    SecondQuantization.Bosonic.freeThermalPairValue ε β\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent ⋯) (orders B) a)\n      (SecondQuantization.Bosonic.QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent ⋯) (orders B) b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77520,7 +77515,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle),\n  SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder orders shuffle) =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent ⋯) (orders B)",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle),\n  SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder orders shuffle) =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent ⋯) (orders B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77562,7 +77557,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle),\n  SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue ε β d (d.assembleVertexOrder orders shuffle) =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent ⋯) (orders B)",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle),\n  SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue ε β d (d.assembleVertexOrder orders shuffle) =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent ⋯) (orders B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77604,7 +77599,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S),\n  SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g d =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑(d.restrictComponentConnected ⋯)",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S),\n  SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g d =\n    ∏ B, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑(d.restrictComponentConnected ⋯)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79900,49 +79895,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (i : Mode), 0 < β * ε i)\n  (admissible : (n : ℕ) → (Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode) → Prop),\n  (∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      admissible n C →\n        SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C) ∈\n          SecondQuantization.Bosonic.freeGibbsDomain ε β) →\n    (∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n        admissible (n + 1) C → ∀ (j : Fin (2 * n + 1)), admissible n fun i => C (j.succAbove i).succ) →\n      (∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible (n + 1) C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ j,\n                SecondQuantization.Bosonic.freeThermalPairValue ε β (C 0) (C j.succ) *\n                  (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                    (SecondQuantization.Bosonic.FreeThermalField.orderedProduct\n                      (List.ofFn fun i => C (j.succAbove i).succ))) →\n        ∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible n C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ pairing,\n                Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing *\n                  ∏ pr ∈ pairing.pairs, SecondQuantization.Bosonic.freeThermalPairValue ε β (C pr.1) (C pr.2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
-    "externalAxioms": [],
-    "docString": "The full free-boson Wick pairing expansion obtained from the Common induction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n        ∑ pairing,\n          Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing *\n            ∏ pr ∈ pairing.pairs, SecondQuantization.Bosonic.freeThermalPairValue ε β (C pr.1) (C pr.2)",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (i : Mode), 0 < β * ε i)\n  (admissible : (n : ℕ) → (Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode) → Prop),\n  (∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      admissible n C →\n        SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C) ∈\n          SecondQuantization.Bosonic.freeGibbsDomain ε β) →\n    (∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n        admissible (n + 1) C → ∀ (j : Fin (2 * n + 1)), admissible n fun i => C (j.succAbove i).succ) →\n      (∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible (n + 1) C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ j,\n                SecondQuantization.Bosonic.freeThermalPairValue ε β (C 0) (C j.succ) *\n                  (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                    (SecondQuantization.Bosonic.FreeThermalField.orderedProduct\n                      (List.ofFn fun i => C (j.succAbove i).succ))) →\n        ∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible n C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ pairing,\n                Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing *\n                  ∏ pr ∈ pairing.pairs, SecondQuantization.Bosonic.freeThermalPairValue ε β (C pr.1) (C pr.2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79954,13 +79908,52 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
+    "externalAxioms": [],
+    "docString": "The full free-boson Wick pairing expansion obtained from the Common induction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (n : ℕ) (C : Fin (2 * n) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.freeGibbsExpectation ε β\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n        ∑ pairing,\n          Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing *\n            ∏ pr ∈ pairing.pairs, SecondQuantization.Bosonic.freeThermalPairValue ε β (C pr.1) (C pr.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
     "externalAxioms": [],
     "docString": "Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic\nhypothesis is positivity of every one-mode Boltzmann exponent. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
+    ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing",
@@ -79968,8 +79961,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80392,48 +80387,6 @@
       "SecondQuantization.Bosonic.freeGibbsExpectation_id"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] [inst_1 : DecidableEq Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hpos : ∀ (i : Mode), 0 < β * ε i)\n  (admissible : (r : ℕ) → (Fin (2 * r) → SecondQuantization.Bosonic.FreeThermalField Mode) → Prop),\n  (∀ (r : ℕ) (C : Fin (2 * r) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      admissible r C →\n        SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C) ∈\n          SecondQuantization.Bosonic.freeGibbsDomain ε β) →\n    (∀ (r : ℕ) (C : Fin (2 * (r + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n        admissible (r + 1) C → ∀ (j : Fin (2 * r + 1)), admissible r fun i => C (j.succAbove i).succ) →\n      (∀ (r : ℕ) (C : Fin (2 * (r + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n          admissible (r + 1) C →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n              ∑ j,\n                SecondQuantization.Bosonic.freeThermalPairValue ε β (C 0) (C j.succ) *\n                  (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                    (SecondQuantization.Bosonic.FreeThermalField.orderedProduct\n                      (List.ofFn fun i => C (j.succAbove i).succ))) →\n        ∀ (n : ℕ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n          admissible (2 * n) (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q) →\n            (SecondQuantization.Bosonic.freeGibbsFunctional ε β hpos).value\n                (SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct q) =\n              ∑ pairing,\n                pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                  fun a b =>\n                  SecondQuantization.Bosonic.freeThermalPairValue ε β\n                    (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                    (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion",
-    "externalAxioms": [],
-    "docString": "Finite-order quartic specialization of the convergence-aware free-boson Wick expansion.\n\nThe `n` quartic vertices contribute `4 n` local fields, hence the perfect pairings are indexed by\n`Pairing (2 * n)`.  The right-hand side uses the shared statistics-independent pairing evaluator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing",
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_boson"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82328,7 +82281,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] {N : ℕ} [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    SecondQuantization.Bosonic.quarticThermalCumulant ε β g S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    SecondQuantization.Bosonic.quarticThermalCumulant ε β g S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83706,7 +83659,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83718,17 +83671,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
-      "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing"
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
-      "SecondQuantization.Bosonic.freeGibbsQuarticExpectation_eq_sum_pairing"
+      "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145805,7 +145756,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S),\n  ∑ order, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g d order =\n    ↑(Fintype.card d.ComponentShuffle) *\n      ∏ B,\n        ∑ order, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent ⋯) order",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S),\n  ∑ order, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g d order =\n    ↑(Fintype.card d.ComponentShuffle) *\n      ∏ B,\n        ∑ order, SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent ⋯) order",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
