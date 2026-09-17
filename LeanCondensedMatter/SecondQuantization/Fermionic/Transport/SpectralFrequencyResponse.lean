@@ -64,7 +64,6 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
 variable {ι : Type*}
 
 /-- A diagonal current-current transition has zero Lehmann weight. -/
-@[simp]
 theorem purePointDirectionalCurrentTransitionWeight_diag
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
