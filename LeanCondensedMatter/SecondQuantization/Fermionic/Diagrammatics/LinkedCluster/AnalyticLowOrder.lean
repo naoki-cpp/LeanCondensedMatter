@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.LowOrder
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterIdentification
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster
 
 set_option linter.style.header false
 
