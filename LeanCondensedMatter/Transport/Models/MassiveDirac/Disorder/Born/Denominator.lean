@@ -176,7 +176,7 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
       (continuous_inv_pauliGreenDenominatorOfRegulator_radial
         v m probeEnergy regulator hregulator) using 1
   funext p
-  rw [hden p]
+  simp [hden p, Function.comp_apply]
 
 /-- Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the
 endpoint principal-log difference. -/
