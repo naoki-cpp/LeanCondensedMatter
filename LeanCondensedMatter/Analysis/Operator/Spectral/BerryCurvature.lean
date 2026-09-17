@@ -68,7 +68,7 @@ theorem berryCurvature_swap (μ ν : κ) (n : ι) :
 
 /-- Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into
 band-resolved inner-product terms. -/
-theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
+private theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
     data.berryCurvature μ ν n =
       ∑ m : ι,
         -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
@@ -94,7 +94,7 @@ theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
 
 /-- The band-diagonal completeness term has zero imaginary part. It therefore does not contribute
 to Berry curvature. -/
-theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
+private theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
     (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *
       inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).im = 0 := by
   have hμ := congrArg Complex.re (data.differentiatedOrthonormality μ n n)
@@ -119,7 +119,7 @@ theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
   simp [Complex.mul_im, hμre, hνre]
 
 /-- The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. -/
-theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
+private theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
     (μ : κ) (hself : IsSelfAdjoint (data.hamiltonianDerivative μ))
     {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
     inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =
@@ -142,7 +142,7 @@ theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
 /-- An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.
 The two real level-spacing factors are intentionally kept separate here; a downstream consumer may
 normalize them to a squared denominator if desired. -/
-theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
+private theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
     (μ ν : κ)
     (hselfμ : IsSelfAdjoint (data.hamiltonianDerivative μ))
     (hselfν : IsSelfAdjoint (data.hamiltonianDerivative ν))
