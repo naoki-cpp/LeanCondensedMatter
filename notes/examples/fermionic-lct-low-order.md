@@ -3,7 +3,8 @@
 The finite-mode fermionic Linked Cluster Theorem is available for every nonzero perturbation order.
 The orders `1`, `2`, and `3` are also exposed explicitly because they make the factorial and
 disconnected-subtraction conventions readable without unfolding the general moment-cumulant
-machinery.
+machinery. These identities are an opt-in example/regression surface; the canonical linked-cluster
+umbrella exports the general formal and analytic theorems instead.
 
 Write
 
