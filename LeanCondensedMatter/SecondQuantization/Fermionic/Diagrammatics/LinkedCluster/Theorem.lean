@@ -70,7 +70,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
               (Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment_via_generatingFunctional
                 (constantCoeff_dysonPartitionSeries_ne_zero ε β
                   (quarticInteraction g))
-                (s := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))
+                (S := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))
           _ = Finpartition.cumulantFromMoment
               (dysonVertexMoment ε β (quarticInteraction g))
               (Finset.univ : Finset (Fin n)) := by
