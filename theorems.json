@@ -52013,6 +52013,45 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (v m p probeEnergy disorderStrength hbar : ℝ),\n  ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy disorderStrength\n        hbar) =\n    QuantumTheory.Transport.Models.MassiveDirac.massiveDiracRetardedAdvancedRadialDenominatorProduct v p\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.retarded v probeEnergy disorderStrength hbar)\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.retarded v m disorderStrength hbar)\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornEffectiveEnergy\n        QuantumTheory.Transport.SpectralSide.advanced v probeEnergy disorderStrength hbar)\n      (QuantumTheory.Transport.Models.MassiveDirac.continuumBornEffectiveMass\n        QuantumTheory.Transport.SpectralSide.advanced v m disorderStrength hbar)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.coe_continuumBornRADenominatorProduct_eq_massiveDirac",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel",
+    "externalAxioms": [],
+    "docString": "The real weak-Born radial product is the real-valued form of the canonical complex RA product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (v m fermiEnergy θ : ℝ),\n  v ≠ 0 →\n    |m| ≤ fermiEnergy →\n      fermiEnergy ≠ 0 →\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ) =\n          (QuantumTheory.Transport.Models.MassiveDirac.bandProjector\n                QuantumTheory.Transport.Models.MassiveDirac.Band.upper v m\n                (QuantumTheory.Transport.Models.MassiveDirac.metallicFermiRadius v m fermiEnergy) 0 *\n              QuantumTheory.Transport.Models.MassiveDirac.bandProjector\n                QuantumTheory.Transport.Models.MassiveDirac.Band.upper v m\n                (QuantumTheory.Transport.Models.MassiveDirac.metallicFermiRadius v m fermiEnergy * Real.cos θ)\n                (QuantumTheory.Transport.Models.MassiveDirac.metallicFermiRadius v m fermiEnergy * Real.sin θ)).trace",
     "standardAxioms": [
@@ -52281,6 +52320,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -52681,7 +52721,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m px py probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator side v m px py probeEnergy\n      disorderStrength hbar =\n    ↑((1 - QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar ^ 2) *\n            (probeEnergy ^ 2 - m ^ 2) -\n          v ^ 2 * (px ^ 2 + py ^ 2)) +\n      ↑(2 * side.sign * QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar *\n            (probeEnergy ^ 2 + m ^ 2)) *\n        Complex.I",
     "standardAxioms": [
       "Classical.choice",
@@ -52689,7 +52729,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52697,19 +52737,15 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_eq_closedForm",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator",
     "externalAxioms": [],
-    "docString": "Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced\nrung.  Its real part is even in the spectral side, while its imaginary part changes sign. ",
+    "docString": "Closed side-indexed form of the Born-dressed denominator used by the radial retarded-advanced\nrung. Its real part is even in the spectral side, while its imaginary part changes sign. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52736,14 +52772,14 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator",
     "externalAxioms": [],
-    "docString": "The radial retarded-advanced denominator product is the real sum of squares `A(p)² + B²`. ",
+    "docString": "The radial Cartesian Born denominators multiply to the canonical real weak-Born RA product. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularCoefficient_eq_closed"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornPauliGreenDenominator_eq_closedForm"
+      "QuantumTheory.Transport.Models.MassiveDirac.coe_continuumBornRADenominatorProduct_eq_massiveDirac"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52816,9 +52852,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct_nonneg",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel",
     "externalAxioms": [],
-    "docString": "The real retarded-advanced denominator product is nonnegative. ",
+    "docString": "The real weak-Born retarded-advanced denominator product is nonnegative. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -55720,7 +55756,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -55827,6 +55865,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v m p\n      probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+    "externalAxioms": [],
+    "docString": "The shared radial RA product is exactly the product of the radial retarded and advanced\nfinite-`η` Born-Dyson denominators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_boundary_denominator_nonzero",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v m\n            p probeEnergy broadening disorderStrength hbar pMax ≠\n          0",
     "standardAxioms": [
       "Classical.choice",
@@ -55850,7 +55937,8 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -57688,6 +57776,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_mem_slitPlane"
     ],
     "crossModuleDirectWrapper": false,
@@ -60331,19 +60420,23 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64053,6 +64146,7 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryBornDysonDenominator_ne_zero_of_product_ne_zero",
@@ -64223,6 +64317,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand_broadening_zero"
     ],
     "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -157159,7 +157254,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuous_inv_pauliGreenDenominatorOfRegulator_radial"
+      "QuantumTheory.Transport.Models.MassiveDirac.continuous_inv_pauliGreenDenominatorOfRegulator_radial",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -159760,6 +159856,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_finiteBroadeningBornCurrentRungRadialIntegrand",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
