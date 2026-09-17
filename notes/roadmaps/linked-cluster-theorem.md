@@ -27,6 +27,12 @@ component factorization
   → formal linked-cluster theorem.
 ```
 
+The formal-log step is owned by
+`Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected`.  The Dyson-specific
+coefficient identification is isolated in
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant`, so the public LCT
+theorem only composes that specialization with the concrete connected-diagram expansion.
+
 ## Analytic log-partition theorem
 
 For finite fermionic mode sets,
@@ -69,20 +75,23 @@ transport declarations remain private/local unless independently reusable.
 
 ## Formal source-functional layer
 
-`Common.Perturbation.GeneratingFunctional` now provides a statistics-independent boundary for the
-higher-point program.  `SourceGeneratingFunctional` stores formal source moments indexed by finite
-sets of external insertions and the nonzero zero-source series.  Its `vacuumNormalized` family
-divides out vacuum components, while `connected` applies the finite-set cumulant transform.  The
-identity
+`Common.Perturbation.GeneratingFunctional` provides a statistics-independent boundary for the
+higher-point program.  `GeneratingFunctional` stores normalized finite-set source moments over a
+commutative coefficient ring, and `powerSeriesGeneratingFunctional` turns factorial-normalized
+coefficients of a normalized formal series into that representation.  Its `connected` operation
+applies the finite-set cumulant transform.  `SourceGeneratingFunctional` remains the
+pre-normalization representation: it stores formal source moments together with the nonzero
+zero-source series, and its `vacuumNormalized` family divides out vacuum components.  The identity
 
 ```lean
 SourceGeneratingFunctional.connected_moment
 ```
 
-records that connected source coefficients reconstruct the vacuum-normalised moments.  Concrete
-fermionic external-insertion diagrams still need to supply the unnormalised moments and their
-signs; this layer intentionally does not introduce Grassmann variables or claim the arbitrary
-`n`-point diagram theorem.
+records that connected source coefficients reconstruct the vacuum-normalised moments.  The
+fermionic `dysonVertexGeneratingFunctional` specializes the normalized representation to Dyson
+moments, while the quartic Wick layer supplies the concrete amplitudes and fermionic signs.  This
+boundary intentionally does not introduce Grassmann variables or claim the arbitrary `n`-point
+diagram theorem.
 
 ## Open work
 
