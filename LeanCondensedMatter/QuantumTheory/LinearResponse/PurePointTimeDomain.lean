@@ -114,7 +114,7 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
       purePointTransitionWeight system data A B mn *
         Complex.exp
           (Complex.I * ((((orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ) /
-            system.hbar : ℝ) : ℂ)) := by
+            system.hbar : ℝ) : ℂ))) := by
   rw [purePointTimeDomainTerm,
     purePointTransitionPhase_eq_exp_energyDifference]
   simp
