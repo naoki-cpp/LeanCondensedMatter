@@ -172,7 +172,7 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     unfold massiveDiracRadialDenominator
     push_cast
     ring
-  simpa only [hden] using
+  simpa only [Function.comp_apply, id_eq, hden] using
     (Complex.continuous_ofReal.comp continuous_id).mul
       (continuous_inv_pauliGreenDenominatorOfRegulator_radial
         v m probeEnergy regulator hregulator)
@@ -518,7 +518,7 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
               pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
             (nhdsWithin 0 (Set.Ioi 0))
             (nhdsWithin
-              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy 0)
+              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
               {z : ℂ | z.im < 0}) := by
         rw [tendsto_nhdsWithin_iff]
         refine ⟨hden, ?_⟩
