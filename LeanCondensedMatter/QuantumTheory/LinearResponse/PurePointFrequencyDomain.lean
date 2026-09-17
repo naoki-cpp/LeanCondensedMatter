@@ -51,7 +51,6 @@ theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
   rw [purePointAdiabaticTransitionIntegrand,
     purePointTimeDomainTerm_eq_exp_energyDifference,
     adiabaticFrequencyPhase, lehmannMode, lehmannModeExponent]
-  simp only [orderedLehmannEnergyGap_eq]
   rw [show
       Complex.exp
           ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
