@@ -31,15 +31,6 @@ theorem resolventApproximationEvolutionAtScale_zero
   unfold resolventApproximationEvolutionAtScale
   exact resolventApproximationEvolution_zero A hA _ _
 
-/-- The totalized bounded approximants retain the additive one-parameter group law. -/
-theorem resolventApproximationEvolutionAtScale_add
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t s : ℝ) :
-    resolventApproximationEvolutionAtScale A hA r (t + s) =
-      resolventApproximationEvolutionAtScale A hA r t *
-        resolventApproximationEvolutionAtScale A hA r s := by
-  unfold resolventApproximationEvolutionAtScale
-  exact resolventApproximationEvolution_add A hA _ _ t s
-
 /-- The totalized bounded approximants preserve distances. -/
 theorem resolventApproximationEvolutionAtScale_dist_eq
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x y : H) :
@@ -129,8 +120,9 @@ theorem resolventEvolutionStrongLimit_add_time_apply
     tendsto_resolventApproximationEvolutionAtScale_comp_apply A hA t s x
   exact tendsto_nhds_unique hleft <|
     hright.congr' (Eventually.of_forall fun r => by
-      have hgroup := congrArg (fun T : H →L[ℂ] H => T x)
-        (resolventApproximationEvolutionAtScale_add A hA r t s)
+      have hgroup := congrArg (fun T : H →L[ℂ] H => T x) (by
+        unfold resolventApproximationEvolutionAtScale
+        exact resolventApproximationEvolution_add A hA _ _ t s)
       simpa using hgroup.symm)
 
 /-- The bundled strong-limit operators form an additive one-parameter group. -/
