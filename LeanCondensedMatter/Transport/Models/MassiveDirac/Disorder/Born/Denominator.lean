@@ -518,7 +518,7 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
               pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
             (nhdsWithin 0 (Set.Ioi 0))
             (nhdsWithin
-              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy broadening)
+              (pauliGreenDenominator .advanced v m pMax 0 probeEnergy 0)
               {z : ℂ | z.im < 0}) := by
         rw [tendsto_nhdsWithin_iff]
         refine ⟨hden, ?_⟩
