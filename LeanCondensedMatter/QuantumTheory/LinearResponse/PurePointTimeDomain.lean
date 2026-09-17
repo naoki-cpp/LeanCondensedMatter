@@ -113,10 +113,11 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
     purePointTimeDomainTerm system data A B τ mn =
       purePointTransitionWeight system data A B mn *
         Complex.exp
-          (Complex.I * ((((data.energy mn.1 - data.energy mn.2) * τ) /
+          (Complex.I * ((((orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ)) := by
   rw [purePointTimeDomainTerm,
     purePointTransitionPhase_eq_exp_energyDifference]
+  simp
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
