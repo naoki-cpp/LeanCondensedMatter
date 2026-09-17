@@ -67654,202 +67654,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    0 < broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.broadening_pos",
-    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "externalAxioms": [],
-    "docString": "The resolvent broadening is strictly positive. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    IsSelfAdjoint hamiltonian",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.hamiltonian_selfAdjoint",
-    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "externalAxioms": [],
-    "docString": "The Hamiltonian used in the resolvents is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    IntervalIntegrable occupationDerivative MeasureTheory.volume lowerEnergy upperEnergy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.occupationDerivative_intervalIntegrable",
-    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.toRegularizedStredaIntegralData",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    ContinuousOn occupation (Set.uIcc lowerEnergy upperEnergy)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_continuous",
-    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.toRegularizedStredaIntegralData",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    ∀ energy ∈ Set.Ioo (min lowerEnergy upperEnergy) (max lowerEnergy upperEnergy),\n      HasDerivAt occupation (occupationDerivative energy) energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_hasDerivAt",
-    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.toRegularizedStredaIntegralData",
-      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ}\n  (data :\n    QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative),\n  QuantumTheory.Transport.regularizedBastinEnergyIntegral data.toRegularizedStredaIntegralData =\n    QuantumTheory.Transport.regularizedTracedBastinEnergyIntegral hamiltonian current₁ current₂ broadening lowerEnergy\n      upperEnergy occupation",
     "standardAxioms": [
@@ -67875,9 +67679,10 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.TracedStredaAnalyticData.boundary_vanishes",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupationDerivative_intervalIntegrable",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_continuous",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_hasDerivAt",
+      "QuantumTheory.Transport.TracedStredaAnalyticData.toTracedStredaKernelFacts",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupationDerivative_intervalIntegrable",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_continuous",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_hasDerivAt",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea"
     ],
     "crossModuleDirectWrapper": false,
@@ -67936,6 +67741,283 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] {hamiltonian current₁ current₂ : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ}\n  {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaAnalyticData hamiltonian current₁ current₂ broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaAnalyticData.toTracedStredaKernelFacts",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaAnalyticData.toRegularizedStredaIntegralData",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {hamiltonian : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative →\n    0 < broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaKernelFacts.broadening_pos",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": "The resolvent broadening is strictly positive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {hamiltonian : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative →\n    IsSelfAdjoint hamiltonian",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaKernelFacts.hamiltonian_selfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": "The Hamiltonian used in the resolvents is self-adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {hamiltonian : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative →\n    IntervalIntegrable occupationDerivative MeasureTheory.volume lowerEnergy upperEnergy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaKernelFacts.occupationDerivative_intervalIntegrable",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.toRegularizedStredaIntegralData",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {hamiltonian : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative →\n    ContinuousOn occupation (Set.uIcc lowerEnergy upperEnergy)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_continuous",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.toRegularizedStredaIntegralData",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {hamiltonian : H →L[ℂ] H} {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative →\n    ∀ energy ∈ Set.Ioo (min lowerEnergy upperEnergy) (max lowerEnergy upperEnergy),\n      HasDerivAt occupation (occupationDerivative energy) energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaAnalyticData.regularizedBastinEnergyIntegral_eq_traced",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.toRegularizedStredaIntegralData",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] {hamiltonian : H →L[ℂ] H} {current : ι → H →L[ℂ] H}\n  {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData hamiltonian current broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    ∀ (i j : ι),\n      occupation upperEnergy *\n            QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace hamiltonian (current i) (current j)\n              upperEnergy broadening -\n          occupation lowerEnergy *\n            QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace hamiltonian (current i) (current j)\n              lowerEnergy broadening =\n        0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.boundary_vanishes",
+    "module": "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
+    "externalAxioms": [],
+    "docString": "Pair-dependent vanishing of the integration-by-parts boundary term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] {hamiltonian : H →L[ℂ] H} {current : ι → H →L[ℂ] H}\n  {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ}\n  (data :\n    QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData hamiltonian current broadening lowerEnergy\n      upperEnergy occupation occupationDerivative)\n  (i j : ι), data.fermiSeaMatrix i j = -data.fermiSeaMatrix j i",
     "standardAxioms": [
       "Classical.choice",
@@ -67959,9 +68041,10 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.TracedStredaAnalyticData.boundary_vanishes",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupationDerivative_intervalIntegrable",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_continuous",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.occupation_hasDerivAt",
+      "QuantumTheory.Transport.TracedStredaAnalyticData.toTracedStredaKernelFacts",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupationDerivative_intervalIntegrable",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_continuous",
+      "QuantumTheory.Transport.TracedStredaKernelFacts.occupation_hasDerivAt",
       "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData",
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap"
     ],
@@ -67998,14 +68081,17 @@
     "name": "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData",
     "module": "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
     "externalAxioms": [],
-    "docString": "Analytic Středa data for each measured/source current pair under the shared setup. ",
+    "docString": "Pair adapter obtained from the common traced-kernel facts and the pair-specific boundary\ncondition. No regularity or integrability proof is rebuilt here. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap",
       "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.toStaticStredaResponseMatrix_total_eq_tracedBastin"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.boundary_vanishes",
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.sharedFacts"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -68015,6 +68101,45 @@
       "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.toStaticStredaResponseMatrix_total_eq_tracedBastin"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H] {hamiltonian : H →L[ℂ] H} {current : ι → H →L[ℂ] H}\n  {broadening lowerEnergy upperEnergy : ℝ} {occupation occupationDerivative : ℝ → ℂ},\n  QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData hamiltonian current broadening lowerEnergy upperEnergy\n      occupation occupationDerivative →\n    QuantumTheory.Transport.TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy occupation\n      occupationDerivative",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.sharedFacts",
+    "module": "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
+    "externalAxioms": [],
+    "docString": "Pair-independent traced-kernel provenance. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.pairData"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
