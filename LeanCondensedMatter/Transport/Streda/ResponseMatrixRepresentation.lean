@@ -61,7 +61,7 @@ variable {occupation occupationDerivative : ℝ → ℂ}
 
 /-- Pair adapter obtained from the common traced-kernel facts and the pair-specific boundary
 condition. No regularity or integrability proof is rebuilt here. -/
-noncomputable def pairData
+theorem pairData
     (data : TracedStredaResponseMatrixAnalyticData hamiltonian current broadening
       lowerEnergy upperEnergy occupation occupationDerivative)
     (i j : ι) :
