@@ -84,18 +84,15 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   classical
   have hminus := twoSiteDimerLehmannDenominator_ne_zero omega eta (-2) heta
   have hplus := twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta
-  have hgapMinus : ((-1 : ℝ) - 1) = -2 := by norm_num
-  have hgapPlus : ((1 : ℝ) + 1) = 2 := by norm_num
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
-    twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
-    twoSiteDimerGroundStateLehmannTable_energy_one,
+    twoSiteDimerGroundStateEnergyGap_zero_one,
+    twoSiteDimerGroundStateEnergyGap_one_zero,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero,
-    finiteLehmannTableTransitionWeight_diag, sub_self]
+    finiteLehmannTableTransitionWeight_diag]
   simp only [lehmannTerm, zero_mul, zero_add, add_zero]
-  rw [hgapMinus, hgapPlus]
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   field_simp [hminus, hplus]
   apply Complex.ext
