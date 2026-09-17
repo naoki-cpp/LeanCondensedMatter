@@ -79,22 +79,22 @@ transport declarations remain private/local unless independently reusable.
 higher-point program.  `GeneratingFunctional` stores normalized finite-set source moments over a
 commutative coefficient ring, and `powerSeriesGeneratingFunctional` turns factorial-normalized
 coefficients of a normalized formal series into that representation.  Its `connected` operation
-applies the finite-set cumulant transform.  `SourceGeneratingFunctional` remains the
-pre-normalization representation: it stores formal source moments together with the nonzero
-zero-source series, and its `vacuumNormalized` family divides out vacuum components.  The identity
+applies the finite-set cumulant transform.  The fermionic
+`dysonVertexGeneratingFunctional` is defined directly from the normalized Dyson partition series,
+so its connected coefficients are a genuine specialization of the generic operation.  The identity
 
 ```lean
-SourceGeneratingFunctional.connected_moment
+GeneratingFunctional.connected_moment
 ```
 
-records that connected source coefficients reconstruct the vacuum-normalised moments.  The
-fermionic `dysonVertexGeneratingFunctional` specializes the normalized representation to Dyson
-moments, while the quartic Wick layer supplies the concrete amplitudes and fermionic signs.  This
-boundary intentionally does not introduce Grassmann variables or claim the arbitrary `n`-point
-diagram theorem.
+records that connected source coefficients reconstruct the normalized moments.  The quartic Wick
+layer supplies the concrete amplitudes and fermionic signs.  Vacuum normalization of unnormalized
+external-insertion moments, Grassmann variables, and the arbitrary `n`-point diagram theorem remain
+outside this algebraic boundary.
 
 ## Open work
 
+- pre-normalized arbitrary higher-point source moments and their vacuum normalization;
 - arbitrary higher-point and source-insertion connected expansions using the formal source-functional layer;
 - convergence-aware bosonic Dyson and linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;

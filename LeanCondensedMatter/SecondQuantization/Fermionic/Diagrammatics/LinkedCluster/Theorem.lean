@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.ConnectedDiagramExpansion
 
 set_option linter.style.header false

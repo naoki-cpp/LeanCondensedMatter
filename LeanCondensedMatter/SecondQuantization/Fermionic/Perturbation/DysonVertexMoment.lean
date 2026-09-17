@@ -94,10 +94,22 @@ theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)
 noncomputable def dysonVertexGeneratingFunctional {α : Type*} [DecidableEq α]
     (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.GeneratingFunctional α ℂ where
-  moment :=
-    { toFun := dysonVertexMoment ε β V
-      map_empty := dysonVertexMoment_empty ε β V }
+    Common.GeneratingFunctional α ℂ :=
+  Common.powerSeriesGeneratingFunctional
+    (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
+    (PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β V))
+
+omit [LinearOrder Mode] in
+theorem dysonVertexGeneratingFunctional_moment {α : Type*} [DecidableEq α]
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
+    (dysonVertexGeneratingFunctional ε β V).moment S = dysonVertexMoment ε β V S := by
+  change Combinatorics.powerSeriesMomentCoeff
+      (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) S.card =
+    dysonVertexMoment ε β V S
+  rw [Combinatorics.powerSeriesMomentCoeff, dysonVertexMoment,
+    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
 
 /-- The finite-set cumulant of the Dyson vertex moment. -/
 noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
@@ -115,33 +127,11 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumula
         PowerSeries.coeff S.card
           (dysonFormalLogPartitionFunction ε β V) =
       dysonVertexCumulant ε β V S := by
-  unfold dysonVertexCumulant
-  change (S.card.factorial : ℂ) *
-      PowerSeries.coeff S.card
-        (PowerSeries.logOf
-          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))) =
-    Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
-  calc
-    (S.card.factorial : ℂ) *
-        PowerSeries.coeff S.card
-          (PowerSeries.logOf
-            (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))) =
-        (Common.powerSeriesGeneratingFunctional
-          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
-          (PowerSeries.constantCoeff_normalizeByConstantCoeff
-            (constantCoeff_dysonPartitionSeries_ne_zero ε β V))).connected S := by
-      exact Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
-        (constantCoeff_dysonPartitionSeries_ne_zero ε β V) hS
-    _ = Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S := by
-      change Finpartition.cumulantFromMoment
-          (fun T : Finset α =>
-            Combinatorics.powerSeriesMomentCoeff
-              (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) T.card) S =
-        Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
-      congr 1
-      funext T
-      rw [Combinatorics.powerSeriesMomentCoeff, dysonVertexMoment,
-        coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+  simpa [dysonFormalLogPartitionFunction, dysonVertexCumulant,
+    dysonVertexGeneratingFunctional] using
+    (Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
+      (Z := dysonPartitionSeries ε β V) (Source := α)
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β V) hS)
 
 end Fermionic
 end SecondQuantization
