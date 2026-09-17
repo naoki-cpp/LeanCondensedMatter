@@ -104,15 +104,17 @@ theorem twoSiteDimerEnergyBasisCurrent_one_zero :
 theorem twoSiteDimerGroundStateTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
-    twoSiteDimerEnergyBasisCurrent]
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    LehmannTransitionData.weight, orderedLehmannTransitionData,
+    twoSiteDimerGroundStateLehmannTable, twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_one_zero :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
-    twoSiteDimerEnergyBasisCurrent]
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    LehmannTransitionData.weight, orderedLehmannTransitionData,
+    twoSiteDimerGroundStateLehmannTable, twoSiteDimerEnergyBasisCurrent]
 
 /-- At `ℏ = 1`, zero driving frequency, and positive switching rate `η = 1`, the dimer's exact
 finite Lehmann current-current response is `4/5`. -/
@@ -122,14 +124,11 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue,
-    twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
-    twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
-    finiteLehmannTableTransitionWeight_diag,
-    twoSiteDimerGroundStateTransitionWeight_zero_one,
-    twoSiteDimerGroundStateTransitionWeight_one_zero, sub_self]
   apply Complex.ext <;>
-    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
+    norm_num [LehmannTransitionData.fixedRateTerm, lehmannTerm, lehmannDenominator,
+      finiteLehmannTableTransitionData, LehmannTransitionData.weight,
+      orderedLehmannTransitionData, twoSiteDimerGroundStateLehmannTable,
+      twoSiteDimerEnergyBasisCurrent, Complex.normSq]
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
