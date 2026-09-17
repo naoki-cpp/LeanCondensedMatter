@@ -15,7 +15,9 @@ A `PurePointLehmannData` probability distribution is first realized as the canon
 `DensityOperator`. Its normalized expectation is then obtained through
 `DensityOperator.toNormalizedExpectation`; no parallel linear-functional construction is retained.
 The module proves that this density state commutes with the Hamiltonian and derives stationarity
-from the general conservation law. It also proves the free energy-basis phases used downstream.
+from the general conservation law. It also proves the free energy-basis phases used downstream and
+identifies the relative Heisenberg phase with `lehmannTimePhase` at the canonical ordered energy
+gap owned by `Lehmann.lean`.
 
 The countable double-sum expansion of the commutator and the exchange of that sum with the time
 integral are intentionally left to the next layer.
@@ -176,6 +178,16 @@ theorem purePointTransitionPhase_eq_exp_energyDifference
   congr 1
   simp
   ring
+
+/-- The dynamical relative phase is the canonical Lehmann phase for the same ordered transition. -/
+theorem purePointTransitionPhase_eq_lehmannTimePhase
+    (data : PurePointLehmannData system ι)
+    (m n : ι) (t : ℝ) :
+    purePointTransitionPhase system data m n t =
+      lehmannTimePhase system.hbar
+        (purePointTransitionEnergyGap system data (m, n)) t := by
+  rw [purePointTransitionPhase_eq_exp_energyDifference]
+  rfl
 
 /-- Matrix elements of a freely evolved observable acquire the energy-difference phase. -/
 theorem inner_purePointBasis_heisenbergEvolution
