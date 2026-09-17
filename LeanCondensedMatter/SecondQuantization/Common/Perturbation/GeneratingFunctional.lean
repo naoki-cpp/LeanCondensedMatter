@@ -89,7 +89,6 @@ theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
   exact Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment
     (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ) hS
 
-/-- The generating-functional bridge with its cumulant family exposed explicitly. -/
 /--
 A finite source generating functional before vacuum normalisation.
 
