@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.AngularReduction
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
@@ -428,8 +429,8 @@ open scoped Interval
 Jacobian `p`. -/
 noncomputable def continuumBornRadialDenominatorIntegrandOfRegulator
     (v m probeEnergy regulator p : ℝ) : ℂ :=
-  (p : ℂ) *
-    (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator)⁻¹
+  massiveDiracRadialDenominatorKernel v p
+    (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ)
 
 /-- Either surviving Born self-energy radial integrand is its channel numerator times the common
 denominator integrand. -/
@@ -443,8 +444,10 @@ theorem continuumBornRadialIntegrandOfRegulator_eq_weight_mul_denominatorIntegra
     simp [continuumBornRadialIntegrandOfRegulator,
       bornSelfEnergyChannelWeightOfRegulator,
       continuumBornRadialDenominatorIntegrandOfRegulator,
+      massiveDiracRadialDenominatorKernel, massiveDiracRadialDenominator,
       pauliGreenScalarCoefficientOfRegulator,
-      pauliGreenPauliCoefficientOfRegulator, InternalSpace.pauliAxisComponent] <;>
+      pauliGreenPauliCoefficientOfRegulator, pauliGreenDenominatorOfRegulator,
+      energySq, InternalSpace.pauliAxisComponent] <;>
     ring
 
 /-- Finite-cutoff interval integral of the common radial denominator integrand at an arbitrary
