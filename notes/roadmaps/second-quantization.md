@@ -47,7 +47,12 @@ The connected perturbative line proves three finite-mode endpoints:
 The first two names deliberately identify the connected object on the right-hand side as the
 quartic Wick-diagram amplitude rather than using a generic `connectedAmplitude` label. The two-point
 result already covers one external-leg correlation-function setting. The remaining connected-diagram
-target is arbitrary higher-point/source-insertion structure.
+target is arbitrary higher-point/source-insertion structure. The reusable normalized algebraic
+boundary for that work is now `Common.Perturbation.GeneratingFunctional`: it stores finite-set source
+moments, applies the cumulant transform through `connected`, and proves `connected_moment`. The
+fermionic `dysonVertexGeneratingFunctional` consumes this boundary directly from the normalized Dyson
+partition series. Pre-normalized external-insertion moments and the physical higher-point theorem
+remain open.
 
 ## Diagrammatics ownership
 
@@ -86,7 +91,7 @@ operator integration, Dyson convergence, and connected-diagram specialization.
 
 ## Research directions
 
-- arbitrary time-ordered insertions, higher Green functions, and source derivatives;
+- pre-normalized time-ordered insertions, higher Green functions, and source derivatives;
 - convergence-aware bosonic Dyson and linked-cluster theory;
 - completed bosonic Fock/operator-domain theory;
 - interacting completed-space fermionic perturbation theory;

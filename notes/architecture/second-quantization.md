@@ -195,6 +195,19 @@ in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next corr
 target is higher-point/source-insertion structure, not re-proving the two-point linked-cluster
 identity.
 
+## Normalized source-functional boundary
+
+`SecondQuantization.Common.Perturbation.GeneratingFunctional` owns the statistics-independent
+algebraic boundary for normalized source moments. `GeneratingFunctional Source R` stores a
+`NormalizedSetFunction Source R` over a commutative coefficient ring; its `connected` operation is
+the finite-set cumulant transform, and `GeneratingFunctional.connected_moment` proves that connected
+coefficients reconstruct the moments. `powerSeriesGeneratingFunctional` packages
+factorial-normalized coefficients of a normalized formal power series into this representation.
+
+`Fermionic.dysonVertexGeneratingFunctional` is the concrete normalized Dyson specialization. This
+boundary does not yet provide pre-normalized external-insertion moments, Grassmann variables, or an
+arbitrary higher-point diagram theorem; those remain downstream research targets.
+
 ## Fermionic field/current boundary
 
 The basis-independent algebraic field architecture is documented separately in
