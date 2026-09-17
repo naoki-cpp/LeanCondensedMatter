@@ -40,7 +40,7 @@ open Set MeasureTheory
 noncomputable section
 
 /-- Canonical energy gap of an ordered Lehmann transition `(m,n)`. -/
-def orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
+abbrev orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
   energyM - energyN
 
 @[simp]
