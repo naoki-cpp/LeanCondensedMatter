@@ -85,6 +85,25 @@ theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_canonicalLehmannMode
     purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
       system data A B omega eta mn τ
 
+/-- Integrating one switched transition produces the fixed-rate Lehmann term built from the same
+canonical ordered gap and physical weight. -/
+theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero_eq_lehmannTerm
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
+    (mn : ι × ι) :
+    (∫ τ : ℝ in Ioi 0,
+      purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
+      lehmannTerm system.hbar omega eta
+        (purePointTransitionEnergyGap system data mn)
+        (purePointTransitionWeight system data A B mn) := by
+  rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
+    purePointAdiabaticTransitionIntegrand_eq_weight_mul_canonicalLehmannMode
+      system data A B omega eta mn τ]
+  rw [integral_const_mul]
+  rw [integral_lehmannMode_Ioi_zero_eq_resolvent
+    system.hbar omega eta (purePointTransitionEnergyGap system data mn) hη]
+  rfl
+
 /-- The countable transition sum may be exchanged with the causal fixed-rate Bochner integral. -/
 theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
     [Countable ι]
@@ -147,13 +166,8 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
   rw [purePointLehmannSeries]
   apply tsum_congr
   intro mn
-  rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
-    purePointAdiabaticTransitionIntegrand_eq_weight_mul_canonicalLehmannMode
-      system data A B omega eta mn τ]
-  rw [integral_const_mul]
-  rw [integral_lehmannMode_Ioi_zero_eq_resolvent
-    system.hbar omega eta (purePointTransitionEnergyGap system data mn) hη]
-  rfl
+  exact integral_purePointAdiabaticTransitionIntegrand_Ioi_zero_eq_lehmannTerm
+    system data A B omega eta hη mn
 
 /-- The fixed-positive-rate physical susceptibility equals the countable pure-point Lehmann
 resolvent series. -/
