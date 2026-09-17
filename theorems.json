@@ -4486,7 +4486,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude",
+      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
       "SecondQuantization.Fermionic.dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
@@ -4496,10 +4496,86 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude",
+      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
       "SecondQuantization.Fermionic.dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) (S : Finset α),\n  W.normalizedObjectMoment.toFun S = W.objectMoment S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) {S : Finset α},\n  S ≠ ∅ → W.normalizedObjectMoment.cumulant.toFun S = W.connectedContribution S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+    "externalAxioms": [],
+    "docString": "On a nonempty set, the cumulant of the normalized object moment is the connected-object\ncontribution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude"
+    ],
+    "dependencies": [
+      "Combinatorics.MultiplicativeWeight.cumulantFromMoment_objectMoment"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10113,8 +10189,8 @@
       "Combinatorics.powerSeriesCumulantCoeff_one_eq",
       "Combinatorics.powerSeriesCumulantCoeff_three_eq",
       "Combinatorics.powerSeriesCumulantCoeff_two_eq",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
       "PowerSeries.derivative_logOf_mul"
@@ -10125,8 +10201,8 @@
       "Combinatorics.powerSeriesCumulantCoeff_one_eq",
       "Combinatorics.powerSeriesCumulantCoeff_three_eq",
       "Combinatorics.powerSeriesCumulantCoeff_two_eq",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -19074,6 +19150,41 @@
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_right"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R),\n  Finpartition.momentFromCumulant κ ∅ = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.momentFromCumulant_empty",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+    "externalAxioms": [],
+    "docString": "The moment transform is normalized to `1` on the empty set, independently of the input\ncumulant value at the empty set. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -30219,14 +30330,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -30301,8 +30412,8 @@
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
       "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -30315,8 +30426,8 @@
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
       "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -30616,6 +30727,45 @@
       "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_1} [inst : Field R] {source normalized vacuum : PowerSeries R},\n  PowerSeries.constantCoeff vacuum ≠ 0 → source = normalized * vacuum → source * vacuum⁻¹ = normalized",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
+    "externalAxioms": [],
+    "docString": "Cancel a right power-series factor with invertible constant coefficient.\n\nThis is the formal algebra used after a coefficientwise factorization `source = normalized * vacuum`:\nmultiplying the source by the inverse vacuum series recovers the normalized factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46456,7 +46606,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι)\n  (τ : ℝ),\n  QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta (data.energy mn.1 - data.energy mn.2) τ",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι)\n  (τ : ℝ),\n  QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta\n        (QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46810,7 +46960,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      Complex.exp (Complex.I * ↑((data.energy mn.1 - data.energy mn.2) * τ / system.hbar))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      Complex.exp\n        (Complex.I *\n          ↑(QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ /\n              system.hbar))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83337,7 +83487,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    SecondQuantization.Bosonic.quarticThermalCumulant ε β g S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
+    "statement": "∀ {Mode : Type u_1} {N : ℕ} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    (SecondQuantization.Bosonic.quarticThermalCumulant ε β g).toFun S =\n      ∑ d, SecondQuantization.Bosonic.QuarticDiagram.thermalAmplitude ε β g ↑d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83357,7 +83507,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.MultiplicativeWeight.cumulantFromMoment_objectMoment"
+      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -120536,20 +120686,20 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.analyticAt_analyticNormalizedLogPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": "The selected logarithm branch is analytic at zero coupling. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction"
@@ -120557,7 +120707,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -120577,20 +120727,20 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.analyticAt_normalizedAnalyticDysonPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": "The normalized partition function is analytic at zero coupling. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
@@ -120598,7 +120748,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -120743,20 +120893,20 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
@@ -120764,7 +120914,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -121838,7 +121988,7 @@
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
     ],
     "dependencies": [
       "PowerSeries.coeff_normalizeByConstantCoeff",
@@ -121853,7 +122003,7 @@
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -121873,20 +122023,20 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.coeff_normalizedDysonPartitionFPowerSeries_eq_formal",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": "The analytic normalized-series coefficient agrees with the existing formal normalization. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.coeff_dysonPartitionFPowerSeries",
@@ -121896,7 +122046,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -123949,7 +124099,7 @@
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.dysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries"
@@ -123960,7 +124110,7 @@
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.dysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -123998,8 +124148,8 @@
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries",
@@ -124013,8 +124163,8 @@
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -127642,10 +127792,10 @@
     "dependents": [
       "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero"
+      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_ofReal"
@@ -127655,10 +127805,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.analyticDysonPartitionFunction_ne_zero_eventually",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero"
+      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -127728,14 +127878,14 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": "The local analytic logarithm is represented by the composed Taylor series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.analyticAt_analyticNormalizedLogPartitionFunction_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction",
@@ -127745,7 +127895,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.analyticAt_analyticNormalizedLogPartitionFunction_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -127772,7 +127922,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": "The normalized analytic partition function has the scaled Dyson series as its Taylor series. ",
     "directWrapperTargetModule": null,
@@ -127780,8 +127930,8 @@
     "dependents": [
       "SecondQuantization.Fermionic.analyticAt_normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction"
@@ -127791,8 +127941,8 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.analyticAt_normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -128650,43 +128800,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        ↑n.factorial * (SecondQuantization.Fermionic.analyticNormalizedLogFPowerSeries ε β V).coeff n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
-    "externalAxioms": [],
-    "docString": "The `n`-th derivative of the analytic logarithm is `n!` times the scalar coefficient of its\ncomposed Taylor series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        ↑n.factorial * (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β V)",
     "standardAxioms": [
@@ -128701,9 +128814,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterIdentification",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
-    "docString": "Taylor-coefficient form of the analytic/formal logarithm bridge. ",
+    "docString": "Analytic logarithmic derivatives agree with the factorial-normalized coefficients of the formal\nDyson logarithm. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -128713,7 +128826,7 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_order_two"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128724,55 +128837,6 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_order_two"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        Combinatorics.powerSeriesCumulantCoeff\n          (SecondQuantization.Fermionic.dysonPartitionSeries ε β V).normalizeByConstantCoeff n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterIdentification",
-    "externalAxioms": [],
-    "docString": "The analytic logarithmic derivatives equal the exponential-generating coefficients of the\nformal logarithm of the normalized Dyson partition series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff"
-    ],
-    "dependencies": [
-      "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
-      "PowerSeries.coeff_normalizeByConstantCoeff",
-      "PowerSeries.constantCoeff_normalizeByConstantCoeff",
-      "SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction_zero",
-      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries",
-      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128797,7 +128861,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterIdentification",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Analytic",
     "externalAxioms": [],
     "docString": "Analytic fermionic Dyson linked-cluster theorem: derivatives of the local normalized log\npartition function are sums of connected quartic Wick-diagram amplitudes. ",
     "directWrapperTargetModule": null,
@@ -128835,7 +128899,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_order_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterLowOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.AnalyticLowOrder",
     "externalAxioms": [],
     "docString": "First derivative of the analytic normalized logarithm. ",
     "directWrapperTargetModule": null,
@@ -128873,7 +128937,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_order_three",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterLowOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.AnalyticLowOrder",
     "externalAxioms": [],
     "docString": "Third derivative of the analytic normalized logarithm, with all disconnected partitions\nsubtracted explicitly. ",
     "directWrapperTargetModule": null,
@@ -128911,7 +128975,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_order_two",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterLowOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.AnalyticLowOrder",
     "externalAxioms": [],
     "docString": "Second derivative of the analytic normalized logarithm, with the disconnected square\nsubtracted explicitly. ",
     "directWrapperTargetModule": null,
@@ -128925,92 +128989,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0 =\n        Combinatorics.powerSeriesMomentCoeff\n          (SecondQuantization.Fermionic.dysonPartitionSeries ε β V).normalizeByConstantCoeff n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterRecurrence",
-    "externalAxioms": [],
-    "docString": "Derivatives of the normalized analytic partition function are the exponential-generating\ncoefficients of the normalized formal Dyson partition series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.coeff_normalizedDysonPartitionFPowerSeries_eq_formal",
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv (n + 1) (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0 =\n        ∑ k ∈ Finset.range (n + 1),\n          ↑(n.choose k) *\n              iteratedDeriv (k + 1) (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 *\n            iteratedDeriv (n - k) (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterRecurrence",
-    "externalAxioms": [],
-    "docString": "Leibniz recurrence obtained from the local identity `(log F)' * F = F'`, where `F` is the\nnormalized analytic partition function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.analyticAt_analyticNormalizedLogPartitionFunction_zero",
-      "SecondQuantization.Fermionic.analyticAt_normalizedAnalyticDysonPartitionFunction_zero",
-      "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction",
-      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129696,7 +129674,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -129704,7 +129682,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction_zero",
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.analyticDysonPartitionFunction_zero",
@@ -129715,7 +129693,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction_zero",
       "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction",
-      "SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -132832,13 +132810,55 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor",
       "SecondQuantization.Fermionic.sum_eq_sum_powerset_fixedExternalFiber",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n      SecondQuantization.Fermionic.twoPointDysonSeries ε β g i j τ τ' =\n        SecondQuantization.Fermionic.connectedTwoPointDysonSeries ε β g i j τ τ' *\n          (SecondQuantization.Fermionic.dysonPartitionSeries ε β\n              (SecondQuantization.Fermionic.quarticInteraction g)).normalizeByConstantCoeff",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.CauchySeries",
+    "externalAxioms": [],
+    "docString": "The full two-point Dyson series factors into its externally connected series and the normalized\nzero-external-leg Dyson partition series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -133321,9 +133341,9 @@
     "dependents": [],
     "dependencies": [
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
-      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
+      "PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff"
+      "SecondQuantization.Fermionic.twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": true,
@@ -137923,41 +137943,6 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Normalized.0.Combinatorics.NormalizedSetFunction.cumulantFromMoment_empty",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (κ : Finset α → R),\n  Finpartition.momentFromCumulant κ ∅ = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Normalized.0.Combinatorics.NormalizedSetFunction.momentFromCumulant_empty",
     "module": "LeanCondensedMatter.Combinatorics.Cumulant.Normalized",
     "externalAxioms": [],
     "docString": null,
@@ -154750,6 +154735,178 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        ↑n.factorial * (SecondQuantization.Fermionic.analyticNormalizedLogFPowerSeries ε β V).coeff n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 =\n        Combinatorics.powerSeriesCumulantCoeff\n          (SecondQuantization.Fermionic.dysonPartitionSeries ε β V).normalizeByConstantCoeff n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff"
+    ],
+    "dependencies": [
+      "Combinatorics.powerSeriesMomentCoeff_succ_recurrence",
+      "PowerSeries.coeff_normalizeByConstantCoeff",
+      "PowerSeries.constantCoeff_normalizeByConstantCoeff",
+      "SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction_zero",
+      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries",
+      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
+      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv n (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0 =\n        Combinatorics.powerSeriesMomentCoeff\n          (SecondQuantization.Fermionic.dysonPartitionSeries ε β V).normalizeByConstantCoeff n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.coeff_normalizedDysonPartitionFPowerSeries_eq_formal",
+      "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) {β : ℝ},\n  0 ≤ β →\n    ∀ (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode)\n      (n : ℕ),\n      iteratedDeriv (n + 1) (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0 =\n        ∑ k ∈ Finset.range (n + 1),\n          ↑(n.choose k) *\n              iteratedDeriv (k + 1) (SecondQuantization.Fermionic.analyticNormalizedLogPartitionFunction ε β V) 0 *\n            iteratedDeriv (n - k) (SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction ε β V) 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.analyticAt_analyticNormalizedLogPartitionFunction_zero",
+      "SecondQuantization.Fermionic.analyticAt_normalizedAnalyticDysonPartitionFunction_zero",
+      "SecondQuantization.Fermionic.hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction",
+      "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
