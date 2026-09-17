@@ -174,7 +174,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     .retarded v m p probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
   have hadv := tendsto_finiteCutoffContinuumBornDysonDenominator_broadening_zero
     .advanced v m p probeEnergy disorderStrength hbar pMax hvelocity hmetal hcutoff
-  simpa [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
+  simpa only [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
     finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary] using
     hret.mul hadv
 
