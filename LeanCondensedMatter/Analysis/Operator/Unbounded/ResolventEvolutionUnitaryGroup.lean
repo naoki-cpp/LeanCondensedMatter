@@ -164,11 +164,12 @@ theorem resolventEvolutionStrongLimitOperator_inner_map_map
       (fun z => by
         simpa using resolventEvolutionStrongLimit_apply_norm A hA t z) x y
 
-/-- The Hilbert-space adjoint of the limiting evolution is negative-time evolution. -/
-theorem resolventEvolutionStrongLimitOperator_adjoint
+/-- Star/adjoint reverses time for the limiting evolution. -/
+theorem resolventEvolutionStrongLimitOperator_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    ContinuousLinearMap.adjoint (resolventEvolutionStrongLimitOperator A hA t) =
+    star (resolventEvolutionStrongLimitOperator A hA t) =
       resolventEvolutionStrongLimitOperator A hA (-t) := by
+  rw [ContinuousLinearMap.star_eq_adjoint]
   symm
   rw [ContinuousLinearMap.eq_adjoint_iff]
   intro x y
@@ -182,14 +183,6 @@ theorem resolventEvolutionStrongLimitOperator_adjoint
       (resolventEvolutionStrongLimit_add_time_apply A hA t (-t) x).symm
   rw [hcancel] at hinner
   exact hinner.symm
-
-/-- Star/adjoint reverses time for the limiting evolution. -/
-theorem resolventEvolutionStrongLimitOperator_star
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    star (resolventEvolutionStrongLimitOperator A hA t) =
-      resolventEvolutionStrongLimitOperator A hA (-t) := by
-  rw [ContinuousLinearMap.star_eq_adjoint]
-  exact resolventEvolutionStrongLimitOperator_adjoint A hA t
 
 /-- The limiting evolution is unitary, left-inverse form. -/
 theorem resolventEvolutionStrongLimitOperator_star_mul
