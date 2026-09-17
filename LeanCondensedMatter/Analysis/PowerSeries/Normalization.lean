@@ -31,6 +31,22 @@ theorem constantCoeff_normalizeByConstantCoeff {Z : PowerSeries R}
     constantCoeff (normalizeByConstantCoeff Z) = 1 := by
   rw [normalizeByConstantCoeff, map_mul, constantCoeff_C, inv_mul_cancel₀ hZ]
 
+/-- Cancel a right power-series factor with invertible constant coefficient.
+
+This is the formal algebra used after a coefficientwise factorization `source = normalized * vacuum`:
+multiplying the source by the inverse vacuum series recovers the normalized factor. -/
+theorem mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+    {source normalized vacuum : PowerSeries R}
+    (hvacuum : constantCoeff vacuum ≠ 0)
+    (hsource : source = normalized * vacuum) :
+    source * vacuum⁻¹ = normalized := by
+  rw [hsource]
+  calc
+    (normalized * vacuum) * vacuum⁻¹ = normalized * (vacuum⁻¹ * vacuum) := by
+      ac_rfl
+    _ = normalized := by
+      rw [PowerSeries.inv_mul_cancel vacuum hvacuum, mul_one]
+
 /-- The order-one coefficient of `logOf Z` equals the order-one coefficient of a normalized
 complex power series `Z`. -/
 @[simp]
