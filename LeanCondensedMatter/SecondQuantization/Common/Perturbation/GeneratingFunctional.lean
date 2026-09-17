@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 
 set_option linter.style.header false
 
@@ -50,6 +50,18 @@ theorem connected_apply (Z : GeneratingFunctional Source R) (S : Finset Source) 
 theorem connected_moment (Z : GeneratingFunctional Source R) :
     Z.connected.moment = Z.moment := by
   exact NormalizedSetFunction.moment_cumulant Z.moment
+
+/-- A normalized source functional whose moments are total weights of a multiplicative connected
+decomposition has connected coefficients equal to the connected-object contribution. -/
+theorem connected_eq_connectedContribution
+    {D : ConnectedDecomposition Source} (Z : GeneratingFunctional Source R)
+    (W : MultiplicativeWeight D R)
+    (hMoment : ∀ S, Z.moment S = W.objectMoment S)
+    {S : Finset Source} (hS : S ≠ ∅) :
+    Z.connected S = W.connectedContribution S := by
+  change Finpartition.cumulantFromMoment Z.moment.toFun S = W.connectedContribution S
+  rw [show Z.moment.toFun = W.objectMoment from funext hMoment]
+  exact W.cumulantFromMoment_objectMoment hS
 
 end GeneratingFunctional
 
