@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.ConnectedDiagramExpansion
 
 set_option linter.style.header false
@@ -66,7 +67,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
                       (dysonPartitionSeries ε β (quarticInteraction g))))
               Finset.univ := by
             simpa using
-              (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment
+              (Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment_via_generatingFunctional
                 (constantCoeff_dysonPartitionSeries_ne_zero ε β
                   (quarticInteraction g))
                 (s := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))

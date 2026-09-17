@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
@@ -89,10 +90,19 @@ theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)
   classical
   simp [dysonVertexMoment]
 
+/-- The normalized Dyson vertex moments as a source generating functional. -/
+noncomputable def dysonVertexGeneratingFunctional {α : Type*} [DecidableEq α]
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    Common.GeneratingFunctional α ℂ where
+  moment :=
+    { toFun := dysonVertexMoment ε β V
+      map_empty := dysonVertexMoment_empty ε β V }
+
 /-- The finite-set cumulant of the Dyson vertex moment. -/
 noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
-  Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
+  (dysonVertexGeneratingFunctional ε β V).connected S
 
 end Fermionic
 end SecondQuantization
