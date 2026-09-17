@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Time-domain pure-point Lehmann representation
 
 This module identifies the causal commutator susceptibility of the diagonal pure-point expectation
-with its countable transition series.  The infinite-dimensional theorem keeps every rearrangement
-hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability of the two ordered
+with its countable transition series. The infinite-dimensional theorem keeps every rearrangement
+hypothesis explicit. `PurePointTimeDomainSummable` requires absolute summability of the two ordered
 products entering the commutator and of the already defined physical transition weights.
 
 On the causal half-line the result is
@@ -19,7 +19,11 @@ where
 
 `Wₘₙ = (i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ`.
 
-For a finite spectral index all summability assumptions are automatic.  The exchange of this
+The physical time-domain term uses the canonical ordered energy gap, transition weight, and time
+phase owned by `Lehmann.lean`. The dynamical phase derived from free evolution remains a separate
+construction and is identified with that canonical phase by `purePointTransitionPhase_eq_lehmannTimePhase`.
+
+For a finite spectral index all summability assumptions are automatic. The exchange of this
 transition series with the fixed-rate Bochner time integral is left to the next module.
 -/
 
@@ -99,12 +103,23 @@ noncomputable def purePointBackwardTimeTerm
   purePointBackwardWeight system data A B mn *
     purePointTransitionPhase system data mn.2 mn.1 τ
 
-/-- One physical time-domain Lehmann transition. -/
+/-- One physical time-domain Lehmann transition, using the canonical ordered gap and time phase. -/
 noncomputable def purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) : ℂ :=
   purePointTransitionWeight system data A B mn *
-    purePointTransitionPhase system data mn.1 mn.2 τ
+    lehmannTimePhase system.hbar
+      (purePointTransitionEnergyGap system data mn) τ
+
+/-- The canonical time-domain term agrees with the phase derived from free dynamics. -/
+theorem purePointTimeDomainTerm_eq_weight_mul_transitionPhase
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) :
+    purePointTimeDomainTerm system data A B τ mn =
+      purePointTransitionWeight system data A B mn *
+        purePointTransitionPhase system data mn.1 mn.2 τ := by
+  rw [purePointTimeDomainTerm,
+    purePointTransitionPhase_eq_lehmannTimePhase]
 
 /-- The physical transition term written with the explicit energy-difference exponential. -/
 theorem purePointTimeDomainTerm_eq_exp_energyDifference
@@ -115,8 +130,8 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
         Complex.exp
           (Complex.I * ((((data.energy mn.1 - data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ)) := by
-  rw [purePointTimeDomainTerm,
-    purePointTransitionPhase_eq_exp_energyDifference]
+  rw [purePointTimeDomainTerm, lehmannTimePhase,
+    purePointTransitionEnergyGap_eq]
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
@@ -243,6 +258,8 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   apply tsum_congr
   intro mn
   simp [purePointTimeDomainTerm, purePointTransitionWeight,
+    orderedLehmannTransitionWeight, orderedLehmannProbabilityDifference,
+    purePointTransitionPhase_eq_lehmannTimePhase,
     purePointForwardTimeTerm, purePointForwardWeight,
     purePointBackwardTimeTerm, purePointBackwardWeight]
   ring
