@@ -79,6 +79,23 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     (finiteCutoffContinuumBornEffectiveMass
       .advanced v m probeEnergy broadening disorderStrength hbar pMax)
 
+/-- The shared radial RA product is exactly the product of the radial retarded and advanced
+finite-`η` Born-Dyson denominators. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+        v m p probeEnergy broadening disorderStrength hbar pMax =
+      finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+        finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+    massiveDiracRetardedAdvancedRadialDenominatorProduct
+  congr 1 <;>
+    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator <;>
+    push_cast <;>
+    ring
+
 /-- Scalar Pauli coefficient of the finite-`η` Born-Dyson propagator candidate. -/
 noncomputable def finiteCutoffContinuumBornDysonScalarCoefficient
     (side : SpectralSide)
