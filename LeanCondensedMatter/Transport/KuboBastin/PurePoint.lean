@@ -143,6 +143,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
   unfold purePointTransitionWeight orderedLehmannTransitionWeight
     orderedLehmannProbabilityDifference
   field_simp [hhbar, hhbarComplex, hshift]
+  ring
 
 end
 end Transport
