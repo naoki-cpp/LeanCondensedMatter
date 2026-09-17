@@ -52,7 +52,7 @@ def orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
 /-- Canonical diagonal-probability difference of an ordered Lehmann transition `(m,n)`. -/
 def orderedLehmannProbabilityDifference
     (probabilityM probabilityN : ℝ) : ℝ :=
-  probabilityM - probabilityN
+  -(probabilityN - probabilityM)
 
 /-- Canonical physical weight of an ordered Lehmann transition `(m,n)`.
 
@@ -73,7 +73,8 @@ theorem orderedLehmannEnergyGap_eq
 theorem orderedLehmannProbabilityDifference_eq
     (probabilityM probabilityN : ℝ) :
     orderedLehmannProbabilityDifference probabilityM probabilityN =
-      probabilityM - probabilityN := rfl
+      probabilityM - probabilityN := by
+  simp [orderedLehmannProbabilityDifference]
 
 /-- Equal diagonal probabilities force the canonical physical transition weight to vanish. -/
 @[simp]
