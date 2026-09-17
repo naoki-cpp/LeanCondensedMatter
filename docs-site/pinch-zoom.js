@@ -36,6 +36,12 @@ if (viewport) {
   viewport.addEventListener("pointerdown", (event) => {
     if (event.pointerType !== "touch") return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointers.size === 2) {
+      const [first, second] = [...pointers.values()];
+      previousDistance = distance(first, second);
+      zoomAccumulator = 0;
+      suppressClickUntil = performance.now() + 400;
+    }
   }, { capture: true });
 
   viewport.addEventListener("pointermove", (event) => {
