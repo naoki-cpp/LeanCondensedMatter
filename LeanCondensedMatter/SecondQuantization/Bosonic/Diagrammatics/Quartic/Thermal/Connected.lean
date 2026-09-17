@@ -193,8 +193,8 @@ theorem quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude
       ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
         QuarticDiagram.thermalAmplitude ε β g d.1 := by
   let W := quarticThermalDiagramMultiplicativeWeight (N := N) ε β g
-  let Z : Common.GeneratingFunctional (Fin N) ℂ where
-    moment := quarticThermalMoment (N := N) ε β g
+  let Z : Common.GeneratingFunctional (Fin N) ℂ :=
+    ⟨quarticThermalMoment (N := N) ε β g⟩
   change Z.connected S =
     ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
       QuarticDiagram.thermalAmplitude ε β g d.1
