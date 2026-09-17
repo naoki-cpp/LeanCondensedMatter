@@ -51764,6 +51764,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bastinTraceConductivityPrefactor hbar *\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar =\n    2 * Real.pi * QuantumTheory.Transport.Models.MassiveDirac.bastinStredaConductivityNormalization hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.bastinTrace_mul_continuumBornAngularMeasurePrefactor_eq_two_pi_mul_normalization",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.ContinuumMeasureProvenance",
+    "externalAxioms": [],
+    "docString": "For a radial response whose full polar angle has not yet been accounted for, restoring the trace\nprefactor and angular-reduced measure is one angular `2π` times the canonical combined normalization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0 ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace 0 1\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band e v m p 0 =\n      ↑(e ^ 2) *\n          ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m p 0) *\n        Complex.I",
     "standardAxioms": [
@@ -52572,8 +52607,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
     ],
@@ -52581,8 +52616,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
     ],
@@ -52628,6 +52663,93 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder.0.QuantumTheory.Transport.Models.MassiveDirac.boundaryRetardedDenominator_im_eq_width"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength hbar =\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar * v ^ 2 /\n          Real.pi ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_eq_dampingScale",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
+    "externalAxioms": [],
+    "docString": "The external disorder-line / physical-measure prefactor is one power of the Born damping scale:\n`W /(2πℏ)² = γ v² / π²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan_normalized",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan_normalized",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor\n          (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =\n        gamma * v ^ 2 / Real.pi ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
+    "externalAxioms": [],
+    "docString": "Under the weak-disorder parameterization the canonical disorder-measure prefactor is\n`γ v² / π²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_disorderStrengthOfDampingScale",
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_eq_dampingScale"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52909,93 +53031,6 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator_eq_weight_mul_denominatorIntegral"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n          hbar =\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale v disorderStrength hbar * v ^ 2 /\n          Real.pi ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
-    "externalAxioms": [],
-    "docString": "The external disorder-line / physical-measure prefactor is one power of the Born damping scale:\n`W /(2πℏ)² = γ v² / π²`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan_normalized",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_eq_arctan_normalized",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v hbar gamma : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor\n          (QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =\n        gamma * v ^ 2 / Real.pi ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
-    "externalAxioms": [],
-    "docString": "Under the weak-disorder parameterization the physical current-rung prefactor is\n`γ v² / π²`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_disorderStrengthOfDampingScale",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_weakDisorderStrength_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_weakDisorderStrength_eq"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53889,6 +53924,41 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary_disorder_zero_bornRelaxationTime"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (disorderStrength hbar : ℝ),\n  disorderStrength * QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularMeasurePrefactor hbar =\n    2 * Real.pi *\n      QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength hbar",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.disorder_mul_continuumBornAngularMeasurePrefactor_eq_two_pi_mul_disorderMeasurePrefactor",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.ContinuumMeasureProvenance",
+    "externalAxioms": [],
+    "docString": "Attaching the disorder line to the self-energy angular-reduced measure is exactly one full-angle\n`2π` multiplying the canonical disorder-measure stage. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55624,7 +55694,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  have q := ↑(-e) * ↑v;\n  have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n  have solved :=\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary v\n      m probeEnergy disorderStrength hbar pMax;\n  have rung :=\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v\n      m probeEnergy disorderStrength hbar pMax;\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax =\n    -2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0) + -2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)",
+    "statement": "∀ (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  have q := ↑(-e) * ↑v;\n  have pref :=\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength hbar);\n  have solved :=\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary v\n      m probeEnergy disorderStrength hbar pMax;\n  have rung :=\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary v\n      m probeEnergy disorderStrength hbar pMax;\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary\n      e v m probeEnergy disorderStrength hbar pMax =\n    -2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0) + -2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -56799,7 +56869,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_disorder_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale",
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_eq_dampingScale",
       "QuantumTheory.Transport.integral_radialQuadraticLorentzian_eq_arctan"
     ],
     "crossModuleDirectWrapper": false,
@@ -63267,7 +63337,7 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_orderedXYProvenance_rungXSolvedY_disorder_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale",
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_eq_dampingScale",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_im",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re",
       "QuantumTheory.Transport.tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero",
@@ -63915,7 +63985,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have normalization :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.bastinStredaConductivityNormalization hbar);\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)))\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n                ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength\n                    hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have normalization :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.bastinStredaConductivityNormalization hbar);\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)))\n                (normalization * (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n                ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63952,7 +64022,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)) (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2))\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength\n                    hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                (-2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0)) (-2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1)))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              (QuantumTheory.Transport.Models.MassiveDirac.inPlaneCoefficientVector\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2))\n                ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                    (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -157214,8 +157284,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_disorderStrengthOfDampingScale",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength"
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -157257,8 +157327,8 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDampingScale_disorderStrengthOfDampingScale",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength"
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor_weakDisorderStrength",
+      "QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorWidth_weakDisorderStrength"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -157277,7 +157347,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n      output v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n          hbar *\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRARadialIntegral✝ v m probeEnergy\n        disorderStrength hbar pMax",
+    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient\n      output v m probeEnergy disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength hbar *\n        QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n          probeEnergy disorderStrength hbar *\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRARadialIntegral✝ v m probeEnergy\n        disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -157557,7 +157627,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v m\n      p probeEnergy disorderStrength hbar =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength\n              hbar *\n            p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
+    "statement": "∀ (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand✝ output v m\n      p probeEnergy disorderStrength hbar =\n    ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength hbar * p *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRetardedAdvancedPauliXAngularNumerator output v m\n            probeEnergy disorderStrength hbar) *\n      (↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornRADenominatorProduct v m p probeEnergy\n            disorderStrength hbar))⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158699,7 +158769,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          output 0 v m probeEnergy disorderStrength hbar pMax =\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n            output 0 v m probeEnergy disorderStrength hbar pMax *\n          ↑(2 * Real.pi * (disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                p /\n                  ((QuantumTheory.Transport.Models.MassiveDirac.boundaryRACenter✝ v m probeEnergy disorderStrength hbar\n                          pMax -\n                        v ^ 2 * p ^ 2) ^\n                      2 +\n                    QuantumTheory.Transport.Models.MassiveDirac.boundaryRAWidth✝ v m probeEnergy disorderStrength hbar\n                        pMax ^\n                      2))",
+    "statement": "∀ (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary\n          output 0 v m probeEnergy disorderStrength hbar pMax =\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary\n            output 0 v m probeEnergy disorderStrength hbar pMax *\n          ↑(2 * Real.pi *\n                QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength\n                  hbar *\n              ∫ (p : ℝ) in 0..pMax,\n                p /\n                  ((QuantumTheory.Transport.Models.MassiveDirac.boundaryRACenter✝ v m probeEnergy disorderStrength hbar\n                          pMax -\n                        v ^ 2 * p ^ 2) ^\n                      2 +\n                    QuantumTheory.Transport.Models.MassiveDirac.boundaryRAWidth✝ v m probeEnergy disorderStrength hbar\n                        pMax ^\n                      2))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159256,7 +159326,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              -2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                  (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength\n                    hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              -2 * q ^ 2 * pref⁻¹ * (rung 0 * solved 1))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds\n              ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n                  (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159298,7 +159368,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref := ↑(disorderStrength * QuantumTheory.Transport.momentumMeasurePrefactor hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              -2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2)))",
+    "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              have q := ↑(-e) * ↑v;\n              have pref :=\n                ↑(QuantumTheory.Transport.Models.MassiveDirac.continuumBornDisorderMeasurePrefactor disorderStrength\n                    hbar);\n              have solved :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              have rung :=\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary\n                  v m probeEnergy disorderStrength hbar pMax;\n              -2 * q ^ 2 * pref⁻¹ * (rung 1 * solved 0))\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(-8 * Real.pi ^ 2 * e ^ 2 * probeEnergy * m / (probeEnergy ^ 2 + 3 * m ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
