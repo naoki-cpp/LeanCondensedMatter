@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.SelfEnergy
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
@@ -27,10 +28,11 @@ G_B,s = D_s⁻¹ (ε̃_s I + v pₓ σₓ + v pᵧ σᵧ + m̃_s σ_z).
 The sign `m̃_s = m + Σ_z,s` follows from
 `G₀⁻¹ - Σ = (z_s - Σ₀) I - v p·σ - (m + Σ_z) σ_z`.
 
-The same propagator is exposed in the shared polar Pauli representation for downstream radial and
-angular reductions. This is a finite-cutoff Born-Dyson approximation candidate. It is not identified
-with the exact disorder average, and no `η → 0⁺`, weak-disorder, SCBA/Ward, or conductivity-limit
-statement is made here.
+The radial retarded-advanced denominator product is the finite-`η` specialization of the shared
+MassiveDirac radial owner. The propagator itself remains exposed in the shared polar Pauli
+representation for downstream angular and radial reductions. This is a finite-cutoff Born-Dyson
+approximation candidate. It is not identified with the exact disorder average, and no `η → 0⁺`,
+weak-disorder, SCBA/Ward, or conductivity-limit statement is made here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -67,10 +69,15 @@ noncomputable def finiteCutoffContinuumBornDysonDenominator
 /-- Product of the radial retarded and advanced finite-`η` Born-Dyson denominators. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
-  finiteCutoffContinuumBornDysonDenominator
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-    finiteCutoffContinuumBornDysonDenominator
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  massiveDiracRetardedAdvancedRadialDenominatorProduct v p
+    (finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax)
+    (finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax)
 
 /-- Scalar Pauli coefficient of the finite-`η` Born-Dyson propagator candidate. -/
 noncomputable def finiteCutoffContinuumBornDysonScalarCoefficient
