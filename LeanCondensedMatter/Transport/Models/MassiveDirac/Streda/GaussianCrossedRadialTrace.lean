@@ -12,10 +12,10 @@ one-dimensional radial Green and current blocks on the real-space radial axis. T
 kernels is assumed here.
 
 The radial specialization reuses the canonical topology from `GaussianCrossedTrace`; it does not
-redefine the `X` / `Psi` matrix products. This is the trace-level bridge between the radial Fourier
-reductions upstream and the later rotational reduction of the finite-radius real-space integral.
-No real-space angular integration, cutoff removal, broadening/disorder limit, or conductivity
-normalization is introduced here.
+redefine the `X` / `Psi` matrix products. The two radial topologies are additionally exposed as
+finite scalar sums over matrix entries, removing the remaining matrix multiplication and trace
+operations before later radial-kernel evaluation. No real-space angular integration, cutoff removal,
+broadening/disorder limit, or conductivity normalization is introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -40,6 +40,54 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
       finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
         source v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
+
+private theorem trace_four_mul_eq_entry_sum (A B C D : Matrix2) :
+    Matrix.trace (A * B * C * D) =
+      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+        A i j * B j k * C k l * D l i := by
+  simp [Matrix.trace, Matrix.mul_apply, mul_assoc]
+  ring
+
+/-- The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This
+removes the remaining matrix multiplication and trace operations without changing any regulator or
+Fourier normalization. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius =
+      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+        finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *
+          finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius) j k *
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            1 v m probeEnergy broadening disorderStrength hbar pMax radius k l *
+          finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius) l i := by
+  simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
+    gaussianCrossedTraceKernel]
+  exact trace_four_mul_eq_entry_sum _ _ _ _
+
+/-- The radial `Psi` topology is the Hermitian-conjugate pair of one finite scalar entry sum. The
+entry sum is the scalar boundary consumed by later radial-kernel evaluation. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
+      let amplitude :=
+        ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *
+            finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+              .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius) j k *
+            finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+              .retarded v m probeEnergy broadening disorderStrength hbar pMax radius k l *
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) l i
+      amplitude + (starRingEnd ℂ) amplitude := by
+  simp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
+    gaussianCrossedTraceKernel]
+  rw [trace_four_mul_eq_entry_sum]
 
 private theorem neg_polarPoint2D_zero (radius : ℝ) :
     -(polarPoint2D radius 0) = polarPoint2D (-radius) 0 := by

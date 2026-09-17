@@ -34,6 +34,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Analysis/PowerSeries/Cumulant.lean` |
+| Normalized source generating-functional boundary | B/D | `proved` | [linked-cluster theorem](roadmaps/linked-cluster-theorem.md#formal-source-functional-layer) |
 | Compact self-adjoint spectral decomposition | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Spectral trace-class theory and trace identities | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator analysis](roadmaps/operator-algebra.md) |
