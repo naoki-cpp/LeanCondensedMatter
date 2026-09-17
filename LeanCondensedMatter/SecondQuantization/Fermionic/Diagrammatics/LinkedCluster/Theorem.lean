@@ -66,7 +66,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
                     (PowerSeries.normalizeByConstantCoeff
                       (dysonPartitionSeries ε β (quarticInteraction g))))
               Finset.univ := by
-            simpa using
+            simpa [Combinatorics.powerSeriesMomentCoeff] using
               (Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment_via_generatingFunctional
                 (constantCoeff_dysonPartitionSeries_ne_zero ε β
                   (quarticInteraction g))
