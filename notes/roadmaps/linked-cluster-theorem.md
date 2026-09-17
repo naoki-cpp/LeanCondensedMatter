@@ -27,6 +27,12 @@ component factorization
   → formal linked-cluster theorem.
 ```
 
+The formal-log step is owned by
+`Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected`.  The Dyson-specific
+coefficient identification is isolated in
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant`, so the public LCT
+theorem only composes that specialization with the concrete connected-diagram expansion.
+
 ## Analytic log-partition theorem
 
 For finite fermionic mode sets,
@@ -67,9 +73,29 @@ series; it does not mean that the thermal state is a vacuum state. Schematically
 The public API should expose these physical/combinatorial endpoints; proof-only reindexing and
 transport declarations remain private/local unless independently reusable.
 
+## Formal source-functional layer
+
+`Common.Perturbation.GeneratingFunctional` provides a statistics-independent boundary for the
+higher-point program.  `GeneratingFunctional` stores normalized finite-set source moments over a
+commutative coefficient ring, and `powerSeriesGeneratingFunctional` turns factorial-normalized
+coefficients of a normalized formal series into that representation.  Its `connected` operation
+applies the finite-set cumulant transform.  The fermionic
+`dysonVertexGeneratingFunctional` is defined directly from the normalized Dyson partition series,
+so its connected coefficients are a genuine specialization of the generic operation.  The identity
+
+```lean
+GeneratingFunctional.connected_moment
+```
+
+records that connected source coefficients reconstruct the normalized moments.  The quartic Wick
+layer supplies the concrete amplitudes and fermionic signs.  Vacuum normalization of unnormalized
+external-insertion moments, Grassmann variables, and the arbitrary `n`-point diagram theorem remain
+outside this algebraic boundary.
+
 ## Open work
 
-- arbitrary higher-point and source-insertion connected expansions;
+- pre-normalized arbitrary higher-point source moments and their vacuum normalization;
+- arbitrary higher-point and source-insertion connected expansions using the formal source-functional layer;
 - convergence-aware bosonic Dyson and linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
 - infinite-mode and thermodynamic limits under explicit analytic hypotheses.

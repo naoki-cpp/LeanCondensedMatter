@@ -43,40 +43,10 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
         dysonVertexCumulant ε β (quarticInteraction g)
           (Finset.univ : Finset (Fin n)) :=
       by
-        unfold dysonVertexCumulant
-        change (n.factorial : ℂ) *
-            PowerSeries.coeff n
-              (PowerSeries.logOf
-                (PowerSeries.normalizeByConstantCoeff
-                  (dysonPartitionSeries ε β (quarticInteraction g)))) =
-          Finpartition.cumulantFromMoment
-            (dysonVertexMoment ε β (quarticInteraction g))
-            (Finset.univ : Finset (Fin n))
-        calc
-          (n.factorial : ℂ) *
-              PowerSeries.coeff n
-                (PowerSeries.logOf
-                  (PowerSeries.normalizeByConstantCoeff
-                    (dysonPartitionSeries ε β (quarticInteraction g)))) =
-            Finpartition.cumulantFromMoment
-              (fun S : Finset (Fin n) =>
-                (S.card.factorial : ℂ) *
-                  PowerSeries.coeff S.card
-                    (PowerSeries.normalizeByConstantCoeff
-                      (dysonPartitionSeries ε β (quarticInteraction g))))
-              Finset.univ := by
-            simpa using
-              (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment
-                (constantCoeff_dysonPartitionSeries_ne_zero ε β
-                  (quarticInteraction g))
-                (s := (Finset.univ : Finset (Fin n))) (fin_univ_ne_empty hn))
-          _ = Finpartition.cumulantFromMoment
-              (dysonVertexMoment ε β (quarticInteraction g))
-              (Finset.univ : Finset (Fin n)) := by
-            congr 1
-            funext S
-            rw [dysonVertexMoment,
-              coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+        simpa using
+          (factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
+            ε β (quarticInteraction g) (S := (Finset.univ : Finset (Fin n)))
+            (fin_univ_ne_empty hn))
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
       dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude
