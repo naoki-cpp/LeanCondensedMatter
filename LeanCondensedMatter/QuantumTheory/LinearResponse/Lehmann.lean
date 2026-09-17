@@ -44,6 +44,7 @@ abbrev orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
   energyM - energyN
 
 /-- Canonical physical weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` of an ordered Lehmann transition. -/
+@[simp]
 noncomputable abbrev orderedLehmannTransitionWeight
     (hbar probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ) : ℂ :=
   (Complex.I / (hbar : ℂ)) *
