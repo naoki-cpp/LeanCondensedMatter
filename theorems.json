@@ -27483,48 +27483,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t s : ℝ),\n  A.resolventApproximationEvolutionAtScale hA r (t + s) =\n    A.resolventApproximationEvolutionAtScale hA r t * A.resolventApproximationEvolutionAtScale hA r s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventApproximationEvolutionAtScale_add",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The totalized bounded approximants retain the additive one-parameter group law. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventApproximationEvolution_add",
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  CauchySeq fun r => (A.resolventApproximationEvolutionAtScale hA r t) x",
     "standardAxioms": [
       "Classical.choice",
@@ -27756,7 +27714,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution",
     "directWrapperOf": "LinearPMap.boundedUnitaryEvolution_add",
     "dependents": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_add"
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add"
@@ -27764,7 +27722,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_add"
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29292,8 +29250,9 @@
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub"
     ],
     "dependencies": [
-      "LinearPMap.resolventApproximationEvolutionAtScale_add",
+      "LinearPMap.resolventApproximationEvolution_add",
       "LinearPMap.tendsto_resolventApproximationEvolutionAtScale_apply",
+      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit.0.LinearPMap.positiveApproximationScale_pos",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -136901,11 +136860,11 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
-      "LinearPMap.resolventApproximationEvolutionAtScale_add",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
       "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero"
+      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -136913,11 +136872,11 @@
     "compiledConsumers": [
       "LinearPMap.norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain",
       "LinearPMap.resolventApproximationEvolutionAtScale",
-      "LinearPMap.resolventApproximationEvolutionAtScale_add",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_cauchySeq",
       "LinearPMap.resolventApproximationEvolutionAtScale_apply_norm",
       "LinearPMap.resolventApproximationEvolutionAtScale_nonrealResolvent_commute",
-      "LinearPMap.resolventApproximationEvolutionAtScale_zero"
+      "LinearPMap.resolventApproximationEvolutionAtScale_zero",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
