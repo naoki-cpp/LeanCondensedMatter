@@ -7,9 +7,10 @@ set_option linter.style.header false
 # Shared-provenance traced Středa response matrices
 
 A response matrix should not be assembled from unrelated scalar Středa representations. This module
-keeps the Hamiltonian, current family, broadening, energy interval, occupation, and occupation
-derivative common to every matrix component, while retaining the pair-dependent analytic proofs
-needed by `TracedStredaAnalyticData`.
+keeps one `TracedStredaKernelFacts` value for the Hamiltonian, broadening, energy interval,
+occupation, and occupation derivative shared by every matrix component. Pair-specific data is
+restricted to the integration-by-parts boundary condition; the canonical trace-kernel derivative,
+continuity, and integrability facts are inherited from the shared owner.
 
 The resulting matrix is one regularized Středa calculation evaluated on a family of current
 vertices. Its Fermi-sea antisymmetry follows from the exact traced residual-sea kernel antisymmetry,
@@ -28,21 +29,28 @@ variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable [CompleteSpace H] [FiniteDimensional ℂ H]
 
-/-- Pairwise traced Středa analytic data with one shared physical/analytic setup.
+/-- Traced Středa response-matrix data with one shared analytic setup.
 
-All matrix entries use the same Hamiltonian, current family, finite broadening, energy interval,
-occupation, and occupation derivative. Only the proofs needed to validate each ordered current pair
-are stored componentwise. -/
+All matrix entries consume the same Hamiltonian, finite broadening, energy interval, occupation, and
+occupation regularity. Only the finite-interval boundary condition depends on the ordered current
+pair. -/
 structure TracedStredaResponseMatrixAnalyticData
     (hamiltonian : H →L[ℂ] H)
     (current : ι → H →L[ℂ] H)
     (broadening lowerEnergy upperEnergy : ℝ)
     (occupation occupationDerivative : ℝ → ℂ) where
-  /-- Analytic Středa data for each measured/source current pair under the shared setup. -/
-  pairData : ∀ i j,
-    TracedStredaAnalyticData
-      hamiltonian (current i) (current j)
-      broadening lowerEnergy upperEnergy occupation occupationDerivative
+  /-- Pair-independent traced-kernel provenance. -/
+  sharedFacts :
+    TracedStredaKernelFacts hamiltonian broadening lowerEnergy upperEnergy
+      occupation occupationDerivative
+  /-- Pair-dependent vanishing of the integration-by-parts boundary term. -/
+  boundary_vanishes : ∀ i j,
+    occupation upperEnergy *
+        regularizedStredaSurfacePrimitiveTrace
+          hamiltonian (current i) (current j) upperEnergy broadening -
+      occupation lowerEnergy *
+        regularizedStredaSurfacePrimitiveTrace
+          hamiltonian (current i) (current j) lowerEnergy broadening = 0
 
 namespace TracedStredaResponseMatrixAnalyticData
 
@@ -50,6 +58,17 @@ variable {hamiltonian : H →L[ℂ] H}
 variable {current : ι → H →L[ℂ] H}
 variable {broadening lowerEnergy upperEnergy : ℝ}
 variable {occupation occupationDerivative : ℝ → ℂ}
+
+/-- Pair adapter obtained from the common traced-kernel facts and the pair-specific boundary
+condition. No regularity or integrability proof is rebuilt here. -/
+noncomputable def pairData
+    (data : TracedStredaResponseMatrixAnalyticData hamiltonian current broadening
+      lowerEnergy upperEnergy occupation occupationDerivative)
+    (i j : ι) :
+    TracedStredaAnalyticData hamiltonian (current i) (current j) broadening
+      lowerEnergy upperEnergy occupation occupationDerivative where
+  toTracedStredaKernelFacts := data.sharedFacts
+  boundary_vanishes := data.boundary_vanishes i j
 
 /-- Fermi-surface response matrix extracted from the shared traced Středa data. -/
 noncomputable def fermiSurfaceMatrix
@@ -77,6 +96,7 @@ theorem fermiSeaMatrix_swap
     data.fermiSeaMatrix i j = -data.fermiSeaMatrix j i := by
   unfold fermiSeaMatrix regularizedStredaFermiSea
     TracedStredaAnalyticData.toRegularizedStredaIntegralData
+    TracedStredaKernelFacts.toRegularizedStredaIntegralData pairData
   rw [show
       (fun energy => occupation energy *
         regularizedStredaResidualSeaTraceKernel
