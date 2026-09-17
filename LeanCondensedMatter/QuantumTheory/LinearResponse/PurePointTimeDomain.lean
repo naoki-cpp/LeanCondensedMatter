@@ -7,9 +7,13 @@ set_option linter.style.header false
 # Time-domain pure-point Lehmann representation
 
 This module identifies the causal commutator susceptibility of the diagonal pure-point expectation
-with its countable transition series.  The infinite-dimensional theorem keeps every rearrangement
-hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability of the two ordered
-products entering the commutator and of the already defined physical transition weights.
+with its countable transition series. The physical time-domain term is derived from the canonical
+`LehmannTransitionData` owned by `Lehmann.lean`; the forward/backward expansions are only the
+commutator calculation used to reach that canonical term.
+
+The infinite-dimensional theorem keeps every rearrangement hypothesis explicit.
+`PurePointTimeDomainSummable` requires absolute summability of the two ordered products entering the
+commutator and of the already defined physical transition weights.
 
 On the causal half-line the result is
 
@@ -19,7 +23,7 @@ where
 
 `Wₘₙ = (i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ`.
 
-For a finite spectral index all summability assumptions are automatic.  The exchange of this
+For a finite spectral index all summability assumptions are automatic. The exchange of this
 transition series with the fixed-rate Bochner time integral is left to the next module.
 -/
 
@@ -99,12 +103,12 @@ noncomputable def purePointBackwardTimeTerm
   purePointBackwardWeight system data A B mn *
     purePointTransitionPhase system data mn.2 mn.1 τ
 
-/-- One physical time-domain Lehmann transition. -/
+/-- One physical time-domain Lehmann transition, derived from the canonical ordered transition
+data. -/
 noncomputable def purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) : ℂ :=
-  purePointTransitionWeight system data A B mn *
-    purePointTransitionPhase system data mn.1 mn.2 τ
+  (purePointTransitionData system data A B mn).timeTerm system.hbar τ
 
 /-- The physical transition term written with the explicit energy-difference exponential. -/
 theorem purePointTimeDomainTerm_eq_exp_energyDifference
@@ -115,8 +119,7 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
         Complex.exp
           (Complex.I * ((((data.energy mn.1 - data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ)) := by
-  rw [purePointTimeDomainTerm,
-    purePointTransitionPhase_eq_exp_energyDifference]
+  rfl
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
@@ -144,7 +147,7 @@ theorem summable_purePointBackwardTimeTerm
   intro mn
   simp [purePointBackwardTimeTerm]
 
-/-- Absolute summability of the physical weights is preserved by the unit transition phase. -/
+/-- Absolute summability of the physical weights is preserved by the canonical unit time phase. -/
 theorem summable_purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ)
@@ -152,7 +155,8 @@ theorem summable_purePointTimeDomainTerm
     Summable (purePointTimeDomainTerm system data A B τ) := by
   apply hsum.2.2.of_norm_bounded
   intro mn
-  simp [purePointTimeDomainTerm]
+  simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
+    purePointTransitionWeight]
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
@@ -242,9 +246,12 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   rw [purePointTimeDomainSeries]
   apply tsum_congr
   intro mn
-  simp [purePointTimeDomainTerm, purePointTransitionWeight,
+  simp [purePointTimeDomainTerm_eq_exp_energyDifference,
+    purePointTransitionWeight, purePointTransitionData,
+    orderedLehmannTransitionData, LehmannTransitionData.weight,
     purePointForwardTimeTerm, purePointForwardWeight,
-    purePointBackwardTimeTerm, purePointBackwardWeight]
+    purePointBackwardTimeTerm, purePointBackwardWeight,
+    purePointTransitionPhase_eq_exp_energyDifference]
   ring
 
 /-- The physical commutator susceptibility equals the countable time-domain Lehmann series. -/
