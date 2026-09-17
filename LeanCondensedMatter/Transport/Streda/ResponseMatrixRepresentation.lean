@@ -96,7 +96,7 @@ theorem fermiSeaMatrix_swap
     data.fermiSeaMatrix i j = -data.fermiSeaMatrix j i := by
   unfold fermiSeaMatrix regularizedStredaFermiSea
     TracedStredaAnalyticData.toRegularizedStredaIntegralData
-    TracedStredaKernelFacts.toRegularizedStredaIntegralData pairData
+    TracedStredaKernelFacts.toRegularizedStredaIntegralData
   rw [show
       (fun energy => occupation energy *
         regularizedStredaResidualSeaTraceKernel
