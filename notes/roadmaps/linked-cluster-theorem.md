@@ -82,6 +82,11 @@ from full source connectedness for higher-point external insertions.
 boundary. `GeneratingFunctional` stores normalized finite-set source moments over a commutative
 coefficient ring, `connected` applies the finite-set cumulant transform, and
 `GeneratingFunctional.connected_moment` reconstructs the normalized moments.
+`GeneratingFunctional.connected_eq_connectedContribution` is the statistics-independent
+linked-cluster seam: when source moments agree with the object moments of a multiplicative connected
+decomposition, connected source coefficients equal its connected-object contribution. Both the
+fermionic formal linked-cluster proof and the bosonic coefficientwise connected theorem use this
+bridge. Bose/Fermi statistics enter only through the concrete pairing weights and amplitudes.
 `powerSeriesGeneratingFunctional` packages factorial-normalized coefficients of a normalized formal
 power series into this representation.
 
