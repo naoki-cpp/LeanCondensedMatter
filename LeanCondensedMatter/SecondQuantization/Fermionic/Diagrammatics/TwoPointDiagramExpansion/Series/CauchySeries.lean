@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberCauchySum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series.DysonSeries
@@ -10,8 +11,8 @@ set_option linter.style.header false
 
 The canonical external-slot fiber decomposition first identifies each order-`n` two-point Dyson
 coefficient with the Cauchy convolution of externally connected coefficients and normalized vacuum
-coefficients.  The same module then lifts that coefficientwise identity to formal power series and
-cancels the normalized vacuum series.
+coefficients. That physical factorization is then lifted to formal power series; generic
+power-series normalization cancels the vacuum factor.
 -/
 
 namespace SecondQuantization
@@ -67,6 +68,23 @@ theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_no
     simpa [Nat.lt_succ_iff] using hm
   exact slice (Nat.add_sub_of_le hmn)
 
+/-- The full two-point Dyson series factors into its externally connected series and the normalized
+zero-external-leg Dyson partition series. -/
+theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    twoPointDysonSeries ε β g i j τ τ' =
+      connectedTwoPointDysonSeries ε β g i j τ τ' *
+        PowerSeries.normalizeByConstantCoeff
+          (dysonPartitionSeries ε β (quarticInteraction g)) := by
+  ext n
+  rw [PowerSeries.coeff_mul]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk,
+    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+  exact twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
+    ε β hβ g i j τ τ' n
+
 /-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
 built from free Gibbs expectations and a quartic interaction, with the repository's canonical
 time-order/equal-time convention, vacuum normalization leaves exactly the sum of externally
@@ -76,31 +94,13 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     vacuumNormalizedTwoPointDysonSeries ε β g i j τ τ' =
       connectedTwoPointDysonSeries ε β g i j τ τ' := by
-  let Z := PowerSeries.normalizeByConstantCoeff
-    (dysonPartitionSeries ε β (quarticInteraction g))
-  have hZconst : PowerSeries.constantCoeff Z = 1 := by
-    simpa [Z] using
-      PowerSeries.constantCoeff_normalizeByConstantCoeff
-        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
-  have hZ : Z ≠ 0 := by
-    intro hz
-    have hcoeff := congrArg PowerSeries.constantCoeff hz
-    rw [hZconst] at hcoeff
-    simpa using hcoeff
-  apply mul_right_cancel₀ hZ
-  dsimp [Z] at hZconst hZ ⊢
-  rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
-    PowerSeries.inv_mul_cancel _ (by
-      rw [hZconst]
-      exact one_ne_zero),
-    mul_one]
-  ext n
-  rw [PowerSeries.coeff_mul]
-  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk,
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  exact twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
-    ε β hβ g i j τ τ' n
+  rw [vacuumNormalizedTwoPointDysonSeries]
+  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]
+    exact one_ne_zero
+  · exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
+      ε β hβ g i j τ τ'
 
 end Fermionic
 end SecondQuantization
