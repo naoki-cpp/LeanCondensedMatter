@@ -169,7 +169,7 @@ theorem purePointTransitionPhase_eq_exp_energyDifference
     purePointTransitionPhase system data m n t =
       Complex.exp
         (Complex.I * ((((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
-          system.hbar : ℝ) : ℂ)) := by
+          system.hbar : ℝ) : ℂ))) := by
   rw [purePointTransitionPhase, purePointSchrodingerPhase,
     purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ]
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
