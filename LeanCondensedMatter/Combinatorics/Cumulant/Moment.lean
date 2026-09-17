@@ -23,4 +23,16 @@ noncomputable def partitionProduct (f : Finset α → R) {S : Finset α} (π : F
 noncomputable def momentFromCumulant (κ : Finset α → R) (S : Finset α) : R :=
   ∑ π : Finpartition S, partitionProduct κ π
 
+/-- The moment transform is normalized to `1` on the empty set, independently of the input
+cumulant value at the empty set. -/
+@[simp]
+theorem momentFromCumulant_empty (κ : Finset α → R) :
+    momentFromCumulant κ ∅ = 1 := by
+  classical
+  letI : Unique (Finpartition (∅ : Finset α)) :=
+    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
+  rw [momentFromCumulant, Fintype.sum_unique]
+  have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+  simp [partitionProduct, hparts]
+
 end Finpartition
