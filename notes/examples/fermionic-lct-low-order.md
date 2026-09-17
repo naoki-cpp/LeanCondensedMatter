@@ -28,7 +28,7 @@ The generic power-series formulas live in
 `Analysis/PowerSeries/LowOrderLog.lean`. The fermionic formal corollaries live in
 `SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean`, and the analytic
 logarithmic-derivative corollaries live in
-`SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterLowOrder.lean`.
+`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/AnalyticLowOrder.lean`.
 
 The analytic statements use the same right-hand sides because
 
