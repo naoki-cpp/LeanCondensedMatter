@@ -48,7 +48,7 @@ theorem orderedLehmannEnergyGap_eq (energyM energyN : ℝ) :
     orderedLehmannEnergyGap energyM energyN = energyM - energyN := rfl
 
 /-- Canonical physical weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` of an ordered Lehmann transition. -/
-noncomputable def orderedLehmannTransitionWeight
+noncomputable abbrev orderedLehmannTransitionWeight
     (hbar probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ) : ℂ :=
   (Complex.I / (hbar : ℂ)) *
     ((probabilityM - probabilityN : ℝ) : ℂ) * matrixAMN * matrixBNM
