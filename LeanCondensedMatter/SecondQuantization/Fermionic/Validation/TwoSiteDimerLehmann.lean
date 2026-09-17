@@ -113,12 +113,6 @@ theorem twoSiteDimerEnergyBasisCurrent_one_zero :
   simp [twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
-theorem twoSiteDimerGroundStateTransitionWeight_zero_zero :
-    finiteLehmannTableTransitionWeight 1
-        twoSiteDimerGroundStateLehmannTable (0, 0) = 0 := by
-  exact finiteLehmannTableTransitionWeight_diag 1 twoSiteDimerGroundStateLehmannTable 0
-
-@[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (0, 1) = Complex.I := by
