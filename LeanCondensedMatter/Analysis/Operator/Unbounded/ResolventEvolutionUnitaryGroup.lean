@@ -120,10 +120,10 @@ theorem resolventEvolutionStrongLimit_add_time_apply
     tendsto_resolventApproximationEvolutionAtScale_comp_apply A hA t s x
   exact tendsto_nhds_unique hleft <|
     hright.congr' (Eventually.of_forall fun r => by
-      have hgroup := congrArg (fun T : H →L[ℂ] H => T x) (by
-        unfold resolventApproximationEvolutionAtScale
-        exact resolventApproximationEvolution_add A hA _ _ t s)
-      simpa using hgroup.symm)
+      simpa [resolventApproximationEvolutionAtScale] using
+        congrArg (fun T : H →L[ℂ] H => T x)
+          (resolventApproximationEvolution_add A hA
+            (positiveApproximationScale r) (positiveApproximationScale_pos r) t s).symm)
 
 /-- The bundled strong-limit operators form an additive one-parameter group. -/
 theorem resolventEvolutionStrongLimitOperator_add
