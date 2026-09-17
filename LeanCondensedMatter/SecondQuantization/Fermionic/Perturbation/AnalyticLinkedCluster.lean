@@ -119,7 +119,7 @@ private theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_s
     rw [normalizedAnalyticDysonPartitionFunction_zero ε hβ V]
     exact hasFPowerSeriesAt_clog_one
   have hGanalytic : AnalyticAt ℂ G 0 := by
-    simpa [G, analyticNormalizedLogPartitionFunction] using
+    simpa [G, analyticNormalizedLogPartitionFunction, Function.comp_def] using
       (hlog.comp hFseries).analyticAt
   have hFdiff : ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ F z := by
     simpa [F] using hFseries.eventually_differentiableAt
