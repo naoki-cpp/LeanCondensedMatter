@@ -309,10 +309,11 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
     finiteLehmannLimitSum_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar
-      (fun mn : ι × ι => data.energy mn.1 - data.energy mn.2)
+      (fun mn : ι × ι =>
+        orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2))
       (purePointTransitionWeight system data A B)
       (ne_of_gt system.hbar_pos)
-      (fun mn _ => hregular mn)
+      (fun mn _ => by simpa using hregular mn)
 
 end
 end LinearResponse

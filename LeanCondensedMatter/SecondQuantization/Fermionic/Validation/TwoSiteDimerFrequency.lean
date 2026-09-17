@@ -90,7 +90,7 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
     twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
-    twoSiteDimerGroundStateLehmannTable_energy_one,
+    twoSiteDimerGroundStateLehmannTable_energy_one, orderedLehmannEnergyGap,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero,
     finiteLehmannTableTransitionWeight_diag, sub_self]

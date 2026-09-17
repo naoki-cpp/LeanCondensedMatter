@@ -47,7 +47,7 @@ theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
     purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =
       purePointTransitionWeight system data A B mn *
         lehmannMode system.hbar omega eta
-          (data.energy mn.1 - data.energy mn.2) τ := by
+          (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ := by
   rw [purePointAdiabaticTransitionIntegrand,
     purePointTimeDomainTerm_eq_exp_energyDifference,
     adiabaticFrequencyPhase, lehmannMode, lehmannModeExponent]
@@ -87,11 +87,12 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
         (Ioi 0) volume := by
     intro mn
     have hmode := integrableOn_lehmannMode_Ioi_zero
-      system.hbar omega eta (data.energy mn.1 - data.energy mn.2) hη
+      system.hbar omega eta
+        (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) hη
     have hweighted : IntegrableOn (fun τ : ℝ =>
         purePointTransitionWeight system data A B mn *
           lehmannMode system.hbar omega eta
-            (data.energy mn.1 - data.energy mn.2) τ) (Ioi 0) volume :=
+            (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ) (Ioi 0) volume :=
       hmode.const_mul _
     apply hweighted.congr_fun
     · intro τ _
@@ -138,7 +139,8 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
       system data A B omega eta mn τ]
   rw [integral_const_mul]
   rw [integral_lehmannMode_Ioi_zero_eq_resolvent
-    system.hbar omega eta (data.energy mn.1 - data.energy mn.2) hη]
+    system.hbar omega eta
+      (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) hη]
   rfl
 
 /-- The fixed-positive-rate physical susceptibility equals the countable pure-point Lehmann

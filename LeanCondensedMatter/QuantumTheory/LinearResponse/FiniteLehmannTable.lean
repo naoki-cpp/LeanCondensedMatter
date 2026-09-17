@@ -12,9 +12,8 @@ small finite benchmark models.  A finite response calculation only needs the sca
 Eₙ, pₙ, Aₘₙ = ⟨m|A|n⟩, Bₘₙ = ⟨m|B|n⟩.
 ```
 
-`FiniteLehmannTable` stores exactly these quantities.  Its evaluator is the ordinary finite double
-sum built from the repository's existing `lehmannTerm`, so Fourier/sign/broadening conventions are
-not duplicated here.
+`FiniteLehmannTable` stores exactly these quantities.  Its evaluator uses the canonical ordered
+energy gap and transition weight from `Lehmann.lean`, then the existing `lehmannTerm`.
 
 The bridge `finiteLehmannTableOfPurePoint` constructs a table from the theorem-level
 `PurePointLehmannData` API and bounded observables.  The main equality proves that evaluating the
@@ -45,9 +44,9 @@ structure FiniteLehmannTable (ι : Type*) where
 /-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table. -/
 def finiteLehmannTableTransitionWeight
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
-  (Complex.I / (hbar : ℂ)) *
-    ((table.probability mn.1 - table.probability mn.2 : ℝ) : ℂ) *
-    table.matrixA mn.1 mn.2 * table.matrixB mn.2 mn.1
+  orderedLehmannTransitionWeight hbar
+    (table.probability mn.1) (table.probability mn.2)
+    (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
 
 /-- Diagonal transitions vanish already at the scalar-table level. -/
 @[simp]
@@ -62,7 +61,7 @@ noncomputable def finiteLehmannTableResponse
     (hbar omega eta : ℝ) (table : FiniteLehmannTable ι) : ℂ :=
   ∑ mn : ι × ι,
     lehmannTerm hbar omega eta
-      (table.energy mn.1 - table.energy mn.2)
+      (orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2))
       (finiteLehmannTableTransitionWeight hbar table mn)
 
 variable {H ι : Type*}

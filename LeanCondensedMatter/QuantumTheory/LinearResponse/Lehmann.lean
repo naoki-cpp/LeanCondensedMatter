@@ -20,6 +20,9 @@ For every `η > 0`, its causal half-line integral is
 
 `1 / (η - i (ω + ΔE / ℏ))`.
 
+`orderedLehmannEnergyGap` and `orderedLehmannTransitionWeight` own the ordered-transition
+orientation shared by the pure-point and finite-table paths.
+
 The main API is not finite-dimensional. `PurePointLehmannData` packages a Hilbert basis of energy
 eigenvectors and normalized diagonal probabilities, while `PurePointLehmannSummable` records the
 absolute summability needed for the countable double transition series. In finite dimension that
@@ -35,6 +38,18 @@ namespace LinearResponse
 open Set MeasureTheory
 
 noncomputable section
+
+/-- Canonical energy gap of an ordered Lehmann transition `(m,n)`. -/
+@[simp]
+abbrev orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
+  energyM - energyN
+
+/-- Canonical physical weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` of an ordered Lehmann transition. -/
+@[simp]
+noncomputable abbrev orderedLehmannTransitionWeight
+    (hbar probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ) : ℂ :=
+  (Complex.I / (hbar : ℂ)) *
+    ((probabilityM - probabilityN : ℝ) : ℂ) * matrixAMN * matrixBNM
 
 /-- Complex exponent of one adiabatically damped Lehmann transition mode. -/
 noncomputable def lehmannModeExponent
@@ -171,10 +186,10 @@ variable {ι : Type*} (system : BoundedFreeSystem H)
 noncomputable def purePointTransitionWeight
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) : ℂ :=
-  (Complex.I / (system.hbar : ℂ)) *
-    ((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ) *
-    inner ℂ (data.basis mn.1) (A (data.basis mn.2)) *
-    inner ℂ (data.basis mn.2) (B (data.basis mn.1))
+  orderedLehmannTransitionWeight system.hbar
+    (data.probability mn.1) (data.probability mn.2)
+    (inner ℂ (data.basis mn.1) (A (data.basis mn.2)))
+    (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
 
 /-- Absolute-summability condition for the countable pure-point transition weights. -/
 def PurePointLehmannSummable
@@ -188,7 +203,7 @@ noncomputable def purePointLehmannSeries
     (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
   ∑' mn : ι × ι,
     lehmannTerm system.hbar omega eta
-      (data.energy mn.1 - data.energy mn.2)
+      (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2))
       (purePointTransitionWeight system data A B mn)
 
 /-- Absolute transition-weight summability implies summability of the fixed-rate pure-point
@@ -200,10 +215,11 @@ theorem summable_purePointLehmannSeries_of_pos
     Summable fun mn : ι × ι =>
       lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn) :=
-  summable_lehmannTerm_of_pos system.hbar omega eta
-    (fun mn : ι × ι => data.energy mn.1 - data.energy mn.2)
-    (purePointTransitionWeight system data A B) hsum heta
+        (purePointTransitionWeight system data A B mn) := by
+  simpa using
+    summable_lehmannTerm_of_pos system.hbar omega eta
+      (fun mn : ι × ι => orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2))
+      (purePointTransitionWeight system data A B) hsum heta
 
 /-- In finite dimension, the absolute transition-weight condition is automatic. -/
 theorem purePointLehmannSummable_of_finite
