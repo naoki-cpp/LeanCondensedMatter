@@ -16,6 +16,8 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
+open Filter
+
 /-- The zero-temperature Born-RTA longitudinal conductivity at a scaling-domain point. -/
 def AheScalingParameters.bornRtaLongitudinalConductivity
     (params : AheScalingParameters) : ℝ :=
@@ -50,7 +52,8 @@ theorem AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivit
     (params : AheScalingParameters) :
     params.disorderStrength * params.bornRtaLongitudinalConductivity =
       params.bornRtaLongitudinalCoefficient := by
-  simpa [AheScalingParameters.bornRtaLongitudinalCoefficient] using
+  simpa [AheScalingParameters.bornRtaLongitudinalConductivity,
+    AheScalingParameters.bornRtaLongitudinalCoefficient] using
     disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq
       params.e params.hbar params.v params.m params.fermiEnergy params.disorderStrength
       params.velocity_ne_zero params.hbar_pos params.disorder_pos params.metallic
