@@ -104,5 +104,43 @@ noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode �
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
   (dysonVertexGeneratingFunctional ε β V).connected S
 
+/-- The Dyson formal-log coefficient is the connected coefficient of the Dyson source functional. -/
+theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
+    {α : Type*} [DecidableEq α]
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    {S : Finset α} (hS : S ≠ ∅) :
+    (S.card.factorial : ℂ) *
+        PowerSeries.coeff S.card
+          (dysonFormalLogPartitionFunction ε β V) =
+      dysonVertexCumulant ε β V S := by
+  unfold dysonVertexCumulant
+  change (S.card.factorial : ℂ) *
+      PowerSeries.coeff S.card
+        (PowerSeries.logOf
+          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))) =
+    Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
+  calc
+    (S.card.factorial : ℂ) *
+        PowerSeries.coeff S.card
+          (PowerSeries.logOf
+            (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))) =
+        (Common.powerSeriesGeneratingFunctional
+          (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
+          (PowerSeries.constantCoeff_normalizeByConstantCoeff
+            (constantCoeff_dysonPartitionSeries_ne_zero ε β V))).connected S := by
+      exact Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β V) hS
+    _ = Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S := by
+      change Finpartition.cumulantFromMoment
+          (fun T : Finset α =>
+            Combinatorics.powerSeriesMomentCoeff
+              (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) T.card) S =
+        Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
+      congr 1
+      funext T
+      rw [Combinatorics.powerSeriesMomentCoeff, dysonVertexMoment,
+        coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+
 end Fermionic
 end SecondQuantization

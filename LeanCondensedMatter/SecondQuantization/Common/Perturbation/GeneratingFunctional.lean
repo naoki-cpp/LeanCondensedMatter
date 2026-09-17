@@ -90,20 +90,6 @@ theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
     (PowerSeries.constantCoeff_normalizeByConstantCoeff hZ) hS
 
 /-- The generating-functional bridge with its cumulant family exposed explicitly. -/
-theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment_via_generatingFunctional
-    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0)
-    {Source : Type*} [DecidableEq Source] {S : Finset Source} (hS : S ≠ ∅) :
-    (S.card.factorial : ℂ) *
-        PowerSeries.coeff S.card
-          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff Z)) =
-      Finpartition.cumulantFromMoment
-        (fun T : Finset Source =>
-          Combinatorics.powerSeriesMomentCoeff
-            (PowerSeries.normalizeByConstantCoeff Z) T.card) S := by
-  simpa [GeneratingFunctional.connected, powerSeriesGeneratingFunctional] using
-    (factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
-      (Z := Z) hZ hS)
-
 /--
 A finite source generating functional before vacuum normalisation.
 
