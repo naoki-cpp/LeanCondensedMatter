@@ -5,9 +5,14 @@ set_option linter.style.header false
 /-!
 # Nonresonant limits of finite Lehmann sums
 
-This module gives concrete existence theorems for the limit-order API.  The inner limits are required
-only locally near the point used by the outer limit, because a finite spectrum can have resonant
-frequencies away from `omega = 0`.
+This module gives concrete existence theorems for the limit-order API. The scalar lemmas are stated
+for arbitrary finite families of energy gaps and weights. The finite pure-point specialization
+obtains both quantities from the canonical `LehmannTransitionData` construction in `Lehmann.lean`,
+so its resonance condition and its fixed-rate terms use the same ordered transition data as the
+time- and frequency-domain paths.
+
+The inner limits are required only locally near the point used by the outer limit, because a finite
+spectrum can have resonant frequencies away from `omega = 0`.
 
 If every zero-energy-gap transition has zero spectral weight, then both `omega → 0` followed by
 `eta → 0⁺` and `eta → 0⁺` followed by `omega → 0` exist locally and converge to the same
@@ -271,16 +276,17 @@ variable {ι : Type*} [Fintype ι]
 variable (system : BoundedFreeSystem H)
 
 /-- Static nonresonance for a finite pure-point response. Degenerate transitions are allowed when
-their physical transition weight vanishes. -/
+their canonical physical transition weight vanishes. -/
 def PurePointStaticNonresonant
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) : Prop :=
   ∀ mn : ι × ι,
-    purePointTransitionWeight system data A B mn = 0 ∨
-      data.energy mn.1 - data.energy mn.2 ≠ 0
+    (purePointTransitionData system data A B mn).weight system.hbar = 0 ∨
+      (purePointTransitionData system data A B mn).energyGap ≠ 0
 
 /-- A finite static-nonresonant pure-point Lehmann formula has both local iterated limits, with the
-same zero-rate static double sum. -/
+same zero-rate static double sum. The generic finite-limit theorem is specialized using the gap and
+weight projections of the canonical ordered transition. -/
 theorem finite_purePointLehmann_has_both_local_iterated_limits
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H)
@@ -305,12 +311,15 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
             (purePointTransitionWeight system data A B mn)) := by
-  simpa [finiteLehmannLimitSum, finiteUnswitchedLehmannSum] using
+  simpa [finiteLehmannLimitSum, finiteUnswitchedLehmannSum,
+    purePointTransitionWeight] using
     finiteLehmannLimitSum_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar
-      (fun mn : ι × ι => data.energy mn.1 - data.energy mn.2)
-      (purePointTransitionWeight system data A B)
+      (fun mn : ι × ι =>
+        (purePointTransitionData system data A B mn).energyGap)
+      (fun mn : ι × ι =>
+        (purePointTransitionData system data A B mn).weight system.hbar)
       (ne_of_gt system.hbar_pos)
       (fun mn _ => hregular mn)
 
