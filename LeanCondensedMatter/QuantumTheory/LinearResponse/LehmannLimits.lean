@@ -5,13 +5,14 @@ set_option linter.style.header false
 /-!
 # Nonresonant limits of finite Lehmann sums
 
-This module gives concrete existence theorems for the limit-order API.  The inner limits are required
+This module gives concrete existence theorems for the limit-order API. The inner limits are required
 only locally near the point used by the outer limit, because a finite spectrum can have resonant
 frequencies away from `omega = 0`.
 
 If every zero-energy-gap transition has zero spectral weight, then both `omega → 0` followed by
 `eta → 0⁺` and `eta → 0⁺` followed by `omega → 0` exist locally and converge to the same
-unswitched static finite Lehmann sum.
+unswitched static finite Lehmann sum. The pure-point specialization feeds the generic finite-limit
+machinery with the canonical ordered energy gap and physical transition weight from `Lehmann.lean`.
 -/
 
 namespace QuantumTheory
@@ -309,10 +310,10 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
     finiteLehmannLimitSum_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar
-      (fun mn : ι × ι => data.energy mn.1 - data.energy mn.2)
+      (purePointTransitionEnergyGap system data)
       (purePointTransitionWeight system data A B)
       (ne_of_gt system.hbar_pos)
-      (fun mn _ => hregular mn)
+      (fun mn _ => by simpa using hregular mn)
 
 end
 end LinearResponse
