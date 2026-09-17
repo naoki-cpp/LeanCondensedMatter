@@ -43,6 +43,9 @@ theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagra
     dysonVertexCumulant ε β (quarticInteraction g) S =
         Finpartition.cumulantFromMoment W.objectMoment S := by
       unfold dysonVertexCumulant
+      change Finpartition.cumulantFromMoment
+          (dysonVertexMoment ε β (quarticInteraction g)) S =
+        Finpartition.cumulantFromMoment W.objectMoment S
       congr 1
       funext T
       change dysonVertexMoment ε β (quarticInteraction g) T =
