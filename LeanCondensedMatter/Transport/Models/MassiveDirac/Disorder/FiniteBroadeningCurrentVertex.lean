@@ -149,21 +149,6 @@ def finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
           .advanced v m probeEnergy broadening disorderStrength hbar pMax))
   inPlaneRotationMatrix rung i j
 
-private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul
-    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
-    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-        v m p probeEnergy broadening disorderStrength hbar pMax =
-      finiteCutoffContinuumBornDysonDenominator
-          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-        finiteCutoffContinuumBornDysonDenominator
-          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-    massiveDiracRetardedAdvancedRadialDenominatorProduct
-  congr 1 <;>
-    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator <;>
-    push_cast <;>
-    ring
-
 /-- The common finite-`η` RA denominator product is nonzero whenever the Born-Dyson invertibility
 hypotheses hold. -/
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero
