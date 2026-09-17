@@ -91,7 +91,7 @@ private theorem currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
         1 0 v m probeEnergy disorderStrength hbar pMax := by
   let common : ℝ → ℂ := fun p =>
-    (((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)) * (p : ℂ) *
+    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
       (((2 * Real.pi : ℝ) : ℂ)) *
       (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
         v m p probeEnergy disorderStrength hbar pMax)⁻¹

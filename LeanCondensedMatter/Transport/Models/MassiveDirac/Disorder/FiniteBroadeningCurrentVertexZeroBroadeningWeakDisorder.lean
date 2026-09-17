@@ -118,7 +118,7 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
         output 0 v m probeEnergy disorderStrength hbar pMax =
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
           output 0 v m probeEnergy disorderStrength hbar pMax *
-        (((2 * Real.pi * (disorderStrength * momentumMeasurePrefactor hbar)) *
+        (((2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar) *
           (∫ p in (0 : ℝ)..pMax,
             p / ((boundaryRACenter v m probeEnergy disorderStrength hbar pMax - v ^ 2 * p ^ 2) ^ 2 +
               boundaryRAWidth v m probeEnergy disorderStrength hbar pMax ^ 2)) : ℝ) : ℂ) := by
@@ -126,7 +126,7 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
   let B := boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
   let N := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
     output 0 v m probeEnergy disorderStrength hbar pMax
-  let scale := 2 * Real.pi * (disorderStrength * momentumMeasurePrefactor hbar)
+  let scale := 2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
   have hintegrand (p : ℝ) :
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
           output 0 v m p probeEnergy disorderStrength hbar pMax =
@@ -176,7 +176,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
   let width := fun disorderStrength : ℝ =>
     boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
   let scale := fun disorderStrength : ℝ =>
-    2 * Real.pi * (disorderStrength * momentumMeasurePrefactor hbar)
+    2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
   have hl : l ≤ nhds 0 := by
     dsimp [l, nhdsWithin]
     exact inf_le_left
@@ -246,13 +246,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       exact div_ne_zero (ne_of_gt hdisorder)
         (mul_ne_zero (mul_ne_zero (by norm_num) (pow_ne_zero 2 hhbar))
           (pow_ne_zero 2 hvelocity))
-    have hpref := continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
+    have hpref := continuumBornDisorderMeasurePrefactor_eq_dampingScale
       v disorderStrength hbar hvelocity hhbar
     dsimp [scale, width, Q]
     unfold boundaryRAWidth
-    rw [show disorderStrength * momentumMeasurePrefactor hbar =
-        continuumBornDampingScale v disorderStrength hbar * v ^ 2 / Real.pi ^ 2 by
-      simpa [continuumBornRetardedAdvancedCurrentRungPrefactor] using hpref]
+    rw [hpref]
     field_simp [hvelocity, hgammaNe, ne_of_gt hQPos, Real.pi_ne_zero]
   have hkernel := tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
     v pMax hvelocity hcenter0 hgap hcenterMax (by linarith) hwidth hscale

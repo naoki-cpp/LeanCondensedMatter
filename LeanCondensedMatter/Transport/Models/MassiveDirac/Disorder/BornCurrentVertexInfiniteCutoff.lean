@@ -81,7 +81,7 @@ private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
     (output : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ) :
     finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient output
         v m probeEnergy disorderStrength hbar pMax =
-      (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+      (continuumBornDisorderMeasurePrefactor disorderStrength hbar *
         continuumBornRetardedAdvancedPauliXAngularNumerator output
           v m probeEnergy disorderStrength hbar) *
         finiteCutoffContinuumBornRARadialIntegral
@@ -91,13 +91,13 @@ private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
     finiteCutoffContinuumBornRARadialIntegral
   rw [show
       (fun p : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+        continuumBornDisorderMeasurePrefactor disorderStrength hbar * p *
           continuumBornRetardedAdvancedPauliXAngularNumerator output
             v m probeEnergy disorderStrength hbar *
           (continuumBornRADenominatorProduct
             v m p probeEnergy disorderStrength hbar)⁻¹) =
       (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+        (continuumBornDisorderMeasurePrefactor disorderStrength hbar *
           continuumBornRetardedAdvancedPauliXAngularNumerator output
             v m probeEnergy disorderStrength hbar) *
           (p / continuumBornRADenominatorProduct
@@ -110,7 +110,7 @@ private theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
 /-- Infinite-cutoff full one-rung coefficient in the selected in-plane output direction. -/
 def continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV
     (output : Fin 2) (v m probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+  (continuumBornDisorderMeasurePrefactor disorderStrength hbar *
     continuumBornRetardedAdvancedPauliXAngularNumerator output
       v m probeEnergy disorderStrength hbar) *
     continuumBornRARadialIntegralUVLimit v m probeEnergy disorderStrength hbar
@@ -146,14 +146,14 @@ theorem continuumBornRADenominatorWidth_weakDisorderStrength
   rw [continuumBornDampingScale_disorderStrengthOfDampingScale
     v hbar gamma hvelocity hhbar]
 
-/-- Under the weak-disorder parameterization the physical current-rung prefactor is
+/-- Under the weak-disorder parameterization the canonical disorder-measure prefactor is
 `γ v² / π²`. -/
-theorem continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
+theorem continuumBornDisorderMeasurePrefactor_weakDisorderStrength
     (v hbar gamma : ℝ) (hvelocity : v ≠ 0) (hhbar : hbar ≠ 0) :
-    continuumBornRetardedAdvancedCurrentRungPrefactor
+    continuumBornDisorderMeasurePrefactor
         (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar =
       gamma * v ^ 2 / Real.pi ^ 2 := by
-  rw [continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
+  rw [continuumBornDisorderMeasurePrefactor_eq_dampingScale
     v (continuumBornDisorderStrengthOfDampingScale v hbar gamma) hbar hvelocity hhbar]
   rw [continuumBornDampingScale_disorderStrengthOfDampingScale
     v hbar gamma hvelocity hhbar]
@@ -182,7 +182,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_x_we
     continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   simp only [Matrix.cons_val_zero]
-  rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
+  rw [continuumBornDisorderMeasurePrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
     continuumBornDampingScale_disorderStrengthOfDampingScale
       v hbar gamma hvelocity hhbar,
@@ -207,7 +207,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungCoefficientUV_y_we
     continuumBornRetardedAdvancedPauliXAngularNumerator
     continuumBornRARadialIntegralUVLimit continuumBornRAWeakDisorderArctanMass
   simp only [Matrix.cons_val_one, Matrix.cons_val_zero]
-  rw [continuumBornRetardedAdvancedCurrentRungPrefactor_weakDisorderStrength
+  rw [continuumBornDisorderMeasurePrefactor_weakDisorderStrength
       v hbar gamma hvelocity hhbar,
     continuumBornDampingScale_disorderStrengthOfDampingScale
       v hbar gamma hvelocity hhbar,

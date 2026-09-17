@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -42,7 +43,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
     Tendsto
       (fun disorderStrength : ℝ =>
         let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-        let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
+        let pref : ℂ :=
+          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
         let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
           v m probeEnergy disorderStrength hbar pMax
         let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -66,7 +68,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
       Tendsto
         (fun disorderStrength : ℝ =>
           let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-          let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
+          let pref : ℂ :=
+            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
           let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax
           let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
@@ -81,7 +84,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
       Tendsto
         (fun disorderStrength : ℝ =>
           let q : ℂ := (((-e : ℝ) : ℂ)) * (((v : ℝ) : ℂ))
-          let pref : ℂ := ((disorderStrength * momentumMeasurePrefactor hbar : ℝ) : ℂ)
+          let pref : ℂ :=
+            (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)
           let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
             v m probeEnergy disorderStrength hbar pMax
           let rung := finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary

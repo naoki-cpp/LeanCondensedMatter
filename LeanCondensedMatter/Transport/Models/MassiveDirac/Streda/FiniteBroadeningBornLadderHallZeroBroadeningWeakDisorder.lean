@@ -75,6 +75,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSu
     exact_mod_cast ne_of_gt hdisorder
   unfold finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary
   dsimp [q, measure]
+  unfold continuumBornDisorderMeasurePrefactor
   push_cast
   field_simp [hdisorderC, hmeasure]
 

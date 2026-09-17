@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.BornPropagator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung
 import Mathlib.Tactic
 
@@ -18,9 +19,9 @@ The operator order is intentionally `Gᴿ σₓ Gᴬ`, matching `Transport.Disor
 retarded/advanced order reverses the orientation-sensitive `σᵧ` coefficient. The source is fixed to
 `σₓ`, while the in-plane output component is indexed by `Fin 2`. The angular coefficients already
 contain the full `2π` factor, while the external scalar-disorder line and physical momentum measure
-remain explicit through `continuumBornRetardedAdvancedCurrentRungPrefactor`. The canonical
-weak-disorder target coefficient is recorded here because it is consumed independently by the
-fixed-cutoff and infinite-cutoff limit routes.
+remain explicit through `continuumBornDisorderMeasurePrefactor`. The canonical weak-disorder target
+coefficient is recorded here because it is consumed independently by the fixed-cutoff and
+infinite-cutoff limit routes.
 
 No weak-disorder or ultraviolet limit, ladder resummation, transport-lifetime identification, Ward
 claim, or conductivity theorem is introduced here.
@@ -232,18 +233,11 @@ private theorem continuumBornRetardedAdvancedPauliXRadialIntegrand_eq_closed
   push_cast
   ring
 
-/-- External scalar-disorder line and physical-momentum measure factor for the continuum RA current
-rung. The `2π` angle factor is already contained in the angular coefficients above, so this uses
-`momentumMeasurePrefactor hbar` directly rather than `continuumBornAngularMeasurePrefactor hbar`. -/
-def continuumBornRetardedAdvancedCurrentRungPrefactor
-    (disorderStrength hbar : ℝ) : ℝ :=
-  disorderStrength * momentumMeasurePrefactor hbar
-
 /-- Full continuum radial current-rung integrand in the selected output direction, including the
 external disorder line and physical momentum measure but not the radial integral. -/
 private def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand
     (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ) : ℂ :=
-  (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar : ℂ) *
+  (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) *
     continuumBornRetardedAdvancedPauliXRadialIntegrand output
       v m p probeEnergy disorderStrength hbar
 
@@ -252,7 +246,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq
     (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ) :
     continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand output
         v m p probeEnergy disorderStrength hbar =
-      ((continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+      ((continuumBornDisorderMeasurePrefactor disorderStrength hbar * p *
           continuumBornRetardedAdvancedPauliXAngularNumerator output
             v m probeEnergy disorderStrength hbar : ℝ) : ℂ) *
         (continuumBornRADenominatorProduct
@@ -265,7 +259,7 @@ private theorem continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrand_eq
 /-- Real-valued form of the normalized radial current-rung integrand in either output direction. -/
 def continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
     (output : Fin 2) (v m p probeEnergy disorderStrength hbar : ℝ) : ℝ :=
-  continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+  continuumBornDisorderMeasurePrefactor disorderStrength hbar * p *
     continuumBornRetardedAdvancedPauliXAngularNumerator output
       v m probeEnergy disorderStrength hbar *
     (continuumBornRADenominatorProduct
@@ -315,12 +309,11 @@ noncomputable def finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoef
 
 /-- The external disorder-line / physical-measure prefactor is one power of the Born damping scale:
 `W /(2πℏ)² = γ v² / π²`. -/
-theorem continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
+theorem continuumBornDisorderMeasurePrefactor_eq_dampingScale
     (v disorderStrength hbar : ℝ) (hv : v ≠ 0) (hhbar : hbar ≠ 0) :
-    continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar =
+    continuumBornDisorderMeasurePrefactor disorderStrength hbar =
       continuumBornDampingScale v disorderStrength hbar * v ^ 2 / Real.pi ^ 2 := by
-  unfold continuumBornRetardedAdvancedCurrentRungPrefactor
-  unfold continuumBornDampingScale momentumMeasurePrefactor
+  unfold continuumBornDisorderMeasurePrefactor continuumBornDampingScale momentumMeasurePrefactor
   field_simp [hv, hhbar, Real.pi_ne_zero]
   ring
 
@@ -367,14 +360,14 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_
   simp only [Matrix.cons_val_zero]
   rw [show
       (fun p : ℝ =>
-        continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar * p *
+        continuumBornDisorderMeasurePrefactor disorderStrength hbar * p *
           (2 * Real.pi *
             (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
             (probeEnergy ^ 2 - m ^ 2)) *
           (continuumBornRADenominatorProduct
             v m p probeEnergy disorderStrength hbar)⁻¹) =
       (fun p : ℝ =>
-        (continuumBornRetardedAdvancedCurrentRungPrefactor disorderStrength hbar *
+        (continuumBornDisorderMeasurePrefactor disorderStrength hbar *
           2 * Real.pi *
           (1 + continuumBornDampingScale v disorderStrength hbar ^ 2) *
           (probeEnergy ^ 2 - m ^ 2)) *
@@ -407,7 +400,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_
     ring]
   rw [Real.arctan_neg]
   unfold continuumBornRADenominatorCenter
-  rw [continuumBornRetardedAdvancedCurrentRungPrefactor_eq_dampingScale
+  rw [continuumBornDisorderMeasurePrefactor_eq_dampingScale
     v disorderStrength hbar hv hhbar]
   unfold continuumBornRADenominatorWidth
   field_simp [hv, hhbar, hgamma, hsum, Real.pi_ne_zero]

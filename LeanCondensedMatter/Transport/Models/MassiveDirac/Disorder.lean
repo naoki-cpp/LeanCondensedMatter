@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ScalarCovariance
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder
@@ -11,15 +12,17 @@ set_option linter.style.header false
 # Massive-Dirac disorder transport
 
 Public umbrella for the disorder-dependent massive-Dirac transport benchmark. The continuum Born
-chain is organized by physical and analytic responsibility: `Born.SelfEnergy` owns the finite-cutoff
-self-energy and its polar provenance, `Born.Denominator` owns exact denominator evaluation and the
-branch-oriented imaginary boundary analysis, `Born.Boundary` owns the finite metallic boundary value
-as a complex number together with its scalar and `σ_z` propagation, `Born.Damping` projects that
-complex API to the physical damping observables, `BornPropagator` feeds those damping channels into
-the weak-disorder propagator and owns its retarded-advanced radial denominator pair, and
-`TransportRate` owns the microscopic upper-band single-particle and transport scattering scales. The
-finite-`η` Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy,
-effective mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
+chain is organized by physical and analytic responsibility: `ContinuumMeasurePrefactor` owns one
+scalar-disorder line together with exactly one physical-momentum-measure factor, independently of
+where a consumer performs angular reduction; `Born.SelfEnergy` owns the finite-cutoff self-energy and
+its polar provenance; `Born.Denominator` owns exact denominator evaluation and the branch-oriented
+imaginary boundary analysis; `Born.Boundary` owns the finite metallic boundary value as a complex
+number together with its scalar and `σ_z` propagation; `Born.Damping` projects that complex API to
+the physical damping observables; `BornPropagator` feeds those damping channels into the
+weak-disorder propagator and owns its retarded-advanced radial denominator pair; and `TransportRate`
+owns the microscopic upper-band single-particle and transport scattering scales. The finite-`η`
+Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
+mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 `FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
@@ -39,8 +42,8 @@ explicit nonzero boundary determinant. The subsequent fixed-cutoff weak-disorder
 after this zero-broadening boundary is formed, retaining both the finite longitudinal rung and the
 first nonvanishing disorder-scaled transverse coefficient needed by ordered Hall response. For the
 zero-external-broadening Born route, `BornCurrentVertexRung` owns the exact normalized finite-cutoff
-longitudinal rung, while its fixed-cutoff weak-disorder and infinite-cutoff limits remain separate
-downstream routes.
+longitudinal rung while consuming the same shared disorder/measure factor; its fixed-cutoff
+weak-disorder and infinite-cutoff limits remain separate downstream routes.
 
 Physical charge-current conversion and Kubo/Středa insertion are downstream. SCBA/Ward closure,
 crossed diagrams, and simultaneous thermodynamic, UV, disorder, and zero-broadening limits are not
