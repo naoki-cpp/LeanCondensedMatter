@@ -6,17 +6,20 @@ set_option linter.style.header false
 /-!
 # Frequency-domain pure-point Lehmann representation
 
-This module completes the fixed-positive-rate pure-point bridge.  On the causal half-line, the
-switched susceptibility integrand is the countable sum of damped transition modes.  Absolute
-transition-weight summability and the common exponential envelope justify exchanging that countable
-sum with the Bochner time integral.
+This module completes the fixed-positive-rate pure-point bridge. On the causal half-line, the
+switched susceptibility integrand is the countable sum of damped transition modes. Each physical
+transition starts from the canonical `LehmannTransitionData` used by the time-domain series; its
+causal integral is the same transition's `fixedRateTerm`.
+
+Absolute transition-weight summability and the common exponential envelope justify exchanging that
+countable sum with the Bochner time integral.
 
 For `η > 0`, the resulting identity is
 
 `χᴿ_AB(ω,η) = ∑' (m,n), Wₘₙ / (η - i(ω + (Eₘ-Eₙ)/ℏ))`,
 
-where `Wₘₙ = (i/ℏ)(pₘ-pₙ)AₘₙBₙₘ`.  The finite-dimensional theorem is an immediate finite-sum
-corollary.  No `η → 0⁺`, `ω → 0`, or long-time limit is formed here.
+where `Wₘₙ = (i/ℏ)(pₘ-pₙ)AₘₙBₙₘ`. The finite-dimensional theorem is an immediate finite-sum
+corollary. No `η → 0⁺`, `ω → 0`, or long-time limit is formed here.
 -/
 
 namespace QuantumTheory
@@ -30,7 +33,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
-/-- One switched pure-point transition before imposing causal support.  The surrounding integral
+/-- One switched pure-point transition before imposing causal support. The surrounding integral
 is restricted to the causal half-line. -/
 noncomputable def purePointAdiabaticTransitionIntegrand
     (data : PurePointLehmannData system ι)
@@ -39,7 +42,8 @@ noncomputable def purePointAdiabaticTransitionIntegrand
   adiabaticFrequencyPhase omega eta τ *
     purePointTimeDomainTerm system data A B τ mn
 
-/-- A switched transition is its spectral weight times the corresponding damped Lehmann mode. -/
+/-- A switched transition is its canonical spectral weight times the corresponding damped Lehmann
+mode. -/
 theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ)
@@ -70,6 +74,24 @@ theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
   congr 2
   push_cast
   ring
+
+/-- Integrating one switched canonical time-domain transition gives that same transition's
+fixed-rate Lehmann term. -/
+theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
+    (mn : ι × ι) :
+    (∫ τ : ℝ in Ioi 0,
+      purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
+      (purePointTransitionData system data A B mn).fixedRateTerm
+        system.hbar omega eta := by
+  rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
+    purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
+      system data A B omega eta mn τ]
+  rw [integral_const_mul]
+  rw [integral_lehmannMode_Ioi_zero_eq_resolvent
+    system.hbar omega eta (data.energy mn.1 - data.energy mn.2) hη]
+  rfl
 
 /-- The countable transition sum may be exchanged with the causal fixed-rate Bochner integral. -/
 theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
@@ -122,7 +144,8 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
           apply setIntegral_congr_fun measurableSet_Ioi
           intro τ _
           simp [purePointAdiabaticTransitionIntegrand,
-            purePointTimeDomainTerm]
+            purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
+            purePointTransitionWeight]
           ring
       _ = ‖purePointTransitionWeight system data A B mn‖ * C := by
         rw [integral_const_mul]
@@ -133,13 +156,8 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
   rw [purePointLehmannSeries]
   apply tsum_congr
   intro mn
-  rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
-    purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
-      system data A B omega eta mn τ]
-  rw [integral_const_mul]
-  rw [integral_lehmannMode_Ioi_zero_eq_resolvent
-    system.hbar omega eta (data.energy mn.1 - data.energy mn.2) hη]
-  rfl
+  exact integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
+    system data A B omega eta hη mn
 
 /-- The fixed-positive-rate physical susceptibility equals the countable pure-point Lehmann
 resolvent series. -/
