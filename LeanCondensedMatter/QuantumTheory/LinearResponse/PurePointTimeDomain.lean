@@ -117,7 +117,6 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
             system.hbar : ℝ) : ℂ))) := by
   rw [purePointTimeDomainTerm,
     purePointTransitionPhase_eq_exp_energyDifference]
-  simp
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
