@@ -7,24 +7,33 @@ set_option linter.style.header false
 /-!
 # Pure-point Lehmann representation
 
-This module separates the scalar analytic denominator from the spectral data entering a Lehmann
-representation. With the repository conventions
+This module owns the scalar ordered-transition conventions used throughout the pure-point Lehmann
+path. For an ordered transition `(m,n)`, the canonical orientation is
 
-`A_I(t) = U₀(-t) A U₀(t)` and Fourier phase `exp (+i ω t)`,
+```text
+ΔEₘₙ = Eₘ - Eₙ,
+Δpₘₙ = pₘ - pₙ,
+Wₘₙ = (i / ℏ) Δpₘₙ Aₘₙ Bₙₘ.
+```
 
-a transition with energy gap `ΔE = Eₘ - Eₙ` contributes
+`orderedLehmannEnergyGap`, `orderedLehmannProbabilityDifference`, and
+`orderedLehmannTransitionWeight` are the single scalar helpers for these conventions. The time
+phase and fixed-rate denominator consume the same ordered gap. With
+`A_I(t) = U₀(-t) A U₀(t)` and Fourier phase `exp (+i ω t)`, one transition contributes
 
-`exp ((-η + i (ω + ΔE / ℏ)) t)`.
+`exp (i ΔEₘₙ t / ℏ)`
 
-For every `η > 0`, its causal half-line integral is
+in the time domain and
 
-`1 / (η - i (ω + ΔE / ℏ))`.
+`1 / (η - i (ω + ΔEₘₙ / ℏ))`
 
-The main API is not finite-dimensional. `PurePointLehmannData` packages a Hilbert basis of energy
-eigenvectors and normalized diagonal probabilities, while `PurePointLehmannSummable` records the
-absolute summability needed for the countable double transition series. In finite dimension that
-condition is automatic. Proving it from bounded observables and a trace-class diagonal state in
-infinite dimension is kept as a separate theorem layer.
+in the fixed-rate frequency domain.
+
+The main pure-point API is not finite-dimensional. `PurePointLehmannData` packages a Hilbert basis
+of energy eigenvectors and normalized diagonal probabilities, while `PurePointLehmannSummable`
+records the absolute summability needed for the countable double transition series. In finite
+dimension that condition is automatic. Proving it from bounded observables and a trace-class
+diagonal state in infinite dimension is kept as a separate theorem layer.
 
 The switching-rate limit `η → 0⁺` is intentionally not formed here.
 -/
@@ -35,6 +44,57 @@ namespace LinearResponse
 open Set MeasureTheory
 
 noncomputable section
+
+/-- Canonical energy gap of an ordered Lehmann transition `(m,n)`. -/
+def orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
+  energyM - energyN
+
+/-- Canonical diagonal-probability difference of an ordered Lehmann transition `(m,n)`. -/
+def orderedLehmannProbabilityDifference
+    (probabilityM probabilityN : ℝ) : ℝ :=
+  probabilityM - probabilityN
+
+/-- Canonical physical weight of an ordered Lehmann transition `(m,n)`.
+
+The matrix elements are supplied in the orientation `Aₘₙ` and `Bₙₘ`. -/
+noncomputable def orderedLehmannTransitionWeight
+    (hbar probabilityM probabilityN : ℝ)
+    (matrixAMN matrixBNM : ℂ) : ℂ :=
+  (Complex.I / (hbar : ℂ)) *
+    (orderedLehmannProbabilityDifference probabilityM probabilityN : ℂ) *
+    matrixAMN * matrixBNM
+
+@[simp]
+theorem orderedLehmannEnergyGap_eq
+    (energyM energyN : ℝ) :
+    orderedLehmannEnergyGap energyM energyN = energyM - energyN := rfl
+
+@[simp]
+theorem orderedLehmannProbabilityDifference_eq
+    (probabilityM probabilityN : ℝ) :
+    orderedLehmannProbabilityDifference probabilityM probabilityN =
+      probabilityM - probabilityN := rfl
+
+/-- Equal diagonal probabilities force the canonical physical transition weight to vanish. -/
+@[simp]
+theorem orderedLehmannTransitionWeight_sameProbability
+    (hbar probability : ℝ) (matrixAMN matrixBNM : ℂ) :
+    orderedLehmannTransitionWeight hbar probability probability
+      matrixAMN matrixBNM = 0 := by
+  simp [orderedLehmannTransitionWeight]
+
+/-- Heisenberg time phase associated with one ordered Lehmann energy gap. -/
+noncomputable def lehmannTimePhase
+    (hbar energyGap t : ℝ) : ℂ :=
+  Complex.exp
+    (Complex.I * ((((energyGap * t) / hbar : ℝ) : ℂ)))
+
+@[simp]
+theorem norm_lehmannTimePhase
+    (hbar energyGap t : ℝ) :
+    ‖lehmannTimePhase hbar energyGap t‖ = 1 := by
+  rw [lehmannTimePhase, Complex.norm_exp]
+  simp
 
 /-- Complex exponent of one adiabatically damped Lehmann transition mode. -/
 noncomputable def lehmannModeExponent
@@ -166,15 +226,34 @@ structure PurePointLehmannData
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
+/-- Canonical ordered energy gap of one pure-point transition `(m,n)`. -/
+def purePointTransitionEnergyGap
+    (data : PurePointLehmannData system ι) (mn : ι × ι) : ℝ :=
+  orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)
+
+@[simp]
+theorem purePointTransitionEnergyGap_eq
+    (data : PurePointLehmannData system ι) (mn : ι × ι) :
+    purePointTransitionEnergyGap system data mn =
+      data.energy mn.1 - data.energy mn.2 := rfl
+
 /-- The physical spectral weight
 `(i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ` of one pure-point transition. -/
 noncomputable def purePointTransitionWeight
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) : ℂ :=
-  (Complex.I / (system.hbar : ℂ)) *
-    ((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ) *
-    inner ℂ (data.basis mn.1) (A (data.basis mn.2)) *
-    inner ℂ (data.basis mn.2) (B (data.basis mn.1))
+  orderedLehmannTransitionWeight system.hbar
+    (data.probability mn.1) (data.probability mn.2)
+    (inner ℂ (data.basis mn.1) (A (data.basis mn.2)))
+    (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
+
+/-- Diagonal pure-point transitions have zero physical weight. -/
+@[simp]
+theorem purePointTransitionWeight_diag
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (i : ι) :
+    purePointTransitionWeight system data A B (i, i) = 0 := by
+  simp [purePointTransitionWeight]
 
 /-- Absolute-summability condition for the countable pure-point transition weights. -/
 def PurePointLehmannSummable
@@ -188,7 +267,7 @@ noncomputable def purePointLehmannSeries
     (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
   ∑' mn : ι × ι,
     lehmannTerm system.hbar omega eta
-      (data.energy mn.1 - data.energy mn.2)
+      (purePointTransitionEnergyGap system data mn)
       (purePointTransitionWeight system data A B mn)
 
 /-- Absolute transition-weight summability implies summability of the fixed-rate pure-point
@@ -200,10 +279,11 @@ theorem summable_purePointLehmannSeries_of_pos
     Summable fun mn : ι × ι =>
       lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn) :=
-  summable_lehmannTerm_of_pos system.hbar omega eta
-    (fun mn : ι × ι => data.energy mn.1 - data.energy mn.2)
-    (purePointTransitionWeight system data A B) hsum heta
+        (purePointTransitionWeight system data A B mn) := by
+  simpa using
+    summable_lehmannTerm_of_pos system.hbar omega eta
+      (purePointTransitionEnergyGap system data)
+      (purePointTransitionWeight system data A B) hsum heta
 
 /-- In finite dimension, the absolute transition-weight condition is automatic. -/
 theorem purePointLehmannSummable_of_finite
