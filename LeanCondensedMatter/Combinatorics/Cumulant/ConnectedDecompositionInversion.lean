@@ -44,7 +44,7 @@ contribution. -/
 theorem normalizedObjectMoment_cumulant_eq_connectedContribution
     {S : Finset α} (hS : S ≠ ∅) :
     W.normalizedObjectMoment.cumulant S = W.connectedContribution S := by
-  rw [NormalizedSetFunction.cumulant_apply, normalizedObjectMoment_apply]
+  change Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S
   exact W.cumulantFromMoment_objectMoment hS
 
 end MultiplicativeWeight
