@@ -43,22 +43,11 @@ noncomputable section
 abbrev orderedLehmannEnergyGap (energyM energyN : ℝ) : ℝ :=
   energyM - energyN
 
-@[simp]
-theorem orderedLehmannEnergyGap_eq (energyM energyN : ℝ) :
-    orderedLehmannEnergyGap energyM energyN = energyM - energyN := rfl
-
 /-- Canonical physical weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` of an ordered Lehmann transition. -/
 noncomputable abbrev orderedLehmannTransitionWeight
     (hbar probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ) : ℂ :=
   (Complex.I / (hbar : ℂ)) *
     ((probabilityM - probabilityN : ℝ) : ℂ) * matrixAMN * matrixBNM
-
-@[simp]
-theorem orderedLehmannTransitionWeight_eq
-    (hbar probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ) :
-    orderedLehmannTransitionWeight hbar probabilityM probabilityN matrixAMN matrixBNM =
-      (Complex.I / (hbar : ℂ)) *
-        ((probabilityM - probabilityN : ℝ) : ℂ) * matrixAMN * matrixBNM := rfl
 
 /-- Complex exponent of one adiabatically damped Lehmann transition mode. -/
 noncomputable def lehmannModeExponent
