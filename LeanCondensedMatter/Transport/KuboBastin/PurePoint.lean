@@ -140,7 +140,8 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
   unfold purePointKuboBastinSpectralVertexTerm
   rw [hinner]
-  unfold purePointTransitionWeight
+  unfold purePointTransitionWeight orderedLehmannTransitionWeight
+    orderedLehmannProbabilityDifference
   field_simp [hhbar, hhbarComplex, hshift]
 
 end
