@@ -75,7 +75,11 @@ theorem purePointDirectionalCurrentTransitionWeight_diag
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K) (i, i) = 0 := by
-  simp [purePointTransitionWeight]
+  exact purePointTransitionWeight_diag system data
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K) i
 
 /-- Equal-energy off-diagonal transitions retain the regularized denominator `η - iω`; their
 weight is not assumed to vanish without an additional equality of state probabilities. -/
