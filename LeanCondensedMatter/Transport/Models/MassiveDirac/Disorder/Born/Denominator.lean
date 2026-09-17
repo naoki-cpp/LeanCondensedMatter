@@ -172,10 +172,11 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     unfold massiveDiracRadialDenominator
     push_cast
     ring
-  simpa only [Function.comp_apply, id_eq, hden] using
-    (Complex.continuous_ofReal.comp continuous_id).mul
+  convert (Complex.continuous_ofReal.comp continuous_id).mul
       (continuous_inv_pauliGreenDenominatorOfRegulator_radial
-        v m probeEnergy regulator hregulator)
+        v m probeEnergy regulator hregulator) using 1
+  funext p
+  rw [hden p]
 
 /-- Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the
 endpoint principal-log difference. -/
