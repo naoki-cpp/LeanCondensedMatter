@@ -43,9 +43,11 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
           (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
         dysonVertexCumulant ε β (quarticInteraction g)
           (Finset.univ : Finset (Fin n)) :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
-        ε β (quarticInteraction g) (S := (Finset.univ : Finset (Fin n)))
-        (fin_univ_ne_empty hn)
+      by
+        simpa using
+          (factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
+            ε β (quarticInteraction g) (S := (Finset.univ : Finset (Fin n)))
+            (fin_univ_ne_empty hn))
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 :=
       dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude

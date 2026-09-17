@@ -104,6 +104,7 @@ noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode �
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
   (dysonVertexGeneratingFunctional ε β V).connected S
 
+omit [LinearOrder Mode] in
 /-- The Dyson formal-log coefficient is the connected coefficient of the Dyson source functional. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
     {α : Type*} [DecidableEq α]
