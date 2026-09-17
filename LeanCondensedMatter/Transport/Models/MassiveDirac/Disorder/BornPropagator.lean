@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Damping
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator.Basic
 import Mathlib.Tactic
 
@@ -171,6 +172,20 @@ theorem continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq
   ring_nf
   simp [hI]
   ring
+
+/-- The real weak-Born radial product is the real-valued form of the canonical complex RA product. -/
+theorem coe_continuumBornRADenominatorProduct_eq_massiveDirac
+    (v m p probeEnergy disorderStrength hbar : ℝ) :
+    (continuumBornRADenominatorProduct
+        v m p probeEnergy disorderStrength hbar : ℂ) =
+      massiveDiracRetardedAdvancedRadialDenominatorProduct v p
+        (continuumBornEffectiveEnergy .retarded v probeEnergy disorderStrength hbar)
+        (continuumBornEffectiveMass .retarded v m disorderStrength hbar)
+        (continuumBornEffectiveEnergy .advanced v probeEnergy disorderStrength hbar)
+        (continuumBornEffectiveMass .advanced v m disorderStrength hbar) := by
+  rw [← continuumBornPauliGreenDenominator_retarded_mul_advanced_radial_eq]
+  simp [massiveDiracRetardedAdvancedRadialDenominatorProduct,
+    massiveDiracRadialDenominator, continuumBornPauliGreenDenominator]
 
 end
 
