@@ -71,6 +71,18 @@ theorem twoSiteDimerGroundStateLehmannTable_energy_one :
   simp [twoSiteDimerGroundStateLehmannTable]
 
 @[simp]
+theorem twoSiteDimerGroundStateEnergyGap_zero_one :
+    finiteLehmannTableEnergyGap twoSiteDimerGroundStateLehmannTable (0, 1) = -2 := by
+  norm_num [finiteLehmannTableEnergyGap, orderedLehmannEnergyGap,
+    twoSiteDimerGroundStateLehmannTable]
+
+@[simp]
+theorem twoSiteDimerGroundStateEnergyGap_one_zero :
+    finiteLehmannTableEnergyGap twoSiteDimerGroundStateLehmannTable (1, 0) = 2 := by
+  norm_num [finiteLehmannTableEnergyGap, orderedLehmannEnergyGap,
+    twoSiteDimerGroundStateLehmannTable]
+
+@[simp]
 theorem twoSiteDimerGroundStateLehmannTable_probability_zero :
     twoSiteDimerGroundStateLehmannTable.probability 0 = 1 := by
   simp [twoSiteDimerGroundStateLehmannTable]
@@ -101,17 +113,25 @@ theorem twoSiteDimerEnergyBasisCurrent_one_zero :
   simp [twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
+theorem twoSiteDimerGroundStateTransitionWeight_zero_zero :
+    finiteLehmannTableTransitionWeight 1
+        twoSiteDimerGroundStateLehmannTable (0, 0) = 0 := by
+  exact finiteLehmannTableTransitionWeight_diag 1 twoSiteDimerGroundStateLehmannTable 0
+
+@[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, orderedLehmannTransitionWeight,
+    orderedLehmannProbabilityDifference, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_one_zero :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, orderedLehmannTransitionWeight,
+    orderedLehmannProbabilityDifference, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 /-- At `ℏ = 1`, zero driving frequency, and positive switching rate `η = 1`, the dimer's exact
@@ -123,13 +143,14 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
-    twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
-    twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
     finiteLehmannTableTransitionWeight_diag,
+    twoSiteDimerGroundStateEnergyGap_zero_one,
+    twoSiteDimerGroundStateEnergyGap_one_zero,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
-    twoSiteDimerGroundStateTransitionWeight_one_zero, sub_self]
+    twoSiteDimerGroundStateTransitionWeight_one_zero]
   apply Complex.ext <;>
-    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
+    norm_num [finiteLehmannTableEnergyGap, orderedLehmannEnergyGap,
+      twoSiteDimerGroundStateLehmannTable, lehmannTerm, lehmannDenominator, Complex.normSq]
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
