@@ -135,8 +135,8 @@ theorem continuous_finiteBroadeningBornCurrentRungRadialIntegrand
       Continuous (fun p : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax) := by
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-      finiteCutoffContinuumBornDysonDenominator
+    simp_rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
+    unfold finiteCutoffContinuumBornDysonDenominator
     fun_prop
   have hdenNe : ∀ p : ℝ,
       finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
@@ -350,7 +350,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
         ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax‖ = ‖DR‖ * ‖DA‖ := by
       dsimp [DR, DA]
-      simp [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct]
+      rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul, norm_mul]
     have hproductLower :
         cDen ≤
           ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct

@@ -157,7 +157,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero
     (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
       v m p probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
   exact mul_ne_zero
     (finiteCutoffContinuumBornDysonDenominator_ne_zero
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
@@ -178,6 +178,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
         finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
           i j v m probeEnergy broadening disorderStrength hbar pMax := by
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
   fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
@@ -186,7 +187,6 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_deno
       pauliRungAngularCoefficient,
       finiteCutoffContinuumBornDysonScalarCoefficient,
       finiteCutoffContinuumBornDysonPauliCoefficient, InternalSpace.pauliAxisComponent,
-      finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct,
       mul_inv_rev] <;>
     ring
 

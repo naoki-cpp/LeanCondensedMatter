@@ -146,7 +146,16 @@ theorem hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial
         v m probeEnergy regulator p hprobeEnergy hregulator)
   convert hlog using 1
   unfold continuumBornRadialDenominatorIntegrandOfRegulator
-  rw [div_eq_mul_inv]
+    massiveDiracRadialDenominatorKernel
+  have hden :
+      massiveDiracRadialDenominator v p
+          (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
+        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
+    rw [pauliGreenDenominatorOfRegulator_radial_eq]
+    unfold massiveDiracRadialDenominator
+    push_cast
+    ring
+  rw [hden, div_eq_mul_inv]
   ring
 
 private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
@@ -154,9 +163,20 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     Continuous (continuumBornRadialDenominatorIntegrandOfRegulator
       v m probeEnergy regulator) := by
   unfold continuumBornRadialDenominatorIntegrandOfRegulator
-  exact (Complex.continuous_ofReal.comp continuous_id).mul
-    (continuous_inv_pauliGreenDenominatorOfRegulator_radial
-      v m probeEnergy regulator hregulator)
+    massiveDiracRadialDenominatorKernel
+  have hden (p : ℝ) :
+      massiveDiracRadialDenominator v p
+          (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
+        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
+    rw [pauliGreenDenominatorOfRegulator_radial_eq]
+    unfold massiveDiracRadialDenominator
+    push_cast
+    ring
+  convert (Complex.continuous_ofReal.comp continuous_id).mul
+      (continuous_inv_pauliGreenDenominatorOfRegulator_radial
+        v m probeEnergy regulator hregulator) using 1
+  funext p
+  simp [hden p]
 
 /-- Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the
 endpoint principal-log difference. -/
