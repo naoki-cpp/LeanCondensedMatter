@@ -11,10 +11,12 @@ Green matrix. The matrix Fourier transform is performed entrywise through the ge
 physical-momentum polar Fourier transform, so the factor `d²p / (2πℏ)²` is already included in every
 real-space Green block.
 
-On the positive real-space radial axis, rotational symmetry reduces the angular Fourier integral to
-the model-independent zeroth and first-cosine full-angle kernels from `Transport.Analysis.PolarFourier`.
-The Green matrix supplies one `AngularHarmonicCoefficients` value at each radial momentum; entrywise
-Fourier reduction consumes that common decomposition without rebuilding angular integrability.
+The generic Fourier reduction uses the model-independent constant/first/second harmonic kernels from
+`Transport.Analysis.PolarFourier` at an arbitrary polar point. On the positive real-space radial axis,
+the massive-Dirac Green matrix has vanishing second-harmonic coefficients and the first-sine channel
+is suppressed by the point angle, leaving the zeroth and first-cosine kernels. The Green matrix
+supplies one `AngularHarmonicCoefficients` value at each radial momentum; entrywise Fourier reduction
+consumes that common decomposition without rebuilding angular integrability.
 
 No crossed-diagram topology, current vertex, real-space integration, cutoff removal, or conductivity
 normalization is introduced here.

@@ -8,13 +8,16 @@ Formalizing results in condensed matter physics as machine-checked theorems in L
 The repository currently includes quantum-theory foundations, operator-analysis infrastructure,
 combinatorics for cumulants and connected structures, algebraic second quantization, finite-temperature
 fermionic thermal theory, quartic Wick/Dyson diagrammatics, formal and finite-dimensional analytic
-Linked Cluster Theorems, and a finite-mode fermionic two-point linked-cluster theorem with external
-legs.
+Linked Cluster Theorems, a normalized source-functional boundary, finite-volume response theory, and
+massive-Dirac continuum/disorder transport with a finite-mode fermionic two-point linked-cluster
+theorem with external legs.
 
 ## Highlighted canonical endpoints
 
 Representative public theorems include:
 
+- `SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected` — statistics-independent formal-log / connected-source bridge;
+- `SecondQuantization.Common.GeneratingFunctional.connected_moment` — reconstruction of normalized source moments from connected coefficients;
 - `SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` — finite-temperature Bloch–de Dominicis pairing;
 - `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — formal finite-mode linked-cluster theorem;
 - `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — analytic finite-dimensional linked-cluster theorem;
@@ -35,6 +38,10 @@ The theorem catalog and subsystem notes are the authoritative navigation surface
 - [notes/migrations/](notes/migrations/) — concise migration notes for deliberate breaking public-API changes.
 
 Lean declarations and CI-enforced architecture checks are the source of truth when prose and code disagree.
+
+Transport ownership and normalization boundaries are documented in
+[notes/architecture/transport.md](notes/architecture/transport.md), with proved chains and open
+targets tracked in [notes/roadmaps/transport.md](notes/roadmaps/transport.md).
 
 ## Building
 

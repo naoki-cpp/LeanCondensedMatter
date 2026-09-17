@@ -60,6 +60,17 @@ provide the Bessel special-function module, so the repository does not maintain 
 Bessel implementation; a later deliberate Mathlib upgrade should identify these kernels with the
 standard `J₀` / `J₁` / `J₂` API by theorem.
 
+## Harmonic and measure boundaries
+
+The implementation uses `Analysis.AngularHarmonics.AngularHarmonicCoefficients` as the single
+constant/first/second-harmonic representation. `Analysis.PolarFourier` consumes it both for ordinary
+full-angle integration and for phase-weighted reduction at an arbitrary polar point; concrete
+massive-Dirac consumers specialize it to the radial axis where the sine and mixed channels drop out.
+Continuum measure factors are kept separate from trace/current normalization. The model-local
+`ContinuumMeasureProvenance` module records the equalities between the disorder-line measure, the
+self-energy angular measure, and the Bastin/Streda normalization, while crossed real-space Fourier
+blocks retain their momentum measure upstream.
+
 ## SCBA and ladder boundary
 
 SCBA stores supplied self-consistent approximation data using the same exact second-moment action
