@@ -99,8 +99,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator,
       inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_y_x,
       inPlaneCoefficientVector]
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-    rw [mul_inv_rev]
+    rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul, mul_inv_rev]
     have hprefEq :
         (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) = pref := by
       rfl
