@@ -28222,50 +28222,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ),\n  ContinuousLinearMap.adjoint (A.resolventEvolutionStrongLimitOperator hA t) =\n    A.resolventEvolutionStrongLimitOperator hA (-t)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup",
-    "externalAxioms": [],
-    "docString": "The Hilbert-space adjoint of the limiting evolution is negative-time evolution. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
-    ],
-    "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_apply",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
-      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
-      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H),\n  (A.resolventEvolutionStrongLimitOperator hA t) x = A.resolventEvolutionStrongLimit hA t x",
     "standardAxioms": [
       "Classical.choice",
@@ -28287,13 +28243,13 @@
     "dependents": [
       "LinearPMap.norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain",
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_continuousAt",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_eq",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
       "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
       "LinearPMap.resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
@@ -28303,13 +28259,13 @@
     "compiledConsumers": [
       "LinearPMap.norm_resolventEvolutionStrongLimitOperator_apply_sub_le_domain",
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_continuousAt",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_eq",
       "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
       "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
       "LinearPMap.resolventEvolutionStrongLimitOperator_nonrealResolvent_mul_comm",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup.0.LinearPMap.tendsto_resolventApproximationEvolutionAtScale_comp_apply"
     ],
@@ -28777,7 +28733,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
     ],
     "dependencies": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply",
@@ -28786,7 +28742,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -29078,7 +29034,10 @@
       "LinearPMap.resolventEvolutionStrongLimitOperator_star_mul"
     ],
     "dependencies": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_apply",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_inner_map_map",
+      "LinearPMap.resolventEvolutionStrongLimit_add_time_apply",
+      "LinearPMap.resolventEvolutionStrongLimit_zero_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -29245,9 +29204,9 @@
     "directWrapperOf": null,
     "dependents": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
     ],
     "dependencies": [
       "LinearPMap.resolventApproximationEvolution_add",
@@ -29259,9 +29218,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.resolventEvolutionStrongLimitOperator_add",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
-      "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub"
+      "LinearPMap.resolventEvolutionStrongLimitOperator_dist_time_eq_sub",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -29377,8 +29336,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero"
     ],
     "dependencies": [
@@ -29388,8 +29347,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LinearPMap.resolventEvolutionStrongLimitOperator_adjoint",
       "LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined",
+      "LinearPMap.resolventEvolutionStrongLimitOperator_star",
       "LinearPMap.resolventEvolutionStrongLimitOperator_zero"
     ],
     "compiledConsumerCount": 3,
