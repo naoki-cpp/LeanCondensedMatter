@@ -72,11 +72,9 @@ theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
     d.mixedRestrictedPartner τ τ' σ B
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) =
       d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1) := by
-  simpa only [TwoPointDiagram.mixedRestrictedPartner,
-      TwoPointDiagram.mixedComponentPairEndpointEquiv] using
-    (d.pairingInMixedOrder τ τ' σ).partnerSubtypePerm_normalizedPairSubtypeEndpoint_zero
-      (fun p => d.mixedPositionComponent τ τ' σ p = B)
-      (fun p => by rw [d.mixedPositionComponent_partner]) pr
+  apply Subtype.ext
+  rw [d.mixedRestrictedPartner_val]
+  exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
 
 /-- Mixed component pairs are equivalent to normalized pairs of a local pairing obtained by
 transporting the mixed restricted partner through the supplied position equivalence. -/
