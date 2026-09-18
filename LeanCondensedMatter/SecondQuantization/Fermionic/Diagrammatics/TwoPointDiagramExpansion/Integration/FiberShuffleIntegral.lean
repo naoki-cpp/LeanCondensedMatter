@@ -35,12 +35,6 @@ private theorem heq_finFun_of_cast {a b : ℕ} (h : a = b)
   cases h
   exact heq_of_eq (funext fun j => hfg j)
 
-private theorem orderEmbOfFin_rfl_cast {n m : ℕ} (S : Finset (Fin n))
-    (h : S.card = m) (q : Fin m) :
-    S.orderEmbOfFin rfl (Fin.cast h.symm q) = S.orderEmbOfFin h q := by
-  cases h
-  rfl
-
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem connectedFixedExternal_cast_val_heq {a b : ℕ} (h : a = b)
     (d : {d : FixedExternalTwoPointWickDiagram Mode a i j // d.1.IsExternallyConnected}) :
@@ -130,18 +124,14 @@ private theorem fixedExternalShuffleFiber_externalPieceTimes_heq
     (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q)))
   have hsize : d.1.1.externalInteractionPart.card = m :=
     (congrArg Finset.card d.2).trans shuffle.card_leftSlots
-  have horder := Finset.orderEmbOfFin_unique
-    (s := d.1.1.externalInteractionPart) (h := hsize)
-    (f := fun q : Fin m => shuffle.slotEquiv (Sum.inl q))
-    (fun q => by
-      rw [d.2]
-      exact (shuffle.mem_leftSlots_iff _).2 ⟨q, rfl⟩)
-    shuffle.strictMonoLeft
   apply heq_finFun_of_cast hsize
   intro q
   change σ (d.1.1.externalInteractionPart.orderEmbOfFin rfl (Fin.cast hsize.symm q)) = _
-  rw [orderEmbOfFin_rfl_cast d.1.1.externalInteractionPart hsize q]
-  exact congrArg σ (congrFun horder.symm q)
+  apply congrArg σ
+  rw [d.2]
+  convert shuffle.leftSlots_orderEmbOfFin q using 1
+  apply Fin.ext
+  rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
