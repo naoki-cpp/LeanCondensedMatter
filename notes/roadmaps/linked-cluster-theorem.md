@@ -100,15 +100,17 @@ higher-point connected diagram expansions remain downstream work.
 
 ## Low-order identities
 
-Orders `1`, `2`, and `3` remain available as explicit readable examples and regression theorems in
+Orders `1`, `2`, and `3` remain available as explicit readable formal-log examples and
+regression theorems in
 
 ```text
 Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean
-Fermionic/Diagrammatics/LinkedCluster/AnalyticLowOrder.lean
 ```
 
-They are opt-in modules rather than part of the canonical `LinkedCluster` umbrella. The umbrella
-exports the general formal and analytic endpoints.
+The module records only the moment-cumulant subtraction polynomials. Connected-diagram and analytic
+low-order statements are obtained by specializing the canonical general formal and analytic
+endpoints rather than by separate public wrappers. `LowOrder` remains opt-in and is not part of
+the canonical `LinkedCluster` umbrella.
 
 ## Open work
 
