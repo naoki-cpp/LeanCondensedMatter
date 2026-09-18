@@ -30,8 +30,10 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
     rcases x with ⟨pr, k⟩
     refine ⟨pairing.pairEndpoint (pr.1, k), ?_⟩
     fin_cases k
-    · simpa using pr.2
-    · have hpair := (pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2
+    · change p pr.1.1.1
+      exact pr.2
+    · change p pr.1.1.2
+      have hpair := (pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2
       rw [← hpair.2]
       exact (hpartner pr.1.1.1).1 pr.2
   invFun pos := by
