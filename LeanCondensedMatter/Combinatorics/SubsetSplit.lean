@@ -18,6 +18,25 @@ namespace Combinatorics
 
 variable {α : Type*} [DecidableEq α]
 
+
+/-- A subtype of elements of `S` that lie in the subset `T` is canonically equivalent to
+`↥T`. -/
+def subsetSubtypeEquiv {S T : Finset α} (h : T ⊆ S) :
+    {x : ↥S // (x : α) ∈ T} ≃ ↥T :=
+  (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ S) (· ∈ T)).trans
+    (Equiv.subtypeEquivRight fun _x => ⟨fun hx => hx.2, fun hx => ⟨h hx, hx⟩⟩)
+
+@[simp]
+theorem subsetSubtypeEquiv_val {S T : Finset α} (h : T ⊆ S)
+    (x : {x : ↥S // (x : α) ∈ T}) :
+    (subsetSubtypeEquiv h x : α) = (x : α) :=
+  rfl
+
+@[simp]
+theorem subsetSubtypeEquiv_symm_val {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
+    (((subsetSubtypeEquiv h).symm x : {x : ↥S // (x : α) ∈ T}) : α) = (x : α) :=
+  rfl
+
 /-- A finite set is its subset together with the relative complement. -/
 def subsetSumSdiffEquiv {S T : Finset α} (h : T ⊆ S) : ↥T ⊕ ↥(S \ T) ≃ ↥S where
   toFun := Sum.elim (fun x => ⟨x.1, h x.2⟩) (fun x => ⟨x.1, (Finset.mem_sdiff.mp x.2).1⟩)
