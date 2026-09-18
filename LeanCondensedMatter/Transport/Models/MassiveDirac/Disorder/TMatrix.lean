@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import Mathlib.Algebra.Group.Units.Basic
+import Mathlib.Analysis.Normed.Ring.Units
 
 set_option linter.style.header false
 
@@ -23,10 +24,12 @@ an explicit argument to the shift, T-matrix, and self-energy definitions, so reg
 provenance cannot be attached to an unrelated matrix. The concrete Born-Dyson loop below owns the
 finite cutoff, spectral side, broadening, and physical momentum measure.
 
-Invertibility is explicit through `IsUnit`. No geometric-series expansion, small-impurity limit,
-self-consistent existence theorem, exact disorder-average identification, or skew-scattering
-conductivity is asserted here. The concrete Born-Dyson specialization is an approximation boundary;
-it is not identified with the paper-faithful self-consistent T-matrix loop.
+Invertibility is explicit through `IsUnit`. For a fixed supplied Green loop, this module also
+proves eventual invertibility near zero impurity strength and the small-strength remainder
+`T(v_imp) - v_imp I = O(v_imp²)` using Mathlib's general normed-ring inverse theory. No
+self-consistent T-matrix existence theorem, exact disorder-average identification, or
+skew-scattering conductivity is asserted here. The concrete Born-Dyson specialization is an
+approximation boundary; it is not identified with the paper-faithful self-consistent T-matrix loop.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -34,6 +37,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open Asymptotics Filter Topology
 
 /-- Scalar-impurity parameters kept separate from the dressed Green-loop provenance. -/
 structure ScalarImpurityParameters where
@@ -189,6 +193,192 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inve
   exact (params.norm_matrixOperator_tMatrix_sub_bare_le greenLoop hinvertible).trans
     (mul_le_mul_of_nonneg_left hinverse
       (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
+
+/-- For a fixed Green loop, the scalar-impurity shift is a unit for all impurity strengths
+sufficiently close to zero. This is a family-level statement in the raw scalar strength, so the
+limit point `v_imp = 0` is not excluded by `ScalarImpurityParameters.impurityStrength_ne_zero`. -/
+theorem eventually_isUnit_scalarImpurityShiftMatrix (greenLoop : Matrix2) :
+    ∀ᶠ impurityStrength : ℝ in 𝓝 0,
+      IsUnit
+        ((1 : Matrix2) - (((impurityStrength : ℝ) : ℂ)) • greenLoop) := by
+  have hofReal :
+      Tendsto (fun impurityStrength : ℝ => (impurityStrength : ℂ)) (𝓝 0) (𝓝 0) := by
+    simpa using Complex.continuous_ofReal.tendsto 0
+  have hzero :
+      Tendsto
+        (fun impurityStrength : ℝ =>
+          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)
+        (𝓝 0) (𝓝 0) := by
+    simpa using hofReal.smul_const (matrixOperator greenLoop)
+  have hnorm :
+      Tendsto
+        (fun impurityStrength : ℝ =>
+          ‖(((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop‖)
+        (𝓝 0) (𝓝 0) := by
+    simpa [Function.comp_def] using
+      (continuous_norm.tendsto
+        (0 : DiracHilbert →L[ℂ] DiracHilbert)).comp hzero
+  have hsmall :
+      ∀ᶠ impurityStrength : ℝ in 𝓝 0,
+        ‖(((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop‖ < 1 :=
+    hnorm (Iio_mem_nhds zero_lt_one)
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  filter_upwards [hsmall] with impurityStrength hstrength
+  have hoperator :
+      IsUnit
+        ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) :=
+    isUnit_one_sub_of_norm_lt_one hstrength
+  have hmap :
+      φ ((1 : Matrix2) - (((impurityStrength : ℝ) : ℂ)) • greenLoop) =
+        (1 : DiracHilbert →L[ℂ] DiracHilbert) -
+          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop := by
+    simp only [φ, matrixOperator, map_sub, map_one, map_smul]
+  apply (isUnit_map_iff φ
+    ((1 : Matrix2) - (((impurityStrength : ℝ) : ℂ)) • greenLoop)).mp
+  rw [hmap]
+  exact hoperator
+
+/-- The total ring inverse of the operator shift is uniformly bounded on some neighborhood of zero
+impurity strength. On that neighborhood the preceding theorem guarantees that this totalized
+inverse is the ordinary inverse of a unit. -/
+theorem exists_eventually_norm_scalarImpurityShiftOperator_inverse_le
+    (greenLoop : Matrix2) :
+    ∃ C : ℝ, ∀ᶠ impurityStrength : ℝ in 𝓝 0,
+      ‖Ring.inverse
+          ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+            (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)‖ ≤ C := by
+  have hofReal :
+      Tendsto (fun impurityStrength : ℝ => (impurityStrength : ℂ)) (𝓝 0) (𝓝 0) := by
+    simpa using Complex.continuous_ofReal.tendsto 0
+  have hzero :
+      Tendsto
+        (fun impurityStrength : ℝ =>
+          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)
+        (𝓝 0) (𝓝 0) := by
+    simpa using hofReal.smul_const (matrixOperator greenLoop)
+  rcases
+      ((NormedRing.inverse_one_sub_norm
+        (R := DiracHilbert →L[ℂ] DiracHilbert)).comp_tendsto hzero).bound with
+    ⟨C, hC⟩
+  refine ⟨C, ?_⟩
+  filter_upwards [hC] with impurityStrength hbound
+  simpa [Function.comp_def] using hbound
+
+/-- On an invertible scalar-impurity shift, the canonical matrix T-matrix becomes the corresponding
+totalized operator-ring inverse after applying `matrixOperator`. This connects the family-level
+asymptotic route below to the existing `IsUnit`-guarded T-matrix API. -/
+theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
+    matrixOperator (params.tMatrix greenLoop hinvertible) =
+      (((params.impurityStrength : ℝ) : ℂ)) •
+        Ring.inverse
+          ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+            (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) := by
+  let shiftOp : DiracHilbert →L[ℂ] DiracHilbert :=
+    matrixOperator (params.shiftMatrix greenLoop)
+  let inverseOp : DiracHilbert →L[ℂ] DiracHilbert :=
+    matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  have hshiftUnit : IsUnit shiftOp := by
+    dsimp [shiftOp]
+    exact (isUnit_map_iff φ (params.shiftMatrix greenLoop)).mpr hinvertible
+  have hinverse_mul : inverseOp * shiftOp = 1 := by
+    dsimp [inverseOp, shiftOp]
+    simpa [matrixOperator, map_mul, map_one] using
+      congrArg matrixOperator
+        (params.inverseShiftMatrix_mul_shiftMatrix greenLoop hinvertible)
+  have hinverse_eq : inverseOp = Ring.inverse shiftOp := by
+    have hmul : shiftOp * Ring.inverse shiftOp = 1 :=
+      Ring.mul_inverse_cancel shiftOp hshiftUnit
+    calc
+      inverseOp = inverseOp * 1 := (mul_one inverseOp).symm
+      _ = inverseOp * (shiftOp * Ring.inverse shiftOp) := by rw [hmul]
+      _ = (inverseOp * shiftOp) * Ring.inverse shiftOp := by rw [mul_assoc]
+      _ = Ring.inverse shiftOp := by rw [hinverse_mul, one_mul]
+  have hshift_eq :
+      matrixOperator (params.shiftMatrix greenLoop) =
+        (1 : DiracHilbert →L[ℂ] DiracHilbert) -
+          (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop := by
+    simp only [ScalarImpurityParameters.shiftMatrix, matrixOperator, map_sub, map_one, map_smul]
+  have hinverse_eq' :
+      matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) =
+        Ring.inverse
+          ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+            (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) := by
+    dsimp [inverseOp, shiftOp] at hinverse_eq
+    rw [hshift_eq] at hinverse_eq
+    exact hinverse_eq
+  rw [ScalarImpurityParameters.tMatrix]
+  have hmap_smul :
+      matrixOperator
+          ((((params.impurityStrength : ℝ) : ℂ)) •
+            params.inverseShiftMatrix greenLoop hinvertible) =
+        (((params.impurityStrength : ℝ) : ℂ)) •
+          matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
+    simp only [matrixOperator, map_smul]
+  rw [hmap_smul, hinverse_eq']
+
+/-- For a fixed Green loop, the operator-valued scalar-impurity T-matrix has a genuine quadratic
+remainder at zero impurity strength:
+`T(v_imp) - v_imp I = O(v_imp²)`.
+The use of `Ring.inverse` only totalizes the family away from the unit neighborhood; locally it is
+the ordinary inverse by `eventually_isUnit_scalarImpurityShiftMatrix`. -/
+theorem scalarImpurityTMatrixOperator_sub_bare_isBigO_sq
+    (greenLoop : Matrix2) :
+    (fun impurityStrength : ℝ =>
+      (((impurityStrength : ℝ) : ℂ)) •
+          Ring.inverse
+            ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+              (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) -
+        (((impurityStrength : ℝ) : ℂ)) •
+          (1 : DiracHilbert →L[ℂ] DiracHilbert))
+      =O[𝓝 0] (fun impurityStrength : ℝ => impurityStrength ^ 2) := by
+  have hofReal :
+      Tendsto (fun impurityStrength : ℝ => (impurityStrength : ℂ)) (𝓝 0) (𝓝 0) := by
+    simpa using Complex.continuous_ofReal.tendsto 0
+  have hbase :
+      Tendsto
+        (fun impurityStrength : ℝ =>
+          (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop)
+        (𝓝 0) (𝓝 0) := by
+    simpa using hofReal.smul_const (matrixOperator greenLoop)
+  have hzero :
+      Tendsto
+        (fun impurityStrength : ℝ =>
+          -((((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop))
+        (𝓝 0) (𝓝 0) := by
+    simpa using hbase.neg
+  have hinverse :=
+    (NormedRing.inverse_add_norm_diff_first_order
+      (R := DiracHilbert →L[ℂ] DiracHilbert)
+      (1 : (DiracHilbert →L[ℂ] DiracHilbert)ˣ)).comp_tendsto hzero
+  rcases isBigO_iff'.mp hinverse with ⟨C, _hCpos, hC⟩
+  refine IsBigO.of_bound (C * ‖matrixOperator greenLoop‖) ?_
+  filter_upwards [hC] with impurityStrength hbound
+  have hbound' :
+      ‖Ring.inverse
+            ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+              (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) -
+          (1 : DiracHilbert →L[ℂ] DiracHilbert)‖ ≤
+        C * ‖(((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop‖ := by
+    simpa [Function.comp_def, sub_eq_add_neg, norm_neg, Real.norm_eq_abs,
+      abs_of_nonneg (norm_nonneg _)] using hbound
+  rw [← smul_sub, norm_smul]
+  calc
+    ‖((impurityStrength : ℝ) : ℂ)‖ *
+        ‖Ring.inverse
+            ((1 : DiracHilbert →L[ℂ] DiracHilbert) -
+              (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop) -
+          (1 : DiracHilbert →L[ℂ] DiracHilbert)‖ ≤
+      ‖((impurityStrength : ℝ) : ℂ)‖ *
+        (C * ‖(((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop‖) :=
+      mul_le_mul_of_nonneg_left hbound' (norm_nonneg _)
+    _ = (C * ‖matrixOperator greenLoop‖) * ‖impurityStrength ^ 2‖ := by
+      rw [norm_smul]
+      simp only [Complex.norm_real, Real.norm_eq_abs, norm_pow]
+      ring
 
 /-- Finite-cutoff Born-Dyson zero-field loop at the spatial origin. Each real-space Green block
 already contains the physical momentum measure, so downstream T-matrix data must not attach it
