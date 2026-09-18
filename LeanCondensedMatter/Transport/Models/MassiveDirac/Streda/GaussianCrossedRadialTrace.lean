@@ -24,78 +24,6 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- Scalar radial momentum kernel for one Green-matrix entry in the crossed calculation. The
-physical momentum-measure prefactor remains outside the one-dimensional integral. -/
-noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
-    (i j : Fin 2) : ℂ :=
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
-  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
-  (p : ℂ) *
-    (!![k0 * (a + d), k1 * b;
-        k1 * b, k0 * (a - d)] : Matrix2) i j
-
-/-- Scalar radial momentum kernel for one Gaussian-crossed current-block entry. The angular
-harmonics have already been reduced to the finite-cutoff `K0` / `K1` / `K2` radial kernels. -/
-noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-    (source : Fin 2)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
-    (i j : Fin 2) : ℂ :=
-  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let coefficients : InPlaneCoefficientVector :=
-    fun direction => if direction = source then factor else 0
-  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let harmonics :=
-    polarPauliInPlaneHarmonics aA bA dA aR bR dR coefficients
-  (p : ℂ) *
-    (polarFourierZerothAngularKernel (p * radius / hbar) * harmonics.constant i j +
-      polarFourierFirstCosineAngularKernel (p * radius / hbar) * harmonics.firstCosine i j +
-      polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-        harmonics.secondCosine i j)
-
-private theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (i j : Fin 2) :
-    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
-        side v m probeEnergy broadening disorderStrength hbar pMax radius i j =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax,
-          finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
-            side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
-  fin_cases i <;> fin_cases j <;> rfl
-
-private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
-    (source : Fin 2)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
-    (i j : Fin 2) :
-    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-        source v m probeEnergy broadening disorderStrength hbar pMax radius i j =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax,
-          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
-  rfl
-
 /-- Pointwise crossed trace kernel written only in terms of the one-dimensional radial Green and
 current blocks. Negative real-space arguments are represented by negative scalar radii. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
@@ -153,7 +81,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scal
                 0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *
           ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
             ∫ p in (0 : ℝ)..pMax,
-              finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
+              finiteCutoffContinuumBornDysonRadialGreenEntryKernel
                 .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius) p j k) *
           ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
             ∫ p in (0 : ℝ)..pMax,
@@ -161,7 +89,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scal
                 1 v m probeEnergy broadening disorderStrength hbar pMax radius p k l) *
           ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
             ∫ p in (0 : ℝ)..pMax,
-              finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
+              finiteCutoffContinuumBornDysonRadialGreenEntryKernel
                 .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius) p l i) := by
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum]
   simp_rw [
@@ -203,11 +131,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_sc
                   0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *
             ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
               ∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
+                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
                   .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius) p j k) *
             ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
               ∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonGaussianCrossedRadialGreenEntryKernel
+                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
                   .retarded v m probeEnergy broadening disorderStrength hbar pMax radius p k l) *
             ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
               ∫ p in (0 : ℝ)..pMax,
