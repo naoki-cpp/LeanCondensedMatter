@@ -76,23 +76,6 @@ theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
   rw [d.mixedRestrictedPartner_val]
   exact (((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
 
-/-- Mixed component pairs are equivalent to normalized pairs of a local pairing obtained by
-transporting the mixed restricted partner through the supplied position equivalence. -/
-noncomputable def TwoPointDiagram.mixedComponentPairRestrictedEquiv
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m)
-    (hpartner : ∀ pos,
-      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos)) :
-    d.MixedComponentPair τ τ' σ B ≃ localPairing.NormalizedPair :=
-  (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
-    (fun p => d.mixedPositionComponent τ τ' σ p = B)
-    (fun p => by rw [d.mixedPositionComponent_partner]) e localPairing
-    (fun pos => by
-      simpa only [TwoPointDiagram.mixedRestrictedPartner] using hpartner pos)
-
 /-- Mixed pairs in the external component are equivalent to normalized pairs of the canonical
 external split pairing. -/
 noncomputable def TwoPointDiagram.mixedExternalComponentPairEquiv
@@ -101,9 +84,13 @@ noncomputable def TwoPointDiagram.mixedExternalComponentPairEquiv
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.MixedComponentPair τ τ' σ d.externalComponentPart ≃
       d.externalVacuumSplit.1.pairing.NormalizedPair :=
-  d.mixedComponentPairRestrictedEquiv τ τ' σ d.externalComponentPart
+  (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
+    (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
+    (fun p => by rw [d.mixedPositionComponent_partner])
     (d.mixedExternalPositionEquiv τ τ' σ) d.externalVacuumSplit.1.pairing
-    (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ)
+    (fun pos => by
+      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
+        d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ pos)
 
 /-- Mixed pairs in a vacuum component are equivalent to normalized pairs of the corresponding
 restricted vacuum pairing. -/
@@ -113,10 +100,14 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
     (hVac : d.ComponentIsVacuum B) :
     d.MixedComponentPair τ τ' σ B ≃ (d.restrictedVacuumPairing B hVac).NormalizedPair :=
-  d.mixedComponentPairRestrictedEquiv τ τ' σ B
+  (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
+    (fun p => d.mixedPositionComponent τ τ' σ p = B)
+    (fun p => by rw [d.mixedPositionComponent_partner])
     (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
     (d.restrictedVacuumPairing B hVac)
-    (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
+    (fun pos => by
+      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
+        d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac pos)
 
 end Common
 end SecondQuantization
