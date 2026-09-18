@@ -172,8 +172,9 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
       rw [ht, norm_smul]
       ring
 
-/-- With a supplied uniform bound on the operator norm of the inverse shift, the exact remainder
-has an explicit quadratic impurity-strength bound. -/
+/-- With a supplied pointwise bound on the operator norm of the inverse shift, the exact remainder
+has an explicit quadratic impurity-strength factor. This does not by itself assert a uniform
+small-impurity estimate, Big-O statement, or limit as the impurity strength tends to zero. -/
 theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
     (hinvertible : IsUnit (params.shiftMatrix greenLoop))
