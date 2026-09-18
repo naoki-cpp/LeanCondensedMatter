@@ -94,6 +94,7 @@ theorem tendsto_disorderStrength_mul_bornRtaLongitudinalConductivityClosedForm
     tendsto_const_nhds
   refine hconst.congr' ?_
   filter_upwards [self_mem_nhdsWithin] with disorderStrength hdisorder
+  change 0 < disorderStrength at hdisorder
   unfold bornRtaLongitudinalConductivityClosedForm
   field_simp [ne_of_gt hdisorder, hden, Real.pi_ne_zero]
 
