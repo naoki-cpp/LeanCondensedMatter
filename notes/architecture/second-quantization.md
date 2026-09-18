@@ -168,6 +168,12 @@ semantic transport between the two representations. Odd external sectors are out
 paired-diagram representation and should be handled by a separate vanishing statement when a
 physical consumer requires them.
 
+The generic external-insertion component layer classifies each connected component as either
+externally supported or vacuum. `ExternalInsertionDiagram.HasNoVacuumComponent` requires every
+interaction vertex to lie in a component meeting at least one external insertion; it does not require
+distinct external insertions to lie in the same component. The finite component partition is the
+disjoint union of `externallySupportedComponentParts` and `vacuumComponentParts`.
+
 The two-point expansion has its own internal layer order:
 
 ```text
