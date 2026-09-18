@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -27,43 +28,6 @@ open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode]
-
-/-- View one quartic local leg as an external-style annihilation or creation field label. -/
-def quarticLocalLegExternalFieldLabel (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    ExternalFieldLabel Mode :=
-  match Common.quarticLocalLeg q l with
-  | .create i => .creation i
-  | .annihilate i => .annihilation i
-
-@[simp]
-theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
-    (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    bareExternalFieldOperator (quarticLocalLegExternalFieldLabel q l) =
-      quarticLocalLegOperator q l := by
-  cases h : Common.quarticLocalLeg q l <;>
-    simp [quarticLocalLegExternalFieldLabel, bareExternalFieldOperator,
-      quarticLocalLegOperator, Common.quarticLocalLegOperator, h]
-
-omit [LinearOrder Mode] in
-@[simp]
-theorem externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel
-    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    externalFieldLabelEnergyShift ε (quarticLocalLegExternalFieldLabel q l) =
-      quarticLocalLegEnergyShift ε q l := by
-  cases h : Common.quarticLocalLeg q l <;>
-    simp [quarticLocalLegExternalFieldLabel, externalFieldLabelEnergyShift,
-      quarticLocalLegEnergyShift, h]
-
-/-- The time-labelled field corresponding to one quartic local leg has the existing local-leg
-operator semantics. -/
-theorem timedFieldOperator_quarticLocalLeg (ε : Mode → ℝ) (τ : ℝ)
-    (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    timedFieldOperator ε ⟨τ, quarticLocalLegExternalFieldLabel q l⟩ =
-      imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) := by
-  rw [timedFieldOperator_eq_smul,
-    bareExternalFieldOperator_quarticLocalLegExternalFieldLabel,
-    externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel,
-    imaginaryTimeEvolve_quarticLocalLegOperator]
 
 /-- The field descriptors contributed by one external or quartic interaction event. -/
 noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
