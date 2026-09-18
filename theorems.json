@@ -7342,47 +7342,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} {ι : Type u_1} {M : Type u_2} [inst : Fintype ι] {F : ι → Type u_3} [inst_1 : (B : ι) → Fintype (F B)]\n  [inst_2 : CommMonoid M] (pairing : Combinatorics.Pairing n) (e : (B : ι) × F B ≃ pairing.NormalizedPair)\n  (f : pairing.NormalizedPair → M), ∏ pr, f pr = ∏ B, ∏ pr, f (e ⟨B, pr⟩)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.prod_componentDecomposition",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct",
-    "externalAxioms": [],
-    "docString": "Reindex a commutative product over normalized pairs as an iterated product over any dependent\ncomponent decomposition of those pairs. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} {M : Type u_1} [inst : CommMonoid M] (pairing : Combinatorics.Pairing (n + 1))\n  (f : Fin (2 * (n + 1)) × Fin (2 * (n + 1)) → M),\n  ∏ pr ∈ pairing.pairs, f pr =\n    f pairing.firstPair *\n      ∏ pr ∈ pairing.eraseZeroPair.pairs, f (↑(pairing.eraseZeroOrderIso pr.1), ↑(pairing.eraseZeroOrderIso pr.2))",
     "standardAxioms": [
       "Classical.choice",
@@ -20574,6 +20533,49 @@
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {ι : Type u_2} {M : Type u_3} [inst : Fintype α] [inst_1 : Fintype ι] {F : ι → Type u_4}\n  [inst_2 : (i : ι) → Fintype (F i)] [inst_3 : CommMonoid M] (e : α ≃ (i : ι) × F i) (f : α → M),\n  ∏ x, f x = ∏ i, ∏ y, f (e.symm ⟨i, y⟩)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Fintype.prod_equiv_sigma",
+    "module": "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
+    "externalAxioms": [],
+    "docString": "Reindex a commutative product through an equivalence with a dependent sum and split it\ninto the product over the base and each fiber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52097,7 +52099,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52109,15 +52111,54 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift",
       "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_mul_shiftMatrix"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift",
       "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_mul_shiftMatrix"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  QuantumTheory.Transport.Models.MassiveDirac.matrixOperator (params.tMatrix greenLoop hinvertible) =\n    ↑params.impurityStrength •\n      Ring.inverse (1 - ↑params.impurityStrength • QuantumTheory.Transport.Models.MassiveDirac.matrixOperator greenLoop)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "On an invertible scalar-impurity shift, the canonical matrix T-matrix becomes the corresponding\ntotalized operator-ring inverse after applying `matrixOperator`. This connects the family-level\nasymptotic route below to the existing `IsUnit`-guarded T-matrix API. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -56190,6 +56231,76 @@
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderDeterminant_broadening_zero_of_boundary_realRenormalization_lt_one"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2),\n  ∀ᶠ (impurityStrength : ℝ) in nhds 0, IsUnit (1 - ↑impurityStrength • greenLoop)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.eventually_isUnit_scalarImpurityShiftMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "For a fixed Green loop, the scalar-impurity shift is a unit for all impurity strengths\nsufficiently close to zero. This is a family-level statement in the raw scalar strength, so the\nlimit point `v_imp = 0` is not excluded by `ScalarImpurityParameters.impurityStrength_ne_zero`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2),\n  ∃ C,\n    ∀ᶠ (impurityStrength : ℝ) in nhds 0,\n      ‖Ring.inverse (1 - ↑impurityStrength • QuantumTheory.Transport.Models.MassiveDirac.matrixOperator greenLoop)‖ ≤ C",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.exists_eventually_norm_scalarImpurityShiftOperator_inverse_le",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The total ring inverse of the operator shift is uniformly bounded on some neighborhood of zero\nimpurity strength. On that neighborhood the preceding theorem guarantees that this totalized\ninverse is the ordinary inverse of a unit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -63887,6 +63998,41 @@
       "QuantumTheory.Transport.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2),\n  (fun impurityStrength =>\n      ↑impurityStrength •\n          Ring.inverse (1 - ↑impurityStrength • QuantumTheory.Transport.Models.MassiveDirac.matrixOperator greenLoop) -\n        ↑impurityStrength • 1) =O[nhds 0]\n    fun impurityStrength => impurityStrength ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.scalarImpurityTMatrixOperator_sub_bare_isBigO_sq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "For a fixed Green loop, the operator-valued scalar-impurity T-matrix has a genuine quadratic\nremainder at zero impurity strength:\n`T(v_imp) - v_imp I = O(v_imp²)`.\nThe use of `Ring.inverse` only totalizes the family away from the unit neighborhood; locally it is\nthe ordinary inverse by `eventually_isUnit_scalarImpurityShiftMatrix`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88900,7 +89046,7 @@
       "SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.prod_componentDecomposition",
+      "Fintype.prod_equiv_sigma",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components"
     ],
@@ -91368,7 +91514,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91380,15 +91526,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
+      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff",
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
+      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff",
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93937,7 +94085,9 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset"
+      "Fintype.prod_equiv_sigma",
+      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
+      "SecondQuantization.Common.TwoPointDiagram.interactionVertexComponentEquiv_symm_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114417,7 +114567,7 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.prod_componentDecomposition",
+      "Fintype.prod_equiv_sigma",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
