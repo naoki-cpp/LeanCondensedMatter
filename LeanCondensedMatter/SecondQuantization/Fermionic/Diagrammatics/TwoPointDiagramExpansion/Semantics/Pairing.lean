@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
@@ -13,7 +13,8 @@ set_option linter.style.header false
 
 This module applies the finite-temperature Bloch--de Dominicis theorem to the `4n + 2` atomic
 operator list constructed by `TwoPointDiagramExpansion.Flattening` and exposes its physical result
-through the shared pairing evaluator with a canonical free Gibbs density-state pair kernel.
+through the shared pairing evaluator with a canonical free Gibbs density-state pair kernel. Generic
+time-labelled external-field semantics are owned by `Fermionic.ImaginaryTime.TimedField`.
 
 Finite-Gibbs product formulas stay local to the physical endpoint proof. Reindexing the pairing sum
 into `TwoPointWickDiagram` is intentionally left to the next layer.
