@@ -35,12 +35,6 @@ private theorem heq_finFun_of_cast {a b : ℕ} (h : a = b)
   cases h
   exact heq_of_eq (funext fun j => hfg j)
 
-private theorem orderEmbOfFin_rfl_cast {n m : ℕ} (S : Finset (Fin n))
-    (h : S.card = m) (q : Fin m) :
-    S.orderEmbOfFin rfl (Fin.cast h.symm q) = S.orderEmbOfFin h q := by
-  cases h
-  rfl
-
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem connectedFixedExternal_cast_val_heq {a b : ℕ} (h : a = b)
     (d : {d : FixedExternalTwoPointWickDiagram Mode a i j // d.1.IsExternallyConnected}) :
@@ -140,8 +134,10 @@ private theorem fixedExternalShuffleFiber_externalPieceTimes_heq
   apply heq_finFun_of_cast hsize
   intro q
   change σ (d.1.1.externalInteractionPart.orderEmbOfFin rfl (Fin.cast hsize.symm q)) = _
-  rw [orderEmbOfFin_rfl_cast d.1.1.externalInteractionPart hsize q]
-  exact congrArg σ (congrFun horder.symm q)
+  apply congrArg σ
+  convert congrFun horder.symm q using 1
+  apply Fin.ext
+  rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
