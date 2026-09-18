@@ -36,7 +36,7 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod (fun B =>
       d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g := by
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g := by
   classical
   let d := fixedExternalOfSlotSplit T ext vac
   change d.1.vacuumComponentParts.prod (fun B =>
@@ -49,10 +49,10 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         (Finset.subset_univ T) ext.1 vac hext)
   have hvertex : d.1.vacuumComponentParts.prod (d.mixedComponentVertexWeight g) =
-      vac.couplingWeight g := by
+      vac.vertexWeight g := by
     unfold FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     simpa [d, fixedExternalOfSlotSplit,
-      QuarticWickDiagram.couplingWeight, Common.QuarticDiagram.vertexWeight] using
+      Common.QuarticDiagram.vertexWeight] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         (Finset.subset_univ T) ext.1 vac hext g)
   rw [hsign, hvertex]
@@ -200,7 +200,7 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
 
 /-- For an externally connected left piece and strictly decreasing inherited vacuum times, the
 complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
-fixed-order quartic vacuum integrand, including its Dyson sign and coupling prefactor. -/
+fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor. -/
 theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (T : Finset (Fin n))
@@ -212,7 +212,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod
         (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) := by
   classical
@@ -220,7 +220,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
   have hpre :
       d.1.vacuumComponentParts.prod (fun B =>
         d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) =
-        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g := by
+        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g := by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
         g T ext hext vac)
@@ -292,13 +292,13 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
       apply Finset.prod_congr rfl
       intro B _
       ring
-    _ = ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g) *
+    _ = ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g) *
         ((vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion *
           ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
             orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
               (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2) := by
       rw [hpre, hweight, hcontraction]
-    _ = (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+    _ = (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) := by
       have hpairProd :

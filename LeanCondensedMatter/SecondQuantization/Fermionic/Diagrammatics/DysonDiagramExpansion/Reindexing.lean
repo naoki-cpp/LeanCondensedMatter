@@ -39,19 +39,19 @@ theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (F
 
 /-- Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical
 evaluator form. -/
-theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
+theorem sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
     {N : ℕ} {S : Finset (Fin N)}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (order : Common.QuarticVertexOrder S) :
     ∑ d : QuarticWickDiagram Mode N S,
-        d.couplingWeight g * d.orderedSimplexContribution ε β order =
+        d.vertexWeight g * d.orderedSimplexContribution ε β order =
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
         ∑ pairing : Pairing (2 * S.card),
           intervalIntegral.orderedSimplexIntegral S.card β
             (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) :=
   calc
     ∑ d : QuarticWickDiagram Mode N S,
-        d.couplingWeight g * d.orderedSimplexContribution ε β order =
+        d.vertexWeight g * d.orderedSimplexContribution ε β order =
       ∑ d : QuarticWickDiagram Mode N S,
         (fun x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card =>
           (∏ i, g (x.1 i)) *
@@ -60,8 +60,7 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
           (Common.quarticDiagramEquivOrderedData order d) :=
         Finset.sum_congr rfl fun d _ => by
           simp only [Common.quarticDiagramEquivOrderedData]
-          rw [QuarticWickDiagram.couplingWeight,
-            Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order,
+          rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order,
             orderedSimplexContribution_eq_pairingEvaluation]
           rfl
     _ = ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card,
@@ -101,21 +100,21 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude 
     have hpt : ∀ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
         (-1 : ℂ) ^ S.card *
           ∑ order : Common.QuarticVertexOrder S,
-            d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+            d.vertexWeight g * d.orderedSimplexContribution ε β order :=
       fun d => by rw [quarticWickDiagramAmplitude, mul_assoc, Finset.mul_sum]
     calc
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
           = ∑ d : QuarticWickDiagram Mode N S, (-1 : ℂ) ^ S.card *
               ∑ order : Common.QuarticVertexOrder S,
-                d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+                d.vertexWeight g * d.orderedSimplexContribution ε β order :=
           Finset.sum_congr rfl fun d _ => hpt d
       _ = (-1 : ℂ) ^ S.card * ∑ d : QuarticWickDiagram Mode N S,
             ∑ order : Common.QuarticVertexOrder S,
-              d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+              d.vertexWeight g * d.orderedSimplexContribution ε β order :=
           (Finset.mul_sum _ _ _).symm
       _ = (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
             ∑ d : QuarticWickDiagram Mode N S,
-              d.couplingWeight g * d.orderedSimplexContribution ε β order := by
+              d.vertexWeight g * d.orderedSimplexContribution ε β order := by
           rw [Finset.sum_comm]
       _ = (-1 : ℂ) ^ S.card * ∑ order : Common.QuarticVertexOrder S,
             ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
@@ -124,7 +123,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude 
                   (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
           congr 1
           exact Finset.sum_congr rfl fun order _ =>
-            sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation ε β g order
+            sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation ε β g order
   rw [hstep, Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
   ring
 

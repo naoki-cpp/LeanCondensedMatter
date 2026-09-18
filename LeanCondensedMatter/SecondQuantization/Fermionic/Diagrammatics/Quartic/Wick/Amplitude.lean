@@ -57,13 +57,6 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
             (orderedQuarticLegOperator ε d order τ b))) :=
   rfl
 
-/-! ## Coupling weight compatibility -/
-
-/-- Fermionic compatibility name for the statistics-independent Common quartic vertex weight. -/
-noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ) : ℂ :=
-  d.vertexWeight g
-
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
 /-- The fixed-order Wick contraction integrand. -/
@@ -135,7 +128,7 @@ theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Fins
 /-- The quartic Wick-diagram amplitude, including the Dyson sign and all vertex orders. -/
 noncomputable def quarticWickDiagramAmplitude (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : ℂ :=
-  (-1 : ℂ) ^ S.card * d.couplingWeight g *
+  (-1 : ℂ) ^ S.card * d.vertexWeight g *
     ∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order
 
 /-! ## Basic lemmas -/
@@ -180,8 +173,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       (∅ : Finset (Fin 0 × Fin 0)).prod
           (fun pr => orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2) = (1 : ℂ)
     exact Finset.prod_empty
-  simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
-    Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
+  simp only [quarticWickDiagramAmplitude, Common.QuarticDiagram.vertexWeight,
+    hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
     have : IsEmpty (↥(∅ : Finset (Fin N))) := Finset.isEmpty_coe_sort.2 rfl
     exact Finset.prod_of_isEmpty _

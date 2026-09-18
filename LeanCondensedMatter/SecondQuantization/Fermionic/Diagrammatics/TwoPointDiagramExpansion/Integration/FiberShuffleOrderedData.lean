@@ -42,7 +42,7 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
     let d := fixedExternalOfSlotSplit T ext vac
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
-        ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+        ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g *
           vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
             (σ ∘ slotSplitVacuumSlot T)) := by
   classical
@@ -53,7 +53,7 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
   rw [show
     d.1.vacuumComponentParts.prod
         (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) by
     simpa [d] using
@@ -136,8 +136,7 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
-  rw [QuarticWickDiagram.couplingWeight,
-    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
+  rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
     hcontraction]
   rfl
 
