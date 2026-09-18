@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
@@ -10,9 +9,9 @@ set_option linter.style.header false
 /-!
 # Fermionic Dyson linked cluster theorem
 
-The normalized Dyson source functional is identified directly with the connected quartic Wick
-amplitude sum, and the generic formal-log/source-cumulant bridge then yields the canonical formal
-Linked Cluster Theorem.
+The factorial-normalized Dyson moments are identified with the object moments of the multiplicative
+quartic Wick-diagram decomposition. The statistics-independent formal power-series/connected-
+decomposition theorem then yields the canonical formal Linked Cluster Theorem.
 -/
 
 open scoped BigOperators
@@ -44,28 +43,6 @@ private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → 
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
     exact quarticWickDiagramAmplitude_eq_prod_components ε β g d
 
-private theorem dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {S : Finset (Fin N)} (hS : S ≠ ∅) :
-    (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).connected S =
-      ∑ d : ConnectedQuarticWickDiagram Mode N S,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  let W := quarticWickDiagramMultiplicativeWeight (N := N) ε β g
-  calc
-    (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).connected S =
-        W.connectedContribution S := by
-      refine Common.GeneratingFunctional.connected_eq_connectedContribution
-        (Z := dysonVertexGeneratingFunctional ε β (quarticInteraction g))
-        (W := W) ?_ hS
-      ext T
-      rw [dysonVertexGeneratingFunctional_moment]
-      change dysonVertexMoment ε β (quarticInteraction g) T =
-        ∑ d : QuarticWickDiagram Mode N T, quarticWickDiagramAmplitude ε β g d
-      exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
-    _ = ∑ d : ConnectedQuarticWickDiagram Mode N S,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-      rfl
-
 /-- Fermionic Dyson Linked Cluster Theorem. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -76,20 +53,37 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
       ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
         quarticWickDiagramAmplitude ε β g d.1 := by
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := fin_univ_ne_empty hn
+  let W := quarticWickDiagramMultiplicativeWeight (N := n) ε β g
+  have hZ :
+      PowerSeries.constantCoeff
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))) = 1 :=
+    PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
+  have hMoment :
+      Combinatorics.powerSeriesMomentSetFunction
+          (α := Fin n)
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
+        W.normalizedObjectMoment := by
+    ext T
+    change (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).moment T =
+      ∑ d : QuarticWickDiagram Mode n T, quarticWickDiagramAmplitude ε β g d
+    rw [dysonVertexGeneratingFunctional_moment]
+    exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
           (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
-        (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).connected
-          (Finset.univ : Finset (Fin n)) := by
-      simpa [dysonFormalLogPartitionFunction, dysonVertexGeneratingFunctional] using
-        (Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
-          (Z := dysonPartitionSeries ε β (quarticInteraction g)) (Source := Fin n)
-          (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g)) huniv)
+        W.connectedContribution (Finset.univ : Finset (Fin n)) := by
+      simpa [dysonFormalLogPartitionFunction] using
+        (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
+          (Z := PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g)))
+          hZ (W := W) hMoment huniv)
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
-          quarticWickDiagramAmplitude ε β g d.1 :=
-      dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected
-        ε β g huniv
+          quarticWickDiagramAmplitude ε β g d.1 := by
+      rfl
 
 end Fermionic
 end SecondQuantization
