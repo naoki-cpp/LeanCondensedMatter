@@ -331,10 +331,6 @@ private theorem QuarticDiagram.subsetSubtypeEquiv_equivSigmaParts_snd
   rw [← Equiv.eq_symm_apply]
   exact (Subtype.ext (d.subsetSubtypeEquiv_symm_equivSigmaParts_snd v)).symm
 
-private theorem QuarticDiagram.subsetSubtypeEquiv_val {S : Finset (Fin N)}
-    {B : Finset (Fin N)} (hBS : B ⊆ S) (v : {v : ↥S // (v : Fin N) ∈ B}) :
-    (Combinatorics.subsetSubtypeEquiv B hBS v : Fin N) = (v : Fin N) := rfl
-
 private theorem QuarticDiagram.equivSigmaParts_symm_subsetSubtypeEquiv
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (w : ↥S) (hw : (w : Fin N) ∈ B) :
@@ -344,7 +340,7 @@ private theorem QuarticDiagram.equivSigmaParts_symm_subsetSubtypeEquiv
   apply Subtype.ext
   change (Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB) ⟨w, hw⟩ : Fin N) =
     (w : Fin N)
-  exact QuarticDiagram.subsetSubtypeEquiv_val _ _
+  exact Combinatorics.subsetSubtypeEquiv_val B (d.componentPartition.le hB) ⟨w, hw⟩
 
 private theorem QuarticDiagram.reassemble_componentPartition_partner
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (v : ↥S) (i : Fin 4) :
