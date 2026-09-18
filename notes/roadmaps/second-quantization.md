@@ -48,11 +48,10 @@ The first two names deliberately identify the connected object on the right-hand
 quartic Wick-diagram amplitude rather than using a generic `connectedAmplitude` label. The two-point
 result already covers one external-leg correlation-function setting. The remaining connected-diagram
 target is arbitrary higher-point/source-insertion structure. The reusable normalized algebraic
-boundary for that work is now `Common.Perturbation.GeneratingFunctional`: it stores finite-set source
-moments, applies the cumulant transform through `connected`, and proves `connected_moment`. The
-fermionic `dysonVertexGeneratingFunctional` consumes this boundary directly from the normalized Dyson
-partition series. Pre-normalized external-insertion moments and the physical higher-point theorem
-remain open.
+boundary is `Combinatorics.NormalizedSetFunction` together with
+`Combinatorics.powerSeriesMomentSetFunction` and the multiplicative connected-decomposition
+machinery. Pre-normalized external-insertion moments, any source-functional API they genuinely
+require, and the physical higher-point theorem remain open.
 
 ## Diagrammatics ownership
 

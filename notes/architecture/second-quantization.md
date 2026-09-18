@@ -195,18 +195,17 @@ in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next corr
 target is higher-point/source-insertion structure, not re-proving the two-point linked-cluster
 identity.
 
-## Normalized source-functional boundary
+## Normalized moment and connected-decomposition boundary
 
-`SecondQuantization.Common.Perturbation.GeneratingFunctional` owns the statistics-independent
-algebraic boundary for normalized source moments. `GeneratingFunctional Source R` stores a
-`NormalizedSetFunction Source R` over a commutative coefficient ring; its `connected` operation is
-the finite-set cumulant transform, and `GeneratingFunctional.connected_moment` proves that connected
-coefficients reconstruct the moments. `powerSeriesGeneratingFunctional` packages
-factorial-normalized coefficients of a normalized formal power series into this representation.
+The statistics-independent algebraic boundary is owned by `Combinatorics`.
+`NormalizedSetFunction` is the canonical normalized finite-set representation,
+`powerSeriesMomentSetFunction` packages factorial-normalized coefficients of a unit-constant formal
+power series into that representation, and `MultiplicativeWeight` expresses factorization over
+connected components. The formal linked-cluster bridge consumes these objects directly.
 
-`Fermionic.dysonVertexGeneratingFunctional` is the concrete normalized Dyson specialization. This
-boundary does not yet provide pre-normalized external-insertion moments, Grassmann variables, or an
-arbitrary higher-point diagram theorem; those remain downstream research targets.
+There is no separate source-functional wrapper in the current API. Pre-normalized external-insertion
+moments, Grassmann variables, and arbitrary higher-point source semantics remain downstream research
+targets and should introduce a source abstraction only when concrete consumers require one.
 
 ## Fermionic field/current boundary
 

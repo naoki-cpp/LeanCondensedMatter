@@ -32,8 +32,7 @@ partition-function endpoint.
 The normalized coefficients themselves,
 `normalizedDysonPartitionCoeff`, belong to `Fermionic.Perturbation.DysonPartitionSeries` together
 with the normalized-series coefficient theorem and formal logarithm. `DysonVertexMoment` owns only
-the labelled finite-set moment boundary, its Gibbs expectation bridge used by diagrammatics, and the
-Dyson generating-functional specialization.
+the labelled finite-set moment boundary and its Gibbs expectation bridge used by diagrammatics.
 
 ## Analytic log-partition theorem
 
@@ -76,27 +75,19 @@ Here `vacuumNormalized` is the Lean identifier for division by the zero-external
 series; it does not mean that the thermal state is a vacuum state. Vacuum normalization is distinct
 from full source connectedness for higher-point external insertions.
 
-## Formal source-functional layer
+## Statistics-independent moment boundary
 
-`Common.Perturbation.GeneratingFunctional` provides the statistics-independent normalized source
-boundary. `GeneratingFunctional` stores normalized finite-set source moments over a commutative
-coefficient ring, `connected` applies the finite-set cumulant transform, and
-`GeneratingFunctional.connected_moment` reconstructs the normalized moments.
-`GeneratingFunctional.connected_eq_connectedContribution` is the statistics-independent
-source/diagram seam: when normalized source moments agree with the normalized object moments of a
-multiplicative connected decomposition, connected source coefficients equal its connected-object
-contribution. This seam is for consumers that genuinely carry source-functional semantics. The
-bosonic coefficientwise connected theorem applies the underlying statistics-independent
-`MultiplicativeWeight` cumulant theorem directly, while the fermionic zero-source formal LCT now
-uses the lower generic power-series/connected-decomposition theorem directly. Statistics do not
-enter either bridge; they remain in concrete source/moment realizations and in pairing weights and
-amplitudes. `powerSeriesGeneratingFunctional` wraps the generic
-`Combinatorics.powerSeriesMomentSetFunction` when a source-functional view is actually needed.
+`Combinatorics.powerSeriesMomentSetFunction` packages factorial-normalized coefficients of a
+unit-constant formal power series as a `NormalizedSetFunction`. Connected-decomposition consumers
+compare that moment function directly with `MultiplicativeWeight.normalizedObjectMoment`; the
+generic theorem `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` then identifies
+the corresponding formal-log coefficient with the connected-object contribution.
 
-`Fermionic.dysonVertexGeneratingFunctional` is the concrete normalized Dyson specialization. The
-quartic Wick layer supplies the model-specific amplitudes and fermionic signs. Pre-normalized
-external-insertion moments, their vacuum normalization, Grassmann variables, and arbitrary
-higher-point connected diagram expansions remain downstream work.
+The bosonic coefficientwise connected theorem uses the same normalized finite-set and
+`MultiplicativeWeight` machinery directly. Statistics enter only in concrete moment realizations,
+pairing weights, and amplitudes. No source-functional wrapper is part of the current zero-source LCT
+API. A source-functional abstraction should be introduced only when pre-normalized external
+insertions and higher-point source consumers give it independent semantics.
 
 ## Low-order identities
 
@@ -115,7 +106,7 @@ the canonical `LinkedCluster` umbrella.
 ## Open work
 
 - pre-normalized arbitrary higher-point source moments and their vacuum normalization;
-- arbitrary higher-point and source-insertion connected expansions using the formal source-functional layer;
+- arbitrary higher-point and source-insertion connected expansions, including a source-functional layer if required by concrete consumers;
 - convergence-aware bosonic Dyson and linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
 - infinite-mode and thermodynamic limits under explicit analytic hypotheses.

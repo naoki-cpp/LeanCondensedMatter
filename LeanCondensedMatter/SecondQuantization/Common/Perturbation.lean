@@ -12,7 +12,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonE
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
 
 set_option linter.style.header false
