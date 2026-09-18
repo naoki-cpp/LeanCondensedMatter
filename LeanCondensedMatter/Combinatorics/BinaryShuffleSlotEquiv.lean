@@ -114,6 +114,17 @@ theorem SlotShuffle.card_leftSlots {m n : ℕ} (σ : SlotShuffle m n) :
     σ.leftSlots.card = m := by
   simpa [SlotShuffle.leftSlots] using (SumEquiv.card_leftImage σ.slotEquiv)
 
+@[simp]
+theorem SlotShuffle.card_rightSlots {m n : ℕ} (σ : SlotShuffle m n) :
+    σ.rightSlots.card = n := by
+  simpa [SlotShuffle.rightSlots] using (SumEquiv.card_rightImage σ.slotEquiv)
+
+@[simp]
+theorem SlotShuffle.mem_leftSlots_iff {m n : ℕ} (σ : SlotShuffle m n)
+    (x : Fin (m + n)) :
+    x ∈ σ.leftSlots ↔ ∃ i : Fin m, σ.slotEquiv (Sum.inl i) = x := by
+  simpa [SlotShuffle.leftSlots] using (SumEquiv.mem_leftImage_iff σ.slotEquiv x)
+
 /-- The increasing enumeration of the left slots is the left shuffle slot map. -/
 theorem SlotShuffle.leftSlots_orderEmbOfFin {m n : ℕ}
     (σ : SlotShuffle m n) (i : Fin m) :
@@ -125,17 +136,6 @@ theorem SlotShuffle.leftSlots_orderEmbOfFin {m n : ℕ}
     (fun q => (σ.mem_leftSlots_iff _).2 ⟨q, rfl⟩)
     σ.strictMonoLeft
   exact congrFun h.symm i
-
-@[simp]
-theorem SlotShuffle.card_rightSlots {m n : ℕ} (σ : SlotShuffle m n) :
-    σ.rightSlots.card = n := by
-  simpa [SlotShuffle.rightSlots] using (SumEquiv.card_rightImage σ.slotEquiv)
-
-@[simp]
-theorem SlotShuffle.mem_leftSlots_iff {m n : ℕ} (σ : SlotShuffle m n)
-    (x : Fin (m + n)) :
-    x ∈ σ.leftSlots ↔ ∃ i : Fin m, σ.slotEquiv (Sum.inl i) = x := by
-  simpa [SlotShuffle.leftSlots] using (SumEquiv.mem_leftImage_iff σ.slotEquiv x)
 
 @[simp]
 theorem SlotShuffle.mem_rightSlots_iff {m n : ℕ} (σ : SlotShuffle m n)
