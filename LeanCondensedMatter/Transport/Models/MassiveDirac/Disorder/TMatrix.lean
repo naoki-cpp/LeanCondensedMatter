@@ -116,6 +116,54 @@ theorem ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix
   simp only [sub_mul, one_mul, smul_mul_assoc] at h
   exact (sub_eq_iff_eq_add).mp h
 
+/-- Exact remainder after subtracting the bare scalar-impurity term. No series
+expansion is used. -/
+theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
+    params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
+      (((params.impurityStrength : ℝ) : ℂ)) •
+        (greenLoop * params.tMatrix greenLoop hinvertible) := by
+  rw [params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible]
+  simp
+
+/-- The exact T-matrix remainder carries two powers of the impurity strength, up to the norm of
+the supplied Green loop and inverse shift. -/
+theorem ScalarImpurityParameters.norm_tMatrix_sub_bare_le
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
+    ‖params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2)‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ *
+        ‖params.inverseShiftMatrix greenLoop hinvertible‖ := by
+  rw [params.tMatrix_sub_bare_eq greenLoop hinvertible, norm_smul]
+  calc
+    ‖((params.impurityStrength : ℝ) : ℂ)‖ *
+        ‖greenLoop * params.tMatrix greenLoop hinvertible‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ *
+        (‖greenLoop‖ * ‖params.tMatrix greenLoop hinvertible‖) :=
+      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
+    _ = ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ *
+        ‖params.inverseShiftMatrix greenLoop hinvertible‖ := by
+      rw [ScalarImpurityParameters.tMatrix, norm_smul]
+      ring
+
+/-- With a supplied uniform bound on the inverse shift, the exact remainder has an explicit
+quadratic impurity-strength bound. -/
+theorem ScalarImpurityParameters.norm_tMatrix_sub_bare_le_of_inverse_bound
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop))
+    (inverseBound : ℝ)
+    (hinverse :
+      ‖params.inverseShiftMatrix greenLoop hinvertible‖ ≤ inverseBound) :
+    ‖params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2)‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ * inverseBound := by
+  exact (params.norm_tMatrix_sub_bare_le greenLoop hinvertible).trans
+    (mul_le_mul_of_nonneg_left hinverse
+      (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
+
 /-- Finite-cutoff Born-Dyson zero-field loop at the spatial origin. Each real-space Green block
 already contains the physical momentum measure, so downstream T-matrix data must not attach it
 again. -/
