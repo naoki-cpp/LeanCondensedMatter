@@ -41,6 +41,24 @@ noncomputable def finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           probeEnergy broadening disorderStrength hbar pMax i j)
       r
 
+/-- Scalar radial momentum kernel for one finite-cutoff Born-Dyson Green-matrix entry. The
+physical momentum-measure prefactor remains outside the one-dimensional integral. -/
+noncomputable def finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
+    (i j : Fin 2) : ℂ :=
+  let a := finiteCutoffContinuumBornDysonScalarCoefficient
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  (p : ℂ) *
+    (!![k0 * (a + d), k1 * b;
+        k1 * b, k0 * (a - d)] : Matrix2) i j
+
 /-- One-dimensional radial-kernel representation of the finite-cutoff Born-Dyson Green matrix on
 the positive real-space radial axis. The diagonal channels carry the zeroth angular kernel, while
 the off-diagonal in-plane channel carries the first-cosine kernel. -/
@@ -66,6 +84,20 @@ noncomputable def finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
     prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * b p);
     prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * b p),
     prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * (a p - d p))]
+
+/-- Each entry of the radial Born-Dyson Green matrix is the physical momentum-measure prefactor
+times the integral of its scalar radial kernel. -/
+theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (i j : Fin 2) :
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        side v m probeEnergy broadening disorderStrength hbar pMax radius i j =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+  fin_cases i <;> fin_cases j <;> rfl
 
 /-- The two-dimensional polar Fourier representation of the finite-cutoff Born-Dyson Green matrix
 reduces exactly to the one-dimensional zeroth/first angular kernels on the positive real-space
