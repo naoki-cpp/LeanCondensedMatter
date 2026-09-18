@@ -27,7 +27,6 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
-
   calc
     (∏ v : ↥S, w (d.vertexLabel v)) =
         ∏ B : d.componentPartition.parts,
