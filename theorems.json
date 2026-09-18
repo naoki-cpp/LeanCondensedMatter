@@ -51974,6 +51974,269 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters), 0 < self.impurityDensity",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.impurityDensity_pos",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The impurity density is positive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters), self.impurityStrength ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.impurityStrength_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The scalar impurity potential is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.inverseShiftMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The explicit inverse is also a left inverse of `1 - v_imp G_loop`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_mul_shiftMatrix"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_mul_shiftMatrix"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.shiftMatrix greenLoop * params.inverseShiftMatrix greenLoop hinvertible = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_inverseShiftMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The explicit inverse is a right inverse of `1 - v_imp G_loop`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_tMatrix"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_tMatrix"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.shiftMatrix greenLoop * params.tMatrix greenLoop hinvertible = ↑params.impurityStrength • 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_tMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "Multiplying the T-matrix by its shift from the left gives the scalar impurity potential. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_inverseShiftMatrix"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.tMatrix greenLoop hinvertible =\n    ↑params.impurityStrength • 1 + ↑params.impurityStrength • (greenLoop * params.tMatrix greenLoop hinvertible)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "Exact Lippmann--Schwinger fixed-point identity. This follows from invertibility alone and does\nnot assert convergence of a geometric series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_tMatrix"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.tMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = ↑params.impurityStrength • 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_mul_shiftMatrix",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "Multiplying the T-matrix by its shift from the right gives the same scalar impurity potential. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.inverseShiftMatrix_mul_shiftMatrix"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py offset radius : ℝ),\n  |offset| ≤ radius →\n    |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py| - radius ≤\n      |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py + offset|",
     "standardAxioms": [
@@ -56891,6 +57154,44 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix side v m probeEnergy\n      broadening disorderStrength hbar pMax i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax 0 p i j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "The Born-Dyson loop is exactly the existing radial physical-momentum integral at radius zero.\nThis theorem exposes the cutoff and the single momentum-measure prefactor directly in the T-matrix\nAPI. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator side v m (p * Real.cos θ)\n      (p * Real.sin θ) probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient side v m p 0\n        probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient\n        InternalSpace.PauliAxis.x side v m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient\n        InternalSpace.PauliAxis.z side v m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      θ",
     "standardAxioms": [
@@ -57158,16 +57459,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57186,7 +57489,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57198,7 +57501,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
@@ -57207,9 +57511,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122436,7 +122741,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_comp_self",
       "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.linearMap_ext_basisState",
@@ -122447,7 +122752,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_comp_self",
       "SecondQuantization.Fermionic.completedAnticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -122483,7 +122788,7 @@
       "SecondQuantization.Fermionic.anticomm_create_annihilate",
       "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
       "SecondQuantization.Fermionic.traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.matrixCoeff_create_comp_annihilate_of_ne"
     ],
     "dependencies": [
@@ -122496,7 +122801,7 @@
       "SecondQuantization.Fermionic.anticomm_create_annihilate",
       "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
       "SecondQuantization.Fermionic.traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.matrixCoeff_create_comp_annihilate_of_ne"
     ],
     "compiledConsumerCount": 5,
@@ -122571,7 +122876,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -122584,7 +122889,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_swap_of_sq_eq_one",
@@ -122593,7 +122898,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -122628,7 +122933,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.completedAnticomm_create_create",
       "SecondQuantization.Fermionic.create_comp_self",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.linearMap_ext_basisState",
@@ -122639,7 +122944,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnticomm_create_create",
       "SecondQuantization.Fermionic.create_comp_self",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -122666,7 +122971,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.bareExternalFieldOperator_quarticLocalLegExternalFieldLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -126163,7 +126468,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -126354,7 +126659,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.externalFieldOperator_eq_smul_bare",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "externalAxioms": [],
     "docString": "Every evolved external field is its bare ladder operator times the expected exponential. ",
     "directWrapperTargetModule": null,
@@ -128695,7 +129000,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "externalAxioms": [],
     "docString": "A time-labelled field remains an eigenoperator after a further evolution by `-β`. ",
     "directWrapperTargetModule": null,
@@ -132575,10 +132880,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.timedFieldOperator_eq_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "externalAxioms": [],
     "docString": "A time-labelled field has the expected scalar-times-bare normal form. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "directWrapperOf": "SecondQuantization.Fermionic.externalFieldOperator_eq_smul_bare",
     "dependents": [
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
@@ -132620,7 +132925,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
     "externalAxioms": [],
     "docString": "The time-labelled field corresponding to one quartic local leg has the existing local-leg\noperator semantics. ",
     "directWrapperTargetModule": null,
@@ -134050,50 +134355,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (A B : SecondQuantization.Fermionic.ExternalFieldLabel Mode),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator A)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator B) =\n    (if\n          SecondQuantization.Fermionic.externalFieldLabelIsCreate A =\n            SecondQuantization.Fermionic.externalFieldLabelIsCreate B then\n        0\n      else\n        if\n            SecondQuantization.Fermionic.externalFieldLabelMode A =\n              SecondQuantization.Fermionic.externalFieldLabelMode B then\n          1\n        else 0) •\n      LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
-    "externalAxioms": [],
-    "docString": "The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
-      "SecondQuantization.Fermionic.anticomm_annihilate_create",
-      "SecondQuantization.Fermionic.anticomm_create_annihilate",
-      "SecondQuantization.Fermionic.anticomm_create_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p)\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p') =\n    SecondQuantization.Fermionic.flatVertexLegCommutatorCoeff ε q τ p p' • LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -134150,7 +134411,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "externalAxioms": [],
     "docString": "Two evolved fields satisfy the scalar zeta-commutator hypothesis. ",
     "directWrapperTargetModule": null,
@@ -134161,7 +134422,7 @@
     "dependencies": [
       "LinearMap.zetaCommutator_smul_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_eq_smul",
-      "SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154962,6 +155223,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (A B : SecondQuantization.Fermionic.ExternalFieldLabel Mode),\n  LinearMap.zetaCommutator (↑SecondQuantization.Common.Statistics.fermion.zetaInt)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator A)\n      (SecondQuantization.Fermionic.bareExternalFieldOperator B) =\n    (if\n          SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ A =\n            SecondQuantization.Fermionic.externalFieldLabelIsCreate✝ B then\n        0\n      else\n        if\n            SecondQuantization.Fermionic.externalFieldLabelMode✝ A =\n              SecondQuantization.Fermionic.externalFieldLabelMode✝ B then\n          1\n        else 0) •\n      LinearMap.id",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField.0.SecondQuantization.Fermionic.zetaCommutator_bareExternalFieldOperator",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
+    "externalAxioms": [],
+    "docString": "The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.anticomm_annihilate_annihilate",
+      "SecondQuantization.Fermionic.anticomm_annihilate_create",
+      "SecondQuantization.Fermionic.anticomm_create_annihilate",
+      "SecondQuantization.Fermionic.anticomm_create_create"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
