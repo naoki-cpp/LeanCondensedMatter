@@ -187,7 +187,9 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero
   have hnormalized :=
     h.const_mul
       (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
-  simpa [AheScalingParameters.normalizedComplexConductivity] using hnormalized
+  simpa [AheScalingParameters.normalizedComplexConductivity,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary]
+    using hnormalized
 
 /-- The normalized Hall coordinate inherits the existing sequential zero-broadening then
 weak-disorder non-crossing limit. No finite-broadening skew contribution is introduced here. -/
