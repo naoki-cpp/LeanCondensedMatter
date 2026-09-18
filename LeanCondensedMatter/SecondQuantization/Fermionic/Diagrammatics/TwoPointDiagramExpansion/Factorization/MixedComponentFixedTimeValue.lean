@@ -133,7 +133,8 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
                 pr.1.1.1 pr.1.1.2 := by
-          simpa only [Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
+          simpa only [Equiv.symm_symm,
+            Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
             (Fintype.prod_equiv_sigma
               (d.1.mixedComponentPairSigmaEquiv τ τ' σ).symm
               (fun pr =>
