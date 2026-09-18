@@ -59,16 +59,18 @@ normalization by the zero-external-leg Dyson partition series; the state itself 
 
 The general higher-point/source-insertion connected expansion remains open.
 
-## Normalized source-functional boundary
+## Normalized moment / connected-decomposition boundary
 
-`SecondQuantization.Common.Perturbation.GeneratingFunctional` provides the proved,
-statistics-independent normalized source layer. `GeneratingFunctional` stores finite-set moments
-over a commutative coefficient ring, `connected` applies the finite-set cumulant transform, and
-`GeneratingFunctional.connected_moment` reconstructs the normalized moments. The formal-log bridge
-`Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected` and the fermionic
-`dysonVertexGeneratingFunctional` specialization use this boundary. Vacuum normalization of
-unnormalized external-insertion moments, Grassmann variables, and arbitrary higher-point diagram
-expansions are still outside the current implementation.
+The statistics-independent formal boundary is the combination of
+`Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction`, and
+`Combinatorics.MultiplicativeWeight`. The generic theorem
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` connects normalized formal
+power-series moments directly to connected-object contributions.
+
+There is currently no separate source-functional wrapper. Vacuum normalization of unnormalized
+external-insertion moments, Grassmann variables, and arbitrary higher-point/source diagram
+expansions remain outside the implementation; a source API should be added only when those concrete
+consumers require it.
 
 ## Completed fermionic representation
 
