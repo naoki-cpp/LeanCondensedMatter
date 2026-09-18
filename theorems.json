@@ -86433,7 +86433,7 @@
     "name": "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
     "externalAxioms": [],
-    "docString": "**The general finite-temperature Bloch–de Dominicis theorem.** ",
+    "docString": "**The general finite-temperature Bloch–de Dominicis theorem.** For the unified\nbosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear\nPhysics* **15**, 89–91 (1960),\n[doi:10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6). This theorem is\nthe finite-Gibbs recursion specialization described above. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
