@@ -203,9 +203,9 @@ or consumer structure changes.
   operator.
 - `QuantumTheory.Transport.Models.MassiveDirac.sum_bandProjectorOperator_eq_one` — canonical
   completeness relation for the finite family of Massive Dirac band projectors.
-- `SecondQuantization.Common.QuarticDiagram.blockVertex_subsetSubtypeEquiv` — one direction of the
-  canonical inverse laws between the public block-vertex embedding and `Combinatorics.subsetSubtypeEquiv`, paired
-  with `subsetSubtypeEquiv_blockVertex` rather than one-use proof routing.
+- `SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype` — one direction of the
+  canonical inverse laws between the public block-vertex embedding and `Equiv.subtypeSubtypeEquivSubtype`, paired
+  with `subtypeSubtypeEquivSubtype_blockVertex` rather than one-use proof routing.
 - `SecondQuantization.Common.QuarticDiagram.restrictComponentConnected_reassemble` — round-trip law
   for connected component restriction after reassembly; it forms the semantic right-inverse layer
   underlying the public component-decomposition equivalence.
