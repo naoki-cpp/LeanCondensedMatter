@@ -82,8 +82,7 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
         unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
         rw [vertexOfLeg_legOfVertexLocal]
         apply (d.componentPartition.part_eq_iff_mem hB).mpr
-        exact (((Combinatorics.subsetSubtypeEquiv B
-          (d.componentPartition.le hB)).symm (vertexOfLeg leg') :
+        exact (((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm (vertexOfLeg leg') :
             {v : ↥S // (v : Fin N) ∈ B})).2⟩
   left_inv leg := by
     apply Subtype.ext
