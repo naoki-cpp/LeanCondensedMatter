@@ -106,16 +106,16 @@ omit [Fintype Mode] in
 /-- The mixed field family at an atomic position is exactly the descriptor of the fixed standard leg
 represented at that position. -/
 theorem mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField
-    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    {n : ℕ} (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * n + 1))) :
-    mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p =
+    mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p =
       orderedTwoPointLegField i j τ τ' q σ
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
   let fields := mixedTimeOrderedAtomicFields i j τ τ' q σ
   let legs := mixedTimeOrderedAtomicLegs τ τ' σ
   have hFieldsLen : fields.length = 2 * (2 * n + 1) := by
-    exact mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ
+    exact mixedTimeOrderedAtomicFields_length i j τ τ' q σ
   have hLegsLen : legs.length = 2 * (2 * n + 1) := by
     exact mixedTimeOrderedAtomicLegs_length τ τ' σ
   have hpFields : p.1 < fields.length := by
@@ -154,7 +154,7 @@ theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField
       timedFieldOperator ε
         (orderedTwoPointLegField i j τ τ' q σ
           (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)) := by
-  change timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p) = _
+  change timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p) = _
   rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField]
 
 /-- Density-state contraction associated with two fixed standard two-point legs. -/
