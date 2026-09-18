@@ -58,6 +58,16 @@ theorem AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivit
       params.e params.hbar params.v params.m params.fermiEnergy params.disorderStrength
       params.velocity_ne_zero params.hbar_pos params.disorder_pos params.metallic
 
+/-- The longitudinal benchmark is exactly the finite scaling coefficient divided by positive
+disorder strength. -/
+theorem AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength
+    (params : AheScalingParameters) :
+    params.bornRtaLongitudinalConductivity =
+      params.bornRtaLongitudinalCoefficient / params.disorderStrength := by
+  apply (eq_div_iff (ne_of_gt params.disorder_pos)).2
+  simpa [mul_comm] using
+    (AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq params)
+
 /-- The totalized closed form has a well-defined positive-disorder scaling limit. -/
 def bornRtaLongitudinalConductivityClosedForm
     (e hbar v m fermiEnergy disorderStrength : ℝ) : ℝ :=
