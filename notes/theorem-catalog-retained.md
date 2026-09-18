@@ -40,7 +40,7 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
   representation theorem identifying one Wick diagram's fixed-order ordered-simplex contribution
   with the flattened pairing evaluator after transport to a chosen vertex order.
-- `SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation`
+- `SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation`
   — canonical reindexing theorem converting the full fixed-order Wick-diagram sum into the
   vertex-label/pairing double sum used by the Dyson-to-Wick expansion.
 - `Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog` — canonical
