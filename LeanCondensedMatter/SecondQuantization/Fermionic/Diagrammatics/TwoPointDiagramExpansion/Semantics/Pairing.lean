@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
@@ -37,6 +38,13 @@ noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
   | .inr v => List.ofFn fun l : Fin 4 =>
       ⟨σ v, quarticLocalLegExternalFieldLabel (q v) l⟩
 
+private theorem twoPointTimedEventAtomicFields_length {n : ℕ} (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (event : TwoPointTimedEvent n) :
+    (twoPointTimedEventAtomicFields i j τ τ' q σ event).length =
+      (twoPointTimedEventAtomicLegs event).length := by
+  cases event <;> simp [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicLegs]
+
 /-- Mapping one event's field descriptors to operators recovers its atomic operator list. -/
 private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -73,37 +81,40 @@ private theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
       rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
         map_timedFieldOperator_twoPointTimedEventAtomicFields, ih]
 
-/-- The descriptor list has the same `4n + 2` cardinality as the atomic operator list. -/
-theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+/-- The descriptor list has exactly the statistics-independent `4n + 2` atomic positions. -/
+theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicFields i j τ τ' q σ).length = 2 * (2 * n + 1) := by
-  calc
-    (mixedTimeOrderedAtomicFields i j τ τ' q σ).length =
-        ((mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFieldOperator ε)).length := by simp
-    _ = (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length :=
-      congrArg List.length
-        (map_timedFieldOperator_mixedTimeOrderedAtomicFields ε i j τ τ' q σ)
-    _ = 2 * (2 * n + 1) := mixedTimeOrderedAtomicOperators_length ε i j τ τ' q σ
+  have hlen :
+      (mixedTimeOrderedAtomicFields i j τ τ' q σ).length =
+        (mixedTimeOrderedAtomicLegs τ τ' σ).length := by
+    unfold mixedTimeOrderedAtomicFields mixedTimeOrderedAtomicLegs
+    induction orderedTwoPointTimedEvents τ τ' σ with
+    | nil => rfl
+    | cons event events ih =>
+        rw [List.flatMap_cons, List.flatMap_cons, List.length_append, List.length_append,
+          twoPointTimedEventAtomicFields_length, ih]
+  rw [hlen, mixedTimeOrderedAtomicLegs_length]
 
 /-- The `Fin (4n + 2)`-indexed time-labelled field family underlying the mixed operator list. -/
-noncomputable def mixedTimeOrderedAtomicFieldFamily {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+noncomputable def mixedTimeOrderedAtomicFieldFamily {n : ℕ} (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → TimedField Mode :=
   fun p => (mixedTimeOrderedAtomicFields i j τ τ' q σ).get
-    (Fin.cast (mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ).symm p)
+    (Fin.cast (mixedTimeOrderedAtomicFields_length i j τ τ' q σ).symm p)
 
 /-- The corresponding `Fin (4n + 2)`-indexed atomic operator family. -/
 noncomputable def mixedTimeOrderedAtomicOperatorFamily {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
-  fun p => timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)
+  fun p => timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)
 
 /-- The eigenvalue-shift family used by the general pairing theorem. -/
 noncomputable def mixedTimeOrderedAtomicEnergyShift {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → ℝ :=
   fun p => externalFieldLabelEnergyShift ε
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p).label
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p).label
 
 /-- The scalar zeta-commutator coefficient family used by the general pairing theorem. -/
 noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
@@ -111,18 +122,18 @@ noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → Fin (2 * (2 * n + 1)) → ℂ :=
   fun a b => timedFieldCommutatorCoeff ε
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)
 
 /-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
 private theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    List.ofFn (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ) =
+    List.ofFn (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ) =
       mixedTimeOrderedAtomicFields i j τ τ' q σ := by
   let l := mixedTimeOrderedAtomicFields i j τ τ' q σ
   have h : l.length = 2 * (2 * n + 1) :=
-    mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ
+    mixedTimeOrderedAtomicFields_length i j τ τ' q σ
   simpa [mixedTimeOrderedAtomicFieldFamily, l] using
     (List.ofFn_congr h l.get).symm.trans (List.ofFn_get l)
 
@@ -133,7 +144,7 @@ private theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
     List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ) =
       mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
   change List.ofFn (fun p => timedFieldOperator ε
-    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)) = _
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)) = _
   rw [List.ofFn_comp', ofFn_mixedTimeOrderedAtomicFieldFamily_eq,
     map_timedFieldOperator_mixedTimeOrderedAtomicFields]
 
@@ -177,10 +188,10 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
       (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
       (mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ)
       (fun p => heisenbergEvolve_timedFieldOperator ε β
-        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p))
+        (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p))
       (fun a b _ => zetaCommutator_timedFieldOperator ε
-        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
-        (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b))
+        (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+        (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b))
       (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
         (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p) β)
   rw [ofFn_mixedTimeOrderedAtomicOperatorFamily_eq] at hgen
