@@ -164,7 +164,8 @@ theorem ExternalInsertionDiagram.univ_componentParts_eq_supported_union_vacuum
       d.externallySupportedComponentParts ∪ d.vacuumComponentParts := by
   classical
   ext B
-  simp [ExternalInsertionDiagram.ComponentIsVacuum]
+  by_cases h : d.ComponentMeetsExternal B <;>
+    simp [ExternalInsertionDiagram.ComponentIsVacuum, h]
 
 /-- Externally supported and vacuum components are disjoint. -/
 theorem ExternalInsertionDiagram.externallySupportedComponentParts_disjoint_vacuumComponentParts
