@@ -19,21 +19,24 @@ variable {Label : Type*} {N : ℕ}
 noncomputable def QuarticDiagram.blockVertex {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) : ↥S :=
-  ((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm v :
+  ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})
 
 theorem QuarticDiagram.blockVertex_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
     (d.blockVertex hB v : Fin N) ∈ B :=
-  (((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm v :
+  (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})).2
 
 private theorem QuarticDiagram.blockVertex_injective {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     Function.Injective (d.blockVertex hB) := fun _v _w h =>
-  (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm.injective
+  (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm.injective
     (Subtype.ext h)
 
 /-- `blockLegEquiv` maps a leg to vertex `v` exactly when its ambient vertex is `blockVertex v`. -/
@@ -82,14 +85,16 @@ theorem QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype {S : Finset (Fin N
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) (hv : (v : Fin N) ∈ B) :
     d.blockVertex hB
-        (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB) ⟨v, hv⟩) = v := by
+        (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB) ⟨v, hv⟩) = v := by
   unfold QuarticDiagram.blockVertex
   rw [Equiv.symm_apply_apply]
 
 theorem QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
-    Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)
+    Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)
         ⟨d.blockVertex hB v, d.blockVertex_mem hB v⟩ = v :=
   Equiv.apply_symm_apply _ v
 
@@ -109,8 +114,10 @@ private theorem QuarticDiagram.reachable_restrictComponent_of_walk {S : Finset (
     (hB : B ∈ d.componentPartition.parts) {v w : ↥S}
     (p : d.vertexGraph.Walk v w) (hv : (v : Fin N) ∈ B) :
     ∃ hw : (w : Fin N) ∈ B, (d.restrictComponent hB).vertexGraph.Reachable
-      (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB) ⟨v, hv⟩)
-      (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB) ⟨w, hw⟩) := by
+      (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB) ⟨v, hv⟩)
+      (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB) ⟨w, hw⟩) := by
   induction p with
   | nil => exact ⟨hv, SimpleGraph.Reachable.refl _⟩
   | cons hadj p' ih =>
