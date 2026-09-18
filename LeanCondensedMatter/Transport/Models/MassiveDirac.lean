@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair
 import LeanCondensedMatter.Transport.Models.MassiveDirac.ContinuumMeasureProvenance
 
 set_option linter.style.header false
