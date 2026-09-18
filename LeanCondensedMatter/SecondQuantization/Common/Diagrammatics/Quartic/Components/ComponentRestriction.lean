@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import LeanCondensedMatter.Combinatorics.SubsetSplit
 
 set_option linter.style.header false
 
@@ -70,13 +69,13 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
     {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) where
   toFun leg :=
     legOfVertexLocal
-      (Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)
+      (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩)
       (localLegOfLeg (leg : Fin (2 * (2 * S.card))))
   invFun leg' :=
     ⟨legOfVertexLocal
-        (((Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)).symm
+        (((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm
           (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
         (localLegOfLeg leg'),
       by
@@ -98,7 +97,7 @@ theorem QuarticDiagram.vertexOfLeg_blockLegEquiv {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     vertexOfLeg (d.blockLegEquiv hB leg) =
-      Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)
+      Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩ :=
   vertexOfLeg_legOfVertexLocal _ _
@@ -136,7 +135,7 @@ noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : QuarticDiagram Label N B where
   vertexLabel v :=
-    d.vertexLabel ((Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)).symm v).1
+    d.vertexLabel ((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm v).1
   pairing := d.restrictedPairing hB
 
 theorem QuarticDiagram.restrictComponent_pairing {S : Finset (Fin N)}
