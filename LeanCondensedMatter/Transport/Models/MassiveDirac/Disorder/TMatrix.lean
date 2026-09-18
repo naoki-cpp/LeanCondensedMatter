@@ -233,7 +233,7 @@ theorem eventually_isUnit_scalarImpurityShiftMatrix (greenLoop : Matrix2) :
       φ ((1 : Matrix2) - (((impurityStrength : ℝ) : ℂ)) • greenLoop) =
         (1 : DiracHilbert →L[ℂ] DiracHilbert) -
           (((impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop := by
-    simp [φ, matrixOperator]
+    simp only [φ, matrixOperator, map_sub, map_one, map_smul]
   apply (isUnit_map_iff φ
     ((1 : Matrix2) - (((impurityStrength : ℝ) : ℂ)) • greenLoop)).mp
   rw [hmap]
@@ -301,7 +301,7 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
       matrixOperator (params.shiftMatrix greenLoop) =
         (1 : DiracHilbert →L[ℂ] DiracHilbert) -
           (((params.impurityStrength : ℝ) : ℂ)) • matrixOperator greenLoop := by
-    simp [ScalarImpurityParameters.shiftMatrix, matrixOperator]
+    simp only [ScalarImpurityParameters.shiftMatrix, matrixOperator, map_sub, map_one, map_smul]
   have hinverse_eq' :
       matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) =
         Ring.inverse
@@ -317,7 +317,7 @@ theorem ScalarImpurityParameters.matrixOperator_tMatrix_eq_ringInverse_shift
             params.inverseShiftMatrix greenLoop hinvertible) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
-    simp [matrixOperator]
+    simp only [matrixOperator, map_smul]
   rw [hmap_smul, hinverse_eq']
 
 /-- For a fixed Green loop, the operator-valued scalar-impurity T-matrix has a genuine quadratic
