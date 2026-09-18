@@ -124,12 +124,18 @@ private theorem fixedExternalShuffleFiber_externalPieceTimes_heq
     (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q)))
   have hsize : d.1.1.externalInteractionPart.card = m :=
     (congrArg Finset.card d.2).trans shuffle.card_leftSlots
+  have horder := Finset.orderEmbOfFin_unique
+    (s := d.1.1.externalInteractionPart) (h := hsize)
+    (f := fun q : Fin m => shuffle.slotEquiv (Sum.inl q))
+    (fun q => by
+      rw [d.2]
+      exact (shuffle.mem_leftSlots_iff _).2 ⟨q, rfl⟩)
+    shuffle.strictMonoLeft
   apply heq_finFun_of_cast hsize
   intro q
   change σ (d.1.1.externalInteractionPart.orderEmbOfFin rfl (Fin.cast hsize.symm q)) = _
   apply congrArg σ
-  rw [d.2]
-  convert shuffle.leftSlots_orderEmbOfFin q using 1
+  convert congrFun horder.symm q using 1
   apply Fin.ext
   rfl
 
