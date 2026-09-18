@@ -114,6 +114,18 @@ theorem SlotShuffle.card_leftSlots {m n : ℕ} (σ : SlotShuffle m n) :
     σ.leftSlots.card = m := by
   simpa [SlotShuffle.leftSlots] using (SumEquiv.card_leftImage σ.slotEquiv)
 
+/-- The increasing enumeration of the left slots is the left shuffle slot map. -/
+theorem SlotShuffle.leftSlots_orderEmbOfFin {m n : ℕ}
+    (σ : SlotShuffle m n) (i : Fin m) :
+    σ.leftSlots.orderEmbOfFin σ.card_leftSlots i =
+      σ.slotEquiv (Sum.inl i) := by
+  have h := Finset.orderEmbOfFin_unique
+    (s := σ.leftSlots) (h := σ.card_leftSlots)
+    (f := fun q => σ.slotEquiv (Sum.inl q))
+    (fun q => (σ.mem_leftSlots_iff _).2 ⟨q, rfl⟩)
+    σ.strictMonoLeft
+  exact congrFun h.symm i
+
 @[simp]
 theorem SlotShuffle.card_rightSlots {m n : ℕ} (σ : SlotShuffle m n) :
     σ.rightSlots.card = n := by
@@ -131,51 +143,12 @@ theorem SlotShuffle.mem_rightSlots_iff {m n : ℕ} (σ : SlotShuffle m n)
     x ∈ σ.rightSlots ↔ ∃ j : Fin n, σ.slotEquiv (Sum.inr j) = x := by
   simpa [SlotShuffle.rightSlots] using (SumEquiv.mem_rightImage_iff σ.slotEquiv x)
 
-/-- Local left slots as the subtype of ambient slots occupied by the left family. -/
-noncomputable def SlotShuffle.leftSlotSubtypeEquiv {m n : ℕ} (σ : SlotShuffle m n) :
-    Fin m ≃ ↥σ.leftSlots :=
-  (Equiv.ofInjective (fun i : Fin m => σ.slotEquiv (Sum.inl i))
-      (fun _ _ h => Sum.inl.inj (σ.slotEquiv.injective h))).trans
-    (Equiv.setCongr (by
-      ext x
-      simp [SlotShuffle.leftSlots]))
-
-@[simp]
-theorem SlotShuffle.leftSlotSubtypeEquiv_val {m n : ℕ}
-    (σ : SlotShuffle m n) (i : Fin m) :
-    ((σ.leftSlotSubtypeEquiv i : ↥σ.leftSlots) : Fin (m + n)) =
-      σ.slotEquiv (Sum.inl i) := by
-  rfl
-
-/-- Local right slots as the subtype of ambient slots occupied by the right family. -/
-noncomputable def SlotShuffle.rightSlotSubtypeEquiv {m n : ℕ} (σ : SlotShuffle m n) :
-    Fin n ≃ ↥σ.rightSlots :=
-  (Equiv.ofInjective (fun j : Fin n => σ.slotEquiv (Sum.inr j))
-      (fun _ _ h => Sum.inr.inj (σ.slotEquiv.injective h))).trans
-    (Equiv.setCongr (by
-      ext x
-      simp [SlotShuffle.rightSlots]))
-
-@[simp]
-theorem SlotShuffle.rightSlotSubtypeEquiv_val {m n : ℕ}
-    (σ : SlotShuffle m n) (j : Fin n) :
-    ((σ.rightSlotSubtypeEquiv j : ↥σ.rightSlots) : Fin (m + n)) =
-      σ.slotEquiv (Sum.inr j) := by
-  rfl
-
 /-- The right slots are precisely the complement of the left slots. -/
 theorem SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots {m n : ℕ}
     (σ : SlotShuffle m n) (x : Fin (m + n)) :
     x ∈ σ.rightSlots ↔ x ∉ σ.leftSlots := by
   simpa [SlotShuffle.leftSlots, SlotShuffle.rightSlots] using
     (SumEquiv.mem_rightImage_iff_not_mem_leftImage σ.slotEquiv x)
-
-/-- The right-slot finset is exactly the ambient complement of the left slots. -/
-theorem SlotShuffle.rightSlots_eq_sdiff_leftSlots {m n : ℕ}
-    (σ : SlotShuffle m n) :
-    σ.rightSlots = (Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots := by
-  simpa [SlotShuffle.leftSlots, SlotShuffle.rightSlots] using
-    (SumEquiv.rightImage_eq_sdiff_leftImage σ.slotEquiv)
 
 /-- The complement of the left slots has the right perturbation order. -/
 @[simp]
