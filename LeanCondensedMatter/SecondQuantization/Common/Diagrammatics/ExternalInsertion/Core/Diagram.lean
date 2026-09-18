@@ -11,9 +11,11 @@ interaction vertices.  The parameter `E` represents `2 * E` one-legged external 
 total number of legs is automatically even and the existing ordered `Pairing` API applies without
 an additional parity witness.
 
-The two-point syntax is the specialization `E = 1`.  Odd external sectors are not represented by
-this paired-diagram type; a fermionic application that needs them should prove the corresponding
-vanishing statement separately rather than weakening the pairing invariant.
+At `E = 1`, this core has two external insertions and therefore the same external/interaction
+shape as the established two-point diagram data; the two representations remain independent.
+Odd external sectors are not represented by this paired-diagram type; a fermionic application that
+needs them should prove the corresponding vanishing statement separately rather than weakening the
+pairing invariant.
 -/
 
 namespace SecondQuantization
