@@ -102,7 +102,7 @@ private theorem map_orderedTwoPointLegField_mixedTimeOrderedAtomicLegs
       rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
         map_orderedTwoPointLegField_twoPointTimedEventAtomicLegs, ih]
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The mixed field family at an atomic position is exactly the descriptor of the fixed standard leg
 represented at that position. -/
 theorem mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField
