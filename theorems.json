@@ -30446,7 +30446,6 @@
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq",
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
-      "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
@@ -30460,12 +30459,11 @@
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq",
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq",
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
-      "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55352,8 +55350,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ l,\n          ∑ k,\n            ∑ j,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax (-radius) j k *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    radius k l *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) l i;\n    amplitude + (starRingEnd ℂ) amplitude",
+    "terminal": false,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n      source v m probeEnergy broadening disorderStrength hbar pMax radius i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55365,15 +55363,99 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "Each entry of the Gaussian-crossed radial current block is the physical momentum-measure\nprefactor times the integral of its scalar radial kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ l,\n          ∑ k,\n            ∑ j,\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax (-radius) j k *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    radius k l *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) l i;\n    amplitude + (starRingEnd ℂ) amplitude",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
     "docString": "The radial `Psi` topology is the Hermitian-conjugate pair of one finite scalar entry sum. The\nentry sum is the scalar boundary consumed by later radial-kernel evaluation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.trace_four_mul_eq_entry_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    have amplitude :=\n      ∑ i,\n        ∑ l,\n          ∑ k,\n            ∑ j,\n              (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                      ∫ (p : ℝ) in 0..pMax,\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                          0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                    (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                      ∫ (p : ℝ) in 0..pMax,\n                        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                          pMax (-radius) p j k) *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax radius p k l) *\n                (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                      1 v m probeEnergy broadening disorderStrength hbar pMax (-radius) p l i);\n    amplitude + (starRingEnd ℂ) amplitude",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": "The radial `Psi` amplitude is a finite sum of products of one-dimensional scalar momentum\nintegrals; the full kernel adds its complex-conjugate partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55426,8 +55508,49 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ l,\n        ∑ k,\n          ∑ j,\n            QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                    0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius) j k *\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                  1 v m probeEnergy broadening disorderStrength hbar pMax radius k l *\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                (-radius) l i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": "The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This\nremoves the remaining matrix multiplication and trace operations without changing any regulator or\nFourier normalization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.trace_four_mul_eq_entry_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n      QuantumTheory.Transport.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n      hbar pMax radius =\n    ∑ i,\n      ∑ l,\n        ∑ k,\n          ∑ j,\n            (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                        0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                    ∫ (p : ℝ) in 0..pMax,\n                      QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                        QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                        pMax (-radius) p j k) *\n                (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                      1 v m probeEnergy broadening disorderStrength hbar pMax radius p k l) *\n              (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                ∫ (p : ℝ) in 0..pMax,\n                  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel\n                    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius) p l i)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55439,15 +55562,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This\nremoves the remaining matrix multiplication and trace operations without changing any regulator or\nFourier normalization. ",
+    "docString": "The radial `X` topology is a finite sum of products of one-dimensional scalar momentum\nintegrals. Each real-space Fourier block retains exactly one physical momentum-measure prefactor. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Transport.Models.MassiveDirac.trace_four_mul_eq_entry_sum"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entry_sum",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55937,6 +56062,47 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m\n      probeEnergy broadening disorderStrength hbar pMax radius i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n          probeEnergy broadening disorderStrength hbar pMax radius p i j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Each entry of the radial Born-Dyson Green matrix is the physical momentum-measure prefactor\ntimes the integral of its scalar radial kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123972,44 +124138,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  PowerSeries.constantCoeff (SecondQuantization.Fermionic.dysonFormalLogPartitionFunction ε β V) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
-    "externalAxioms": [],
-    "docString": "The formal logarithm has vanishing constant coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "PowerSeries.constantCoeff_normalizeByConstantCoeff",
-      "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  PowerSeries.constantCoeff (SecondQuantization.Fermionic.dysonPartitionSeries ε β V) =\n    SecondQuantization.Fermionic.freePartitionFunction ε β",
     "standardAxioms": [
@@ -124077,7 +124205,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
@@ -124089,12 +124216,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.constantCoeff_dysonFormalLogPartitionFunction",
       "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
