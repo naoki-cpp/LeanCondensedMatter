@@ -52084,6 +52084,84 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n        (params.tMatrix greenLoop hinvertible - ↑params.impurityStrength • 1)‖ ≤\n    ‖↑params.impurityStrength‖ ^ 2 * ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator greenLoop‖ *\n      ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up\nto the norm of the supplied Green loop and inverse shift. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_sub_bare_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)) (inverseBound : ℝ),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ ≤\n      inverseBound →\n    ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n          (params.tMatrix greenLoop hinvertible - ↑params.impurityStrength • 1)‖ ≤\n      ‖↑params.impurityStrength‖ ^ 2 * ‖QuantumTheory.Transport.Models.MassiveDirac.matrixOperator greenLoop‖ *\n        inverseBound",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "With a supplied pointwise bound on the operator norm of the inverse shift, the exact remainder\nhas an explicit quadratic impurity-strength factor. This does not by itself assert a uniform\nsmall-impurity estimate, Big-O statement, or limit as the impurity strength tends to zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.shiftMatrix greenLoop * params.inverseShiftMatrix greenLoop hinvertible = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -52163,7 +52241,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.tMatrix greenLoop hinvertible =\n    ↑params.impurityStrength • 1 + ↑params.impurityStrength • (greenLoop * params.tMatrix greenLoop hinvertible)",
     "standardAxioms": [
       "Classical.choice",
@@ -52171,7 +52249,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52182,14 +52260,18 @@
     "docString": "Exact Lippmann--Schwinger fixed-point identity. This follows from invertibility alone and does\nnot assert convergence of a geometric series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_sub_bare_eq"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.shiftMatrix_mul_tMatrix"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_sub_bare_eq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52227,6 +52309,47 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Transport.Models.MassiveDirac.Matrix2)\n  (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.tMatrix greenLoop hinvertible - ↑params.impurityStrength • 1 =\n    ↑params.impurityStrength • (greenLoop * params.tMatrix greenLoop hinvertible)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_sub_bare_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TMatrix",
+    "externalAxioms": [],
+    "docString": "Exact remainder after subtracting the bare scalar-impurity term. No series\nexpansion is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104235,7 +104358,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -104247,7 +104370,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField"
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField",
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
     ],
     "dependencies": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_all_mem",
@@ -104256,9 +104380,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField"
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField",
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129635,7 +129760,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p =\n    SecondQuantization.Fermionic.orderedTwoPointLegField i j τ τ' q σ\n      ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p)",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (i j : Mode) (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))),\n  SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p =\n    SecondQuantization.Fermionic.orderedTwoPointLegField i j τ τ' q σ\n      ((SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129680,7 +129805,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields i j τ τ' q σ).length = 2 * (2 * n + 1)",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (i j : Mode) (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (σ : Fin n → ℝ), (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields i j τ τ' q σ).length = 2 * (2 * n + 1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129695,7 +129820,7 @@
     "name": "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
     "externalAxioms": [],
-    "docString": "The descriptor list has the same `4n + 2` cardinality as the atomic operator list. ",
+    "docString": "The descriptor list has exactly the statistics-independent `4n + 2` atomic positions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -129703,8 +129828,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.ofFn_mixedTimeOrderedAtomicFieldFamily_eq"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.map_timedFieldOperator_mixedTimeOrderedAtomicFields"
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_length",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.twoPointTimedEventAtomicFields_length"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -129766,7 +129891,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  (SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length = 2 * (2 * n + 1)",
     "standardAxioms": [
       "Classical.choice",
@@ -129774,7 +129899,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -129785,9 +129910,7 @@
     "docString": "A two-point insertion with `n` quartic vertices contains exactly `4n + 2` atomic operators. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEvents_perm",
       "SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_length",
@@ -129795,10 +129918,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153896,7 +154017,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} {i j : Mode}\n  (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ)\n  (σ : Fin n → ℝ) (p : Fin (2 * (2 * (SecondQuantization.Common.TwoPointDiagram.externalInteractionPart ↑d).card + 1))),\n  SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.vertexLabelSequence σ\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition (↑d) τ τ' σ p) =\n    SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.externalPiece.vertexLabelSequence\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) p",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} {i j : Mode} (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j)\n  (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (p : Fin (2 * (2 * (SecondQuantization.Common.TwoPointDiagram.externalInteractionPart ↑d).card + 1))),\n  SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' d.vertexLabelSequence σ\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition (↑d) τ τ' σ p) =\n    SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' d.externalPiece.vertexLabelSequence\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) p",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154713,8 +154834,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -154726,7 +154847,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.ofFn_mixedTimeOrderedAtomicOperatorFamily_eq"
     ],
     "dependencies": [
@@ -154735,10 +154855,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.ofFn_mixedTimeOrderedAtomicOperatorFamily_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154792,7 +154911,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  List.ofFn (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ) =\n    SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields i j τ τ' q σ",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (i j : Mode) (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (σ : Fin n → ℝ),\n  List.ofFn (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ) =\n    SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields i j τ τ' q σ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154862,6 +154981,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} (i j : Mode) (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (σ : Fin n → ℝ) (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  (SecondQuantization.Fermionic.twoPointTimedEventAtomicFields i j τ τ' q σ event).length =\n    (SecondQuantization.Common.twoPointTimedEventAtomicLegs event).length",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.twoPointTimedEventAtomicFields_length",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
