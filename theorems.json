@@ -4563,6 +4563,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
       "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude",
       "SecondQuantization.Common.GeneratingFunctional.connected_eq_connectedContribution"
     ],
@@ -4572,10 +4573,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
       "SecondQuantization.Bosonic.quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude",
       "SecondQuantization.Common.GeneratingFunctional.connected_eq_connectedContribution"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4766,7 +4768,7 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -4775,7 +4777,7 @@
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -8893,6 +8895,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1) {α : Type u_1} [inst : DecidableEq α]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D ℂ),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
+    "externalAxioms": [],
+    "docString": "If the factorial-normalized moments of a unit-constant formal power series are the normalized\nobject moments of a multiplicative connected decomposition, its formal-log coefficients are exactly\nthe connected-object contributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
+    "dependencies": [
+      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf =\n          Finpartition.cumulantFromMoment (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) s",
     "standardAxioms": [
       "Classical.choice",
@@ -8912,6 +8956,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.mu_bot_top_complex"
@@ -8923,11 +8968,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
       "Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_cumulantFromMoment",
       "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.mu_bot_top_complex"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85619,7 +85665,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Source : Type u_1} {R : Type u_2} [inst : DecidableEq Source] [inst_1 : CommRing R]\n  (Z : SecondQuantization.Common.GeneratingFunctional Source R) (S : Finset Source),\n  Z.connected.toFun S = Finpartition.cumulantFromMoment Z.moment.toFun S",
     "standardAxioms": [
       "Classical.choice",
@@ -85627,7 +85673,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85638,16 +85684,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -85658,15 +85700,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Source : Type u_1} {R : Type u_2} [inst : DecidableEq Source] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition Source} (Z : SecondQuantization.Common.GeneratingFunctional Source R)\n  (W : Combinatorics.MultiplicativeWeight D R),\n  Z.moment = W.normalizedObjectMoment → ∀ {S : Finset Source}, S ≠ ∅ → Z.connected.toFun S = W.connectedContribution S",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -85677,18 +85719,14 @@
     "docString": "A normalized source functional whose moments are total weights of a multiplicative connected\ndecomposition has connected coefficients equal to the connected-object contribution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98104,7 +98142,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z ≠ 0) {Source : Type u_1} [inst : DecidableEq Source]\n  {S : Finset Source},\n  S ≠ ∅ →\n    ↑S.card.factorial * (PowerSeries.coeff S.card) Z.normalizeByConstantCoeff.logOf =\n      (SecondQuantization.Common.powerSeriesGeneratingFunctional Z.normalizeByConstantCoeff ⋯).connected.toFun S",
     "standardAxioms": [
       "Classical.choice",
@@ -98112,7 +98150,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -98123,19 +98161,15 @@
     "docString": "The formal logarithm coefficient is the connected coefficient of its source functional. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment",
       "PowerSeries.constantCoeff_normalizeByConstantCoeff"
     ],
     "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "compiledConsumerCount": 1,
+    "completedMention": true,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124849,7 +124883,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -124862,7 +124896,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff"
@@ -124870,7 +124904,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -124944,8 +124978,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_quarticWickDiagramAmplitude_eq_of_card_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.sum_quarticWickDiagramAmplitude_eq_of_card_eq"
     ],
     "dependencies": [
       "SecondQuantization.Common.card_quarticVertexOrder",
@@ -124955,8 +124989,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_quarticWickDiagramAmplitude_eq_of_card_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected"
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude",
+      "SecondQuantization.Fermionic.sum_quarticWickDiagramAmplitude_eq_of_card_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -125315,11 +125349,12 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
+      "Combinatorics.NormalizedSetFunction.ext",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
-      "SecondQuantization.Common.GeneratingFunctional.connected_apply",
-      "SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected",
+      "SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_moment",
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.fin_univ_ne_empty"
     ],
     "crossModuleDirectWrapper": false,
@@ -152599,50 +152634,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)},\n  S ≠ ∅ →\n    (SecondQuantization.Fermionic.dysonVertexGeneratingFunctional ε β\n              (SecondQuantization.Fermionic.quarticInteraction g)).connected.toFun\n        S =\n      ∑ d, SecondQuantization.Fermionic.quarticWickDiagramAmplitude ε β g ↑d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem.0.SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_sum_connected",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "dependencies": [
-      "Combinatorics.NormalizedSetFunction.ext",
-      "SecondQuantization.Common.GeneratingFunctional.connected_eq_connectedContribution",
-      "SecondQuantization.Fermionic.dysonVertexGeneratingFunctional_moment",
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
