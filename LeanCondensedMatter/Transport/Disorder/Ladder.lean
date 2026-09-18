@@ -17,6 +17,11 @@ where `C₂ = E[V (·) V]` is the same canonical exact second-moment action used
 self-energy. The ladder itself is represented as a bounded complex-linear map, so downstream clean,
 SCBA, and other consumers can supply whichever Green operators their approximation requires.
 
+Using the same second-moment kernel in the self-energy and vertex channels is motivated by the
+conserving-approximation framework of Baym and Kadanoff, *Phys. Rev.* **124**, 287–299 (1961),
+[doi:10.1103/PhysRev.124.287](https://doi.org/10.1103/PhysRev.124.287). No Φ-derivability or Ward
+identity is asserted here.
+
 The public algebra is intentionally small: the RA kernel, finite fixed-point iterates, and
 conditional resummation when `I - L_RA` is a unit. No convergence, geometric-series expansion, Ward
 identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.

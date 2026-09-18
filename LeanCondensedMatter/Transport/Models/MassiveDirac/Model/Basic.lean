@@ -17,6 +17,11 @@ v_μ = ∂H₀/∂p_μ,
 j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
+This two-dimensional massive-Dirac family is the benchmark used in the Kubo–Středa/Boltzmann
+comparison of Sinitsyn et al., *Phys. Rev. B* **75**, 045315 (2007),
+[doi:10.1103/PhysRevB.75.045315](https://doi.org/10.1103/PhysRevB.75.045315). Momentum and sign
+conventions are fixed independently above.
+
 The in-plane Cartesian direction is the standard finite index `Fin 2`, with coordinates `0 = x`
 and `1 = y`. The direction-indexed `velocity` and `current` definitions are the public model-level
 owners used throughout the transport stack. The Pauli-vector basis uses the model-independent

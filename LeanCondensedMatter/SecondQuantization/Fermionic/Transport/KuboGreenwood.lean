@@ -90,7 +90,11 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy
 /-- The exact finite Kubo–Greenwood conductivity supplied to the resolvent rewrite.
 
 The current-current sum, Peierls contact expectation, positive finite volume, and electric-field
-conversion factor are all explicit in the definition. -/
+conversion factor are all explicit in the definition. The historical Kubo–Greenwood name follows
+D. A. Greenwood, *Proc. Phys. Soc.* **71**, 585–596 (1958),
+[doi:10.1088/0370-1328/71/4/306](https://doi.org/10.1088/0370-1328/71/4/306). The Peierls contact
+term and finite-rate normalization come from the repository's upstream derivation rather than from
+Greenwood's formula. -/
 noncomputable def finiteKuboGreenwoodDirectionalConductivity
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)
