@@ -73,11 +73,7 @@ noncomputable def powerSeriesGeneratingFunctional
     {Source : Type*} [DecidableEq Source]
     (Z : PowerSeries ℂ) (hZ : PowerSeries.constantCoeff Z = 1) :
     GeneratingFunctional Source ℂ where
-  moment :=
-    { toFun := fun S => Combinatorics.powerSeriesMomentCoeff Z S.card
-      map_empty := by
-        simpa [Combinatorics.powerSeriesMomentCoeff,
-          PowerSeries.coeff_zero_eq_constantCoeff] using hZ }
+  moment := Combinatorics.powerSeriesMomentSetFunction Z hZ
 
 /-- The formal logarithm coefficient is the connected coefficient of its source functional. -/
 theorem factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected
