@@ -13,6 +13,11 @@ T = v_imp * (1 - v_imp * G_loop)⁻¹,
 Σ_T = n_imp * T.
 ```
 
+This boundary follows the scalar-impurity construction in Onoda, Sugimoto, and Nagaosa,
+*Phys. Rev. Lett.* **97**, 126602 (2006), Eqs. (12)–(15),
+doi:10.1103/PhysRevLett.97.126602. The repository keeps the finite-cutoff loop and its regulator
+explicit rather than importing the paper's numerical or self-consistency assumptions wholesale.
+
 The supplied `greenLoop` is already a finite-cutoff, finite-regulator, zero-field dressed Green
 loop and must already contain its physical momentum measure. The T-matrix layer does not reconstruct
 that loop, attach a second momentum measure, or identify it with the clean propagator.
