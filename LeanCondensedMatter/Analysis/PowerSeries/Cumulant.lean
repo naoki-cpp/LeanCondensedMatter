@@ -26,7 +26,7 @@ noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :
 /-- Factorial-normalized coefficients of a unit-constant power series, bundled as normalized
 finite-set moment data. -/
 noncomputable def powerSeriesMomentSetFunction
-    {α : Type*} [DecidableEq α] (Z : PowerSeries ℂ)
+    {α : Type*} (Z : PowerSeries ℂ)
     (hZ : PowerSeries.constantCoeff Z = 1) :
     NormalizedSetFunction α ℂ where
   toFun := fun S => powerSeriesMomentCoeff Z S.card
@@ -35,7 +35,7 @@ noncomputable def powerSeriesMomentSetFunction
 
 @[simp]
 theorem powerSeriesMomentSetFunction_apply
-    {α : Type*} [DecidableEq α] (Z : PowerSeries ℂ)
+    {α : Type*} (Z : PowerSeries ℂ)
     (hZ : PowerSeries.constantCoeff Z = 1) (S : Finset α) :
     powerSeriesMomentSetFunction Z hZ S = powerSeriesMomentCoeff Z S.card := by
   rfl
