@@ -22,20 +22,18 @@ The formal logarithm satisfies
 
 The first identity fixes the normalization. The second displays cancellation of a partition into two
 single-vertex components. The third displays both one-plus-two decompositions and the partition into
-three singletons. Each polynomial is proved equal to the sum of amplitudes over connected quartic
-Wick diagrams on `Fin 1`, `Fin 2`, or `Fin 3`.
+three singletons.
 
 The generic power-series formulas live in
-`Analysis/PowerSeries/LowOrderLog.lean`. The fermionic formal corollaries live in
-`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean`, and the analytic
-logarithmic-derivative corollaries live in
-`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/AnalyticLowOrder.lean`.
+`Analysis/PowerSeries/LowOrderLog.lean`. The fermionic specializations live in
+`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean`.
 
-The analytic statements use the same right-hand sides because
+Connected-diagram statements at orders `1`, `2`, and `3` are obtained by specializing the
+general fermionic linked-cluster theorem. Analytic low-order statements similarly follow by
+combining the analytic/formal bridge
 
 ```text
 (dⁿ/dλⁿ)|₀ log (Z(λ) / Z(0)) = n! [λⁿ] log Ẑ
 ```
 
-is already proved by the analytic/formal bridge. The formal and analytic corollaries therefore use
-one shared factorial and sign normalization for the connected-diagram identities.
+with these formal identities, so separate public wrappers are not maintained.
