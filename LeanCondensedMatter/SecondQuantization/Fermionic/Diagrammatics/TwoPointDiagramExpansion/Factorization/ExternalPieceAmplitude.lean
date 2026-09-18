@@ -25,14 +25,14 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem
     FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
-    mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.vertexLabelSequence σ
+    mixedTimeOrderedAtomicFieldFamily i j τ τ' d.vertexLabelSequence σ
         (d.1.externalPieceMixedPosition τ τ' σ p) =
-      mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.externalPiece.vertexLabelSequence
+      mixedTimeOrderedAtomicFieldFamily i j τ τ' d.externalPiece.vertexLabelSequence
         (d.1.externalPieceTimes σ) p := by
   rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
     mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
@@ -73,8 +73,8 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_exte
       congrArg Prod.snd hpos
     unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     simp only [mixedTimeOrderedAtomicPairValue, mixedTimeOrderedAtomicOperatorFamily]
-    rw [← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition ε τ τ' σ,
-      ← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition ε τ τ' σ,
+    rw [← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition τ τ' σ,
+      ← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition τ τ' σ,
       hfirst, hsecond]
   have hprod :
       (∏ pr ∈ (d.1.externalPiece.pairingInMixedOrder τ τ' (d.1.externalPieceTimes σ)).pairs,
