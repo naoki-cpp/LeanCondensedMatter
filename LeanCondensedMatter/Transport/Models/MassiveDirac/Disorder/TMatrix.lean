@@ -125,42 +125,66 @@ theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
         (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
       (((params.impurityStrength : ℝ) : ℂ)) •
         (greenLoop * params.tMatrix greenLoop hinvertible) := by
-  rw [params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible]
-  simp
+  have h := params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible
+  calc
+    params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
+      ((((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
+          (((params.impurityStrength : ℝ) : ℂ)) •
+            (greenLoop * params.tMatrix greenLoop hinvertible)) -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) :=
+      congrArg
+        (fun M : Matrix2 =>
+          M - (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))
+        h
+    _ = (((params.impurityStrength : ℝ) : ℂ)) •
+        (greenLoop * params.tMatrix greenLoop hinvertible) := by
+      abel
 
-/-- The exact T-matrix remainder carries two powers of the impurity strength, up to the norm of
-the supplied Green loop and inverse shift. -/
-theorem ScalarImpurityParameters.norm_tMatrix_sub_bare_le
+/-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
+to the norm of the supplied Green loop and inverse shift. -/
+theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
     (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
-    ‖params.tMatrix greenLoop hinvertible -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2)‖ ≤
-      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ *
-        ‖params.inverseShiftMatrix greenLoop hinvertible‖ := by
-  rw [params.tMatrix_sub_bare_eq greenLoop hinvertible, norm_smul]
+    ‖matrixOperator
+        (params.tMatrix greenLoop hinvertible -
+          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
+  have ht :
+      matrixOperator (params.tMatrix greenLoop hinvertible) =
+        (((params.impurityStrength : ℝ) : ℂ)) •
+          matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
+    simp [ScalarImpurityParameters.tMatrix, matrixOperator]
+  rw [params.tMatrix_sub_bare_eq greenLoop hinvertible]
+  simp only [matrixOperator, map_smul, map_mul]
+  rw [norm_smul]
   calc
     ‖((params.impurityStrength : ℝ) : ℂ)‖ *
-        ‖greenLoop * params.tMatrix greenLoop hinvertible‖ ≤
+        ‖matrixOperator greenLoop * matrixOperator (params.tMatrix greenLoop hinvertible)‖ ≤
       ‖((params.impurityStrength : ℝ) : ℂ)‖ *
-        (‖greenLoop‖ * ‖params.tMatrix greenLoop hinvertible‖) :=
+        (‖matrixOperator greenLoop‖ *
+          ‖matrixOperator (params.tMatrix greenLoop hinvertible)‖) :=
       mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
-    _ = ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ *
-        ‖params.inverseShiftMatrix greenLoop hinvertible‖ := by
-      rw [ScalarImpurityParameters.tMatrix, norm_smul]
+    _ = ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
+      rw [ht, norm_smul]
       ring
 
-/-- With a supplied uniform bound on the inverse shift, the exact remainder has an explicit
-quadratic impurity-strength bound. -/
-theorem ScalarImpurityParameters.norm_tMatrix_sub_bare_le_of_inverse_bound
+/-- With a supplied uniform bound on the operator norm of the inverse shift, the exact remainder
+has an explicit quadratic impurity-strength bound. -/
+theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound
     (params : ScalarImpurityParameters) (greenLoop : Matrix2)
     (hinvertible : IsUnit (params.shiftMatrix greenLoop))
     (inverseBound : ℝ)
     (hinverse :
-      ‖params.inverseShiftMatrix greenLoop hinvertible‖ ≤ inverseBound) :
-    ‖params.tMatrix greenLoop hinvertible -
-        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2)‖ ≤
-      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖greenLoop‖ * inverseBound := by
-  exact (params.norm_tMatrix_sub_bare_le greenLoop hinvertible).trans
+      ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ ≤ inverseBound) :
+    ‖matrixOperator
+        (params.tMatrix greenLoop hinvertible -
+          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        inverseBound := by
+  exact (params.norm_matrixOperator_tMatrix_sub_bare_le greenLoop hinvertible).trans
     (mul_le_mul_of_nonneg_left hinverse
       (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
 
