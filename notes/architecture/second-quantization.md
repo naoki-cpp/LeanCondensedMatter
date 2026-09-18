@@ -158,6 +158,16 @@ Common owns component and shuffle structure when no fermionic sign or energy dat
 Fermionic modules should call those results directly instead of exposing parameter-substitution or
 proof-routing wrappers.
 
+`Common.ExternalInsertionDiagram` is the core syntax for higher-point paired diagrams. Its parameter
+`E` represents `2 * E` one-legged external insertions, which keeps the total leg count even and
+lets the existing ordered `Pairing` API carry fermionic crossing data without a separate parity
+witness. At `E = 1` it has the same external/interaction shape as the established two-point
+diagram data, but the mature two-point representation remains independent so its definitional
+normal forms are preserved. A bridge is introduced only when a concrete higher-point consumer needs
+semantic transport between the two representations. Odd external sectors are outside this
+paired-diagram representation and should be handled by a separate vanishing statement when a
+physical consumer requires them.
+
 The two-point expansion has its own internal layer order:
 
 ```text
