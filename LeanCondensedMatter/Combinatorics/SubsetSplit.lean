@@ -21,7 +21,7 @@ variable {α : Type*} [DecidableEq α]
 
 /-- A subtype of elements of `S` that lie in the subset `T` is canonically equivalent to
 `↥T`. -/
-def subsetSubtypeEquiv {S T : Finset α} (h : T ⊆ S) :
+def subsetSubtypeEquiv {S : Finset α} (T : Finset α) (h : T ⊆ S) :
     {x : ↥S // (x : α) ∈ T} ≃ ↥T where
   toFun x := ⟨x.1.1, x.2⟩
   invFun x := ⟨⟨x.1, h x.2⟩, x.2⟩
@@ -34,14 +34,14 @@ def subsetSubtypeEquiv {S T : Finset α} (h : T ⊆ S) :
     rfl
 
 @[simp]
-theorem subsetSubtypeEquiv_val {S T : Finset α} (h : T ⊆ S)
+theorem subsetSubtypeEquiv_val {S : Finset α} (T : Finset α) (h : T ⊆ S)
     (x : {x : ↥S // (x : α) ∈ T}) :
-    (subsetSubtypeEquiv h x : α) = (x : α) :=
+    (subsetSubtypeEquiv T h x : α) = (x : α) :=
   rfl
 
 @[simp]
-theorem subsetSubtypeEquiv_symm_val {S T : Finset α} (h : T ⊆ S) (x : ↥T) :
-    (((subsetSubtypeEquiv h).symm x : {x : ↥S // (x : α) ∈ T}) : α) = (x : α) :=
+theorem subsetSubtypeEquiv_symm_val {S : Finset α} (T : Finset α) (h : T ⊆ S) (x : ↥T) :
+    (((subsetSubtypeEquiv T h).symm x : {x : ↥S // (x : α) ∈ T}) : α) = (x : α) :=
   rfl
 
 /-- A finite set is its subset together with the relative complement. -/
