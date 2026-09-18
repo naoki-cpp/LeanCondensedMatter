@@ -50899,7 +50899,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 ≤ self.pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -50918,12 +50918,18 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50934,7 +50940,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  self.fermiEnergy ^ 2 - self.m ^ 2 < self.v ^ 2 * self.pMax ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -50953,12 +50959,20 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51074,7 +51088,9 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -51083,9 +51099,11 @@
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq_coefficient_div_disorderStrength",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51133,6 +51151,82 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters) (broadening : ℝ),\n  (params.finiteBroadeningPair broadening).sxx =\n    params.normalizedComplexConductivity\n      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n            params.e params.v params.m params.fermiEnergy broadening params.disorderStrength params.hbar\n            params.pMax).component\n        0 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxx",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "The finite-broadening longitudinal scaling coordinate is the normalized ordered `xx`\nconductivity component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters) (broadening : ℝ),\n  (params.finiteBroadeningPair broadening).sxy =\n    params.normalizedComplexConductivity\n      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n            params.e params.v params.m params.fermiEnergy broadening params.disorderStrength params.hbar\n            params.pMax).component\n        0 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "Rotational closure identifies the finite-broadening Hall projection with ordered `xy`, so the\nscaling coordinate has an explicit component orientation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), 0 < self.hbar",
     "standardAxioms": [
@@ -51154,7 +51248,10 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -51162,9 +51259,12 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51197,7 +51297,10 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -51206,9 +51309,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.fermiEnergy_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51375,6 +51481,137 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization params.v params.m\n        params.fermiEnergy params.disorderStrength params.hbar params.pMax <\n      1 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          params.v params.m params.fermiEnergy params.disorderStrength params.hbar params.pMax ≠\n        0 →\n      Filter.Tendsto (fun broadening => (params.finiteBroadeningPair broadening).sxx) (nhdsWithin 0 (Set.Ioi 0))\n        (nhds params.zeroBroadeningPair.sxx)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "At fixed positive disorder, the normalized longitudinal coordinate converges componentwise to\nthe zero-broadening boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.cutoff_nonneg",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.cutoff_shell",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorder_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.hbar_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.metallic",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.velocity_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxx",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization params.v params.m\n        params.fermiEnergy params.disorderStrength params.hbar params.pMax <\n      1 →\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n          params.v params.m params.fermiEnergy params.disorderStrength params.hbar params.pMax ≠\n        0 →\n      Filter.Tendsto (fun broadening => (params.finiteBroadeningPair broadening).sxy) (nhdsWithin 0 (Set.Ioi 0))\n        (nhds params.zeroBroadeningPair.sxy)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "At fixed positive disorder, the normalized Hall coordinate converges to the Hall projection of\nthe zero-broadening tensor boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.cutoff_nonneg",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.cutoff_shell",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorder_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.hbar_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.metallic",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.velocity_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxy",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  Filter.Tendsto (fun disorderStrength => (params.zeroBroadeningPairAtDisorder disorderStrength).sxy)\n    (nhdsWithin 0 (Set.Ioi 0))\n    (nhds\n      (params.normalizedComplexConductivity\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity params.e params.hbar params.m\n            params.fermiEnergy)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "The normalized Hall coordinate inherits the existing sequential zero-broadening then\nweak-disorder non-crossing limit. No finite-broadening skew contribution is introduced here. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.cutoff_shell",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.hbar_pos",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.metallic",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.velocity_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero_eq_nonCrossing"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (self : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters), self.v ≠ 0",
     "standardAxioms": [
@@ -51396,7 +51633,10 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -51404,9 +51644,168 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity",
       "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.bornRtaLongitudinalConductivity_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters) (disorderStrength : ℝ),\n  (params.zeroBroadeningPairAtDisorder disorderStrength).sxx =\n    params.normalizedComplexConductivity\n      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n            params.e params.v params.m params.fermiEnergy disorderStrength params.hbar params.pMax).component\n        0 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxx",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "The zero-broadening longitudinal scaling coordinate at arbitrary disorder strength is the\nnormalized ordered `xx` boundary component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters) (disorderStrength : ℝ),\n  (params.zeroBroadeningPairAtDisorder disorderStrength).sxy =\n    params.normalizedComplexConductivity\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n        params.e params.v params.m params.fermiEnergy disorderStrength params.hbar params.pMax)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "The zero-broadening Hall scaling coordinate at arbitrary disorder strength is the normalized\nordered `xy` boundary, using the proved Hall projection identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxy"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_xy"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  params.zeroBroadeningPair.sxx =\n    params.normalizedComplexConductivity\n      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n            params.e params.v params.m params.fermiEnergy params.disorderStrength params.hbar params.pMax).component\n        0 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxx",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "At the stored disorder strength, the zero-broadening longitudinal scaling coordinate is the\nnormalized ordered `xx` boundary component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (params : QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters),\n  params.zeroBroadeningPair.sxy =\n    params.normalizedComplexConductivity\n      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceConductivityZeroBroadeningBoundary\n        params.e params.v params.m params.fermiEnergy params.disorderStrength params.hbar params.pMax)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPair_sxy",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Pair",
+    "externalAxioms": [],
+    "docString": "At the stored disorder strength, the zero-broadening Hall scaling coordinate is the normalized\nordered `xy` boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57282,7 +57681,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57294,15 +57693,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.zeroBroadeningPairAtDisorder_sxy",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57321,7 +57724,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57333,6 +57736,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
     ],
     "dependencies": [
@@ -57341,9 +57745,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.finiteBroadeningPair_sxy",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_broadening_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65543,7 +65948,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (e v m probeEnergy hbar pMax : ℝ),\n  v ≠ 0 →\n    0 < hbar →\n      |m| < probeEnergy →\n        probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n          Filter.Tendsto\n            (fun disorderStrength =>\n              (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                    e v m probeEnergy disorderStrength hbar pMax).hallComponent\n                0 1)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds ↑(QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy))",
     "standardAxioms": [
       "Classical.choice",
@@ -65551,7 +65956,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65562,14 +65967,18 @@
     "docString": "The sequential zero-broadening then weak-disorder Hall projection reproduces the Ado\nnon-crossing conductivity formula. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary_hallComponent_disorder_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65580,7 +65989,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (measured source : Fin 2) (e v m probeEnergy disorderStrength hbar pMax : ℝ),\n  0 ≤ pMax →\n    v ≠ 0 →\n      hbar ≠ 0 →\n        0 < disorderStrength →\n          |m| < probeEnergy →\n            probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n              QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m\n                    probeEnergy disorderStrength hbar pMax <\n                  1 →\n                QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary\n                      v m probeEnergy disorderStrength hbar pMax ≠\n                    0 →\n                  Filter.Tendsto\n                    (fun broadening =>\n                      (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor\n                            e v m probeEnergy broadening disorderStrength hbar pMax).component\n                        measured source)\n                    (nhdsWithin 0 (Set.Ioi 0))\n                    (nhds\n                      ((QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensorZeroBroadeningBoundary\n                            e v m probeEnergy disorderStrength hbar pMax).component\n                        measured source))",
     "standardAxioms": [
       "Classical.choice",
@@ -65599,7 +66008,10 @@
     "docString": "Every finite-`η` conductivity tensor component converges to the corresponding entry of the\nphysical zero-broadening conductivity tensor. The off-diagonal `yx` and diagonal `yy` cases are\nobtained from the finite-`η` rotational identities rather than assigned independently. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceConductivityTensor_component_yy_eq_xx",
@@ -65608,8 +66020,11 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
