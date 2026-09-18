@@ -1,16 +1,16 @@
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 
 set_option linter.style.header false
 
 /-!
-# Low-order fermionic formal linked-cluster identities
+# Low-order fermionic formal logarithm identities
 
-The first three coefficients make the moment-cumulant subtraction pattern explicit and specialize
-the general fermionic Dyson Linked Cluster Theorem to orders one, two, and three.
+The first three coefficients make the moment-cumulant subtraction pattern explicit. These are
+opt-in example/regression theorems for the fermionic Dyson partition series; connected-diagram
+specializations are obtained from the general linked-cluster theorem rather than duplicated here.
 -/
-
-open scoped BigOperators
 
 namespace SecondQuantization
 namespace Fermionic
@@ -60,67 +60,6 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
     (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq
       (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g)))
-
-/-- First-order formal linked-cluster corollary. -/
-theorem dysonFormalLinkedCluster_order_one
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 1 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  calc
-    normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 =
-        ((1 : ℕ).factorial : ℂ) *
-          PowerSeries.coeff 1
-            (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) :=
-      (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one ε β g).symm
-    _ = ∑ d : ConnectedQuarticWickDiagram Mode 1 Finset.univ,
-          quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-        ε β g 1 (by norm_num)
-
-/-- Second-order formal linked-cluster corollary, displaying cancellation of the product of two
-disconnected one-vertex contributions. -/
-theorem dysonFormalLinkedCluster_order_two
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 -
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 2 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 2 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  calc
-    2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 -
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 2 =
-        ((2 : ℕ).factorial : ℂ) *
-          PowerSeries.coeff 2
-            (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) :=
-      (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two ε β g).symm
-    _ = ∑ d : ConnectedQuarticWickDiagram Mode 2 Finset.univ,
-          quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-        ε β g 2 (by norm_num)
-
-/-- Third-order formal linked-cluster corollary, displaying cancellation of all one-plus-two and
-three-singleton disconnected decompositions. -/
-theorem dysonFormalLinkedCluster_order_three
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 3 -
-        6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 +
-        2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 3 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 3 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  calc
-    6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 3 -
-        6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 +
-        2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 3 =
-        ((3 : ℕ).factorial : ℂ) *
-          PowerSeries.coeff 3
-            (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) :=
-      (factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three ε β g).symm
-    _ = ∑ d : ConnectedQuarticWickDiagram Mode 3 Finset.univ,
-          quarticWickDiagramAmplitude ε β g d.1 :=
-      factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
-        ε β g 3 (by norm_num)
 
 end Fermionic
 end SecondQuantization
