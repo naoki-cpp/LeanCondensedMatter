@@ -39,7 +39,6 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
-
 /-! ## External-field compatibility -/
 
 /-- View one quartic local leg as an external-style annihilation or creation field label. -/
