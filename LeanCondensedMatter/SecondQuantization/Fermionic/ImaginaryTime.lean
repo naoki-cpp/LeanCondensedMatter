@@ -14,7 +14,7 @@ set_option linter.style.header false
 
 Free diagonal evolution, evolved creation and annihilation operators, quartic-interaction evolution,
 the canonical fermionic two-point operator, labelled and time-labelled external fields, and their
-operator realization in the shared statistics-independent mixed-event order. The mixed event ordering, monotone slot
-embeddings, order chambers, null comparison walls, and finite order signatures are owned by
+operator realization in the shared statistics-independent mixed-event order. The mixed event ordering,
+monotone slot embeddings, order chambers, null comparison walls, and finite order signatures are owned by
 `SecondQuantization.Common`; this namespace supplies the fermionic operator/sign specialization.
 -/
