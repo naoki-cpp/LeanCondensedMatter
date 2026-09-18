@@ -38,6 +38,7 @@ noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
   | .inr v => List.ofFn fun l : Fin 4 =>
       ⟨σ v, quarticLocalLegExternalFieldLabel (q v) l⟩
 
+omit [LinearOrder Mode] in
 private theorem twoPointTimedEventAtomicFields_length {n : ℕ} (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (event : TwoPointTimedEvent n) :
