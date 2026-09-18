@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
@@ -193,17 +193,12 @@ theorem quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude
       ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
         QuarticDiagram.thermalAmplitude ε β g d.1 := by
   let W := quarticThermalDiagramMultiplicativeWeight (N := N) ε β g
-  let Z : Common.GeneratingFunctional (Fin N) ℂ :=
-    ⟨quarticThermalMoment (N := N) ε β g⟩
-  change Z.connected S =
+  change W.normalizedObjectMoment.cumulant S =
     ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
       QuarticDiagram.thermalAmplitude ε β g d.1
   calc
-    Z.connected S = W.connectedContribution S := by
-      refine Common.GeneratingFunctional.connected_eq_connectedContribution
-        (Z := Z) (W := W) ?_ hS
-      intro T
-      rfl
+    W.normalizedObjectMoment.cumulant S = W.connectedContribution S :=
+      W.normalizedObjectMoment_cumulant_eq_connectedContribution hS
     _ = ∑ d : Common.ConnectedQuarticDiagram (Common.QuarticVertexLabel Mode) N S,
         QuarticDiagram.thermalAmplitude ε β g d.1 := rfl
 
