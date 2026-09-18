@@ -126,7 +126,6 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Basic.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Creation.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Annihilation.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Mode.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/OccupationEquivalence.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/OccupationFieldEquivalence.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/SecondQuantization.lean",
