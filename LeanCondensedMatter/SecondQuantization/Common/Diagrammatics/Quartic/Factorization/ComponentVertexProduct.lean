@@ -26,7 +26,7 @@ theorem QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts
       d.vertexLabel (d.componentPartition.equivSigmaParts.symm ⟨B, v⟩) := by
   apply congrArg d.vertexLabel
   apply Subtype.ext
-  rw [QuarticDiagram.subtypeMemBlockEquiv_symm_val]
+  rw [Combinatorics.subsetSubtypeEquiv_symm_val]
   rfl
 
 /-- The statistics-independent complex Dyson sign times vertex weight factors over connected
