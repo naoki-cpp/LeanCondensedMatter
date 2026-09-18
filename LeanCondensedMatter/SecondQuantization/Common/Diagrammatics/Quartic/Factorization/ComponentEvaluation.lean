@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
-import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
@@ -61,9 +61,10 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
             pairValue
               (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.1
               (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.2 :=
-        (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).prod_componentDecomposition
-          (d.componentPairEquiv orders shuffle)
-          (fun pr => pairValue pr.1.1 pr.1.2)
+        by
+          simpa using
+            (Fintype.prod_equiv_sigma (d.componentPairEquiv orders shuffle).symm
+              (fun pr => pairValue pr.1.1 pr.1.2))
       _ = ∏ B : d.componentPartition.parts,
           ∏ pr : d.LocalOrderedPair orders B,
             localPairValue B pr.1.1 pr.1.2 := by
