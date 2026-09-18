@@ -63,12 +63,6 @@ def AheScalingParameters.normalizedConductivity
     (params : AheScalingParameters) (sigma : ℝ) : ℝ :=
   (planckFromReduced params.hbar / params.e ^ 2) * sigma
 
-/-- Complex-valued counterpart of `normalizedConductivity`, used before zero-broadening or other
-reality statements have been proved for a physical conductivity component. -/
-def AheScalingParameters.normalizedComplexConductivity
-    (params : AheScalingParameters) (sigma : ℂ) : ℂ :=
-  (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ)) * sigma
-
 lemma AheScalingParameters.referenceEnergy_ne_zero (params : AheScalingParameters) :
     params.referenceEnergy ≠ 0 :=
   ne_of_gt params.referenceEnergy_pos
