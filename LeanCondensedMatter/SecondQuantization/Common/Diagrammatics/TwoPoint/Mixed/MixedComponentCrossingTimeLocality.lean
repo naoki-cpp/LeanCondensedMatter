@@ -42,7 +42,7 @@ private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
     (d.componentIsVacuum_iff_ne_externalComponentPart B).1 hVac
   simp [TwoPointDiagram.mixedComponentPairTimeEquiv, hB]
 
-private theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
+private theorem TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
@@ -51,15 +51,14 @@ private theorem TwoPointDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swa
     (hpartner : ∀ pos,
       localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
     (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+    (localPairing.normalizedPairOfEndpointEquiv
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B) e pr).1 =
         (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
           e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
-      (d.mixedComponentPairRestrictedEquiv τ τ' σ B e localPairing hpartner pr).1 =
+      (localPairing.normalizedPairOfEndpointEquiv
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B) e pr).1 =
         (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
           e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
-  change
-    (localPairing.normalizedPairOfEndpointEquiv
-      (d.mixedComponentPairEndpointEquiv τ τ' σ B) e pr).1 = _ ∨ _
   apply localPairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
   intro q
   rw [hpartner, d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B q]
@@ -125,11 +124,11 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         (d.mixedExternalComponentPairEquiv τ τ' υ q).1 =
           (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 :=
       congrArg Subtype.val hlocal
-    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ
+    rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ
         d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' σ)
         d.externalVacuumSplit.1.pairing
         (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr with hp | hp <;>
-      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ
+      rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ
           d.externalComponentPart (d.mixedExternalPositionEquiv τ τ' υ)
           d.externalVacuumSplit.1.pairing
           (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' υ) q with hq | hq
@@ -172,12 +171,12 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac q).1 =
           (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 :=
       congrArg Subtype.val hlocal
-    rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ B
+    rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' σ B
         (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
         (d.restrictedVacuumPairing B hVac)
         (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
       with hp | hp <;>
-      rcases d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' υ B
+      rcases d.mixedComponentPairEndpoints_pair_eq_or_swap τ τ' υ B
           (d.mixedVacuumPositionEquiv τ τ' υ B hVac)
           (d.restrictedVacuumPairing B hVac)
           (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' υ B hVac) q
