@@ -101,15 +101,5 @@ noncomputable def dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
   PowerSeries.logOf
     (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
 
-omit [LinearOrder Mode] in
-/-- The formal logarithm has vanishing constant coefficient. -/
-theorem constantCoeff_dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    PowerSeries.constantCoeff (dysonFormalLogPartitionFunction ε β V) = 0 := by
-  rw [dysonFormalLogPartitionFunction]
-  exact PowerSeries.constantCoeff_logOf
-    (PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β V))
-
 end Fermionic
 end SecondQuantization
