@@ -12,6 +12,10 @@ This module connects the concrete ordered-`xy` ladder provenance isolated upstre
 EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition. Mechanism names remain theorem-level:
 no primitive side-jump or skew-scattering conductivity definitions are introduced.
 
+The intrinsic/side-jump/skew taxonomy follows Nagaosa et al., *Rev. Mod. Phys.* **82**, 1539–1592
+(2010), [doi:10.1103/RevModPhys.82.1539](https://doi.org/10.1103/RevModPhys.82.1539), while the
+closed expressions classified below remain those of Ado et al.
+
 After physical conductivity normalization, the two concrete weak-disorder provenance terms do not
 map one-to-one to mechanisms. Instead, with `P₀` the `r_y Γ_x` contribution and `P₁` the
 `r_x Γ_y` contribution,

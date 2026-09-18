@@ -28,6 +28,12 @@ Fermi-sea contribution. A representation object additionally proves that a chose
 `Transport.Streda` trace layer. Only after such a representation is supplied does the response
 inherit the split.
 
+The surface/sea terminology and Hall-response motivation trace to Středa, *J. Phys. C* **15**,
+L717–L721 (1982),
+[doi:10.1088/0022-3719/15/22/005](https://doi.org/10.1088/0022-3719/15/22/005). This module proves
+only the displayed finite-interval identity, not the density- or magnetization-derivative
+interpretation.
+
 This module does not identify the sea term with a magnetic-field derivative of particle density or
 magnetization. It also makes no zero-temperature distributional, zero-broadening, DC, disorder,
 trace-per-unit-volume, or thermodynamic-limit claim.

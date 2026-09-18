@@ -34,6 +34,10 @@ When `V_I` is interval-integrable, continuity and linearity of `ω` give the gen
 
 `-(i / ℏ) ∫₀ᵗ ω([A_I(t), V_I(s)]) ds`.
 
+The linear-response principle used here is due to Kubo, *J. Phys. Soc. Jpn.* **12**, 570–586
+(1957), [doi:10.1143/JPSJ.12.570](https://doi.org/10.1143/JPSJ.12.570). The bounded finite-time
+hypotheses are this library's explicit specialization.
+
 The finite-coupling pullback is kept as a continuous linear functional rather than bundled as a
 `NormalizedExpectation`: normalization would require full unitarity of the Dyson propagator, which
 is a separate theorem.
