@@ -56,12 +56,12 @@ decomposition has connected coefficients equal to the connected-object contribut
 theorem connected_eq_connectedContribution
     {D : ConnectedDecomposition Source} (Z : GeneratingFunctional Source R)
     (W : MultiplicativeWeight D R)
-    (hMoment : ∀ S, Z.moment S = W.objectMoment S)
+    (hMoment : Z.moment = W.normalizedObjectMoment)
     {S : Finset Source} (hS : S ≠ ∅) :
     Z.connected S = W.connectedContribution S := by
-  change Finpartition.cumulantFromMoment Z.moment.toFun S = W.connectedContribution S
-  rw [show Z.moment.toFun = W.objectMoment from funext hMoment]
-  exact W.cumulantFromMoment_objectMoment hS
+  change Z.moment.cumulant S = W.connectedContribution S
+  rw [hMoment]
+  exact W.normalizedObjectMoment_cumulant_eq_connectedContribution hS
 
 end GeneratingFunctional
 
