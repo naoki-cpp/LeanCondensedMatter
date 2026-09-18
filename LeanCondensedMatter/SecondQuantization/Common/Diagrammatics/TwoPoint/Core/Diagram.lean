@@ -1,16 +1,14 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
-import Mathlib.Data.Fintype.EquivFin
 
 set_option linter.style.header false
 
 /-!
 # Two-point diagrams with external legs
 
-This module adds the statistics-independent combinatorial data needed for a two-point correlation
-function with quartic interaction vertices.  There are two distinguished one-legged external
-vertices and four legs at every interaction vertex.
+This module specializes the statistics-independent external-insertion diagram core to a two-point
+correlation function. There are two distinguished one-legged external vertices and four legs at
+every interaction vertex.
 
 Two connectedness notions are deliberately separated:
 
@@ -28,37 +26,32 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- The vertices of a two-point diagram: two external vertices and the interaction vertices. -/
-abbrev TwoPointVertex (S : Finset (Fin N)) : Type := Fin 2 ⊕ ↥S
+/-- The vertices of a two-point diagram, as the `E = 1` external-insertion specialization. -/
+abbrev TwoPointVertex (S : Finset (Fin N)) : Type := ExternalInsertionVertex 1 S
 
-/-- The legs of a two-point diagram: one leg at each external vertex and four at each interaction
-vertex. -/
-abbrev TwoPointLeg (S : Finset (Fin N)) : Type := Fin 2 ⊕ (↥S × Fin 4)
+/-- The legs of a two-point diagram, as the `E = 1` external-insertion specialization. -/
+abbrev TwoPointLeg (S : Finset (Fin N)) : Type := ExternalInsertionLeg 1 S
 
 /-- Flatten the two external legs and all quartic interaction legs into the ordered finite type used
 by `Pairing`. -/
 noncomputable def twoPointLegEquiv (S : Finset (Fin N)) :
     Fin (2 * (2 * S.card + 1)) ≃ TwoPointLeg S :=
-  Fintype.equivOfCardEq (by
-    simp [TwoPointLeg]
-    omega)
+  externalInsertionLegEquiv 1 S
 
 /-- The flattened leg belonging to external vertex `e`. -/
 noncomputable def twoPointExternalLeg (S : Finset (Fin N)) (e : Fin 2) :
     Fin (2 * (2 * S.card + 1)) :=
-  (twoPointLegEquiv S).symm (Sum.inl e)
+  externalInsertionExternalLeg 1 S e
 
 /-- The flattened local leg `l` belonging to interaction vertex `v`. -/
 noncomputable def twoPointInteractionLeg {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
     Fin (2 * (2 * S.card + 1)) :=
-  (twoPointLegEquiv S).symm (Sum.inr (v, l))
+  externalInsertionInteractionLeg (E := 1) v l
 
 /-- The vertex incident to a flattened two-point leg. -/
 noncomputable def twoPointVertexOfLeg {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) : TwoPointVertex S :=
-  match twoPointLegEquiv S leg with
-  | Sum.inl e => Sum.inl e
-  | Sum.inr p => Sum.inr p.1
+  externalInsertionVertexOfLeg (E := 1) leg
 
 @[simp]
 theorem twoPointVertexOfLeg_externalLeg (S : Finset (Fin N)) (e : Fin 2) :
@@ -80,6 +73,15 @@ structure TwoPointDiagram (ExternalLabel InternalLabel : Type*) (N : ℕ)
   vertexLabel : ↥S → InternalLabel
   /-- Perfect pairing of all external and interaction legs. -/
   pairing : Pairing (2 * S.card + 1)
+
+/-- The two-point diagram data are exactly the `E = 1` external-insertion diagram data. -/
+def TwoPointDiagram.equivExternalInsertion {S : Finset (Fin N)} :
+    TwoPointDiagram ExternalLabel InternalLabel N S ≃
+      ExternalInsertionDiagram ExternalLabel InternalLabel 1 N S where
+  toFun d := ⟨d.externalLabel, d.vertexLabel, d.pairing⟩
+  invFun d := ⟨d.externalLabel, d.vertexLabel, d.pairing⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 @[ext]
 theorem TwoPointDiagram.ext {S : Finset (Fin N)}
