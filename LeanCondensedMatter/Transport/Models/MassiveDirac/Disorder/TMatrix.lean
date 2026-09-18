@@ -88,6 +88,39 @@ theorem ScalarImpurityTMatrixInput.inverseShiftMatrix_mul_shiftMatrix
     input.inverseShiftMatrix hinvertible * input.shiftMatrix = 1 := by
   simpa [ScalarImpurityTMatrixInput.inverseShiftMatrix] using hinvertible.val_inv_mul
 
+/-- Multiplying the T-matrix by its shift from the left gives the scalar impurity
+potential. -/
+theorem ScalarImpurityTMatrixInput.shiftMatrix_mul_tMatrix
+    (input : ScalarImpurityTMatrixInput)
+    (hinvertible : IsUnit input.shiftMatrix) :
+    input.shiftMatrix * input.tMatrix hinvertible =
+      (((input.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
+  unfold ScalarImpurityTMatrixInput.tMatrix
+  rw [mul_smul_comm, input.shiftMatrix_mul_inverseShiftMatrix hinvertible]
+
+/-- Multiplying the T-matrix by its shift from the right gives the same scalar impurity potential. -/
+theorem ScalarImpurityTMatrixInput.tMatrix_mul_shiftMatrix
+    (input : ScalarImpurityTMatrixInput)
+    (hinvertible : IsUnit input.shiftMatrix) :
+    input.tMatrix hinvertible * input.shiftMatrix =
+      (((input.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) := by
+  unfold ScalarImpurityTMatrixInput.tMatrix
+  rw [smul_mul_assoc, input.inverseShiftMatrix_mul_shiftMatrix hinvertible]
+
+/-- Exact Lippmann--Schwinger fixed-point identity. This follows from invertibility alone and does
+not assert convergence of a geometric series. -/
+theorem ScalarImpurityTMatrixInput.tMatrix_eq_bare_add_loop_tMatrix
+    (input : ScalarImpurityTMatrixInput)
+    (hinvertible : IsUnit input.shiftMatrix) :
+    input.tMatrix hinvertible =
+      (((input.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
+        (((input.impurityStrength : ℝ) : ℂ)) •
+          (input.greenLoop * input.tMatrix hinvertible) := by
+  have h := input.shiftMatrix_mul_tMatrix hinvertible
+  rw [ScalarImpurityTMatrixInput.shiftMatrix] at h
+  simp only [sub_mul, one_mul, smul_mul_assoc] at h
+  exact (sub_eq_iff_eq_add).mp h
+
 /-- The self-energy keeps the impurity density as an external scalar multiplier of the T-matrix. -/
 @[simp]
 theorem ScalarImpurityTMatrixInput.selfEnergy_eq
