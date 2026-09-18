@@ -116,6 +116,80 @@ theorem ScalarImpurityParameters.tMatrix_eq_bare_add_loop_tMatrix
   simp only [sub_mul, one_mul, smul_mul_assoc] at h
   exact (sub_eq_iff_eq_add).mp h
 
+/-- Exact remainder after subtracting the bare scalar-impurity term. No series
+expansion is used. -/
+theorem ScalarImpurityParameters.tMatrix_sub_bare_eq
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
+    params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
+      (((params.impurityStrength : ℝ) : ℂ)) •
+        (greenLoop * params.tMatrix greenLoop hinvertible) := by
+  have h := params.tMatrix_eq_bare_add_loop_tMatrix greenLoop hinvertible
+  calc
+    params.tMatrix greenLoop hinvertible -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) =
+      ((((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) +
+          (((params.impurityStrength : ℝ) : ℂ)) •
+            (greenLoop * params.tMatrix greenLoop hinvertible)) -
+        (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2) :=
+      congrArg
+        (fun M : Matrix2 =>
+          M - (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))
+        h
+    _ = (((params.impurityStrength : ℝ) : ℂ)) •
+        (greenLoop * params.tMatrix greenLoop hinvertible) := by
+      abel
+
+/-- In operator norm, the exact T-matrix remainder carries two powers of the impurity strength, up
+to the norm of the supplied Green loop and inverse shift. -/
+theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop)) :
+    ‖matrixOperator
+        (params.tMatrix greenLoop hinvertible -
+          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
+  have ht :
+      matrixOperator (params.tMatrix greenLoop hinvertible) =
+        (((params.impurityStrength : ℝ) : ℂ)) •
+          matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
+    unfold ScalarImpurityParameters.tMatrix matrixOperator
+    rw [map_smul]
+  rw [params.tMatrix_sub_bare_eq greenLoop hinvertible]
+  simp only [matrixOperator, map_smul, map_mul]
+  rw [norm_smul]
+  calc
+    ‖((params.impurityStrength : ℝ) : ℂ)‖ *
+        ‖matrixOperator greenLoop * matrixOperator (params.tMatrix greenLoop hinvertible)‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ *
+        (‖matrixOperator greenLoop‖ *
+          ‖matrixOperator (params.tMatrix greenLoop hinvertible)‖) :=
+      mul_le_mul_of_nonneg_left (norm_mul_le _ _) (norm_nonneg _)
+    _ = ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ := by
+      rw [ht, norm_smul]
+      ring
+
+/-- With a supplied pointwise bound on the operator norm of the inverse shift, the exact remainder
+has an explicit quadratic impurity-strength factor. This does not by itself assert a uniform
+small-impurity estimate, Big-O statement, or limit as the impurity strength tends to zero. -/
+theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le_of_inverse_bound
+    (params : ScalarImpurityParameters) (greenLoop : Matrix2)
+    (hinvertible : IsUnit (params.shiftMatrix greenLoop))
+    (inverseBound : ℝ)
+    (hinverse :
+      ‖matrixOperator (params.inverseShiftMatrix greenLoop hinvertible)‖ ≤ inverseBound) :
+    ‖matrixOperator
+        (params.tMatrix greenLoop hinvertible -
+          (((params.impurityStrength : ℝ) : ℂ)) • (1 : Matrix2))‖ ≤
+      ‖((params.impurityStrength : ℝ) : ℂ)‖ ^ 2 * ‖matrixOperator greenLoop‖ *
+        inverseBound := by
+  exact (params.norm_matrixOperator_tMatrix_sub_bare_le greenLoop hinvertible).trans
+    (mul_le_mul_of_nonneg_left hinverse
+      (mul_nonneg (sq_nonneg _) (norm_nonneg _)))
+
 /-- Finite-cutoff Born-Dyson zero-field loop at the spatial origin. Each real-space Green block
 already contains the physical momentum measure, so downstream T-matrix data must not attach it
 again. -/
