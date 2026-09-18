@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 
 set_option linter.style.header false
 
@@ -37,6 +38,45 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
       (fermionEnergy ε) ε create annihilate q l τ
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
+
+/-! ## External-field compatibility -/
+
+/-- View one quartic local leg as an external-style annihilation or creation field label. -/
+def quarticLocalLegExternalFieldLabel (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    ExternalFieldLabel Mode :=
+  match Common.quarticLocalLeg q l with
+  | .create i => .creation i
+  | .annihilate i => .annihilation i
+
+@[simp]
+theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
+    (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    bareExternalFieldOperator (quarticLocalLegExternalFieldLabel q l) =
+      quarticLocalLegOperator q l := by
+  cases h : Common.quarticLocalLeg q l <;>
+    simp [quarticLocalLegExternalFieldLabel, bareExternalFieldOperator,
+      quarticLocalLegOperator, Common.quarticLocalLegOperator, h]
+
+omit [LinearOrder Mode] in
+@[simp]
+theorem externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel
+    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    externalFieldLabelEnergyShift ε (quarticLocalLegExternalFieldLabel q l) =
+      quarticLocalLegEnergyShift ε q l := by
+  cases h : Common.quarticLocalLeg q l <;>
+    simp [quarticLocalLegExternalFieldLabel, externalFieldLabelEnergyShift,
+      quarticLocalLegEnergyShift, h]
+
+/-- The time-labelled field corresponding to one quartic local leg has the existing local-leg
+operator semantics. -/
+theorem timedFieldOperator_quarticLocalLeg (ε : Mode → ℝ) (τ : ℝ)
+    (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    timedFieldOperator ε ⟨τ, quarticLocalLegExternalFieldLabel q l⟩ =
+      imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) := by
+  rw [timedFieldOperator_eq_smul,
+    bareExternalFieldOperator_quarticLocalLegExternalFieldLabel,
+    externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel,
+    imaginaryTimeEvolve_quarticLocalLegOperator]
 
 end Fermionic
 end SecondQuantization
