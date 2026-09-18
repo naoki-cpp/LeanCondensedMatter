@@ -22,9 +22,16 @@ variable {α : Type*} [DecidableEq α]
 /-- A subtype of elements of `S` that lie in the subset `T` is canonically equivalent to
 `↥T`. -/
 def subsetSubtypeEquiv {S T : Finset α} (h : T ⊆ S) :
-    {x : ↥S // (x : α) ∈ T} ≃ ↥T :=
-  (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ S) (· ∈ T)).trans
-    (Equiv.subtypeEquivRight fun _x => ⟨fun hx => hx.2, fun hx => ⟨h hx, hx⟩⟩)
+    {x : ↥S // (x : α) ∈ T} ≃ ↥T where
+  toFun x := ⟨x.1.1, x.2⟩
+  invFun x := ⟨⟨x.1, h x.2⟩, x.2⟩
+  left_inv x := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv x := by
+    apply Subtype.ext
+    rfl
 
 @[simp]
 theorem subsetSubtypeEquiv_val {S T : Finset α} (h : T ⊆ S)
