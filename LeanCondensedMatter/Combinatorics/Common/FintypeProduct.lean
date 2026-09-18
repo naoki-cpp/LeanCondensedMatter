@@ -4,14 +4,25 @@ import Mathlib.Data.Fintype.BigOperators
 set_option linter.style.header false
 
 /-!
-# Finite-product counting
+# Finite-product reindexing and counting
 
-A sum whose summand depends only on the first coordinate of a finite product repeats each base value
-once for every element of the second factor.  The statement is phrased through an equivalence so
-that downstream code can use its own product decomposition directly.
+Generic finite-product identities used by combinatorial decompositions. In particular, an arbitrary
+finite type can be reindexed as a dependent sum and products can then be split fiberwise.
 -/
 
 namespace Fintype
+
+/-- Reindex a commutative product through an equivalence with a dependent sum and split it
+into the product over the base and each fiber. -/
+theorem prod_equiv_sigma {α ι M : Type*} [Fintype α] [Fintype ι]
+    {F : ι → Type*} [∀ i, Fintype (F i)] [CommMonoid M]
+    (e : α ≃ Σ i, F i) (f : α → M) :
+    (∏ x : α, f x) = ∏ i : ι, ∏ y : F i, f (e.symm ⟨i, y⟩) := by
+  calc
+    (∏ x : α, f x) = ∏ z : Σ i, F i, f (e.symm z) :=
+      (Equiv.prod_comp e.symm f).symm
+    _ = ∏ i : ι, ∏ y : F i, f (e.symm ⟨i, y⟩) :=
+      Fintype.prod_sigma _
 
 /-- Reindexing a finite type as `β × γ` counts a first-coordinate summand `card γ` times. -/
 theorem sum_equiv_fst_eq_card_mul_sum {α β γ : Type*}

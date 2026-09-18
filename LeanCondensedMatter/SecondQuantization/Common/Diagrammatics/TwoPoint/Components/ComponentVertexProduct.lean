@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false
 
@@ -26,21 +27,26 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
-  classical
   calc
     (∏ v : ↥S, w (d.vertexLabel v)) =
-        ∏ x : Σ B : d.componentPartition.parts,
-          ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))),
-          w (d.vertexLabel (d.interactionVertexComponentEquiv.symm x)) :=
-      (Equiv.prod_comp d.interactionVertexComponentEquiv.symm
-        (fun v => w (d.vertexLabel v))).symm
+        ∏ B : d.componentPartition.parts,
+          ∏ v : ↥(TwoPointDiagram.interactionPart
+            (B : Finset (TwoPointVertex S))),
+            w (d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) :=
+      Fintype.prod_equiv_sigma d.interactionVertexComponentEquiv
+        (fun v => w (d.vertexLabel v))
     _ = ∏ B : d.componentPartition.parts,
         ∏ v : ↥(TwoPointDiagram.interactionPart
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
-      rw [Fintype.prod_sigma]
-      rfl
+      apply Fintype.prod_congr
+      intro B
+      apply Fintype.prod_congr
+      intro v
+      apply congrArg (fun x : ↥S => w (d.vertexLabel x))
+      apply Subtype.ext
+      exact d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
 
 /-- The Dyson sign factors into the external component sign and all vacuum-component signs. -/
 theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
