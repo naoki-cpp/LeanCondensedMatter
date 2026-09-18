@@ -704,6 +704,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
@@ -715,12 +716,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -982,6 +984,45 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (i : Fin m),\n  (σ.leftSlots.orderEmbOfFin ⋯) i = σ.slotEquiv (Sum.inl i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
+    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
+    "externalAxioms": [],
+    "docString": "The increasing enumeration of the left slots is the left shuffle slot map. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
+      "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
+      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {m n : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m n) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded g → intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g)",
     "standardAxioms": [
@@ -1044,6 +1085,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.FamilySlotShuffle.cons_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
@@ -1052,10 +1094,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.FamilySlotShuffle.cons_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -1214,6 +1257,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
     "dependencies": [],
@@ -1221,9 +1265,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
+      "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -87377,6 +87422,82 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  {d₁ d₂ : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S},\n  d₁.externalLabel = d₂.externalLabel → d₁.vertexLabel = d₂.vertexLabel → d₁.pairing = d₂.pairing → d₁ = d₂",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ext",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  {d₁ d₂ : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S},\n  d₁ = d₂ ↔ d₁.externalLabel = d₂.externalLabel ∧ d₁.vertexLabel = d₂.vertexLabel ∧ d₁.pairing = d₂.pairing",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.ext_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.ext"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [self : SecondQuantization.Common.OccupationBasis Mode Config] {m n : Config},\n  (∀ (i : Mode),\n      SecondQuantization.Common.OccupationBasis.occupation m i =\n        SecondQuantization.Common.OccupationBasis.occupation n i) →\n    m = n",
     "standardAxioms": [],
@@ -99735,6 +99856,76 @@
       "SecondQuantization.Common.continuousDiagonalEvolution_eq_exp"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} (E : ℕ) (S : Finset (Fin N)) (e : Fin (2 * E)),\n  SecondQuantization.Common.externalInsertionVertexOfLeg\n      (SecondQuantization.Common.externalInsertionExternalLeg E S e) =\n    Sum.inl e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionVertexOfLeg_externalLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N E : ℕ} {S : Finset (Fin N)} (v : ↥S) (l : Fin 4),\n  SecondQuantization.Common.externalInsertionVertexOfLeg\n      (SecondQuantization.Common.externalInsertionInteractionLeg v l) =\n    Sum.inr v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionVertexOfLeg_interactionLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154405,8 +154596,7 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
       "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
       "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.heq_finFun_of_cast",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderEmbOfFin_rfl_cast"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.heq_finFun_of_cast"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154583,45 +154773,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n m : ℕ} (S : Finset (Fin n)) (h : S.card = m) (q : Fin m),\n  (S.orderEmbOfFin ⋯) (Fin.cast ⋯ q) = (S.orderEmbOfFin h) q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderEmbOfFin_rfl_cast",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
