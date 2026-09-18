@@ -21,14 +21,23 @@ noncomputable section
 
 /-- Parameters and domain conditions for a normalized Massive-Dirac AHE scaling observable. -/
 structure AheScalingParameters where
+  /-- Electric charge entering the conductivity normalization. -/
   e : ℝ
+  /-- Reduced Planck constant used by the Massive-Dirac transport formulas. -/
   hbar : ℝ
+  /-- Dirac velocity parameter. -/
   v : ℝ
+  /-- Massive-Dirac gap/mass parameter. -/
   m : ℝ
+  /-- Fermi energy in the strict metallic regime. -/
   fermiEnergy : ℝ
+  /-- Ultraviolet radial momentum cutoff. -/
   pMax : ℝ
+  /-- Positive scalar-disorder strength `W`. -/
   disorderStrength : ℝ
+  /-- Positive energy scale used to nondimensionalize the scattering coordinate. -/
   referenceEnergy : ℝ
+  /-- Chosen positive scattering/broadening energy scale `γ`. -/
   scatteringScale : ℝ
   hbar_pos : 0 < hbar
   velocity_ne_zero : v ≠ 0
