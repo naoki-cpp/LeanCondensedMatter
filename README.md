@@ -8,7 +8,8 @@ Formalizing results in condensed matter physics as machine-checked theorems in L
 The repository currently includes quantum-theory foundations, operator-analysis infrastructure,
 combinatorics for cumulants and connected structures, algebraic second quantization, finite-temperature
 fermionic thermal theory, quartic Wick/Dyson diagrammatics, formal and finite-dimensional analytic
-Linked Cluster Theorems, a normalized source-functional boundary, finite-volume response theory, and
+Linked Cluster Theorems, a statistics-independent normalized moment/connected-decomposition core,
+finite-volume response theory, and
 massive-Dirac continuum/disorder transport with a finite-mode fermionic two-point linked-cluster
 theorem with external legs.
 
@@ -16,8 +17,8 @@ theorem with external legs.
 
 Representative public theorems include:
 
-- `SecondQuantization.Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected` — statistics-independent formal-log / connected-source bridge;
-- `SecondQuantization.Common.GeneratingFunctional.connected_moment` — reconstruction of normalized source moments from connected coefficients;
+- `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` — statistics-independent formal-log / connected-decomposition bridge;
+- `Combinatorics.NormalizedSetFunction.moment_cumulant` — reconstruction of normalized finite-set moments from cumulants;
 - `SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` — finite-temperature Bloch–de Dominicis pairing;
 - `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — formal finite-mode linked-cluster theorem;
 - `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — analytic finite-dimensional linked-cluster theorem;
