@@ -33,13 +33,6 @@ noncomputable def powerSeriesMomentSetFunction
   map_empty := by
     simp [powerSeriesMomentCoeff, PowerSeries.coeff_zero_eq_constantCoeff, hZ]
 
-@[simp]
-theorem powerSeriesMomentSetFunction_apply
-    {α : Type*} (Z : PowerSeries ℂ)
-    (hZ : PowerSeries.constantCoeff Z = 1) (S : Finset α) :
-    powerSeriesMomentSetFunction Z hZ S = powerSeriesMomentCoeff Z S.card := by
-  rfl
-
 /-- The exponential-generating-function normalization of a formal-log coefficient. -/
 noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
   (n.factorial : ℂ) * PowerSeries.coeff n (PowerSeries.logOf Z)
