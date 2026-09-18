@@ -110536,7 +110536,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (f g : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) f ∘ₗ\n        (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) g +\n      (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) g ∘ₗ\n        (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) f =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -110544,7 +110544,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110555,18 +110555,14 @@
     "docString": "The annihilation-annihilation smeared CAR. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_add_swap"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_add_swap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_add_swap"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110577,7 +110573,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (f g : 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) f ∘ₗ\n        (SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) g +\n      (SecondQuantization.Fermionic.AlgebraicFock.create 𝓗₁) g ∘ₗ\n        (SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) f =\n    inner ℂ f g • LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -110585,7 +110581,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110596,18 +110592,14 @@
     "docString": "The mixed smeared CAR `{a(f), a†(g)} = inner ℂ f g • I`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_swap"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_create_add_swap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_swap"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110692,7 +110684,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (𝓗₁ : Type u_1) [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (f : 𝓗₁),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate 𝓗₁) f)\n      (SecondQuantization.Fermionic.AlgebraicFock.vacuum 𝓗₁) =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -110700,7 +110692,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110711,18 +110703,14 @@
     "docString": "A smeared annihilation field kills the vacuum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_vacuum"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_vacuum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_vacuum"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110779,8 +110767,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -110792,7 +110780,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeCreate_comp_add_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
     ],
     "dependencies": [
@@ -110801,10 +110788,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeCreate_comp_add_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.create_exteriorBasis"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -111440,269 +111426,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (e : Mode → 𝓗₁)\n  (i j : Mode),\n  SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i ∘ₗ\n        SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e j +\n      SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e j ∘ₗ\n        SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_add_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": "Annihilation operators attached to any one-particle family anticommute. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_comp_add_swap"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] {e : Mode → 𝓗₁},\n  Orthonormal ℂ e →\n    ∀ {i j : Mode},\n      i ≠ j →\n        SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i ∘ₗ\n              SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j +\n            SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j ∘ₗ\n              SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i =\n          0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_of_ne",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": "Distinct modes have zero mixed anticommutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_swap"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] {e : Mode → 𝓗₁},\n  Orthonormal ℂ e →\n    ∀ (i : Mode),\n      SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i ∘ₗ\n            SecondQuantization.Fermionic.AlgebraicFock.modeCreate e i +\n          SecondQuantization.Fermionic.AlgebraicFock.modeCreate e i ∘ₗ\n            SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i =\n        LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": "The same-mode mixed anticommutator is the identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_swap"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁]\n  [inst_2 : DecidableEq Mode] {e : Mode → 𝓗₁},\n  Orthonormal ℂ e →\n    ∀ (i j : Mode),\n      SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i ∘ₗ\n            SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j +\n          SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j ∘ₗ\n            SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i =\n        (if i = j then 1 else 0) • LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": "For an orthonormal family, the mixed smeared CAR becomes the Kronecker-delta mode CAR. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_of_ne",
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_comp_create_add_swap"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_of_ne",
-      "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_comp_modeCreate_add_self"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (e : Mode → 𝓗₁)\n  (i : Mode),\n  (SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate e i)\n      (SecondQuantization.Fermionic.AlgebraicFock.vacuum 𝓗₁) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeAnnihilate_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_vacuum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (e : Mode → 𝓗₁)\n  (i : Mode) (Ψ : SecondQuantization.Fermionic.AlgebraicFock 𝓗₁),\n  (SecondQuantization.Fermionic.AlgebraicFock.modeCreate e i) Ψ =\n    (SecondQuantization.Fermionic.AlgebraicFock.oneParticle 𝓗₁) (e i) * Ψ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeCreate_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {𝓗₁ : Type u_2} [inst : NormedAddCommGroup 𝓗₁] [inst_1 : InnerProductSpace ℂ 𝓗₁] (e : Mode → 𝓗₁)\n  (i j : Mode),\n  SecondQuantization.Fermionic.AlgebraicFock.modeCreate e i ∘ₗ\n        SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j +\n      SecondQuantization.Fermionic.AlgebraicFock.modeCreate e j ∘ₗ\n        SecondQuantization.Fermionic.AlgebraicFock.modeCreate e i =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.AlgebraicFock.modeCreate_comp_add_swap",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Mode",
-    "externalAxioms": [],
-    "docString": "Creation operators attached to any one-particle family anticommute. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.create_comp_add_swap"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
