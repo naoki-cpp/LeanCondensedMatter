@@ -29,12 +29,12 @@ structure TimedField (Mode : Type*) where
   label : ExternalFieldLabel Mode
 
 /-- The mode carried by an external fermionic field label. -/
-def externalFieldLabelMode : ExternalFieldLabel Mode → Mode
+private def externalFieldLabelMode : ExternalFieldLabel Mode → Mode
   | .annihilation i => i
   | .creation i => i
 
 /-- Whether an external fermionic field label is a creation field. -/
-def externalFieldLabelIsCreate : ExternalFieldLabel Mode → Bool
+private def externalFieldLabelIsCreate : ExternalFieldLabel Mode → Bool
   | .annihilation _ => false
   | .creation _ => true
 
@@ -77,7 +77,7 @@ theorem externalFieldOperator_eq_smul_bare (ε : Mode → ℝ) (τ : ℝ)
       ring
 
 /-- The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. -/
-theorem zetaCommutator_bareExternalFieldOperator
+private theorem zetaCommutator_bareExternalFieldOperator
     (A B : ExternalFieldLabel Mode) :
     LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
