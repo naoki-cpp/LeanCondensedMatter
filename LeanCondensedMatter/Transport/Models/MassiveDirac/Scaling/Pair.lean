@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Longitudinal
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Scaling.Domain
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 
 set_option linter.style.header false
@@ -23,6 +23,12 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open Filter QuantumTheory.Transport
+
+/-- Complex-valued conductivity normalization used before zero-broadening or other reality
+statements have been proved for a physical conductivity component. -/
+def AheScalingParameters.normalizedComplexConductivity
+    (params : AheScalingParameters) (sigma : ℂ) : ℂ :=
+  (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ)) * sigma
 
 /-- Dimensionless longitudinal/Hall conductivity coordinates. Finite-broadening values remain
 complex until a separate reality theorem is available. -/
