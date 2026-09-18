@@ -18,7 +18,7 @@ namespace Combinatorics
 ensures that the second endpoint lies in the same subset when needed. -/
 abbrev Pairing.NormalizedPairSubtype {n : ℕ} (pairing : Pairing n)
     (p : Fin (2 * n) → Prop) :=
-  {pr : pairing.NormalizedPair // p pr.1.1.1}
+  {pr : pairing.NormalizedPair // p pr.1.1}
 
 /-- The two endpoints of normalized pairs selected by a partner-invariant predicate are equivalent
 to the selected ambient positions. -/
@@ -103,8 +103,9 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
     (localPairing : Pairing m)
     (hlocal : ∀ pos,
       localPairing.partner (e pos) = e (pairing.partnerSubtypePerm p hpartner pos)) :
-    pairing.NormalizedPairSubtype p ≃ localPairing.NormalizedPair :=
-  localPairing.normalizedPairEquivOfEndpointEquiv
+    pairing.NormalizedPairSubtype p ≃ localPairing.NormalizedPair := by
+  classical
+  exact localPairing.normalizedPairEquivOfEndpointEquiv
     (pairing.normalizedPairSubtypeEndpointEquiv p hpartner) e
     (fun pr => by
       rw [hlocal, pairing.partnerSubtypePerm_normalizedPairSubtypeEndpoint_zero])
