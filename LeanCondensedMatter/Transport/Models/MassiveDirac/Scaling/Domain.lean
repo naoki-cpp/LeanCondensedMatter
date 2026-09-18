@@ -48,13 +48,23 @@ def AheScalingParameters.gamma (params : AheScalingParameters) : ℝ :=
 def AheScalingParameters.dimensionlessScattering (params : AheScalingParameters) : ℝ :=
   params.gamma / params.referenceEnergy
 
-/-- Conductivity normalized in the `e² / h` convention, `σ̂ = (h/e²) σ`. -/
-def normalizedConductivity (e hbar sigma : ℝ) : ℝ :=
-  (planckFromReduced hbar / e ^ 2) * sigma
+/-- Conductivity normalized in the `e² / h` convention, `σ̂ = (h/e²) σ`, using the
+charge and reduced-Planck-constant data of this scaling point. -/
+def AheScalingParameters.normalizedConductivity
+    (params : AheScalingParameters) (sigma : ℝ) : ℝ :=
+  (planckFromReduced params.hbar / params.e ^ 2) * sigma
 
 lemma AheScalingParameters.referenceEnergy_ne_zero (params : AheScalingParameters) :
     params.referenceEnergy ≠ 0 :=
   ne_of_gt params.referenceEnergy_pos
+
+lemma AheScalingParameters.scatteringScale_ne_zero (params : AheScalingParameters) :
+    params.scatteringScale ≠ 0 :=
+  ne_of_gt params.scatteringScale_pos
+
+lemma AheScalingParameters.charge_sq_ne_zero (params : AheScalingParameters) :
+    params.e ^ 2 ≠ 0 :=
+  pow_ne_zero 2 params.charge_ne_zero
 
 lemma AheScalingParameters.dimensionlessScattering_pos (params : AheScalingParameters) :
     0 < params.dimensionlessScattering := by
