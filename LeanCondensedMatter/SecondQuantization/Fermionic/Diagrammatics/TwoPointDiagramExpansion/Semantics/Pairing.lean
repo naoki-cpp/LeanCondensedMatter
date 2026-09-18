@@ -127,6 +127,7 @@ noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
     (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
     (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)
 
+omit [LinearOrder Mode] in
 /-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
 private theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
     (i j : Mode) (τ τ' : ℝ)
