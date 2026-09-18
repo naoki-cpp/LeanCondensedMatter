@@ -115,13 +115,12 @@ amplitudes. The third is the two-external-leg analogue after division by the zer
 partition series; `vacuumNormalized` is an identifier for that algebraic normalization, not a claim
 that the thermal state is the vacuum.
 
-The statistics-independent normalized source boundary is explicit in
-`SecondQuantization.Common.Perturbation.GeneratingFunctional`. It packages finite-set moments over a
-commutative coefficient ring, defines connected coefficients by the cumulant transform, and proves
-that connected coefficients reconstruct the normalized moments. The fermionic
-`dysonVertexGeneratingFunctional` is its normalized Dyson specialization. This layer begins after
-vacuum normalization; pre-normalized external insertions and arbitrary higher-point source
-expansions remain to be supplied.
+The statistics-independent normalized moment boundary is expressed by
+`Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction`, and
+`Combinatorics.MultiplicativeWeight`. The zero-source linked-cluster theorem uses these objects
+directly. A distinct source-functional representation is not currently part of the API;
+pre-normalized external insertions and arbitrary higher-point source expansions remain to be
+supplied and may introduce one when concrete source semantics require it.
 
 The formal/combinatorial core does not assert convergence of an infinite-volume perturbation series
 or existence of a thermodynamic limit.
