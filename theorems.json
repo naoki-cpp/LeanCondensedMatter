@@ -89211,14 +89211,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -107325,13 +107325,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -126345,7 +126345,7 @@
     "dependencies": [
       "SecondQuantization.Common.card_quarticVertexOrder",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -127405,7 +127405,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T) →\n        have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n        d.dysonFixedTimeAmplitude ε β g τ τ' σ =\n          d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ'\n              (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) *\n            ((-1) ^ (Finset.univ \\ T).card * vac.couplingWeight g *\n              SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand ε β vac\n                (SecondQuantization.Common.slotSplitVacuumOrder T)\n                (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T) →\n        have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n        d.dysonFixedTimeAmplitude ε β g τ τ' σ =\n          d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ'\n              (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) *\n            ((-1) ^ (Finset.univ \\ T).card * SecondQuantization.Common.QuarticDiagram.vertexWeight vac g *\n              SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand ε β vac\n                (SecondQuantization.Common.slotSplitVacuumOrder T)\n                (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127448,7 +127448,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} {i j : Mode} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (T : Finset (Fin n))\n  (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T) →\n        have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n        (SecondQuantization.Common.TwoPointDiagram.vacuumComponentParts ↑d).prod\n            (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =\n          (-1) ^ (Finset.univ \\ T).card * vac.couplingWeight g *\n            SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand ε β vac\n              (SecondQuantization.Common.slotSplitVacuumOrder T) (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} {i j : Mode} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (T : Finset (Fin n))\n  (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T) →\n        have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n        (SecondQuantization.Common.TwoPointDiagram.vacuumComponentParts ↑d).prod\n            (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =\n          (-1) ^ (Finset.univ \\ T).card * SecondQuantization.Common.QuarticDiagram.vertexWeight vac g *\n            SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand ε β vac\n              (SecondQuantization.Common.slotSplitVacuumOrder T) (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127463,7 +127463,7 @@
     "name": "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand",
     "externalAxioms": [],
-    "docString": "For an externally connected left piece and strictly decreasing inherited vacuum times, the\ncomplete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone\nfixed-order quartic vacuum integrand, including its Dyson sign and coupling prefactor. ",
+    "docString": "For an externally connected left piece and strictly decreasing inherited vacuum times, the\ncomplete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone\nfixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -131357,7 +131357,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
@@ -131366,7 +131366,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
+      "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -132049,49 +132049,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)\n  (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (order : SecondQuantization.Common.QuarticVertexOrder S),\n  ∑ d, d.couplingWeight g * SecondQuantization.Fermionic.QuarticWickDiagram.orderedSimplexContribution ε β d order =\n    ∑ q,\n      (∏ i, g (q i)) *\n        ∑ pairing,\n          intervalIntegral.orderedSimplexIntegral S.card β fun τ =>\n            SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β q τ pairing",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
-    "externalAxioms": [],
-    "docString": "Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical\nevaluator form. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
-      "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
-      "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} {i j : Mode} {M : Type u_2}\n  [inst_2 : AddCommMonoid M] (F : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j → M),\n  ∑ d, F d = ∑ T ∈ Finset.univ.powerset, ∑ p, F ↑((SecondQuantization.Fermionic.fixedExternalFiberEquiv T).symm p)",
     "standardAxioms": [
       "Classical.choice",
@@ -132496,6 +132453,49 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)\n  (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (order : SecondQuantization.Common.QuarticVertexOrder S),\n  ∑ d,\n      SecondQuantization.Common.QuarticDiagram.vertexWeight d g *\n        SecondQuantization.Fermionic.QuarticWickDiagram.orderedSimplexContribution ε β d order =\n    ∑ q,\n      (∏ i, g (q i)) *\n        ∑ pairing,\n          intervalIntegral.orderedSimplexIntegral S.card β fun τ =>\n            SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β q τ pairing",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
+    "externalAxioms": [],
+    "docString": "Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical\nevaluator form. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
+      "SecondQuantization.Common.sum_quarticDiagram_eq_sum_orderedData",
+      "SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154302,7 +154302,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {n : ℕ} {i j : Mode} (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (T : Finset (Fin n)) (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)),\n      have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n      ∏ B ∈ SecondQuantization.Common.TwoPointDiagram.vacuumComponentParts ↑d,\n          d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B =\n        (-1) ^ (Finset.univ \\ T).card * vac.couplingWeight g",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} {i j : Mode} (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (T : Finset (Fin n)) (ext : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagramOn Mode n T i j),\n  SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext →\n    ∀ (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)),\n      have d := SecondQuantization.Fermionic.fixedExternalOfSlotSplit T ext vac;\n      ∏ B ∈ SecondQuantization.Common.TwoPointDiagram.vacuumComponentParts ↑d,\n          d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B =\n        (-1) ^ (Finset.univ \\ T).card * SecondQuantization.Common.QuarticDiagram.vertexWeight vac g",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
