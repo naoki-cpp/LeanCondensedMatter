@@ -151,7 +151,7 @@ theorem QuarticDiagram.vertexOfLeg_componentDiagramLeg_val
   have h := d.vertexOfLeg_blockLegEquiv B.2 leg
   have h' := congrArg (fun v : ↥(B : Finset (Fin N)) => (v : Fin N)) h
   simpa [QuarticDiagram.componentDiagramLeg, leg,
-    Combinatorics.subsetSubtypeEquiv] using h'.symm
+    Equiv.subtypeSubtypeEquivSubtype] using h'.symm
 
 /-- `componentDiagramLeg` preserves the local leg index. -/
 theorem QuarticDiagram.localLegOfLeg_componentDiagramLeg
