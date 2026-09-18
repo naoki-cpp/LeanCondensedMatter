@@ -69,20 +69,23 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
     {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) where
   toFun leg :=
     legOfVertexLocal
-      (Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)
+      (Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩)
       (localLegOfLeg (leg : Fin (2 * (2 * S.card))))
   invFun leg' :=
     ⟨legOfVertexLocal
-        (((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm
+        (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm
           (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
         (localLegOfLeg leg'),
       by
         unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
         rw [vertexOfLeg_legOfVertexLocal]
         apply (d.componentPartition.part_eq_iff_mem hB).mpr
-        exact (((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm (vertexOfLeg leg') :
+        exact (((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm (vertexOfLeg leg') :
             {v : ↥S // (v : Fin N) ∈ B})).2⟩
   left_inv leg := by
     apply Subtype.ext
@@ -96,7 +99,8 @@ theorem QuarticDiagram.vertexOfLeg_blockLegEquiv {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     vertexOfLeg (d.blockLegEquiv hB leg) =
-      Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)
+      Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩ :=
   vertexOfLeg_legOfVertexLocal _ _
@@ -134,7 +138,8 @@ noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : QuarticDiagram Label N B where
   vertexLabel v :=
-    d.vertexLabel ((Equiv.subtypeSubtypeEquivSubtype (d.componentPartition.le hB)).symm v).1
+    d.vertexLabel ((Equiv.subtypeSubtypeEquivSubtype (p := (· ∈ S)) (q := (· ∈ B))
+      (d.componentPartition.le hB)).symm v).1
   pairing := d.restrictedPairing hB
 
 theorem QuarticDiagram.restrictComponent_pairing {S : Finset (Fin N)}
