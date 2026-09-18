@@ -82,6 +82,7 @@ private theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
       rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
         map_timedFieldOperator_twoPointTimedEventAtomicFields, ih]
 
+omit [LinearOrder Mode] in
 /-- The descriptor list has exactly the statistics-independent `4n + 2` atomic positions. -/
 theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
