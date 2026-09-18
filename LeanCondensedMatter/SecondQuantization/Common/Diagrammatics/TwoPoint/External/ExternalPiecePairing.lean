@@ -50,10 +50,14 @@ noncomputable def TwoPointDiagram.externalPieceComponentPairEquiv
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.MixedComponentPair τ τ' σ d.externalComponentPart ≃
       (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).NormalizedPair :=
-  d.mixedComponentPairRestrictedEquiv τ τ' σ d.externalComponentPart
+  (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
+    (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
+    (fun p => by rw [d.mixedPositionComponent_partner])
     (d.externalPieceMixedPositionEquiv τ τ' σ).symm
     (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
-    (d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ)
+    (fun pos => by
+      simpa only [TwoPointDiagram.mixedRestrictedPartner] using
+        d.externalPiece_partner_externalPieceMixedPositionEquiv_symm τ τ' σ pos)
 
 /-- Before using normalized order, the external-piece pair equivalence transports the two ambient
 component endpoints either in their original order or swapped. -/
