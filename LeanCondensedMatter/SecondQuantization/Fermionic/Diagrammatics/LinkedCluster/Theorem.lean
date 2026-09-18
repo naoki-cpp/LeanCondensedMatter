@@ -71,9 +71,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
         (PowerSeries.normalizeByConstantCoeff
           (dysonPartitionSeries ε β (quarticInteraction g))) T.card =
       ∑ d : QuarticWickDiagram Mode n T, quarticWickDiagramAmplitude ε β g d
-    simpa [Combinatorics.powerSeriesMomentCoeff, dysonVertexMoment,
-      coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
-      (dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T)
+    rw [Combinatorics.powerSeriesMomentCoeff,
+      coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+    exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
