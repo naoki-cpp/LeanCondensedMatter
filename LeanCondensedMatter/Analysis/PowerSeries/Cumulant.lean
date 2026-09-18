@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
-import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 
 set_option linter.style.header false
@@ -22,6 +22,16 @@ open PowerSeries
 /-- The exponential-generating-function normalization of a power-series coefficient. -/
 noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
   (n.factorial : ℂ) * PowerSeries.coeff n Z
+
+/-- Factorial-normalized coefficients of a unit-constant power series, bundled as normalized
+finite-set moment data. -/
+noncomputable def powerSeriesMomentSetFunction
+    {α : Type*} (Z : PowerSeries ℂ)
+    (hZ : PowerSeries.constantCoeff Z = 1) :
+    NormalizedSetFunction α ℂ where
+  toFun := fun S => powerSeriesMomentCoeff Z S.card
+  map_empty := by
+    simp [powerSeriesMomentCoeff, PowerSeries.coeff_zero_eq_constantCoeff, hZ]
 
 /-- The exponential-generating-function normalization of a formal-log coefficient. -/
 noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
@@ -156,6 +166,29 @@ theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment
     (fun T : Finset α => powerSeriesMomentCoeff Z T.card) s
   rw [hm]
   exact (Finpartition.cumulantFromMoment_momentFromCumulant κ hs).symm
+
+/-- If the factorial-normalized moments of a unit-constant formal power series are the normalized
+object moments of a multiplicative connected decomposition, its formal-log coefficients are exactly
+the connected-object contributions. -/
+theorem factorial_mul_coeff_logOf_eq_connectedContribution
+    {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1)
+    {α : Type*} [DecidableEq α]
+    {D : ConnectedDecomposition α} (W : MultiplicativeWeight D ℂ)
+    (hMoment :
+      powerSeriesMomentSetFunction (α := α) Z hZ = W.normalizedObjectMoment)
+    {s : Finset α} (hs : s ≠ ∅) :
+    (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+      W.connectedContribution s := by
+  calc
+    (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+        (powerSeriesMomentSetFunction (α := α) Z hZ).cumulant s := by
+      change (s.card.factorial : ℂ) * PowerSeries.coeff s.card (PowerSeries.logOf Z) =
+        Finpartition.cumulantFromMoment
+          (fun T : Finset α => powerSeriesMomentCoeff Z T.card) s
+      exact factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ hs
+    _ = W.normalizedObjectMoment.cumulant s := by rw [hMoment]
+    _ = W.connectedContribution s :=
+      W.normalizedObjectMoment_cumulant_eq_connectedContribution hs
 
 /-- After normalization by any nonzero constant coefficient, factorial-normalized formal-log
 coefficients are the finite-set cumulants of the normalized coefficients. -/
