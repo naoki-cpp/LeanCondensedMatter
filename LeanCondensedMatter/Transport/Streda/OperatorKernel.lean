@@ -266,7 +266,10 @@ theorem continuous_regularizedStredaSurfacePrimitiveOperatorDerivative_energy
       (-(1 / 2 : ℂ))
 
 /-- Canonical static Kubo–Bastin operator integrand at fixed finite broadening, with the overall
-physical prefactor omitted. -/
+physical prefactor omitted. The Green-function conductivity kernel is sourced to Bastin et al.,
+*J. Phys. Chem. Solids* **32**, 1811–1824 (1971),
+[doi:10.1016/S0022-3697(71)80147-6](https://doi.org/10.1016/S0022-3697(71)80147-6); the physical
+prefactor and trace realization remain external to this operator definition. -/
 noncomputable def regularizedBastinOperatorIntegrand
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -275,7 +278,11 @@ noncomputable def regularizedBastinOperatorIntegrand
     retardedAdvancedResolventDifference hamiltonian energy broadening)
 
 /-- Finite-broadening residual after removing the derivative of the chosen surface primitive from
-the canonical Bastin operator integrand. -/
+the canonical Bastin operator integrand. Keeping this remainder distinct from the conventional
+Smrčka–Středa `II` term is motivated by Bonbien and Manchon, *Phys. Rev. B* **102**, 085113 (2020),
+[doi:10.1103/PhysRevB.102.085113](https://doi.org/10.1103/PhysRevB.102.085113), whose symmetrized
+trace decomposition avoids the overlap of the conventional `I`/`II` terms. No direct identification
+of this operator remainder with the paper's trace-level sea term is asserted here. -/
 noncomputable def regularizedStredaResidualSeaOperatorKernel
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=

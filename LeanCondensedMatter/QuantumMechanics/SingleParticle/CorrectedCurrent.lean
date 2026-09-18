@@ -65,8 +65,12 @@ theorem symmetrizedVelocityCurrentFlux_apply
         (symmetrizedVelocityCurrent V velocity m) :=
   rfl
 
-/-- Canonical correction to the symmetrized/conventional current flux.  It is defined as the
-exact difference between the full nested transport and the flux represented by `1/2 {v,m}`. -/
+/-- Canonical correction to the symmetrized/conventional current flux. It is defined as the exact
+difference between the full nested transport and the flux represented by `1/2 {v,m}`. This abstract
+correction is motivated by the torque-dipole completion of the proper spin current in Shi et al.,
+*Phys. Rev. Lett.* **96**, 076604 (2006),
+[doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604); identifying it
+with that model-specific operator requires a separate specialization. -/
 noncomputable def localizationCorrectionFlux
     (velocity m : V →ₗ[ℂ] V)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V)) :

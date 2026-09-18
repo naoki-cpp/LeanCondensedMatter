@@ -11,6 +11,11 @@ connection, Hellmann--Feynman, and Born--Fock identities are already stated dire
 same `PointwiseEigenbasisData`, so curvature proofs specialize them directly without constructing a
 second one-direction record.
 
+For the standard Berry-curvature and force-matrix framework used here, see Xiao, Chang, and Niu,
+*Rev. Mod. Phys.* **82**, 1959–2007 (2010),
+[doi:10.1103/RevModPhys.82.1959](https://doi.org/10.1103/RevModPhys.82.1959). The sign is fixed by
+the displayed convention, and no global-gauge or topology claim is imported.
+
 The pointwise Berry curvature convention is
 
 ```text
