@@ -133,31 +133,35 @@ theorem SlotShuffle.mem_rightSlots_iff {m n : ℕ} (σ : SlotShuffle m n)
 
 /-- Local left slots as the subtype of ambient slots occupied by the left family. -/
 noncomputable def SlotShuffle.leftSlotSubtypeEquiv {m n : ℕ} (σ : SlotShuffle m n) :
-    Fin m ≃ ↥σ.leftSlots := by
-  simpa [SlotShuffle.leftSlots] using
-    (SumEquiv.leftSubtypeEquiv σ.slotEquiv)
+    Fin m ≃ ↥σ.leftSlots :=
+  (Equiv.ofInjective (fun i : Fin m => σ.slotEquiv (Sum.inl i))
+      (fun _ _ h => Sum.inl.inj (σ.slotEquiv.injective h))).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [SlotShuffle.leftSlots]))
 
 @[simp]
 theorem SlotShuffle.leftSlotSubtypeEquiv_val {m n : ℕ}
     (σ : SlotShuffle m n) (i : Fin m) :
     ((σ.leftSlotSubtypeEquiv i : ↥σ.leftSlots) : Fin (m + n)) =
       σ.slotEquiv (Sum.inl i) := by
-  simpa [SlotShuffle.leftSlotSubtypeEquiv, SlotShuffle.leftSlots] using
-    (SumEquiv.leftSubtypeEquiv_val σ.slotEquiv i)
+  rfl
 
 /-- Local right slots as the subtype of ambient slots occupied by the right family. -/
 noncomputable def SlotShuffle.rightSlotSubtypeEquiv {m n : ℕ} (σ : SlotShuffle m n) :
-    Fin n ≃ ↥σ.rightSlots := by
-  simpa [SlotShuffle.rightSlots] using
-    (SumEquiv.rightSubtypeEquiv σ.slotEquiv)
+    Fin n ≃ ↥σ.rightSlots :=
+  (Equiv.ofInjective (fun j : Fin n => σ.slotEquiv (Sum.inr j))
+      (fun _ _ h => Sum.inr.inj (σ.slotEquiv.injective h))).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [SlotShuffle.rightSlots]))
 
 @[simp]
 theorem SlotShuffle.rightSlotSubtypeEquiv_val {m n : ℕ}
     (σ : SlotShuffle m n) (j : Fin n) :
     ((σ.rightSlotSubtypeEquiv j : ↥σ.rightSlots) : Fin (m + n)) =
       σ.slotEquiv (Sum.inr j) := by
-  simpa [SlotShuffle.rightSlotSubtypeEquiv, SlotShuffle.rightSlots] using
-    (SumEquiv.rightSubtypeEquiv_val σ.slotEquiv j)
+  rfl
 
 /-- The right slots are precisely the complement of the left slots. -/
 theorem SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots {m n : ℕ}
