@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.PowerSeries
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.GeneratingFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
@@ -54,17 +53,15 @@ private theorem dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_
   let W := quarticWickDiagramMultiplicativeWeight (N := N) ε β g
   calc
     (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).connected S =
-        Finpartition.cumulantFromMoment W.objectMoment S := by
-      change Finpartition.cumulantFromMoment
-          (dysonVertexGeneratingFunctional ε β (quarticInteraction g)).moment S =
-        Finpartition.cumulantFromMoment W.objectMoment S
-      congr 1
-      funext T
+        W.connectedContribution S := by
+      refine Common.GeneratingFunctional.connected_eq_connectedContribution
+        (Z := dysonVertexGeneratingFunctional ε β (quarticInteraction g))
+        (W := W) ?_ hS
+      ext T
       rw [dysonVertexGeneratingFunctional_moment]
       change dysonVertexMoment ε β (quarticInteraction g) T =
         ∑ d : QuarticWickDiagram Mode N T, quarticWickDiagramAmplitude ε β g d
       exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
-    _ = W.connectedContribution S := W.cumulantFromMoment_objectMoment hS
     _ = ∑ d : ConnectedQuarticWickDiagram Mode N S,
         quarticWickDiagramAmplitude ε β g d.1 := by
       rfl
