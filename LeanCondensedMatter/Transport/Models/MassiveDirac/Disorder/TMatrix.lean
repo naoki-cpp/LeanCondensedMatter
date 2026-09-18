@@ -155,7 +155,8 @@ theorem ScalarImpurityParameters.norm_matrixOperator_tMatrix_sub_bare_le
       matrixOperator (params.tMatrix greenLoop hinvertible) =
         (((params.impurityStrength : ℝ) : ℂ)) •
           matrixOperator (params.inverseShiftMatrix greenLoop hinvertible) := by
-    simp [ScalarImpurityParameters.tMatrix, matrixOperator]
+    unfold ScalarImpurityParameters.tMatrix matrixOperator
+    rw [map_smul]
   rw [params.tMatrix_sub_bare_eq greenLoop hinvertible]
   simp only [matrixOperator, map_smul, map_mul]
   rw [norm_smul]
