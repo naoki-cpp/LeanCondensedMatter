@@ -61,6 +61,35 @@ private theorem gaussianCrossedCurrentCoefficientVector_vertex
   fin_cases source <;>
     simp [gaussianCrossedCurrentCoefficientVector, directionPauli]
 
+/-- Scalar radial momentum kernel for one Gaussian-crossed current-block entry. The angular
+harmonics have already been reduced to the finite-cutoff `K0` / `K1` / `K2` radial kernels. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
+    (i j : Fin 2) : ℂ :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let coefficients := gaussianCrossedCurrentCoefficientVector source factor
+  let aA := finiteCutoffContinuumBornDysonScalarCoefficient
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bA := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dA := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let aR := finiteCutoffContinuumBornDysonScalarCoefficient
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let bR := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let dR := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let harmonics :=
+    polarPauliInPlaneHarmonics aA bA dA aR bR dR coefficients
+  (p : ℂ) *
+    (polarFourierZerothAngularKernel (p * radius / hbar) * harmonics.constant i j +
+      polarFourierFirstCosineAngularKernel (p * radius / hbar) * harmonics.firstCosine i j +
+      polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+        harmonics.secondCosine i j)
+
 /-- Source-indexed finite-cutoff finite-`η` Gaussian-crossed real-space current block.
 
 This is the regularized massive-Dirac realization of the `J_r` object entering the crossed trace
@@ -124,6 +153,20 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCu
               (harmonics p).firstCosine i j +
             polarFourierSecondCosineAngularKernel (p * radius / hbar) *
               (harmonics p).secondCosine i j)
+
+/-- Each entry of the Gaussian-crossed radial current block is the physical momentum-measure
+prefactor times the integral of its scalar radial kernel. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (i j : Fin 2) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax radius i j =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+  rfl
 
 /-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
 the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
