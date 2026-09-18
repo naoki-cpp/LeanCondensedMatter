@@ -57,7 +57,7 @@ private theorem dysonVertexGeneratingFunctional_connected_quarticInteraction_eq_
       refine Common.GeneratingFunctional.connected_eq_connectedContribution
         (Z := dysonVertexGeneratingFunctional ε β (quarticInteraction g))
         (W := W) ?_ hS
-      intro T
+      ext T
       rw [dysonVertexGeneratingFunctional_moment]
       change dysonVertexMoment ε β (quarticInteraction g) T =
         ∑ d : QuarticWickDiagram Mode N T, quarticWickDiagramAmplitude ε β g d
