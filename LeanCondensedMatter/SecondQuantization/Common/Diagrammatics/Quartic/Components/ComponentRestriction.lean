@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.SubsetSplit
 
 set_option linter.style.header false
 
@@ -56,19 +57,6 @@ theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
     d.pairing.partnerSubtypePerm_val (d.legInBlock B)
       (fun i => d.legInBlock_partner_iff i) leg
 
-/-- Vertices of `S` lying in `B`, identified with `↥B`. -/
-def QuarticDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fin N))
-    (hBS : B ⊆ S) : {v : ↥S // (v : Fin N) ∈ B} ≃ ↥B :=
-  (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ S) (· ∈ B)).trans
-    (Equiv.subtypeEquivRight fun _x => ⟨fun h => h.2, fun h => ⟨hBS h, h⟩⟩)
-
-@[simp]
-theorem QuarticDiagram.subtypeMemBlockEquiv_symm_val {S : Finset (Fin N)}
-    {B : Finset (Fin N)} (hBS : B ⊆ S) (v : ↥B) :
-    (((QuarticDiagram.subtypeMemBlockEquiv B hBS).symm v :
-      {v : ↥S // (v : Fin N) ∈ B}) : Fin N) = (v : Fin N) :=
-  rfl
-
 /-- Reconstructing a flattened leg from its vertex and local leg is the identity. -/
 theorem QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
@@ -82,20 +70,20 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
     {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) where
   toFun leg :=
     legOfVertexLocal
-      (QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)
+      (Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩)
       (localLegOfLeg (leg : Fin (2 * (2 * S.card))))
   invFun leg' :=
     ⟨legOfVertexLocal
-        (((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)).symm
+        (((Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)).symm
           (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
         (localLegOfLeg leg'),
       by
         unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
         rw [vertexOfLeg_legOfVertexLocal]
         apply (d.componentPartition.part_eq_iff_mem hB).mpr
-        exact (((QuarticDiagram.subtypeMemBlockEquiv B
+        exact (((Combinatorics.subsetSubtypeEquiv B
           (d.componentPartition.le hB)).symm (vertexOfLeg leg') :
             {v : ↥S // (v : Fin N) ∈ B})).2⟩
   left_inv leg := by
@@ -110,7 +98,7 @@ theorem QuarticDiagram.vertexOfLeg_blockLegEquiv {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     vertexOfLeg (d.blockLegEquiv hB leg) =
-      QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)
+      Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)
         ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))),
           (d.componentPartition.part_eq_iff_mem hB).mp leg.2⟩ :=
   vertexOfLeg_legOfVertexLocal _ _
@@ -148,7 +136,7 @@ noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : QuarticDiagram Label N B where
   vertexLabel v :=
-    d.vertexLabel ((QuarticDiagram.subtypeMemBlockEquiv B (d.componentPartition.le hB)).symm v).1
+    d.vertexLabel ((Combinatorics.subsetSubtypeEquiv B (d.componentPartition.le hB)).symm v).1
   pairing := d.restrictedPairing hB
 
 theorem QuarticDiagram.restrictComponent_pairing {S : Finset (Fin N)}
