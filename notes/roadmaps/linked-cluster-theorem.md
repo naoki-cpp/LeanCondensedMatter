@@ -20,14 +20,14 @@ n! [λⁿ] log(normalized Dyson partition series)
 
 with the sum of connected `n`-vertex quartic Wick-diagram amplitudes.
 
-The formal algebra is owned by
-`Common.factorial_mul_coeff_logOf_normalizeByConstantCoeff_eq_connected`, which identifies a
-normalized formal-log coefficient with the `connected` coefficient of a source generating
-functional. `Fermionic.dysonVertexGeneratingFunctional` is the normalized Dyson specialization, and
-its moments are the labelled `dysonVertexMoment` values. The quartic diagrammatic layer identifies
-those moments with Wick-diagram sums and uses connected-component factorization to obtain the public
-formal theorem directly. The finite-set connected identification used inside that proof is
-proof-internal rather than a second public linked-cluster endpoint.
+The statistics-independent formal core is owned by
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. It takes a unit-constant formal
+power series, a multiplicative connected decomposition, and equality between the series'
+factorial-normalized finite-set moments and the decomposition's normalized object moments; it then
+identifies the formal-log coefficient directly with the connected-object contribution. The
+fermionic theorem is a concrete consumer: its only model-specific obligation at this boundary is the
+Dyson-moment/Wick-diagram identification. No source-functional wrapper is required for this formal
+partition-function endpoint.
 
 The normalized coefficients themselves,
 `normalizedDysonPartitionCoeff`, belong to `Fermionic.Perturbation.DysonPartitionSeries` together
@@ -85,12 +85,13 @@ coefficient ring, `connected` applies the finite-set cumulant transform, and
 `GeneratingFunctional.connected_eq_connectedContribution` is the statistics-independent
 source/diagram seam: when normalized source moments agree with the normalized object moments of a
 multiplicative connected decomposition, connected source coefficients equal its connected-object
-contribution. The fermionic formal linked-cluster proof uses this bridge. The bosonic coefficientwise
-connected theorem applies the underlying statistics-independent `MultiplicativeWeight` cumulant
-theorem directly. Statistics do not enter this bridge; they remain in concrete source/moment
-realizations and in pairing weights and amplitudes.
-`powerSeriesGeneratingFunctional` packages factorial-normalized coefficients of a normalized formal
-power series into this representation.
+contribution. This seam is for consumers that genuinely carry source-functional semantics. The
+bosonic coefficientwise connected theorem applies the underlying statistics-independent
+`MultiplicativeWeight` cumulant theorem directly, while the fermionic zero-source formal LCT now
+uses the lower generic power-series/connected-decomposition theorem directly. Statistics do not
+enter either bridge; they remain in concrete source/moment realizations and in pairing weights and
+amplitudes. `powerSeriesGeneratingFunctional` wraps the generic
+`Combinatorics.powerSeriesMomentSetFunction` when a source-functional view is actually needed.
 
 `Fermionic.dysonVertexGeneratingFunctional` is the concrete normalized Dyson specialization. The
 quartic Wick layer supplies the model-specific amplitudes and fermionic signs. Pre-normalized
