@@ -55,6 +55,25 @@ Annotated reference list. One entry per source: full citation, what it is used f
   - **Caveat:** `regularizedStredaResidualSeaOperatorKernel` is defined as an operator-level exact
     remainder. The project has not identified it directly with the paper's trace-level sea term.
 
+### Massive-Dirac mechanisms and the Smrčka–Středa bridge
+
+- **I. A. Ado, I. A. Dmitriev, P. M. Ostrovsky, and M. Titov.** “Anomalous Hall effect with
+  massive Dirac fermions.” *EPL* **111**(3), 37004 (2015). DOI:
+  [10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).
+  - **Project use:** Model-specific provenance for the Eq. (12a–c) non-crossing mechanism
+    decomposition and the crossed `X`/`Psi` disorder-line correction documented in
+    `Transport/Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean`.
+  - **Caveat:** The project formalizes ordered finite-cutoff ladder expressions, not the paper's
+    full diagrammatic calculation or a general equivalence of mechanism decompositions.
+
+- **L. Smrčka and P. Středa.** “Transport coefficients in strong magnetic fields.” *Journal of
+  Physics C: Solid State Physics* **10**(12), 2153–2161 (1977). DOI:
+  [10.1088/0022-3719/10/12/021](https://doi.org/10.1088/0022-3719/10/12/021).
+  - **Project use:** Primary provenance for the Smrčka–Středa `I`/`II` transport terminology used
+    by `StaticKuboBastinResponse.lean` and `Transport/Streda/OperatorKernel.lean`.
+  - **Caveat:** The cited declarations retain finite-volume and finite-broadening hypotheses; this
+    entry does not supply a DC, thermodynamic-limit, or trace-per-volume theorem for the project.
+
 ### Conserving approximations and disorder transport
 
 - **Gordon Baym and Leo P. Kadanoff.** “Conservation Laws and Correlation Functions.” *Physical
@@ -97,6 +116,17 @@ Annotated reference list. One entry per source: full citation, what it is used f
     does not supply the analytic convergence, trace-class, or Fredholm-determinant estimates needed
     by a fully analytic source-functional theorem.
 
+### Bloch–de Dominicis original source
+
+- **C. Bloch and C. de Dominicis.** “Un développement du potentiel de Gibbs d’un système quantique
+  composé d’un grand nombre de particules.” *Nuclear Physics* **7**, 459–479 (1958). DOI:
+  [10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).
+  - **Project use:** Original linked-diagram and finite-temperature pairing provenance for
+    `finiteGibbsExpectation_prodComp_eq_sum_pairing` in
+    `SecondQuantization/Common/Thermal/BlochDeDominicis/Induction.lean`.
+  - **Caveat:** The theorem is a finite noninteracting Gibbs recursion specialization; it does not
+    assert the original paper's interacting or infinite-volume analytic generality.
+
 ### Current definitions and Berry geometry
 
 - **Junren Shi, Ping Zhang, Di Xiao, and Qian Niu.** “Proper Definition of Spin Current in
@@ -125,6 +155,42 @@ Annotated reference list. One entry per source: full citation, what it is used f
   - **Caveat:** Many formulas assume a smooth isolated nondegenerate band and use local gauges.
     Degeneracies, global gauge patching, and the project's totalized definitions require separate
     hypotheses.
+
+### Analytic foundations and roadmap boundaries
+
+- **J. Bellissard, A. van Elst, and H. Schulz-Baldes.** “The noncommutative geometry of the
+  quantum Hall effect.” *Journal of Mathematical Physics* **35**, 5373–5451 (1994). DOI:
+  [10.1063/1.530758](https://doi.org/10.1063/1.530758).
+  - **Roadmap use:** Primary source for covariant trace per unit volume, noncommutative integration,
+    and quantum-Hall response; it is the main analytic reference for the first boundary in issue
+    #2457.
+  - **Caveat:** The repository's current response APIs are finite-system constructions and do not
+    yet provide the covariant observable algebra or thermodynamic trace required by this source.
+
+- **J.-M. Bouclet, F. Germinet, A. Klein, and J. H. Schenker.** “Linear response theory for
+  magnetic Schrödinger operators in disordered media.” *Journal of Functional Analysis* **226**(2),
+  301–372 (2005). DOI: [10.1016/j.jfa.2005.02.002](https://doi.org/10.1016/j.jfa.2005.02.002).
+  - **Roadmap use:** Rigorous covariant magnetic linear response and the localization-regime
+    Kubo–Středa formula; it supports the trace-per-volume and unbounded magnetic-response work in
+    issue #2457.
+  - **Caveat:** Its ergodic Schrödinger hypotheses and measurable covariant-operator spaces are not
+    present in the current finite bounded declarations.
+
+- **Barry Simon.** “Notes on infinite determinants of Hilbert space operators.” *Advances in
+  Mathematics* **24**(3), 244–273 (1977). DOI:
+  [10.1016/0001-8708(77)90057-3](https://doi.org/10.1016/0001-8708(77)90057-3).
+  - **Roadmap use:** Primary analytic reference for Lidskii's theorem, trace ideals, Fredholm
+    determinants, and regularized determinants; it anchors the second boundary in issue #2457.
+  - **Caveat:** Current determinant APIs are finite or explicitly diagonal and are not claimed to be
+    a general trace-class ideal implementation.
+
+- **G. Panati, H. Spohn, and S. Teufel.** “Effective Dynamics for Bloch Electrons: Peierls
+  Substitution and Beyond.” *Communications in Mathematical Physics* **242**, 547–578 (2003).
+  DOI: [10.1007/s00220-003-0950-1](https://doi.org/10.1007/s00220-003-0950-1).
+  - **Roadmap use:** Companion reference for the domain-sensitive, gauge/Peierls-covariant
+    effective-dynamics boundary in issue #2457.
+  - **Caveat:** No current theorem is attributed to this paper; it identifies the assumptions needed
+    before extending finite bounded response to continuum Bloch Hamiltonians.
 
 ## Lean / Mathlib resources
 

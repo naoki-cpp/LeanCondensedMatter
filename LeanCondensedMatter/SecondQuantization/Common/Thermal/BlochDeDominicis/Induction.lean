@@ -24,11 +24,15 @@ open Combinatorics
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
-/-- **The general finite-temperature Bloch–de Dominicis theorem.** For the unified
-bosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear
+/-- **The general finite-temperature Bloch–de Dominicis theorem.** The original linked-diagram
+and finite-temperature pairing development is C. Bloch and C. de Dominicis, *Nuclear Physics*
+**7**, 459–479 (1958),
+[doi:10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).
+For the unified bosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear
 Physics* **15**, 89–91 (1960),
 [doi:10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6). This theorem is
-the finite-Gibbs recursion specialization described above. -/
+the finite-Gibbs recursion specialization described above; it does not claim the infinite-volume
+or interacting-state generality of the original diagrammatic development. -/
 theorem finiteGibbsExpectation_prodComp_eq_sum_pairing (s : Statistics)
     (energy : Config → ℝ) (β : ℝ) :
     ∀ (n : ℕ) (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)

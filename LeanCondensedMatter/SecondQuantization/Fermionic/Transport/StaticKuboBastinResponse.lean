@@ -14,6 +14,11 @@ This module names that target and separates its vector-potential coefficient fro
 current-density/electric-field normalization. It does not manufacture an ordinary trace by
 multiplying the already-computed scalar response by a trace-one density operator. Genuine operator
 traces belong to the canonical static Bastin layer in `Transport.Streda.TraceKernel`.
+
+The static Smrcka--Streda terminology is sourced to L. Smrcka and P. Streda, *J. Phys. C* **10**,
+2153 (1977), [doi:10.1088/0022-3719/10/12/021](https://doi.org/10.1088/0022-3719/10/12/021).
+This citation documents the bridge's vocabulary only; these declarations retain finite-volume,
+finite-broadening hypotheses and do not assert a DC or thermodynamic-limit theorem.
 -/
 
 namespace SecondQuantization

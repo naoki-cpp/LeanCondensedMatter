@@ -9,8 +9,12 @@ set_option linter.style.header false
 # Mechanism classification of the massive-Dirac non-crossing Hall result
 
 This module connects the concrete ordered-`xy` ladder provenance isolated upstream to the Ado et al.
-EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition. Mechanism names remain theorem-level:
-no primitive side-jump or skew-scattering conductivity definitions are introduced.
+EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition
+([doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004)).
+That paper is the model-specific provenance for the ladder, crossed `X`, and crossed `Psi` diagram
+grouping; the theorem-level expressions below remain the project's ordered finite-cutoff
+specialization. Mechanism names remain theorem-level: no primitive side-jump or skew-scattering
+conductivity definitions are introduced.
 
 The intrinsic/side-jump/skew taxonomy follows Nagaosa et al., *Rev. Mod. Phys.* **82**, 1539–1592
 (2010), [doi:10.1103/RevModPhys.82.1539](https://doi.org/10.1103/RevModPhys.82.1539), while the

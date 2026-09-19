@@ -281,8 +281,11 @@ noncomputable def regularizedBastinOperatorIntegrand
 the canonical Bastin operator integrand. Keeping this remainder distinct from the conventional
 Smrčka–Středa `II` term is motivated by Bonbien and Manchon, *Phys. Rev. B* **102**, 085113 (2020),
 [doi:10.1103/PhysRevB.102.085113](https://doi.org/10.1103/PhysRevB.102.085113), whose symmetrized
-trace decomposition avoids the overlap of the conventional `I`/`II` terms. No direct identification
-of this operator remainder with the paper's trace-level sea term is asserted here. -/
+trace decomposition avoids the overlap of the conventional `I`/`II` terms. The conventional
+Smrcka--Streda `I`/`II` terminology is sourced to L. Smrcka and P. Streda, *J. Phys. C* **10**,
+2153 (1977), [doi:10.1088/0022-3719/10/12/021](https://doi.org/10.1088/0022-3719/10/12/021).
+No direct identification of this operator remainder with the paper's trace-level sea term is
+asserted here. -/
 noncomputable def regularizedStredaResidualSeaOperatorKernel
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
