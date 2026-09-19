@@ -30,12 +30,22 @@ theorem TwoPointDiagram.externalInteractionPart_card
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
     d.externalInteractionPart.card = d.interactionComponentSize d.externalComponentPart := rfl
 
+/-- The external component as a standalone two-point diagram on any consecutive slot set whose
+size is identified with the external interaction-part cardinality. -/
+noncomputable def TwoPointDiagram.externalPieceOfCardEq
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    {m : ℕ} (h : d.externalInteractionPart.card = m) :
+    TwoPointDiagram ExternalLabel InternalLabel m
+      (Finset.univ : Finset (Fin m)) :=
+  d.externalVacuumSplit.1.slotCongr
+    (standardSlotEquivOfCardEq d.externalInteractionPart h)
+
 /-- The canonical external component as a standalone two-point diagram on consecutive slots. -/
 noncomputable def TwoPointDiagram.externalPiece
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
     TwoPointDiagram ExternalLabel InternalLabel d.externalInteractionPart.card
       (Finset.univ : Finset (Fin d.externalInteractionPart.card)) :=
-  d.externalVacuumSplit.1.slotCongr (standardSlotEquiv d.externalInteractionPart)
+  d.externalPieceOfCardEq rfl
 
 @[simp]
 theorem TwoPointDiagram.externalPiece_externalLabel
@@ -205,11 +215,19 @@ theorem TwoPointDiagram.atomicLegPartner_orderedTwoPointLegMap
     hsub, TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply,
     TwoPointDiagram.restrictedPartner_val]
 
+/-- Restrict ambient interaction times to the increasing external slots, with the target slot count
+identified by a supplied cardinality equality. -/
+noncomputable def TwoPointDiagram.externalPieceTimesOfCardEq
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    {m : ℕ} (h : d.externalInteractionPart.card = m)
+    (σ : Fin n → ℝ) : Fin m → ℝ :=
+  σ ∘ d.externalInteractionPart.orderEmbOfFin h
+
 /-- Restrict ambient interaction times to the canonically ordered slots of the external piece. -/
 noncomputable def TwoPointDiagram.externalPieceTimes
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (σ : Fin n → ℝ) : Fin d.externalInteractionPart.card → ℝ :=
-  σ ∘ d.externalInteractionPart.orderEmbOfFin rfl
+  d.externalPieceTimesOfCardEq rfl σ
 
 /-- Embed a mixed-order position of the standalone external piece into the ambient mixed order. -/
 noncomputable def TwoPointDiagram.externalPieceMixedPosition
