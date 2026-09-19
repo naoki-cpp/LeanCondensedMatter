@@ -65,16 +65,6 @@ private noncomputable def TwoPointDiagram.mixedComponentPositionInversionCount
     ∑ q : d.MixedComponentPosition τ τ' σ C,
       if q.1 < p.1 then 1 else 0
 
-private theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_val
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.componentPartition.parts)
-    (p : d.MixedComponentPair τ τ' σ B) (k : Fin 2) :
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B (p, k)).1 =
-      pairEndpointAt p.1.1 k := by
-  rfl
-
 private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -92,7 +82,16 @@ private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
   intro a _
   apply Finset.sum_congr rfl
   intro b _
-  rw [d.mixedComponentPairEndpointEquiv_val, d.mixedComponentPairEndpointEquiv_val]
+  have endpointVal (D : d.componentPartition.parts)
+      (r : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
+      (d.mixedComponentPairEndpointEquiv τ τ' σ D (r, k)).1 =
+        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (r.1, k) := by
+    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
+    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+      (d.pairingInMixedOrder τ τ' σ)
+      (fun x => d.mixedPositionComponent τ τ' σ x = D) _ r k
+  rw [endpointVal C q b, endpointVal B p a]
+  rfl
 
 private theorem
     TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount

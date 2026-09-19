@@ -44,24 +44,6 @@ noncomputable def TwoPointDiagram.mixedComponentPairEndpointEquiv
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
     (fun p => by rw [d.mixedPositionComponent_partner])
 
-@[simp]
-theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_zero
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)).1 = pr.1.1.1 := by
-  rfl
-
-@[simp]
-theorem TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_one
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)).1 = pr.1.1.2 := by
-  rfl
-
 /-- On mixed component endpoints, the restricted mixed partner exchanges endpoint zero and endpoint
 one of the same normalized mixed pair. -/
 theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
