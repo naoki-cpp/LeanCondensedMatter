@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 
 set_option linter.style.header false
 
@@ -91,7 +91,12 @@ private theorem diracEigenvalue_sq
   have heig :
       hamiltonianOperator v m px py (b i) =
         (((lam : ℝ) : ℂ)) • b i := by
-    simpa [b, lam, diracEigenbasisFin, diracEigenvaluesFin] using
+    change
+      hamiltonianOperator v m px py
+          (diracEigenbasisFin v m px py i) =
+        (((diracEigenvaluesFin v m px py i : ℝ) : ℂ)) •
+          diracEigenbasisFin v m px py i
+    exact
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank i
   have hop := hamiltonianOperator_mul_self v m px py
@@ -104,7 +109,9 @@ private theorem diracEigenvalue_sq
   rw [heig, map_smul, heig, smul_smul] at happly
   have hinner := congrArg (fun x : DiracHilbert => inner ℂ (b i) x) happly
   simp only [inner_smul_right, b.inner_eq_one, mul_one] at hinner
-  exact_mod_cast hinner
+  have hreal : lam ^ 2 = energy v m px py ^ 2 := by
+    exact_mod_cast hinner
+  simpa [lam] using hreal
 
 private theorem diracEigenvalues_sum_eq_zero
     (v m px py : ℝ) :
@@ -150,16 +157,30 @@ theorem hamiltonianOperator_pointwiseEigenbasis
       (((bandEnergy band v m px py : ℝ) : ℂ)) •
         pointwiseEigenbasis v m px py band := by
   cases band
-  · simpa [pointwiseEigenbasis, finTwoEquivBand, diracEigenbasisFin,
-      diracEigenvaluesFin, bandEnergy,
-      diracEigenvalue_one_eq_neg_energy v m px py hE] using
+  · change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 1) =
+        (((-energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 1
+    have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (1 : Fin 2)
-  · simpa [pointwiseEigenbasis, finTwoEquivBand, diracEigenbasisFin,
-      diracEigenvaluesFin, bandEnergy,
-      diracEigenvalue_zero_eq_energy v m px py hE] using
+    rw [show
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
+          diracHilbert_finrank (1 : Fin 2) =
+        -energy v m px py by
+      exact diracEigenvalue_one_eq_neg_energy v m px py hE] at heig
+    exact heig
+  · change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 0) =
+        (((energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 0
+    have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (0 : Fin 2)
+    rw [show
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
+          diracHilbert_finrank (0 : Fin 2) =
+        energy v m px py by
+      exact diracEigenvalue_zero_eq_energy v m px py hE] at heig
+    exact heig
 
 private noncomputable def pointwiseForceMatrixElement
     (direction : Fin 2) (target source : Band) (v m px py : ℝ) : ℂ :=
@@ -215,10 +236,9 @@ private theorem star_pointwiseEigenvectorDerivativeCoefficient
           (((interbandEnergyGap (oppositeBand band) v m px py : ℝ) : ℂ))) =
       -(pointwiseForceMatrixElement direction (oppositeBand band) band v m px py /
           (((interbandEnergyGap band v m px py : ℝ) : ℂ))) := by
-  rw [oppositeBand_oppositeBand,
-    star_div, star_pointwiseForceMatrixElement,
-    interbandEnergyGap_oppositeBand]
-  simp
+  rw [oppositeBand_oppositeBand, map_div,
+    star_pointwiseForceMatrixElement]
+  simp [interbandEnergyGap_oppositeBand]
 
 private theorem pointwiseForceMatrixElement_offdiag_coefficient
     (direction : Fin 2) (band : Band) (v m px py : ℝ)
@@ -237,7 +257,7 @@ private theorem pointwiseForceMatrixElement_offdiag_coefficient
     exact_mod_cast hgap
   rw [interbandEnergyGap] at hgapc ⊢
   field_simp [hgapc]
-  ring
+  ring_nf
 
 private theorem pointwiseDifferentiatedEigenpair
     (direction : Fin 2) (band : Band) (v m px py : ℝ)
@@ -292,8 +312,7 @@ private theorem pointwiseDifferentiatedEigenpair
             (((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ)) =
         (((bandEnergy band v m px py : ℝ) : ℂ)) * (Fmn / gap) := by
     simpa [Fmn, gap] using hoff
-  rw [← add_smul, smul_smul, smul_smul, hoff']
-  module
+  rw [smul_smul, smul_smul, add_assoc, ← add_smul, hoff']
 
 private theorem pointwiseDifferentiatedOrthonormality
     (direction : Fin 2) (left right : Band) (v m px py : ℝ) :
@@ -301,9 +320,23 @@ private theorem pointwiseDifferentiatedOrthonormality
         (pointwiseEigenbasis v m px py right) +
       inner ℂ (pointwiseEigenbasis v m px py left)
         (pointwiseEigenvectorDerivative direction right v m px py) = 0 := by
-  cases left <;> cases right <;>
-    simp [pointwiseEigenvectorDerivative,
-      star_pointwiseEigenvectorDerivativeCoefficient]
+  let b := pointwiseEigenbasis v m px py
+  have horth := b.orthonormal
+  cases left <;> cases right
+  · simp only [pointwiseEigenvectorDerivative, inner_smul_left, inner_smul_right]
+    rw [horth.inner_eq_zero (by decide), horth.inner_eq_zero (by decide)]
+    simp
+  · simp only [pointwiseEigenvectorDerivative, inner_smul_left, inner_smul_right]
+    rw [b.inner_eq_one, b.inner_eq_one,
+      star_pointwiseEigenvectorDerivativeCoefficient direction Band.upper v m px py]
+    simp
+  · simp only [pointwiseEigenvectorDerivative, inner_smul_left, inner_smul_right]
+    rw [b.inner_eq_one, b.inner_eq_one,
+      star_pointwiseEigenvectorDerivativeCoefficient direction Band.lower v m px py]
+    simp
+  · simp only [pointwiseEigenvectorDerivative, inner_smul_left, inner_smul_right]
+    rw [horth.inner_eq_zero (by decide), horth.inner_eq_zero (by decide)]
+    simp
 
 /-- The massive-Dirac Hamiltonian packaged as the generic pointwise Berry-geometry data at a
 nondegenerate momentum point.
@@ -458,8 +491,17 @@ private theorem pointwiseBerryData_nondegenerate
       (pointwiseBerryData v m px py hE).energy other ≠
         (pointwiseBerryData v m px py hE).energy band := by
   intro other hother
-  cases band <;> cases other <;>
-    simp_all [bandEnergy, hE]
+  cases band <;> cases other
+  · exact (hother rfl).elim
+  · simp only [pointwiseBerryData_energy, bandEnergy, bandSign]
+    intro h
+    apply hE
+    linarith
+  · simp only [pointwiseBerryData_energy, bandEnergy, bandSign]
+    intro h
+    apply hE
+    linarith
+  · exact (hother rfl).elim
 
 private theorem pointwiseBerryData_hamiltonianDerivative_selfAdjoint
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
