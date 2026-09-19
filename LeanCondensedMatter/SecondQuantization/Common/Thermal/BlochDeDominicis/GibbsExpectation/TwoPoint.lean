@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 
