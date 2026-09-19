@@ -43,7 +43,10 @@ theorem SlotShuffle.measurableLocallyBounded_integrand {m n : ℕ}
     (hf : intervalIntegral.MeasurableLocallyBounded f)
     (hg : intervalIntegral.MeasurableLocallyBounded g) :
     intervalIntegral.MeasurableLocallyBounded (shuffle.integrand f g) := by
-  simpa [SlotShuffle.integrand] using
+  change intervalIntegral.MeasurableLocallyBounded (fun τ : Fin (m + n) → ℝ =>
+    f (fun i => τ (shuffle.slotEquiv (Sum.inl i))) *
+      g (fun j => τ (shuffle.slotEquiv (Sum.inr j))))
+  exact
     (hf.comp_finCoordinateSelection
       (fun i => shuffle.slotEquiv (Sum.inl i))).mul
       (hg.comp_finCoordinateSelection
