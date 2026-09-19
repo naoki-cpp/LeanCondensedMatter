@@ -59,7 +59,8 @@ private theorem gaussianCrossedCurrentCoefficientVector_vertex
         gaussianCrossedCurrentCoefficientVector source factor 1 • sigmaY =
       factor • directionPauli source := by
   fin_cases source <;>
-    simp [gaussianCrossedCurrentCoefficientVector, directionPauli]
+    simp [gaussianCrossedCurrentCoefficientVector, directionPauli,
+      inPlanePauliAxis, InternalSpace.pauliBasis]
 
 /-- Scalar radial momentum kernel for one Gaussian-crossed current-block entry. The angular
 harmonics have already been reduced to the finite-cutoff `K0` / `K1` / `K2` radial kernels. -/

@@ -133,22 +133,12 @@ noncomputable def hamiltonian
     (κ : ℝ) (potential : Spatial) (internalH : SpinMatrix) : Spinor →ₗ[ℂ] Spinor :=
   spatialHamiltonian κ potential + internalOperator internalH
 
-/-- Cartesian spin axes. -/
-inductive SpinAxis
-  | x
-  | y
-  | z
-  deriving DecidableEq, Repr
-
-/-- Pauli matrix associated with a Cartesian spin axis. -/
-noncomputable def pauli : SpinAxis → SpinMatrix
-  | .x => InternalSpace.pauliX
-  | .y => InternalSpace.pauliY
-  | .z => InternalSpace.pauliZ
+/-- Cartesian spin axes, identified with the model-independent Pauli axes. -/
+abbrev SpinAxis := InternalSpace.PauliAxis
 
 /-- Spin-1/2 matrix `S_a = ℏ σ_a / 2`. -/
 noncomputable def spinMatrix (ℏ : ℝ) (axis : SpinAxis) : SpinMatrix :=
-  (((ℏ / 2 : ℝ) : ℂ)) • pauli axis
+  (((ℏ / 2 : ℝ) : ℂ)) • InternalSpace.pauliBasis axis
 
 /-- Spin-1/2 operator acting only on the internal index. -/
 noncomputable def spinOperator (ℏ : ℝ) (axis : SpinAxis) : Spinor →ₗ[ℂ] Spinor :=

@@ -91,7 +91,9 @@ theorem forceMatrixTraceNumerator_xy_eq (band : Band) (v m px py : ℝ)
         (((v : ℝ) : ℂ) • sigmaX) *
         ((1 / 2 : ℂ) • ((1 : Matrix2) + InternalSpace.pauliCombination u)) *
         (((v : ℝ) : ℂ) • sigmaY)) = _
-  rw [InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
+  rw [show sigmaX = InternalSpace.pauliX by rfl,
+    show sigmaY = InternalSpace.pauliY by rfl,
+    InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY]
   cases band <;>
     simp [u, diracPauliCoefficients, bandSign] <;>
     field_simp [hEc]
