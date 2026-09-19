@@ -310,7 +310,7 @@ private theorem two_mul_product_div_real_im
 /-- The generic pointwise Berry curvature is the model force-matrix curvature. -/
 theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseBerryData v m px py hE).berryCurvature 0 1 band =
+    (pointwiseBerryData v m px py hE).berryCurvature 0 1 (bandIndex band) =
       forceMatrixBerryCurvature band v m px py := by
   let data := pointwiseBerryData v m px py hE
   have hself :
@@ -318,32 +318,40 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
     intro direction
     exact velocityOperator_isSelfAdjoint direction v
   have hnondegenerate :
-      ∀ other, other ≠ band → data.energy other ≠ data.energy band := by
+      ∀ other, other ≠ bandIndex band →
+        data.energy other ≠ data.energy (bandIndex band) := by
     intro other hother
-    exact bandEnergy_ne_of_ne other band v m px py hE hother
+    change
+      diracEigenvaluesFin v m px py other ≠
+        diracEigenvaluesFin v m px py (bandIndex band)
+    exact diracEigenvaluesFin_ne_of_ne other (bandIndex band) v m px py hE hother
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
-    0 1 band hself hnondegenerate]
+    0 1 (bandIndex band) hself hnondegenerate]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   have hforce := pointwiseBerryData_forceMatrixElement_product 0 1 band v m px py hE
   change
-    data.hamiltonianDerivativeMatrixElement 0 (oppositeBand band) band *
-        data.hamiltonianDerivativeMatrixElement 1 band (oppositeBand band) =
+    data.hamiltonianDerivativeMatrixElement 0
+        (bandIndex (oppositeBand band)) (bandIndex band) *
+      data.hamiltonianDerivativeMatrixElement 1
+        (bandIndex band) (bandIndex (oppositeBand band)) =
       forceMatrixTraceNumerator 0 1 band v m px py at hforce
   cases band
-  · simp only [oppositeBand_lower] at hforce
-    simp only [sum_band,
-      if_neg (show Band.upper ≠ Band.lower by decide), if_true, zero_add]
+  · simp only [bandIndex, Fin.sum_univ_two,
+      if_neg (show (0 : Fin 2) ≠ 1 by decide), if_pos rfl, add_zero]
     rw [show
-      data.energy Band.lower - data.energy Band.upper =
-        interbandEnergyGap Band.lower v m px py by rfl]
+      data.energy 1 - data.energy 0 =
+        interbandEnergyGap Band.lower v m px py by
+      simpa [bandIndex] using
+        pointwiseBerryData_interbandEnergyGap Band.lower v m px py hE]
     rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
     rfl
-  · simp only [oppositeBand_upper] at hforce
-    simp only [sum_band,
-      if_neg (show Band.lower ≠ Band.upper by decide), if_true, add_zero]
+  · simp only [bandIndex, Fin.sum_univ_two,
+      if_pos rfl, if_neg (show (1 : Fin 2) ≠ 0 by decide), zero_add]
     rw [show
-      data.energy Band.upper - data.energy Band.lower =
-        interbandEnergyGap Band.upper v m px py by rfl]
+      data.energy 0 - data.energy 1 =
+        interbandEnergyGap Band.upper v m px py by
+      simpa [bandIndex] using
+        pointwiseBerryData_interbandEnergyGap Band.upper v m px py hE]
     rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
     rfl
 
@@ -363,7 +371,7 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : �
 /-- Canonical specialization of generic pointwise curvature to the closed massive-Dirac benchmark. -/
 theorem pointwiseBerryCurvature_eq_berryCurvature
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseBerryData v m px py hE).berryCurvature 0 1 band =
+    (pointwiseBerryData v m px py hE).berryCurvature 0 1 (bandIndex band) =
       berryCurvature band v m px py :=
   (pointwiseBerryCurvature_eq_forceMatrixBerryCurvature band v m px py hE).trans
     (forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE)
