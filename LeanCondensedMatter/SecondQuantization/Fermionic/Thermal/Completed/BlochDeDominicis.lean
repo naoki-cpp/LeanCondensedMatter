@@ -665,7 +665,6 @@ noncomputable def completedFreeGibbsExpectationRecursion
           apply Finset.sum_congr rfl
           intro j _
           simp only [finCongr_apply, Fin.val_cast, hl, List.getElem_ofFn]
-          congr 4
         rw [hreindex]
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
