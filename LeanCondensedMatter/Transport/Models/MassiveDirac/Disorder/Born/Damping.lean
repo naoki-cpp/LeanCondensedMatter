@@ -167,10 +167,8 @@ theorem finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq
     unfold bandProjectorOperator matrixOperator
     rw [← map_mul, finiteDimensionalOperatorTrace_toEuclideanCLM,
       bandProjector_eq_pauliCombination, smul_mul_assoc, add_mul, one_mul]
-    rw [show sigmaZ = InternalSpace.pauliCombination
-      (fun | .x => 0 | .y => 0 | .z => 1) by simp [InternalSpace.pauliCombination]]
-    simp [InternalSpace.trace_pauliCombination_mul_pauliCombination,
-      InternalSpace.dotProduct_pauliAxis, diracPauliCoefficients]
+    simp [sigmaZ, InternalSpace.trace_pauliCombination_mul_pauliBasis,
+      diracPauliCoefficients]
     ring
   have henergy := energy_metallicFermiRadius v m fermiEnergy hvelocity hmF
   unfold finiteCutoffContinuumBornRetardedUpperBandFermiProjection
