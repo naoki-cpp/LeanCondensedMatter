@@ -67,14 +67,10 @@ private theorem purePointPartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
     purePointPartitionFunction (fermionEnergy ε) β =
       ∏ i, (1 + Real.exp (-β * ε i)) := by
-  rw [purePointPartitionFunction, tsum_fintype, ← Finset.powerset_univ]
-  simp_rw [purePointBoltzmannWeight, fermionEnergy, Finset.mul_sum, Real.exp_sum]
-  have h := Finset.prod_add
-    (fun i => Real.exp (-β * ε i)) (fun _ => (1 : ℝ))
-    (Finset.univ : Finset Mode)
-  simp only [Finset.prod_const_one, mul_one] at h
-  rw [← h]
-  exact Finset.prod_congr rfl fun i _ => add_comm _ _
+  apply Complex.ofReal_injective
+  rw [← freePartitionFunction_eq_coe_purePointPartitionFunction,
+    freePartitionFunction_eq_prod]
+  push_cast [Complex.ofReal_exp]
 
 omit [LinearOrder Mode] in
 private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
