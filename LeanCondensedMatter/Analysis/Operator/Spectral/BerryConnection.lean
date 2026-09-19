@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
@@ -93,22 +94,10 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
       if k = n then 0 else
         inner ℂ (eigenbasis k) (hamiltonianDerivative μ (eigenbasis n)) /
           (((energy n - energy k : ℝ) : ℂ)) := by
-  rw [simpleSpectrumEigenvectorDerivative, inner_sum]
   by_cases hkn : k = n
   · subst k
-    rw [if_pos rfl]
-    rw [Fintype.sum_eq_single n (fun x hxn => by
-      rw [if_neg hxn, inner_smul_right,
-        eigenbasis.inner_eq_zero (Ne.symm hxn), mul_zero])]
-    simp
-  · rw [if_neg hkn]
-    rw [Fintype.sum_eq_single k (fun x hxk => by
-      by_cases hxn : x = n
-      · subst x
-        simp [hkn]
-      · rw [if_neg hxn, inner_smul_right,
-          eigenbasis.inner_eq_zero (Ne.symm hxk), mul_zero])]
-    rw [if_neg hkn, inner_smul_right, eigenbasis.inner_eq_one, mul_one]
+    simp [simpleSpectrumEigenvectorDerivative]
+  · simp [simpleSpectrumEigenvectorDerivative, hkn]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
@@ -131,10 +120,10 @@ private theorem inner_hamiltonian_right_of_eigenbasis
 
 /-- Construct pointwise differentiated eigenbasis data from a simple finite spectrum.
 
-The supplied energy derivative is required only through its diagonal Hellmann--Feynman identity.
-Eigenvector derivatives are constructed algebraically in the parallel-transport gauge
+Energy derivatives are the lossless diagonal expectations of the self-adjoint Hamiltonian
+derivatives. Eigenvector derivatives are constructed algebraically in the parallel-transport gauge
 `⟪φ_n, ∂_μ φ_n⟫ = 0`, so a concrete model need not differentiate an explicit eigenvector gauge. -/
-noncomputable def ofSimpleSpectrum [DecidableEq ι]
+noncomputable def ofSimpleSpectrum
     (hamiltonian : H →L[ℂ] H)
     (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
     (eigenbasis : OrthonormalBasis ι ℂ H)
@@ -144,15 +133,14 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
     (hamiltonianDerivative : κ → H →L[ℂ] H)
     (hamiltonianDerivative_selfAdjoint :
       ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
-    (energyDerivative : κ → ι → ℝ)
-    (energyDerivative_eq :
-      ∀ μ n, ((energyDerivative μ n : ℝ) : ℂ) =
-        inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis n)))
     (energy_injective : Function.Injective energy) :
     PointwiseEigenbasisData κ ι H := by
   classical
   let eigenvectorDerivative : κ → ι → H :=
     simpleSpectrumEigenvectorDerivative eigenbasis energy hamiltonianDerivative
+  let energyDerivative : κ → ι → ℝ := fun μ n =>
+    ContinuousLinearMap.diagonalExpectationValue
+      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)
   refine
     { hamiltonian := hamiltonian
       hamiltonian_selfAdjoint := hamiltonian_selfAdjoint
@@ -182,13 +170,14 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
     simp only [eigenvectorDerivative, inner_simpleSpectrumEigenvectorDerivative]
     by_cases hkn : k = n
     · subst k
-      simp [energyDerivative_eq]
+      simp [energyDerivative,
+        ContinuousLinearMap.coe_diagonalExpectationValue_right]
     · have henergy : energy k ≠ energy n := fun h => hkn (energy_injective h)
-      have hgap : (((energy n - energy k : ℝ) : ℂ)) ≠ 0 := by
+      have hgap : ((energy n : ℂ) - (energy k : ℂ)) ≠ 0 := by
         exact_mod_cast sub_ne_zero.mpr henergy.symm
       simp only [if_neg hkn, eigenbasis.inner_eq_zero hkn]
-      field_simp [hgap]
       push_cast
+      field_simp [hgap]
       ring
   · intro μ m n
     change
@@ -202,9 +191,9 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
     · subst m
       simp
     · have henergy : energy m ≠ energy n := fun h => hmn (energy_injective h)
-      have hgapMN : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
+      have hgapMN : ((energy n : ℂ) - (energy m : ℂ)) ≠ 0 := by
         exact_mod_cast sub_ne_zero.mpr henergy.symm
-      have hgapNM : (((energy m - energy n : ℝ) : ℂ)) ≠ 0 := by
+      have hgapNM : ((energy m : ℂ) - (energy n : ℂ)) ≠ 0 := by
         exact_mod_cast sub_ne_zero.mpr henergy
       have hstar :
           (starRingEnd ℂ)
@@ -217,7 +206,8 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
                 simp [inner_conj_symm]
           _ = inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) := by
             exact (hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
-      simp only [if_neg (Ne.symm hmn), if_neg hmn]
+      have hnm : n ≠ m := fun h => hmn h.symm
+      simp only [if_neg hnm, if_neg hmn]
       have hstarDiv :
           (starRingEnd ℂ)
               (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) /
@@ -226,8 +216,8 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
               (((energy m - energy n : ℝ) : ℂ)) := by
         simp [hstar]
       rw [hstarDiv]
-      field_simp [hgapMN, hgapNM]
       push_cast
+      field_simp [hgapMN, hgapNM]
       ring
 
 variable (data : PointwiseEigenbasisData κ ι H)
