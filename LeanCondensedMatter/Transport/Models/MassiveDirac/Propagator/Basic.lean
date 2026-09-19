@@ -92,15 +92,6 @@ theorem hamiltonianOperator_eq_pauli (v m px py : ℝ) :
   unfold hamiltonianOperator matrixOperator hamiltonian
   rw [map_add, map_add, map_smul, map_smul, map_smul]
 
-/-- Transporting `H₀² = E² I` to `DiracHilbert` gives the bounded-operator square identity used by
-the closed resolvent form. -/
-theorem hamiltonianOperator_mul_self (v m px py : ℝ) :
-    hamiltonianOperator v m px py * hamiltonianOperator v m px py =
-      (((energySq v m px py : ℝ) : ℂ)) •
-        (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
-  unfold hamiltonianOperator matrixOperator
-  rw [← map_mul, hamiltonian_mul_self, map_smul, map_one]
-
 /-- A nonzero signed regulator keeps the quadratic two-band denominator away from zero. -/
 theorem pauliGreenDenominatorOfRegulator_ne_zero
     (v m px py probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
