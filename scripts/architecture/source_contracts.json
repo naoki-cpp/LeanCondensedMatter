@@ -68,8 +68,7 @@
       "id": "thermalCompletedSpaceOwners",
       "paths": [
         "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/TotalNumberExpectation.lean"
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean"
       ]
     },
     {
