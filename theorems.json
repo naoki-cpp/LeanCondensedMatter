@@ -706,8 +706,8 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
     "dependencies": [
       "Combinatorics.SumEquiv.card_leftImage"
@@ -718,11 +718,12 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.BinaryShuffle.SlotShuffle.toLeftSlotSet",
+      "SecondQuantization.Fermionic.connectedFixedExternalShuffleLeftEquiv",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -1084,7 +1085,7 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.FamilySlotShuffle.cons_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -1093,7 +1094,7 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
       "Combinatorics.FamilySlotShuffle.cons_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -1296,7 +1297,7 @@
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -1304,7 +1305,7 @@
     "compiledConsumers": [
       "Combinatorics.BinaryShuffle.SlotShuffle.eq_of_leftSlots_eq",
       "Combinatorics.BinaryShuffle.SlotShuffle.leftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -77468,7 +77469,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -77480,8 +77481,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_one",
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_one",
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_eq_one"
     ],
     "dependencies": [
@@ -77491,11 +77490,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_one",
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_one",
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_eq_one"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78293,7 +78290,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_nonneg"
+      "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
     ],
     "dependencies": [
       "QuantumTheory.purePointBoltzmannWeight_nonneg",
@@ -78302,7 +78299,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_nonneg"
+      "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -91185,6 +91182,89 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) {m : ℕ}\n  (h : d.externalInteractionPart.card = m), (d.externalPieceOfCardEq h).externalLabel = d.externalLabel",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_externalLabel"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_externalLabel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) {m : ℕ}\n  (h : d.externalInteractionPart.card = m) (v : Fin m),\n  (d.externalPieceOfCardEq h).vertexLabel ⟨v, ⋯⟩ = d.vertexLabel ⟨(d.externalInteractionPart.orderEmbOfFin h) v, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel",
+      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
+      "SecondQuantization.Common.TwoPointDiagram.slotCongr_vertexLabel",
+      "SecondQuantization.Common.standardSlotEquivOfCardEq_symm_coe"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ),\n  d.externalPiece.externalLabel = d.externalLabel",
     "standardAxioms": [
@@ -91202,10 +91282,12 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
+    "directWrapperOf": "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel",
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -91281,17 +91363,14 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
+    "directWrapperOf": "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel",
-      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
-      "SecondQuantization.Common.TwoPointDiagram.slotCongr_vertexLabel",
-      "SecondQuantization.Common.standardSlotEquiv_symm_coe"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91450,13 +91529,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -91752,7 +91831,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -91768,7 +91847,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -94678,13 +94757,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel"
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -96523,6 +96602,7 @@
     "dependents": [
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
     "dependencies": [
@@ -96534,9 +96614,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96847,6 +96928,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
     "dependencies": [
@@ -96859,9 +96941,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
+      "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103444,7 +103527,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq"
+      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.isSplit_externalSlotLegSplitting"
@@ -103452,7 +103535,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq"
+      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -107935,6 +108018,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {N : ℕ} (T : Finset (Fin N)) {m : ℕ} (h : T.card = m) (v : ↥Finset.univ),\n  ↑((SecondQuantization.Common.standardSlotEquivOfCardEq T h).symm v) = (T.orderEmbOfFin h) ↑v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.standardSlotEquivOfCardEq_symm_coe",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
+      "SecondQuantization.Common.standardSlotEquiv_symm_coe"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
+      "SecondQuantization.Common.standardSlotEquiv_symm_coe"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {N : ℕ} (T : Finset (Fin N)) (v : ↥Finset.univ),\n  ↑((SecondQuantization.Common.standardSlotEquiv T).symm v) = (T.orderEmbOfFin ⋯) ↑v",
     "standardAxioms": [
       "Classical.choice",
@@ -107951,22 +108075,22 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
+    "directWrapperOf": "SecondQuantization.Common.standardSlotEquivOfCardEq_symm_coe",
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Common.standardSlotEquivOfCardEq_symm_coe"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPiece_vertexLabel",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124422,6 +124546,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.completedBasisState n ∈ SecondQuantization.Fermionic.completedTotalNumberDomain",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Every occupation-basis vector lies in the domain of the completed total-number operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedCreate i) ψ) n =\n    if i ∈ n then\n      SecondQuantization.Fermionic.fermionPhase i (SecondQuantization.Fermionic.toggleOccupation i n) *\n        ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)\n    else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -124673,6 +124840,7 @@
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_expectation_eq_tsum",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "dependencies": [
@@ -124685,9 +124853,10 @@
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_expectation_eq_tsum",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124834,224 +125003,40 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (a b : SecondQuantization.Fermionic.Occupation Mode → ℝ),\n  SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β a →\n    SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β b →\n      (SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β fun n => a n + b n) =\n        SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β a +\n          SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β b",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "Gibbs expectation is additive on integrable real diagonal observables. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (a : SecondQuantization.Fermionic.Occupation Mode → ℝ),\n      (∀ (n : SecondQuantization.Fermionic.Occupation Mode), 0 ≤ a n) →\n        0 ≤ SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β a",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_nonneg",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "A nonnegative diagonal observable has nonnegative `tsum` expectation. This order property does\nnot require integrability; interpreting the series as an unbounded Gibbs expectation still requires\n`CompletedFreeGibbsIntegrableDiagonal`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.purePointGibbsProbability_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    (SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β fun x => 1) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "The unbounded-diagonal expectation has the same normalization as the density-state API. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.hasSum_purePointGibbsProbability"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (a b : SecondQuantization.Fermionic.Occupation Mode → ℝ),\n  SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β a →\n    SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β b →\n      SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β fun n => a n + b n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "Integrability is stable under pointwise addition of real diagonal observables. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β fun x => 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "The constant-one diagonal observable is Gibbs integrable whenever the Gibbs state exists. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.hasSum_purePointGibbsProbability"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (a : SecondQuantization.Fermionic.Occupation Mode → ℝ),\n  SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β a →\n    Summable fun n => QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n * a n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n      ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op\n        (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n          ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)) =\n    ↑(QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n *\n        ↑(SecondQuantization.Fermionic.particleNumber n))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_summable",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
+    "name": "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
-    "docString": "The Gibbs integrability predicate gives ordinary summability of the real expectation series. ",
+    "docString": "On each occupation basis state, the diagonal matrix element of the composed completed Gibbs\ndensity operator and total-number operator is the corresponding Gibbs probability times particle\nnumber. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_add",
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_add",
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDiagonalExpectation"
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation_add",
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_add",
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDiagonalExpectation"
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125476,6 +125461,43 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β),\n  0 ≤ SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β hsum",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
+    "externalAxioms": [],
+    "docString": "The completed free total-number expectation is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.purePointGibbsProbability_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (x : SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Fermionic.algebraicModeSupport x ⊆ S →\n    (SecondQuantization.Fermionic.completedModeTruncation S) (SecondQuantization.Fermionic.algebraicToCompleted x) =\n      SecondQuantization.Fermionic.algebraicToCompleted x",
     "standardAxioms": [
@@ -125692,6 +125714,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_expectation_eq_tsum",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_tsum",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
@@ -125704,11 +125727,12 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_expectation_eq_tsum",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_tsum",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125790,6 +125814,47 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑SecondQuantization.Fermionic.completedTotalNumberOperator ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩ =\n    ↑(SecondQuantization.Fermionic.particleNumber n) • SecondQuantization.Fermionic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "Occupation-basis vectors diagonalize the completed total-number operator with eigenvalue\n`particleNumber n`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127739,7 +127804,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {n : ℕ} {i j : Mode} (T : Finset (Fin n))\n  (p :\n    { ext // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext } ×\n      SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)),\n  (↑((SecondQuantization.Fermionic.fixedExternalFiberEquiv T).symm p)).externalPiece ≍\n    ↑((SecondQuantization.Fermionic.connectedFixedExternalTwoPointWickDiagramOnEquiv T) p.1)",
+    "statement": "∀ {Mode : Type u_1} {n : ℕ} {i j : Mode} (T : Finset (Fin n)) {m : ℕ} (h : T.card = m)\n  (p :\n    { ext // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑ext } ×\n      SecondQuantization.Fermionic.QuarticWickDiagram Mode n (Finset.univ \\ T)),\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv T).symm p;\n  have hsize := ⋯;\n  (↑d).externalPieceOfCardEq hsize =\n    ↑((SecondQuantization.Fermionic.connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq T h) p.1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127751,14 +127816,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq",
+    "name": "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition",
     "externalAxioms": [],
-    "docString": "After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is\nthe standardized connected external diagram and therefore does not depend on the vacuum diagram. ",
+    "docString": "After reindexing a fiber, the standalone external piece at any identified slot count is exactly\nthe correspondingly standardized connected external diagram, independently of the vacuum piece. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq"
     ],
     "dependencies": [
       "SecondQuantization.Common.isSplit_slotLegSplitting_of_interactionPart_eq"
@@ -127766,7 +127831,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -127940,10 +128005,9 @@
       "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val",
       "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_cast",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.cast_eq_of_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_externalPieceOfCardEq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder",
       "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti",
@@ -129191,49 +129255,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (a : SecondQuantization.Fermionic.Occupation Mode → ℝ),\n  SecondQuantization.Fermionic.CompletedFreeGibbsIntegrableDiagonal ε β a →\n    HasSum (fun n => QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n * a n)\n      (SecondQuantization.Fermionic.completedFreeGibbsDiagonalExpectation ε β a)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDiagonalExpectation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
-    "externalAxioms": [],
-    "docString": "An integrable real diagonal observable has the expected occupation-basis `HasSum`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeGibbsIntegrableDiagonal_summable"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.CompletedFreeTotalNumberIntegrable ε β →\n    HasSum\n      (fun n =>\n        QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n *\n          ↑(SecondQuantization.Fermionic.particleNumber n))\n      (SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β),\n  SecondQuantization.Fermionic.CompletedFreeTotalNumberIntegrable ε β hsum →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β hsum)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129245,20 +129268,61 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation",
+    "name": "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
-    "docString": "Under the explicit number-integrability hypothesis, the total particle-number expectation is\nrepresented by an absolutely convergent occupation-basis series. ",
+    "docString": "The diagonal matrix elements of the actual completed Gibbs density operator composed with the\ncompleted total-number operator sum to the real spectral expectation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDiagonalExpectation"
+      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
+      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.PurePointGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β),\n  SecondQuantization.Fermionic.CompletedFreeTotalNumberIntegrable ε β hsum →\n    HasSum\n      (fun n =>\n        QuantumTheory.purePointGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n *\n          ↑(SecondQuantization.Fermionic.particleNumber n))\n      (SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β hsum)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
+    "externalAxioms": [],
+    "docString": "Under the explicit number-integrability hypothesis, the total particle-number expectation is\nrepresented by an absolutely convergent occupation-basis series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153829,7 +153893,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} {a b : ℕ} (h : a = b)\n  (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode a i j) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ : Fin a → ℝ),\n  d.dysonFixedTimeAmplitude ε β g τ τ' σ = (cast ⋯ d).dysonFixedTimeAmplitude ε β g τ τ' (cast ⋯ σ)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i j : Mode} {n m : ℕ}\n  (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j)\n  (h : (SecondQuantization.Common.TwoPointDiagram.externalInteractionPart ↑d).card = m) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ'\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑d) σ) =\n    (d.externalPieceOfCardEq h).dysonFixedTimeAmplitude ε β g τ τ'\n      (SecondQuantization.Common.TwoPointDiagram.externalPieceTimesOfCardEq (↑d) h σ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153841,7 +153905,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_cast",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_externalPieceOfCardEq",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
     "externalAxioms": [],
     "docString": null,
@@ -153868,63 +153932,35 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α β : Sort u} (hαβ : α = β) {a : α} {b : β}, a ≍ b → cast hαβ a = b",
-    "standardAxioms": [],
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  (↑d).externalPieceOfCardEq hsize = ↑ext",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.cast_eq_of_heq",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceOfCardEq_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "After standardizing a shuffle fiber at its known left-slot count, the standalone external piece\nis exactly the chosen order-`m` connected diagram. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
+      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {a b : ℕ} (h : a = b)\n  (d : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d }), ↑d ≍ ↑((Equiv.cast ⋯) d)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.connectedFixedExternal_cast_val_heq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -153938,7 +153974,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k)\n  (σ : Fin (m + k) → ℝ),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  SecondQuantization.Common.TwoPointDiagram.externalPieceTimes (↑↑d) σ ≍ fun q => σ (shuffle.slotEquiv (Sum.inl q))",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k)\n  (σ : Fin (m + k) → ℝ),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  have hsize := ⋯;\n  SecondQuantization.Common.TwoPointDiagram.externalPieceTimesOfCardEq (↑↑d) hsize σ = fun q =>\n    σ (shuffle.slotEquiv (Sum.inl q))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153950,10 +153986,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
     "externalAxioms": [],
-    "docString": "The inherited external-piece time coordinates of a shuffle fiber are its left shuffle\ncoordinates. ",
+    "docString": "The inherited external-piece times at the known left-slot count are the left shuffle\ncoordinates. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -153962,51 +153998,7 @@
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
       "Combinatorics.BinaryShuffle.SlotShuffle.mem_leftSlots_iff",
-      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.heq_finFun_of_cast"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  have d := (SecondQuantization.Fermionic.fixedExternalFiberEquiv shuffle.leftSlots).symm p;\n  (↑d).externalPiece ≍ ↑ext",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": "After standardizing a shuffle fiber, the ambient standalone external piece is heterogeneously\nequal to the chosen order-`m` connected diagram. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "SecondQuantization.Fermionic.fixedExternalFiberEquiv_symm_externalPiece_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.connectedFixedExternal_cast_val_heq"
+      "Combinatorics.BinaryShuffle.SlotShuffle.strictMonoLeft"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154051,45 +154043,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {a b : ℕ} (h : a = b) (f : Fin a → ℝ) (g : Fin b → ℝ), (∀ (j : Fin b), f (Fin.cast ⋯ j) = g j) → f ≍ g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.heq_finFun_of_cast",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
