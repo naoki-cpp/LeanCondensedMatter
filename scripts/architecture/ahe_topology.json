@@ -42,6 +42,7 @@
         {"upstream": "modelOperator", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelSpectral", "downstream": "modelOperatorSpectral"},
         {"upstream": "modelOperator", "downstream": "intrinsicBerryPointwise"},
+        {"upstream": "modelOperatorSpectral", "downstream": "intrinsicBerryPointwise"},
         {"upstream": "modelInterband", "downstream": "intrinsicBerryPointwise"},
         {"upstream": "modelOperatorSpectral", "downstream": "propagatorBasic"},
         {"upstream": "propagatorBasic", "downstream": "propagatorSymmetry"},
