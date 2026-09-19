@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 
