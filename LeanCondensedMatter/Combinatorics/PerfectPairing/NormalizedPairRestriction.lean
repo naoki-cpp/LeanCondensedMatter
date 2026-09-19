@@ -68,19 +68,12 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
     exact pairing.pairEndpointEquiv.right_inv pos.1
 
 @[simp]
-theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_zero_val {n : ℕ}
+theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
     (pairing : Pairing n) (p : Fin (2 * n) → Prop)
     (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (pr : pairing.NormalizedPairSubtype p) :
-    (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, 0)).1 = pr.1.1.1 := by
-  rfl
-
-@[simp]
-theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_one_val {n : ℕ}
-    (pairing : Pairing n) (p : Fin (2 * n) → Prop)
-    (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (pr : pairing.NormalizedPairSubtype p) :
-    (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, 1)).1 = pr.1.1.2 := by
+    (pr : pairing.NormalizedPairSubtype p) (k : Fin 2) :
+    (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, k)).1 =
+      pairing.pairEndpoint (pr.1, k) := by
   rfl
 
 /-- On selected normalized-pair endpoints, the restricted partner exchanges endpoint zero and
