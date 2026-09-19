@@ -165,7 +165,8 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
     have hcongr := congrArg
       (fun x => Common.TwoPointDiagram.slotCongr
         (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
-    simpa [FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
+    simpa [Common.TwoPointDiagram.externalInteractionPart,
+      FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
       Common.TwoPointDiagram.externalPieceOfCardEq,
       fixedExternalTwoPointWickDiagramOnEquivOfCardEq] using hcongr
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
