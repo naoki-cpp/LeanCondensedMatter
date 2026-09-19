@@ -39,7 +39,9 @@ The reusable finite coordinate layer is split by responsibility:
 | `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Pairing-specific finite Gibbs two-point, peel, four-point, and recursion formulas. |
 
 A generic complex-weight coordinate functional acquires a Gibbs interpretation only after
-specialization to physical Boltzmann weights.
+specialization to physical Boltzmann weights. For finite fermionic mode types,
+`freePartitionFunction_eq_coe_purePointPartitionFunction` identifies the complex finite-coordinate
+partition function with the canonical real pure-point partition function after coercion to `ℂ`.
 
 ## Generic pairing recursion
 
