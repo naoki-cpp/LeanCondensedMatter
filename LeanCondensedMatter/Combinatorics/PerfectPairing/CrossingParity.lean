@@ -25,16 +25,6 @@ theorem if_negOne_one_eq_negOne_pow_indicator (p : Prop) [Decidable p] :
 def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
   if k = 0 then pair.1 else pair.2
 
-@[simp]
-theorem pairEndpointAt_zero {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) :
-    pairEndpointAt pair 0 = pair.1 := by
-  simp [pairEndpointAt]
-
-@[simp]
-theorem pairEndpointAt_one {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) :
-    pairEndpointAt pair 1 = pair.2 := by
-  simp [pairEndpointAt]
-
 /-- Number of endpoints of `right` that occur before endpoints of `left`. -/
 def pairEndpointInversionCount {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n)) : ℕ :=
