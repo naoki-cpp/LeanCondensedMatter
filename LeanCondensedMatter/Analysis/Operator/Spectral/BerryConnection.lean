@@ -96,11 +96,11 @@ private theorem inner_bornFockDerivative [DecidableEq ι]
   unfold bornFockDerivative
   rw [inner_sum, Finset.sum_eq_single m]
   · by_cases hmn : m = n
-    · simp only [if_pos hmn, inner_zero]
+    · simp only [if_pos hmn, zero_smul, inner_zero_right]
     · rw [if_neg hmn, inner_smul_right, eigenbasis.inner_eq_one, mul_one]
   · intro k _ hkm
     by_cases hkn : k = n
-    · simp only [if_pos hkn, inner_zero]
+    · simp only [if_pos hkn, zero_smul, inner_zero_right]
     · rw [if_neg hkn, inner_smul_right,
         eigenbasis.inner_eq_zero (Ne.symm hkm), mul_zero]
   · simp
@@ -158,7 +158,7 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
     have hdiag :
         inner ℂ (eigenbasis m)
             (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m) = 0 := by
-      simpa only [if_pos rfl] using
+      simpa only [if_true] using
         (inner_bornFockDerivative eigenbasis energy hamiltonianDerivative μ m m)
     rw [show
       inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
@@ -220,15 +220,15 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   rw [hb]
   by_cases hmn : m = n
   · subst m
-    simp only [if_pos rfl, mul_zero, add_zero, zero_mul, smul_eq_mul, mul_one]
+    simp only [if_true, mul_zero, add_zero, mul_one]
     exact (ContinuousLinearMap.coe_diagonalExpectationValue_right
       (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)).symm
-  · simp only [if_neg hmn, mul_zero]
+  · simp only [if_neg hmn]
     have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
       exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
+    push_cast at hgap ⊢
     field_simp [hgap]
-    push_cast
-    ring_nf
+    ring
 
 /-- Build pointwise Berry data from a nondegenerate orthonormal eigenbasis and self-adjoint
 Hamiltonian derivatives.
