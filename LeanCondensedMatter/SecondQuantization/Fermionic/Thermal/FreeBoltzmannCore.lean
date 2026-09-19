@@ -6,8 +6,9 @@ set_option linter.style.header false
 /-!
 # Free-fermion Boltzmann weights and partition function
 
-This module owns the finite free-fermion thermal weight and partition function used by canonical
-density-state constructions.
+This module owns the finite complex-coordinate free-fermion Boltzmann weight and partition
+function used by perturbative and algebraic finite-sum calculations. The canonical physical Gibbs
+state and real partition function are owned by `QuantumTheory.Gibbs.PurePoint`.
 -/
 
 namespace SecondQuantization
