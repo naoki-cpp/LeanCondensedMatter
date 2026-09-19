@@ -108,7 +108,7 @@ theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator
     currentOperator_eq_charge_smul_velocityOperator]
   unfold velocityOperator velocity inPlanePauliVertexOperator matrixOperator
   rw [map_smul, map_smul]
-  simp [directionPauli]
+  simp [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis]
   module
 
 /-- The explicit massive-Dirac Hamiltonian matrix is Hermitian. -/
@@ -119,16 +119,12 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
     | .x => v * px
     | .y => v * py
     | .z => m
-  simpa [InternalSpace.pauliCombination, diracPauliCoefficients, u] using
+  simpa [diracPauliCoefficients, u] using
     InternalSpace.pauliCombination_ofReal_isHermitian u
 
 private theorem directionPauli_isHermitian (direction : Fin 2) :
     (directionPauli direction).IsHermitian := by
-  fin_cases direction
-  · simpa [directionPauli, InternalSpace.pauliBasis] using
-      InternalSpace.pauliBasis_isHermitian .x
-  · simpa [directionPauli, InternalSpace.pauliBasis] using
-      InternalSpace.pauliBasis_isHermitian .y
+  exact InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)
 
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
