@@ -139,8 +139,8 @@ private theorem integral_polarPauli_directionTrace_eq
   have hmatrix :
       x • matrixOperator sigmaX + y • matrixOperator sigmaY =
         matrixOperator (InternalSpace.pauliCombination u) := by
-    simp [matrixOperator, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis,
-      InternalSpace.pauliBasis, sigmaX, sigmaY, u]
+    simp [matrixOperator, InternalSpace.pauliCombination_eq_components,
+      sigmaX, sigmaY, u]
   rw [hmatrix]
   have hop :
       (q • matrixOperator (directionPauli measured)) *
