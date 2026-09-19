@@ -217,6 +217,7 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
   rw [bandProjectorOperator_eq_pointwise_spectral_formula]
   rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
     hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
+  simp only [one_smul, smul_smul, mul_one]
   rw [← one_smul ℂ (pointwiseEigenbasis v m px py source), ← add_smul, smul_smul]
   have hcoeff :
       (1 / 2 : ℂ) *
@@ -302,6 +303,25 @@ def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
+private theorem two_mul_product_div_real_im
+    (z w : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
+    2 * ((z / (gap : ℂ)) * (w / (gap : ℂ))).im =
+      2 * (z * w).im / gap ^ 2 := by
+  have hgapc : (gap : ℂ) ≠ 0 := by exact_mod_cast hgap
+  have hcancel :
+      ((z / (gap : ℂ)) * (w / (gap : ℂ))) * (((gap ^ 2 : ℝ) : ℂ)) =
+        z * w := by
+    push_cast
+    field_simp [hgapc]
+  have him := congrArg Complex.im hcancel
+  rw [Complex.mul_im] at him
+  simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero, add_zero] at him
+  rw [div_eq_iff (pow_ne_zero 2 hgap)]
+  calc
+    2 * ((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2 =
+        2 * (((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2) := by ring
+    _ = 2 * (z * w).im := by rw [him]
+
 /-- The generic pointwise Berry curvature is the model force-matrix curvature. -/
 theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -319,15 +339,22 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
-  have hgapc : (((interbandEnergyGap band v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hgap
   have hforce := pointwiseBerryData_forceMatrixElement_product 0 1 band v m px py hE
-  cases band <;>
-    simp [sum_band, data, pointwiseBerryData_interbandEnergyGap,
-      forceMatrixBerryCurvature, oppositeBand, hforce] <;>
-    field_simp [hgap, hgapc] <;>
-    try simp [Complex.mul_im] <;>
-    ring
+  cases band
+  · simp only [sum_band, if_pos rfl,
+      if_neg (show Band.upper ≠ Band.lower by decide), zero_add]
+    rw [show
+      data.energy Band.lower - data.energy Band.upper =
+        interbandEnergyGap Band.lower v m px py by rfl]
+    rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
+    rfl
+  · simp only [sum_band,
+      if_neg (show Band.lower ≠ Band.upper by decide), if_pos rfl, add_zero]
+    rw [show
+      data.energy Band.upper - data.energy Band.lower =
+        interbandEnergyGap Band.upper v m px py by rfl]
+    rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
+    rfl
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
