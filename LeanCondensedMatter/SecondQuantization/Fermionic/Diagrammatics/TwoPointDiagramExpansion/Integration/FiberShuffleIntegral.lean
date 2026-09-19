@@ -160,8 +160,8 @@ private theorem orderedVacuumDysonIntegrand_rightSlotOrder
       orderedVacuumDysonIntegrand ε β g
         (Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv vac)
         (fun q => σ ((shuffle.rightSlotOrderEquiv q).1)) := by
-  simpa [slotSplitVacuumOrder, slotSplitVacuumSlot,
-    BinaryShuffle.SlotShuffle.rightSlotOrderEquiv] using
+  simpa only [slotSplitVacuumOrder, slotSplitVacuumSlot,
+    BinaryShuffle.SlotShuffle.rightSlotOrderEquiv, Function.comp_apply] using
     (orderedVacuumDysonIntegrand_orderIsoOfFin ε β g
       ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)
       shuffle.card_sdiff_leftSlots vac σ)
