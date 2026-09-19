@@ -165,10 +165,17 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
     have hcongr := congrArg
       (fun x => Common.TwoPointDiagram.slotCongr
         (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
-    simpa [Common.TwoPointDiagram.externalInteractionPart,
-      FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
-      Common.TwoPointDiagram.externalPieceOfCardEq,
-      fixedExternalTwoPointWickDiagramOnEquivOfCardEq] using hcongr
+    change
+      Common.TwoPointDiagram.slotCongr
+          (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
+          d0.1.externalVacuumSplit.1 =
+        Common.TwoPointDiagram.slotCongr
+          (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
+          (d0.1.slotSplitExternal
+            (Finset.subset_univ d0.1.externalInteractionPart)
+            (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+              (Finset.subset_univ d0.1.externalInteractionPart) rfl))
+    exact hcongr
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
   have hext :
       ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
