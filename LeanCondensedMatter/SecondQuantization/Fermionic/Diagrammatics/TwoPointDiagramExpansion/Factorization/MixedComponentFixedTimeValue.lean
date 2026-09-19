@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentPairingValue
 
@@ -128,16 +127,23 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
             (fun pr =>
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                 d.vertexLabelSequence pr.1 pr.2)
+        _ = ∏ x : Σ B : d.1.componentPartition.parts,
+              d.1.MixedComponentPair τ τ' σ B,
+            mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+              ((Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ) x).1.1)
+              ((Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ) x).1.2) := by
+          exact
+            (Equiv.prod_comp
+              (Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ))
+              (fun pr =>
+                mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+                  d.vertexLabelSequence pr.1.1 pr.1.2)).symm
         _ = ∏ B : d.1.componentPartition.parts,
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
                 pr.1.1.1 pr.1.1.2 := by
-          simpa only [Equiv.symm_symm, Equiv.sigmaFiberEquiv] using
-            (Fintype.prod_equiv_sigma
-              (Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ)).symm
-              (fun pr =>
-                mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
-                  d.vertexLabelSequence pr.1.1 pr.1.2))
+          rw [Fintype.prod_sigma]
+          rfl
     rw [hpairProduct,
       d.1.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
