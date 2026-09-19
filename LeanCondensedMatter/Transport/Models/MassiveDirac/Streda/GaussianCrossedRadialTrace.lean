@@ -41,12 +41,12 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         source v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
-private theorem trace_four_mul_eq_entry_sum (A B C D : Matrix2) :
+private theorem trace_four_mul_eq_entry_sum
+    {ι : Type*} [Fintype ι] (A B C D : Matrix ι ι ℂ) :
     Matrix.trace (A * B * C * D) =
-      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+      ∑ i : ι, ∑ j : ι, ∑ k : ι, ∑ l : ι,
         A i j * B j k * C k l * D l i := by
-  simp [Matrix.trace, Matrix.mul_apply, mul_assoc]
-  ring
+  simp [Matrix.trace, Matrix.mul_apply, Finset.mul_sum, mul_assoc]
 
 /-- The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This
 removes the remaining matrix multiplication and trace operations without changing any regulator or
@@ -55,7 +55,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_entr
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .x v m probeEnergy broadening disorderStrength hbar pMax radius =
-      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+      ∑ i : Fin 2, ∑ j : Fin 2, ∑ k : Fin 2, ∑ l : Fin 2,
         finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
             0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *
           finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
@@ -74,7 +74,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scal
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .x v m probeEnergy broadening disorderStrength hbar pMax radius =
-      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+      ∑ i : Fin 2, ∑ j : Fin 2, ∑ k : Fin 2, ∑ l : Fin 2,
         ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
             ∫ p in (0 : ℝ)..pMax,
               finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
@@ -103,7 +103,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_en
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
       let amplitude :=
-        ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+        ∑ i : Fin 2, ∑ j : Fin 2, ∑ k : Fin 2, ∑ l : Fin 2,
           finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
               0 v m probeEnergy broadening disorderStrength hbar pMax radius i j *
             finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
@@ -124,7 +124,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_sc
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         .psi v m probeEnergy broadening disorderStrength hbar pMax radius =
       let amplitude :=
-        ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+        ∑ i : Fin 2, ∑ j : Fin 2, ∑ k : Fin 2, ∑ l : Fin 2,
           ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
               ∫ p in (0 : ℝ)..pMax,
                 finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
