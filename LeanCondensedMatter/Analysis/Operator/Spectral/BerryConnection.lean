@@ -84,6 +84,7 @@ private noncomputable def bornFockDerivative [DecidableEq ι]
       inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
         (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
 
+omit [CompleteSpace H] in
 private theorem inner_bornFockDerivative [DecidableEq ι]
     (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
     (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (m n : ι) :
@@ -221,13 +222,20 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   by_cases hmn : m = n
   · subst m
     simp only [if_true, mul_zero, add_zero, mul_one]
-    exact (ContinuousLinearMap.coe_diagonalExpectationValue_right
-      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)).symm
-  · simp only [if_neg hmn]
+    simpa only [smul_eq_mul, mul_one, mul_zero, add_zero] using
+      (ContinuousLinearMap.coe_diagonalExpectationValue_right
+        (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)).symm
+  · simp only [if_neg hmn, smul_eq_mul, mul_zero, zero_add]
     have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
       exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
-    push_cast at hgap ⊢
-    field_simp [hgap]
+    have hcancel :
+        (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+            (((energy n - energy m : ℝ) : ℂ))) *
+          (((energy n - energy m : ℝ) : ℂ)) =
+        inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) :=
+      div_mul_cancel₀ _ hgap
+    rw [← hcancel]
+    push_cast
     ring
 
 /-- Build pointwise Berry data from a nondegenerate orthonormal eigenbasis and self-adjoint
