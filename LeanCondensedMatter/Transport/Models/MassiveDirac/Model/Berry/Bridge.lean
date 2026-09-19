@@ -217,7 +217,6 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
   rw [bandProjectorOperator_eq_pointwise_spectral_formula]
   rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
     hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
-  simp only [one_smul, smul_smul, mul_one]
   rw [← one_smul ℂ (pointwiseEigenbasis v m px py source), ← add_smul, smul_smul]
   have hcoeff :
       (1 / 2 : ℂ) *
@@ -316,7 +315,7 @@ private theorem two_mul_product_div_real_im
   have him := congrArg Complex.im hcancel
   rw [Complex.mul_im] at him
   simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero, add_zero] at him
-  rw [div_eq_iff (pow_ne_zero 2 hgap)]
+  apply (eq_div_iff (pow_ne_zero 2 hgap)).2
   calc
     2 * ((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2 =
         2 * (((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2) := by ring
@@ -340,16 +339,20 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
     0 1 band hself hnondegenerate]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   have hforce := pointwiseBerryData_forceMatrixElement_product 0 1 band v m px py hE
+  change
+    data.hamiltonianDerivativeMatrixElement 0 (oppositeBand band) band *
+        data.hamiltonianDerivativeMatrixElement 1 band (oppositeBand band) =
+      forceMatrixTraceNumerator 0 1 band v m px py at hforce
   cases band
   · simp only [sum_band, if_pos rfl,
-      if_neg (show Band.upper ≠ Band.lower by decide), zero_add]
+      if_neg (show Band.upper ≠ Band.lower by decide), if_true, zero_add]
     rw [show
       data.energy Band.lower - data.energy Band.upper =
         interbandEnergyGap Band.lower v m px py by rfl]
     rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
     rfl
   · simp only [sum_band,
-      if_neg (show Band.lower ≠ Band.upper by decide), if_pos rfl, add_zero]
+      if_neg (show Band.lower ≠ Band.upper by decide), if_pos rfl, if_true, add_zero]
     rw [show
       data.energy Band.upper - data.energy Band.lower =
         interbandEnergyGap Band.upper v m px py by rfl]
