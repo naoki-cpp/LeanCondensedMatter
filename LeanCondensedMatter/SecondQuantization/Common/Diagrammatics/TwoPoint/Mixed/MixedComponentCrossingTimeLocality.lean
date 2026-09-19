@@ -284,7 +284,9 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
       (d.mixedComponentPairEndpointEquiv τ τ' ρ B (r, k)).1 =
         (d.pairingInMixedOrder τ τ' ρ).pairEndpoint (r.1, k) := by
     unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val _ _ _ r k
+    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+      (d.pairingInMixedOrder τ τ' ρ)
+      (fun x => d.mixedPositionComponent τ τ' ρ x = B) _ r k
   have hpEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
           d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
@@ -435,7 +437,9 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
       (d.mixedComponentPairEndpointEquiv τ τ' ρ B (r, k)).1 =
         (d.pairingInMixedOrder τ τ' ρ).pairEndpoint (r.1, k) := by
     unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val _ _ _ r k
+    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+      (d.pairingInMixedOrder τ τ' ρ)
+      (fun x => d.mixedPositionComponent τ τ' ρ x = B) _ r k
   have hEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
           d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
