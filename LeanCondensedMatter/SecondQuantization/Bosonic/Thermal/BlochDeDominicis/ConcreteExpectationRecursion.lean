@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
-import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
 set_option linter.style.header false
@@ -69,7 +68,7 @@ theorem freeGibbsExpectation_firstPair_recursion
               ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
                 ((C 0).exchangeValue (C j.succ) *
                   freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j))) := by
-        rw [Combinatorics.FiniteIndex.sum_cast hlen]
+        rw [← Equiv.sum_comp (finCongr hlen.symm)]
         apply Finset.sum_congr rfl
         intro j _
         simp only [Fin.val_cast, hl, List.getElem_ofFn]
