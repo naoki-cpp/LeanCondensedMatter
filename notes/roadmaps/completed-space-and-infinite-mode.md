@@ -35,8 +35,9 @@ the state-level pure-point Gibbs construction is owned by `QuantumTheory.Gibbs.P
 The completed free-fermion route includes:
 
 - pure-point Gibbs states under explicit `PurePointGibbsSummable` hypotheses;
-- occupation-basis expectation formulas and unbounded diagonal expectations on explicit summability
-  domains;
+- occupation-basis formulas for bounded expectations and an explicit integrability domain for the
+  completed total-number expectation;
+- generic unbounded energy expectation through `QuantumTheory.Gibbs.PurePointExpectation`;
 - a one-particle sufficient condition for free-fermion Gibbs summability and the corresponding
   partition-product identity;
 - bounded thermal ladder packaging, Gibbs intertwining, KMS rotation, CAR peel, and the completed

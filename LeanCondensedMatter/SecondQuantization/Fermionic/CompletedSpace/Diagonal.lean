@@ -44,6 +44,22 @@ noncomputable def completedTotalNumberOperator :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode :=
   Common.completedDiagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
 
+/-- Every occupation-basis vector lies in the domain of the completed total-number operator. -/
+theorem completedBasisState_mem_completedTotalNumberDomain (n : Occupation Mode) :
+    completedBasisState n ∈ completedTotalNumberDomain := by
+  exact Common.completedBasisState_mem_completedDiagonalDomain
+    (fun m : Occupation Mode => (particleNumber m : ℂ)) n
+
+/-- Occupation-basis vectors diagonalize the completed total-number operator with eigenvalue
+`particleNumber n`. -/
+@[simp]
+theorem completedTotalNumberOperator_basisState (n : Occupation Mode) :
+    completedTotalNumberOperator
+        ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩ =
+      (particleNumber n : ℂ) • completedBasisState n := by
+  exact Common.completedDiagonalOperator_basisState
+    (fun m : Occupation Mode => (particleNumber m : ℂ)) n
+
 end
 end Fermionic
 end SecondQuantization

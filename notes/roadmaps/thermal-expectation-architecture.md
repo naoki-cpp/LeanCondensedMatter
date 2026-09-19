@@ -73,6 +73,13 @@ Gibbs state on the completed occupation Hilbert basis. Bounded completed ladder 
 KMS, first-pair/peel, and pairing-recursion results without introducing a finite-mode assumption into
 the generic recursion.
 
+Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
+is owned by `Fermionic.CompletedSpace.Diagonal`, while
+`Fermionic.Thermal.Completed.TotalNumberExpectation` defines its explicit Gibbs-integrability
+condition and spectral expectation. Potentially unbounded energy expectation remains generic in
+`QuantumTheory.Gibbs.PurePointExpectation`; there is no public arbitrary-diagonal thermal
+expectation API.
+
 ## Bosonic boundary
 
 Even for finite `Mode`,

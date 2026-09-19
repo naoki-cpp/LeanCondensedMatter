@@ -177,13 +177,18 @@
       ]
     },
     {
-      "id": "unboundedExpectationBoundary",
-      "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"],
-      "layers": [
-        {"id": "unboundedExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation"]},
-        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]}
+      "id": "completedThermalBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed"
       ],
-      "edges": []
+      "layers": [
+        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]},
+        {"id": "completedThermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]}
+      ],
+      "edges": [
+        {"upstream": "completedSpace", "downstream": "completedThermal"}
+      ]
     }
   ],
   "forbiddenReachability": [
