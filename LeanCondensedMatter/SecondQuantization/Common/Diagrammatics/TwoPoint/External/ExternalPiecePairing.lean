@@ -100,9 +100,21 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
     intro x
     rw [← TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
       Equiv.apply_symm_apply]
+  have hEndpoint (k : Fin 2) :
+      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, k)).1 =
+        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (pr.1, k) := by
+    simpa only [TwoPointDiagram.mixedComponentPairEndpointEquiv] using
+      (Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+        (d.pairingInMixedOrder τ τ' σ)
+        (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
+        (fun p => by rw [d.mixedPositionComponent_partner]) pr k)
   rcases d.externalPieceComponentPairEquiv_pair_eq_or_swap τ τ' σ pr with h | h
   · rw [h]
-    simp [hf, TwoPointDiagram.mixedComponentPairEndpointEquiv]
+    simp only [hf]
+    change ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)).1,
+      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)).1) = pr.1.1
+    rw [hEndpoint 0, hEndpoint 1]
+    simp
   · exfalso
     have hnorm :
         (d.externalPieceComponentPairEquiv τ τ' σ pr).1.1 <
@@ -111,7 +123,11 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
         (d.externalPieceComponentPairEquiv τ τ' σ pr).2
     have hmono := d.externalPieceMixedPosition_strictMono τ τ' σ hnorm
     rw [h] at hmono
-    simp only [hf, TwoPointDiagram.mixedComponentPairEndpointEquiv] at hmono
+    simp only [hf] at hmono
+    change (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)).1 <
+      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)).1 at hmono
+    rw [hEndpoint 1, hEndpoint 0] at hmono
+    simp at hmono
     exact absurd ((d.pairingInMixedOrder τ τ' σ).pairs_normalized pr.1.2) (asymm hmono)
 
 /-- The crossing count internal to the ambient external component equals the crossing count of the
