@@ -70,22 +70,13 @@ theorem FamilySlotShuffle.measurableLocallyBounded_integrand {size : ι → ℕ}
     (hlocal : ∀ i, intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) :
     intervalIntegral.MeasurableLocallyBounded (shuffle.integrand localIntegrand) := by
   classical
-  have hMeas : Measurable (shuffle.integrand localIntegrand) := by
-    unfold FamilySlotShuffle.integrand
-    exact Finset.measurable_prod _ fun i _ =>
-      (hlocal i).1.comp (shuffle.continuous_timeAssignment i).measurable
-  refine ⟨hMeas, ?_⟩
-  intro R hR
-  choose C hC0 hC using fun i => (hlocal i).2 R hR
-  refine ⟨∏ i, C i, Finset.prod_nonneg fun i _ => hC0 i, ?_⟩
-  intro τ hτ
-  have hmem (i : ι) : shuffle.timeAssignment τ i ∈
-      intervalIntegral.orderedSimplexTimeCube (size i) R := by
-    rw [intervalIntegral.orderedSimplexTimeCube, Set.mem_Icc] at hτ ⊢
-    exact ⟨fun j => hτ.1 (shuffle.slotEquiv ⟨i, j⟩),
-      fun j => hτ.2 (shuffle.slotEquiv ⟨i, j⟩)⟩
-  rw [FamilySlotShuffle.integrand, norm_prod]
-  exact Finset.prod_le_prod (fun i _ => norm_nonneg _)
-    (fun i _ => hC i _ (hmem i))
+  change intervalIntegral.MeasurableLocallyBounded
+    (fun τ : Fin (∑ i, size i) → ℝ =>
+      ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩)))
+  simpa using
+    intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
+      (fun i τ => localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩)))
+      (fun i _ => (hlocal i).comp_finCoordinateSelection
+        (fun j => shuffle.slotEquiv ⟨i, j⟩))
 
 end Combinatorics
