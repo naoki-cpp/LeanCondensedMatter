@@ -83,8 +83,9 @@ private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
       (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.1,
         d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.2) := by
   change
-    ((Equiv.cast (by
-      rw [d.assembleVertexOrder_fixedOrderComponentShuffle order])
+    ((Equiv.cast
+      (congrArg (fun o => (d.pairingInOrder o).NormalizedPair)
+        (d.assembleVertexOrder_fixedOrderComponentShuffle order))
       (d.componentPairEquiv (d.componentPartition.partOrdersOfOrder order)
         (d.fixedOrderComponentShuffle order) ⟨C, pr⟩) :
       (d.pairingInOrder order).NormalizedPair)).1 = _
