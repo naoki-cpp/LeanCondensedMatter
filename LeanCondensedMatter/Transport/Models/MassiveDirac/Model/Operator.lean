@@ -161,12 +161,26 @@ theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
     (hamiltonian_isHermitian v m px py).isSelfAdjoint.map
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
+/-- Transporting `H₀² = E² I` to `DiracHilbert`. -/
+theorem hamiltonianOperator_mul_self (v m px py : ℝ) :
+    hamiltonianOperator v m px py * hamiltonianOperator v m px py =
+      (((energySq v m px py : ℝ) : ℂ)) •
+        (1 : DiracHilbert →L[ℂ] DiracHilbert) := by
+  unfold hamiltonianOperator matrixOperator
+  rw [← map_mul, hamiltonian_mul_self, map_smul, map_one]
+
 /-- The direction-indexed current operator is self-adjoint. -/
 theorem currentOperator_isSelfAdjoint (direction : Fin 2) (e v : ℝ) :
     IsSelfAdjoint (currentOperator direction e v) := by
   simpa [currentOperator, matrixOperator] using
     (current_isHermitian direction e v).isSelfAdjoint.map
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+
+/-- The direction-indexed velocity operator is self-adjoint. -/
+theorem velocityOperator_isSelfAdjoint (direction : Fin 2) (v : ℝ) :
+    IsSelfAdjoint (velocityOperator direction v) := by
+  have h := currentOperator_isSelfAdjoint direction (-1) v
+  simpa [currentOperator_eq_charge_smul_velocityOperator] using h
 
 /-- The clean massive-Dirac model as the bounded free system consumed by generic response layers.
 The currents remain supplied separately because `BoundedFreeSystem` intentionally stores only
