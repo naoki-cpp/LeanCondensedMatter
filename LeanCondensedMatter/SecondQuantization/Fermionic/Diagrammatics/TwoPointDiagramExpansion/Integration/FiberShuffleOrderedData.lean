@@ -85,7 +85,7 @@ noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
     QuarticWickDiagram Mode (m + k)
         ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
       Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
-  Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv
+  Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv
 
 /-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
 diagram and one order-`k` vacuum label/pairing datum. -/
