@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
@@ -83,7 +82,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
             (l[(j : ℕ)]'(by rw [hlen]; exact j.isLt)).2 *
               finiteGibbsExpectation energy β
                 (prodComp ((l.eraseIdx (j : ℕ)).map Prod.fst)) := by
-      rw [Combinatorics.FiniteIndex.sum_cast hlen]
+      rw [← Equiv.sum_comp (finCongr hlen.symm)]
       apply Finset.sum_congr rfl
       intro j _
       simp only [Fin.val_cast]
