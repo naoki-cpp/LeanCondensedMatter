@@ -82,9 +82,23 @@ private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
   intro a _
   apply Finset.sum_congr rfl
   intro b _
-  unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
-  rw [Pairing.normalizedPairSubtypeEndpointEquiv_apply_val,
-    Pairing.normalizedPairSubtypeEndpointEquiv_apply_val]
+  have hq :
+      (d.mixedComponentPairEndpointEquiv τ τ' σ C (q, b)).1 =
+        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (q.1, b) := by
+    simpa only [TwoPointDiagram.mixedComponentPairEndpointEquiv] using
+      (Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+        (d.pairingInMixedOrder τ τ' σ)
+        (fun x => d.mixedPositionComponent τ τ' σ x = C)
+        (fun x => by rw [d.mixedPositionComponent_partner]) q b)
+  have hp :
+      (d.mixedComponentPairEndpointEquiv τ τ' σ B (p, a)).1 =
+        (d.pairingInMixedOrder τ τ' σ).pairEndpoint (p.1, a) := by
+    simpa only [TwoPointDiagram.mixedComponentPairEndpointEquiv] using
+      (Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
+        (d.pairingInMixedOrder τ τ' σ)
+        (fun x => d.mixedPositionComponent τ τ' σ x = B)
+        (fun x => by rw [d.mixedPositionComponent_partner]) p a)
+  rw [hq, hp]
   rfl
 
 private theorem
