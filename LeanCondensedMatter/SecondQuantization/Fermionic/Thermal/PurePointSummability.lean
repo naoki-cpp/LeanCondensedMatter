@@ -7,8 +7,9 @@ set_option linter.style.header false
 /-!
 # Pure-point summability for the free fermion Gibbs state
 
-The free fermion Gibbs state on an arbitrary mode type is the generic pure-point Gibbs state on occupation energies
-`fermionEnergy ε`.  Its occupation-level summability follows from the corresponding one-particle
+The free fermion Gibbs state on an arbitrary mode type is the generic pure-point Gibbs state on
+occupation energies `fermionEnergy ε`. Its occupation-level summability follows from the
+corresponding one-particle
 pure-point summability condition.  Writing
 
 ```text
