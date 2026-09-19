@@ -25,16 +25,20 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- The generic pure-point Gibbs density operator specialized to free fermion occupation energies is
-diagonal on the completed occupation basis. -/
+/-- The canonical free-fermion Gibbs density operator on the completed occupation Fock space. -/
+noncomputable def completedFreeGibbsDensityOperator
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    DensityOperator (CompletedFockSpace Mode) :=
+  purePointGibbsDensityOperator completedOccupationHilbertBasis (fermionEnergy ε) β hsum
+
+/-- The completed free Gibbs density operator acts diagonally in the occupation basis. -/
 @[simp]
 theorem completedFreeGibbsDensityOperator_apply_basis
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (n : Occupation Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).op (completedBasisState n) =
+    (completedFreeGibbsDensityOperator ε β hsum).op (completedBasisState n) =
       (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) • completedBasisState n := by
-  simpa using
+  simpa [completedFreeGibbsDensityOperator] using
     purePointGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum n
 
@@ -43,14 +47,12 @@ occupation-basis pure-point Gibbs series. -/
 theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation A =
+    (completedFreeGibbsDensityOperator ε β hsum).expectation A =
       ∑' n : Occupation Mode,
         (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
           inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
   simpa using
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).expectation_eq_tsum_diagonal
+    (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
       A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
       (purePointGibbsDensityOperator_apply_basis
         (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum)
@@ -126,22 +128,18 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
 `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. -/
 theorem completedFreeGibbsDensityOperator_comp_create
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (i : Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).op.comp (completedCreate i) =
+    (completedFreeGibbsDensityOperator ε β hsum).op.comp (completedCreate i) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) •
         ((completedCreate i).comp
-          (purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).op) := by
+          (completedFreeGibbsDensityOperator ε β hsum).op) := by
   apply Common.continuousLinearMap_ext_completedBasis
   intro n
   change
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).op
+    (completedFreeGibbsDensityOperator ε β hsum).op
         (completedCreate i (completedBasisState n)) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) •
         completedCreate i
-          ((purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).op (completedBasisState n))
+          ((completedFreeGibbsDensityOperator ε β hsum).op (completedBasisState n))
   by_cases hi : i ∈ n
   · rw [completedCreate_basisState_of_mem hi, map_zero,
       completedFreeGibbsDensityOperator_apply_basis, map_smul,
@@ -160,22 +158,18 @@ theorem completedFreeGibbsDensityOperator_comp_create
 `ρβ aᵢ = exp (β εᵢ) aᵢ ρβ` as an identity of bounded operators. -/
 theorem completedFreeGibbsDensityOperator_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (i : Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).op.comp (completedAnnihilate i) =
+    (completedFreeGibbsDensityOperator ε β hsum).op.comp (completedAnnihilate i) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) •
         ((completedAnnihilate i).comp
-          (purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).op) := by
+          (completedFreeGibbsDensityOperator ε β hsum).op) := by
   apply Common.continuousLinearMap_ext_completedBasis
   intro n
   change
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).op
+    (completedFreeGibbsDensityOperator ε β hsum).op
         (completedAnnihilate i (completedBasisState n)) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) •
         completedAnnihilate i
-          ((purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).op (completedBasisState n))
+          ((completedFreeGibbsDensityOperator ε β hsum).op (completedBasisState n))
   by_cases hi : i ∈ n
   · rw [completedAnnihilate_basisState_of_mem hi, map_smul,
       completedFreeGibbsDensityOperator_apply_basis,
