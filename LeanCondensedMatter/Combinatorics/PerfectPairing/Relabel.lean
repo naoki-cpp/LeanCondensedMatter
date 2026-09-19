@@ -43,6 +43,26 @@ def Pairing.transportEquiv {m n : ℕ} (e : Fin (2 * m) ≃ Fin (2 * n)) :
     ext i
     simp
 
+@[simp]
+theorem Pairing.transport_symm_transport {m n : ℕ} (P : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n)) :
+    (P.transport e).transport e.symm = P := by
+  ext i
+  simp
+
+@[simp]
+theorem Pairing.transport_transport_symm {m n : ℕ} (P : Pairing m)
+    (e : Fin (2 * m) ≃ Fin (2 * n)) :
+    (P.transport e.symm).transport e = P := by
+  ext i
+  simp
+
+theorem Pairing.transport_trans {l m n : ℕ} (P : Pairing n)
+    (e : Fin (2 * m) ≃ Fin (2 * n)) (f : Fin (2 * l) ≃ Fin (2 * m)) :
+    (P.transport e).transport f = P.transport (f.trans e) := by
+  ext i
+  simp
+
 /-- Transport a pairing along an ambient permutation, where `e` maps new positions to old
 positions. -/
 def Pairing.relabel {n : ℕ} (P : Pairing n) (e : Equiv.Perm (Fin (2 * n))) : Pairing n :=
