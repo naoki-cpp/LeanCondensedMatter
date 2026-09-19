@@ -57,10 +57,19 @@ def pauliZ : PauliMatrix :=
   !![1, 0; 0, -1]
 
 /-- The Pauli matrix associated with a semantic axis. -/
-private def pauliBasis : PauliAxis → PauliMatrix
+def pauliBasis : PauliAxis → PauliMatrix
   | .x => pauliX
   | .y => pauliY
   | .z => pauliZ
+
+/-- Every matrix in the Pauli basis is Hermitian. -/
+theorem pauliBasis_isHermitian (axis : PauliAxis) :
+    (pauliBasis axis).IsHermitian := by
+  cases axis <;>
+    apply Matrix.IsHermitian.ext <;>
+    intro i j <;>
+    fin_cases i <;> fin_cases j <;>
+    simp [pauliBasis, pauliX, pauliY, pauliZ]
 
 /-- Bilinear Pauli synthesis `u · σ`. The coefficient family is kept as the canonical indexed
 function rather than wrapped in a parallel vector type. -/
@@ -70,10 +79,12 @@ def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
 /-- A Pauli synthesis with real axis coefficients is Hermitian. -/
 theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
     (pauliCombination (fun axis => (u axis : ℂ))).IsHermitian := by
-  apply Matrix.IsHermitian.ext
-  intro i j
-  fin_cases i <;> fin_cases j <;>
-    simp [pauliCombination, pauliX, pauliY, pauliZ]
+  have hself (r : ℝ) : IsSelfAdjoint ((r : ℂ)) := by
+    simp [isSelfAdjoint_iff]
+  simpa [pauliCombination, pauliBasis] using
+    (((pauliBasis_isHermitian .x).smul (hself (u .x))).add
+      ((pauliBasis_isHermitian .y).smul (hself (u .y)))).add
+      ((pauliBasis_isHermitian .z).smul (hself (u .z)))
 
 /-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families, obtained by
 transporting Mathlib's three-dimensional cross product to the semantic axes. -/
