@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 
 set_option linter.style.header false
@@ -128,7 +127,6 @@ theorem TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart
     TwoPointDiagram.mixedComponentOrientedCrossingCount,
     Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Pairing.crossingCount_eq_sum_sum_crosses]
-  simp only [TwoPointDiagram.mixedComponentPairSigmaEquiv_apply]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : d.MixedComponentPair τ τ' σ d.externalComponentPart => p.1.1)
     (fun p : (d.externalPiece.pairingInMixedOrder τ τ'
