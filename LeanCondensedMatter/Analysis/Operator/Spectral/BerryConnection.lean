@@ -78,14 +78,14 @@ namespace PointwiseEigenbasisData
 /-- Parallel-transport-gauge eigenvector derivative determined by a simple spectrum and a
 Hamiltonian derivative. The diagonal basis component is fixed to zero; every off-diagonal
 component is the Born--Fock quotient. -/
-private noncomputable def simpleSpectrumEigenvectorDerivative
+private noncomputable def simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
     (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n : ι) : H :=
   ∑ m : ι, if m = n then 0 else
     (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
       (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
 
-private theorem inner_simpleSpectrumEigenvectorDerivative
+private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
     (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n k : ι) :
     inner ℂ (eigenbasis k)
@@ -93,8 +93,7 @@ private theorem inner_simpleSpectrumEigenvectorDerivative
       if k = n then 0 else
         inner ℂ (eigenbasis k) (hamiltonianDerivative μ (eigenbasis n)) /
           (((energy n - energy k : ℝ) : ℂ)) := by
-  classical
-  simp [simpleSpectrumEigenvectorDerivative, inner_sum, inner_smul_right]
+  simp [simpleSpectrumEigenvectorDerivative]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
@@ -120,7 +119,7 @@ private theorem inner_hamiltonian_right_of_eigenbasis
 The supplied energy derivative is required only through its diagonal Hellmann--Feynman identity.
 Eigenvector derivatives are constructed algebraically in the parallel-transport gauge
 `⟪φ_n, ∂_μ φ_n⟫ = 0`, so a concrete model need not differentiate an explicit eigenvector gauge. -/
-noncomputable def ofSimpleSpectrum
+noncomputable def ofSimpleSpectrum [DecidableEq ι]
     (hamiltonian : H →L[ℂ] H)
     (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
     (eigenbasis : OrthonormalBasis ι ℂ H)
@@ -179,7 +178,9 @@ noncomputable def ofSimpleSpectrum
     change
       inner ℂ (eigenvectorDerivative μ m) (eigenbasis n) +
         inner ℂ (eigenbasis m) (eigenvectorDerivative μ n) = 0
-    rw [inner_conj_symm]
+    rw [show inner ℂ (eigenvectorDerivative μ m) (eigenbasis n) =
+      (starRingEnd ℂ) (inner ℂ (eigenbasis n) (eigenvectorDerivative μ m)) by
+        simp [inner_conj_symm]]
     simp only [eigenvectorDerivative, inner_simpleSpectrumEigenvectorDerivative]
     by_cases hmn : m = n
     · subst m
