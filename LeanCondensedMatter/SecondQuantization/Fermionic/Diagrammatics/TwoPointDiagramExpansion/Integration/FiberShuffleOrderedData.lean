@@ -74,9 +74,8 @@ noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
     {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
         ext.1.IsExternallyConnected} ≃
       {ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} :=
-  (connectedFixedExternalTwoPointWickDiagramOnEquiv
-      (Mode := Mode) (i := i) (j := j) shuffle.leftSlots).trans
-    (Equiv.cast (by rw [shuffle.card_leftSlots]))
+  connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq
+    (Mode := Mode) (i := i) (j := j) shuffle.leftSlots shuffle.card_leftSlots
 
 /-- Read the vacuum half of a shuffle fiber in its inherited increasing order.  The resulting
 ordered data has order `k`, independently of which ambient slots the shuffle assigns to it. -/

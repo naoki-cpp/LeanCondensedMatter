@@ -18,6 +18,16 @@ open Common
 
 variable {Mode : Type*} {n : ℕ} {i j : Mode}
 
+/-- The Common standalone external piece with a chosen target slot count, lifted to the
+fixed-external fermionic subtype. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPieceOfCardEq
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) {m : ℕ}
+    (h : d.1.externalInteractionPart.card = m) :
+    FixedExternalTwoPointWickDiagram Mode m i j :=
+  ⟨d.1.externalPieceOfCardEq h, by
+    rw [Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel]
+    exact d.2⟩
+
 /-- The Common standalone external piece, lifted to the fixed-external fermionic subtype. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
