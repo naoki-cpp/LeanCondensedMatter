@@ -29,42 +29,62 @@ abbrev FixedExternalTwoPointWickDiagramOn (Mode : Type*) (n : ℕ) (T : Finset (
     (i j : Mode) : Type _ :=
   {d : TwoPointWickDiagram Mode n T // d.externalLabel = twoPointExternalLabels i j}
 
-/-- A fixed-external two-point diagram on an arbitrary chosen slot set is canonically the same data
-as an order-`|T|` fixed-external diagram, using the canonical increasing standardization of `T`. -/
-noncomputable def fixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
+/-- A fixed-external two-point diagram on a chosen slot set, standardized by its increasing order
+onto any `Fin m` whose size is identified by `h`. -/
+noncomputable def fixedExternalTwoPointWickDiagramOnEquivOfCardEq
+    (T : Finset (Fin n)) {m : ℕ} (h : T.card = m) :
     FixedExternalTwoPointWickDiagramOn Mode n T i j ≃
-      FixedExternalTwoPointWickDiagram Mode T.card i j where
+      FixedExternalTwoPointWickDiagram Mode m i j where
   toFun d :=
-    ⟨d.1.slotCongr (Common.standardSlotEquiv T), by
+    ⟨d.1.slotCongr (Common.standardSlotEquivOfCardEq T h), by
       rw [Common.TwoPointDiagram.slotCongr_externalLabel]
       exact d.2⟩
   invFun d :=
-    ⟨d.1.slotCongr (Common.standardSlotEquiv T).symm, by
+    ⟨d.1.slotCongr (Common.standardSlotEquivOfCardEq T h).symm, by
       rw [Common.TwoPointDiagram.slotCongr_externalLabel]
       exact d.2⟩
   left_inv d :=
     Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
-      (Common.standardSlotEquiv T)).left_inv d.1)
+      (Common.standardSlotEquivOfCardEq T h)).left_inv d.1)
   right_inv d :=
     Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
-      (Common.standardSlotEquiv T)).right_inv d.1)
+      (Common.standardSlotEquivOfCardEq T h)).right_inv d.1)
+
+/-- A fixed-external two-point diagram on an arbitrary chosen slot set is canonically the same data
+as an order-`|T|` fixed-external diagram, using the canonical increasing standardization of `T`. -/
+noncomputable def fixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
+    FixedExternalTwoPointWickDiagramOn Mode n T i j ≃
+      FixedExternalTwoPointWickDiagram Mode T.card i j :=
+  fixedExternalTwoPointWickDiagramOnEquivOfCardEq T rfl
+
+/-- The increasing slot standardization with a chosen cardinality equality restricts to externally
+connected fixed-external diagrams. -/
+noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq
+    (T : Finset (Fin n)) {m : ℕ} (h : T.card = m) :
+    {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
+        ext.1.IsExternallyConnected} ≃
+      {d : FixedExternalTwoPointWickDiagram Mode m i j //
+        d.1.IsExternallyConnected} where
+  toFun ext :=
+    ⟨fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h ext.1,
+      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
+        (Common.standardSlotEquivOfCardEq T h) ext.1.1).2 ext.2⟩
+  invFun d :=
+    ⟨(fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).symm d.1,
+      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
+        (Common.standardSlotEquivOfCardEq T h).symm d.1.1).2 d.2⟩
+  left_inv ext :=
+    Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).left_inv ext.1)
+  right_inv d :=
+    Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).right_inv d.1)
 
 /-- The canonical slot standardization restricts to externally connected fixed-external diagrams. -/
 noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
     {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
         ext.1.IsExternallyConnected} ≃
       {d : FixedExternalTwoPointWickDiagram Mode T.card i j //
-        d.1.IsExternallyConnected} where
-  toFun ext :=
-    ⟨fixedExternalTwoPointWickDiagramOnEquiv T ext.1,
-      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
-        (Common.standardSlotEquiv T) ext.1.1).2 ext.2⟩
-  invFun d :=
-    ⟨(fixedExternalTwoPointWickDiagramOnEquiv T).symm d.1,
-      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
-        (Common.standardSlotEquiv T).symm d.1.1).2 d.2⟩
-  left_inv ext := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).left_inv ext.1)
-  right_inv d := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).right_inv d.1)
+        d.1.IsExternallyConnected} :=
+  connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq T rfl
 
 /-- Reassemble a fixed-external two-point diagram from a chosen external piece and quartic vacuum
 piece. -/
