@@ -39,7 +39,8 @@ def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
   | .y => y
   | .z => z
 
-private theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
+/-- A sum over the semantic Pauli axes is the x, y, and z contribution. -/
+theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
   simp [add_assoc]
@@ -74,14 +75,14 @@ theorem pauliBasis_isHermitian (axis : PauliAxis) :
 /-- Bilinear Pauli synthesis `u · σ`. The coefficient family is kept as the canonical indexed
 function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
-  u .x • pauliX + u .y • pauliY + u .z • pauliZ
+  ∑ axis : PauliAxis, u axis • pauliBasis axis
 
 /-- A Pauli synthesis with real axis coefficients is Hermitian. -/
 theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
     (pauliCombination (fun axis => (u axis : ℂ))).IsHermitian := by
   have hself (r : ℝ) : IsSelfAdjoint ((r : ℂ)) := by
     simp [isSelfAdjoint_iff]
-  simpa [pauliCombination, pauliBasis] using
+  simpa [pauliCombination, sum_pauliAxis] using
     (((pauliBasis_isHermitian .x).smul (hself (u .x))).add
       ((pauliBasis_isHermitian .y).smul (hself (u .y)))).add
       ((pauliBasis_isHermitian .z).smul (hself (u .z)))
@@ -102,6 +103,11 @@ components. No complex conjugation is introduced. -/
 private def pauliBasisCoeff (axis : PauliAxis) : PauliAxis → ℂ :=
   fun other => if other = axis then 1 else 0
 
+private theorem pauliCombination_pauliBasisCoeff (axis : PauliAxis) :
+    pauliCombination (pauliBasisCoeff axis) = pauliBasis axis := by
+  cases axis <;>
+    simp [pauliCombination, sum_pauliAxis, pauliBasisCoeff, pauliBasis]
+
 private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
     pauliBasis a * pauliBasis b =
       dotProduct (pauliBasisCoeff a) (pauliBasisCoeff b) • (1 : PauliMatrix) +
@@ -118,13 +124,13 @@ private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
 /-- Pauli synthesis commutes with addition of indexed coefficient families. -/
 @[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
     pauliCombination (u + v) = pauliCombination u + pauliCombination v := by
-  simp [pauliCombination, add_smul]
+  simp [pauliCombination, sum_pauliAxis, add_smul]
   module
 
 /-- Pauli synthesis commutes with scalar multiplication of the indexed coefficient family. -/
 @[simp] theorem pauliCombination_smul (c : ℂ) (u : PauliAxis → ℂ) :
     pauliCombination (c • u) = c • pauliCombination u := by
-  simp [pauliCombination, smul_add, smul_smul]
+  simp [pauliCombination, sum_pauliAxis, smul_add, smul_smul]
 
 /-- Product of two synthesized Pauli vectors:
 `(u·σ)(v·σ) = (u·v) I + i (u×v)·σ`. -/
@@ -132,14 +138,7 @@ theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination v =
       dotProduct u v • (1 : PauliMatrix) +
         Complex.I • pauliCombination (pauliCross u v) := by
-  change
-    (u .x • pauliBasis .x + u .y • pauliBasis .y + u .z • pauliBasis .z) *
-        (v .x • pauliBasis .x + v .y • pauliBasis .y + v .z • pauliBasis .z) =
-      dotProduct u v • (1 : PauliMatrix) +
-        Complex.I •
-          (pauliCross u v .x • pauliBasis .x +
-            pauliCross u v .y • pauliBasis .y +
-            pauliCross u v .z • pauliBasis .z)
+  simp only [pauliCombination, sum_pauliAxis]
   simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, pauliBasisCoeff, pauliCross,
     cross_apply, pauliAxisComponent, dotProduct_pauliAxis]
   module
@@ -156,10 +155,16 @@ theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
     pauliCombination_smul, pauliCombination_smul, pauliCombination_smul]
   module
 
+/-- Every matrix in the Pauli basis is traceless. -/
+@[simp] theorem trace_pauliBasis (axis : PauliAxis) :
+    Matrix.trace (pauliBasis axis) = 0 := by
+  cases axis <;>
+    simp [Matrix.trace, pauliBasis, pauliX, pauliY, pauliZ]
+
 /-- Every Pauli synthesis is traceless. -/
 @[simp] theorem trace_pauliCombination (u : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u) = 0 := by
-  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ]
+  simp [pauliCombination]
 
 /-- The trace pairing of two Pauli syntheses is twice the ordinary bilinear dot product. -/
 theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
@@ -168,6 +173,20 @@ theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
   rw [pauliCombination_mul_pauliCombination]
   simp
   ring
+
+/-- Tracing one Pauli basis matrix against a synthesized Pauli vector selects that coefficient. -/
+theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis → ℂ) :
+    Matrix.trace (pauliBasis axis * pauliCombination u) = 2 * u axis := by
+  rw [← pauliCombination_pauliBasisCoeff axis,
+    trace_pauliCombination_mul_pauliCombination]
+  cases axis <;>
+    simp [pauliBasisCoeff, dotProduct_pauliAxis]
+
+/-- Tracing a synthesized Pauli vector against one basis matrix selects that coefficient. -/
+theorem trace_pauliCombination_mul_pauliBasis (u : PauliAxis → ℂ) (axis : PauliAxis) :
+    Matrix.trace (pauliCombination u * pauliBasis axis) = 2 * u axis := by
+  rw [Matrix.trace_mul_comm]
+  exact trace_pauliBasis_mul_pauliCombination axis u
 
 /-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
 `(I + v·σ)/2`. -/
@@ -195,8 +214,8 @@ theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentit
       a * b * (-(u .x * u .y) - Complex.I * u .z) := by
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
-  simp [Matrix.trace, Matrix.mul_apply, pauliCombination, pauliX, pauliY, pauliZ,
-    sub_eq_add_neg]
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination, sum_pauliAxis,
+    pauliBasis, pauliX, pauliY, pauliZ, sub_eq_add_neg]
   ring_nf
   simp [hI]
 
@@ -235,7 +254,7 @@ theorem pauliShiftMatrix_mul_closedInverse
     | .z => z
   have hcombination :
       pauliCombination u = x • pauliX + y • pauliY + z • pauliZ := by
-    rfl
+    simp [pauliCombination, sum_pauliAxis, pauliBasis, u]
   have hdot : dotProduct u u = x ^ 2 + y ^ 2 + z ^ 2 := by
     rw [dotProduct_pauliAxis]
     simp [u, pow_two]
