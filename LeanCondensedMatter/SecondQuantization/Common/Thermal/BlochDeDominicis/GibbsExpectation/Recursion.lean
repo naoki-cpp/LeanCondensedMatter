@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
@@ -75,20 +76,17 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
       (hC 0) hcommL hne0
     rw [hlmap] at hpeel
-    let hcast : Fin l.length ≃ Fin (2 * m + 1) :=
-      ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
     have hreindex :
         (∑ i : Fin l.length, (s.zetaInt : ℂ) ^ (i : ℕ) * l[(i : ℕ)].2 *
             finiteGibbsExpectation energy β (prodComp ((l.eraseIdx (i : ℕ)).map Prod.fst))) =
           ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
             (l[(j : ℕ)]'(by rw [hlen]; exact j.isLt)).2 *
               finiteGibbsExpectation energy β
-                (prodComp ((l.eraseIdx (j : ℕ)).map Prod.fst)) :=
-      Fintype.sum_equiv hcast _ _ fun i => by
-        have hv : ((hcast i : Fin (2 * m + 1)) : ℕ) = (i : ℕ) := by
-          change ((Fin.cast hlen i : Fin (2 * m + 1)) : ℕ) = (i : ℕ)
-          rfl
-        simp only [hv]
+                (prodComp ((l.eraseIdx (j : ℕ)).map Prod.fst)) := by
+      rw [Combinatorics.FiniteIndex.sum_cast hlen]
+      apply Finset.sum_congr rfl
+      intro j _
+      simp only [Fin.val_cast]
     rw [hreindex] at hpeel
     rw [hzl] at hpeel
     rw [h1, hpeel, Finset.sum_div]
