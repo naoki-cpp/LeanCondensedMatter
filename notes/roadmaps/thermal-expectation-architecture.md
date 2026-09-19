@@ -60,12 +60,18 @@ summability, integrability, domain closure, and KMS hypotheses enter.
 ## Fermionic implementations
 
 The finite Gibbs implementation specializes the generic recursion using the finite pure-point Gibbs
-state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
+state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations. The finite
+density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
+finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
-The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`. It uses bounded
-completed ladder operators and a summability-controlled pure-point Gibbs state to provide KMS,
-first-pair/peel, and pairing-recursion results without introducing a finite-mode assumption into the
-generic recursion.
+`Fermionic.Thermal.PurePointSummability` owns the representation-independent theorem that
+one-particle Gibbs summability implies summability over fermionic occupation configurations.
+
+The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
+`completedFreeGibbsDensityOperator` is the representation-specific name for the generic pure-point
+Gibbs state on the completed occupation Hilbert basis. Bounded completed ladder operators then provide
+KMS, first-pair/peel, and pairing-recursion results without introducing a finite-mode assumption into
+the generic recursion.
 
 ## Bosonic boundary
 
