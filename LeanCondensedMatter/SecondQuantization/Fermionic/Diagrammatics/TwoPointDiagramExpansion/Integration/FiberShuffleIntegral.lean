@@ -132,6 +132,21 @@ private theorem fixedExternalShuffleFiber_vacuumOrderedData_eq
     (fixedExternalShuffleFiberDataEquiv shuffle).apply_symm_apply (ext, x)
   exact congrArg Prod.snd hp
 
+private theorem orderedVacuumDysonIntegrand_orderIsoOfFin
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {N k : ℕ} (S : Finset (Fin N)) (h : S.card = k)
+    (vac : QuarticWickDiagram Mode N S) (σ : Fin N → ℝ) :
+    orderedVacuumDysonIntegrand ε β g
+        (Common.quarticDiagramEquivOrderedData
+          (S.orderIsoOfFin rfl).toEquiv vac)
+        (fun q => σ (((S.orderIsoOfFin rfl).toEquiv q).1)) =
+      orderedVacuumDysonIntegrand ε β g
+        (Common.quarticDiagramEquivOrderedData
+          (S.orderIsoOfFin h).toEquiv vac)
+        (fun q => σ (((S.orderIsoOfFin h).toEquiv q).1)) := by
+  cases h
+  rfl
+
 private theorem orderedVacuumDysonIntegrand_rightSlotOrder
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
@@ -145,9 +160,11 @@ private theorem orderedVacuumDysonIntegrand_rightSlotOrder
       orderedVacuumDysonIntegrand ε β g
         (Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv vac)
         (fun q => σ ((shuffle.rightSlotOrderEquiv q).1)) := by
-  have hsize := shuffle.card_sdiff_leftSlots
-  cases hsize
-  rfl
+  simpa [slotSplitVacuumOrder, slotSplitVacuumSlot,
+    BinaryShuffle.SlotShuffle.rightSlotOrderEquiv] using
+    (orderedVacuumDysonIntegrand_orderIsoOfFin ε β g
+      ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)
+      shuffle.card_sdiff_leftSlots vac σ)
 
 /-- **One fixed shuffle fiber is exactly the corresponding binary shuffled product integral.** -/
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
@@ -216,7 +233,9 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
     have htransport := d.1.externalPiece.dysonFixedTimeAmplitude_cast
       hsize ε β g τ τ' (d.1.1.externalPieceTimes σ)
     simpa only [hpieceEq, hleftTimesEq] using htransport
-  have hvacData := fixedExternalShuffleFiber_vacuumOrderedData_eq shuffle ext x
+  have hvacData :
+      Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv p.2 = x := by
+    simpa [p] using fixedExternalShuffleFiber_vacuumOrderedData_eq shuffle ext x
   have hvacTransport :=
     orderedVacuumDysonIntegrand_rightSlotOrder ε β g shuffle p.2 σ
   have hrightTimes :
@@ -231,7 +250,8 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
           (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) =
         orderedVacuumDysonIntegrand ε β g x
           (fun q => σ (shuffle.slotEquiv (Sum.inr q))) := by
-    simpa only [hvacData, hrightTimes] using hvacTransport
+    rw [hvacData, hrightTimes] at hvacTransport
+    exact hvacTransport
   rw [hprod', hextValue, hvacValue]
   rfl
 
