@@ -103,8 +103,7 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     InternalSpace.pauliAffine_mul_pauliAffine]
   simp [uL, uR, vertex, InternalSpace.pauliCross, cross_apply,
     InternalSpace.pauliAxisComponent, InternalSpace.dotProduct_pauliAxis,
-    InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
-    InternalSpace.pauliCombination_eq_components,
+    InternalSpace.pauliCombination_eq_components, polarPauliInPlaneHarmonics,
     AngularHarmonicCoefficients.eval]
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
