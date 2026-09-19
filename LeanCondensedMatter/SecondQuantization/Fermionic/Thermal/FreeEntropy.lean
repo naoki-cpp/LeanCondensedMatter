@@ -72,7 +72,6 @@ private theorem purePointPartitionFunction_fermionEnergy_eq_prod
   push_cast [Complex.ofReal_exp]
   rfl
 
-omit [LinearOrder Mode] in
 private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
     (ε : Mode → ℝ) (β : ℝ) :
     Real.log (purePointPartitionFunction (fermionEnergy ε) β) =
