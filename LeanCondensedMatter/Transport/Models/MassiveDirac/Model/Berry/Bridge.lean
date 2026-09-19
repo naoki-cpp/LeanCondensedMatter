@@ -219,10 +219,10 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
     hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
   have hfactor :
       (1 / 2 : ℂ) •
-          (1 • pointwiseEigenbasis v m px py source +
+          (pointwiseEigenbasis v m px py source +
             (((bandSign projected / energy v m px py : ℝ) : ℂ) *
               ((bandEnergy source v m px py : ℝ) : ℂ)) •
-                1 • pointwiseEigenbasis v m px py source) =
+                pointwiseEigenbasis v m px py source) =
         ((1 / 2 : ℂ) *
           (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
             (((bandEnergy source v m px py : ℝ) : ℂ)))) •
