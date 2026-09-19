@@ -217,7 +217,18 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
   rw [bandProjectorOperator_eq_pointwise_spectral_formula]
   rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
     hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
-  rw [← one_smul ℂ (pointwiseEigenbasis v m px py source), ← add_smul, smul_smul]
+  have hfactor :
+      (1 / 2 : ℂ) •
+          (1 • pointwiseEigenbasis v m px py source +
+            (((bandSign projected / energy v m px py : ℝ) : ℂ) *
+              ((bandEnergy source v m px py : ℝ) : ℂ)) •
+                1 • pointwiseEigenbasis v m px py source) =
+        ((1 / 2 : ℂ) *
+          (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
+            (((bandEnergy source v m px py : ℝ) : ℂ)))) •
+              pointwiseEigenbasis v m px py source := by
+    module
+  rw [hfactor]
   have hcoeff :
       (1 / 2 : ℂ) *
           (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
@@ -243,7 +254,7 @@ private theorem bandProjectorOperator_eq_rankOne
   change
     bandProjectorOperator band v m px py (b source) =
       InnerProductSpace.rankOne ℂ (b band) (b band) (b source)
-  rw [bandProjectorOperator_apply_pointwiseEigenbasis]
+  rw [bandProjectorOperator_apply_pointwiseEigenbasis band source v m px py hE]
   cases band <;> cases source <;>
     simp [b, InnerProductSpace.rankOne_apply]
 
@@ -306,7 +317,7 @@ private theorem two_mul_product_div_real_im
     field_simp [hgapc]
   have him := congrArg Complex.im hcancel
   rw [Complex.mul_im] at him
-  simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero] at him
+  simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero, zero_add] at him
   apply (eq_div_iff (pow_ne_zero 2 hgap)).2
   calc
     2 * ((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2 =
@@ -336,15 +347,17 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
         data.hamiltonianDerivativeMatrixElement 1 band (oppositeBand band) =
       forceMatrixTraceNumerator 0 1 band v m px py at hforce
   cases band
-  · simp only [sum_band, if_pos rfl,
+  · simp only [oppositeBand_lower] at hforce
+    simp only [sum_band,
       if_neg (show Band.upper ≠ Band.lower by decide), if_true, zero_add]
     rw [show
       data.energy Band.lower - data.energy Band.upper =
         interbandEnergyGap Band.lower v m px py by rfl]
     rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
     rfl
-  · simp only [sum_band,
-      if_neg (show Band.lower ≠ Band.upper by decide), if_pos rfl, if_true, add_zero]
+  · simp only [oppositeBand_upper] at hforce
+    simp only [sum_band,
+      if_neg (show Band.lower ≠ Band.upper by decide), if_true, add_zero]
     rw [show
       data.energy Band.upper - data.energy Band.lower =
         interbandEnergyGap Band.upper v m px py by rfl]
