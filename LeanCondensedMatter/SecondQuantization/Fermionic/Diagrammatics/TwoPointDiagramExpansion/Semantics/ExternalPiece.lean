@@ -25,7 +25,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPieceOfCardEq
     (h : d.1.externalInteractionPart.card = m) :
     FixedExternalTwoPointWickDiagram Mode m i j :=
   ⟨d.1.externalPieceOfCardEq h, by
-    change d.1.externalLabel = twoPointExternalLabels i j
+    rw [Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel]
     exact d.2⟩
 
 /-- The Common standalone external piece, lifted to the fixed-external fermionic subtype. -/
