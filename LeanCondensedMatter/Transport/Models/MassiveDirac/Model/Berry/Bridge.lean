@@ -124,24 +124,30 @@ private theorem hamiltonianOperator_pointwiseEigenbasis
     rw [hzero] at hsum
     linarith
   cases band
-  · have heig :=
+  · change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 1) =
+        (((-energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 1
+    have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (1 : Fin 2)
-    rw [show
-      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
-          diracHilbert_finrank (1 : Fin 2) = -energy v m px py by
-      exact hone] at heig
-    simpa only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
-      finTwoEquivBand_symm_lower, bandEnergy_lower] using heig
-  · have heig :=
+    change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 1) =
+        (((diracEigenvaluesFin v m px py 1 : ℝ) : ℂ)) •
+          diracEigenbasisFin v m px py 1 at heig
+    rw [hone] at heig
+    exact heig
+  · change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 0) =
+        (((energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 0
+    have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (0 : Fin 2)
-    rw [show
-      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
-          diracHilbert_finrank (0 : Fin 2) = energy v m px py by
-      exact hzero] at heig
-    simpa only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
-      finTwoEquivBand_symm_upper, bandEnergy_upper] using heig
+    change
+      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 0) =
+        (((diracEigenvaluesFin v m px py 0 : ℝ) : ℂ)) •
+          diracEigenbasisFin v m px py 0 at heig
+    rw [hzero] at heig
+    exact heig
 
 private theorem bandEnergy_ne_of_ne
     (left right : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
