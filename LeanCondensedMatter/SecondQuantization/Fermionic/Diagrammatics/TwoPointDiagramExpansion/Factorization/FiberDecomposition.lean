@@ -153,6 +153,8 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
             d.1.2⟩ := by
     obtain ⟨d0, hd⟩ := d
     subst T
+    have hh : hsize = h := Subsingleton.elim _ _
+    rw [hh]
     apply Subtype.ext
     have hsplit :
         d0.1.externalVacuumSplit.1 =
@@ -163,7 +165,7 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
     have hcongr := congrArg
       (fun x => Common.TwoPointDiagram.slotCongr
         (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
-    simpa [d, hsize, FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
+    simpa [FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
       Common.TwoPointDiagram.externalPieceOfCardEq,
       fixedExternalTwoPointWickDiagramOnEquivOfCardEq] using hcongr
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
