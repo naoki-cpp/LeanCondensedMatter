@@ -116,11 +116,11 @@ private theorem hamiltonianOperator_pointwiseEigenbasis
     linarith
   cases band
   · simpa [pointwiseEigenbasis, diracEigenbasisFin, diracEigenvaluesFin,
-      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy] using
+      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy, hone] using
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (1 : Fin 2)
   · simpa [pointwiseEigenbasis, diracEigenbasisFin, diracEigenvaluesFin,
-      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy] using
+      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy, hzero] using
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (0 : Fin 2)
 
