@@ -96,16 +96,18 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
   rw [simpleSpectrumEigenvectorDerivative, inner_sum]
   by_cases hkn : k = n
   · subst k
+    rw [if_pos rfl]
+    rw [Fintype.sum_eq_single n (fun x hxn => by
+      rw [if_neg hxn]
+      simp [Ne.symm hxn])]
     simp
   · rw [if_neg hkn]
-    apply Finset.sum_eq_single k
-    · simp [hkn]
-    · intro x _ hxk
+    rw [Fintype.sum_eq_single k (fun x hxk => by
       by_cases hxn : x = n
       · simp [hxn]
-      · simp [hxn, hxk]
-    · intro hnot
-      exact (hnot (Finset.mem_univ k)).elim
+      · rw [if_neg hxn]
+        simp [Ne.symm hxk])]
+    simp [hkn]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
@@ -215,8 +217,14 @@ noncomputable def ofSimpleSpectrum [DecidableEq ι]
           _ = inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) := by
             exact (hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
       simp only [if_neg (Ne.symm hmn), if_neg hmn]
-      rw [map_div, hstar]
-      simp only [starRingEnd_apply, Complex.conj_ofReal]
+      have hstarDiv :
+          (starRingEnd ℂ)
+              (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) /
+                (((energy m - energy n : ℝ) : ℂ))) =
+            inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+              (((energy m - energy n : ℝ) : ℂ)) := by
+        simp [hstar]
+      rw [hstarDiv]
       field_simp [hgapMN, hgapNM]
       push_cast
       ring
