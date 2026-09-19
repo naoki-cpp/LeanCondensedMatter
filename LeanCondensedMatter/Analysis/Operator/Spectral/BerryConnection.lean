@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
@@ -74,6 +75,186 @@ structure PointwiseEigenbasisData (κ ι H : Type*) [Fintype ι]
         inner ℂ (eigenbasis m) (eigenvectorDerivative μ n) = 0
 
 namespace PointwiseEigenbasisData
+
+private noncomputable def bornFockDerivative [DecidableEq ι]
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n : ι) : H :=
+  ∑ m : ι,
+    (if m = n then 0 else
+      inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+        (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
+
+private theorem inner_bornFockDerivative [DecidableEq ι]
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (m n : ι) :
+    inner ℂ (eigenbasis m)
+        (bornFockDerivative eigenbasis energy hamiltonianDerivative μ n) =
+      if m = n then 0 else
+        inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+          (((energy n - energy m : ℝ) : ℂ)) := by
+  classical
+  have hb : ∀ i j,
+      inner ℂ (eigenbasis i) (eigenbasis j) = if i = j then 1 else 0 :=
+    orthonormal_iff_ite.mp eigenbasis.orthonormal
+  simp [bornFockDerivative, hb]
+
+private theorem inner_hamiltonian_of_eigenbasis
+    (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonian_eigenvector :
+      ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n)
+    (m : ι) (x : H) :
+    inner ℂ (eigenbasis m) (hamiltonian x) =
+      ((energy m : ℝ) : ℂ) * inner ℂ (eigenbasis m) x := by
+  calc
+    inner ℂ (eigenbasis m) (hamiltonian x) =
+        inner ℂ (hamiltonian (eigenbasis m)) x := by
+      symm
+      exact hamiltonian_selfAdjoint.isSymmetric.apply_clm _ _
+    _ = inner ℂ (((energy m : ℝ) : ℂ) • eigenbasis m) x := by
+      rw [hamiltonian_eigenvector]
+    _ = ((energy m : ℝ) : ℂ) * inner ℂ (eigenbasis m) x := by
+      rw [inner_smul_left]
+      simp
+
+private theorem star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
+    (eigenbasis : OrthonormalBasis ι ℂ H)
+    (hamiltonianDerivative : κ → H →L[ℂ] H)
+    (hamiltonianDerivative_selfAdjoint :
+      ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
+    (μ : κ) (m n : ι) :
+    (starRingEnd ℂ)
+        (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n))) =
+      inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) := by
+  calc
+    (starRingEnd ℂ)
+        (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n))) =
+        inner ℂ (hamiltonianDerivative μ (eigenbasis n)) (eigenbasis m) := by
+      simp [inner_conj_symm]
+    _ = inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) := by
+      exact (hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
+
+private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonianDerivative : κ → H →L[ℂ] H)
+    (hamiltonianDerivative_selfAdjoint :
+      ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
+    (hnondegenerate : ∀ m n, m ≠ n → energy m ≠ energy n)
+    (μ : κ) (m n : ι) :
+    inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
+        (eigenbasis n) +
+      inner ℂ (eigenbasis m)
+        (bornFockDerivative eigenbasis energy hamiltonianDerivative μ n) = 0 := by
+  classical
+  by_cases hmn : m = n
+  · subst n
+    have hdiag :=
+      inner_bornFockDerivative eigenbasis energy hamiltonianDerivative μ m m
+    simp at hdiag
+    rw [show
+      inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
+          (eigenbasis m) =
+        (starRingEnd ℂ)
+          (inner ℂ (eigenbasis m)
+            (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)) by
+      simp [inner_conj_symm]]
+    rw [hdiag]
+    simp
+  · have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
+      exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
+    rw [show
+      inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
+          (eigenbasis n) =
+        (starRingEnd ℂ)
+          (inner ℂ (eigenbasis n)
+            (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)) by
+      simp [inner_conj_symm]]
+    rw [inner_bornFockDerivative, inner_bornFockDerivative]
+    simp only [if_neg hmn, if_neg (Ne.symm hmn)]
+    rw [map_div,
+      star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
+        eigenbasis hamiltonianDerivative hamiltonianDerivative_selfAdjoint]
+    simp only [map_sub, map_ofReal]
+    field_simp [hgap]
+    ring
+
+private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
+    (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonian_eigenvector :
+      ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n)
+    (hamiltonianDerivative : κ → H →L[ℂ] H)
+    (hamiltonianDerivative_selfAdjoint :
+      ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
+    (hnondegenerate : ∀ m n, m ≠ n → energy m ≠ energy n)
+    (μ : κ) (n : ι) :
+    hamiltonianDerivative μ (eigenbasis n) +
+        hamiltonian (bornFockDerivative eigenbasis energy hamiltonianDerivative μ n) =
+      ((ContinuousLinearMap.diagonalExpectationValue
+          (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ)
+          (eigenbasis n) : ℝ) : ℂ) • eigenbasis n +
+        ((energy n : ℝ) : ℂ) •
+          bornFockDerivative eigenbasis energy hamiltonianDerivative μ n := by
+  classical
+  apply eigenbasis.repr.injective
+  ext m
+  simp only [map_add, map_smul]
+  rw [eigenbasis.repr_apply_apply,
+    inner_hamiltonian_of_eigenbasis hamiltonian hamiltonian_selfAdjoint
+      eigenbasis energy hamiltonian_eigenvector,
+    eigenbasis.repr_apply_apply,
+    eigenbasis.repr_apply_apply,
+    inner_bornFockDerivative]
+  have hb : inner ℂ (eigenbasis m) (eigenbasis n) =
+      if m = n then 1 else 0 :=
+    orthonormal_iff_ite.mp eigenbasis.orthonormal m n
+  rw [hb]
+  by_cases hmn : m = n
+  · subst m
+    simp only [if_pos rfl, mul_zero, add_zero, mul_one, zero_mul]
+    exact ContinuousLinearMap.coe_diagonalExpectationValue_right
+      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)
+  · simp only [if_neg hmn, mul_zero, zero_add]
+    have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
+      exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
+    field_simp [hgap]
+    push_cast
+    ring
+
+/-- Build pointwise Berry data from a nondegenerate orthonormal eigenbasis and self-adjoint
+Hamiltonian derivatives.
+
+The eigenvector derivative is the off-diagonal Born--Fock derivative with zero band-diagonal
+component. This is a pointwise local gauge choice only; it makes no global smooth-gauge or topology
+claim. -/
+noncomputable def ofNondegenerateEigenbasis [DecidableEq ι]
+    (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonian_eigenvector :
+      ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n)
+    (hamiltonianDerivative : κ → H →L[ℂ] H)
+    (hamiltonianDerivative_selfAdjoint :
+      ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
+    (hnondegenerate : ∀ m n, m ≠ n → energy m ≠ energy n) :
+    PointwiseEigenbasisData κ ι H where
+  hamiltonian := hamiltonian
+  hamiltonian_selfAdjoint := hamiltonian_selfAdjoint
+  eigenbasis := eigenbasis
+  energy := energy
+  hamiltonian_eigenvector := hamiltonian_eigenvector
+  hamiltonianDerivative := hamiltonianDerivative
+  eigenvectorDerivative :=
+    bornFockDerivative eigenbasis energy hamiltonianDerivative
+  energyDerivative := fun μ n =>
+    ContinuousLinearMap.diagonalExpectationValue
+      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)
+  differentiatedEigenpair :=
+    bornFockDerivative_differentiatedEigenpair
+      hamiltonian hamiltonian_selfAdjoint eigenbasis energy hamiltonian_eigenvector
+        hamiltonianDerivative hamiltonianDerivative_selfAdjoint hnondegenerate
+  differentiatedOrthonormality :=
+    bornFockDerivative_differentiatedOrthonormality
+      eigenbasis energy hamiltonianDerivative hamiltonianDerivative_selfAdjoint hnondegenerate
 
 variable (data : PointwiseEigenbasisData κ ι H)
 
