@@ -49,13 +49,13 @@ open QuantumTheory.Transport
 abbrev Matrix2 := InternalSpace.PauliMatrix
 
 /-- Massive-Dirac notation for the common Pauli matrix `σₓ`. -/
-abbrev sigmaX : Matrix2 := InternalSpace.pauliBasis .x
+abbrev sigmaX : Matrix2 := InternalSpace.pauliX
 
 /-- Massive-Dirac notation for the common Pauli matrix `σᵧ`. -/
-abbrev sigmaY : Matrix2 := InternalSpace.pauliBasis .y
+abbrev sigmaY : Matrix2 := InternalSpace.pauliY
 
 /-- Massive-Dirac notation for the common Pauli matrix `σ_z`. -/
-abbrev sigmaZ : Matrix2 := InternalSpace.pauliBasis .z
+abbrev sigmaZ : Matrix2 := InternalSpace.pauliZ
 
 /-- Massive-Dirac notation for the model-independent Pauli-basis axis. -/
 abbrev PauliAxis := InternalSpace.PauliAxis
