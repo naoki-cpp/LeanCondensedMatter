@@ -117,6 +117,22 @@ theorem MeasurableLocallyBounded.finsetProd {ι : Type*} {n : ℕ} (s : Finset �
   exact Finset.prod_induction f MeasurableLocallyBounded
     (fun _ _ ha hb => ha.mul hb) (measurableLocallyBounded_const (n := n) 1) hf
 
+/-- Pulling back along a selection of finite coordinates preserves measurable local boundedness.
+The coordinate selection need not be injective. -/
+theorem MeasurableLocallyBounded.comp_finCoordinateSelection {m n : ℕ}
+    {f : (Fin m → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) (σ : Fin m → Fin n) :
+    MeasurableLocallyBounded (fun τ : Fin n → ℝ => f (fun i => τ (σ i))) := by
+  have hσ : Continuous (fun τ : Fin n → ℝ => fun i : Fin m => τ (σ i)) :=
+    continuous_pi fun i => continuous_apply (σ i)
+  refine ⟨hf.1.comp hσ.measurable, ?_⟩
+  intro R hR
+  obtain ⟨C, hC0, hC⟩ := hf.2 R hR
+  refine ⟨C, hC0, ?_⟩
+  intro τ hτ
+  apply hC
+  rw [orderedSimplexTimeCube, Set.mem_Icc] at hτ ⊢
+  exact ⟨fun i => hτ.1 (σ i), fun i => hτ.2 (σ i)⟩
+
 /-- Fixing the outermost finite coordinate preserves measurable local boundedness. -/
 theorem MeasurableLocallyBounded.finCons {n : ℕ}
     {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) (t : ℝ) :
