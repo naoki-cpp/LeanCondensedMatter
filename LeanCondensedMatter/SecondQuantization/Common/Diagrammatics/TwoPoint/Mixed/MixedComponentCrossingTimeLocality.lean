@@ -356,8 +356,7 @@ private theorem TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder
   classical
   unfold TwoPointDiagram.mixedComponentCrossingCount
     TwoPointDiagram.mixedComponentOrientedCrossingCount
-  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type,
-    TwoPointDiagram.mixedComponentPairSigmaEquiv_apply]
+  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
     (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)

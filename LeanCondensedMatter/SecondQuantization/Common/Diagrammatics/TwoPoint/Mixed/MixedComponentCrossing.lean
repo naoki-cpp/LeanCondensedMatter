@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
@@ -24,7 +24,7 @@ noncomputable def TwoPointDiagram.mixedComponentOrientedCrossingCount
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
   (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
-    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
+    (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C
 
 /-- Crossing count internal to one mixed-time component. -/
 noncomputable def TwoPointDiagram.mixedComponentCrossingCount
@@ -51,14 +51,14 @@ theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
   change
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
-        (d.mixedComponentPairSigmaEquiv τ τ' σ) B C =
+        (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C =
       (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
-          (d.mixedComponentPairSigmaEquiv τ τ' σ) B C +
+          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C +
         (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
-          (d.mixedComponentPairSigmaEquiv τ τ' σ) C B
+          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) C B
   exact
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
-      (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
+      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C
 
 private theorem TwoPointDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -69,7 +69,7 @@ private theorem TwoPointDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum
     (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
       (∑ B : d.componentPartition.parts, d.mixedComponentCrossingCount τ τ' σ B) % 2 :=
   Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
-    (d.pairingInMixedOrder τ τ' σ) (d.mixedComponentPairSigmaEquiv τ τ' σ)
+    (d.pairingInMixedOrder τ τ' σ) (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
     (fun B C hBC => by
       change (d.mixedComponentOrientedCrossingCount τ τ' σ B C +
         d.mixedComponentOrientedCrossingCount τ τ' σ C B) % 2 = 0
