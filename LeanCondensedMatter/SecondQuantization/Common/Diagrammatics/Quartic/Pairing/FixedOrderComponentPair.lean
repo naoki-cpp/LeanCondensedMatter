@@ -118,6 +118,44 @@ theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
     (d.componentOrderedLeg_strictMono (d.fixedOrderComponentShuffle order) C)
     p.1.1 p.1.2 q.1.1 q.1.2
 
+/-- The first endpoint of a fixed-order normalized pair belongs to the component
+classified by `fixedOrderPairComponent`. -/
+theorem QuarticDiagram.fixedOrderPairComponent_firstEndpoint_mem
+    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (order : QuarticVertexOrder S)
+    (pr : (d.pairingInOrder order).NormalizedPair) :
+    ((vertexOfLeg (orderedLegToDiagramLeg S order pr.1.1) : ↥S) : Fin N) ∈
+      (d.fixedOrderPairComponent order pr : Finset (Fin N)) := by
+  let x := (d.fixedOrderComponentPairEquiv order).symm pr
+  let C : d.componentPartition.parts := x.1
+  let localPr :
+      d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C := x.2
+  let shuffle := d.fixedOrderComponentShuffle order
+  have hx : d.fixedOrderComponentPairEquiv order x = pr :=
+    (d.fixedOrderComponentPairEquiv order).apply_symm_apply pr
+  have hpair :
+      pr.1 =
+        (d.componentOrderedLeg shuffle C localPr.1.1,
+          d.componentOrderedLeg shuffle C localPr.1.2) := by
+    rw [← hx]
+    exact d.componentPairEquivOfAssembleEq_apply
+      (d.componentPartition.partOrdersOfOrder order) shuffle order
+      (d.assembleVertexOrder_fixedOrderComponentShuffle order) C localPr
+  have hfirst :
+      pr.1.1 = d.componentOrderedLeg shuffle C localPr.1.1 :=
+    congrArg Prod.fst hpair
+  let localLeg := orderedLegToDiagramLeg (C : Finset (Fin N))
+    (d.componentPartition.partOrdersOfOrder order C) localPr.1.1
+  have hleg := d.orderedLegToDiagramLeg_componentOrderedLeg
+    (d.componentPartition.partOrdersOfOrder order) shuffle C localPr.1.1
+  rw [d.assembleVertexOrder_fixedOrderComponentShuffle order] at hleg
+  change ((vertexOfLeg (orderedLegToDiagramLeg S order pr.1.1) : ↥S) : Fin N) ∈
+    (C : Finset (Fin N))
+  rw [hfirst, hleg]
+  have hv := d.vertexOfLeg_componentDiagramLeg_val C localLeg
+  rw [hv]
+  exact (vertexOfLeg localLeg).2
+
 /-- A component-local normalized pair remains assigned to that component after embedding into the
 fixed global quartic order. -/
 theorem QuarticDiagram.fixedOrderPairComponent_fixedOrderComponentPairEmbedding
