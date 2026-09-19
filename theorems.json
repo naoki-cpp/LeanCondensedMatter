@@ -62621,7 +62621,7 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
     "externalAxioms": [],
-    "docString": "The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms.\nThe side-jump-type term is shared between the two provenance components rather than attached to only\none of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and\ndo not create primitive mechanism APIs. ",
+    "docString": "The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms\nfrom I. A. Ado et al., *EPL* **111**, 37004 (2015),\n[doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).\nThe paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the\ntheorem below only formalizes the ordered finite-cutoff provenance partition.\nThe side-jump-type term is shared between the two provenance components rather than attached to only\none of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and\ndo not create primitive mechanism APIs. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -87337,7 +87337,7 @@
     "name": "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
     "externalAxioms": [],
-    "docString": "**The general finite-temperature Bloch–de Dominicis theorem.** For the unified\nbosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear\nPhysics* **15**, 89–91 (1960),\n[doi:10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6). This theorem is\nthe finite-Gibbs recursion specialization described above. ",
+    "docString": "**The general finite-temperature Bloch–de Dominicis theorem.** The original linked-diagram\nand finite-temperature pairing development is C. Bloch and C. de Dominicis, *Nuclear Physics*\n**7**, 459–479 (1958),\n[doi:10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).\nFor the unified bosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear\nPhysics* **15**, 89–91 (1960),\n[doi:10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6). This theorem is\nthe finite-Gibbs recursion specialization described above; it does not claim the infinite-volume\nor interacting-state generality of the original diagrammatic development. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
