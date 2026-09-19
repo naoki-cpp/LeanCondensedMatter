@@ -99,8 +99,9 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     if m = n then 0 else
       inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
         (((energy n - energy m : ℝ) : ℂ))
-  change inner ℂ (eigenbasis k) (∑ m : ι, coefficient m • eigenbasis m) = coefficient k
-  exact eigenbasis.orthonormal.inner_right_fintype coefficient k
+  rw [simpleSpectrumEigenvectorDerivative]
+  simpa only [coefficient] using
+    eigenbasis.orthonormal.inner_right_fintype coefficient k
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
