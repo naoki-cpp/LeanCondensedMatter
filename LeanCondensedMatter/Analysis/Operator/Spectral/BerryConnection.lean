@@ -93,10 +93,7 @@ private theorem inner_bornFockDerivative [DecidableEq ι]
         inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
           (((energy n - energy m : ℝ) : ℂ)) := by
   classical
-  have hb : ∀ i j,
-      inner ℂ (eigenbasis i) (eigenbasis j) = if i = j then 1 else 0 :=
-    orthonormal_iff_ite.mp eigenbasis.orthonormal
-  simp [bornFockDerivative, hb]
+  simp [bornFockDerivative]
 
 private theorem inner_hamiltonian_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
@@ -173,10 +170,9 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
       simp [inner_conj_symm]]
     rw [inner_bornFockDerivative, inner_bornFockDerivative]
     simp only [if_neg hmn, if_neg (Ne.symm hmn)]
-    rw [map_div,
-      star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
-        eigenbasis hamiltonianDerivative hamiltonianDerivative_selfAdjoint]
-    simp only [Complex.conj_ofReal]
+    simp only [map_div₀, Complex.conj_ofReal]
+    rw [star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
+      eigenbasis hamiltonianDerivative hamiltonianDerivative_selfAdjoint]
     field_simp [hgap, hgap']
     ring
 
@@ -200,7 +196,7 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   classical
   apply eigenbasis.repr.injective
   ext m
-  simp only [map_add, map_smul]
+  simp only [map_add, map_smul, PiLp.add_apply, PiLp.smul_apply]
   rw [eigenbasis.repr_apply_apply,
     inner_hamiltonian_of_eigenbasis hamiltonian hamiltonian_selfAdjoint
       eigenbasis energy hamiltonian_eigenvector,
