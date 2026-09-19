@@ -109,12 +109,7 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
       (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart) _ pr k
   rcases d.externalPieceComponentPairEquiv_pair_eq_or_swap τ τ' σ pr with h | h
   · rw [h]
-    simp only [hf]
-    change ((d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 0)).1,
-      (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, 1)).1) = pr.1.1
-    rw [hEndpoint 0, hEndpoint 1]
-    change (pr.1.1.1, pr.1.1.2) = pr.1.1
-    rfl
+    simp [hf, hEndpoint]
   · exfalso
     have hnorm :
         (d.externalPieceComponentPairEquiv τ τ' σ pr).1.1 <
