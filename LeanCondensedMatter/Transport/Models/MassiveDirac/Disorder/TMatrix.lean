@@ -529,7 +529,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     push_cast
     ring
   · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp [InternalSpace.pauliZ]
+    simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one, ne_eq, zero_ne_one, not_false_eq_true,
+      Matrix.one_apply_ne, smul_eq_mul, mul_zero, zero_add]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -540,7 +541,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     simp_rw [hkernel]
     simp
   · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp [InternalSpace.pauliZ]
+    simp only [Fin.mk_one, Fin.isValue, Fin.zero_eta, ne_eq, one_ne_zero, not_false_eq_true,
+      Matrix.one_apply_ne, smul_eq_mul, mul_zero, zero_add]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -551,7 +553,7 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     simp_rw [hkernel]
     simp
   · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp [InternalSpace.pauliZ]
+    simp only [Fin.mk_one, Fin.isValue, Matrix.one_apply_eq, smul_eq_mul, mul_one]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
