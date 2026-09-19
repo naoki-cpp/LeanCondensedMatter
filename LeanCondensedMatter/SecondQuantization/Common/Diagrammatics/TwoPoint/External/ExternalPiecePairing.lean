@@ -103,11 +103,8 @@ theorem TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEqu
   have hEndpoint (k : Fin 2) :
       (d.mixedComponentPairEndpointEquiv τ τ' σ d.externalComponentPart (pr, k)).1 =
         (d.pairingInMixedOrder τ τ' σ).pairEndpoint (pr.1, k) := by
-    simpa only [TwoPointDiagram.mixedComponentPairEndpointEquiv] using
-      (Pairing.normalizedPairSubtypeEndpointEquiv_apply_val
-        (d.pairingInMixedOrder τ τ' σ)
-        (fun p => d.mixedPositionComponent τ τ' σ p = d.externalComponentPart)
-        (fun p => by rw [d.mixedPositionComponent_partner]) pr k)
+    unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
+    exact Pairing.normalizedPairSubtypeEndpointEquiv_apply_val _ _ _ pr k
   rcases d.externalPieceComponentPairEquiv_pair_eq_or_swap τ τ' σ pr with h | h
   · rw [h]
     simp only [hf]
