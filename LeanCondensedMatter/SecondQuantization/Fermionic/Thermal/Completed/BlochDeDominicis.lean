@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import Mathlib.Tactic.Module
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
@@ -652,8 +653,6 @@ noncomputable def completedFreeGibbsExpectationRecursion
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
         rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
-        let hcast : Fin l.length ≃ Fin (2 * n + 1) :=
-          ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
         have hreindex :
             (∑ i : Fin l.length,
               ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
@@ -662,14 +661,12 @@ noncomputable def completedFreeGibbsExpectationRecursion
               ∑ j : Fin (2 * n + 1),
                 ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
                   (((-1 : ℂ) ^ (j : ℕ)) * (C 0).anticommutatorValue (C j.succ) *
-                    completedFreeGibbsExpectation ε β hsum (l.eraseIdx j)) :=
-          Fintype.sum_equiv hcast _ _ fun i => by
-            have hv : ((hcast i : Fin (2 * n + 1)) : ℕ) = (i : ℕ) := by
-              change ((Fin.cast hlen i : Fin (2 * n + 1)) : ℕ) = (i : ℕ)
-              rfl
-            simp only [hv]
-            simp only [hl, List.getElem_ofFn]
-            congr 4
+                    completedFreeGibbsExpectation ε β hsum (l.eraseIdx j)) := by
+          rw [Combinatorics.FiniteIndex.sum_cast hlen]
+          apply Finset.sum_congr rfl
+          intro j _
+          simp only [Fin.val_cast, hl, List.getElem_ofFn]
+          congr 4
         rw [hreindex]
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
