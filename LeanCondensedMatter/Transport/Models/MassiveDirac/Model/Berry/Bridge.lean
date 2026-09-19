@@ -237,23 +237,15 @@ private theorem bandProjectorOperator_eq_rankOne
         (pointwiseEigenbasis v m px py band)
         (pointwiseEigenbasis v m px py band) := by
   let b := pointwiseEigenbasis v m px py
-  apply ContinuousLinearMap.ext
-  intro x
-  have hrepr := b.sum_repr' x
-  calc
-    bandProjectorOperator band v m px py x =
-        bandProjectorOperator band v m px py
-          (∑ source : Band, inner ℂ (b source) x • b source) := by
-      rw [hrepr]
-    _ = ∑ source : Band,
-        inner ℂ (b source) x •
-          bandProjectorOperator band v m px py (b source) := by
-      simp [map_sum]
-    _ = inner ℂ (b band) x • b band := by
-      cases band <;>
-        simp [sum_band, b,
-          bandProjectorOperator_apply_pointwiseEigenbasis _ _ v m px py hE]
-    _ = InnerProductSpace.rankOne ℂ (b band) (b band) x := rfl
+  apply ContinuousLinearMap.coe_injective
+  apply b.toBasis.ext
+  intro source
+  change
+    bandProjectorOperator band v m px py (b source) =
+      InnerProductSpace.rankOne ℂ (b band) (b band) (b source)
+  rw [bandProjectorOperator_apply_pointwiseEigenbasis]
+  cases band <;> cases source <;>
+    simp [b, InnerProductSpace.rankOne_apply]
 
 /-- The sole opposite-band generic force-matrix product is the model projector trace. -/
 theorem pointwiseBerryData_forceMatrixElement_product
@@ -294,7 +286,7 @@ theorem pointwiseBerryData_forceMatrixElement_product
     sum_band]
   cases band <;>
     simp [b, InnerProductSpace.rankOne_apply, map_smul,
-      inner_smul_left, inner_smul_right, mul_comm, mul_left_comm, mul_assoc]
+      inner_smul_right, mul_comm, mul_assoc]
 
 /-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
 the generic formula `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
@@ -314,7 +306,7 @@ private theorem two_mul_product_div_real_im
     field_simp [hgapc]
   have him := congrArg Complex.im hcancel
   rw [Complex.mul_im] at him
-  simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero, add_zero] at him
+  simp only [Complex.ofReal_re, Complex.ofReal_im, mul_zero] at him
   apply (eq_div_iff (pow_ne_zero 2 hgap)).2
   calc
     2 * ((z / (gap : ℂ)) * (w / (gap : ℂ))).im * gap ^ 2 =
