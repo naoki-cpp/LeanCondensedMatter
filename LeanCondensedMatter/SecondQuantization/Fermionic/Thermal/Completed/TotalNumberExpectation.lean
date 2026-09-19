@@ -94,8 +94,10 @@ theorem hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal
             (completedTotalNumberOperator
               ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)))
       (completedFreeTotalNumberExpectation ε β hsum : ℂ) := by
-  simpa only [completedFreeGibbsDensityOperator_totalNumber_diagonalTerm] using
+  have hcast :=
     (hasSum_completedFreeTotalNumberExpectation ε β hsum hint).mapL Complex.ofRealCLM
+  simp only [Complex.ofRealCLM_apply] at hcast
+  simpa only [completedFreeGibbsDensityOperator_totalNumber_diagonalTerm] using hcast
 
 end
 end Fermionic
