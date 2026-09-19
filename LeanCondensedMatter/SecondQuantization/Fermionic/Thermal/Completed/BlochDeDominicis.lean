@@ -78,12 +78,10 @@ theorem gibbsFactor_annihilate (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
 theorem completedFreeGibbsDensityOperator_comp_operator
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).op.comp C.operator =
+    (completedFreeGibbsDensityOperator ε β hsum).op.comp C.operator =
       C.gibbsFactor ε β •
         (C.operator.comp
-          (purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).op) := by
+          (completedFreeGibbsDensityOperator ε β hsum).op) := by
   cases C with
   | create i =>
       exact completedFreeGibbsDensityOperator_comp_create ε β hsum i
@@ -200,8 +198,7 @@ theorem operator_comp_operatorProduct_eq_thermalPeelSum
 noncomputable def completedFreeGibbsExpectation
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (l : List (CompletedThermalLadder Mode)) : ℂ :=
-  (purePointGibbsDensityOperator completedOccupationHilbertBasis
-    (fermionEnergy ε) β hsum).expectation (operatorProduct l)
+  (completedFreeGibbsDensityOperator ε β hsum).expectation (operatorProduct l)
 
 @[simp]
 theorem completedFreeGibbsExpectation_nil
@@ -214,8 +211,7 @@ theorem completedFreeGibbsExpectation_cons_eq_peel_add_rotated
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C₁ :: l) =
-      (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation (thermalPeelSum C₁ l) +
+      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) +
         ((-1 : ℂ) ^ l.length) * completedFreeGibbsExpectation ε β hsum (l ++ [C₁]) := by
   rw [completedFreeGibbsExpectation, operatorProduct_cons,
     operator_comp_operatorProduct_eq_thermalPeelSum C₁ l]
@@ -313,20 +309,16 @@ theorem thermalPeelTerms_eq_ofFn
 theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).expectation (thermalPeelSum C₁ l) =
+    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) =
       ∑ j : Fin l.length,
         ((-1 : ℂ) ^ (j : ℕ)) * C₁.anticommutatorValue (l[(j : ℕ)]'j.isLt) *
           completedFreeGibbsExpectation ε β hsum (l.eraseIdx j) := by
   have hmap : ∀ L : List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode),
-      (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation L.sum =
-        (L.map (purePointGibbsDensityOperator completedOccupationHilbertBasis
-          (fermionEnergy ε) β hsum).expectation).sum := by
+      (completedFreeGibbsDensityOperator ε β hsum).expectation L.sum =
+        (L.map (completedFreeGibbsDensityOperator ε β hsum).expectation).sum := by
     intro L
     exact map_list_sum
-      (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation L
+      (completedFreeGibbsDensityOperator ε β hsum).expectation L
   rw [thermalPeelSum_eq_thermalPeelTerms_sum, thermalPeelTerms_eq_ofFn, hmap,
     List.map_ofFn, List.sum_ofFn]
   apply Finset.sum_congr rfl
@@ -359,11 +351,9 @@ theorem completedFreeGibbsExpectation_operator_comp
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).expectation (C.operator.comp A) =
+    (completedFreeGibbsDensityOperator ε β hsum).expectation (C.operator.comp A) =
       C.gibbsFactor ε β *
-        (purePointGibbsDensityOperator completedOccupationHilbertBasis
-          (fermionEnergy ε) β hsum).expectation (A.comp C.operator) := by
+        (completedFreeGibbsDensityOperator ε β hsum).expectation (A.comp C.operator) := by
   rw [completedFreeGibbsDensityOperator_expectation_eq_tsum,
     completedFreeGibbsDensityOperator_expectation_eq_tsum, ← tsum_mul_left]
   cases C with
@@ -541,12 +531,10 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
     completedFreeGibbsExpectation ε β hsum (C :: l) =
       (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (purePointGibbsDensityOperator completedOccupationHilbertBasis
-          (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l) := by
+        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := by
   set E : ℂ := completedFreeGibbsExpectation ε β hsum (C :: l)
   set P : ℂ :=
-    (purePointGibbsDensityOperator completedOccupationHilbertBasis
-      (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l)
+    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l)
   set R : ℂ := completedFreeGibbsExpectation ε β hsum (l ++ [C])
   have hpeel : E = P + ((-1 : ℂ) ^ l.length) * R := by
     simpa [E, P, R] using
@@ -579,8 +567,7 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
       rw [hR]
       ring
     _ = (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (purePointGibbsDensityOperator completedOccupationHilbertBasis
-          (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l) := rfl
+        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := rfl
 
 /-- The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied
 by the same Gibbs ratio that solves the odd-tail KMS equation. -/
@@ -594,8 +581,7 @@ theorem completedFreeGibbsExpectation_pair_eq
   have h := completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     ε β hsum 0 C [D] (by simp) hne
   have hpeel :
-      (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation (thermalPeelSum C [D]) =
+      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C [D]) =
         C.anticommutatorValue D := by
     simp [thermalPeelSum]
   rw [hpeel] at h
@@ -641,8 +627,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
     calc
       completedFreeGibbsExpectation ε β hsum (C 0 :: l) =
         ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
-          (purePointGibbsDensityOperator completedOccupationHilbertBasis
-            (fermionEnergy ε) β hsum).expectation
+          (completedFreeGibbsDensityOperator ε β hsum).expectation
             (thermalPeelSum (C 0) l) :=
         completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
           ε β hsum n (C 0) l hlen (hC 0)
