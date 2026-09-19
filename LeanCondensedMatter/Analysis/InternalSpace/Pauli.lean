@@ -1,5 +1,6 @@
 import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Data.Complex.Basic
+import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
@@ -55,6 +56,12 @@ def pauliY : PauliMatrix :=
 def pauliZ : PauliMatrix :=
   !![1, 0; 0, -1]
 
+/-- The Pauli matrix associated with a semantic axis. -/
+private def pauliBasis : PauliAxis → PauliMatrix
+  | .x => pauliX
+  | .y => pauliY
+  | .z => pauliZ
+
 /-- Bilinear Pauli synthesis `u · σ`. The coefficient family is kept as the canonical indexed
 function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
@@ -68,32 +75,34 @@ theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
   fin_cases i <;> fin_cases j <;>
     simp [pauliCombination, pauliX, pauliY, pauliZ]
 
-/-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families. -/
-def pauliCross (u v : PauliAxis → ℂ) : PauliAxis → ℂ
-  | .x => u .y * v .z - u .z * v .y
-  | .y => u .z * v .x - u .x * v .z
-  | .z => u .x * v .y - u .y * v .x
-
-@[simp] theorem pauliX_zero_zero : pauliX 0 0 = 0 := rfl
-@[simp] theorem pauliX_zero_one : pauliX 0 1 = 1 := rfl
-@[simp] theorem pauliX_one_zero : pauliX 1 0 = 1 := rfl
-@[simp] theorem pauliX_one_one : pauliX 1 1 = 0 := rfl
-
-@[simp] theorem pauliY_zero_zero : pauliY 0 0 = 0 := rfl
-@[simp] theorem pauliY_zero_one : pauliY 0 1 = -Complex.I := rfl
-@[simp] theorem pauliY_one_zero : pauliY 1 0 = Complex.I := rfl
-@[simp] theorem pauliY_one_one : pauliY 1 1 = 0 := rfl
-
-@[simp] theorem pauliZ_zero_zero : pauliZ 0 0 = 1 := rfl
-@[simp] theorem pauliZ_zero_one : pauliZ 0 1 = 0 := rfl
-@[simp] theorem pauliZ_one_zero : pauliZ 1 0 = 0 := rfl
-@[simp] theorem pauliZ_one_one : pauliZ 1 1 = -1 := rfl
+/-- Ordinary bilinear cross product on semantic Pauli-axis coefficient families, obtained by
+transporting Mathlib's three-dimensional cross product to the semantic axes. -/
+def pauliCross (u v : PauliAxis → ℂ) : PauliAxis → ℂ :=
+  let w : Fin 3 → ℂ :=
+    crossProduct ![u .x, u .y, u .z] ![v .x, v .y, v .z]
+  fun axis => pauliAxisComponent axis (w 0) (w 1) (w 2)
 
 /-- The ordinary bilinear dot product on Pauli coefficients is the sum of the three semantic
 components. No complex conjugation is introduced. -/
 @[simp] theorem dotProduct_pauliAxis (u v : PauliAxis → ℂ) :
     dotProduct u v = u .x * v .x + u .y * v .y + u .z * v .z := by
   simp [dotProduct, sum_pauliAxis]
+
+private def pauliBasisCoeff (axis : PauliAxis) : PauliAxis → ℂ :=
+  fun other => if other = axis then 1 else 0
+
+private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
+    pauliBasis a * pauliBasis b =
+      dotProduct (pauliBasisCoeff a) (pauliBasisCoeff b) • (1 : PauliMatrix) +
+        Complex.I •
+          (pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .x • pauliBasis .x +
+            pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .y • pauliBasis .y +
+            pauliCross (pauliBasisCoeff a) (pauliBasisCoeff b) .z • pauliBasis .z) := by
+  cases a <;> cases b <;>
+    ext i j <;> fin_cases i <;> fin_cases j <;>
+    simp [pauliBasis, pauliBasisCoeff, pauliCross, cross_apply, pauliAxisComponent,
+      Matrix.mul_apply, Fin.sum_univ_two, pauliX, pauliY, pauliZ, dotProduct_pauliAxis,
+      Complex.I_mul_I]
 
 /-- Pauli synthesis commutes with addition of indexed coefficient families. -/
 @[simp] theorem pauliCombination_add (u v : PauliAxis → ℂ) :
@@ -112,15 +121,17 @@ theorem pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
     pauliCombination u * pauliCombination v =
       dotProduct u v • (1 : PauliMatrix) +
         Complex.I • pauliCombination (pauliCross u v) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [pauliCombination, pauliCross, Matrix.mul_apply, pauliX, pauliY, pauliZ,
-      dotProduct, sum_pauliAxis] <;>
-    ring_nf <;>
-    simp [hI] <;>
-    ring
+  change
+    (u .x • pauliBasis .x + u .y • pauliBasis .y + u .z • pauliBasis .z) *
+        (v .x • pauliBasis .x + v .y • pauliBasis .y + v .z • pauliBasis .z) =
+      dotProduct u v • (1 : PauliMatrix) +
+        Complex.I •
+          (pauliCross u v .x • pauliBasis .x +
+            pauliCross u v .y • pauliBasis .y +
+            pauliCross u v .z • pauliBasis .z)
+  simp [add_mul, mul_add, pauliBasis_mul_pauliBasis, pauliBasisCoeff, pauliCross,
+    cross_apply, pauliAxisComponent, dotProduct_pauliAxis]
+  module
 
 /-- Product of two scalar-plus-Pauli forms. -/
 theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
@@ -143,12 +154,9 @@ theorem pauliAffine_mul_pauliAffine (a b : ℂ) (u v : PauliAxis → ℂ) :
 theorem trace_pauliCombination_mul_pauliCombination (u v : PauliAxis → ℂ) :
     Matrix.trace (pauliCombination u * pauliCombination v) =
       2 * dotProduct u v := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  simp [Matrix.trace, pauliCombination, pauliX, pauliY, pauliZ,
-    dotProduct, sum_pauliAxis]
-  ring_nf
-  simp [hI]
+  rw [pauliCombination_mul_pauliCombination]
+  simp
+  ring
 
 /-- Trace overlap of two normalized two-level projector forms `(I + u·σ)/2` and
 `(I + v·σ)/2`. -/
@@ -188,7 +196,7 @@ theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
   rw [pauliCombination_mul_pauliCombination]
   have hcross : pauliCross u u = 0 := by
     funext axis
-    cases axis <;> simp [pauliCross] <;> ring
+    cases axis <;> simp [pauliCross, pauliAxisComponent]
   rw [hcross]
   simp [pauliCombination]
 

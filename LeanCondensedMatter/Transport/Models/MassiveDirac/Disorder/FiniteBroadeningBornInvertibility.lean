@@ -362,7 +362,8 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
     dsimp [M]
     rw [Matrix.det_fin_two]
     simp [finiteCutoffContinuumBornDysonShiftMatrix,
-      finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ]
+      finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ,
+      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ]
     ring_nf
     rw [hI]
     ring
