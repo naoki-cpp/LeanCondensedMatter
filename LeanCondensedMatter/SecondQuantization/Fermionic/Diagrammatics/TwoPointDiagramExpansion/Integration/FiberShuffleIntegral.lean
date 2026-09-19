@@ -96,7 +96,6 @@ private theorem fixedExternalShuffleFiber_externalPieceTimesOfCardEq_eq
   funext q
   apply congrArg σ
   convert congrFun horder.symm q using 1
-  apply Fin.ext
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
 private theorem fixedExternalShuffleFiber_vacuumOrderedData_eq
