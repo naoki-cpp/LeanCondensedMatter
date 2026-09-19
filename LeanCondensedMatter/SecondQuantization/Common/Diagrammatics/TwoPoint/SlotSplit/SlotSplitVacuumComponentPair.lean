@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair
 
@@ -204,7 +203,6 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
     TwoPointDiagram.mixedComponentOrientedCrossingCount,
     Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Pairing.crossingCount_eq_sum_sum_crosses]
-  simp only [TwoPointDiagram.mixedComponentPairSigmaEquiv_apply]
   symm
   exact sum_sum_crosses_eq_of_equiv
     (fun p : LocalPair => p.1)
