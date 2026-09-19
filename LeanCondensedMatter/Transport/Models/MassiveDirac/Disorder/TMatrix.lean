@@ -561,7 +561,7 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
                 .scalar v m probeEnergy (side.regulator broadening) p -
               continuumBornRadialIntegrandOfRegulator
                 .z v m probeEnergy (side.regulator broadening) p) := by
-      simpa [InternalSpace.pauliZ] using
+      simpa [InternalSpace.pauliZ, sub_eq_add_neg] using
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius
           side v m probeEnergy broadening hbar pMax p 1 1
     simp_rw [hkernel]
