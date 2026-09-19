@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import Mathlib.Analysis.Normed.Group.Tannery
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
@@ -256,15 +256,13 @@ theorem tendsto_completedFreeModeRetainedExpectation
     (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     Tendsto (fun S : Finset Mode => completedFreeModeRetainedExpectation ε β S A) atTop
-      (𝓝 ((purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation A)) := by
+      (𝓝 ((completedFreeGibbsDensityOperator ε β hsum).expectation A)) := by
   let term : Occupation Mode → ℂ := fun n =>
     (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
       inner ℂ (completedBasisState n) (A (completedBasisState n))
   have hterm : Summable term := by
     simpa [term] using
-      (purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).summable_expectation_diagonal
+      (completedFreeGibbsDensityOperator ε β hsum).summable_expectation_diagonal
         A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
         (fun n => by
           simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)
@@ -283,8 +281,7 @@ theorem tendsto_completedFreeModeRetainedExpectation
     by_cases h : n ⊆ S <;> simp [h]
   have ht := tendsto_tsum_of_dominated_convergence hterm.norm hpoint hbound
   have hfull := completedFreeGibbsDensityOperator_expectation_eq_tsum ε β hsum A
-  change (purePointGibbsDensityOperator completedOccupationHilbertBasis
-    (fermionEnergy ε) β hsum).expectation A = ∑' n, term n at hfull
+  change (completedFreeGibbsDensityOperator ε β hsum).expectation A = ∑' n, term n at hfull
   rw [← hfull] at ht
   simpa [completedFreeModeRetainedExpectation, term] using ht
 
@@ -319,8 +316,7 @@ theorem tendsto_completedFreeModeTruncatedGibbsDensityOperator_expectation
     Tendsto
       (fun S : Finset Mode =>
         (completedFreeModeTruncatedGibbsDensityOperator ε β hsum S).expectation A)
-      atTop (𝓝 ((purePointGibbsDensityOperator completedOccupationHilbertBasis
-        (fermionEnergy ε) β hsum).expectation A)) := by
+      atTop (𝓝 ((completedFreeGibbsDensityOperator ε β hsum).expectation A)) := by
   have hratio :
       Tendsto (fun S : Finset Mode => (completedFreeModeTruncationNormalizationRatio ε β S : ℂ))
         atTop (𝓝 (1 : ℂ)) :=

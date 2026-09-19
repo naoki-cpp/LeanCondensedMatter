@@ -1,14 +1,15 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 set_option linter.style.header false
 
 /-!
-# Mode-level summability for the completed free fermion Gibbs state
+# Pure-point summability for the free fermion Gibbs state
 
-The completed free fermion Gibbs state is the generic pure-point Gibbs state on occupation energies
-`fermionEnergy ε`.  Its occupation-level summability follows from the corresponding one-particle
+The free fermion Gibbs state on an arbitrary mode type is the generic pure-point Gibbs state on
+occupation energies `fermionEnergy ε`. Its occupation-level summability follows from the
+corresponding one-particle
 pure-point summability condition.  Writing
 
 ```text
