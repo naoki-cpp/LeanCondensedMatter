@@ -181,36 +181,42 @@ private theorem bandProjectorOperator_eq_pointwise_spectral_formula
   unfold bandProjectorOperator bandProjector hamiltonianOperator matrixOperator
   simp [map_add, map_smul]
 
-private theorem bandProjectorOperator_apply_pointwiseEigenbasis
-    (projected source : Band) (v m px py : ℝ)
+private theorem bandProjectorOperator_apply_diracEigenbasisFin
+    (projected : Band) (source : Fin 2) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     bandProjectorOperator projected v m px py
-        (pointwiseEigenbasis v m px py source) =
-      if projected = source then pointwiseEigenbasis v m px py source else 0 := by
+        (diracEigenbasisFin v m px py source) =
+      if bandIndex projected = source then diracEigenbasisFin v m px py source else 0 := by
+  let b := diracEigenbasisFin v m px py
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
+  have heig :
+      hamiltonianOperator v m px py (b source) =
+        (((diracEigenvaluesFin v m px py source : ℝ) : ℂ)) • b source := by
+    exact
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
+        diracHilbert_finrank source
   rw [bandProjectorOperator_eq_pointwise_spectral_formula]
-  rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
-    hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
+  rw [smul_apply, add_apply, one_apply_eq_self, smul_apply, heig, smul_smul]
   have hfactor :
       (1 / 2 : ℂ) •
-          (pointwiseEigenbasis v m px py source +
+          (b source +
             (((bandSign projected / energy v m px py : ℝ) : ℂ) *
-              ((bandEnergy source v m px py : ℝ) : ℂ)) •
-                pointwiseEigenbasis v m px py source) =
+              ((diracEigenvaluesFin v m px py source : ℝ) : ℂ)) • b source) =
         ((1 / 2 : ℂ) *
           (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
-            (((bandEnergy source v m px py : ℝ) : ℂ)))) •
-              pointwiseEigenbasis v m px py source := by
+            (((diracEigenvaluesFin v m px py source : ℝ) : ℂ)))) • b source := by
     module
   rw [hfactor]
   have hcoeff :
       (1 / 2 : ℂ) *
           (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
-            (((bandEnergy source v m px py : ℝ) : ℂ))) =
-        if projected = source then 1 else 0 := by
-    cases projected <;> cases source <;>
-      simp [bandSign, bandEnergy, hE] <;>
+            (((diracEigenvaluesFin v m px py source : ℝ) : ℂ))) =
+        if bandIndex projected = source then 1 else 0 := by
+    cases projected <;> fin_cases source <;>
+      simp [bandIndex, bandSign,
+        diracEigenvalue_zero_eq_energy v m px py hE,
+        diracEigenvalue_one_eq_neg_energy v m px py hE, hE] <;>
       field_simp [hEc] <;>
       ring
   rw [hcoeff]
@@ -220,32 +226,33 @@ private theorem bandProjectorOperator_eq_rankOne
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     bandProjectorOperator band v m px py =
       InnerProductSpace.rankOne ℂ
-        (pointwiseEigenbasis v m px py band)
-        (pointwiseEigenbasis v m px py band) := by
-  let b := pointwiseEigenbasis v m px py
+        (diracEigenbasisFin v m px py (bandIndex band))
+        (diracEigenbasisFin v m px py (bandIndex band)) := by
+  let b := diracEigenbasisFin v m px py
   apply ContinuousLinearMap.coe_injective
   apply b.toBasis.ext
   intro source
   change
     bandProjectorOperator band v m px py (b source) =
-      InnerProductSpace.rankOne ℂ (b band) (b band) (b source)
-  rw [bandProjectorOperator_apply_pointwiseEigenbasis band source v m px py hE]
-  cases band <;> cases source <;>
-    simp [b, InnerProductSpace.rankOne_apply]
+      InnerProductSpace.rankOne ℂ (b (bandIndex band)) (b (bandIndex band)) (b source)
+  rw [bandProjectorOperator_apply_diracEigenbasisFin band source v m px py hE]
+  cases band <;> fin_cases source <;>
+    simp [b, bandIndex, InnerProductSpace.rankOne_apply]
 
 /-- The sole opposite-band generic force-matrix product is the model projector trace. -/
 theorem pointwiseBerryData_forceMatrixElement_product
     (μ ν : Fin 2) (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     (pointwiseBerryData v m px py hE).hamiltonianDerivativeMatrixElement
-          μ (oppositeBand band) band *
+          μ (bandIndex (oppositeBand band)) (bandIndex band) *
         (pointwiseBerryData v m px py hE).hamiltonianDerivativeMatrixElement
-          ν band (oppositeBand band) =
+          ν (bandIndex band) (bandIndex (oppositeBand band)) =
       forceMatrixTraceNumerator μ ν band v m px py := by
-  let b := pointwiseEigenbasis v m px py
+  let b := diracEigenbasisFin v m px py
   change
-    inner ℂ (b (oppositeBand band)) (velocityOperator μ v (b band)) *
-        inner ℂ (b band) (velocityOperator ν v (b (oppositeBand band))) =
+    inner ℂ (b (bandIndex (oppositeBand band))) (velocityOperator μ v (b (bandIndex band))) *
+        inner ℂ (b (bandIndex band))
+          (velocityOperator ν v (b (bandIndex (oppositeBand band)))) =
       forceMatrixTraceNumerator μ ν band v m px py
   rw [show
       forceMatrixTraceNumerator μ ν band v m px py =
@@ -264,14 +271,15 @@ theorem pointwiseBerryData_forceMatrixElement_product
     bandProjectorOperator_eq_rankOne band v m px py hE,
     finiteDimensionalOperatorTrace_apply,
     LinearMap.trace_eq_sum_inner
-      (((InnerProductSpace.rankOne ℂ (b (oppositeBand band)) (b (oppositeBand band))) *
+      (((InnerProductSpace.rankOne ℂ
+          (b (bandIndex (oppositeBand band))) (b (bandIndex (oppositeBand band)))) *
         velocityOperator μ v *
-        (InnerProductSpace.rankOne ℂ (b band) (b band)) *
+        (InnerProductSpace.rankOne ℂ (b (bandIndex band)) (b (bandIndex band))) *
         velocityOperator ν v : DiracHilbert →L[ℂ] DiracHilbert) :
         DiracHilbert →ₗ[ℂ] DiracHilbert) b,
-    sum_band]
+    Fin.sum_univ_two]
   cases band <;>
-    simp [b, InnerProductSpace.rankOne_apply, map_smul,
+    simp [b, bandIndex, InnerProductSpace.rankOne_apply, map_smul,
       inner_smul_right, mul_comm, mul_assoc]
 
 /-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
