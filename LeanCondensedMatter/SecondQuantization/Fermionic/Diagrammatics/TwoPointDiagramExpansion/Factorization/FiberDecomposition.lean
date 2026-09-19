@@ -50,12 +50,6 @@ noncomputable def fixedExternalTwoPointWickDiagramOnEquivOfCardEq
     Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
       (Common.standardSlotEquivOfCardEq T h)).right_inv d.1)
 
-/-- A fixed-external two-point diagram on an arbitrary chosen slot set is canonically the same data
-as an order-`|T|` fixed-external diagram, using the canonical increasing standardization of `T`. -/
-noncomputable def fixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
-    FixedExternalTwoPointWickDiagramOn Mode n T i j ≃
-      FixedExternalTwoPointWickDiagram Mode T.card i j :=
-  fixedExternalTwoPointWickDiagramOnEquivOfCardEq T rfl
 
 /-- The increasing slot standardization with a chosen cardinality equality restricts to externally
 connected fixed-external diagrams. -/
@@ -78,13 +72,6 @@ noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq
   right_inv d :=
     Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).right_inv d.1)
 
-/-- The canonical slot standardization restricts to externally connected fixed-external diagrams. -/
-noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
-    {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
-        ext.1.IsExternallyConnected} ≃
-      {d : FixedExternalTwoPointWickDiagram Mode T.card i j //
-        d.1.IsExternallyConnected} :=
-  connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq T rfl
 
 /-- Reassemble a fixed-external two-point diagram from a chosen external piece and quartic vacuum
 piece. -/
