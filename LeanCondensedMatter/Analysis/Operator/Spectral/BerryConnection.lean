@@ -124,6 +124,7 @@ private theorem inner_hamiltonian_right_of_eigenbasis
 
 /-- Construct pointwise differentiated eigenbasis data from a simple finite spectrum.
 
+The simple-spectrum hypothesis is expressed by injectivity of the band-energy map.
 Energy derivatives are the lossless diagonal expectations of the self-adjoint Hamiltonian
 derivatives. Eigenvector derivatives are constructed algebraically in the parallel-transport gauge
 `⟪φ_n, ∂_μ φ_n⟫ = 0`, so a concrete model need not differentiate an explicit eigenvector gauge. -/
