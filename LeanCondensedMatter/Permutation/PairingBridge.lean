@@ -64,28 +64,6 @@ private theorem exchangeUnitWeight_neg_one_pow {R : Type*} [CommSemiring R]
   rw [map_pow]
   simp [exchangeUnitWeightHom, exchangeUnitWeight]
 
-private theorem cycleType_card_le_sum {α : Type*} [Fintype α] [DecidableEq α]
-    (σ : Equiv.Perm α) : σ.cycleType.card ≤ σ.cycleType.sum := by
-  have h : ∀ s : Multiset ℕ, (∀ a ∈ s, 1 ≤ a) → s.card ≤ s.sum := by
-    intro s hs
-    induction s using Multiset.induction_on with
-    | empty => simp
-    | @cons a s ih =>
-        have ha : 1 ≤ a := hs a (by simp)
-        have hs' : ∀ b ∈ s, 1 ≤ b := by
-          intro b hb
-          exact hs b (by simp [hb])
-        simpa [Nat.add_comm] using Nat.add_le_add ha (ih hs')
-  exact h σ.cycleType fun _ ha =>
-    Nat.le_of_lt (Equiv.Perm.one_lt_of_mem_cycleType ha)
-
-private theorem cycleDefect_mod_two {α : Type*} [Fintype α] [DecidableEq α]
-    (σ : Equiv.Perm α) :
-    (σ.cycleType.sum + σ.cycleType.card) % 2 = cycleDefect σ % 2 := by
-  have hle := cycleType_card_le_sum σ
-  rw [cycleDefect]
-  omega
-
 private theorem exchangeUnitWeight_sign_eq_cycleWeight {α R : Type*}
     [Fintype α] [DecidableEq α] [CommSemiring R]
     (ζ : R) (hζ : ζ * ζ = 1) (σ : Equiv.Perm α) :

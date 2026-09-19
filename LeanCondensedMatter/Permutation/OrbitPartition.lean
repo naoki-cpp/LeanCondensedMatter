@@ -44,6 +44,29 @@ nontrivial `cycleType` gives the equivalent formula `sum - card`. -/
 def cycleDefect (σ : Perm α) : ℕ :=
   σ.cycleType.sum - σ.cycleType.card
 
+private theorem cycleType_card_le_sum (σ : Perm α) :
+    σ.cycleType.card ≤ σ.cycleType.sum := by
+  have h : ∀ s : Multiset ℕ, (∀ a ∈ s, 1 ≤ a) → s.card ≤ s.sum := by
+    intro s hs
+    induction s using Multiset.induction_on with
+    | empty => simp
+    | @cons a s ih =>
+        have ha : 1 ≤ a := hs a (by simp)
+        have hs' : ∀ b ∈ s, 1 ≤ b := by
+          intro b hb
+          exact hs b (by simp [hb])
+        simpa [Nat.add_comm] using Nat.add_le_add ha (ih hs')
+  exact h σ.cycleType fun _ ha =>
+    Nat.le_of_lt (Equiv.Perm.one_lt_of_mem_cycleType ha)
+
+/-- The parity of the cycle defect agrees with the parity of
+`cycleType.sum + cycleType.card`. -/
+theorem cycleDefect_mod_two (σ : Perm α) :
+    (σ.cycleType.sum + σ.cycleType.card) % 2 = cycleDefect σ % 2 := by
+  have hle := cycleType_card_le_sum σ
+  rw [cycleDefect]
+  omega
+
 private theorem cycleDefect_eq_sum_cycleFactorsFinset (σ : Perm α) :
     cycleDefect σ = ∑ c ∈ σ.cycleFactorsFinset, (c.support.card - 1) := by
   have hsum : (∑ c ∈ σ.cycleFactorsFinset, c.support.card) = σ.support.card := by
