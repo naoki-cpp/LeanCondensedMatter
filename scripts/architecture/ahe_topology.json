@@ -45,7 +45,6 @@
         {"upstream": "propagatorSymmetry", "downstream": "propagatorAngularReduction"},
         {"upstream": "modelKinematics", "downstream": "propagatorAngularReduction"},
         {"upstream": "modelInterband", "downstream": "intrinsicBerryBridge"},
-        {"upstream": "modelOperatorSpectral", "downstream": "intrinsicBerryBridge"},
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
         {"upstream": "intrinsicBerrySymmetry", "downstream": "occupiedBerryWeight"},
         {"upstream": "occupiedBerryWeight", "downstream": "intrinsicConductivity"}
