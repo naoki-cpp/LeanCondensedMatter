@@ -124,9 +124,8 @@ private theorem hamiltonianOperator_pointwiseEigenbasis
     rw [hzero] at hsum
     linarith
   cases band
-  · change
-      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 1) =
-        (((-energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 1
+  · simp only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
+      finTwoEquivBand_symm_lower, bandEnergy_lower]
     have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (1 : Fin 2)
@@ -136,9 +135,8 @@ private theorem hamiltonianOperator_pointwiseEigenbasis
           diracEigenbasisFin v m px py 1 at heig
     rw [hone] at heig
     exact heig
-  · change
-      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 0) =
-        (((energy v m px py : ℝ) : ℂ)) • diracEigenbasisFin v m px py 0
+  · simp only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
+      finTwoEquivBand_symm_upper, bandEnergy_upper]
     have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (0 : Fin 2)
