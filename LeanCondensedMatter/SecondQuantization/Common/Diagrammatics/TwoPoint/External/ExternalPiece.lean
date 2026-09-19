@@ -38,16 +38,15 @@ noncomputable def TwoPointDiagram.externalPieceOfCardEq
     TwoPointDiagram ExternalLabel InternalLabel m
       (Finset.univ : Finset (Fin m)) :=
   d.externalVacuumSplit.1.slotCongr
-    (standardSlotEquivOfCardEq d.externalInteractionPart h)
+    (standardSlotEquivOfCardEq
+      (TwoPointDiagram.interactionPart (d.externalComponent 0)) h)
 
 @[simp]
 theorem TwoPointDiagram.externalPieceOfCardEq_externalLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     {m : ℕ} (h : d.externalInteractionPart.card = m) :
     (d.externalPieceOfCardEq h).externalLabel = d.externalLabel := by
-  unfold TwoPointDiagram.externalPieceOfCardEq
-  rw [TwoPointDiagram.slotCongr_externalLabel,
-    TwoPointDiagram.externalVacuumSplit_fst_externalLabel]
+  rfl
 
 /-- The canonical external component as a standalone two-point diagram on consecutive slots. -/
 noncomputable def TwoPointDiagram.externalPiece
