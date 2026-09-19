@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
@@ -11,8 +11,8 @@ set_option linter.style.header false
 
 This module defines the finite free-fermion imaginary-time Green function directly from the
 canonical Gibbs density operator. Coordinate lemmas for off-diagonal mixed contractions remain
-private proof infrastructure, while `freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction`
-connects the physical definition to the finite occupation-coordinate calculation.
+private proof infrastructure. Arbitrary weighted two-point functionals are kept private here as
+coordinate lemmas rather than exported as a competing thermal-state API.
 
 Off-diagonal vanishing of the *mixed* contractions is mode-specific rather than a particle-number
 selection rule: those operators have zero total charge, but toggling distinct modes cannot return an
@@ -29,6 +29,42 @@ namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-! ## Private weighted-coordinate helpers -/
+
+private noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ)
+    (w : Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : ℂ :=
+  - Common.normalizedWeightedDiagonal w (twoPointTimeOrderedProduct ε i j τ τ')
+
+private theorem weightedFreeTwoPointFunction_of_gt (ε : Mode → ℝ)
+    (w : Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ} (h : τ' < τ) :
+    weightedFreeTwoPointFunction ε w i j τ τ' =
+      - Common.normalizedWeightedDiagonal w
+          ((imaginaryTimeEvolve ε τ (annihilate i)).comp
+            (imaginaryTimeEvolve ε τ' (create j))) := by
+  rw [weightedFreeTwoPointFunction, twoPointTimeOrderedProduct_of_gt ε i j h]
+
+private theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ)
+    (w : Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ} (h : τ < τ') :
+    weightedFreeTwoPointFunction ε w i j τ τ' =
+      Common.normalizedWeightedDiagonal w
+        ((imaginaryTimeEvolve ε τ' (create j)).comp
+          (imaginaryTimeEvolve ε τ (annihilate i))) := by
+  rw [weightedFreeTwoPointFunction, twoPointTimeOrderedProduct_of_lt ε i j h,
+    Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
+    (Common.normalizedWeightedDiagonal w).map_neg, neg_neg]
+
+private theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ)
+    (w : Occupation Mode → ℂ) (i j : Mode) (τ : ℝ) :
+    weightedFreeTwoPointFunction ε w i j τ τ =
+      - Common.normalizedWeightedDiagonal w
+          ((2⁻¹ : ℂ) • ((imaginaryTimeEvolve ε τ (annihilate i)).comp
+              (imaginaryTimeEvolve ε τ (create j)) +
+            (-1 : ℂ) •
+              ((imaginaryTimeEvolve ε τ (create j)).comp
+                (imaginaryTimeEvolve ε τ (annihilate i))))) := by
+  rw [weightedFreeTwoPointFunction, twoPointTimeOrderedProduct_self_time,
+    Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
 /-- The physical free Gibbs Green function
 `G₀,ᵢⱼ(τ, τ') = -Tr(ρ₀,β Tτ cᵢ(τ)cⱼ†(τ'))`. -/
@@ -103,8 +139,8 @@ private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw]
 
-/-- The density-state Green function agrees with its finite occupation-coordinate evaluation. -/
-theorem freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction
+/-- The density-state Green function agrees with its private finite occupation-coordinate evaluation. -/
+private theorem freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ) :
     freeGibbsGreenFunction ε β i j τ τ' =
       weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j τ τ' := by
