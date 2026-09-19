@@ -45,7 +45,9 @@ theorem TwoPointDiagram.externalPieceOfCardEq_externalLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     {m : ℕ} (h : d.externalInteractionPart.card = m) :
     (d.externalPieceOfCardEq h).externalLabel = d.externalLabel := by
-  simp [TwoPointDiagram.externalPieceOfCardEq]
+  unfold TwoPointDiagram.externalPieceOfCardEq
+  rw [TwoPointDiagram.slotCongr_externalLabel,
+    TwoPointDiagram.externalVacuumSplit_fst_externalLabel]
 
 /-- The canonical external component as a standalone two-point diagram on consecutive slots. -/
 noncomputable def TwoPointDiagram.externalPiece
@@ -61,19 +63,27 @@ theorem TwoPointDiagram.externalPiece_externalLabel
   exact d.externalPieceOfCardEq_externalLabel rfl
 
 @[simp]
+theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    {m : ℕ} (h : d.externalInteractionPart.card = m) (v : Fin m) :
+    (d.externalPieceOfCardEq h).vertexLabel ⟨v, Finset.mem_univ _⟩ =
+      d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin h v, Finset.mem_univ _⟩ := by
+  unfold TwoPointDiagram.externalPieceOfCardEq
+  unfold TwoPointDiagram.externalInteractionPart
+  rw [TwoPointDiagram.slotCongr_vertexLabel,
+    TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
+  exact congrArg d.vertexLabel
+    (Subtype.ext (standardSlotEquivOfCardEq_symm_coe
+      (TwoPointDiagram.interactionPart (d.externalComponent 0)) h
+      ⟨v, Finset.mem_univ v⟩))
+
+@[simp]
 theorem TwoPointDiagram.externalPiece_vertexLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (v : Fin d.externalInteractionPart.card) :
     d.externalPiece.vertexLabel ⟨v, Finset.mem_univ _⟩ =
       d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
-  unfold TwoPointDiagram.externalPiece
-  unfold TwoPointDiagram.externalInteractionPart
-  rw [TwoPointDiagram.slotCongr_vertexLabel,
-    TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
-  exact congrArg d.vertexLabel
-    (Subtype.ext (standardSlotEquiv_symm_coe
-      (TwoPointDiagram.interactionPart (d.externalComponent 0))
-      ⟨v, Finset.mem_univ v⟩))
+  exact d.externalPieceOfCardEq_vertexLabel rfl v
 
 private noncomputable def TwoPointDiagram.externalPieceLegEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
@@ -256,6 +266,7 @@ theorem TwoPointDiagram.externalPieceMixedPosition_strictMono
     mixedTimeOrderedAtomicLegPosition_map_lt_iff
       (d.externalInteractionPart.orderEmbOfFin rfl).strictMono]
   simpa only [TwoPointDiagram.externalPieceTimes,
+    TwoPointDiagram.externalPieceTimesOfCardEq,
     mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv] using hpq
 
 theorem TwoPointDiagram.externalPieceMixedPosition_injective
