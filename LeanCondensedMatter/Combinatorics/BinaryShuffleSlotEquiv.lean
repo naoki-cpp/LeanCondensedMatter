@@ -177,6 +177,34 @@ theorem SlotShuffle.sdiffLeftSlots_orderEmbOfFin {m n : ℕ}
     σ.strictMonoRight
   exact congrFun h.symm j
 
+/-- The local left slots identified with their ambient subtype in increasing order. -/
+noncomputable def SlotShuffle.leftSlotOrderEquiv {m n : ℕ}
+    (σ : SlotShuffle m n) : Fin m ≃ ↥σ.leftSlots :=
+  (σ.leftSlots.orderIsoOfFin σ.card_leftSlots).toEquiv
+
+@[simp]
+theorem SlotShuffle.leftSlotOrderEquiv_val {m n : ℕ}
+    (σ : SlotShuffle m n) (i : Fin m) :
+    ((σ.leftSlotOrderEquiv i : ↥σ.leftSlots) : Fin (m + n)) =
+      σ.slotEquiv (Sum.inl i) := by
+  exact σ.leftSlots_orderEmbOfFin i
+
+/-- The local right slots identified with the ambient complement of the left slots in increasing
+order. -/
+noncomputable def SlotShuffle.rightSlotOrderEquiv {m n : ℕ}
+    (σ : SlotShuffle m n) :
+    Fin n ≃ ↥((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots) :=
+  (((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots).orderIsoOfFin
+    σ.card_sdiff_leftSlots).toEquiv
+
+@[simp]
+theorem SlotShuffle.rightSlotOrderEquiv_val {m n : ℕ}
+    (σ : SlotShuffle m n) (j : Fin n) :
+    ((σ.rightSlotOrderEquiv j :
+      ↥((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots)) : Fin (m + n)) =
+      σ.slotEquiv (Sum.inr j) := by
+  exact σ.sdiffLeftSlots_orderEmbOfFin j
+
 /-- A slot shuffle is uniquely determined by the ambient positions of its left slots. -/
 theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
     (hslots : σ.leftSlots = τ.leftSlots) : σ = τ := by
