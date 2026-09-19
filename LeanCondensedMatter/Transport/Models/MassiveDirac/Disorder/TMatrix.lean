@@ -598,7 +598,7 @@ theorem matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disord
 /-- Under the explicit convention `W = n_imp v_imp²`, the quadratic clean-loop coefficient of
 the scalar-impurity T-matrix self-energy is exactly the existing finite-cutoff continuum Born
 self-energy. The linear mean-potential term `n_imp v_imp I` is not included in this identity. -/
-theorem ScalarImpurityParameters.quadraticCleanLoopSelfEnergy_eq_finiteCutoffContinuumBornSelfEnergy
+theorem ScalarImpurityParameters.quadraticCleanLoopSelfEnergy_eq_finiteCutoffContinuumBornSelfEnergyOfRegulator
     (params : ScalarImpurityParameters)
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
@@ -608,11 +608,11 @@ theorem ScalarImpurityParameters.quadraticCleanLoopSelfEnergy_eq_finiteCutoffCon
         matrixOperator
           (finiteCutoffContinuumBornDysonGreenLoopMatrix
             side v m probeEnergy broadening 0 hbar pMax) =
-      finiteCutoffContinuumBornSelfEnergy
-        side v m probeEnergy broadening disorderStrength hbar pMax := by
+      finiteCutoffContinuumBornSelfEnergyOfRegulator
+        v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax := by
   rw [matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq
     side v m probeEnergy broadening hbar pMax hbroadening]
-  unfold finiteCutoffContinuumBornSelfEnergy finiteCutoffContinuumBornSelfEnergyOfRegulator
+  unfold finiteCutoffContinuumBornSelfEnergyOfRegulator
   rw [hdisorder]
   simp only [smul_smul]
   congr 1
