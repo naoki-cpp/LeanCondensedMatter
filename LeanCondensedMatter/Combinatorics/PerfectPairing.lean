@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
+import LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
