@@ -59,10 +59,8 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
   · rw [show D = (slotSplitVacuumComponentPart
         (Finset.subset_univ T) ext vac C).1 by rfl,
       interactionPart_slotSplitVacuumComponentPart]
-    change (v.1 : Fin n) ∈ (C : Finset (Fin n))
-    change (v.1 : Fin n) ∈ vac.componentBlock v
-    unfold QuarticDiagram.componentBlock
-    exact vac.componentPartition.mem_part v.2
+    simpa [v, q, C] using
+      vac.fixedOrderPairComponent_firstEndpoint_mem (slotSplitVacuumOrder T) pr
 
 /-- Embed one restricted quartic component's normalized pairs into the corresponding ambient mixed
 vacuum-component pair fiber. -/
