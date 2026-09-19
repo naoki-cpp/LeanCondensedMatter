@@ -107,18 +107,17 @@ private theorem diracEigenvaluesFin_ne_of_ne
     (left right : Fin 2) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
     (hne : left ≠ right) :
     diracEigenvaluesFin v m px py left ≠ diracEigenvaluesFin v m px py right := by
-  fin_cases left <;> fin_cases right
-  · exact (hne rfl).elim
-  · rw [diracEigenvalue_zero_eq_energy v m px py hE,
+  have h01 :
+      diracEigenvaluesFin v m px py 0 ≠ diracEigenvaluesFin v m px py 1 := by
+    rw [diracEigenvalue_zero_eq_energy v m px py hE,
       diracEigenvalue_one_eq_neg_energy v m px py hE]
     intro h
     apply hE
     linarith
-  · rw [diracEigenvalue_one_eq_neg_energy v m px py hE,
-      diracEigenvalue_zero_eq_energy v m px py hE]
-    intro h
-    apply hE
-    linarith
+  fin_cases left <;> fin_cases right
+  · exact (hne rfl).elim
+  · simpa using h01
+  · simpa using h01.symm
   · exact (hne rfl).elim
 
 private def bandIndex : Band → Fin 2
@@ -151,11 +150,10 @@ noncomputable def pointwiseBerryData
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (pointwiseBerryData v m px py hE).energy (bandIndex band) =
       bandEnergy band v m px py := by
+  unfold pointwiseBerryData PointwiseEigenbasisData.ofNondegenerateEigenbasis
   cases band
-  · change diracEigenvaluesFin v m px py 1 = -energy v m px py
-    exact diracEigenvalue_one_eq_neg_energy v m px py hE
-  · change diracEigenvaluesFin v m px py 0 = energy v m px py
-    exact diracEigenvalue_zero_eq_energy v m px py hE
+  · exact diracEigenvalue_one_eq_neg_energy v m px py hE
+  · exact diracEigenvalue_zero_eq_energy v m px py hE
 
 @[simp] theorem pointwiseBerryData_hamiltonianDerivative
     (direction : Fin 2) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -220,7 +218,7 @@ private theorem bandProjectorOperator_apply_diracEigenbasisFin
       field_simp [hEc] <;>
       ring
   rw [hcoeff]
-  split <;> simp
+  split <;> simp [b]
 
 private theorem bandProjectorOperator_eq_rankOne
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -336,7 +334,8 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
         (bandIndex band) (bandIndex (oppositeBand band)) =
       forceMatrixTraceNumerator 0 1 band v m px py at hforce
   cases band
-  · simp only [bandIndex, Fin.sum_univ_two,
+  · simp [bandIndex, oppositeBand] at hforce
+    simp only [bandIndex, Fin.sum_univ_two,
       if_neg (show (0 : Fin 2) ≠ 1 by decide), if_pos rfl, add_zero]
     rw [show
       data.energy 1 - data.energy 0 =
@@ -345,7 +344,8 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
         pointwiseBerryData_interbandEnergyGap Band.lower v m px py hE]
     rw [two_mul_product_div_real_im _ _ _ hgap, hforce]
     rfl
-  · simp only [bandIndex, Fin.sum_univ_two,
+  · simp [bandIndex, oppositeBand] at hforce
+    simp only [bandIndex, Fin.sum_univ_two,
       if_pos rfl, if_neg (show (1 : Fin 2) ≠ 0 by decide), zero_add]
     rw [show
       data.energy 0 - data.energy 1 =
