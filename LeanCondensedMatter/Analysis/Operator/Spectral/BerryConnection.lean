@@ -82,9 +82,10 @@ component is the Born--Fock quotient. -/
 private noncomputable def simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
     (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n : ι) : H :=
-  ∑ m : ι, if m = n then 0 else
-    (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
-      (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
+  ∑ m : ι,
+    (if m = n then 0 else
+      inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+        (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
 
 omit [CompleteSpace H] in
 private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
@@ -95,13 +96,12 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
       if k = n then 0 else
         inner ℂ (eigenbasis k) (hamiltonianDerivative μ (eigenbasis n)) /
           (((energy n - energy k : ℝ) : ℂ)) := by
-  let coefficient : ι → ℂ := fun m =>
-    if m = n then 0 else
-      inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
-        (((energy n - energy m : ℝ) : ℂ))
   rw [simpleSpectrumEigenvectorDerivative]
-  simpa only [coefficient] using
-    eigenbasis.orthonormal.inner_right_fintype coefficient k
+  exact eigenbasis.orthonormal.inner_right_fintype
+    (fun m : ι =>
+      if m = n then 0 else
+        inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+          (((energy n - energy m : ℝ) : ℂ))) k
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
