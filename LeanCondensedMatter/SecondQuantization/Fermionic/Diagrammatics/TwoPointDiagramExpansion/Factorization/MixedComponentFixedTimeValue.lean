@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
@@ -133,10 +132,9 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
                 pr.1.1.1 pr.1.1.2 := by
-          simpa only [Equiv.symm_symm,
-            Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
+          simpa only [Equiv.symm_symm] using
             (Fintype.prod_equiv_sigma
-              (d.1.mixedComponentPairSigmaEquiv τ τ' σ).symm
+              (Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ)).symm
               (fun pr =>
                 mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                   d.vertexLabelSequence pr.1.1 pr.1.2))
