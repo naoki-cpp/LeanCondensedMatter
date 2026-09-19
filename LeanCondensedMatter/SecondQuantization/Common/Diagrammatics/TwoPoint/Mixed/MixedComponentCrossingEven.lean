@@ -82,8 +82,10 @@ private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
   intro a _
   apply Finset.sum_congr rfl
   intro b _
-  simp [TwoPointDiagram.mixedComponentPairEndpointEquiv,
-    Pairing.normalizedPairSubtypeEndpointEquiv, Pairing.pairEndpoint, pairEndpointAt]
+  unfold TwoPointDiagram.mixedComponentPairEndpointEquiv
+  rw [Pairing.normalizedPairSubtypeEndpointEquiv_apply_val,
+    Pairing.normalizedPairSubtypeEndpointEquiv_apply_val]
+  rfl
 
 private theorem
     TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
