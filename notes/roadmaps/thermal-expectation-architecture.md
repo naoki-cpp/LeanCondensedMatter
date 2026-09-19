@@ -30,9 +30,11 @@ The reusable finite coordinate layer is split by responsibility:
 | Owner | Responsibility |
 |---|---|
 | `QuantumTheory/Gibbs/PurePoint.lean` | Boltzmann weights, partition functions, probabilities, pure-point Gibbs states. |
-| `Common/Thermal/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
-| `Common/Thermal/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
-| `Common/Thermal/FiniteWeightedTrace.lean` | Finite unnormalized weighted sums. |
+| `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
+| `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
+| `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, trace-ratio formulas, and weighted-coordinate comparison. |
+| `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
+| `Common/Algebra/FiniteWeightedTrace.lean` | Finite unnormalized weighted sums. |
 | `Common/Thermal/WeightedDiagonalFunctional.lean` | Generic normalized finite coordinate functional. |
 | `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Pairing-specific finite Gibbs two-point, peel, four-point, and recursion formulas. |
 
