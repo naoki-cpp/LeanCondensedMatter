@@ -147,7 +147,7 @@ private theorem orderedVacuumDysonIntegrand_orderIsoOfFin
   cases h
   rfl
 
-private theorem orderedVacuumDysonIntegrand_rightSlotOrder
+private theorem orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (vac : QuarticWickDiagram Mode (m + k)
@@ -248,7 +248,7 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
       Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv p.2 = x := by
     simpa [p] using fixedExternalShuffleFiber_vacuumOrderedData_eq shuffle ext x
   have hvacTransport :=
-    orderedVacuumDysonIntegrand_rightSlotOrder ε β g shuffle p.2 σ
+    orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder ε β g shuffle p.2 σ
   have hrightTimes :
       (fun q : Fin k => σ ((shuffle.sdiffLeftSlotsOrderEquiv q).1)) =
         (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
