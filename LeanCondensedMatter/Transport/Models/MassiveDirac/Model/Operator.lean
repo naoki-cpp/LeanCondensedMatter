@@ -119,8 +119,12 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
     | .x => v * px
     | .y => v * py
     | .z => m
-  simpa [diracPauliCoefficients, u] using
-    InternalSpace.pauliCombination_ofReal_isHermitian u
+  have hcoefficients :
+      diracPauliCoefficients v m px py = fun axis => (u axis : ℂ) := by
+    funext axis
+    cases axis <;> rfl
+  rw [hcoefficients]
+  exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
 private theorem directionPauli_isHermitian (direction : Fin 2) :
     (directionPauli direction).IsHermitian := by
