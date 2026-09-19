@@ -142,6 +142,11 @@ private theorem integral_polarPauli_directionTrace_eq
     simp [matrixOperator, InternalSpace.pauliCombination_eq_components,
       sigmaX, sigmaY, u]
   rw [hmatrix]
+  change
+    finiteDimensionalOperatorTrace
+        ((q • matrixOperator (directionPauli measured)) *
+          matrixOperator (InternalSpace.pauliCombination u)) =
+      2 * q * inPlaneLadderAction coefficientsRung coefficients measured
   have hop :
       (q • matrixOperator (directionPauli measured)) *
           matrixOperator (InternalSpace.pauliCombination u) =
