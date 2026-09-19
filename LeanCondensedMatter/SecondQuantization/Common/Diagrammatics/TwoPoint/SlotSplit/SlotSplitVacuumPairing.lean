@@ -113,7 +113,7 @@ theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
       ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)]
   rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr]
   apply congrArg (fun q => slotLegSplitting (Finset.subset_univ T) (Sum.inr q))
-  rw [QuarticDiagram.pairingInOrder, Pairing.relabel_partner, Equiv.apply_symm_apply]
+  rw [QuarticDiagram.pairingInOrder, Pairing.transport_partner, Equiv.apply_symm_apply]
 
 /-- The mixed-order partner on a reassembled diagram is the mixed position of the corresponding
 fixed-order quartic vacuum partner. -/
