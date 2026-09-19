@@ -34,7 +34,7 @@ The reusable finite coordinate layer is split by responsibility:
 | `Common/Thermal/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Thermal/FiniteWeightedTrace.lean` | Finite unnormalized weighted sums. |
 | `Common/Thermal/WeightedDiagonalFunctional.lean` | Generic normalized finite coordinate functional. |
-| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Density-state coordinate, trace-ratio, and finite Gibbs formulas. |
+| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Pairing-specific finite Gibbs two-point, peel, four-point, and recursion formulas. |
 
 A generic complex-weight coordinate functional acquires a Gibbs interpretation only after
 specialization to physical Boltzmann weights.
