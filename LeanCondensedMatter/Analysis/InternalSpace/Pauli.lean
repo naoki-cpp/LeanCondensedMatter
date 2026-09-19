@@ -39,8 +39,7 @@ def pauliAxisComponent {α : Type*} (axis : PauliAxis) (x y z : α) : α :=
   | .y => y
   | .z => z
 
-/-- A sum over the semantic Pauli axes is the x, y, and z contribution. -/
-theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
+private theorem sum_pauliAxis {M : Type*} [AddCommMonoid M] (f : PauliAxis → M) :
     ∑ axis : PauliAxis, f axis = f .x + f .y + f .z := by
   change ∑ axis ∈ ({.x, .y, .z} : Finset PauliAxis), f axis = _
   simp [add_assoc]
@@ -76,6 +75,13 @@ theorem pauliBasis_isHermitian (axis : PauliAxis) :
 function rather than wrapped in a parallel vector type. -/
 def pauliCombination (u : PauliAxis → ℂ) : PauliMatrix :=
   ∑ axis : PauliAxis, u axis • pauliBasis axis
+
+/-- Coordinate expansion of the canonical axis-indexed Pauli synthesis. Use this only when a
+consumer genuinely needs explicit x/y/z components. -/
+theorem pauliCombination_eq_components (u : PauliAxis → ℂ) :
+    pauliCombination u =
+      u .x • pauliX + u .y • pauliY + u .z • pauliZ := by
+  simp [pauliCombination, sum_pauliAxis, pauliBasis]
 
 /-- A Pauli synthesis with real axis coefficients is Hermitian. -/
 theorem pauliCombination_ofReal_isHermitian (u : PauliAxis → ℝ) :
@@ -214,8 +220,8 @@ theorem trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentit
       a * b * (-(u .x * u .y) - Complex.I * u .z) := by
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
-  simp [Matrix.trace, Matrix.mul_apply, pauliCombination, sum_pauliAxis,
-    pauliBasis, pauliX, pauliY, pauliZ, sub_eq_add_neg]
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination_eq_components,
+    pauliX, pauliY, pauliZ, sub_eq_add_neg]
   ring_nf
   simp [hI]
 
@@ -254,7 +260,7 @@ theorem pauliShiftMatrix_mul_closedInverse
     | .z => z
   have hcombination :
       pauliCombination u = x • pauliX + y • pauliY + z • pauliZ := by
-    simp [pauliCombination, sum_pauliAxis, pauliBasis, u]
+    simp [pauliCombination_eq_components, u]
   have hdot : dotProduct u u = x ^ 2 + y ^ 2 + z ^ 2 := by
     rw [dotProduct_pauliAxis]
     simp [u, pow_two]
