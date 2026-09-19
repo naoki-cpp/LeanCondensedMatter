@@ -509,7 +509,7 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
   funext i j
   fin_cases i <;> fin_cases j
   · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp [InternalSpace.pauliZ]
+    simp only [Fin.zero_eta, Fin.isValue, Matrix.one_apply_eq, smul_eq_mul, mul_one]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
