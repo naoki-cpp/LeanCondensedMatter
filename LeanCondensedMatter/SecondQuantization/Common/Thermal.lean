@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -15,10 +16,10 @@ This umbrella exposes five distinct layers:
 
 - algebraic diagonal-trace and weighted-functional infrastructure;
 - finite Hilbert realization and transport of algebraic Fock operators;
-- finite unnormalized and temporary normalized occupation-basis formulas;
 - the generic `QuantumTheory.Gibbs.PurePoint` density state with the finite Gibbs expectation adapter;
+- finite Gibbs trace-ratio and weighted-coordinate formulas;
 - the implementation-independent Bloch–de Dominicis expectation recursion and its finite Gibbs
-  specialization.
+  pairing specialization.
 
 The canonical Gibbs state is the generic pure-point density operator. `SecondQuantization.Common`
 adds only the finite Hilbert transport and expectation adapter needed for algebraic Fock operators.
