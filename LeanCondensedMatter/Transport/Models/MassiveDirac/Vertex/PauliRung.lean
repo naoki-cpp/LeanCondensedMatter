@@ -103,7 +103,8 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
   rw [hL, hVertex, hR,
     InternalSpace.pauliAffine_mul_pauliAffine,
     InternalSpace.pauliAffine_mul_pauliAffine]
-  simp [uL, uR, vertex, InternalSpace.pauliCross, InternalSpace.dotProduct_pauliAxis,
+  simp [uL, uR, vertex, InternalSpace.pauliCross, cross_apply,
+    InternalSpace.pauliAxisComponent, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
     AngularHarmonicCoefficients.eval]
   ring_nf

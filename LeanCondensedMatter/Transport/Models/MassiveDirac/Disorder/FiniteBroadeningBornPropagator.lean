@@ -206,7 +206,8 @@ private theorem finiteCutoffContinuumBornDysonShiftMatrix_det
     simpa [pow_two] using Complex.I_mul_I
   rw [Matrix.det_fin_two]
   simp [finiteCutoffContinuumBornDysonShiftMatrix,
-    finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ]
+    finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ,
+    InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ]
   ring_nf
   rw [hI]
   ring
