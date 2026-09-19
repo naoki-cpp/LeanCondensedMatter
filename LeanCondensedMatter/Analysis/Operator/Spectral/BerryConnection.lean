@@ -162,6 +162,8 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
     simp
   · have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
       exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
+    have hgap' : (((energy m - energy n : ℝ) : ℂ)) ≠ 0 := by
+      exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn)
     rw [show
       inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
           (eigenbasis n) =
@@ -174,8 +176,8 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
     rw [map_div,
       star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
         eigenbasis hamiltonianDerivative hamiltonianDerivative_selfAdjoint]
-    simp only [map_sub, map_ofReal]
-    field_simp [hgap]
+    simp only [Complex.conj_ofReal]
+    field_simp [hgap, hgap']
     ring
 
 private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
