@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import Mathlib.Tactic.Module
-import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
@@ -662,7 +661,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
                 ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
                   (((-1 : ℂ) ^ (j : ℕ)) * (C 0).anticommutatorValue (C j.succ) *
                     completedFreeGibbsExpectation ε β hsum (l.eraseIdx j)) := by
-          rw [Combinatorics.FiniteIndex.sum_cast hlen]
+          rw [← Equiv.sum_comp (finCongr hlen.symm)]
           apply Finset.sum_congr rfl
           intro j _
           simp only [Fin.val_cast, hl, List.getElem_ofFn]
