@@ -93,7 +93,9 @@ private theorem inner_bornFockDerivative [DecidableEq ι]
         inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
           (((energy n - energy m : ℝ) : ℂ)) := by
   classical
-  simp [bornFockDerivative]
+  unfold bornFockDerivative
+  rw [inner_sum]
+  simp [inner_smul_right]
 
 private theorem inner_hamiltonian_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
