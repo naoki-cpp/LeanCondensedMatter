@@ -86,6 +86,7 @@ private noncomputable def simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
       (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
 
+omit [CompleteSpace H] in
 private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
     (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
     (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n k : ι) :
@@ -97,7 +98,7 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
   by_cases hkn : k = n
   · subst k
     simp [simpleSpectrumEigenvectorDerivative]
-  · simp [simpleSpectrumEigenvectorDerivative, hkn]
+  · simp [simpleSpectrumEigenvectorDerivative]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
