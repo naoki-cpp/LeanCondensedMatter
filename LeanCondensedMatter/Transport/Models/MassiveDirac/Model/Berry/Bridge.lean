@@ -30,20 +30,6 @@ private theorem diracHilbert_finrank :
     Module.finrank ℂ DiracHilbert = 2 := by
   simp [DiracHilbert]
 
-private def finTwoEquivBand : Fin 2 ≃ Band where
-  toFun i := if i = 0 then .upper else .lower
-  invFun
-    | .upper => 0
-    | .lower => 1
-  left_inv i := by fin_cases i <;> simp
-  right_inv band := by cases band <;> simp
-
-@[simp] private theorem finTwoEquivBand_symm_lower :
-    finTwoEquivBand.symm .lower = 1 := rfl
-
-@[simp] private theorem finTwoEquivBand_symm_upper :
-    finTwoEquivBand.symm .upper = 0 := rfl
-
 private noncomputable def diracEigenvaluesFin (v m px py : ℝ) : Fin 2 → ℝ :=
   (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
     diracHilbert_finrank
@@ -52,10 +38,6 @@ private noncomputable def diracEigenbasisFin (v m px py : ℝ) :
     OrthonormalBasis (Fin 2) ℂ DiracHilbert :=
   (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvectorBasis
     diracHilbert_finrank
-
-private noncomputable def pointwiseEigenbasis (v m px py : ℝ) :
-    OrthonormalBasis Band ℂ DiracHilbert :=
-  (diracEigenbasisFin v m px py).reindex finTwoEquivBand
 
 private theorem diracEigenvalue_sq (v m px py : ℝ) (i : Fin 2) :
     diracEigenvaluesFin v m px py i ^ 2 = energySq v m px py := by
@@ -114,75 +96,66 @@ private theorem diracEigenvalue_zero_eq_energy
     lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hE)
   nlinarith
 
-private theorem hamiltonianOperator_pointwiseEigenbasis
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    hamiltonianOperator v m px py (pointwiseEigenbasis v m px py band) =
-      (((bandEnergy band v m px py : ℝ) : ℂ)) • pointwiseEigenbasis v m px py band := by
+private theorem diracEigenvalue_one_eq_neg_energy
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    diracEigenvaluesFin v m px py 1 = -energy v m px py := by
   have hsum := diracEigenvalues_sum_eq_zero v m px py
-  have hzero := diracEigenvalue_zero_eq_energy v m px py hE
-  have hone : diracEigenvaluesFin v m px py 1 = -energy v m px py := by
-    rw [hzero] at hsum
-    linarith
-  cases band
-  · simp only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
-      finTwoEquivBand_symm_lower, bandEnergy_lower]
-    have heig :=
-      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
-        diracHilbert_finrank (1 : Fin 2)
-    change
-      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 1) =
-        (((diracEigenvaluesFin v m px py 1 : ℝ) : ℂ)) •
-          diracEigenbasisFin v m px py 1 at heig
-    rw [hone] at heig
-    exact heig
-  · simp only [pointwiseEigenbasis, OrthonormalBasis.reindex_apply,
-      finTwoEquivBand_symm_upper, bandEnergy_upper]
-    have heig :=
-      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
-        diracHilbert_finrank (0 : Fin 2)
-    change
-      hamiltonianOperator v m px py (diracEigenbasisFin v m px py 0) =
-        (((diracEigenvaluesFin v m px py 0 : ℝ) : ℂ)) •
-          diracEigenbasisFin v m px py 0 at heig
-    rw [hzero] at heig
-    exact heig
+  rw [diracEigenvalue_zero_eq_energy v m px py hE] at hsum
+  linarith
 
-private theorem bandEnergy_ne_of_ne
-    (left right : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
+private theorem diracEigenvaluesFin_ne_of_ne
+    (left right : Fin 2) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
     (hne : left ≠ right) :
-    bandEnergy left v m px py ≠ bandEnergy right v m px py := by
-  cases left <;> cases right
+    diracEigenvaluesFin v m px py left ≠ diracEigenvaluesFin v m px py right := by
+  fin_cases left <;> fin_cases right
   · exact (hne rfl).elim
-  · simp only [bandEnergy, bandSign]
+  · rw [diracEigenvalue_zero_eq_energy v m px py hE,
+      diracEigenvalue_one_eq_neg_energy v m px py hE]
     intro h
     apply hE
     linarith
-  · simp only [bandEnergy, bandSign]
+  · rw [diracEigenvalue_one_eq_neg_energy v m px py hE,
+      diracEigenvalue_zero_eq_energy v m px py hE]
     intro h
     apply hE
     linarith
   · exact (hne rfl).elim
+
+private def bandIndex : Band → Fin 2
+  | .lower => 1
+  | .upper => 0
 
 /-- Generic pointwise spectral/Berry data for the nondegenerate massive-Dirac Hamiltonian.
 
-The two derivative directions are the physical momentum directions. This is a pointwise local
-construction only: it makes no global smooth-gauge, Berry-phase, Chern-number, or topology claim. -/
+The generic spectral index remains Mathlib's native `Fin 2`; physical `Band` labels are identified
+only by the bridge theorems below. The two derivative directions are the physical momentum
+directions. This is a pointwise local construction only: it makes no global smooth-gauge,
+Berry-phase, Chern-number, or topology claim. -/
 noncomputable def pointwiseBerryData
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    PointwiseEigenbasisData (Fin 2) Band DiracHilbert :=
+    PointwiseEigenbasisData (Fin 2) (Fin 2) DiracHilbert :=
   PointwiseEigenbasisData.ofNondegenerateEigenbasis
     (hamiltonianOperator v m px py)
     (hamiltonianOperator_isSelfAdjoint v m px py)
-    (pointwiseEigenbasis v m px py)
-    (fun band => bandEnergy band v m px py)
-    (fun band => hamiltonianOperator_pointwiseEigenbasis band v m px py hE)
+    (diracEigenbasisFin v m px py)
+    (diracEigenvaluesFin v m px py)
+    (fun i =>
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
+        diracHilbert_finrank i)
     (fun direction => velocityOperator direction v)
     (fun direction => velocityOperator_isSelfAdjoint direction v)
-    (fun left right hne => bandEnergy_ne_of_ne left right v m px py hE hne)
+    (fun left right hne => diracEigenvaluesFin_ne_of_ne left right v m px py hE hne)
 
-@[simp] theorem pointwiseBerryData_energy
+/-- The generic spectral index attached to a physical band has the model band energy. -/
+@[simp] theorem pointwiseBerryData_energy_bandIndex
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseBerryData v m px py hE).energy band = bandEnergy band v m px py := rfl
+    (pointwiseBerryData v m px py hE).energy (bandIndex band) =
+      bandEnergy band v m px py := by
+  cases band
+  · change diracEigenvaluesFin v m px py 1 = -energy v m px py
+    exact diracEigenvalue_one_eq_neg_energy v m px py hE
+  · change diracEigenvaluesFin v m px py 0 = energy v m px py
+    exact diracEigenvalue_zero_eq_energy v m px py hE
 
 @[simp] theorem pointwiseBerryData_hamiltonianDerivative
     (direction : Fin 2) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -192,9 +165,11 @@ noncomputable def pointwiseBerryData
 /-- The generic opposite-band level spacing is the model interband gap. -/
 theorem pointwiseBerryData_interbandEnergyGap
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseBerryData v m px py hE).energy band -
-        (pointwiseBerryData v m px py hE).energy (oppositeBand band) =
-      interbandEnergyGap band v m px py := rfl
+    (pointwiseBerryData v m px py hE).energy (bandIndex band) -
+        (pointwiseBerryData v m px py hE).energy (bandIndex (oppositeBand band)) =
+      interbandEnergyGap band v m px py := by
+  rw [pointwiseBerryData_energy_bandIndex, pointwiseBerryData_energy_bandIndex]
+  rfl
 
 private theorem bandProjectorOperator_eq_pointwise_spectral_formula
     (band : Band) (v m px py : ℝ) :
