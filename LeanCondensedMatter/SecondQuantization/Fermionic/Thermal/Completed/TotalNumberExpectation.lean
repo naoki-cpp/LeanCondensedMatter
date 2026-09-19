@@ -74,8 +74,9 @@ theorem completedFreeGibbsDensityOperator_totalNumber_diagonalTerm
       (purePointGibbsProbability (fermionEnergy ε) β n *
         (particleNumber n : ℝ) : ℝ) := by
   rw [completedTotalNumberOperator_basisState, map_smul,
-    completedFreeGibbsDensityOperator_apply_basis]
+    completedFreeGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right]
   simp
+  ring
 
 /-- The diagonal matrix elements of the actual completed Gibbs density operator composed with the
 completed total-number operator sum to the real spectral expectation. -/
