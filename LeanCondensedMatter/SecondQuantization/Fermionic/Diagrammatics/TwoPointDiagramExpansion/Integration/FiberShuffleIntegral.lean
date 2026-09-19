@@ -125,7 +125,7 @@ private theorem fixedExternalShuffleFiber_vacuumOrderedData_eq
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
-    Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv p.2 = x := by
+    Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv p.2 = x := by
   dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   have hp : fixedExternalShuffleFiberDataEquiv shuffle p = (ext, x) :=
@@ -158,8 +158,8 @@ private theorem orderedVacuumDysonIntegrand_rightSlotOrder
           (slotSplitVacuumOrder shuffle.leftSlots) vac)
         (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) =
       orderedVacuumDysonIntegrand ε β g
-        (Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv vac)
-        (fun q => σ ((shuffle.rightSlotOrderEquiv q).1)) := by
+        (Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv vac)
+        (fun q => σ ((shuffle.sdiffLeftSlotsOrderEquiv q).1)) := by
   change
     orderedVacuumDysonIntegrand ε β g
         (Common.quarticDiagramEquivOrderedData
@@ -245,15 +245,15 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
       hsize ε β g τ τ' (d.1.1.externalPieceTimes σ)
     simpa only [hpieceEq, hleftTimesEq] using htransport
   have hvacData :
-      Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv p.2 = x := by
+      Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv p.2 = x := by
     simpa [p] using fixedExternalShuffleFiber_vacuumOrderedData_eq shuffle ext x
   have hvacTransport :=
     orderedVacuumDysonIntegrand_rightSlotOrder ε β g shuffle p.2 σ
   have hrightTimes :
-      (fun q : Fin k => σ ((shuffle.rightSlotOrderEquiv q).1)) =
+      (fun q : Fin k => σ ((shuffle.sdiffLeftSlotsOrderEquiv q).1)) =
         (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
     funext q
-    rw [shuffle.rightSlotOrderEquiv_val]
+    rw [shuffle.sdiffLeftSlotsOrderEquiv_val]
   have hvacValue :
       orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData
