@@ -69,7 +69,7 @@
       "paths": [
         "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/UnboundedExpectation.lean"
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/TotalNumberExpectation.lean"
       ]
     },
     {
@@ -471,7 +471,7 @@
     {
       "id": "thermalPublicUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
-      "modules": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation"]
+      "modules": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]
     }
   ],
   "exactImports": [
