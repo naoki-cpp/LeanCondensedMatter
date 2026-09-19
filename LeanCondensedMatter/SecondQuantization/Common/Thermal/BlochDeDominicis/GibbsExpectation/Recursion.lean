@@ -85,7 +85,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       rw [← Equiv.sum_comp (finCongr hlen.symm)]
       apply Finset.sum_congr rfl
       intro j _
-      simp only [Fin.val_cast]
+      simp only [finCongr_apply, Fin.val_cast]
     rw [hreindex] at hpeel
     rw [hzl] at hpeel
     rw [h1, hpeel, Finset.sum_div]
