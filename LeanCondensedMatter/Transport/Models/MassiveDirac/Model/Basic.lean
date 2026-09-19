@@ -49,19 +49,23 @@ open QuantumTheory.Transport
 abbrev Matrix2 := InternalSpace.PauliMatrix
 
 /-- Massive-Dirac notation for the common Pauli matrix `σₓ`. -/
-abbrev sigmaX : Matrix2 := InternalSpace.pauliX
+abbrev sigmaX : Matrix2 := InternalSpace.pauliBasis .x
 
 /-- Massive-Dirac notation for the common Pauli matrix `σᵧ`. -/
-abbrev sigmaY : Matrix2 := InternalSpace.pauliY
+abbrev sigmaY : Matrix2 := InternalSpace.pauliBasis .y
 
 /-- Massive-Dirac notation for the common Pauli matrix `σ_z`. -/
-abbrev sigmaZ : Matrix2 := InternalSpace.pauliZ
+abbrev sigmaZ : Matrix2 := InternalSpace.pauliBasis .z
 
 /-- Massive-Dirac notation for the model-independent Pauli-basis axis. -/
 abbrev PauliAxis := InternalSpace.PauliAxis
 
+/-- Embed an in-plane Cartesian direction into the model-independent Pauli axes. -/
+def inPlanePauliAxis : Fin 2 → PauliAxis := ![.x, .y]
+
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
-def directionPauli : Fin 2 → Matrix2 := ![sigmaX, sigmaY]
+def directionPauli (direction : Fin 2) : Matrix2 :=
+  InternalSpace.pauliBasis (inPlanePauliAxis direction)
 
 /-- Axis-indexed coefficient vector `d(p) = (v pₓ, v pᵧ, m)` of the clean Dirac Hamiltonian. -/
 def diracPauliCoefficients (v m px py : ℝ) : PauliAxis → ℂ
@@ -80,7 +84,8 @@ def hamiltonian (v m px py : ℝ) : Matrix2 :=
 @[simp] theorem hamiltonian_eq_pauliCombination (v m px py : ℝ) :
     hamiltonian v m px py =
       InternalSpace.pauliCombination (diracPauliCoefficients v m px py) := by
-  rfl
+  simp [hamiltonian, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis,
+    InternalSpace.pauliBasis, diracPauliCoefficients]
 
 /-- Velocity operator `v_μ = ∂H₀/∂p_μ = v σ_μ`. -/
 def velocity (direction : Fin 2) (v : ℝ) : Matrix2 :=
