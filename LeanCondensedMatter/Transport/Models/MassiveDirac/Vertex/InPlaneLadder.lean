@@ -64,7 +64,10 @@ private theorem continuous_inPlaneRotationMatrix :
     Continuous inPlaneRotationMatrix := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;>
-    simp [inPlaneRotationMatrix] <;> fun_prop
+    simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue,
+      inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
+      inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y] <;>
+    fun_prop
 
 private theorem continuous_inPlaneLadderAction :
     Continuous fun p : InPlaneCoefficientVector × InPlaneCoefficientVector =>
