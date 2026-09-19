@@ -127,38 +127,45 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
         ext vac _
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is
-the standardized connected external diagram and therefore does not depend on the vacuum diagram. -/
-theorem fixedExternalFiberEquiv_symm_externalPiece_heq
-    (T : Finset (Fin n))
+/-- After reindexing a fiber, the standalone external piece at any identified slot count is exactly
+the correspondingly standardized connected external diagram, independently of the vacuum piece. -/
+theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
+    (T : Finset (Fin n)) {m : ℕ} (h : T.card = m)
     (p : {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
             ext.1.IsExternallyConnected} ×
           QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T)) :
-    HEq ((fixedExternalFiberEquiv T).symm p).1.externalPiece
-      ((connectedFixedExternalTwoPointWickDiagramOnEquiv T p.1).1) := by
+    let d := (fixedExternalFiberEquiv T).symm p
+    let hsize : d.1.1.externalInteractionPart.card = m :=
+      (congrArg Finset.card d.2).trans h
+    d.1.externalPieceOfCardEq hsize =
+      (connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq T h p.1).1 := by
+  dsimp only
   let d := (fixedExternalFiberEquiv T).symm p
+  let hsize : d.1.1.externalInteractionPart.card = m :=
+    (congrArg Finset.card d.2).trans h
+  change d.1.externalPieceOfCardEq hsize = _
   have hpiece :
-      HEq d.1.externalPiece
-        (fixedExternalTwoPointWickDiagramOnEquiv T
+      d.1.externalPieceOfCardEq hsize =
+        fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h
           ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
               (Common.isSplit_slotLegSplitting_of_interactionPart_eq
                 (Finset.subset_univ T) d.2),
-            d.1.2⟩) := by
-    obtain ⟨d, hd⟩ := d
+            d.1.2⟩ := by
+    obtain ⟨d0, hd⟩ := d
     subst T
-    apply heq_of_eq
     apply Subtype.ext
     have hsplit :
-        d.1.externalVacuumSplit.1 =
-          d.1.slotSplitExternal (Finset.subset_univ d.1.externalInteractionPart)
+        d0.1.externalVacuumSplit.1 =
+          d0.1.slotSplitExternal (Finset.subset_univ d0.1.externalInteractionPart)
             (Common.isSplit_slotLegSplitting_of_interactionPart_eq
-              (Finset.subset_univ d.1.externalInteractionPart) rfl) := by
+              (Finset.subset_univ d0.1.externalInteractionPart) rfl) := by
       rfl
     have hcongr := congrArg
       (fun x => Common.TwoPointDiagram.slotCongr
-        (Common.standardSlotEquiv d.1.externalInteractionPart) x) hsplit
-    simpa [FixedExternalTwoPointWickDiagram.externalPiece,
-      Common.TwoPointDiagram.externalPiece, fixedExternalTwoPointWickDiagramOnEquiv] using hcongr
+        (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
+    simpa [d, hsize, FixedExternalTwoPointWickDiagram.externalPieceOfCardEq,
+      Common.TwoPointDiagram.externalPieceOfCardEq,
+      fixedExternalTwoPointWickDiagramOnEquivOfCardEq] using hcongr
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
   have hext :
       ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
@@ -166,7 +173,7 @@ theorem fixedExternalFiberEquiv_symm_externalPiece_heq
             (Finset.subset_univ T) d.2), d.1.2⟩ = p.1.1 := by
     exact congrArg (fun q => q.1.1) hright
   rw [hext] at hpiece
-  exact hpiece
+  simpa [connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq] using hpiece
 
 open Classical in
 /-- **The diagram sum as a sum over the slot split.** Every fixed-external diagram is a connected
