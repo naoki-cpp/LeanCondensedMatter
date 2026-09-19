@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
 
