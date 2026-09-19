@@ -7,17 +7,14 @@ set_option linter.style.header false
 set_option linter.style.openClassical false
 
 /-!
-# Finite Gibbs expectations from density operators
+# Finite Gibbs coordinate formulas
 
-The normalized Gibbs expectation on a finite configuration space is the canonical expectation of
-the generic finite pure-point Gibbs density operator after transporting algebraic Fock operators to
-the finite Hilbert realization. Positivity, normalization, and linearity come from the density-state
-API.
+This module owns the finite-coordinate realization of the canonical pure-point Gibbs expectation:
+complex Boltzmann weights, diagonal-evolution trace formulas, the physical trace-ratio identity, and
+the comparison with the normalized weighted diagonal functional.
 
-The unnormalized trace identities remain occupation-basis formulas about `traceFock`,
-`weightedTrace`, and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only
-their physical trace-ratio combination. The comparison with `normalizedWeightedDiagonal` is kept
-here as a derived coordinate formula rather than in a separate compatibility module.
+These facts are thermal infrastructure independent of Bloch--de Dominicis. Pairing-specific modules
+consume this API downstream; perturbative finite-coordinate calculations may use it directly.
 -/
 
 namespace SecondQuantization

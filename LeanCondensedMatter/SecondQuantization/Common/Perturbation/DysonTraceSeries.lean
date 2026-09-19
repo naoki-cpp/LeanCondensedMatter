@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import Mathlib.RingTheory.PowerSeries.Basic
 
 set_option linter.style.header false
