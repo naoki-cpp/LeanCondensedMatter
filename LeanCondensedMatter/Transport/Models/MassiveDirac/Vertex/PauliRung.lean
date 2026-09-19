@@ -87,25 +87,29 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
   have hL :
       polarPauliMatrix aL bL dL θ =
         aL • (1 : Matrix2) + InternalSpace.pauliCombination uL := by
-    simp [polarPauliMatrix, uL, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis, InternalSpace.pauliBasis]
+    simp [polarPauliMatrix, uL, InternalSpace.pauliCombination_eq_components]
     module
   have hR :
       polarPauliMatrix aR bR dR θ =
         aR • (1 : Matrix2) + InternalSpace.pauliCombination uR := by
-    simp [polarPauliMatrix, uR, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis, InternalSpace.pauliBasis]
+    simp [polarPauliMatrix, uR, InternalSpace.pauliCombination_eq_components]
     module
   have hVertex :
       coefficients 0 • sigmaX + coefficients 1 • sigmaY =
         (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
-    simp [vertex, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis, InternalSpace.pauliBasis]
+    simp [vertex, InternalSpace.pauliCombination_eq_components]
   rw [hL, hVertex, hR,
     InternalSpace.pauliAffine_mul_pauliAffine,
     InternalSpace.pauliAffine_mul_pauliAffine]
   simp [uL, uR, vertex, InternalSpace.pauliCross, cross_apply,
     InternalSpace.pauliAxisComponent, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
+    InternalSpace.pauliCombination_eq_components,
     AngularHarmonicCoefficients.eval]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   ring_nf
+  simp [hI]
   module
 
 private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
