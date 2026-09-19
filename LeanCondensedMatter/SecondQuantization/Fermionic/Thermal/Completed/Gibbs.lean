@@ -54,8 +54,7 @@ theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
   simpa using
     (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
       A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
-      (purePointGibbsDensityOperator_apply_basis
-        (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum)
+      (completedFreeGibbsDensityOperator_apply_basis ε β hsum)
 
 end
 end Fermionic
