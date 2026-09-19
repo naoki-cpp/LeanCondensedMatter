@@ -22368,6 +22368,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (axis : InternalSpace.PauliAxis), Matrix.IsHermitian (InternalSpace.pauliBasis axis)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.pauliBasis_isHermitian",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Every matrix in the Pauli basis is Hermitian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.pauliCombination_ofReal_isHermitian",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator.0.QuantumTheory.Transport.Models.MassiveDirac.directionPauli_isHermitian"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.pauliCombination_ofReal_isHermitian",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator.0.QuantumTheory.Transport.Models.MassiveDirac.directionPauli_isHermitian"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (u v : InternalSpace.PauliAxis → ℂ),\n  InternalSpace.pauliCombination (u + v) = InternalSpace.pauliCombination u + InternalSpace.pauliCombination v",
     "standardAxioms": [
       "Classical.choice",
@@ -22504,7 +22545,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -22516,17 +22557,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "InternalSpace.pauliBasis_isHermitian"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55509,7 +55550,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_isSelfAdjoint"
     ],
     "dependencies": [
-      "InternalSpace.pauliCombination_ofReal_isHermitian"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator.0.QuantumTheory.Transport.Models.MassiveDirac.directionPauli_isHermitian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -135035,7 +135076,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (a b : InternalSpace.PauliAxis),\n  InternalSpace.pauliBasis✝ a * InternalSpace.pauliBasis✝ b =\n    (InternalSpace.pauliBasisCoeff✝ a ⬝ᵥ InternalSpace.pauliBasisCoeff✝ b) • 1 +\n      Complex.I •\n        (InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.x •\n              InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.x +\n            InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.y •\n              InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.y +\n          InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n              InternalSpace.PauliAxis.z •\n            InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.z)",
+    "statement": "∀ (a b : InternalSpace.PauliAxis),\n  InternalSpace.pauliBasis a * InternalSpace.pauliBasis b =\n    (InternalSpace.pauliBasisCoeff✝ a ⬝ᵥ InternalSpace.pauliBasisCoeff✝ b) • 1 +\n      Complex.I •\n        (InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.x •\n              InternalSpace.pauliBasis InternalSpace.PauliAxis.x +\n            InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.y •\n              InternalSpace.pauliBasis InternalSpace.PauliAxis.y +\n          InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n              InternalSpace.PauliAxis.z •\n            InternalSpace.pauliBasis InternalSpace.PauliAxis.z)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159798,6 +159839,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (direction : Fin 2), Matrix.IsHermitian (QuantumTheory.Transport.Models.MassiveDirac.directionPauli direction)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator.0.QuantumTheory.Transport.Models.MassiveDirac.directionPauli_isHermitian",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
+    ],
+    "dependencies": [
+      "InternalSpace.pauliBasis_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
