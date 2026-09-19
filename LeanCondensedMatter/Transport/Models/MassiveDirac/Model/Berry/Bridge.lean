@@ -216,9 +216,19 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
     exact_mod_cast hE
   rw [bandProjectorOperator_eq_pointwise_spectral_formula]
   rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
-    hamiltonianOperator_pointwiseEigenbasis source v m px py hE]
-  cases projected <;> cases source <;>
-    simp [bandSign, bandEnergy, smul_smul, hEc]
+    hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
+  rw [← one_smul ℂ (pointwiseEigenbasis v m px py source), ← add_smul, smul_smul]
+  have hcoeff :
+      (1 / 2 : ℂ) *
+          (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
+            (((bandEnergy source v m px py : ℝ) : ℂ))) =
+        if projected = source then 1 else 0 := by
+    cases projected <;> cases source <;>
+      simp [bandSign, bandEnergy, hE] <;>
+      field_simp [hEc] <;>
+      ring
+  rw [hcoeff]
+  split <;> simp
 
 private theorem bandProjectorOperator_eq_rankOne
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -316,7 +326,7 @@ theorem pointwiseBerryCurvature_eq_forceMatrixBerryCurvature
     simp [sum_band, data, pointwiseBerryData_interbandEnergyGap,
       forceMatrixBerryCurvature, oppositeBand, hforce] <;>
     field_simp [hgap, hgapc] <;>
-    simp [Complex.mul_im] <;>
+    try simp [Complex.mul_im] <;>
     ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
