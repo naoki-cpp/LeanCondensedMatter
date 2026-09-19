@@ -9150,6 +9150,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] (σ : Equiv.Perm α),\n  (σ.cycleType.sum + σ.cycleType.card) % 2 = Combinatorics.cycleDefect σ % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.cycleDefect_mod_two",
+    "module": "LeanCondensedMatter.Permutation.OrbitPartition",
+    "externalAxioms": [],
+    "docString": "The parity of the cycle defect agrees with the parity of\n`cycleType.sum + cycleType.card`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exchangeUnitWeight_sign_eq_cycleWeight"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Permutation.OrbitPartition.0.Combinatorics.cycleType_card_le_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exchangeUnitWeight_sign_eq_cycleWeight"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : Fintype α] (p : Equiv.Perm α),\n  Function.Involutive ⇑p → (∀ (x : α), p x ≠ x) → Even (Fintype.card α)",
     "standardAxioms": [
       "Classical.choice",
@@ -22242,12 +22283,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
@@ -22257,16 +22301,19 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22380,18 +22427,21 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.pauliAffine_mul_pauliAffine",
-      "InternalSpace.pauliCombination_mul_self"
+      "InternalSpace.pauliCombination_mul_self",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
+      "InternalSpace.dotProduct_pauliAxis",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.pauliAffine_mul_pauliAffine",
-      "InternalSpace.pauliCombination_mul_self"
+      "InternalSpace.pauliCombination_mul_self",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22615,426 +22665,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "InternalSpace.pauliX 1 1 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliX_one_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliX 1 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliX_one_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliX 0 1 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliX_zero_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliX 0 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliX_zero_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliY 1 1 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliY_one_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliY 1 0 = Complex.I",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliY_one_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliY 0 1 = -Complex.I",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliY_zero_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliY 0 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliY_zero_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliZ 1 1 = -1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliZ_one_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliZ 1 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliZ_one_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliZ 0 1 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliZ_zero_one",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "InternalSpace.pauliZ 0 0 = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "InternalSpace.pauliZ_zero_zero",
-    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (u v : InternalSpace.PauliAxis → ℂ),\n  ((1 / 2) • (1 + InternalSpace.pauliCombination u) * (1 / 2) • (1 + InternalSpace.pauliCombination v)).trace =\n    (1 + u ⬝ᵥ v) / 2",
     "standardAxioms": [
@@ -23138,6 +22768,7 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
     "dependencies": [],
@@ -23145,9 +22776,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23183,7 +22815,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_mul_pauliCombination",
+      "InternalSpace.trace_pauliCombination"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -135401,6 +135035,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (a b : InternalSpace.PauliAxis),\n  InternalSpace.pauliBasis✝ a * InternalSpace.pauliBasis✝ b =\n    (InternalSpace.pauliBasisCoeff✝ a ⬝ᵥ InternalSpace.pauliBasisCoeff✝ b) • 1 +\n      Complex.I •\n        (InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.x •\n              InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.x +\n            InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n                InternalSpace.PauliAxis.y •\n              InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.y +\n          InternalSpace.pauliCross (InternalSpace.pauliBasisCoeff✝ a) (InternalSpace.pauliBasisCoeff✝ b)\n              InternalSpace.PauliAxis.z •\n            InternalSpace.pauliBasis✝ InternalSpace.PauliAxis.z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.pauliCombination_mul_pauliCombination"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.pauliCombination_mul_pauliCombination"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : InternalSpace.PauliAxis → M),\n  ∑ axis, f axis = f InternalSpace.PauliAxis.x + f InternalSpace.PauliAxis.y + f InternalSpace.PauliAxis.z",
     "standardAxioms": [
       "Classical.choice",
@@ -135408,7 +135083,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -135420,19 +135095,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.pauliCombination_mul_pauliCombination",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination"
+      "InternalSpace.dotProduct_pauliAxis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.pauliCombination_mul_pauliCombination",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination"
+      "InternalSpace.dotProduct_pauliAxis"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143192,6 +142863,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] (σ : Equiv.Perm α), σ.cycleType.card ≤ σ.cycleType.sum",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Permutation.OrbitPartition.0.Combinatorics.cycleType_card_le_sum",
+    "module": "LeanCondensedMatter.Permutation.OrbitPartition",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.cycleDefect_mod_two"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.cycleDefect_mod_two"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] (σ : Equiv.Perm α)\n  (B : ↥(Combinatorics.orbitFinpartition σ).parts),\n  1 < (↑B).card → Combinatorics.orbitBlockCycle✝ σ B ∈ σ.cycleFactorsFinset",
     "standardAxioms": [
       "Classical.choice",
@@ -143449,86 +143159,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : Fintype α] [inst_1 : DecidableEq α] (σ : Equiv.Perm α),\n  (σ.cycleType.sum + σ.cycleType.card) % 2 = Combinatorics.cycleDefect σ % 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleDefect_mod_two",
-    "module": "LeanCondensedMatter.Permutation.PairingBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exchangeUnitWeight_sign_eq_cycleWeight"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleType_card_le_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exchangeUnitWeight_sign_eq_cycleWeight"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : Fintype α] [inst_1 : DecidableEq α] (σ : Equiv.Perm α), σ.cycleType.card ≤ σ.cycleType.sum",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleType_card_le_sum",
-    "module": "LeanCondensedMatter.Permutation.PairingBridge",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleDefect_mod_two"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleDefect_mod_two"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : CommSemiring R] (ζ : R),\n  ζ * ζ = 1 →\n    ∀ (u v : ℤˣ),\n      Combinatorics.exchangeUnitWeight✝ ζ (u * v) =\n        Combinatorics.exchangeUnitWeight✝ ζ u * Combinatorics.exchangeUnitWeight✝ ζ v",
     "standardAxioms": [
       "Classical.choice",
@@ -143628,8 +143258,8 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.pairingWeight_sidePairing"
     ],
     "dependencies": [
+      "Combinatorics.cycleDefect_mod_two",
       "Combinatorics.pow_eq_of_mod_two_eq",
-      "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.cycleDefect_mod_two",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exchangeUnitWeight_neg_one_pow"
     ],
     "crossModuleDirectWrapper": false,
