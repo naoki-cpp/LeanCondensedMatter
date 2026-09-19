@@ -221,7 +221,7 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   rw [hb]
   by_cases hmn : m = n
   · subst m
-    simp only [if_true, mul_zero, add_zero, mul_one]
+    simp only [if_true, mul_zero, add_zero]
     simpa only [smul_eq_mul, mul_one, mul_zero, add_zero] using
       (ContinuousLinearMap.coe_diagonalExpectationValue_right
         (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)).symm
@@ -234,9 +234,23 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
           (((energy n - energy m : ℝ) : ℂ)) =
         inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) :=
       div_mul_cancel₀ _ hgap
-    rw [← hcancel]
-    push_cast
-    ring
+    calc
+      inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) +
+          (((energy m : ℝ) : ℂ)) *
+            (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+              (((energy n - energy m : ℝ) : ℂ))) =
+        (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+            (((energy n - energy m : ℝ) : ℂ))) *
+            (((energy n - energy m : ℝ) : ℂ)) +
+          (((energy m : ℝ) : ℂ)) *
+            (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+              (((energy n - energy m : ℝ) : ℂ))) := by
+        rw [hcancel]
+      _ = (((energy n : ℝ) : ℂ)) *
+          (inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+            (((energy n - energy m : ℝ) : ℂ))) := by
+        push_cast
+        ring
 
 /-- Build pointwise Berry data from a nondegenerate orthonormal eigenbasis and self-adjoint
 Hamiltonian derivatives.
