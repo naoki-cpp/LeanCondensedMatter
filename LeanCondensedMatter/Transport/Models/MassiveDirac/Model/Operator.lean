@@ -122,36 +122,21 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
   simpa [InternalSpace.pauliCombination, diracPauliCoefficients, u] using
     InternalSpace.pauliCombination_ofReal_isHermitian u
 
+private theorem directionPauli_isHermitian (direction : Fin 2) :
+    (directionPauli direction).IsHermitian := by
+  fin_cases direction
+  · simpa [directionPauli, InternalSpace.pauliBasis] using
+      InternalSpace.pauliBasis_isHermitian .x
+  · simpa [directionPauli, InternalSpace.pauliBasis] using
+      InternalSpace.pauliBasis_isHermitian .y
+
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
-  fin_cases direction
-  · let u : PauliAxis → ℝ
-      | .x => -e * v
-      | .y => 0
-      | .z => 0
-    have hcurrent :
-        current 0 e v =
-          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli,
-        InternalSpace.pauliCombination, u, smul_smul]
-      module
-    change (current 0 e v).IsHermitian
-    rw [hcurrent]
-    exact InternalSpace.pauliCombination_ofReal_isHermitian u
-  · let u : PauliAxis → ℝ
-      | .x => 0
-      | .y => -e * v
-      | .z => 0
-    have hcurrent :
-        current 1 e v =
-          InternalSpace.pauliCombination (fun axis => (u axis : ℂ)) := by
-      simp [current, velocity, directionPauli,
-        InternalSpace.pauliCombination, u, smul_smul]
-      module
-    change (current 1 e v).IsHermitian
-    rw [hcurrent]
-    exact InternalSpace.pauliCombination_ofReal_isHermitian u
+  unfold current velocity
+  exact
+    ((directionPauli_isHermitian direction).smul (by simp [isSelfAdjoint_iff])).smul
+      (by simp [isSelfAdjoint_iff])
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator, as required by the generic free-system API. -/
