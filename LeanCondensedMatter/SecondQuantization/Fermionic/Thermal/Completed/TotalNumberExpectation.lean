@@ -73,9 +73,13 @@ theorem completedFreeGibbsDensityOperator_totalNumber_diagonalTerm
             ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)) =
       (purePointGibbsProbability (fermionEnergy ε) β n *
         (particleNumber n : ℝ) : ℝ) := by
+  have hnorm : ‖completedBasisState n‖ = 1 := by
+    rw [← completedOccupationHilbertBasis_apply]
+    exact (completedOccupationHilbertBasis (Mode := Mode)).orthonormal.norm_eq_one n
   rw [completedTotalNumberOperator_basisState, map_smul,
-    completedFreeGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right]
-  simp
+    completedFreeGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
+    inner_self_eq_norm_sq_to_K, hnorm]
+  norm_num
   ring
 
 /-- The diagonal matrix elements of the actual completed Gibbs density operator composed with the
@@ -90,7 +94,7 @@ theorem hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal
             (completedTotalNumberOperator
               ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)))
       (completedFreeTotalNumberExpectation ε β hsum : ℂ) := by
-  simpa [completedFreeGibbsDensityOperator_totalNumber_diagonalTerm] using
+  simpa only [completedFreeGibbsDensityOperator_totalNumber_diagonalTerm] using
     (hasSum_completedFreeTotalNumberExpectation ε β hsum hint).mapL Complex.ofRealCLM
 
 end
