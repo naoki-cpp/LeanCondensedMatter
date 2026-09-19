@@ -41,12 +41,12 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         source v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
-private theorem trace_four_mul_eq_entry_sum (A B C D : Matrix2) :
+private theorem trace_four_mul_eq_entry_sum
+    {ι : Type*} [Fintype ι] (A B C D : Matrix ι ι ℂ) :
     Matrix.trace (A * B * C * D) =
-      ∑ i : Fin 2, ∑ l : Fin 2, ∑ k : Fin 2, ∑ j : Fin 2,
+      ∑ i : ι, ∑ l : ι, ∑ k : ι, ∑ j : ι,
         A i j * B j k * C k l * D l i := by
   simp [Matrix.trace, Matrix.mul_apply, mul_assoc]
-  ring
 
 /-- The radial `X` topology is a finite scalar sum of radial Green/current matrix entries. This
 removes the remaining matrix multiplication and trace operations without changing any regulator or
