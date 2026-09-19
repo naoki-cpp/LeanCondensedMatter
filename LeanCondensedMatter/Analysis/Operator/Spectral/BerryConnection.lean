@@ -98,16 +98,17 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
   · subst k
     rw [if_pos rfl]
     rw [Fintype.sum_eq_single n (fun x hxn => by
-      rw [if_neg hxn]
-      simp [Ne.symm hxn])]
+      rw [if_neg hxn, inner_smul_right,
+        eigenbasis.inner_eq_zero (Ne.symm hxn), mul_zero])]
     simp
   · rw [if_neg hkn]
     rw [Fintype.sum_eq_single k (fun x hxk => by
       by_cases hxn : x = n
-      · simp [hxn]
-      · rw [if_neg hxn]
-        simp [Ne.symm hxk])]
-    simp [hkn]
+      · subst x
+        simp [hkn]
+      · rw [if_neg hxn, inner_smul_right,
+          eigenbasis.inner_eq_zero (Ne.symm hxk), mul_zero])]
+    rw [if_neg hkn, inner_smul_right, eigenbasis.inner_eq_one, mul_one]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
