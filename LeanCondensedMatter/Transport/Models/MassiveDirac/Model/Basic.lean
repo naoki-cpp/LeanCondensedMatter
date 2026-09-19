@@ -84,8 +84,8 @@ def hamiltonian (v m px py : ℝ) : Matrix2 :=
 @[simp] theorem hamiltonian_eq_pauliCombination (v m px py : ℝ) :
     hamiltonian v m px py =
       InternalSpace.pauliCombination (diracPauliCoefficients v m px py) := by
-  simp [hamiltonian, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis,
-    InternalSpace.pauliBasis, diracPauliCoefficients]
+  simp [hamiltonian, InternalSpace.pauliCombination_eq_components,
+    diracPauliCoefficients]
 
 /-- Velocity operator `v_μ = ∂H₀/∂p_μ = v σ_μ`. -/
 def velocity (direction : Fin 2) (v : ℝ) : Matrix2 :=
