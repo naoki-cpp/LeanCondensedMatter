@@ -797,9 +797,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_rightSlots",
@@ -808,12 +806,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv",
       "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -1194,13 +1191,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (j : Fin n),\n  ↑(σ.sdiffLeftSlotsOrderEquiv j) = σ.slotEquiv (Sum.inr j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val",
+    "module": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv",
+    "directWrapperOf": "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
+    "dependents": [
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
+    ],
+    "dependencies": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {m n : ℕ} (σ : Combinatorics.BinaryShuffle.SlotShuffle m n) (j : Fin n),\n  ((Finset.univ \\ σ.leftSlots).orderEmbOfFin ⋯) j = σ.slotEquiv (Sum.inr j)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -1213,7 +1251,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val"
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
@@ -1224,7 +1262,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -6537,8 +6575,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p),\n  ↑((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, 1)) = (↑↑pr).2",
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p) (k : Fin 2),\n  ↑((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, k)) = pairing.pairEndpoint (↑pr, k)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6550,53 +6588,28 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_one_val",
+    "name": "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
     "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p),\n  ↑((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, 0)) = (↑↑pr).1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_zero_val",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6888,18 +6901,24 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6931,18 +6950,24 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
+      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
+      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -19192,7 +19217,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B : Finset α},\n  Finpartition.IsIndependentAcross m A B → A ≠ ⊥ → B ≠ ⊥ → Finpartition.cumulantFromMoment m (A ⊔ B) = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -19200,7 +19225,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -19211,18 +19236,14 @@
     "docString": "The cumulant of a union of two nonempty independent regions vanishes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationCumulant_eq_zero_of_isProductWeightAcross"
-    ],
+    "dependents": [],
     "dependencies": [
       "Finpartition.cumulantFromMoment_eq_zero_of_straddles"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationCumulant_eq_zero_of_isProductWeightAcross"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90227,8 +90248,8 @@
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_comp_create_self",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -90236,8 +90257,8 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_comp_create_self",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
     ],
     "compiledConsumerCount": 4,
     "axioms": [],
@@ -91012,11 +91033,12 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart"
     ],
     "dependencies": [
+      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero",
       "Combinatorics.Pairing.pairs_normalized",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_strictMono",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_one",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing.0.SecondQuantization.Common.TwoPointDiagram.externalPieceComponentPairEquiv_pair_eq_or_swap"
     ],
     "crossModuleDirectWrapper": false,
@@ -92484,92 +92506,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B),\n  ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 1)) = (↑↑pr).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (pr : d.MixedComponentPair τ τ' σ B),\n  ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (pr, 0)) = (↑↑pr).1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts),\n  SecondQuantization.Common.SameTwoPointOrderChamber τ τ' σ υ →\n    ∀ (pr : d.MixedComponentPair τ τ' σ B),\n      have q := (d.mixedComponentPairTimeEquiv τ τ' σ υ B) pr;\n      (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' υ) (↑↑q).1 =\n          (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) (↑↑pr).1 ∧\n        (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' υ) (↑↑q).2 =\n          (SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv τ τ' σ) (↑↑pr).2",
     "standardAxioms": [
       "Classical.choice",
@@ -92592,8 +92528,9 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_one",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_zero",
+      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber",
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
@@ -99389,7 +99326,6 @@
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Fermionic.freeHamiltonian_basisState",
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
-      "SecondQuantization.Fermionic.occupationProjector_basisState",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState"
     ],
     "dependencies": [
@@ -99405,10 +99341,9 @@
       "SecondQuantization.Common.matrixCoeff_diagonalOperator",
       "SecondQuantization.Fermionic.freeHamiltonian_basisState",
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
-      "SecondQuantization.Fermionic.occupationProjector_basisState",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -99440,18 +99375,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
-      "SecondQuantization.Fermionic.occupationProjector_mul"
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
-      "SecondQuantization.Fermionic.occupationProjector_mul"
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103569,7 +103502,6 @@
       "SecondQuantization.Fermionic.anticomm_create_create",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.occupationProjector_singleton",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
@@ -103596,13 +103528,12 @@
       "SecondQuantization.Fermionic.anticomm_create_create",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.occupationProjector_singleton",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_pos",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord_of_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 22,
+    "compiledConsumerCount": 21,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105528,7 +105459,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (w a : Config → ℂ),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w) (SecondQuantization.Common.diagonalOperator a) =\n    (∑ n, w n * a n) / SecondQuantization.Common.weightSum w",
     "standardAxioms": [
       "Classical.choice",
@@ -105536,7 +105467,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105547,19 +105478,15 @@
     "docString": "Coordinate formula for the normalized weighted diagonal of a diagonal operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_occupationProjector"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
       "SecondQuantization.Common.weightedTrace_diagonalOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_occupationProjector"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105594,8 +105521,7 @@
       "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator",
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.normalizedWeightedDiagonal_id",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.occupationMoment_singleton"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -105605,10 +105531,9 @@
       "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator",
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.normalizedWeightedDiagonal_id",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.occupationMoment_singleton"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105641,8 +105566,6 @@
     "dependents": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_annihilate_comp_create_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_create_comp_annihilate_of_ne"
     ],
@@ -105655,12 +105578,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_annihilate_comp_create_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_create_comp_annihilate_of_ne"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105722,7 +105643,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -105734,19 +105655,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128020,16 +127937,15 @@
     ],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.card_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
+      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlotsOrderEquiv_val",
       "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_cast",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.cast_eq_of_heq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPiece_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_cast",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder",
       "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti",
       "intervalIntegral.orderedSimplexIntegral_smul"
     ],
@@ -128763,53 +128679,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ),\n  SecondQuantization.Fermionic.freeGibbsGreenFunction ε β i j τ τ' =\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction ε (SecondQuantization.Fermionic.freeBoltzmannWeight ε β) i\n      j τ τ'",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-    "externalAxioms": [],
-    "docString": "The density-state Green function agrees with its finite occupation-coordinate evaluation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ},\n  τ' < τ →\n    SecondQuantization.Fermionic.freeGibbsGreenFunction ε β i i τ τ' =\n      -(Complex.exp (-↑(τ - τ') * ↑(ε i)) * (Complex.exp (↑β * ↑(ε i)) / (Complex.exp (↑β * ↑(ε i)) + 1)))",
     "standardAxioms": [
@@ -128831,12 +128700,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128874,11 +128743,11 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128916,9 +128785,9 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_annihilate_comp_create_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_create_comp_annihilate_of_ne"
     ],
@@ -128958,13 +128827,13 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -129671,8 +129540,7 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate"
+      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
@@ -129688,10 +129556,9 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate"
+      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129764,8 +129631,7 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
@@ -129781,10 +129647,9 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130290,7 +130155,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -130302,8 +130167,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.CarriesShift.comp",
@@ -130313,10 +130177,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130335,7 +130198,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -130347,8 +130210,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.CarriesShift.comp",
@@ -130358,10 +130220,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130941,123 +130802,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (S : Finset Mode),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w) (SecondQuantization.Fermionic.occupationProjector S) =\n    SecondQuantization.Fermionic.occupationMoment w S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.normalizedWeightedDiagonal_occupationProjector",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.**\nThe operator-level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation\nobservable's normalized weighted diagonal functional agrees with the direct weighted-sum\ndefinition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_diagonalOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w)\n      (SecondQuantization.Common.timeOrderedProduct SecondQuantization.Common.Statistics.fermion\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i))\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.annihilate j)) τ τ') =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedContraction",
-    "externalAxioms": [],
-    "docString": "**`⟨T_τ[c_i(τ) c_j(τ')]⟩_w = 0`** for any occupation-diagonal weight `w`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ),\n  (SecondQuantization.Common.normalizedWeightedDiagonal w)\n      (SecondQuantization.Common.timeOrderedProduct SecondQuantization.Common.Statistics.fermion\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create i))\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j)) τ τ') =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.normalizedWeightedDiagonal_timeOrderedProduct_create_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedContraction",
-    "externalAxioms": [],
-    "docString": "**`⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`**, the creation-side counterpart of\n`normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero",
-      "SecondQuantization.Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.numberOperator i) (SecondQuantization.Fermionic.basisState n) =\n    if i ∈ n then SecondQuantization.Fermionic.basisState n else 0",
     "standardAxioms": [
@@ -131066,7 +130810,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -131078,7 +130822,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.occupationProjector_singleton",
       "SecondQuantization.Fermionic.weightedTrace_numberOperator"
     ],
     "dependencies": [
@@ -131092,10 +130835,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationProjector_singleton",
       "SecondQuantization.Fermionic.weightedTrace_numberOperator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131138,437 +130880,6 @@
       "SecondQuantization.Fermionic.annihilate_comp_create_comp_self"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {w : SecondQuantization.Fermionic.Occupation Mode → ℂ} {A B : Finset Mode},\n  SecondQuantization.Fermionic.IsProductWeightAcross w A B →\n    SecondQuantization.Common.weightSum w ≠ 0 →\n      A ≠ ⊥ → B ≠ ⊥ → SecondQuantization.Fermionic.occupationCumulant w (A ⊔ B) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationCumulant_eq_zero_of_isProductWeightAcross",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**Occupation-number cumulants vanish across a product-weight bipartition.** The physics-facing\nform of `occupationMoment_isIndependentAcross`: under a product weight (e.g. a Gibbs weight for a\nHamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction), the connected\ncorrelator of modes spanning both `A` and `B` vanishes. This packages\n`cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name\n`Finpartition.IsIndependentAcross` themselves. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross",
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {w : SecondQuantization.Fermionic.Occupation Mode → ℂ},\n  SecondQuantization.Common.weightSum w ≠ 0 → SecondQuantization.Fermionic.occupationMoment w ⊥ = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationMoment_bot",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**`occupationMoment` at `⊥` is `1`** (given a nonzero partition function): every occupation\nstate vacuously contains the empty set of modes, so the numerator is exactly `Z(w)`. This matches\n`Finpartition.IsIndependentAcross`'s `m ⊥ = 1` normalization hypothesis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {w wA wB : SecondQuantization.Fermionic.Occupation Mode → ℂ}\n  {A B : Finset Mode},\n  Disjoint A B →\n    A ∪ B = Finset.univ →\n      (∀ (n : SecondQuantization.Fermionic.Occupation Mode), w n = wA (n ∩ A) * wB (n ∩ B)) →\n        ∀ (T : Finset Mode),\n          SecondQuantization.Fermionic.occupationMoment w T =\n            ((∑ S ∈ A.powerset with T ∩ A ⊆ S, wA S) * ∑ T' ∈ B.powerset with T ∩ B ⊆ T', wB T') /\n              SecondQuantization.Common.weightSum w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationMoment_eq_of_product_factorization",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**`occupationMoment` under a product weight, in terms of the two independent sides.** ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.sum_filter_subset_eq_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {w : SecondQuantization.Fermionic.Occupation Mode → ℂ} {A B : Finset Mode},\n  SecondQuantization.Fermionic.IsProductWeightAcross w A B →\n    SecondQuantization.Common.weightSum w ≠ 0 →\n      Finpartition.IsIndependentAcross (SecondQuantization.Fermionic.occupationMoment w) A B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**The main theorem: a product weight makes `occupationMoment` independent across its\nbipartition.** Connects the physical independence hypothesis `IsProductWeightAcross` to the\nabstract `Finpartition.IsIndependentAcross` condition used by the general cumulant-vanishing\ntheorem `cumulantFromMoment_eq_zero_of_isIndependentAcross`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationCumulant_eq_zero_of_isProductWeightAcross"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.occupationMoment_bot",
-      "SecondQuantization.Fermionic.occupationMoment_eq_of_product_factorization",
-      "SecondQuantization.Fermionic.weightSum_eq_mul_of_product_factorization"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationCumulant_eq_zero_of_isProductWeightAcross"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode]\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i : Mode),\n  SecondQuantization.Fermionic.occupationMoment w {i} =\n    (SecondQuantization.Common.normalizedWeightedDiagonal w) (SecondQuantization.Fermionic.numberOperator i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationMoment_singleton",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**`occupationMoment` at a singleton `{i}` is the normalized weighted diagonal functional of\n`numberOperator i`.** This connects the weighted-sum definition to the operator-level normalized\nweighted functional. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
-      "SecondQuantization.Fermionic.weightedTrace_numberOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.occupationProjector S) (SecondQuantization.Fermionic.basisState n) =\n    if S ⊆ n then SecondQuantization.Fermionic.basisState n else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationProjector_singleton"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.diagonalOperator_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationProjector_singleton"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (S T : Finset Mode),\n  SecondQuantization.Fermionic.occupationProjector S * SecondQuantization.Fermionic.occupationProjector T =\n    SecondQuantization.Fermionic.occupationProjector T * SecondQuantization.Fermionic.occupationProjector S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_comm",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.occupationProjector_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1}, SecondQuantization.Fermionic.occupationProjector ∅ = LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_empty",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (S : Finset Mode),\n  SecondQuantization.Fermionic.occupationProjector S * SecondQuantization.Fermionic.occupationProjector S =\n    SecondQuantization.Fermionic.occupationProjector S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_idempotent",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.occupationProjector_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (S T : Finset Mode),\n  SecondQuantization.Fermionic.occupationProjector S * SecondQuantization.Fermionic.occupationProjector T =\n    SecondQuantization.Fermionic.occupationProjector (S ∪ T)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_mul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**Occupation projectors compose by taking unions.** The operator-level confirmation that\n`occupationProjector S` genuinely behaves as the \"simultaneous occupation of `S`\" observable: two\nsuch observables combine into the observable for their union — direct from\n`Common.diagonalOperator_comp`, since `S ∪ T ⊆ n ↔ S ⊆ n ∧ T ⊆ n`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationProjector_comm",
-      "SecondQuantization.Fermionic.occupationProjector_idempotent"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.diagonalOperator_comp"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationProjector_comm",
-      "SecondQuantization.Fermionic.occupationProjector_idempotent"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.occupationProjector {i} = SecondQuantization.Fermionic.numberOperator i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.occupationProjector_singleton",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**`occupationProjector` at the singleton `{i}` is exactly `numberOperator i`.** Confirms the\noperator-level definition matches the physical \"number operator\" reading. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.linearMap_ext_basisState",
-      "SecondQuantization.Fermionic.numberOperator_basisState",
-      "SecondQuantization.Fermionic.occupationProjector_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132532,47 +131843,6 @@
       "SecondQuantization.Fermionic.twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {A B : Finset Mode},\n  Disjoint A B →\n    A ∪ B = Finset.univ →\n      ∀ (wA wB : Finset Mode → ℂ) (C : Finset Mode),\n        ∑ n with C ⊆ n, wA (n ∩ A) * wB (n ∩ B) =\n          (∑ S ∈ A.powerset with C ∩ A ⊆ S, wA S) * ∑ T ∈ B.powerset with C ∩ B ⊆ T, wB T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.sum_filter_subset_eq_mul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": "**Reindexing a sum over occupation states restricted to contain `C`, split across a product\nweight's two independent sides.** The combinatorial core of this section: every occupation state\n`n ⊇ C` corresponds bijectively to a pair `(n ∩ A, n ∩ B)` with `n ∩ A ⊇ C ∩ A` a subset of `A`\nand `n ∩ B ⊇ C ∩ B` a subset of `B` (via `Disjoint A B`/`A ∪ B = univ`), so a sum of a product\n`wA (n ∩ A) * wB (n ∩ B)` over such `n` splits into a product of two independent sums. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationMoment_eq_of_product_factorization",
-      "SecondQuantization.Fermionic.weightSum_eq_mul_of_product_factorization"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationMoment_eq_of_product_factorization",
-      "SecondQuantization.Fermionic.weightSum_eq_mul_of_product_factorization"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134036,7 +133306,7 @@
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_of_gt",
     "dependents": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_of_gt"
@@ -134045,7 +133315,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -134079,7 +133349,7 @@
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_of_lt",
     "dependents": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_of_lt"
@@ -134088,7 +133358,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt",
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -134108,7 +133378,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": true,
@@ -134121,7 +133391,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_self_time",
     "dependents": [
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_self_time"
@@ -134129,7 +133399,7 @@
     "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134518,47 +133788,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] {w wA wB : SecondQuantization.Fermionic.Occupation Mode → ℂ}\n  {A B : Finset Mode},\n  Disjoint A B →\n    A ∪ B = Finset.univ →\n      (∀ (n : SecondQuantization.Fermionic.Occupation Mode), w n = wA (n ∩ A) * wB (n ∩ B)) →\n        SecondQuantization.Common.weightSum w = (∑ S ∈ A.powerset, wA S) * ∑ T ∈ B.powerset, wB T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightSum_eq_mul_of_product_factorization",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OccupationCumulant",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.sum_filter_subset_eq_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.occupationMoment_isIndependentAcross"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Common.weightSum (SecondQuantization.Fermionic.freeBoltzmannWeight ε β) ≠ 0",
     "standardAxioms": [
       "Classical.choice",
@@ -134600,131 +133829,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ' < τ →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction ε w i j τ τ' =\n      -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n            SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction",
-    "externalAxioms": [],
-    "docString": "For `τ' < τ`, time ordering leaves the annihilation field on the left. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ < τ' →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction ε w i j τ τ' =\n      (SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j) ∘ₗ\n          SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction",
-    "externalAxioms": [],
-    "docString": "For `τ < τ'`, the fermionic exchange sign cancels the definition's outer minus sign. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.Statistics.zetaInt_fermion",
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) (τ : ℝ),\n  SecondQuantization.Fermionic.weightedFreeTwoPointFunction ε w i j τ τ =\n    -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (2⁻¹ •\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) +\n            -1 •\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) ∘ₗ\n                SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction",
-    "externalAxioms": [],
-    "docString": "At equal times, use the symmetric `θ(0) = 1/2` convention of the canonical two-point operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.Statistics.zetaInt_fermion",
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode]\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i : Mode),\n  (SecondQuantization.Common.weightedTrace w) (SecondQuantization.Fermionic.numberOperator i) = ∑ n with i ∈ n, w n",
     "standardAxioms": [
       "Classical.choice",
@@ -134732,7 +133836,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -134744,8 +133848,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.occupationMoment_singleton"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_of_smul_basisState",
@@ -134755,10 +133858,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
-      "SecondQuantization.Fermionic.occupationMoment_singleton"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150564,45 +149666,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.componentPartition.parts) (p : d.MixedComponentPair τ τ' σ B) (k : Fin 2),\n  ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (p, k)) = Combinatorics.pairEndpointAt (↑↑p) k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_val",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B C : ↥d.componentPartition.parts) (p : d.MixedComponentPair τ τ' σ B) (q : d.MixedComponentPair τ τ' σ C),\n  Combinatorics.pairEndpointInversionCount ↑↑p ↑↑q =\n    ∑ a,\n      ∑ b,\n        if\n            ↑((d.mixedComponentPairEndpointEquiv τ τ' σ C) (q, b)) <\n              ↑((d.mixedComponentPairEndpointEquiv τ τ' σ B) (p, a)) then\n          1\n        else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -150625,8 +149688,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount"
     ],
     "dependencies": [
-      "Combinatorics.pairEndpointInversionCount_eq_sum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_val"
+      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
+      "Combinatorics.pairEndpointInversionCount_eq_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -151217,8 +150280,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_one",
-      "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_zero",
+      "Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val",
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
     ],
     "crossModuleDirectWrapper": false,
@@ -154961,7 +154025,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  (SecondQuantization.Common.quarticDiagramEquivOrderedData\n        (SecondQuantization.Common.slotSplitVacuumOrder shuffle.leftSlots))\n      p.2 ≍\n    x",
+    "statement": "∀ {Mode : Type u_1} {i j : Mode} {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (ext : { d // SecondQuantization.Common.TwoPointDiagram.IsExternallyConnected ↑d })\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) k),\n  have p := (SecondQuantization.Fermionic.fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x);\n  (SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) p.2 = x",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154973,7 +154037,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
     "externalAxioms": [],
     "docString": "The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. ",
@@ -154982,53 +154046,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedQuarticData_cast_heq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {m k : ℕ} (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k) (σ : Fin (m + k) → ℝ),\n  σ ∘ SecondQuantization.Common.slotSplitVacuumSlot shuffle.leftSlots ≍ fun q => σ (shuffle.slotEquiv (Sum.inr q))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": "The inherited vacuum times of a shuffle fiber are its right shuffle coordinates. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
-    ],
-    "dependencies": [
-      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
-      "Combinatorics.BinaryShuffle.SlotShuffle.sdiffLeftSlots_orderEmbOfFin",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.heq_finFun_of_cast"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -155052,8 +154070,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -155065,54 +154083,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumTimes_heq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {a b : ℕ} (h : a = b)\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) a),\n  x ≍ (Equiv.cast ⋯) x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedQuarticData_cast_heq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_vacuumOrderedData_heq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.fixedExternalShuffleFiber_externalPieceTimes_heq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -155126,7 +154103,46 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {a b : ℕ} (h : a = b)\n  (x : SecondQuantization.Common.OrderedQuarticDiagramData (SecondQuantization.Common.QuarticVertexLabel Mode) a)\n  (σ : Fin a → ℝ),\n  SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g x σ =\n    SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g (cast ⋯ x) (cast ⋯ σ)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N k : ℕ} (S : Finset (Fin N)) (h : S.card = k)\n  (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode N S) (σ : Fin N → ℝ),\n  (SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData (S.orderIsoOfFin ⋯).toEquiv) vac) fun q =>\n      σ ↑((S.orderIsoOfFin ⋯).toEquiv q)) =\n    SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData (S.orderIsoOfFin h).toEquiv) vac) fun q =>\n      σ ↑((S.orderIsoOfFin h).toEquiv q)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_orderIsoOfFin",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {m k : ℕ}\n  (shuffle : Combinatorics.BinaryShuffle.SlotShuffle m k)\n  (vac : SecondQuantization.Fermionic.QuarticWickDiagram Mode (m + k) (Finset.univ \\ shuffle.leftSlots))\n  (σ : Fin (m + k) → ℝ),\n  SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData\n          (SecondQuantization.Common.slotSplitVacuumOrder shuffle.leftSlots))\n        vac)\n      (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot shuffle.leftSlots) =\n    SecondQuantization.Fermionic.orderedVacuumDysonIntegrand ε β g\n      ((SecondQuantization.Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv) vac) fun q =>\n      σ ↑(shuffle.sdiffLeftSlotsOrderEquiv q)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155138,7 +154154,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_cast",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_sdiffLeftSlotsOrder",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral",
     "externalAxioms": [],
     "docString": null,
@@ -155147,7 +154163,10 @@
     "dependents": [
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.card_sdiff_leftSlots",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral.0.SecondQuantization.Fermionic.orderedVacuumDysonIntegrand_orderIsoOfFin"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -156452,6 +155471,53 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ),\n  SecondQuantization.Fermionic.freeGibbsGreenFunction ε β i j τ τ' =\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε (SecondQuantization.Fermionic.freeBoltzmannWeight ε β)\n      i j τ τ'",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
+    "externalAxioms": [],
+    "docString": "The density-state Green function agrees with its private finite occupation-coordinate evaluation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {i j : Mode},\n  i ≠ j →\n    ∀ (n : SecondQuantization.Fermionic.Occupation Mode),\n      SecondQuantization.Common.matrixCoeff\n          (SecondQuantization.Fermionic.annihilate i ∘ₗ SecondQuantization.Fermionic.create j) n n =\n        0",
     "standardAxioms": [
       "Classical.choice",
@@ -156653,11 +155719,11 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
@@ -156671,13 +155737,138 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_self",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction"
     ],
     "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ' < τ →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ' =\n      -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n            SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ < τ' →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ' =\n      (SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j) ∘ₗ\n          SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.Statistics.zetaInt_fermion",
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) (τ : ℝ),\n  SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ =\n    -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (2⁻¹ •\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) +\n            -1 •\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) ∘ₗ\n                SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.Statistics.zetaInt_fermion",
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
