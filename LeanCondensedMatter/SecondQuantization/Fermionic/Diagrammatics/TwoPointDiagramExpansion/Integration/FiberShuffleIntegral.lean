@@ -160,11 +160,22 @@ private theorem orderedVacuumDysonIntegrand_rightSlotOrder
       orderedVacuumDysonIntegrand ε β g
         (Common.quarticDiagramEquivOrderedData shuffle.rightSlotOrderEquiv vac)
         (fun q => σ ((shuffle.rightSlotOrderEquiv q).1)) := by
-  simpa only [slotSplitVacuumOrder, slotSplitVacuumSlot,
-    BinaryShuffle.SlotShuffle.rightSlotOrderEquiv, Function.comp_apply] using
-    (orderedVacuumDysonIntegrand_orderIsoOfFin ε β g
-      ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)
-      shuffle.card_sdiff_leftSlots vac σ)
+  change
+    orderedVacuumDysonIntegrand ε β g
+        (Common.quarticDiagramEquivOrderedData
+          ((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
+            rfl).toEquiv) vac)
+        (fun q => σ (((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
+          rfl).toEquiv q).1)) =
+      orderedVacuumDysonIntegrand ε β g
+        (Common.quarticDiagramEquivOrderedData
+          ((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
+            shuffle.card_sdiff_leftSlots).toEquiv) vac)
+        (fun q => σ (((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
+          shuffle.card_sdiff_leftSlots).toEquiv q).1))
+  exact orderedVacuumDysonIntegrand_orderIsoOfFin ε β g
+    ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)
+    shuffle.card_sdiff_leftSlots vac σ
 
 /-- **One fixed shuffle fiber is exactly the corresponding binary shuffled product integral.** -/
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
