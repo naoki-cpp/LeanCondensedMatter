@@ -95,8 +95,9 @@ theorem tendsto_inPlaneLadderAction
     (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
     Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
-  exact (continuous_inPlaneLadderAction.tendsto (rung₀, coefficients₀)).comp
-    (hrung.prodMk_nhds hcoefficients)
+  simpa only [Function.comp_apply] using
+    (continuous_inPlaneLadderAction.tendsto (rung₀, coefficients₀)).comp
+      (hrung.prodMk_nhds hcoefficients)
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
@@ -143,7 +144,7 @@ theorem tendsto_inPlaneLadderDeterminant
     (hrung : Tendsto rung l (nhds rung₀)) :
     Tendsto (fun a => inPlaneLadderDeterminant (rung a)) l
       (nhds (inPlaneLadderDeterminant rung₀)) := by
-  simpa only [inPlaneShiftMatrix_det] using
+  simpa only [Function.comp_apply, inPlaneShiftMatrix_det] using
     (continuous_inPlaneShiftMatrix.matrix_det.tendsto rung₀).comp hrung
 
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
