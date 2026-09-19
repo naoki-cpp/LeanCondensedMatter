@@ -1,29 +1,63 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FreeGibbs
 
 set_option linter.style.header false
 
 /-!
-# Free-Gibbs intertwining with completed fermionic ladder operators
+# Completed free-fermion Gibbs state and ladder intertwining
 
-This file records the first KMS-facing product identities for the completed fermionic
-representation.  The free Gibbs state is the generic pure-point Gibbs density operator specialized
-to the completed occupation basis and `fermionEnergy ε`, while creation and annihilation are bounded
-continuous linear maps.  Their products are therefore honest bounded-operator compositions; no
-formal exponential of the unbounded free Hamiltonian is formed.
+This module owns the representation-specific completed-Fock-space interface to the generic
+pure-point Gibbs state: occupation-basis expectation formulas and the bounded creation/annihilation
+intertwining identities used by the completed thermal theory.
 
-The occupation Boltzmann weight changes by the expected one-mode factor when a mode is inserted or
-removed.  Consequently the normalized completed Gibbs density operator satisfies
-
-`ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ`
-
-and
-
-`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`.
-
-These are the bounded thermal-intertwining identities needed before deriving completed-space KMS
-cyclicity and the representation-specific `ExpectationPairingRecursion` bridge.
+Boltzmann weights, partition functions, normalized probabilities, and the density-state construction
+remain owned by `QuantumTheory.Gibbs.PurePoint`.
 -/
+
+namespace SecondQuantization
+namespace Fermionic
+
+open QuantumTheory
+
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- The generic pure-point Gibbs density operator specialized to free fermion occupation energies is
+diagonal on the completed occupation basis. -/
+@[simp]
+theorem completedFreeGibbsDensityOperator_apply_basis
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (n : Occupation Mode) :
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).op (completedBasisState n) =
+      (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) • completedBasisState n := by
+  simpa using
+    purePointGibbsDensityOperator_apply_basis
+      (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum n
+
+/-- Bounded-operator expectations in the completed free Gibbs state are the absolutely convergent
+occupation-basis pure-point Gibbs series. -/
+theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation A =
+      ∑' n : Occupation Mode,
+        (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
+          inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
+  simpa using
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+      (fermionEnergy ε) β hsum).expectation_eq_tsum_diagonal
+      A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
+      (purePointGibbsDensityOperator_apply_basis
+        (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum)
+
+end
+end Fermionic
+end SecondQuantization
 
 namespace SecondQuantization
 namespace Fermionic
