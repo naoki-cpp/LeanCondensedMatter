@@ -1044,7 +1044,10 @@
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
+      "intervalIntegral.MeasurableLocallyBounded.mul"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -3357,7 +3360,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand.0.Combinatorics.FamilySlotShuffle.continuous_timeAssignment"
+      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
+      "intervalIntegral.MeasurableLocallyBounded.finsetProd"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -137410,8 +137414,8 @@
     "dependents": [],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_finCast",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consLeft_boundary",
+      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
       "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_boundary"
     ],
     "crossModuleDirectWrapper": false,
@@ -137450,55 +137454,14 @@
     "dependents": [],
     "dependencies": [
       "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_finCast",
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.orderedSimplexContribution_consRight_boundary",
+      "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
       "intervalIntegral.MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_boundary"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {a b : ℕ} (h : a = b) {f : (Fin a → ℝ) → ℂ},\n  intervalIntegral.MeasurableLocallyBounded f →\n    intervalIntegral.MeasurableLocallyBounded fun τ => f fun i => τ (Fin.cast h i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.measurableLocallyBounded_finCast",
-    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
-      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137728,7 +137691,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -137740,17 +137703,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.FamilySlotShuffle.continuous_integrand",
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand"
+      "Combinatorics.FamilySlotShuffle.continuous_integrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.FamilySlotShuffle.continuous_integrand",
-      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand"
+      "Combinatorics.FamilySlotShuffle.continuous_integrand"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -161715,6 +161676,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {m n : ℕ} {f : (Fin m → ℝ) → ℂ},\n  intervalIntegral.MeasurableLocallyBounded f →\n    ∀ (σ : Fin m → Fin n), intervalIntegral.MeasurableLocallyBounded fun τ => f fun i => τ (σ i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "intervalIntegral.MeasurableLocallyBounded.comp_finCoordinateSelection",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity",
+    "externalAxioms": [],
+    "docString": "Pulling back along a selection of finite coordinates preserves measurable local boundedness.\nThe coordinate selection need not be injective. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
+      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consLeft",
+      "_private.LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle.0.Combinatorics.BinaryShuffle.intervalIntegrable_orderedSimplexContribution_consRight"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} {f : (Fin (n + 1) → ℝ) → ℂ},\n  intervalIntegral.MeasurableLocallyBounded f →\n    ∀ (β : ℝ),\n      ∃ D, 0 ≤ D ∧ ∀ t ∈ Set.uIcc 0 β, ‖intervalIntegral.orderedSimplexIntegral n t fun rest => f (Fin.cons t rest)‖ ≤ D",
     "standardAxioms": [
       "Classical.choice",
@@ -161807,7 +161813,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -161819,6 +161825,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "dependencies": [
@@ -161828,9 +161835,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffle.measurableLocallyBounded_integrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -161949,6 +161957,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
@@ -161958,12 +161967,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.BinaryShuffle.SlotShuffle.measurableLocallyBounded_integrand",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_sum_dysonAmplitude",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
