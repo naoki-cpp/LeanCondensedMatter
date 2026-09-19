@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
@@ -75,6 +76,154 @@ structure PointwiseEigenbasisData (κ ι H : Type*) [Fintype ι]
 
 namespace PointwiseEigenbasisData
 
+/-- Parallel-transport-gauge eigenvector derivative determined by a simple spectrum and a
+Hamiltonian derivative. The diagonal basis component is fixed to zero; every off-diagonal
+component is the Born--Fock quotient. -/
+private noncomputable def simpleSpectrumEigenvectorDerivative [DecidableEq ι]
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n : ι) : H :=
+  ∑ m : ι,
+    (if m = n then 0 else
+      inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+        (((energy n - energy m : ℝ) : ℂ))) • eigenbasis m
+
+omit [CompleteSpace H] in
+private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n k : ι) :
+    inner ℂ (eigenbasis k)
+        (simpleSpectrumEigenvectorDerivative eigenbasis energy hamiltonianDerivative μ n) =
+      if k = n then 0 else
+        inner ℂ (eigenbasis k) (hamiltonianDerivative μ (eigenbasis n)) /
+          (((energy n - energy k : ℝ) : ℂ)) := by
+  rw [simpleSpectrumEigenvectorDerivative]
+  exact eigenbasis.orthonormal.inner_right_fintype
+    (fun m : ι =>
+      if m = n then 0 else
+        inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+          (((energy n - energy m : ℝ) : ℂ))) k
+
+private theorem inner_hamiltonian_right_of_eigenbasis
+    (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
+    (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)
+    (hamiltonian_eigenvector :
+      ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n)
+    (n : ι) (x : H) :
+    inner ℂ (eigenbasis n) (hamiltonian x) =
+      ((energy n : ℝ) : ℂ) * inner ℂ (eigenbasis n) x := by
+  calc
+    inner ℂ (eigenbasis n) (hamiltonian x) =
+        inner ℂ (hamiltonian (eigenbasis n)) x := by
+      symm
+      exact hamiltonian_selfAdjoint.isSymmetric.apply_clm _ _
+    _ = inner ℂ (((energy n : ℝ) : ℂ) • eigenbasis n) x := by
+      rw [hamiltonian_eigenvector]
+    _ = ((energy n : ℝ) : ℂ) * inner ℂ (eigenbasis n) x := by
+      rw [inner_smul_left]
+      simp
+
+/-- Construct pointwise differentiated eigenbasis data from a simple finite spectrum.
+
+Energy derivatives are the lossless diagonal expectations of the self-adjoint Hamiltonian
+derivatives. Eigenvector derivatives are constructed algebraically in the parallel-transport gauge
+`⟪φ_n, ∂_μ φ_n⟫ = 0`, so a concrete model need not differentiate an explicit eigenvector gauge. -/
+noncomputable def ofSimpleSpectrum
+    (hamiltonian : H →L[ℂ] H)
+    (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
+    (eigenbasis : OrthonormalBasis ι ℂ H)
+    (energy : ι → ℝ)
+    (hamiltonian_eigenvector :
+      ∀ n, hamiltonian (eigenbasis n) = ((energy n : ℝ) : ℂ) • eigenbasis n)
+    (hamiltonianDerivative : κ → H →L[ℂ] H)
+    (hamiltonianDerivative_selfAdjoint :
+      ∀ μ, IsSelfAdjoint (hamiltonianDerivative μ))
+    (energy_injective : Function.Injective energy) :
+    PointwiseEigenbasisData κ ι H := by
+  classical
+  let eigenvectorDerivative : κ → ι → H :=
+    simpleSpectrumEigenvectorDerivative eigenbasis energy hamiltonianDerivative
+  let energyDerivative : κ → ι → ℝ := fun μ n =>
+    ContinuousLinearMap.diagonalExpectationValue
+      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)
+  refine
+    { hamiltonian := hamiltonian
+      hamiltonian_selfAdjoint := hamiltonian_selfAdjoint
+      eigenbasis := eigenbasis
+      energy := energy
+      hamiltonian_eigenvector := hamiltonian_eigenvector
+      hamiltonianDerivative := hamiltonianDerivative
+      eigenvectorDerivative := eigenvectorDerivative
+      energyDerivative := energyDerivative
+      differentiatedEigenpair := ?_
+      differentiatedOrthonormality := ?_ }
+  · intro μ n
+    apply eigenbasis.repr.injective
+    ext k
+    rw [eigenbasis.repr_apply_apply, eigenbasis.repr_apply_apply]
+    simp only [inner_add_right, inner_smul_right]
+    rw [inner_hamiltonian_right_of_eigenbasis hamiltonian hamiltonian_selfAdjoint
+      eigenbasis energy hamiltonian_eigenvector]
+    change
+      inner ℂ (eigenbasis k) (hamiltonianDerivative μ (eigenbasis n)) +
+          ((energy k : ℝ) : ℂ) *
+            inner ℂ (eigenbasis k) (eigenvectorDerivative μ n) =
+        ((energyDerivative μ n : ℝ) : ℂ) *
+            inner ℂ (eigenbasis k) (eigenbasis n) +
+          ((energy n : ℝ) : ℂ) *
+            inner ℂ (eigenbasis k) (eigenvectorDerivative μ n)
+    simp only [eigenvectorDerivative, inner_simpleSpectrumEigenvectorDerivative]
+    by_cases hkn : k = n
+    · subst k
+      simp [energyDerivative,
+        ContinuousLinearMap.coe_diagonalExpectationValue_right]
+    · have henergy : energy k ≠ energy n := fun h => hkn (energy_injective h)
+      have hgap : ((energy n : ℂ) - (energy k : ℂ)) ≠ 0 := by
+        exact_mod_cast sub_ne_zero.mpr henergy.symm
+      simp only [if_neg hkn, eigenbasis.inner_eq_zero hkn]
+      push_cast
+      field_simp [hgap]
+      ring
+  · intro μ m n
+    change
+      inner ℂ (eigenvectorDerivative μ m) (eigenbasis n) +
+        inner ℂ (eigenbasis m) (eigenvectorDerivative μ n) = 0
+    rw [show inner ℂ (eigenvectorDerivative μ m) (eigenbasis n) =
+      (starRingEnd ℂ) (inner ℂ (eigenbasis n) (eigenvectorDerivative μ m)) by
+        simp [inner_conj_symm]]
+    simp only [eigenvectorDerivative, inner_simpleSpectrumEigenvectorDerivative]
+    by_cases hmn : m = n
+    · subst m
+      simp
+    · have henergy : energy m ≠ energy n := fun h => hmn (energy_injective h)
+      have hgapMN : ((energy n : ℂ) - (energy m : ℂ)) ≠ 0 := by
+        exact_mod_cast sub_ne_zero.mpr henergy.symm
+      have hgapNM : ((energy m : ℂ) - (energy n : ℂ)) ≠ 0 := by
+        exact_mod_cast sub_ne_zero.mpr henergy
+      have hstar :
+          (starRingEnd ℂ)
+              (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m))) =
+            inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) := by
+        calc
+          (starRingEnd ℂ)
+              (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m))) =
+              inner ℂ (hamiltonianDerivative μ (eigenbasis m)) (eigenbasis n) := by
+                simp [inner_conj_symm]
+          _ = inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) := by
+            exact (hamiltonianDerivative_selfAdjoint μ).isSymmetric.apply_clm _ _
+      have hnm : n ≠ m := fun h => hmn h.symm
+      simp only [if_neg hnm, if_neg hmn]
+      have hstarDiv :
+          (starRingEnd ℂ)
+              (inner ℂ (eigenbasis n) (hamiltonianDerivative μ (eigenbasis m)) /
+                (((energy m - energy n : ℝ) : ℂ))) =
+            inner ℂ (eigenbasis m) (hamiltonianDerivative μ (eigenbasis n)) /
+              (((energy m - energy n : ℝ) : ℂ)) := by
+        simp [hstar]
+      rw [hstarDiv]
+      push_cast
+      field_simp [hgapMN, hgapNM]
+      ring
+
 variable (data : PointwiseEigenbasisData κ ι H)
 
 /-- Berry-connection matrix element in parameter direction `μ`,
@@ -92,16 +241,9 @@ using the eigenpair equation multiplies by the corresponding real eigenenergy. -
 theorem inner_hamiltonian_right (m : ι) (x : H) :
     inner ℂ (data.eigenbasis m) (data.hamiltonian x) =
       ((data.energy m : ℝ) : ℂ) * inner ℂ (data.eigenbasis m) x := by
-  calc
-    inner ℂ (data.eigenbasis m) (data.hamiltonian x) =
-        inner ℂ (data.hamiltonian (data.eigenbasis m)) x := by
-      symm
-      exact data.hamiltonian_selfAdjoint.isSymmetric.apply_clm _ _
-    _ = inner ℂ (((data.energy m : ℝ) : ℂ) • data.eigenbasis m) x := by
-      rw [data.hamiltonian_eigenvector]
-    _ = ((data.energy m : ℝ) : ℂ) * inner ℂ (data.eigenbasis m) x := by
-      rw [inner_smul_left]
-      simp
+  exact inner_hamiltonian_right_of_eigenbasis
+    data.hamiltonian data.hamiltonian_selfAdjoint data.eigenbasis data.energy
+    data.hamiltonian_eigenvector m x
 
 /-- The Berry-connection matrix is Hermitian in band indices for every parameter direction:
 `(A_mn^μ)⁎ = A_nm^μ`. In particular, off-diagonal entries are not asserted to be real. -/
