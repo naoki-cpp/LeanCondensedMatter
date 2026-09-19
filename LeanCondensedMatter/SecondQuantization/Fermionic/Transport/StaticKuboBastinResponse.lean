@@ -59,7 +59,10 @@ noncomputable def finiteStaticKuboBastinVectorPotentialResponse
     (staticDirectionalChargeResponseChannel system geometry direction K q) eta
 
 /-- Named finite static Kubo–Bastin conductivity target. The switching rate remains positive and
-finite; only the driving frequency is specialized to zero. -/
+finite; only the driving frequency is specialized to zero. The Smrcka--Streda terminology follows
+L. Smrcka and P. Streda, *J. Phys. C* **10**, 2153 (1977),
+[doi:10.1088/0022-3719/10/12/021](https://doi.org/10.1088/0022-3719/10/12/021); no DC or
+thermodynamic-limit claim is made here. -/
 noncomputable def finiteStaticKuboBastinDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))

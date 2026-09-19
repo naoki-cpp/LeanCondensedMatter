@@ -145,7 +145,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
   · simpa [inPlaneCoefficientVector, normalization] using h0Normalized
   · simpa [inPlaneCoefficientVector, normalization] using h1Normalized
 
-/-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms.
+/-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms
+from I. A. Ado et al., *EPL* **111**, 37004 (2015),
+[doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).
+The paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the
+theorem below only formalizes the ordered finite-cutoff provenance partition.
 The side-jump-type term is shared between the two provenance components rather than attached to only
 one of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and
 do not create primitive mechanism APIs. -/
