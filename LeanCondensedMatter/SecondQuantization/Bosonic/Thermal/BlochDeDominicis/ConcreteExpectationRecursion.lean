@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Congr
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
 set_option linter.style.header false
@@ -59,8 +60,6 @@ theorem freeGibbsExpectation_firstPair_recursion
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
       rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
         Finset.mul_sum]
-      let hcast : Fin l.length ≃ Fin (2 * n + 1) :=
-        ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
       have hreindex :
           (∑ i : Fin l.length,
             ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
@@ -69,14 +68,12 @@ theorem freeGibbsExpectation_firstPair_recursion
             ∑ j : Fin (2 * n + 1),
               ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
                 ((C 0).exchangeValue (C j.succ) *
-                  freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j))) :=
-        Fintype.sum_equiv hcast _ _ fun i => by
-          have hv : ((hcast i : Fin (2 * n + 1)) : ℕ) = (i : ℕ) := by
-            change ((Fin.cast hlen i : Fin (2 * n + 1)) : ℕ) = (i : ℕ)
-            rfl
-          simp only [hv]
-          simp only [hl, List.getElem_ofFn]
-          congr 4
+                  freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j))) := by
+        rw [Combinatorics.FiniteIndex.sum_cast hlen]
+        apply Finset.sum_congr rfl
+        intro j _
+        simp only [Fin.val_cast, hl, List.getElem_ofFn]
+        congr 4
       rw [hreindex]
       refine Finset.sum_congr rfl fun j _ => ?_
       rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
