@@ -98,8 +98,6 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
       coefficients 0 • sigmaX + coefficients 1 • sigmaY =
         (0 : ℂ) • (1 : Matrix2) + InternalSpace.pauliCombination vertex := by
     simp [vertex, InternalSpace.pauliCombination, InternalSpace.sum_pauliAxis, InternalSpace.pauliBasis]
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   rw [hL, hVertex, hR,
     InternalSpace.pauliAffine_mul_pauliAffine,
     InternalSpace.pauliAffine_mul_pauliAffine]
@@ -108,7 +106,6 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     InternalSpace.pauliCombination, polarPauliInPlaneHarmonics,
     AngularHarmonicCoefficients.eval]
   ring_nf
-  simp [hI]
   module
 
 private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
