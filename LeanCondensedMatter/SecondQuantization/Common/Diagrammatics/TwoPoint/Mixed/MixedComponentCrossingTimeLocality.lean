@@ -301,69 +301,27 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
           d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1 := by
     simpa [tq, q0, q1] using
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B hOrder q
-  have p0Val : p0.1 = p.1.1.1 := by
-    dsimp [p0]
-    rw [endpointVal σ p 0]
-    rfl
-  have p1Val : p1.1 = p.1.1.2 := by
-    dsimp [p1]
-    rw [endpointVal σ p 1]
-    rfl
-  have q0Val : q0.1 = q.1.1.1 := by
-    dsimp [q0]
-    rw [endpointVal σ q 0]
-    rfl
-  have q1Val : q1.1 = q.1.1.2 := by
-    dsimp [q1]
-    rw [endpointVal σ q 1]
-    rfl
   have hp0Val :
       tp.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    have h := congrArg Subtype.val hpEnds.1
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 at h
-    rw [endpointVal υ tp 0] at h
-    change tp.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 at h
-    exact h
+    simpa [tp, endpointVal] using congrArg Subtype.val hpEnds.1
   have hp1Val :
       tp.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    have h := congrArg Subtype.val hpEnds.2
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 at h
-    rw [endpointVal υ tp 1] at h
-    change tp.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 at h
-    exact h
+    simpa [tp, endpointVal] using congrArg Subtype.val hpEnds.2
   have hq0Val :
       tq.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
-    have h := congrArg Subtype.val hqEnds.1
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (tq, 0)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 at h
-    rw [endpointVal υ tq 0] at h
-    change tq.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 at h
-    exact h
+    simpa [tq, endpointVal] using congrArg Subtype.val hqEnds.1
   have hq1Val :
       tq.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
-    have h := congrArg Subtype.val hqEnds.2
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (tq, 1)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 at h
-    rw [endpointVal υ tq 1] at h
-    change tq.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 at h
-    exact h
+    simpa [tq, endpointVal] using congrArg Subtype.val hqEnds.2
   have h00 := hOrder p0 q0
   have h01 := hOrder q0 p1
   have h11 := hOrder p1 q1
   unfold Crosses
   constructor
   · rintro ⟨hpq, hqp, hpq'⟩
-    have ht00 := h00.mp (by
-      rw [p0Val, q0Val]
-      exact hpq)
-    have ht01 := h01.mp (by
-      rw [q0Val, p1Val]
-      exact hqp)
-    have ht11 := h11.mp (by
-      rw [p1Val, q1Val]
-      exact hpq')
+    have ht00 := h00.mp (by simpa [p0, q0, endpointVal] using hpq)
+    have ht01 := h01.mp (by simpa [q0, p1, endpointVal] using hqp)
+    have ht11 := h11.mp (by simpa [p1, q1, endpointVal] using hpq')
     refine ⟨?_, ?_, ?_⟩
     · rw [hp0Val, hq0Val]
       exact ht00
@@ -388,12 +346,9 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
       rw [← hp1Val, ← hq1Val]
       exact hpq'
     refine ⟨?_, ?_, ?_⟩
-    · rw [← p0Val, ← q0Val]
-      exact h00.mpr ht00
-    · rw [← q0Val, ← p1Val]
-      exact h01.mpr ht01
-    · rw [← p1Val, ← q1Val]
-      exact h11.mpr ht11
+    · simpa [p0, q0, endpointVal] using h00.mpr ht00
+    · simpa [q0, p1, endpointVal] using h01.mpr ht01
+    · simpa [p1, q1, endpointVal] using h11.mpr ht11
 
 private theorem TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -449,39 +404,19 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrder
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
         (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
           τ τ' σ υ B hChamber) pr
-  have p0Val : p0.1 = pr.1.1.1 := by
-    dsimp [p0]
-    rw [endpointVal σ pr 0]
-    rfl
-  have p1Val : p1.1 = pr.1.1.2 := by
-    dsimp [p1]
-    rw [endpointVal σ pr 1]
-    rfl
   have h0Pos :
       q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    have h := congrArg Subtype.val hEnds.1
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 at h
-    rw [endpointVal υ q 0] at h
-    change q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 at h
-    exact h
+    simpa [q, endpointVal] using congrArg Subtype.val hEnds.1
   have h1Pos :
       q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    have h := congrArg Subtype.val hEnds.2
-    change (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1)).1 =
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 at h
-    rw [endpointVal υ q 1] at h
-    change q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 at h
-    exact h
+    simpa [q, endpointVal] using congrArg Subtype.val hEnds.2
   constructor
   · rw [h0Pos]
-    have h := d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
-    rw [p0Val] at h
-    exact h
+    simpa [p0, endpointVal] using
+      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
   · rw [h1Pos]
-    have h := d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
-    rw [p1Val] at h
-    exact h
+    simpa [p1, endpointVal] using
+      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Component exchange-statistics weight is constant on one chamber. -/
 theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
