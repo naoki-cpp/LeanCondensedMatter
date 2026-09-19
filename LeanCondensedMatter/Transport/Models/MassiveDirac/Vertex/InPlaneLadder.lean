@@ -161,7 +161,7 @@ theorem tendsto_inPlaneLadderDeterminant
         (inPlaneShiftMatrix ∘ rung)) l
         (nhds (inPlaneShiftMatrix rung₀).det) :=
     (continuous_id.matrix_det.tendsto (inPlaneShiftMatrix rung₀)).comp hshift
-  simpa only [Function.comp_apply, inPlaneShiftMatrix_det] using hdet
+  simpa only [Function.comp_def, inPlaneShiftMatrix_det] using hdet
 
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
