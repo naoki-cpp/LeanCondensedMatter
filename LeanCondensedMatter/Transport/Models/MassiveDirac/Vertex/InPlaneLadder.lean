@@ -69,12 +69,6 @@ private theorem continuous_inPlaneRotationMatrix :
       inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y] <;>
     fun_prop
 
-private theorem continuous_inPlaneLadderAction :
-    Continuous fun p : InPlaneCoefficientVector × InPlaneCoefficientVector =>
-      inPlaneLadderAction p.1 p.2 := by
-  unfold inPlaneLadderAction
-  exact (continuous_inPlaneRotationMatrix.comp continuous_fst).matrix_mulVec continuous_snd
-
 @[simp]
 theorem inPlaneLadderAction_apply_x
     (rung coefficients : InPlaneCoefficientVector) :
@@ -98,9 +92,18 @@ theorem tendsto_inPlaneLadderAction
     (hcoefficients : Tendsto coefficients l (nhds coefficients₀)) :
     Tendsto (fun a => inPlaneLadderAction (rung a) (coefficients a)) l
       (nhds (inPlaneLadderAction rung₀ coefficients₀)) := by
-  simpa only [Function.comp_apply] using
-    (continuous_inPlaneLadderAction.tendsto (rung₀, coefficients₀)).comp
-      (hrung.prodMk_nhds hcoefficients)
+  have hrungMatrix :
+      Tendsto (fun a => inPlaneRotationMatrix (rung a)) l
+        (nhds (inPlaneRotationMatrix rung₀)) := by
+    simpa only [Function.comp_apply] using
+      (continuous_inPlaneRotationMatrix.tendsto rung₀).comp hrung
+  have hmul :
+      Continuous fun p :
+        Matrix (Fin 2) (Fin 2) ℂ × InPlaneCoefficientVector => p.1.mulVec p.2 :=
+    continuous_fst.matrix_mulVec continuous_snd
+  simpa only [inPlaneLadderAction, Function.comp_apply] using
+    (hmul.tendsto (inPlaneRotationMatrix rung₀, coefficients₀)).comp
+      (hrungMatrix.prodMk_nhds hcoefficients)
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
@@ -147,8 +150,16 @@ theorem tendsto_inPlaneLadderDeterminant
     (hrung : Tendsto rung l (nhds rung₀)) :
     Tendsto (fun a => inPlaneLadderDeterminant (rung a)) l
       (nhds (inPlaneLadderDeterminant rung₀)) := by
-  simpa only [Function.comp_apply, inPlaneShiftMatrix_det] using
-    (continuous_inPlaneShiftMatrix.matrix_det.tendsto rung₀).comp hrung
+  have hshift :
+      Tendsto (fun a => inPlaneShiftMatrix (rung a)) l
+        (nhds (inPlaneShiftMatrix rung₀)) := by
+    simpa only [Function.comp_apply] using
+      (continuous_inPlaneShiftMatrix.tendsto rung₀).comp hrung
+  have hdet :
+      Tendsto (fun a => (inPlaneShiftMatrix (rung a)).det) l
+        (nhds (inPlaneShiftMatrix rung₀).det) :=
+    (continuous_id.matrix_det.tendsto (inPlaneShiftMatrix rung₀)).comp hshift
+  simpa only [inPlaneShiftMatrix_det] using hdet
 
 /-- Bare `σₓ` source represented as one in-plane coefficient vector. -/
 def inPlaneLadderBareXSource : InPlaneCoefficientVector :=
