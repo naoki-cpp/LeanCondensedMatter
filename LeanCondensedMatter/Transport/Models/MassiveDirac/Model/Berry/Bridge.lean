@@ -212,6 +212,113 @@ theorem pointwiseBerryData_interbandEnergyGap
         (pointwiseBerryData v m px py hE).energy (oppositeBand band) =
       interbandEnergyGap band v m px py := rfl
 
+
+private theorem bandProjectorOperator_eq_pointwise_spectral_formula
+    (band : Band) (v m px py : ℝ) :
+    bandProjectorOperator band v m px py =
+      (1 / 2 : ℂ) •
+        ((1 : DiracHilbert →L[ℂ] DiracHilbert) +
+          (((bandSign band / energy v m px py : ℝ) : ℂ)) •
+            hamiltonianOperator v m px py) := by
+  unfold bandProjectorOperator bandProjector hamiltonianOperator matrixOperator
+  simp [map_add, map_smul]
+
+private theorem bandProjectorOperator_apply_pointwiseEigenbasis
+    (projected source : Band) (v m px py : ℝ)
+    (hE : energy v m px py ≠ 0) :
+    bandProjectorOperator projected v m px py
+        (pointwiseEigenbasis v m px py source) =
+      if projected = source then pointwiseEigenbasis v m px py source else 0 := by
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
+  rw [bandProjectorOperator_eq_pointwise_spectral_formula]
+  rw [smul_apply, add_apply, one_apply_eq_self, smul_apply,
+    hamiltonianOperator_pointwiseEigenbasis source v m px py hE, smul_smul]
+  rw [← one_smul ℂ (pointwiseEigenbasis v m px py source), ← add_smul, smul_smul]
+  have hcoeff :
+      (1 / 2 : ℂ) *
+          (1 + (((bandSign projected / energy v m px py : ℝ) : ℂ)) *
+            (((bandEnergy source v m px py : ℝ) : ℂ))) =
+        if projected = source then 1 else 0 := by
+    cases projected <;> cases source <;>
+      simp [bandSign, bandEnergy, hE] <;>
+      field_simp [hEc] <;>
+      ring
+  rw [hcoeff]
+  split <;> simp
+
+private theorem pointwiseEigenbasis_inner_eq_ite
+    (left right : Band) (v m px py : ℝ) :
+    inner ℂ (pointwiseEigenbasis v m px py left)
+        (pointwiseEigenbasis v m px py right) =
+      if left = right then 1 else 0 :=
+  orthonormal_iff_ite.mp (pointwiseEigenbasis v m px py).orthonormal left right
+
+private theorem bandProjectorOperator_apply_eq_inner_smul
+    (projected : Band) (v m px py : ℝ)
+    (hE : energy v m px py ≠ 0) (x : DiracHilbert) :
+    bandProjectorOperator projected v m px py x =
+      inner ℂ (pointwiseEigenbasis v m px py projected) x •
+        pointwiseEigenbasis v m px py projected := by
+  let b := pointwiseEigenbasis v m px py
+  have hrepr := b.sum_repr' x
+  calc
+    bandProjectorOperator projected v m px py x =
+        bandProjectorOperator projected v m px py
+          (∑ source : Band, inner ℂ (b source) x • b source) := by
+      rw [hrepr]
+    _ = ∑ source : Band,
+        inner ℂ (b source) x •
+          bandProjectorOperator projected v m px py (b source) := by
+      simp [map_sum]
+    _ = inner ℂ (b projected) x • b projected := by
+      cases projected <;>
+        simp [sum_band, b,
+          bandProjectorOperator_apply_pointwiseEigenbasis _ _ v m px py hE]
+
+/-- The generic opposite-band Hamiltonian-derivative matrix elements reproduce the model's
+gauge-independent projector trace. -/
+theorem pointwiseBerryData_forceMatrixElement_product
+    (μ ν : Fin 2) (band : Band) (v m px py : ℝ)
+    (hE : energy v m px py ≠ 0) :
+    (pointwiseBerryData v m px py hE).hamiltonianDerivativeMatrixElement
+          μ (oppositeBand band) band *
+        (pointwiseBerryData v m px py hE).hamiltonianDerivativeMatrixElement
+          ν band (oppositeBand band) =
+      forceMatrixTraceNumerator μ ν band v m px py := by
+  let b := pointwiseEigenbasis v m px py
+  change
+    inner ℂ (b (oppositeBand band)) (velocityOperator μ v (b band)) *
+        inner ℂ (b band) (velocityOperator ν v (b (oppositeBand band))) =
+      forceMatrixTraceNumerator μ ν band v m px py
+  rw [show
+      forceMatrixTraceNumerator μ ν band v m px py =
+        finiteDimensionalOperatorTrace
+          (bandProjectorOperator (oppositeBand band) v m px py *
+            velocityOperator μ v *
+            bandProjectorOperator band v m px py *
+            velocityOperator ν v) by
+    unfold forceMatrixTraceNumerator
+    symm
+    simpa [bandProjectorOperator, velocityOperator, matrixOperator] using
+      finiteDimensionalOperatorTrace_toEuclideanCLM
+        (bandProjector (oppositeBand band) v m px py * velocity μ v *
+          bandProjector band v m px py * velocity ν v)]
+  rw [finiteDimensionalOperatorTrace_apply,
+    LinearMap.trace_eq_sum_inner
+      ((bandProjectorOperator (oppositeBand band) v m px py *
+        velocityOperator μ v *
+        bandProjectorOperator band v m px py *
+        velocityOperator ν v :
+          DiracHilbert →L[ℂ] DiracHilbert) :
+        DiracHilbert →ₗ[ℂ] DiracHilbert) b]
+  simp only [mul_apply_eq_comp]
+  simp_rw [bandProjectorOperator_apply_eq_inner_smul _ v m px py hE]
+  rw [sum_band]
+  cases band <;>
+    simp [b, pointwiseEigenbasis_inner_eq_ite, map_smul,
+      inner_smul_left, inner_smul_right, mul_comm, mul_left_comm, mul_assoc]
+
 /-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
 the generic formula `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
 def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
