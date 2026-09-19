@@ -106,7 +106,7 @@ private def pauliBasisCoeff (axis : PauliAxis) : PauliAxis → ℂ :=
 private theorem pauliCombination_pauliBasisCoeff (axis : PauliAxis) :
     pauliCombination (pauliBasisCoeff axis) = pauliBasis axis := by
   cases axis <;>
-    simp [pauliCombination, sum_pauliAxis, pauliBasisCoeff, pauliBasis]
+    simp [pauliCombination, pauliBasisCoeff, pauliBasis]
 
 private theorem pauliBasis_mul_pauliBasis (a b : PauliAxis) :
     pauliBasis a * pauliBasis b =
