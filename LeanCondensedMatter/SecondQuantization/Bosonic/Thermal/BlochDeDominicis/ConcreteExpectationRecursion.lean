@@ -71,7 +71,7 @@ theorem freeGibbsExpectation_firstPair_recursion
         rw [← Equiv.sum_comp (finCongr hlen.symm)]
         apply Finset.sum_congr rfl
         intro j _
-        simp only [Fin.val_cast, hl, List.getElem_ofFn]
+        simp only [finCongr_apply, Fin.val_cast, hl, List.getElem_ofFn]
         congr 4
       rw [hreindex]
       refine Finset.sum_congr rfl fun j _ => ?_
