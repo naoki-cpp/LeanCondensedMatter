@@ -70,7 +70,10 @@ theorem FamilySlotShuffle.measurableLocallyBounded_integrand {size : ι → ℕ}
     (hlocal : ∀ i, intervalIntegral.MeasurableLocallyBounded (localIntegrand i)) :
     intervalIntegral.MeasurableLocallyBounded (shuffle.integrand localIntegrand) := by
   classical
-  simpa [FamilySlotShuffle.integrand, FamilySlotShuffleTo.timeAssignment] using
+  change intervalIntegral.MeasurableLocallyBounded
+    (fun τ : Fin (∑ i, size i) → ℝ =>
+      ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩)))
+  simpa using
     intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
       (fun i τ => localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩)))
       (fun i _ => (hlocal i).comp_finCoordinateSelection
