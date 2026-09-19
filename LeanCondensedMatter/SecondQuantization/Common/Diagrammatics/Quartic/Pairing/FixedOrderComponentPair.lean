@@ -36,16 +36,38 @@ theorem QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle
     (d.componentPartition.partOrdersOfOrder order)
     (d.componentPartition.partOrdersCompatible_partOrdersOfOrder order)
 
+private noncomputable def QuarticDiagram.componentPairEquivOfAssembleEq
+    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (order : QuarticVertexOrder S) (h : d.assembleVertexOrder orders shuffle = order) :
+    (Σ C : d.componentPartition.parts, d.LocalOrderedPair orders C) ≃
+      (d.pairingInOrder order).NormalizedPair := by
+  subst order
+  exact d.componentPairEquiv orders shuffle
+
+@[simp]
+private theorem QuarticDiagram.componentPairEquivOfAssembleEq_apply
+    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (order : QuarticVertexOrder S) (h : d.assembleVertexOrder orders shuffle = order)
+    (C : d.componentPartition.parts) (pr : d.LocalOrderedPair orders C) :
+    (d.componentPairEquivOfAssembleEq orders shuffle order h ⟨C, pr⟩).1 =
+      (d.componentOrderedLeg shuffle C pr.1.1,
+        d.componentOrderedLeg shuffle C pr.1.2) := by
+  subst order
+  exact d.componentPairEquiv_apply orders shuffle C pr
+
 /-- The generic component-pair decomposition specialized to a fixed global vertex order. -/
 private noncomputable def QuarticDiagram.fixedOrderComponentPairEquiv
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) :
     (Σ C : d.componentPartition.parts,
       d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C) ≃
-      (d.pairingInOrder order).NormalizedPair := by
-  simpa only [d.assembleVertexOrder_fixedOrderComponentShuffle order] using
-    d.componentPairEquiv (d.componentPartition.partOrdersOfOrder order)
-      (d.fixedOrderComponentShuffle order)
+      (d.pairingInOrder order).NormalizedPair :=
+  d.componentPairEquivOfAssembleEq
+    (d.componentPartition.partOrdersOfOrder order)
+    (d.fixedOrderComponentShuffle order) order
+    (d.assembleVertexOrder_fixedOrderComponentShuffle order)
 
 /-- The connected component containing a normalized pair in a fixed global vertex order. -/
 noncomputable def QuarticDiagram.fixedOrderPairComponent
@@ -77,10 +99,10 @@ private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
       (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.1,
         d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C pr.1.2) := by
   change (d.fixedOrderComponentPairEquiv order ⟨C, pr⟩).1 = _
-  simpa only [QuarticDiagram.fixedOrderComponentPairEquiv,
-      d.assembleVertexOrder_fixedOrderComponentShuffle order] using
-    d.componentPairEquiv_apply (d.componentPartition.partOrdersOfOrder order)
-      (d.fixedOrderComponentShuffle order) C pr
+  exact d.componentPairEquivOfAssembleEq_apply
+    (d.componentPartition.partOrdersOfOrder order)
+    (d.fixedOrderComponentShuffle order) order
+    (d.assembleVertexOrder_fixedOrderComponentShuffle order) C pr
 
 /-- The fixed-order component-pair embedding preserves and reflects crossings. -/
 theorem QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff
