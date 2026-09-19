@@ -508,15 +508,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
       .z v m probeEnergy (side.regulator broadening) hregulator).intervalIntegrable 0 pMax
   funext i j
   fin_cases i <;> fin_cases j
-  · change
-      finiteCutoffContinuumBornDysonGreenLoopMatrix
-          side v m probeEnergy broadening 0 hbar pMax 0 0 =
-        (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornIntegralOfRegulator
-              .scalar v m probeEnergy (side.regulator broadening) pMax) +
-          (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornIntegralOfRegulator
-              .z v m probeEnergy (side.regulator broadening) pMax)
+  · simp only [Matrix.add_apply, Matrix.smul_apply]
+    simp [sigmaZ, InternalSpace.pauliZ]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -535,9 +528,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     unfold finiteCutoffContinuumBornIntegralOfRegulator continuumBornAngularMeasurePrefactor
     push_cast
     ring
-  · change
-      finiteCutoffContinuumBornDysonGreenLoopMatrix
-          side v m probeEnergy broadening 0 hbar pMax 0 1 = 0
+  · simp only [Matrix.add_apply, Matrix.smul_apply]
+    simp [sigmaZ, InternalSpace.pauliZ]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -547,9 +539,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
           side v m probeEnergy broadening hbar pMax p 0 1
     simp_rw [hkernel]
     simp
-  · change
-      finiteCutoffContinuumBornDysonGreenLoopMatrix
-          side v m probeEnergy broadening 0 hbar pMax 1 0 = 0
+  · simp only [Matrix.add_apply, Matrix.smul_apply]
+    simp [sigmaZ, InternalSpace.pauliZ]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
@@ -559,15 +550,8 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
           side v m probeEnergy broadening hbar pMax p 1 0
     simp_rw [hkernel]
     simp
-  · change
-      finiteCutoffContinuumBornDysonGreenLoopMatrix
-          side v m probeEnergy broadening 0 hbar pMax 1 1 =
-        (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornIntegralOfRegulator
-              .scalar v m probeEnergy (side.regulator broadening) pMax) -
-          (((continuumBornAngularMeasurePrefactor hbar : ℝ) : ℂ) *
-            finiteCutoffContinuumBornIntegralOfRegulator
-              .z v m probeEnergy (side.regulator broadening) pMax)
+  · simp only [Matrix.add_apply, Matrix.smul_apply]
+    simp [sigmaZ, InternalSpace.pauliZ]
     rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
     have hkernel (p : ℝ) :
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
