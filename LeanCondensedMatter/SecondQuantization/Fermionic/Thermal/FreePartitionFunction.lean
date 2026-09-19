@@ -35,18 +35,6 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
     freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n :=
   rfl
 
-omit [LinearOrder Mode] in
-/-- The finite complex free-fermion partition function is exactly the canonical pure-point Gibbs
-partition function for `fermionEnergy`, coerced from `ℝ` to `ℂ`. -/
-theorem freePartitionFunction_eq_coe_purePointPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) :
-    freePartitionFunction ε β =
-      (QuantumTheory.purePointPartitionFunction (fermionEnergy ε) β : ℂ) := by
-  symm
-  simpa [freePartitionFunction, freeBoltzmannWeight] using
-    (Common.coe_purePointPartitionFunction_eq_sum_boltzmannWeight
-      (fermionEnergy ε) β)
-
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
