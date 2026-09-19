@@ -46,7 +46,7 @@ private theorem
         orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
       unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
       unfold FixedExternalTwoPointWickDiagram.externalPiece
-      rw [d.1.externalPiece_vertexLabel]
+      rw [d.1.externalPieceOfCardEq_vertexLabel]
       rfl
 
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart
