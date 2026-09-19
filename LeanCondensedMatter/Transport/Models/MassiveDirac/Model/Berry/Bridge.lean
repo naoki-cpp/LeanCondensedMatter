@@ -38,6 +38,12 @@ private def finTwoEquivBand : Fin 2 ≃ Band where
   left_inv i := by fin_cases i <;> simp
   right_inv band := by cases band <;> simp
 
+@[simp] private theorem finTwoEquivBand_symm_lower :
+    finTwoEquivBand.symm .lower = 1 := rfl
+
+@[simp] private theorem finTwoEquivBand_symm_upper :
+    finTwoEquivBand.symm .upper = 0 := rfl
+
 private noncomputable def diracEigenvaluesFin (v m px py : ℝ) : Fin 2 → ℝ :=
   (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
     diracHilbert_finrank
@@ -83,12 +89,15 @@ private theorem diracEigenvalues_sum_eq_zero (v m px py : ℝ) :
       simpa [hamiltonianOperator, matrixOperator] using
         finiteDimensionalOperatorTrace_toEuclideanCLM (hamiltonian v m px py)]
     simp [hamiltonian_eq_pauliCombination]
-  have hsum :
-      (((∑ i : Fin 2, hsym.eigenvalues diracHilbert_finrank i : ℝ) : ℂ)) = 0 := by
-    rw [(hsym.trace_eq_sum_eigenvalues (hn := diracHilbert_finrank)).symm, htrace]
+  have hsumComplex :
+      (((∑ i : Fin 2, hsym.eigenvalues diracHilbert_finrank i : ℝ) : ℂ)) =
+        LinearMap.trace ℂ DiracHilbert
+          (hamiltonianOperator v m px py : DiracHilbert →ₗ[ℂ] DiracHilbert) :=
+    (hsym.trace_eq_sum_eigenvalues (hn := diracHilbert_finrank)).symm
+  rw [htrace] at hsumComplex
   have hsumReal :
       ∑ i : Fin 2, hsym.eigenvalues diracHilbert_finrank i = 0 := by
-    exact_mod_cast hsum
+    exact_mod_cast hsumComplex
   simpa [diracEigenvaluesFin, hsym] using hsumReal
 
 private theorem diracEigenvalue_zero_eq_energy
@@ -115,20 +124,40 @@ private theorem hamiltonianOperator_pointwiseEigenbasis
     rw [hzero] at hsum
     linarith
   cases band
-  · simpa [pointwiseEigenbasis, diracEigenbasisFin, diracEigenvaluesFin,
-      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy, hone] using
+  · have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (1 : Fin 2)
-  · simpa [pointwiseEigenbasis, diracEigenbasisFin, diracEigenvaluesFin,
-      OrthonormalBasis.reindex_apply, finTwoEquivBand, bandEnergy, hzero] using
+    rw [show
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
+          diracHilbert_finrank (1 : Fin 2) = -energy v m px py by
+      exact hone] at heig
+    simpa [pointwiseEigenbasis, diracEigenbasisFin,
+      OrthonormalBasis.reindex_apply, bandEnergy] using heig
+  · have heig :=
       (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.apply_eigenvectorBasis
         diracHilbert_finrank (0 : Fin 2)
+    rw [show
+      (hamiltonianOperator_isSelfAdjoint v m px py).isSymmetric.eigenvalues
+          diracHilbert_finrank (0 : Fin 2) = energy v m px py by
+      exact hzero] at heig
+    simpa [pointwiseEigenbasis, diracEigenbasisFin,
+      OrthonormalBasis.reindex_apply, bandEnergy] using heig
 
 private theorem bandEnergy_ne_of_ne
     (left right : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
     (hne : left ≠ right) :
     bandEnergy left v m px py ≠ bandEnergy right v m px py := by
-  cases left <;> cases right <;> simp_all [bandEnergy]
+  cases left <;> cases right
+  · exact (hne rfl).elim
+  · simp only [bandEnergy, bandSign]
+    intro h
+    apply hE
+    linarith
+  · simp only [bandEnergy, bandSign]
+    intro h
+    apply hE
+    linarith
+  · exact (hne rfl).elim
 
 /-- Generic pointwise spectral/Berry data for the nondegenerate massive-Dirac Hamiltonian.
 
