@@ -98,7 +98,7 @@ private theorem inner_simpleSpectrumEigenvectorDerivative [DecidableEq ι]
   by_cases hkn : k = n
   · subst k
     simp [simpleSpectrumEigenvectorDerivative]
-  · simp [simpleSpectrumEigenvectorDerivative]
+  · simp [simpleSpectrumEigenvectorDerivative, hkn]
 
 private theorem inner_hamiltonian_right_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
