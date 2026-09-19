@@ -94,8 +94,11 @@ private theorem inner_bornFockDerivative [DecidableEq ι]
           (((energy n - energy m : ℝ) : ℂ)) := by
   classical
   unfold bornFockDerivative
-  rw [inner_sum]
-  simp [inner_smul_right]
+  rw [inner_sum, Finset.sum_eq_single m]
+  · simp
+  · intro k _ hkm
+    simp [eigenbasis.inner_eq_zero (Ne.symm hkm)]
+  · simp
 
 private theorem inner_hamiltonian_of_eigenbasis
     (hamiltonian : H →L[ℂ] H) (hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian)
@@ -176,6 +179,7 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
     rw [star_hamiltonianDerivativeMatrixElement_of_selfAdjoint
       eigenbasis hamiltonianDerivative hamiltonianDerivative_selfAdjoint]
     field_simp [hgap, hgap']
+    push_cast
     ring
 
 private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
@@ -198,12 +202,10 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   classical
   apply eigenbasis.repr.injective
   ext m
-  simp only [map_add, map_smul, PiLp.add_apply, PiLp.smul_apply]
-  rw [eigenbasis.repr_apply_apply,
-    inner_hamiltonian_of_eigenbasis hamiltonian hamiltonian_selfAdjoint
+  simp only [map_add, map_smul, PiLp.add_apply, PiLp.smul_apply,
+    eigenbasis.repr_apply_apply]
+  rw [inner_hamiltonian_of_eigenbasis hamiltonian hamiltonian_selfAdjoint
       eigenbasis energy hamiltonian_eigenvector,
-    eigenbasis.repr_apply_apply,
-    eigenbasis.repr_apply_apply,
     inner_bornFockDerivative]
   have hb : inner ℂ (eigenbasis m) (eigenbasis n) =
       if m = n then 1 else 0 :=
