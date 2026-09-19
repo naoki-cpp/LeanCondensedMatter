@@ -62,6 +62,7 @@ theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : �
     (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
   simpa [freeGibbsConfigurationProbability, tsum_fintype] using h.tsum_eq
 
+omit [LinearOrder Mode] in
 private theorem purePointPartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
     purePointPartitionFunction (fermionEnergy ε) β =
@@ -72,6 +73,7 @@ private theorem purePointPartitionFunction_fermionEnergy_eq_prod
   push_cast [Complex.ofReal_exp]
   rfl
 
+omit [LinearOrder Mode] in
 private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
     (ε : Mode → ℝ) (β : ℝ) :
     Real.log (purePointPartitionFunction (fermionEnergy ε) β) =
