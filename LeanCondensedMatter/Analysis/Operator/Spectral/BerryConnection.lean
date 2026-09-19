@@ -95,9 +95,14 @@ private theorem inner_bornFockDerivative [DecidableEq ι]
   classical
   unfold bornFockDerivative
   rw [inner_sum, Finset.sum_eq_single m]
-  · simp
+  · by_cases hmn : m = n
+    · simp only [if_pos hmn, inner_zero]
+    · rw [if_neg hmn, inner_smul_right, eigenbasis.inner_eq_one, mul_one]
   · intro k _ hkm
-    simp [eigenbasis.inner_eq_zero (Ne.symm hkm)]
+    by_cases hkn : k = n
+    · simp only [if_pos hkn, inner_zero]
+    · rw [if_neg hkn, inner_smul_right,
+        eigenbasis.inner_eq_zero (Ne.symm hkm), mul_zero]
   · simp
 
 private theorem inner_hamiltonian_of_eigenbasis
@@ -150,9 +155,11 @@ private theorem bornFockDerivative_differentiatedOrthonormality [DecidableEq ι]
   classical
   by_cases hmn : m = n
   · subst n
-    have hdiag :=
-      inner_bornFockDerivative eigenbasis energy hamiltonianDerivative μ m m
-    simp at hdiag
+    have hdiag :
+        inner ℂ (eigenbasis m)
+            (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m) = 0 := by
+      simpa only [if_pos rfl] using
+        (inner_bornFockDerivative eigenbasis energy hamiltonianDerivative μ m m)
     rw [show
       inner ℂ (bornFockDerivative eigenbasis energy hamiltonianDerivative μ m)
           (eigenbasis m) =
@@ -213,15 +220,15 @@ private theorem bornFockDerivative_differentiatedEigenpair [DecidableEq ι]
   rw [hb]
   by_cases hmn : m = n
   · subst m
-    simp only [if_pos rfl, mul_zero, add_zero, mul_one, zero_mul]
-    exact ContinuousLinearMap.coe_diagonalExpectationValue_right
-      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)
-  · simp only [if_neg hmn, mul_zero, zero_add]
+    simp only [if_pos rfl, mul_zero, add_zero, zero_mul, smul_eq_mul, mul_one]
+    exact (ContinuousLinearMap.coe_diagonalExpectationValue_right
+      (hamiltonianDerivative μ) (hamiltonianDerivative_selfAdjoint μ) (eigenbasis n)).symm
+  · simp only [if_neg hmn, mul_zero]
     have hgap : (((energy n - energy m : ℝ) : ℂ)) ≠ 0 := by
       exact_mod_cast sub_ne_zero.mpr (hnondegenerate m n hmn).symm
     field_simp [hgap]
     push_cast
-    ring
+    ring_nf
 
 /-- Build pointwise Berry data from a nondegenerate orthonormal eigenbasis and self-adjoint
 Hamiltonian derivatives.
