@@ -9,7 +9,12 @@ set_option linter.style.header false
 # Mechanism classification of the massive-Dirac non-crossing Hall result
 
 This module connects the concrete ordered-`xy` ladder provenance isolated upstream to the Ado et al.
-EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition. Mechanism names remain theorem-level:
+EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition (intrinsic, side-jump, and
+non-crossing skew)
+([doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004)).
+That paper is also the model-specific provenance for the crossed `X`/`Psi` correction, which is
+separate from Eq. (12a-c) in the paper (see its Eqs. (17-18)). The theorem-level expressions below
+remain the project's ordered finite-cutoff specialization. Mechanism names remain theorem-level:
 no primitive side-jump or skew-scattering conductivity definitions are introduced.
 
 The intrinsic/side-jump/skew taxonomy follows Nagaosa et al., *Rev. Mod. Phys.* **82**, 1539–1592
@@ -140,7 +145,11 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
   · simpa [inPlaneCoefficientVector, normalization] using h0Normalized
   · simpa [inPlaneCoefficientVector, normalization] using h1Normalized
 
-/-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms.
+/-- The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms
+from I. A. Ado et al., *EPL* **111**, 37004 (2015),
+[doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).
+The paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the
+theorem below only formalizes the ordered finite-cutoff provenance partition.
 The side-jump-type term is shared between the two provenance components rather than attached to only
 one of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and
 do not create primitive mechanism APIs. -/
