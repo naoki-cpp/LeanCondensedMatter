@@ -37,7 +37,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H)\n  [inst_4 : DecidableEq ι] (μ ν : κ) (n : ι),\n  (∀ (ρ : κ), IsSelfAdjoint (data.hamiltonianDerivative ρ)) →\n    (∀ (m : ι), m ≠ n → data.energy m ≠ data.energy n) →\n      data.berryCurvature μ ν n =\n        ∑ m,\n          if m = n then 0\n          else\n            2 *\n              (data.hamiltonianDerivativeMatrixElement μ m n / ↑(data.energy n - data.energy m) *\n                  (data.hamiltonianDerivativeMatrixElement ν n m / ↑(data.energy n - data.energy m))).im",
     "standardAxioms": [
       "Classical.choice",
@@ -45,7 +45,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -56,7 +56,9 @@
     "docString": "Force/Hamiltonian-derivative matrix-element representation of Berry curvature for a\nnondegenerate band.\n\nThis is the finite-dimensional pointwise formula needed by the clean anomalous-Hall consumer.\nSelf-adjointness of all directional Hamiltonian derivatives is an explicit hypothesis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
     "dependencies": [
       "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_innerProducts",
       "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
@@ -64,8 +66,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115,7 +119,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ)\n  (n : ι), data.berryCurvature ν μ n = -data.berryCurvature μ ν n",
     "standardAxioms": [
       "Classical.choice",
@@ -123,7 +127,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -134,12 +138,16 @@
     "docString": "Berry curvature is antisymmetric in its two parameter directions. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_yx_eq_neg_berryCurvature"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_yx_eq_neg_berryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14155,7 +14163,8 @@
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -14170,9 +14179,10 @@
       "HilbertBasis.diagonalOpSpectralTraceClass_trace",
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
-      "QuantumTheory.hasSum_negMulLog_eigenvalues"
+      "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14211,6 +14221,7 @@
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
@@ -14228,10 +14239,11 @@
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
       "QuantumTheory.entropyOpSpectralTraceClass_hasSum_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15030,6 +15042,7 @@
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
@@ -15058,13 +15071,14 @@
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 21,
+    "compiledConsumerCount": 22,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15417,6 +15431,141 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H), ContinuousLinearMap.finiteDimensionalOperatorTrace operator = (LinearMap.trace ℂ H) ↑operator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
+      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
+      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (left right : H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace (left * right) =\n    ContinuousLinearMap.finiteDimensionalOperatorTrace (right * left)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "Cyclicity of the bundled ordinary trace for two bounded endomorphisms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace (Matrix.toEuclideanCLM M) = M.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "The finite-dimensional operator trace of a matrix transported through the canonical Euclidean\nmatrix/operator equivalence is its ordinary matrix trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H] {T : H →L[ℂ] H},\n  IsCompactOperator ⇑T → ∀ (μ : { μ // μ ≠ 0 }), FiniteDimensional ℂ ↥(Module.End.eigenspace ↑T ↑↑μ)",
     "standardAxioms": [
       "Classical.choice",
@@ -15532,6 +15681,45 @@
       "ContinuousLinearMap.spectralTrace_unitaryConjugate"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H} {energy : ℝ},\n  HasDerivAt operatorPath operatorDerivative energy →\n    HasDerivAt (fun x => ContinuousLinearMap.finiteDimensionalOperatorTrace (operatorPath x))\n      (ContinuousLinearMap.finiteDimensionalOperatorTrace operatorDerivative) energy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "Applying the finite-dimensional trace to a differentiable real-energy operator path preserves\nits derivative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveTrace"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveTrace"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21427,7 +21615,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -21439,17 +21627,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
       "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "propext"
     ],
@@ -22635,6 +22821,7 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_injective",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
@@ -22647,10 +22834,11 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_injective",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23071,6 +23259,7 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.trace_pauliCombination_mul_pauliBasis",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_injective",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -23082,9 +23271,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.trace_pauliCombination_mul_pauliBasis",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_injective",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -39361,6 +39551,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.ext_iff",
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.evolveDensityOperator_pure",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -39372,13 +39563,14 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.ext_iff",
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.evolveDensityOperator_pure",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "QuantumTheory.pure_smul_of_norm_eq_one"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -39915,6 +40107,47 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (K : H →L[ℂ] H) (hpos : K.IsPositive) (htrace : K.SpectralTraceClass)\n  (hne : K ≠ 0) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (happly : ∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i),\n  QuantumTheory.DensityOperator.normalizePositive K hpos htrace hne =\n    QuantumTheory.purePointGibbsDensityOperator b E β ⋯",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+    "externalAxioms": [],
+    "docString": "A positive nonzero spectral-trace-class heat operator with pure-point Boltzmann basis action\nnormalizes to the existing pure-point Gibbs density operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.ext",
+      "QuantumTheory.DensityOperator.normalizePositive_op",
+      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
+      "QuantumTheory.purePointGibbsSummable_of_basis_action"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (hpos : T.IsPositive) (htrace : T.SpectralTraceClass) (hne : T ≠ 0),\n  (QuantumTheory.DensityOperator.normalizePositive T hpos htrace hne).op = htrace.trace⁻¹ • T",
     "standardAxioms": [
@@ -39923,7 +40156,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -39935,15 +40168,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.gibbsState_op"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.gibbsState_op"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52997,7 +53232,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py",
     "standardAxioms": [
       "Classical.choice",
@@ -53005,7 +53240,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53016,14 +53251,17 @@
     "docString": "Away from the band degeneracy, the two band energies are distinct. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53736,7 +53974,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -53779,7 +54017,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -53911,7 +54149,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.oppositeBand_oppositeBand",
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -54103,6 +54342,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_neg_mass",
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_lower",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
     "dependencies": [],
@@ -54113,9 +54353,10 @@
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_neg_mass",
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_lower",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54269,6 +54510,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_neg_mass",
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_upper",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
     "dependencies": [],
@@ -54279,9 +54521,10 @@
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_neg_mass",
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_upper",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55978,16 +56221,16 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -58244,6 +58487,44 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (hregular :\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular v m probeEnergy broadening\n      disorderStrength hbar pMax),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n      broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.resummedLadderVertex\n      (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m probeEnergy\n          broadening disorderStrength hbar pMax))\n      ⋯ QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
+    "externalAxioms": [],
+    "docString": "Under ladder regularity, the finite-broadening Born-Dyson solved vector is the generic\nalgebraically resummed vertex on the in-plane coefficient space. This is an inverse-based\nresummation statement only; no geometric-series convergence is asserted. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n      broadening 0 hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
     "standardAxioms": [
@@ -58702,12 +58983,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "QuantumTheory.Transport.Models.MassiveDirac.currentOperator_eq_charge_smul_velocityOperator",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_polarPauli_directionTrace"
     ],
@@ -59645,14 +59926,14 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_broadening_zero"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "InternalSpace.pauliCombination_smul",
       "InternalSpace.trace_pauliBasis",
       "InternalSpace.trace_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliBasis",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.energy_metallicFermiRadius",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59938,7 +60219,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_lower",
@@ -59949,7 +60230,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -59962,7 +60243,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator μ ν band v m px py =\n    (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py\n            hE).hamiltonianDerivativeMatrixElement\n        μ (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band *\n      (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py\n            hE).hamiltonianDerivativeMatrixElement\n        ν band (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band)",
     "standardAxioms": [
       "Classical.choice",
@@ -59970,7 +60251,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -59981,15 +60262,19 @@
     "docString": "The gauge-independent interband force numerator is exactly the product of the corresponding\ngeneric Hamiltonian-derivative matrix elements. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis",
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60641,14 +60926,14 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -60659,14 +60944,14 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroadeningBoundary_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "compiledConsumerCount": 13,
     "axioms": [
@@ -60704,12 +60989,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -60720,14 +61005,99 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "compiledConsumerCount": 11,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (rung coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM rung) coefficients =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM_apply",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0 →\n    IsUnit (1 - QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM rung)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
+    "externalAxioms": [],
+    "docString": "The model determinant condition is exactly sufficient for the generic shifted-ladder\nendomorphism to be a unit on the represented in-plane coefficient space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneShiftMatrix_det",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneShiftMatrix_mulVec"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex"
+    ],
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60758,17 +61128,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -60801,17 +61171,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -60825,6 +61195,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector)\n  (hdet : QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung =\n    QuantumTheory.Transport.resummedLadderVertex (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM rung) ⋯\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
+    "externalAxioms": [],
+    "docString": "The closed two-component solution is the generic algebraic resummation on the invariant\nin-plane coefficient space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.resummedLadderVertex_fixedPoint",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung =\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource +\n        QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung\n          (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung)",
     "standardAxioms": [
       "Classical.choice",
@@ -60832,7 +61251,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -60840,24 +61259,19 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
     "externalAxioms": [],
-    "docString": "The explicit coefficient vector solves `Γ = eₓ + L Γ` whenever `I - L` has nonzero\ndeterminant. ",
+    "docString": "The explicit coefficient vector solves `Γ = eₓ + L Γ` as a corollary of the generic\nresummation fixed-point theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_x",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_y"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.resummedLadderVertex_fixedPoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60925,14 +61339,125 @@
     "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
     "externalAxioms": [],
-    "docString": "The in-plane fixed point is unique under the same nonzero-determinant hypothesis. ",
+    "docString": "The in-plane fixed point is unique under the same nonzero-determinant hypothesis, by the generic\nladder uniqueness theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (coefficients : Fin 2 → ℂ),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding coefficients =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator coefficients",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_apply",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "Function.Injective ⇑QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_injective",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+    "externalAxioms": [],
+    "docString": "The in-plane Pauli realization retains both coefficient coordinates. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector)\n  (hdet : QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding\n      (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung) =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding\n      (QuantumTheory.Transport.resummedLadderVertex (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM rung)\n        ⋯ QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
+    "externalAxioms": [],
+    "docString": "At the operator boundary, the explicit massive-Dirac solution is the embedded generic\nresummed ladder vertex on the in-plane invariant subspace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -61160,15 +61685,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_inPlaneLadderDeterminant",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_inPlaneLadderDeterminant"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_inPlaneLadderDeterminant",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_inPlaneLadderDeterminant"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -61188,7 +61713,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -61201,13 +61726,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -61283,6 +61808,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_embedding",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -61297,9 +61823,47 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_embedding",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (aR aA bR bA dR dA : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ *\n          QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding coefficients *\n        QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aA bA dA θ =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexEmbedding\n      ((QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM\n          (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aR aA dR dA))\n        coefficients)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_embedding",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
+    "externalAxioms": [],
+    "docString": "The retarded-advanced polar rung preserves the embedded in-plane Pauli subspace and\nintertwines there with the bundled two-component ladder action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61418,6 +61982,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
     ],
@@ -61429,10 +61994,11 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63827,6 +64393,218 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =\n    QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "Canonical specialization from the generic pointwise Berry curvature to the closed\nmassive-Dirac formula. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_lower",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_upper",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_yx_eq_neg_berryCurvature"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_lower",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_upper",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_yx_eq_neg_berryCurvature"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =\n    QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "The generic pointwise Berry curvature in the physical x-y directions is exactly the\nmodel projector/force-matrix curvature away from the Dirac degeneracy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
+    ],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_injective",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap",
+      "QuantumTheory.Transport.Models.MassiveDirac.sum_band",
+      "QuantumTheory.Transport.Models.MassiveDirac.velocityOperator_isSelfAdjoint",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge.0.QuantumTheory.Transport.Models.MassiveDirac.mul_div_real_gap_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature",
+      "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ) (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 0 1\n      QuantumTheory.Transport.Models.MassiveDirac.Band.lower =\n    m * v ^ 2 / (2 * QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ^ 3)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_lower",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "Generic lower-band x-y curvature in the repository sign convention. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_lower",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ) (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 0 1\n      QuantumTheory.Transport.Models.MassiveDirac.Band.upper =\n    -(m * v ^ 2) / (2 * QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ^ 3)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_upper",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "Generic upper-band x-y curvature in the repository sign convention. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.berryCurvature_upper",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 1 0 band =\n    -QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_yx_eq_neg_berryCurvature",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "Reversing the two physical momentum directions gives the negative closed curvature, inherited\nfrom generic Berry-curvature antisymmetry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_swap",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (v m px py : ℝ) (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).energy band =\n    QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py",
     "standardAxioms": [
@@ -63852,6 +64630,45 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).energy band -\n      (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).energy\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) =\n    QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "The generic band-energy difference to the opposite band is the model interband gap. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65223,6 +66040,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorResolvent_sq",
@@ -65238,6 +66056,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_add_oppositeBand",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Transport.Models.MassiveDirac.projectorResolvent_sq",
@@ -65248,7 +66067,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.MassiveDirac.shiftedHamiltonian_mul_projectorResolvent"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68963,7 +69782,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    2 *\n          (QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace 0 1 band\n              (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py).im /\n        QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n      e ^ 2 * QuantumTheory.Transport.Models.MassiveDirac.berryCurvature band v m px py",
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  2 *\n        (QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace 0 1 band\n            (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) e v m px py).im /\n      QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py ^ 2 =\n    e ^ 2 * (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68975,10 +69794,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.Berry",
     "externalAxioms": [],
-    "docString": "Normalizing the Hall interband current block by the squared interband gap directly reproduces\n`e²` times the clean Berry curvature away from the Dirac degeneracy. ",
+    "docString": "Normalizing the Hall interband current block by the squared interband gap reproduces\n`e²` times the generic pointwise Berry curvature. This is the transport consumer of the canonical\nMassive-Dirac spectral bridge. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -68986,7 +69805,7 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
-      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature"
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69085,7 +69904,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (direction : Fin 2) (v : ℝ), IsSelfAdjoint (QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v)",
     "standardAxioms": [
       "Classical.choice",
@@ -69093,7 +69912,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -69104,16 +69923,19 @@
     "docString": "The direction-indexed velocity operator is self-adjoint. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.velocity_isHermitian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72156,15 +72978,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : NormedSpace ℂ H] (ladder : (H →L[ℂ] H) →L[ℂ] H →L[ℂ] H)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex dressedVertex : H →L[ℂ] H),\n  dressedVertex = bareVertex + ladder dressedVertex →\n    dressedVertex = QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex",
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℂ V] (ladder : V →L[ℂ] V)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex dressedVertex : V),\n  dressedVertex = bareVertex + ladder dressedVertex →\n    dressedVertex = QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -72175,15 +72997,19 @@
     "docString": "When `I - L` is a unit, the ladder fixed point is unique. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+    ],
     "dependencies": [
       "Function.eq_of_eq_add_apply_of_eq_add_apply_of_injective_sub_apply",
       "QuantumTheory.Transport.resummedLadderVertex_fixedPoint"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72228,141 +73054,6 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H),\n  QuantumTheory.Transport.finiteDimensionalOperatorTrace operator = (LinearMap.trace ℂ H) ↑operator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteDimensionalOperatorTrace_apply",
-    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM",
-      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM",
-      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (left right : H →L[ℂ] H),\n  QuantumTheory.Transport.finiteDimensionalOperatorTrace (left * right) =\n    QuantumTheory.Transport.finiteDimensionalOperatorTrace (right * left)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm",
-    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-    "externalAxioms": [],
-    "docString": "Cyclicity of the bundled ordinary trace for two bounded endomorphisms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
-      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
-      "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
-      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_eq_currentBandBlockTrace",
-      "QuantumTheory.Transport.Models.MassiveDirac.bastinBandBlockTrace_swap",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
-      "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
-      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ),\n  QuantumTheory.Transport.finiteDimensionalOperatorTrace (Matrix.toEuclideanCLM M) = M.trace",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM",
-    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-    "externalAxioms": [],
-    "docString": "The finite-dimensional operator trace of a matrix transported through the canonical Euclidean\nmatrix/operator equivalence is its ordinary matrix trace. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
-    ],
-    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72662,45 +73353,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H} {energy : ℝ},\n  HasDerivAt operatorPath operatorDerivative energy →\n    HasDerivAt (fun x => QuantumTheory.Transport.finiteDimensionalOperatorTrace (operatorPath x))\n      (QuantumTheory.Transport.finiteDimensionalOperatorTrace operatorDerivative) energy",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.hasDerivAt_finiteDimensionalOperatorTrace_comp",
-    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-    "externalAxioms": [],
-    "docString": "Applying the finite-dimensional trace to a differentiable real-energy operator path preserves\nits derivative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveTrace"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveTrace"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (hamiltonian : H →L[ℂ] H),\n  IsSelfAdjoint hamiltonian →\n    ∀ (current₁ current₂ : H →L[ℂ] H) (energy broadening : ℝ),\n      0 < broadening →\n        HasDerivAt\n          (fun x =>\n            QuantumTheory.Transport.regularizedStredaSurfacePrimitiveOperator hamiltonian current₁ current₂ x\n              broadening)\n          (QuantumTheory.Transport.regularizedStredaSurfacePrimitiveOperatorDerivative hamiltonian current₁ current₂\n            energy broadening)\n          energy",
     "standardAxioms": [
       "Classical.choice",
@@ -72762,7 +73414,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
       "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveOperator"
     ],
     "crossModuleDirectWrapper": false,
@@ -74757,7 +75409,7 @@
       "QuantumTheory.Transport.TracedStredaResponseMatrixAnalyticData.fermiSeaMatrix_swap"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -74798,7 +75450,7 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_mul_comm"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -75042,14 +75694,14 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : NormedSpace ℂ H] (ladder : (H →L[ℂ] H) →L[ℂ] H →L[ℂ] H)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex : H →L[ℂ] H),\n  QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex =\n    bareVertex + ladder (QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex)",
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℂ V] (ladder : V →L[ℂ] V)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex : V),\n  QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex =\n    bareVertex + ladder (QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -75061,6 +75713,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint"
     ],
     "dependencies": [
@@ -75069,9 +75723,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.eq_resummedLadderVertex_of_fixedPoint"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78154,6 +78810,51 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (K : H →L[ℂ] H) (htrace : K.SpectralTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    HasSum (QuantumTheory.purePointBoltzmannWeight E β) htrace.trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+    "externalAxioms": [],
+    "docString": "If supplied heat data act diagonally by the Boltzmann weights, those weights sum to the\nbundled spectral trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.purePointGibbsSummable_of_basis_action"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
+      "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+      "QuantumTheory.purePointGibbsSummable_of_basis_action"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ι : Type u_1} (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsEnergyIntegrable E β →\n    HasSum (fun i => QuantumTheory.purePointGibbsProbability E β i * E i)\n      (QuantumTheory.purePointGibbsEnergyExpectation E β)",
     "standardAxioms": [
@@ -78219,6 +78920,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_eq_one"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (K : H →L[ℂ] H) (htrace : K.SpectralTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n    htrace.trace = QuantumTheory.purePointPartitionFunction E β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.heatSpectralTrace_eq_purePointPartitionFunction_of_basis_action",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+    "externalAxioms": [],
+    "docString": "If supplied heat data act diagonally by the Boltzmann weights, their bundled spectral trace is\nthe pure-point partition function. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
+    ],
+    "dependencies": [
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -78797,6 +79539,7 @@
     "dependents": [
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
+      "QuantumTheory.purePointGibbsSummable_of_basis_action",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
@@ -78810,11 +79553,12 @@
       "QuantumTheory.purePointGibbsDensityOperator",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
+      "QuantumTheory.purePointGibbsSummable_of_basis_action",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78933,6 +79677,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.energyExpValue_purePointGibbsDensityOperator_eq_tsum",
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
@@ -78945,11 +79690,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action",
       "QuantumTheory.energyExpValue_purePointGibbsDensityOperator_eq_tsum",
       "QuantumTheory.finitePurePointGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79027,6 +79773,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (K : H →L[ℂ] H),\n  K.SpectralTraceClass →\n    ∀ (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n      (∀ (i : ι), K (b i) = ↑(QuantumTheory.purePointBoltzmannWeight E β i) • b i) →\n        QuantumTheory.PurePointGibbsSummable E β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.purePointGibbsSummable_of_basis_action",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
+    "externalAxioms": [],
+    "docString": "Pure-point Boltzmann summability follows from spectral-trace-class heat data with the matching\nbasis action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
+    ],
+    "dependencies": [
+      "QuantumTheory.hasSum_purePointBoltzmannWeight_of_basis_action",
+      "QuantumTheory.purePointBoltzmannWeight_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.normalizePositive_eq_purePointGibbsDensityOperator_of_basis_action"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -156453,7 +157241,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : NormedSpace ℂ H] (ladder : (H →L[ℂ] H) →L[ℂ] H →L[ℂ] H)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex : H →L[ℂ] H),\n  (1 - ladder) (QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex) = bareVertex",
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℂ V] (ladder : V →L[ℂ] V)\n  (hinvertible : IsUnit (1 - ladder)) (bareVertex : V),\n  (1 - ladder) (QuantumTheory.Transport.resummedLadderVertex ladder hinvertible bareVertex) = bareVertex",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159199,6 +159987,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (a b : ℂ) (gap : ℝ), gap ≠ 0 → (a / ↑gap * (b / ↑gap)).im = (a * b).im / gap ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge.0.QuantumTheory.Transport.Models.MassiveDirac.mul_div_real_gap_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (direction : Fin 2), Matrix.IsHermitian (QuantumTheory.Transport.Models.MassiveDirac.directionPauli direction)",
     "standardAxioms": [
       "Classical.choice",
@@ -160092,7 +160919,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ) =\n    2 * q *\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aL aR dL dR) coefficients measured",
+    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ContinuousLinearMap.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ) =\n    2 * q *\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aL aR dL dR) coefficients measured",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160114,12 +160941,12 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "InternalSpace.pauliCombination_eq_components",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.intervalIntegrable_polarPauli_rung"
     ],
     "crossModuleDirectWrapper": false,
@@ -160139,7 +160966,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      QuantumTheory.Transport.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ))\n    MeasureTheory.volume 0 (2 * Real.pi)",
+    "statement": "∀ (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)\n  (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  IntervalIntegrable\n    (fun θ =>\n      ContinuousLinearMap.finiteDimensionalOperatorTrace\n        (q •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  (QuantumTheory.Transport.Models.MassiveDirac.directionPauli measured) *\n              QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aL bL dL θ *\n            (coefficients 0 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaX +\n              coefficients 1 •\n                QuantumTheory.Transport.Models.MassiveDirac.matrixOperator\n                  QuantumTheory.Transport.Models.MassiveDirac.sigmaY) *\n          QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ))\n    MeasureTheory.volume 0 (2 * Real.pi)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160512,7 +161339,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0 →\n    Function.Injective fun coefficients =>\n      coefficients - QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung coefficients",
+    "statement": "∀ (rung : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderDeterminant rung ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung -\n        QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction rung\n          (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector rung) =\n      QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160524,23 +161351,25 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_shift_injective",
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder.0.QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_shift",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneShiftMatrix_det",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneShiftMatrix_mulVec"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_x",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_apply_y"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -160852,7 +161681,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] [inst_4 : FiniteDimensional ℂ H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (operator : H →L[ℂ] H),\n  QuantumTheory.Transport.finiteDimensionalOperatorTrace operator =\n    ∑ m, inner ℂ (data.basis m) (operator (data.basis m))",
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] [inst_4 : FiniteDimensional ℂ H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (operator : H →L[ℂ] H),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace operator = ∑ m, inner ℂ (data.basis m) (operator (data.basis m))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160874,7 +161703,7 @@
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_apply"
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
