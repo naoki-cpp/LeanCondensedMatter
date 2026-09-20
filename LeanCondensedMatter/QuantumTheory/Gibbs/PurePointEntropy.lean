@@ -45,7 +45,7 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
     rw [purePointGibbsProbability, purePointBoltzmannWeight,
       Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
       Real.log_inv, Real.log_exp]
-    rfl
+    ring
   have hterm (i : ι) :
       Real.negMulLog (purePointGibbsProbability E β i) =
         β * (purePointGibbsProbability E β i * E i) +
@@ -98,7 +98,7 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
     rw [purePointGibbsProbability, purePointBoltzmannWeight,
       Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
       Real.log_inv, Real.log_exp]
-    rfl
+    ring
   have hterm (i : ι) :
       Real.negMulLog (p i) =
         β * (p i * E i) + Real.log Z * p i := by
