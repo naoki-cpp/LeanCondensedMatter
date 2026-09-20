@@ -5884,7 +5884,6 @@
       "Combinatorics.Pairing.transport_transport_symm",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
@@ -5907,11 +5906,10 @@
       "Combinatorics.Pairing.transport_transport_symm",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 18,
+    "compiledConsumerCount": 17,
     "axioms": [
       "Quot.sound"
     ],
@@ -7616,8 +7614,7 @@
       "Combinatorics.Pairing.relabel_relabel_symm",
       "Combinatorics.Pairing.relabel_symm_relabel",
       "Combinatorics.Pairing.relabel_trans",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
     ],
     "dependencies": [
       "Combinatorics.Pairing.transport_partner"
@@ -7629,10 +7626,9 @@
       "Combinatorics.Pairing.relabel_relabel_symm",
       "Combinatorics.Pairing.relabel_symm_relabel",
       "Combinatorics.Pairing.relabel_trans",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -7714,14 +7710,14 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} (P : Combinatorics.Pairing n) (e : Equiv.Perm (Fin (2 * n))), (P.relabel e).relabel (Equiv.symm e) = P",
     "standardAxioms": [
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -7732,19 +7728,15 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.Pairing.ext",
       "Combinatorics.Pairing.relabel_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -90864,45 +90856,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N Finset.univ) (σ υ : Fin N → ℝ)\n  (B : ↥d.componentPartition.parts),\n  Combinatorics.FamilySlotShuffleTo.timeAssignment d.canonicalComponentInteractionShuffle (fun i => σ (Fin.cast ⋯ i))\n        B =\n      Combinatorics.FamilySlotShuffleTo.timeAssignment d.canonicalComponentInteractionShuffle\n        (fun i => υ (Fin.cast ⋯ i)) B ↔\n    ∀ (v : ↥(SecondQuantization.Common.TwoPointDiagram.interactionPart ↑B)), σ ↑v = υ ↑v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle",
-    "externalAxioms": [],
-    "docString": "For diagrams indexed by all `Fin N` interaction slots, canonical local-time equality is exactly\npointwise equality of the original slot-time functions on the component's interaction vertices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionVertexComponentEquiv_symm_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle.0.SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle.0.SecondQuantization.Common.finCast_univOrderIsoOfFin_symm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥d.vacuumComponentParts),\n  Fintype.card (d.MixedComponentPair τ τ' σ ↑B) =\n    2 * (SecondQuantization.Common.TwoPointDiagram.interactionPart ↑↑B).card",
     "standardAxioms": [
@@ -91189,7 +91142,6 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.ext_iff",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit",
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitExternal_ofSlotSplit"
     ],
     "dependencies": [],
@@ -91198,10 +91150,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.ext_iff",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit",
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitExternal_ofSlotSplit"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91405,41 +91356,6 @@
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ),\n  d.externalInteractionPart.card = d.interactionComponentSize d.externalComponentPart",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.externalInteractionPart_card",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
-    "externalAxioms": [],
-    "docString": "The external component owns as many interaction slots as its component-local ordered simplex. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92400,7 +92316,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92412,17 +92328,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93395,7 +93309,6 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
     ],
     "dependencies": [
@@ -93407,10 +93320,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93851,47 +93763,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (π : Equiv.Perm (Fin n))\n  (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    (d.relabelInteractionVertices π).pairingInMixedOrder τ τ' σ =\n      d.pairingInMixedOrder τ τ' fun v => σ ((Equiv.symm π) v)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": "Under injective interaction times, interaction-vertex relabeling commutes with the Common\nmixed-order pairing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.ext",
-      "Combinatorics.Pairing.relabel_partner",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ)\n  (s : SecondQuantization.Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Combinatorics.Pairing.weight s (d.pairingInMixedOrder τ τ' σ) =\n    d.mixedComponentWeight s τ τ' σ d.externalComponentPart *\n      d.vacuumComponentParts.prod (d.mixedComponentWeight s τ τ' σ)",
     "standardAxioms": [
@@ -94111,191 +93982,6 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ)\n  (shuffle : d.ComponentInteractionShuffle) (v : Fin n),\n  (d.relabelForComponentShuffle shuffle).vertexLabel ⟨v, ⋯⟩ =\n    d.vertexLabel ⟨(Equiv.symm (d.componentShuffleSlotPermutation shuffle)) v, ⋯⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.relabelForComponentShuffle_vertexLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentShufflePermutation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (π : Equiv.Perm (Fin n)),\n  (d.relabelInteractionVertices π).externalLabel = d.externalLabel",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_externalLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (π : Equiv.Perm (Fin n)),\n  (d.relabelInteractionVertices π).pairing =\n    d.pairing.relabel (SecondQuantization.Common.interactionVertexPositionRelabel π)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (π : Equiv.Perm (Fin n)),\n  (d.relabelInteractionVertices π).relabelInteractionVertices (Equiv.symm π) = d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": "Relabeling by a permutation and then its inverse recovers the original two-point diagram. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.relabel_symm_relabel",
-      "SecondQuantization.Common.TwoPointDiagram.ext",
-      "SecondQuantization.Common.interactionVertexPositionRelabel_symm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.twoPointDiagramInteractionRelabelEquiv"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (π : Equiv.Perm (Fin n))\n  (v : Fin n), (d.relabelInteractionVertices π).vertexLabel ⟨v, ⋯⟩ = d.vertexLabel ⟨π v, ⋯⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_vertexLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94882,41 +94568,6 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting",
     "externalAxioms": [],
     "docString": "**Summing over split diagrams is summing over the two pieces independently.**\n\nThe reindexing the binary external/vacuum factorization runs on: it turns one sum over diagrams into\na double sum whose inner factors are supported on disjoint slot blocks, which is the shape the\nbinary ordered-simplex shuffle identity consumes. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ)\n  (shuffle : d.ComponentInteractionShuffle) (σ : Fin Finset.univ.card → ℝ),\n  (SecondQuantization.Common.twoPointSlotTimeEquiv fun k => σ (shuffle.ambientPermutation k)) = fun v =>\n    SecondQuantization.Common.twoPointSlotTimeEquiv σ ((d.componentShuffleSlotPermutation shuffle) v)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.twoPointSlotTimeEquiv_comp_ambientPermutation",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentShufflePermutation",
-    "externalAxioms": [],
-    "docString": "Transporting the ambient shuffle action to explicit interaction slots gives exactly\nprecomposition by `componentShuffleSlotPermutation`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -102572,7 +102223,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102584,8 +102235,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective"
     ],
     "dependencies": [
       "SecondQuantization.Common.interactionVertexMixedPositionRelabel_strictMono_of_injective"
@@ -102593,10 +102243,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_eq_refl_of_injective"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102819,7 +102468,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)),\n  SecondQuantization.Common.interactionVertexPositionRelabel (Equiv.symm π) =\n    Equiv.symm (SecondQuantization.Common.interactionVertexPositionRelabel π)",
     "standardAxioms": [
       "Classical.choice",
@@ -102827,7 +102476,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102838,18 +102487,14 @@
     "docString": "The flattened position relabeling induced by the inverse slot permutation is the inverse\nflattened position relabeling. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.interactionVertexLegRelabel_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.relabelInteractionVertices_symm"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104102,18 +103747,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply",
-      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "SecondQuantization.Common.orderedTwoPointLegEvent_interactionVertexMixedPositionRelabel"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107207,41 +106850,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} [inst : Fintype ExternalLabel] [inst_1 : Fintype InternalLabel]\n  {R : Type u_3} [inst_2 : AddCommMonoid R] {n : ℕ} (π : Equiv.Perm (Fin n))\n  (F : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ → R),\n  ∑ d, F (d.relabelInteractionVertices π) = ∑ d, F d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.sum_relabelInteractionVertices",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": "A finite sum over all standard two-point diagrams is invariant under interaction-slot\nrelabeling. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) {β τ : ℝ},\n  0 ≤ β → τ ∈ Set.Icc 0 β → ∀ (lam : ℂ), Summable (SecondQuantization.Common.analyticDysonTerm energy V τ lam)",
     "standardAxioms": [
       "Classical.choice",
@@ -108614,8 +108222,7 @@
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -108626,10 +108233,9 @@
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149742,167 +149348,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (τ υ : Fin S.card → ℝ)\n  (B : ↥d.componentPartition.parts),\n  Combinatorics.FamilySlotShuffleTo.timeAssignment d.canonicalComponentInteractionShuffle τ B =\n      Combinatorics.FamilySlotShuffleTo.timeAssignment d.canonicalComponentInteractionShuffle υ B ↔\n    ∀ (v : ↥(SecondQuantization.Common.TwoPointDiagram.interactionPart ↑B)),\n      τ ((S.orderIsoOfFin ⋯).symm (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =\n        υ ((S.orderIsoOfFin ⋯).symm (d.interactionVertexComponentEquiv.symm ⟨B, v⟩))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle.0.SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle",
-    "externalAxioms": [],
-    "docString": "Equality of canonical component-local time assignments is exactly equality of ambient times on\nall actual interaction vertices of that component. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} (x : ↥Finset.univ), Fin.cast ⋯ ((Finset.univ.orderIsoOfFin ⋯).symm x) = ↑x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle.0.SecondQuantization.Common.finCast_univOrderIsoOfFin_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle",
-    "externalAxioms": [],
-    "docString": "For the full finset of `Fin N`, converting the increasing ambient rank back to `Fin N` recovers\nthe underlying vertex. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ),\n  Function.Injective σ →\n    ∀ (p : Fin (2 * (2 * n + 1))),\n      (SecondQuantization.Common.interactionVertexPositionRelabel π)\n          ((SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ) p) =\n        (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' fun v => σ ((Equiv.symm π) v)) p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": "At injective interaction times, interaction-slot relabeling commutes with the mixed-order ambient\nposition equivalence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.interactionVertexMixedPositionRelabel_apply_eq_of_injective",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel",
-      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.twoPointLegEquiv_interactionVertexPositionRelabel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (π : Equiv.Perm (Fin n)) (p : Fin (2 * (2 * Finset.univ.card + 1))),\n  (SecondQuantization.Common.twoPointLegEquiv Finset.univ)\n      ((SecondQuantization.Common.interactionVertexPositionRelabel π) p) =\n    (SecondQuantization.Common.interactionVertexLegRelabel π)\n      ((SecondQuantization.Common.twoPointLegEquiv Finset.univ) p)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.twoPointLegEquiv_interactionVertexPositionRelabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel",
-    "externalAxioms": [],
-    "docString": "Flattening an interaction-relabelled standard position agrees with relabeling the corresponding\nordered two-point leg. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel.0.SecondQuantization.Common.interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
