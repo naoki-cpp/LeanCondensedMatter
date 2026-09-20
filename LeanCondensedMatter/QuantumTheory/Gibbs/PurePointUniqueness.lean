@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
-import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
 
 /-!
 # Uniqueness for countable pure-point Gibbs competitors
@@ -116,17 +115,8 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
             p.probability i + q i / Z) := hBsum.symm
     have hterm_eq : ∀ i, Real.negMulLog (p.probability i) =
         β * (p.probability i * E i) + p.probability i * Real.log Z -
-          p.probability i + q i / Z := by
-      intro i
-      apply le_antisymm (hbound i)
-      by_contra hnot
-      have hlt : Real.negMulLog (p.probability i) <
-          β * (p.probability i * E i) + p.probability i * Real.log Z -
-            p.probability i + q i / Z :=
-        lt_of_not_ge hnot
-      have hsumlt :=
-        Summable.tsum_lt_tsum hbound hlt hEntropySummable hB
-      exact (ne_of_lt hsumlt) hsum_eq
+          p.probability i + q i / Z :=
+      pointwise_eq_of_tsum_eq_of_le hbound hEntropySummable hB hsum_eq
     intro i
     have hqpos : 0 < q i := by
       simpa [q] using purePointBoltzmannWeight_pos E β i
