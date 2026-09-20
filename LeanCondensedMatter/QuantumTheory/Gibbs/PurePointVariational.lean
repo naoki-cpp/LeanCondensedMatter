@@ -44,8 +44,8 @@ noncomputable def helmholtzFreeEnergy (p : PurePointGibbsCompetitor E) (β : ℝ
 
 end PurePointGibbsCompetitor
 
-/-- Every normalized countable competitor with finite entropy and absolutely integrable energy has
-Helmholtz free energy at least the pure-point Gibbs value. -/
+/-- Every normalized countable competitor with absolutely integrable energy has Helmholtz free
+energy at least the pure-point Gibbs value; finite entropy is derived from Gibbs summability. -/
 theorem purePointGibbs_helmholtzFreeEnergy_le
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
     (hsum : PurePointGibbsSummable E β) (p : PurePointGibbsCompetitor E) :
@@ -68,8 +68,7 @@ theorem purePointGibbs_helmholtzFreeEnergy_le
     exact hlogEq.le
   obtain ⟨-, hmain'⟩ :=
     summable_negMulLog_and_tsum_le_gibbs
-      p.probability q E β Z p.nonneg
-      p.hasSum_one.summable p.hasSum_one.tsum_eq hEnergy
+      p.probability q E β Z p.nonneg p.hasSum_one hEnergy
       hqsum hqsum_le (fun i => purePointBoltzmannWeight_pos E β i) hZpos hlog
   have hmain : p.entropy ≤ β * p.energy + Real.log Z := by
     simpa [PurePointGibbsCompetitor.entropy, PurePointGibbsCompetitor.energy] using hmain'
