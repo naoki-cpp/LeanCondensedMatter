@@ -126,7 +126,7 @@ theorem inPlanePauliVertexCLM_injective :
     apply
       (Matrix.toEuclideanCLM :
         Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa only [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hoperator
+    simpa only [inPlanePauliVertexOperator, matrixOperator, map_smul, map_add] using hoperator
   let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
     fun coefficients axis =>
       match axis with
