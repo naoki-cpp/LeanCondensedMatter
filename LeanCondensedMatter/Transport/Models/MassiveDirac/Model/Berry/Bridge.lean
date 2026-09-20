@@ -98,7 +98,7 @@ private theorem mul_div_real_gap_im
       ring
     _ = ((((gap⁻¹ ^ 2 : ℝ) : ℂ)) * (a * b)).im := by rw [hcoeff]
     _ = (a * b).im / gap ^ 2 := by
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, zero_add]
+      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul]
       field_simp [hgap]
       ring
 
@@ -141,6 +141,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
       rw [mul_div_real_gap_im _ _ _ hgap]
       rw [show data.energy .lower - data.energy .upper =
         interbandEnergyGap .lower v m px py by rfl]
+      ring
   | upper =>
       simp only [reduceCtorEq, ↓reduceIte, oppositeBand_upper, add_zero]
       have hgap : data.energy .upper - data.energy .lower ≠ 0 := by
@@ -150,6 +151,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
       rw [mul_div_real_gap_im _ _ _ hgap]
       rw [show data.energy .upper - data.energy .lower =
         interbandEnergyGap .upper v m px py by rfl]
+      ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
