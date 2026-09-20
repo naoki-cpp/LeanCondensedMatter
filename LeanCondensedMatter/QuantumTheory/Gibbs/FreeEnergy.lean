@@ -65,6 +65,35 @@ theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
   have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
   ⟨hf, hf.tsum_mono hg hfg⟩
 
+/-- The Gibbs comparison series is summable whenever the normalized probability family,
+energy term, and comparison weights are summable. Its total separates into energy, normalization,
+and comparison-weight contributions. -/
+theorem summable_gibbsComparison_and_tsum_eq
+    {ι : Type*} (p q energy : ι → ℝ) (β Z : ℝ)
+    (hp_hasSum : HasSum p 1)
+    (henergy : Summable fun i => p i * energy i)
+    (hq_summable : Summable q) :
+    Summable
+        (fun i => β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) ∧
+      (∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z)) =
+        β * (∑' i, p i * energy i) + Real.log Z - 1 + ∑' i, q i / Z := by
+  have hp_summable : Summable p := hp_hasSum.summable
+  have hqZ_summable : Summable (fun i => q i / Z) :=
+    hq_summable.div_const Z
+  have hplogZ_summable : Summable (fun i => p i * Real.log Z) :=
+    hp_summable.mul_right _
+  have hB_summable : Summable
+      (fun i => β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) :=
+    ((henergy.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
+  refine ⟨hB_summable, ?_⟩
+  rw [(((henergy.mul_left β).add hplogZ_summable).sub hp_summable).tsum_add
+    hqZ_summable, ((henergy.mul_left β).add hplogZ_summable).tsum_sub hp_summable,
+    (henergy.mul_left β).tsum_add hplogZ_summable, tsum_mul_left,
+    show (fun i => p i * Real.log Z) = (fun i => Real.log Z * p i) by
+      funext i
+      ring, tsum_mul_left, hp_hasSum.tsum_eq]
+  ring
+
 /-- Countable Gibbs entropy bound for a normalized nonnegative family. The comparison weights need
 only have total mass at most `Z`; the logarithmic estimate supplies the energy term. -/
 theorem summable_negMulLog_and_tsum_le_gibbs
@@ -81,14 +110,8 @@ theorem summable_negMulLog_and_tsum_le_gibbs
       ∑' i, Real.negMulLog (p i) ≤
         β * (∑' i, p i * energy i) + Real.log Z := by
   have hp_summable : Summable p := hp_hasSum.summable
-  have hp_tsum : ∑' i, p i = 1 := hp_hasSum.tsum_eq
-  have hqZ_summable : Summable (fun i => q i / Z) :=
-    hq_summable.div_const Z
-  have hplogZ_summable : Summable (fun i => p i * Real.log Z) :=
-    hp_summable.mul_right _
-  have hB_summable : Summable
-      (fun i => β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) :=
-    ((henergy.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
+  obtain ⟨hB_summable, hBsum⟩ :=
+    summable_gibbsComparison_and_tsum_eq p q energy β Z hp_hasSum henergy hq_summable
   have hbound : ∀ i, Real.negMulLog (p i) ≤
       β * (p i * energy i) + p i * Real.log Z - p i + q i / Z := by
     intro i
@@ -99,21 +122,11 @@ theorem summable_negMulLog_and_tsum_le_gibbs
   have hp_le_one : ∀ i, p i ≤ 1 := by
     intro i
     have hle := hp_summable.le_tsum i (fun j _ => hp_nonneg j)
-    rwa [hp_tsum] at hle
+    rwa [hp_hasSum.tsum_eq] at hle
   have hnegMulLog_nonneg : ∀ i, 0 ≤ Real.negMulLog (p i) :=
     fun i => Real.negMulLog_nonneg (hp_nonneg i) (hp_le_one i)
   obtain ⟨hnegMulLog_summable, hsum_le⟩ :=
     summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
-  have hsum_eq :
-      ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) =
-        β * (∑' i, p i * energy i) + Real.log Z * (∑' i, p i) -
-          (∑' i, p i) + ∑' i, q i / Z := by
-    rw [(((henergy.mul_left β).add hplogZ_summable).sub hp_summable).tsum_add
-      hqZ_summable, ((henergy.mul_left β).add hplogZ_summable).tsum_sub hp_summable,
-      (henergy.mul_left β).tsum_add hplogZ_summable, tsum_mul_left,
-      show (fun i => p i * Real.log Z) = (fun i => Real.log Z * p i) by
-        funext i
-        ring, tsum_mul_left]
   have hqZsum_le : ∑' i, q i / Z ≤ 1 :=
     tsum_div_le_one hq_tsum_le hZ
   have hfinal :
@@ -121,13 +134,11 @@ theorem summable_negMulLog_and_tsum_le_gibbs
         β * (∑' i, p i * energy i) + Real.log Z := by
     calc
       ∑' i, Real.negMulLog (p i) ≤
-          β * (∑' i, p i * energy i) + Real.log Z * (∑' i, p i) -
-            (∑' i, p i) + ∑' i, q i / Z := by
-        rw [← hsum_eq]
-        exact hsum_le
-      _ = β * (∑' i, p i * energy i) + Real.log Z * 1 - 1 +
-          ∑' i, q i / Z := by rw [hp_tsum]
-      _ ≤ β * (∑' i, p i * energy i) + Real.log Z * 1 - 1 + 1 := by
+          ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) :=
+        hsum_le
+      _ = β * (∑' i, p i * energy i) + Real.log Z - 1 + ∑' i, q i / Z :=
+        hBsum
+      _ ≤ β * (∑' i, p i * energy i) + Real.log Z - 1 + 1 := by
         linarith
       _ = β * (∑' i, p i * energy i) + Real.log Z := by ring
   exact ⟨hnegMulLog_summable, hfinal⟩
