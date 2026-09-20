@@ -131,19 +131,6 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
       T ext vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
-@[simp]
-private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_apply
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
-    (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
-      T ext vac τ τ' σ hσ pr).1 =
-      TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr :=
-  rfl
-
 /-- Ambient mixed vacuum pairs are the dependent disjoint union of the mixed pair fibers of the
 ambient vacuum components. -/
 noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
