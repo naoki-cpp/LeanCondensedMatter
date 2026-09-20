@@ -28,16 +28,9 @@ The cycle-factor comparison uses Mathlib's canonical decidability instance suppl
 index type.
 -/
 
-namespace Combinatorics
-
-open Equiv Equiv.Perm Finset
+namespace Equiv.Perm
 
 variable {α : Type*} [DecidableEq α] [Fintype α]
-
-/-- The partition of a finite type into the orbits of a permutation. -/
-def orbitFinpartition (σ : Perm α) [DecidableRel σ.SameCycle] :
-    Finpartition (univ : Finset α) :=
-  Finpartition.ofSetoid (Equiv.Perm.SameCycle.setoid σ)
 
 /-- On a nontrivial finite type, a permutation is a single orbit on the whole type
 exactly when its cycle type is the singleton containing the ambient cardinality. -/
@@ -72,6 +65,19 @@ theorem isCycleOn_univ_iff_cycleType_eq_singleton_card [Nontrivial α] (σ : Per
       simp [← Equiv.Perm.mem_support, hsupp]
     rw [← hset]
     exact hcycle.isCycleOn
+
+end Equiv.Perm
+
+namespace Combinatorics
+
+open Equiv Equiv.Perm Finset
+
+variable {α : Type*} [DecidableEq α] [Fintype α]
+
+/-- The partition of a finite type into the orbits of a permutation. -/
+def orbitFinpartition (σ : Perm α) [DecidableRel σ.SameCycle] :
+    Finpartition (univ : Finset α) :=
+  Finpartition.ofSetoid (Equiv.Perm.SameCycle.setoid σ)
 
 /-- The total cycle excess `Σ_C (|C| - 1)`. Fixed points contribute zero, so Mathlib's
 nontrivial `cycleType` gives the equivalent formula `sum - card`. -/
