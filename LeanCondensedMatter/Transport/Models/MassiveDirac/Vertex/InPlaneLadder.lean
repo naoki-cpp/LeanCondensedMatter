@@ -19,8 +19,9 @@ current rung has been reduced to the in-plane Pauli span. For the repository ori
 The rung, bare-`σₓ` source, and solved fixed point are standard `Fin 2 → ℂ` vectors. Coordinate
 projections remain available where downstream physics needs a concrete `x` or `y` component, but
 the canonical action, determinant, generic resummation bridge, and convergence statements consume
-the complete vector. This file does not define the Born-Dyson momentum integrals that supply the rung, take any
-broadening/disorder limit, identify a transport lifetime, or insert the result into conductivity.
+the complete vector. This file does not define the Born-Dyson momentum integrals that supply the
+rung, take any broadening/disorder limit, identify a transport lifetime, or insert the result into
+conductivity.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
