@@ -31,7 +31,7 @@ noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
 
 /-- If the two external vertices were disconnected, external vertex `1` would not lie in the
 component of external vertex `0`. -/
-theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
+private theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hExt : ¬ d.ExternalVerticesConnected) :
     (Sum.inl (1 : Fin 2) : TwoPointVertex S) ∉
@@ -48,7 +48,7 @@ theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (F
 /-- Under the hypothetical separation of the two external vertices, the legs in the component of
 external vertex `0` are one external leg together with four local legs for every interaction vertex
 in that component. -/
-noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (Fin N)}
+private noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hExt : ¬ d.ExternalVerticesConnected) :
     {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
@@ -107,7 +107,7 @@ noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (
 
 /-- Flattened legs in a hypothetically isolated external component are equivalent to one external
 leg plus its quartic interaction legs. -/
-noncomputable def TwoPointDiagram.disconnectedExternalBlockLegEquiv {S : Finset (Fin N)}
+private noncomputable def TwoPointDiagram.disconnectedExternalBlockLegEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hExt : ¬ d.ExternalVerticesConnected) :
     {leg : Fin (2 * (2 * S.card + 1)) //
@@ -187,12 +187,6 @@ theorem TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent
     d.IsExternallyConnected ↔ d.HasNoVacuumComponent := by
   simp [TwoPointDiagram.IsExternallyConnected, d.externalVerticesConnected]
 
-/-- Equivalent finite-component form of external connectedness. -/
-theorem TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.IsExternallyConnected ↔ d.vacuumComponentParts = ∅ := by
-  rw [d.isExternallyConnected_iff_hasNoVacuumComponent,
-    d.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty]
 
 end Common
 end SecondQuantization
