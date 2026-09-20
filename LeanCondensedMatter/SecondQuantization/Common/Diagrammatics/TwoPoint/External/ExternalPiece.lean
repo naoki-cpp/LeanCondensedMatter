@@ -341,11 +341,24 @@ theorem TwoPointDiagram.externalPieceMixedPosition_partner
     (d.pairingInMixedOrder τ τ' σ).partner (d.externalPieceMixedPosition τ τ' σ p) =
       d.externalPieceMixedPosition τ τ' σ
         ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner p) := by
+  have hPartner :
+      (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner p =
+        mixedTimeOrderedAtomicLegPosition τ τ' (d.externalPieceTimes σ)
+          (d.externalPiece.atomicLegPartner
+            (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p)) := by
+    calc
+      (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner p =
+          (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner
+            (mixedTimeOrderedAtomicLegPosition τ τ' (d.externalPieceTimes σ)
+              (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p)) := by
+            rw [mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv]
+      _ = _ := d.externalPiece.pairingInMixedOrder_partner_legPosition τ τ'
+        (d.externalPieceTimes σ) _
   rw [TwoPointDiagram.externalPieceMixedPosition,
     TwoPointDiagram.externalPieceMixedPosition,
     d.pairingInMixedOrder_partner_legPosition,
     d.atomicLegPartner_orderedTwoPointLegMap,
-    d.externalPiece.pairingInMixedOrder_partner_eq_atomicLegPartner,
+    hPartner,
     mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
 
 end Common

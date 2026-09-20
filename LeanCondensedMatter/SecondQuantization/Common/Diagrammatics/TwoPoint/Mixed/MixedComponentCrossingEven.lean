@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
@@ -19,6 +20,33 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
+
+/-- Unoriented geometric crossing count between two mixed-time components. -/
+private noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
+  ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+    if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
+
+/-- Geometric crossings split into the two oriented component-crossing counts. -/
+private theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) :
+    d.mixedComponentGeometricCrossingCount τ τ' σ B C =
+      d.mixedComponentOrientedCrossingCount τ τ' σ B C +
+        d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
+  change
+    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
+        (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C =
+      (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
+          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C +
+        (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
+          (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) C B
+  exact
+    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
+      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C
 
 private theorem TwoPointDiagram.mixedComponentPair_endpoints_ne
     {n : ℕ}
@@ -481,49 +509,6 @@ private theorem
     τ τ' σ B C hVac
     (d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac)
 
-private theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_comm
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C =
-      d.mixedComponentGeometricCrossingCount τ τ' σ C B := by
-  rw [d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C,
-    d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ C B]
-  omega
-
-private theorem
-    TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
-  by_cases hC : C = d.externalComponentPart
-  · have hB : B ≠ d.externalComponentPart := by
-      intro h
-      apply hBC
-      exact h.trans hC.symm
-    have hBVac : d.ComponentIsVacuum B :=
-      (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
-    rw [d.mixedComponentGeometricCrossingCount_comm τ τ' σ B C]
-    exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
-      τ τ' σ C B (Ne.symm hBC) hBVac
-  · have hCVac : d.ComponentIsVacuum C :=
-      (d.componentIsVacuum_iff_ne_externalComponentPart C).2 hC
-    exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
-      τ τ' σ B C hBC hCVac
-
-private theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_prod_components_unconditional
-    {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (s : Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder τ τ' σ).weight s =
-      ∏ B : d.componentPartition.parts,
-        d.mixedComponentWeight s τ τ' σ B :=
-  d.pairingInMixedOrder_weight_eq_prod_components s τ τ' σ
-    (d.mixedComponentGeometricCrossingCount_mod_two_eq_zero τ τ' σ)
-
 /-- For full quartic two-point diagrams, mixed-time pairing weights factor unconditionally into the
 external component and all vacuum components, for arbitrary exchange statistics. -/
 theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
@@ -534,8 +519,52 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       d.mixedComponentWeight s τ τ' σ d.externalComponentPart *
         d.vacuumComponentParts.prod
           (d.mixedComponentWeight s τ τ' σ) := by
-  rw [d.pairingInMixedOrder_weight_eq_prod_components_unconditional s τ τ' σ,
-    d.prod_mixedComponentWeight_eq_external_mul_prod_vacuum s τ τ' σ]
+  have hEven : ∀ B C : d.componentPartition.parts, B ≠ C →
+      d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
+    intro B C hBC
+    by_cases hC : C = d.externalComponentPart
+    · have hB : B ≠ d.externalComponentPart := by
+        intro h
+        apply hBC
+        exact h.trans hC.symm
+      have hBVac : d.ComponentIsVacuum B :=
+        (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
+      have hcomm :
+          d.mixedComponentGeometricCrossingCount τ τ' σ B C =
+            d.mixedComponentGeometricCrossingCount τ τ' σ C B := by
+        rw [d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C,
+          d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ C B]
+        omega
+      rw [hcomm]
+      exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
+        τ τ' σ C B (Ne.symm hBC) hBVac
+    · have hCVac : d.ComponentIsVacuum C :=
+        (d.componentIsVacuum_iff_ne_externalComponentPart C).2 hC
+      exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
+        τ τ' σ B C hBC hCVac
+  have hparity :
+      (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
+        (∑ B : d.componentPartition.parts,
+          d.mixedComponentCrossingCount τ τ' σ B) % 2 :=
+    Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
+      (d.pairingInMixedOrder τ τ' σ)
+      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
+      (fun B C hBC => by
+        change (d.mixedComponentOrientedCrossingCount τ τ' σ B C +
+          d.mixedComponentOrientedCrossingCount τ τ' σ C B) % 2 = 0
+        rw [← d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C]
+        exact hEven B C hBC)
+  have hcomponents :
+      (d.pairingInMixedOrder τ τ' σ).weight s =
+        ∏ B : d.componentPartition.parts, d.mixedComponentWeight s τ τ' σ B := by
+    simpa only [Combinatorics.Pairing.weight, TwoPointDiagram.mixedComponentWeight] using
+      BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq s
+        (d.pairingInMixedOrder τ τ' σ).crossingCount
+        (fun B : d.componentPartition.parts => d.mixedComponentCrossingCount τ τ' σ B)
+        hparity
+  rw [hcomponents,
+    d.prod_componentParts_eq_external_mul_prod_vacuum
+      (d.mixedComponentWeight s τ τ' σ)]
 
 end Common
 end SecondQuantization

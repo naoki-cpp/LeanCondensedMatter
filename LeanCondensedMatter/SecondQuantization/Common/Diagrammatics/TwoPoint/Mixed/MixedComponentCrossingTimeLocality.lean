@@ -1,6 +1,7 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentTimeTransport
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 
 set_option linter.style.header false
 
@@ -16,6 +17,84 @@ namespace SecondQuantization
 namespace Common
 
 open Combinatorics
+
+variable {ExternalLabel InternalLabel : Type*}
+
+/-- Canonical comparison of mixed positions of one full component across interaction-time
+assignments, used only to prove chamber locality. -/
+private noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    d.MixedComponentPosition τ τ' σ B ≃ d.MixedComponentPosition τ τ' υ B :=
+  (d.mixedComponentPositionEquiv τ τ' σ B).trans
+    (d.mixedComponentPositionEquiv τ τ' υ B).symm
+
+/-- Time transport preserves the atomic leg represented by a mixed component position. -/
+private theorem TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (p : d.MixedComponentPosition τ τ' σ B) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' υ
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
+      mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 := by
+  rw [← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
+  apply congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+  have h := congrArg Subtype.val
+    (show d.mixedComponentPositionEquiv τ τ' υ B
+          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
+        d.mixedComponentPositionEquiv τ τ' σ B p by
+      simp [TwoPointDiagram.mixedComponentPositionTimeEquiv])
+  change mixedTimeAmbientPositionEquiv τ τ' υ
+      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
+    mixedTimeAmbientPositionEquiv τ τ' σ p.1 at h
+  exact h
+
+/-- Component position transport preserves strict order inside one mixed-order chamber. -/
+private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
+    (p q : d.MixedComponentPosition τ τ' σ B) :
+    p.1 < q.1 ↔
+      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
+  have hOrder :
+      (mixedTimeOrderedAtomicLegPosition τ τ' σ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
+        mixedTimeOrderedAtomicLegPosition τ τ' σ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)) ↔
+      (mixedTimeOrderedAtomicLegPosition τ τ' υ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
+        mixedTimeOrderedAtomicLegPosition τ τ' υ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)) :=
+    mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff τ τ' σ υ _ _
+      (orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
+        hChamber
+        (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1))
+        (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)))
+  have hpSource :
+      mixedTimeOrderedAtomicLegPosition τ τ' σ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = p.1 :=
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hqSource :
+      mixedTimeOrderedAtomicLegPosition τ τ' σ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) = q.1 :=
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hpTarget :
+      mixedTimeOrderedAtomicLegPosition τ τ' υ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) =
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 := by
+    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hqTarget :
+      mixedTimeOrderedAtomicLegPosition τ τ' υ
+          (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) =
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
+    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B q]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
+  exact hOrder
 
 @[simp]
 private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
@@ -77,8 +156,7 @@ private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
     d.externalComponentLegEquiv.symm
       (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
-  exact congrArg d.externalComponentLegEquiv.symm
-    (d.mixedComponentPositionEquiv_timeEquiv τ τ' σ υ d.externalComponentPart p)
+  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
 
 @[simp]
 private theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv

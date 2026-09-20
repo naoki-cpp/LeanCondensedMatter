@@ -67,7 +67,7 @@ theorem TwoPointDiagram.mixedRestrictedPartner_val
 /-- The mixed component-position equivalence intertwines the mixed restricted partner with the
 standard component restricted partner. -/
 @[simp]
-theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
+private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
