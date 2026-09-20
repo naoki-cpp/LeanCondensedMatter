@@ -43,6 +43,7 @@ theorem purePointGibbsSummable_of_basis_action
   have habs : Summable fun i => |purePointBoltzmannWeight E β i| :=
     hweights.summable.congr fun i => by
       rw [abs_of_nonneg (purePointBoltzmannWeight_nonneg E β i)]
+  change Summable fun i => ‖purePointBoltzmannWeight E β i‖
   simpa only [Real.norm_eq_abs] using habs
 
 /-- If supplied heat data act diagonally by the Boltzmann weights, their bundled spectral trace is
