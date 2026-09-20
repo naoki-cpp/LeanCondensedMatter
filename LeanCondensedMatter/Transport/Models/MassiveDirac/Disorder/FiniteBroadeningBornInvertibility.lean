@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Analysis.Normed.Operator.Banach
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
