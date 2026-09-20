@@ -44,19 +44,18 @@ private theorem bandEnergy_hasEigenvalue
   have hPne := bandProjectorOperator_ne_zero band v m px py
   obtain ⟨x, hx⟩ : ∃ x : DiracHilbert, bandProjectorOperator band v m px py x ≠ 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hPne
-    ext x
+    apply ContinuousLinearMap.ext
+    intro x
     exact h x
-  apply Module.End.hasEigenvalue_of_hasEigenvector
-  rw [Module.End.hasEigenvector_iff]
-  constructor
-  · rw [Module.End.mem_eigenspace_iff]
-    have happ := congrArg
-      (fun T : DiracHilbert →L[ℂ] DiracHilbert => T x)
-      (hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
-    simpa using happ
-  · exact hx
+  refine Module.End.hasEigenvalue_of_hasEigenvector
+    (Module.End.hasEigenvector_iff.mpr ⟨?_, hx⟩)
+  rw [Module.End.mem_eigenspace_iff]
+  have happ := congrArg
+    (fun T : DiracHilbert →L[ℂ] DiracHilbert => T x)
+    (hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+  simpa using happ
 
 private theorem sortedEigenvalues_eq_bandEnergy
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
@@ -85,20 +84,42 @@ private theorem sortedEigenvalues_eq_bandEnergy
     exact hsymm.eigenvalues_antitone diracHilbert_finrank
   fin_cases iu <;> fin_cases il
   · exfalso
-    simp [bandEnergy] at hiuR hilR
+    have hiuR' :
+        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .upper v m px py := by
+      simpa using hiuR
+    have hilR' :
+        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .lower v m px py := by
+      simpa using hilR
+    rw [hiuR'] at hilR'
+    simp [bandEnergy] at hilR'
     apply hE
     linarith
-  · exact ⟨hiuR, hilR⟩
+  · constructor
+    · simpa using hiuR
+    · simpa using hilR
   · exfalso
+    have hiuR' :
+        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .upper v m px py := by
+      simpa using hiuR
+    have hilR' :
+        sortedEigenvalues v m px py (0 : Fin 2) = bandEnergy .lower v m px py := by
+      simpa using hilR
     have horder :
         sortedEigenvalues v m px py (1 : Fin 2) ≤
           sortedEigenvalues v m px py (0 : Fin 2) :=
       hanti (by decide)
-    rw [hiuR, hilR] at horder
+    rw [hiuR', hilR'] at horder
     simp [bandEnergy] at horder
     linarith
   · exfalso
-    simp [bandEnergy] at hiuR hilR
+    have hiuR' :
+        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .upper v m px py := by
+      simpa using hiuR
+    have hilR' :
+        sortedEigenvalues v m px py (1 : Fin 2) = bandEnergy .lower v m px py := by
+      simpa using hilR
+    rw [hiuR'] at hilR'
+    simp [bandEnergy] at hilR'
     apply hE
     linarith
 
@@ -125,11 +146,13 @@ private theorem hamiltonianOperator_bandEigenbasis
     diracHilbert_finrank
   cases band with
   | lower =>
-      simpa [bandEigenbasis, sortedEigenbasis, sortedEigenvalues, finTwoEquivBand, hspectral.2]
-        using happ (1 : Fin 2)
+      simp only [bandEigenbasis, OrthonormalBasis.reindex_apply, finTwoEquivBand]
+      rw [← hspectral.2]
+      exact happ (1 : Fin 2)
   | upper =>
-      simpa [bandEigenbasis, sortedEigenbasis, sortedEigenvalues, finTwoEquivBand, hspectral.1]
-        using happ (0 : Fin 2)
+      simp only [bandEigenbasis, OrthonormalBasis.reindex_apply, finTwoEquivBand]
+      rw [← hspectral.1]
+      exact happ (0 : Fin 2)
 
 /-- Generic pointwise Berry eigenbasis data for the nondegenerate massive-Dirac Hamiltonian.
 
@@ -177,8 +200,7 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
         (pointwiseEigenbasisData v m px py hE).eigenbasis source
       else 0 := by
   rw [bandProjectorOperator_eq_spectralExpression]
-  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
-    ContinuousLinearMap.one_apply]
+  simp only [add_apply, smul_apply, one_apply_eq_self]
   have heigen :=
     (pointwiseEigenbasisData v m px py hE).hamiltonian_eigenvector source
   change
@@ -187,8 +209,32 @@ private theorem bandProjectorOperator_apply_pointwiseEigenbasis
       ((bandEnergy source v m px py : ℝ) : ℂ) •
         (pointwiseEigenbasisData v m px py hE).eigenbasis source at heigen
   rw [heigen]
-  cases target <;> cases source <;>
-    simp [bandEnergy, hE, div_eq_mul_inv] <;> field_simp [hE]
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
+  cases target <;> cases source
+  · simp only [one_div, bandSign_lower, Complex.ofReal_div, Complex.ofReal_neg,
+      Complex.ofReal_one, bandEnergy_lower, neg_smul, Complex.coe_smul, smul_neg,
+      smul_add, ↓reduceIte]
+    match_scalars
+    field_simp [hEc]
+    simp [two_mul]
+  · simp only [one_div, bandSign_lower, Complex.ofReal_div, Complex.ofReal_neg,
+      Complex.ofReal_one, bandEnergy_upper, Complex.coe_smul, smul_add, reduceCtorEq,
+      ↓reduceIte]
+    match_scalars
+    field_simp [hEc]
+    simp [two_mul]
+  · simp only [one_div, bandSign_upper, Complex.ofReal_inv, bandEnergy_lower,
+      Complex.ofReal_neg, neg_smul, Complex.coe_smul, smul_neg, smul_add, reduceCtorEq,
+      ↓reduceIte]
+    match_scalars
+    field_simp [hEc]
+    simp [two_mul]
+  · simp only [one_div, bandSign_upper, Complex.ofReal_inv, bandEnergy_upper,
+      Complex.coe_smul, smul_add, ↓reduceIte]
+    match_scalars
+    field_simp [hEc]
+    simp [two_mul]
 
 /-- Away from the Dirac degeneracy, the gauge-independent band projector is the rank-one
 projector onto the corresponding vector of the generic pointwise Berry eigenbasis. -/
@@ -213,8 +259,10 @@ theorem bandProjectorOperator_eq_rankOne_pointwiseEigenbasis
     simp [data]
   · rw [bandProjectorOperator_apply_pointwiseEigenbasis]
     simp only [if_neg hsource, smul_zero]
-    rw [data.eigenbasis.inner_eq_zero hsource]
-    simp
+    have horth :
+        inner ℂ (data.eigenbasis band) (data.eigenbasis source) = 0 :=
+      data.eigenbasis.inner_eq_zero (Ne.symm hsource)
+    simpa [data, horth]
 
 end
 
