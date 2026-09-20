@@ -49,7 +49,7 @@ noncomputable def TwoPointDiagram.externalInteractionPart
 
 /-- A component part meets the external sector exactly when it is the canonical common external
 component part. -/
-theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart
+private theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) :
     d.ComponentMeetsExternal B ↔ B = d.externalComponentPart := by
@@ -74,7 +74,7 @@ theorem TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart
   rw [d.componentMeetsExternal_iff_eq_externalComponentPart B]
 
 /-- The canonical external component is not a vacuum component. -/
-theorem TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts
+private theorem TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.externalComponentPart ∉ d.vacuumComponentParts := by
   rw [d.mem_vacuumComponentParts,
@@ -82,7 +82,7 @@ theorem TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts
   simp
 
 /-- Every component part is either the common external part or a vacuum part. -/
-theorem TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts
+private theorem TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) :
     B = d.externalComponentPart ∨ B ∈ d.vacuumComponentParts := by
@@ -93,7 +93,7 @@ theorem TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComp
 
 /-- The full finite type of component parts is the disjoint insertion of the common external part
 into the finite set of vacuum parts. -/
-theorem TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum
+private theorem TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     (Finset.univ : Finset d.componentPartition.parts) =
       insert d.externalComponentPart d.vacuumComponentParts := by
@@ -113,97 +113,6 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
   change (Finset.univ : Finset d.componentPartition.parts).prod f = _
   rw [d.univ_componentParts_eq_insert_external_vacuum,
     Finset.prod_insert d.externalComponentPart_not_mem_vacuumComponentParts]
-
-/-- Every interaction vertex lies either in the common external component or in a vacuum component. -/
-theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥S) :
-    (v : Fin N) ∈ d.externalInteractionPart ∨
-      ∃ B : d.componentPartition.parts,
-        B ∈ d.vacuumComponentParts ∧
-          (v : Fin N) ∈ TwoPointDiagram.interactionPart
-            (B : Finset (TwoPointVertex S)) := by
-  let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (Sum.inr v), by
-      change d.vertexGraph.componentBlock (Sum.inr v) ∈ d.vertexGraph.componentPartition.parts
-      exact d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩
-  have hvB : (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S)) := by
-    change (Sum.inr v : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inr v)
-    exact d.vertexGraph.self_mem_componentBlock (Sum.inr v)
-  rcases d.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts B with hB | hB
-  · left
-    apply (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2
-    rw [show (B : Finset (TwoPointVertex S)) = d.externalComponent 0 by
-      exact congrArg Subtype.val hB] at hvB
-    exact hvB
-  · right
-    refine ⟨B, hB, ?_⟩
-    exact (TwoPointDiagram.mem_interactionPart_subtype
-      (B : Finset (TwoPointVertex S)) v).2 hvB
-
-/-- A two-point diagram is externally connected exactly when the canonical external component owns
-all interaction slots. -/
-theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.IsExternallyConnected ↔ d.externalInteractionPart = S := by
-  rw [d.isExternallyConnected_iff_hasNoVacuumComponent,
-    d.hasNoVacuumComponent_iff_forall_component_meetsExternal]
-  constructor
-  · intro hall
-    apply Finset.Subset.antisymm
-    · exact TwoPointDiagram.interactionPart_subset (d.externalComponent 0)
-    · intro w hw
-      rw [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.mem_interactionPart]
-      refine ⟨hw, ?_⟩
-      let C : d.componentPartition.parts :=
-        ⟨d.componentBlock (Sum.inr ⟨w, hw⟩), by
-          change d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩) ∈
-            d.vertexGraph.componentPartition.parts
-          exact d.vertexGraph.componentBlock_mem_componentPartition _⟩
-      obtain ⟨e, he⟩ := hall C
-      have hC : (C : Finset (TwoPointVertex S)) ∈ d.vertexGraph.componentPartition.parts := by
-        simpa only [TwoPointDiagram.componentPartition] using C.2
-      have hblock : d.externalComponent e = d.componentBlock (Sum.inr ⟨w, hw⟩) := by
-        change d.vertexGraph.componentBlock (Sum.inl e) =
-          d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩)
-        exact (d.vertexGraph.componentBlock_eq_iff_mem hC (Sum.inl e)).2 he
-      have hzero : d.externalComponent e = d.externalComponent 0 := by
-        fin_cases e
-        · rfl
-        · exact d.externalComponent_zero_eq_one.symm
-      rw [← hzero, hblock]
-      change (Sum.inr ⟨w, hw⟩ : TwoPointVertex S) ∈
-        d.vertexGraph.componentBlock (Sum.inr ⟨w, hw⟩)
-      exact d.vertexGraph.self_mem_componentBlock _
-  · intro hconn B
-    obtain ⟨v, -, hv⟩ := d.componentPartition.part_surjOn B.2
-    cases v with
-    | inl e =>
-        refine ⟨e, ?_⟩
-        rw [← hv]
-        change (Sum.inl e : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl e)
-        exact d.vertexGraph.self_mem_componentBlock (Sum.inl e)
-    | inr w =>
-        have hmem : (w : Fin N) ∈ d.externalInteractionPart := by
-          rw [hconn]
-          exact w.2
-        rw [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.mem_interactionPart] at hmem
-        obtain ⟨hw, hw'⟩ := hmem
-        have hvertex : (Sum.inr w : TwoPointVertex S) ∈ d.externalComponent 0 := by
-          simpa using hw'
-        have hBgraph : (d.externalComponent 0) ∈ d.vertexGraph.componentPartition.parts := by
-          change d.vertexGraph.componentBlock (Sum.inl 0) ∈ d.vertexGraph.componentPartition.parts
-          exact d.vertexGraph.componentBlock_mem_componentPartition _
-        have hB : (B : Finset (TwoPointVertex S)) = d.externalComponent 0 := by
-          rw [← hv]
-          change d.vertexGraph.componentBlock (Sum.inr w) =
-            d.vertexGraph.componentBlock (Sum.inl 0)
-          exact (d.vertexGraph.componentBlock_eq_iff_mem hBgraph (Sum.inr w)).2 hvertex
-        refine ⟨0, ?_⟩
-        rw [hB]
-        change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
-          d.vertexGraph.componentBlock (Sum.inl 0)
-        exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
 
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
 theorem TwoPointDiagram.interactionPart_component_unique
