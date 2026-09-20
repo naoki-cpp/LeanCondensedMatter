@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Compact
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!

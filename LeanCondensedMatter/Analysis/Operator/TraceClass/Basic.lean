@@ -1,6 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
-import LeanCondensedMatter.Analysis.Operator.Compact
-import Mathlib.Analysis.Normed.Operator.Compact.Basic
 
 set_option linter.style.header false
 
