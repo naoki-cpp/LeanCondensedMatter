@@ -152,9 +152,6 @@ or consumer structure changes.
 - `SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem` — semantic normalization
   rule for the named flattened-leg component predicate, identifying it with membership of the
   incident vertex in the corresponding component part.
-- `SecondQuantization.Common.TwoPointDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum` —
-  domain-level factorization of mixed-time component weights into the distinguished external
-  component and vacuum components, used by the fixed-external Wick factorization endpoint.
 - `SecondQuantization.Common.interactionPicture_zero` — canonical `[simp]` normalization that the named
   interaction-picture operator equals the original operator at zero imaginary time.
 - `SecondQuantization.Fermionic.externalFieldOperator_annihilation_eq_smul` — physical evaluation rule
