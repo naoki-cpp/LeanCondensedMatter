@@ -41,6 +41,13 @@ theorem bandProjector_eq_pauliCombination
               diracPauliCoefficients v m px py)) := by
   simp [bandProjector, hamiltonian_eq_pauliCombination]
 
+/-- Each massive-Dirac band projector has trace one. -/
+@[simp] theorem trace_bandProjector (band : Band) (v m px py : ℝ) :
+    Matrix.trace (bandProjector band v m px py) = 1 := by
+  rw [bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
+    InternalSpace.trace_pauliCombination]
+  norm_num [Matrix.trace]
+
 /-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
 involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
