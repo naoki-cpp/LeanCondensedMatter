@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Occupation
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import Mathlib.Tactic
 
 set_option linter.style.header false
