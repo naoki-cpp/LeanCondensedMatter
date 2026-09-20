@@ -178,34 +178,13 @@ noncomputable local instance assignmentTraceFullCycleFintype {m : ℕ} :
     Fintype {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))} :=
   Fintype.ofFinite _
 
-private theorem finAddTwo_univ_nontrivial (n : ℕ) :
-    (Set.univ : Set (Fin (n + 2))).Nontrivial := by
-  let a : Fin (n + 2) := ⟨0, by omega⟩
-  let b : Fin (n + 2) := ⟨1, by omega⟩
-  refine ⟨a, by simp, b, by simp, ?_⟩
-  intro hab
-  have hval := congrArg Fin.val hab
-  simp [a, b] at hval
-
-private theorem fullCycle_isCycle_add_two {n : ℕ} (σ : Equiv.Perm (Fin (n + 2)))
-    (hσ : σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))) : σ.IsCycle := by
-  rw [Equiv.Perm.isCycle_iff_exists_isCycleOn]
-  exact ⟨Set.univ, finAddTwo_univ_nontrivial n, hσ, by simp⟩
-
-private theorem fullCycle_support_eq_univ_add_two {n : ℕ} (σ : Equiv.Perm (Fin (n + 2)))
-    (hσ : σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))) :
-    σ.support = (Finset.univ : Finset (Fin (n + 2))) := by
-  ext a
-  simp only [Finset.mem_univ, iff_true]
-  exact Equiv.Perm.mem_support.mpr
-    (hσ.apply_ne (finAddTwo_univ_nontrivial n) (by simp))
-
 private theorem fullCycle_isConj_finRotate_add_two {n : ℕ}
     (σ : {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))}) :
     IsConj σ.1 (finRotate (n + 2)) := by
-  have hσcycle := fullCycle_isCycle_add_two σ.1 σ.2
-  apply hσcycle.isConj isCycle_finRotate
-  rw [fullCycle_support_eq_univ_add_two σ.1 σ.2, support_finRotate]
+  rw [Equiv.Perm.isConj_iff_cycleType_eq,
+    (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2,
+    Equiv.Perm.cycleType_finRotate]
+  simp
 
 private theorem cycleAssignmentKernelSum_fullCycle_add_two [CommSemiring R] [DecidableEq ι]
     (K : Matrix ι ι R) {n : ℕ}
@@ -220,39 +199,14 @@ private theorem cycleAssignmentKernelSum_fullCycle_add_two [CommSemiring R] [Dec
     _ = Matrix.trace (K ^ (n + 2)) := by
       simpa only [Nat.add_assoc] using cycleAssignmentKernelSum_finRotate_eq_trace K (n + 1)
 
-private theorem isCycleOn_univ_iff_cycleType_add_two {n : ℕ}
-    (σ : Equiv.Perm (Fin (n + 2))) :
-    σ.IsCycleOn (Set.univ : Set (Fin (n + 2))) ↔ σ.cycleType = {n + 2} := by
-  constructor
-  · intro hσ
-    have hcycle := fullCycle_isCycle_add_two σ hσ
-    rw [hcycle.cycleType, fullCycle_support_eq_univ_add_two σ hσ]
-    simp
-  · intro htype
-    have hcycle : σ.IsCycle := by
-      apply (Equiv.Perm.card_cycleType_eq_one).1
-      simp [htype]
-    have hsingleton : ({#σ.support} : Multiset ℕ) = {n + 2} := by
-      calc
-        ({#σ.support} : Multiset ℕ) = σ.cycleType := hcycle.cycleType.symm
-        _ = {n + 2} := htype
-    have hcard : #σ.support = n + 2 := by simpa using hsingleton
-    have hsupp : σ.support = (Finset.univ : Finset (Fin (n + 2))) :=
-      (Finset.card_eq_iff_eq_univ σ.support).1 (by simpa using hcard)
-    have hset : {x : Fin (n + 2) | σ x ≠ x} = Set.univ := by
-      ext x
-      simp [← Equiv.Perm.mem_support, hsupp]
-    rw [← hset]
-    exact hcycle.isCycleOn
-
 private noncomputable def fullCycleEquivCycleTypeAddTwo (n : ℕ) :
     {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))} ≃
       ↥({σ : Equiv.Perm (Fin (n + 2)) | σ.cycleType = {n + 2}} :
         Finset (Equiv.Perm (Fin (n + 2)))) where
   toFun σ := ⟨σ.1, by
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact (isCycleOn_univ_iff_cycleType_add_two σ.1).1 σ.2⟩
-  invFun σ := ⟨σ.1, (isCycleOn_univ_iff_cycleType_add_two σ.1).2 (by
+    simpa using (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2⟩
+  invFun σ := ⟨σ.1, (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).2 (by
     have h := σ.2
     simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using h)⟩
   left_inv σ := Subtype.ext rfl
