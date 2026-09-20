@@ -582,7 +582,8 @@
     ],
     "dependencies": [
       "BerryGeometry.PointwiseEigenbasisData.hamiltonian_eigenvector",
-      "BerryGeometry.PointwiseEigenbasisData.hamiltonian_selfAdjoint"
+      "BerryGeometry.PointwiseEigenbasisData.hamiltonian_selfAdjoint",
+      "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -22287,13 +22288,12 @@
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
@@ -22305,15 +22305,14 @@
       "InternalSpace.pauliCombination_mul_self",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.diracPauliCoefficients_dot_self",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22430,13 +22429,64 @@
     "dependents": [
       "InternalSpace.pauliAffine_mul_pauliAffine"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.pauliAffine_mul_pauliAffine"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (u : InternalSpace.PauliAxis → ℂ),\n  InternalSpace.pauliCombination u =\n    u InternalSpace.PauliAxis.x • InternalSpace.pauliX + u InternalSpace.PauliAxis.y • InternalSpace.pauliY +\n      u InternalSpace.PauliAxis.z • InternalSpace.pauliZ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.pauliCombination_eq_components",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Coordinate expansion of the canonical axis-indexed Pauli synthesis. Use this only when a\nconsumer genuinely needs explicit x/y/z components. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22473,7 +22523,8 @@
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
-      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis"
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -22560,7 +22611,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_isHermitian"
     ],
     "dependencies": [
-      "InternalSpace.pauliBasis_isHermitian"
+      "InternalSpace.pauliBasis_isHermitian",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -22602,7 +22654,9 @@
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -22646,6 +22700,7 @@
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_eq_components",
       "InternalSpace.pauliShift_mul_companion"
     ],
     "crossModuleDirectWrapper": false,
@@ -22771,13 +22826,101 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "InternalSpace.pauliCombination_eq_components"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (axis : InternalSpace.PauliAxis), Matrix.trace (InternalSpace.pauliBasis axis) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_pauliBasis",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Every matrix in the Pauli basis is traceless. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.trace_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.trace_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (axis : InternalSpace.PauliAxis) (u : InternalSpace.PauliAxis → ℂ),\n  (InternalSpace.pauliBasis axis * InternalSpace.pauliCombination u).trace = 2 * u axis",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_pauliBasis_mul_pauliCombination",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Tracing one Pauli basis matrix against a synthesized Pauli vector selects that coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.trace_pauliCombination_mul_pauliBasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
+      "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliCombination_pauliBasisCoeff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.trace_pauliCombination_mul_pauliBasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22812,7 +22955,9 @@
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "InternalSpace.trace_pauliBasis"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -22821,6 +22966,47 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (u : InternalSpace.PauliAxis → ℂ) (axis : InternalSpace.PauliAxis),\n  (InternalSpace.pauliCombination u * InternalSpace.pauliBasis axis).trace = 2 * u axis",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_pauliCombination_mul_pauliBasis",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Tracing a synthesized Pauli vector against one basis matrix selects that coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+    ],
+    "dependencies": [
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22852,8 +23038,7 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
@@ -22864,10 +23049,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59088,10 +59272,10 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornRetardedUpperBandFermiProjection_im_broadening_zero"
     ],
     "dependencies": [
-      "InternalSpace.dotProduct_pauliAxis",
       "InternalSpace.pauliCombination_smul",
+      "InternalSpace.trace_pauliBasis",
       "InternalSpace.trace_pauliCombination",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliBasis",
       "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.energy_metallicFermiRadius",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
@@ -59693,7 +59877,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "InternalSpace.pauliCombination_eq_components"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -63248,7 +63434,8 @@
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.pauliAffine_mul_pauliAffine"
+      "InternalSpace.pauliAffine_mul_pauliAffine",
+      "InternalSpace.pauliCombination_eq_components"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -135117,7 +135304,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : InternalSpace.PauliAxis → M),\n  ∑ axis, f axis = f InternalSpace.PauliAxis.x + f InternalSpace.PauliAxis.y + f InternalSpace.PauliAxis.z",
+    "statement": "∀ (axis : InternalSpace.PauliAxis),\n  InternalSpace.pauliCombination (InternalSpace.pauliBasisCoeff✝ axis) = InternalSpace.pauliBasis axis",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135129,6 +135316,45 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliCombination_pauliBasisCoeff",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : InternalSpace.PauliAxis → M),\n  ∑ axis, f axis = f InternalSpace.PauliAxis.x + f InternalSpace.PauliAxis.y + f InternalSpace.PauliAxis.z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis",
     "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
     "externalAxioms": [],
@@ -135136,15 +135362,25 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "InternalSpace.dotProduct_pauliAxis"
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_add",
+      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.pauliCombination_mul_pauliCombination",
+      "InternalSpace.pauliCombination_ofReal_isHermitian",
+      "InternalSpace.pauliCombination_smul"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "InternalSpace.dotProduct_pauliAxis"
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_add",
+      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.pauliCombination_mul_pauliCombination",
+      "InternalSpace.pauliCombination_ofReal_isHermitian",
+      "InternalSpace.pauliCombination_smul"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135923,6 +136159,80 @@
       "L2MultiplicationRealLine.realMultiplicationOperator_symmetric"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (hamiltonian : H →L[ℂ] H),\n  IsSelfAdjoint hamiltonian →\n    ∀ (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ),\n      (∀ (n : ι), hamiltonian (eigenbasis n) = ↑(energy n) • eigenbasis n) →\n        ∀ (n : ι) (x : H), inner ℂ (eigenbasis n) (hamiltonian x) = ↑(energy n) * inner ℂ (eigenbasis n) x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] {ι : Type u_2} [inst_2 : Fintype ι]\n  {κ : Type u_3} [inst_3 : DecidableEq ι] (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ)\n  (hamiltonianDerivative : κ → H →L[ℂ] H) (μ : κ) (n k : ι),\n  inner ℂ (eigenbasis k)\n      (BerryGeometry.PointwiseEigenbasisData.simpleSpectrumEigenvectorDerivative✝ eigenbasis energy\n        hamiltonianDerivative μ n) =\n    if k = n then 0 else inner ℂ (eigenbasis k) ((hamiltonianDerivative μ) (eigenbasis n)) / ↑(energy n - energy k)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_simpleSpectrumEigenvectorDerivative",
+    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159868,15 +160178,15 @@
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "directWrapperOf": "InternalSpace.pauliBasis_isHermitian",
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
     ],
     "dependencies": [
       "InternalSpace.pauliBasis_isHermitian"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
@@ -160511,8 +160821,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
-      "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
+      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_x",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction_apply_y",
       "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
