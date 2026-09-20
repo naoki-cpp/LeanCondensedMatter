@@ -23,8 +23,9 @@ conserving-approximation framework of Baym and Kadanoff, *Phys. Rev.* **124**, 2
 identity is asserted here.
 
 The public algebra is intentionally small: the RA kernel, finite fixed-point iterates, and
-conditional resummation on any normed complex coefficient space when `I - L` is a unit. No convergence, geometric-series expansion, Ward
-identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.
+conditional resummation on any normed complex coefficient space when `I - L` is a unit. No
+convergence, geometric-series expansion, Ward identity, SCBA closure, crossed diagram, or
+thermodynamic limit is asserted here.
 -/
 
 namespace QuantumTheory
