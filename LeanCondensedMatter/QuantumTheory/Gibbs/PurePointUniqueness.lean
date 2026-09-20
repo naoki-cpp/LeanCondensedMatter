@@ -142,9 +142,10 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
     have hscalar :
         Real.negMulLog (p.probability i) + p.probability i - q i / Z =
           -p.probability i * Real.log (q i / Z) := by
+      have hterm := hterm_eq i
       rw [hlogdiv]
-      rw [henergylog] at hterm_eq
-      nlinarith [hterm_eq i]
+      rw [henergylog] at hterm
+      nlinarith [hterm]
     have hpq :=
       (gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
         (p.nonneg i) hqZpos).mp hscalar
