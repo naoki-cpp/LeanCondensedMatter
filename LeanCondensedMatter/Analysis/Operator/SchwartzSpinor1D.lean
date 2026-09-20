@@ -133,30 +133,17 @@ noncomputable def hamiltonian
     (κ : ℝ) (potential : Spatial) (internalH : SpinMatrix) : Spinor →ₗ[ℂ] Spinor :=
   spatialHamiltonian κ potential + internalOperator internalH
 
-/-- Cartesian spin axes. -/
-inductive SpinAxis
-  | x
-  | y
-  | z
-  deriving DecidableEq, Repr
-
-/-- Pauli matrix associated with a Cartesian spin axis. -/
-noncomputable def pauli : SpinAxis → SpinMatrix
-  | .x => InternalSpace.pauliX
-  | .y => InternalSpace.pauliY
-  | .z => InternalSpace.pauliZ
-
 /-- Spin-1/2 matrix `S_a = ℏ σ_a / 2`. -/
-noncomputable def spinMatrix (ℏ : ℝ) (axis : SpinAxis) : SpinMatrix :=
-  (((ℏ / 2 : ℝ) : ℂ)) • pauli axis
+noncomputable def spinMatrix (ℏ : ℝ) (axis : InternalSpace.PauliAxis) : SpinMatrix :=
+  (((ℏ / 2 : ℝ) : ℂ)) • InternalSpace.pauliBasis axis
 
 /-- Spin-1/2 operator acting only on the internal index. -/
-noncomputable def spinOperator (ℏ : ℝ) (axis : SpinAxis) : Spinor →ₗ[ℂ] Spinor :=
+noncomputable def spinOperator (ℏ : ℝ) (axis : InternalSpace.PauliAxis) : Spinor →ₗ[ℂ] Spinor :=
   internalOperator (spinMatrix ℏ axis)
 
 /-- Scalar multiplication localizers commute with every spin component. -/
 theorem multiplicationOperator_comp_spinOperator_comm
-    (f : Spatial) (ℏ : ℝ) (axis : SpinAxis) :
+    (f : Spatial) (ℏ : ℝ) (axis : InternalSpace.PauliAxis) :
     (multiplicationOperator f).comp (spinOperator ℏ axis) =
       (spinOperator ℏ axis).comp (multiplicationOperator f) :=
   spatialLift_comp_internalOperator_comm
@@ -164,7 +151,7 @@ theorem multiplicationOperator_comp_spinOperator_comm
 
 /-- The componentwise velocity commutes with every internal spin component. -/
 theorem velocityOperator_comp_spinOperator_comm
-    (ℏ κ : ℝ) (axis : SpinAxis) :
+    (ℏ κ : ℝ) (axis : InternalSpace.PauliAxis) :
     (velocityOperator ℏ κ).comp (spinOperator ℏ axis) =
       (spinOperator ℏ axis).comp (velocityOperator ℏ κ) :=
   spatialLift_comp_internalOperator_comm
@@ -172,7 +159,7 @@ theorem velocityOperator_comp_spinOperator_comm
 
 /-- The scalar spatial Hamiltonian commutes with every internal spin component. -/
 theorem spatialHamiltonian_comp_spinOperator_comm
-    (κ : ℝ) (potential : Spatial) (ℏ : ℝ) (axis : SpinAxis) :
+    (κ : ℝ) (potential : Spatial) (ℏ : ℝ) (axis : InternalSpace.PauliAxis) :
     (spatialHamiltonian κ potential).comp (spinOperator ℏ axis) =
       (spinOperator ℏ axis).comp (spatialHamiltonian κ potential) :=
   spatialLift_comp_internalOperator_comm
@@ -222,7 +209,7 @@ theorem heisenberg_localization_eq_symmetrized_velocity
 matrix term; scalar spatial dynamics contributes no spin torque. -/
 theorem hamiltonian_spin_commutator_eq_internal
     (κ : ℝ) (potential : Spatial) (internalH : SpinMatrix)
-    (ℏ : ℝ) (axis : SpinAxis) :
+    (ℏ : ℝ) (axis : InternalSpace.PauliAxis) :
     (hamiltonian κ potential internalH).comp (spinOperator ℏ axis) -
         (spinOperator ℏ axis).comp (hamiltonian κ potential internalH) =
       (internalOperator internalH).comp (spinOperator ℏ axis) -

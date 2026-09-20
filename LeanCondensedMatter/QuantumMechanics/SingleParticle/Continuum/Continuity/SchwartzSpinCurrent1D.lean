@@ -58,7 +58,7 @@ theorem schwartzSpinorHeisenbergLocalizationFactorsThroughDifferential1D
 
 /-- Multiplication localization commutes with a concrete spin component. -/
 theorem schwartzSpin_localization_commutator_eq_zero
-    (f : SchwartzSpinor1D.Spatial) (ℏ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    (f : SchwartzSpinor1D.Spatial) (ℏ : ℝ) (axis : InternalSpace.PauliAxis) :
     _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.multiplicationOperator f)
       (SchwartzSpinor1D.spinOperator ℏ axis) = 0 := by
@@ -68,7 +68,7 @@ theorem schwartzSpin_localization_commutator_eq_zero
 /-- The symmetrized velocity-current representation of spin transport on the Schwartz model. -/
 noncomputable def schwartzSpinCurrentRepresentation1D
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : SchwartzSpinor1D.SpinAxis) :
+    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : InternalSpace.PauliAxis) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzSpinor1D.derivative
       (heisenbergTransportFunctional SchwartzSpinorOneParticle1D ℏ
@@ -91,7 +91,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
 @[simp]
 theorem schwartzSpinCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : SchwartzSpinor1D.SpinAxis) :
+    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : InternalSpace.PauliAxis) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH axis).currentDensity =
       symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
@@ -100,7 +100,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
 
 /-- In the internal-spin model the velocity and spin operators commute. -/
 theorem schwartzSpin_velocity_commutator_eq_zero
-    (ℏ κ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    (ℏ κ : ℝ) (axis : InternalSpace.PauliAxis) :
     _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.velocityOperator ℏ κ)
       (SchwartzSpinor1D.spinOperator ℏ axis) = 0 := by
@@ -109,7 +109,7 @@ theorem schwartzSpin_velocity_commutator_eq_zero
 
 /-- The symmetrized spin current simplifies from `1/2 {v,S_a}` to `v S_a`. -/
 theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
-    (ℏ κ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    (ℏ κ : ℝ) (axis : InternalSpace.PauliAxis) :
     symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
         (SchwartzSpinor1D.spinOperator ℏ axis) =
@@ -122,7 +122,7 @@ theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
 
 /-- Compatibility theorem retaining the conventional-spin-current wording. -/
 theorem conventionalSpinCurrent_eq_velocity_comp_spin
-    (ℏ κ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    (ℏ κ : ℝ) (axis : InternalSpace.PauliAxis) :
     symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
         (SchwartzSpinor1D.spinOperator ℏ axis) =
@@ -133,7 +133,7 @@ theorem conventionalSpinCurrent_eq_velocity_comp_spin
 /-- The current density stored in the local representation is exactly `v S_a`. -/
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
-    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : SchwartzSpinor1D.SpinAxis) :
+    (internalH : SchwartzSpinor1D.SpinMatrix) (axis : InternalSpace.PauliAxis) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH axis).currentDensity =
       (SchwartzSpinor1D.velocityOperator ℏ κ).comp
         (SchwartzSpinor1D.spinOperator ℏ axis) := by
@@ -145,7 +145,7 @@ Hamiltonian matrix. -/
 theorem linearCommutator_schwartzSpinorHamiltonian_spinOperator
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    (ℏ : ℝ) (axis : InternalSpace.PauliAxis) :
     _root_.ConservationLaw.linearCommutator
         (SchwartzSpinor1D.hamiltonian κ potential internalH)
         (SchwartzSpinor1D.spinOperator ℏ axis) =
@@ -160,7 +160,7 @@ commutator `[H_internal,S_a]`. -/
 theorem schwartzSpin_sourceCommutator_eq_internal
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) (f : SchwartzSpinor1D.Spatial) :
+    (ℏ : ℝ) (axis : InternalSpace.PauliAxis) (f : SchwartzSpinor1D.Spatial) :
     _root_.ConservationLaw.sourceCommutator SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.hamiltonian κ potential internalH)
         SchwartzSpinor1D.multiplicationLinear
@@ -179,7 +179,7 @@ vanishes and the balance law reduces to pure transport. -/
 theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix)
-    (ℏ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) (f : SchwartzSpinor1D.Spatial)
+    (ℏ : ℝ) (axis : InternalSpace.PauliAxis) (f : SchwartzSpinor1D.Spatial)
     (hcomm : _root_.ConservationLaw.linearCommutator
       (SchwartzSpinor1D.internalOperator internalH)
       (SchwartzSpinor1D.spinOperator ℏ axis) = 0) :
