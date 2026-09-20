@@ -1,11 +1,11 @@
-import LeanCondensedMatter.Transport.Core.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 
 set_option linter.style.header false
 
 /-!
 # Massive-Dirac continuum disorder-measure prefactor
 
-This module binds one continuum Born scalar-disorder line to exactly one generic physical-momentum
+This module binds one continuum Born scalar-disorder line to exactly one two-dimensional physical-momentum
 measure. Angular reduction and response/conductivity normalization remain downstream responsibilities.
 -/
 
