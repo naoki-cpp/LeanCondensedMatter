@@ -28,6 +28,8 @@ namespace QuantumTheory.Transport
 
 noncomputable section
 
+open ContinuousLinearMap
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [FiniteDimensional ℂ H]
 

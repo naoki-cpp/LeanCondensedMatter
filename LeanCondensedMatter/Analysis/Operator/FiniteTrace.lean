@@ -21,7 +21,7 @@ are introduced here. Downstream physics layers apply these primitives where an o
 is genuinely required.
 -/
 
-namespace QuantumTheory.Transport
+namespace ContinuousLinearMap
 
 noncomputable section
 
@@ -95,4 +95,4 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
 
 end
 
-end QuantumTheory.Transport
+end ContinuousLinearMap

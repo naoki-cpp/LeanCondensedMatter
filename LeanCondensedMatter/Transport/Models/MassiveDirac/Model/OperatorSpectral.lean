@@ -27,7 +27,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open ContinuousLinearMap
 
 /-- A massive-Dirac band projector transported to the bounded-operator representation used by the
 transport stack. -/

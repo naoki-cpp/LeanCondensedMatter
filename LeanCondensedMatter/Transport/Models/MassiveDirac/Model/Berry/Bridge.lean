@@ -24,7 +24,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open BerryGeometry
-open QuantumTheory.Transport
+open ContinuousLinearMap
 
 /-- The gauge-independent interband force numerator is exactly the product of the corresponding
 generic Hamiltonian-derivative matrix elements. -/

@@ -25,7 +25,8 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
-open MeasureTheory QuantumTheory.Transport
+open MeasureTheory
+open ContinuousLinearMap
 open scoped Interval
 
 private abbrev DiracOperator := DiracHilbert →L[ℂ] DiracHilbert
