@@ -23,7 +23,7 @@ conserving-approximation framework of Baym and Kadanoff, *Phys. Rev.* **124**, 2
 identity is asserted here.
 
 The public algebra is intentionally small: the RA kernel, finite fixed-point iterates, and
-conditional resummation when `I - L_RA` is a unit. No convergence, geometric-series expansion, Ward
+conditional resummation on any normed complex coefficient space when `I - L` is a unit. No convergence, geometric-series expansion, Ward
 identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.
 -/
 
@@ -58,29 +58,29 @@ theorem retardedAdvancedLadderCLM_apply
 
 end FiniteDisorderEnsemble
 
-variable {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
+variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /-- Finite fixed-point ladder iterate. `n = 0` is the bare vertex and each successor performs the
 exact algebraic update `Γ ↦ J + L(Γ)`. -/
 noncomputable def finiteLadderVertex
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
-    (bareVertex : H →L[ℂ] H) : ℕ → H →L[ℂ] H
+    (ladder : V →L[ℂ] V)
+    (bareVertex : V) : ℕ → V
   | 0 => bareVertex
   | n + 1 => bareVertex + ladder (finiteLadderVertex ladder bareVertex n)
 
 /-- Resummed ladder vertex when the shifted ladder endomorphism `I - L` is a unit. -/
 noncomputable def resummedLadderVertex
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (ladder : V →L[ℂ] V)
     (hinvertible : IsUnit (1 - ladder))
-    (bareVertex : H →L[ℂ] H) : H →L[ℂ] H :=
-  (↑(hinvertible.unit⁻¹) : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)) bareVertex
+    (bareVertex : V) : V :=
+  (↑(hinvertible.unit⁻¹) : V →L[ℂ] V) bareVertex
 
 private theorem shiftedLadder_apply_resummedLadderVertex
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (ladder : V →L[ℂ] V)
     (hinvertible : IsUnit (1 - ladder))
-    (bareVertex : H →L[ℂ] H) :
+    (bareVertex : V) :
     (1 - ladder) (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex := by
-  let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
+  let inverse : V →L[ℂ] V := ↑(hinvertible.unit⁻¹)
   have hmul : (1 - ladder) * inverse = 1 := by
     simpa [inverse] using hinvertible.mul_val_inv
   change ((1 - ladder) * inverse) bareVertex = bareVertex
@@ -89,9 +89,9 @@ private theorem shiftedLadder_apply_resummedLadderVertex
 
 /-- The conditional resummation satisfies the exact ladder fixed-point equation. -/
 theorem resummedLadderVertex_fixedPoint
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (ladder : V →L[ℂ] V)
     (hinvertible : IsUnit (1 - ladder))
-    (bareVertex : H →L[ℂ] H) :
+    (bareVertex : V) :
     resummedLadderVertex ladder hinvertible bareVertex =
       bareVertex + ladder (resummedLadderVertex ladder hinvertible bareVertex) := by
   apply (sub_eq_iff_eq_add).mp
@@ -100,24 +100,24 @@ theorem resummedLadderVertex_fixedPoint
 
 /-- When `I - L` is a unit, the ladder fixed point is unique. -/
 theorem eq_resummedLadderVertex_of_fixedPoint
-    (ladder : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H))
+    (ladder : V →L[ℂ] V)
     (hinvertible : IsUnit (1 - ladder))
-    (bareVertex dressedVertex : H →L[ℂ] H)
+    (bareVertex dressedVertex : V)
     (hfixed : dressedVertex = bareVertex + ladder dressedVertex) :
     dressedVertex = resummedLadderVertex ladder hinvertible bareVertex := by
-  let inverse : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) := ↑(hinvertible.unit⁻¹)
+  let inverse : V →L[ℂ] V := ↑(hinvertible.unit⁻¹)
   have hleft : inverse * (1 - ladder) = 1 := by
     simpa [inverse] using hinvertible.val_inv_mul
   have hleftInverse : Function.LeftInverse inverse
-      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := by
+      (fun vertex : V => (1 - ladder) vertex) := by
     intro vertex
     change (inverse * (1 - ladder)) vertex = vertex
     rw [hleft]
     simp
   have hinjectiveShifted : Function.Injective
-      (fun vertex : H →L[ℂ] H => (1 - ladder) vertex) := hleftInverse.injective
+      (fun vertex : V => (1 - ladder) vertex) := hleftInverse.injective
   have hinjective : Function.Injective
-      (fun vertex : H →L[ℂ] H => vertex - ladder vertex) := by
+      (fun vertex : V => vertex - ladder vertex) := by
     intro left right h
     apply hinjectiveShifted
     simpa using h
