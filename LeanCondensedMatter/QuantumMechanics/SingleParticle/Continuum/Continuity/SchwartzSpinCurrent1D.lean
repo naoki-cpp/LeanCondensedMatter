@@ -18,7 +18,9 @@ symmetrized velocity-current representation
 j^(S_a) = 1/2 {v, S_a}.
 ```
 
-This operator is often called the conventional spin current in the physics literature, but the
+This operator is often called the conventional spin current in the physics literature (see Shi,
+Zhang, Xiao, and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
+[doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604)), but the
 transport functional is the primary object here. In this spinor model `v` also commutes with
 `S_a`, hence the chosen current density simplifies further to `v S_a`. An arbitrary internal
 Hamiltonian matrix is retained; its commutator with `S_a` supplies the local source/torque term.

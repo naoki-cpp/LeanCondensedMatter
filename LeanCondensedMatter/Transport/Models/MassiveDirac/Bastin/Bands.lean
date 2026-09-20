@@ -23,7 +23,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open ContinuousLinearMap
 
 /-- Natural ordered trace `Tr(j_μ P_source j_ν P_target)` produced by the Bastin kernel. -/
 noncomputable def bastinBandBlockTrace

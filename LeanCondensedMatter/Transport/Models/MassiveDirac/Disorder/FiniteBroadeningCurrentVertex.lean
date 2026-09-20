@@ -252,9 +252,9 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
 
-/-- Under the model regularity condition, the finite-broadening Born-Dyson solved coefficient
-vector is exactly the generic algebraically resummed ladder vertex. No geometric-series
-convergence statement is used. -/
+/-- Under ladder regularity, the finite-broadening Born-Dyson solved vector is the generic
+algebraically resummed vertex on the in-plane coefficient space. This is an inverse-based
+resummation statement only; no geometric-series convergence is asserted. -/
 theorem finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hregular : finiteCutoffContinuumBornDysonLadderRegular
@@ -270,7 +270,7 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
             v m probeEnergy broadening disorderStrength hbar pMax)
           hregular)
         inPlaneLadderBareXSource := by
-  exact
+  simpa [finiteCutoffContinuumBornDysonLadderSolvedVector] using
     inPlaneLadderSolvedVector_eq_resummedLadderVertex
       (finiteCutoffContinuumBornDysonCurrentRungVector
         v m probeEnergy broadening disorderStrength hbar pMax)

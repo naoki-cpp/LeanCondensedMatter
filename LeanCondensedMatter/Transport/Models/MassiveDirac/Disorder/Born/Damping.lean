@@ -26,7 +26,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open Filter
-open QuantumTheory.Transport
+open ContinuousLinearMap
 
 /-- At fixed finite cutoff beyond the on-shell circle, the `σ_z` Born channel obeys
 `Im I_z,s → -sπm/(2v²)` as `η → 0⁺`. This is the imaginary projection of the indexed complex channel

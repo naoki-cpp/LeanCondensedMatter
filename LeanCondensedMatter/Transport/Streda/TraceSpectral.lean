@@ -20,6 +20,7 @@ namespace QuantumTheory
 namespace Transport
 
 open scoped BigOperators
+open ContinuousLinearMap
 open QuantumTheory.LinearResponse
 
 noncomputable section

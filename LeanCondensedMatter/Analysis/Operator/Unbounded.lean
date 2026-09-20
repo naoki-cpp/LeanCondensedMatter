@@ -1,27 +1,12 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
-import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
-import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
-import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.StoneEvolution
 
 set_option linter.style.header false
 
 /-!
 # Unbounded operators
 
-Public routing module for the self-adjoint resolvent and unitary-evolution infrastructure exported by
-`LeanCondensedMatter.Analysis`.
+Public routing module for the self-adjoint unbounded-operator infrastructure exported by
+`LeanCondensedMatter.Analysis`.  The consumer-facing Stone evolution is collected under
+`LeanCondensedMatter.Analysis.Operator.Unbounded.StoneEvolution`; its approximation and convergence
+leaves remain implementation-stage dependencies.
 -/

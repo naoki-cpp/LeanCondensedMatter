@@ -53,12 +53,14 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
         interbandEnergyGap band v m px py ^ 2 =
       -(e ^ 2 * berryCurvature band v m px py) := by
   have hband :=
-    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
       band e v m px py hE
   have hopp :=
-    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
+    two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
       (oppositeBand band) e v m px py hE
-  rw [interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE] at hband
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature (oppositeBand band) v m px py hE,
+    interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
   simp [pow_two] at hopp
   unfold bastinInterbandBlockDifference
   rw [bastinBandBlockTrace_swap 0 1 (oppositeBand band) band]

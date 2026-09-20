@@ -65,15 +65,14 @@ def inPlaneLadderAction
 the generic ladder resummation API. -/
 noncomputable def inPlaneLadderCLM
     (rung : InPlaneCoefficientVector) :
-    InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector := by
-  let linearMap : InPlaneCoefficientVector →ₗ[ℂ] InPlaneCoefficientVector :=
-    Matrix.mulVecLin (inPlaneRotationMatrix rung)
-  exact ⟨linearMap, linearMap.continuous_of_finiteDimensional⟩
+    InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector :=
+  ⟨Matrix.mulVecLin (inPlaneRotationMatrix rung),
+    (Matrix.mulVecLin (inPlaneRotationMatrix rung)).continuous_of_finiteDimensional⟩
 
 @[simp]
 theorem inPlaneLadderCLM_apply
     (rung coefficients : InPlaneCoefficientVector) :
-    inPlaneLadderCLM rung coefficients = inPlaneLadderAction rung coefficients := by
+    inPlaneLadderCLM rung coefficients = inPlaneLadderAction rung coefficients :=
   rfl
 
 private theorem continuous_inPlaneRotationMatrix :
@@ -152,8 +151,8 @@ theorem inPlaneShiftMatrix_mulVec
     (Matrix.sub_mulVec
       (1 : Matrix (Fin 2) (Fin 2) ℂ) (inPlaneRotationMatrix rung) coefficients)
 
-/-- A nonzero explicit two-component determinant supplies the generic ladder invertibility
-hypothesis on the in-plane coefficient space. -/
+/-- The model determinant condition is exactly sufficient for the generic shifted-ladder
+endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     IsUnit (1 - inPlaneLadderCLM rung) := by
@@ -164,10 +163,13 @@ theorem inPlaneLadderShift_isUnit
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
     intro left right h
     apply hmatrix
-    simpa [shift, inPlaneLadderCLM_apply, inPlaneShiftMatrix_mulVec] using h
-  have hsurjective : Function.Surjective shift := by
-    exact LinearMap.surjective_of_injective (f := shift.toLinearMap) hinjective
-  exact ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinjective, hsurjective⟩
+    simpa only [shift, inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
+      inPlaneLadderCLM_apply] using h
+  have hsurjective : Function.Surjective shift :=
+    LinearMap.surjective_of_injective (f := shift.toLinearMap) hinjective
+  have hunit : IsUnit shift :=
+    ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinjective, hsurjective⟩
+  simpa [shift] using hunit
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant

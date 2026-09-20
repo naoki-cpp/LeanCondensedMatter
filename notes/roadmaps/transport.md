@@ -97,3 +97,11 @@ not public APIs. Convergence and Ward identities are separate targets.
 - convergence-aware SCBA/ladder results where needed;
 - crossed-diagram, weak-localization, skew-scattering, and side-jump extensions;
 - unbounded Hamiltonian/current/position operators and gauge-equivalence results.
+
+## Spin Hall specialization
+
+The spin-Hall-specific model, current-definition, disorder-vertex, and inverse-
+response work is tracked separately in the [spin Hall roadmap](spin-hall.md).
+Issue #1159 remains the owner of the generic current/source architecture; the
+spin-Hall roadmap supplies concrete Rashba and impurity specializations without
+duplicating the generic transport targets above.
