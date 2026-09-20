@@ -91,22 +91,6 @@ noncomputable def TwoPointDiagram.atomicLegPartner
     (d.pairing.partner
       ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm leg))
 
-/-- The mixed-order partner is the time-independent leg partner conjugated by the mixed enumeration. -/
-theorem TwoPointDiagram.pairingInMixedOrder_partner_eq_atomicLegPartner
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
-    (d.pairingInMixedOrder τ τ' σ).partner p =
-      mixedTimeOrderedAtomicLegPosition τ τ' σ
-        (d.atomicLegPartner (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)) := by
-  apply (mixedTimeOrderedAtomicLegEquiv τ τ' σ).injective
-  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
-    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    d.mixedTimeAmbientPositionEquiv_partner]
-  rw [TwoPointDiagram.atomicLegPartner,
-    (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm_apply_apply]
-
 /-- The mixed-order partner of the position selected by a leg identity is the position selected by
 the partner leg. -/
 theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
@@ -116,8 +100,13 @@ theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
     (d.pairingInMixedOrder τ τ' σ).partner
         (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =
       mixedTimeOrderedAtomicLegPosition τ τ' σ (d.atomicLegPartner leg) := by
-  rw [d.pairingInMixedOrder_partner_eq_atomicLegPartner,
-    mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  apply (mixedTimeOrderedAtomicLegEquiv τ τ' σ).injective
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
+    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    d.mixedTimeAmbientPositionEquiv_partner]
+  rw [TwoPointDiagram.atomicLegPartner,
+    (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm_apply_apply]
 
 end Common
 end SecondQuantization
