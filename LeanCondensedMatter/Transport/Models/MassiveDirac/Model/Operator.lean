@@ -92,6 +92,64 @@ noncomputable def inPlanePauliVertexOperator
     (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY
 
+/-- Canonical complex-linear embedding of in-plane coefficients into the Pauli-operator subspace. -/
+noncomputable def inPlanePauliVertexCLM :
+    (Fin 2 → ℂ) →L[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := by
+  let linearMap : (Fin 2 → ℂ) →ₗ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
+    { toFun := inPlanePauliVertexOperator
+      map_add' := by
+        intro left right
+        simp [inPlanePauliVertexOperator, add_smul]
+        module
+      map_smul' := by
+        intro scalar coefficients
+        simp [inPlanePauliVertexOperator, smul_smul]
+        module }
+  exact ⟨linearMap, linearMap.continuous_of_finiteDimensional⟩
+
+@[simp]
+theorem inPlanePauliVertexCLM_apply (coefficients : Fin 2 → ℂ) :
+    inPlanePauliVertexCLM coefficients = inPlanePauliVertexOperator coefficients := by
+  rfl
+
+/-- The in-plane Pauli realization is faithful: its two coefficients are recovered uniquely from
+the represented bounded operator. -/
+theorem inPlanePauliVertexCLM_injective :
+    Function.Injective inPlanePauliVertexCLM := by
+  intro left right h
+  have hmatrix :
+      left 0 • sigmaX + left 1 • sigmaY =
+        right 0 • sigmaX + right 1 • sigmaY := by
+    apply
+      (Matrix.toEuclideanCLM :
+        Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    simpa [inPlanePauliVertexCLM, inPlanePauliVertexOperator, matrixOperator] using h
+  let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
+    fun coefficients axis =>
+      match axis with
+      | .x => coefficients 0
+      | .y => coefficients 1
+      | .z => 0
+  have hrepresentation (coefficients : Fin 2 → ℂ) :
+      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
+        InternalSpace.pauliCombination (pauliCoefficients coefficients) := by
+    simp [pauliCoefficients, InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY]
+  rw [hrepresentation left, hrepresentation right] at hmatrix
+  funext direction
+  fin_cases direction
+  · have htrace := congrArg
+      (fun M : Matrix2 => Matrix.trace (InternalSpace.pauliBasis .x * M)) hmatrix
+    rw [InternalSpace.trace_pauliBasis_mul_pauliCombination,
+      InternalSpace.trace_pauliBasis_mul_pauliCombination] at htrace
+    apply mul_left_cancel₀ (by norm_num : (2 : ℂ) ≠ 0)
+    simpa [pauliCoefficients] using htrace
+  · have htrace := congrArg
+      (fun M : Matrix2 => Matrix.trace (InternalSpace.pauliBasis .y * M)) hmatrix
+    rw [InternalSpace.trace_pauliBasis_mul_pauliCombination,
+      InternalSpace.trace_pauliBasis_mul_pauliCombination] at htrace
+    apply mul_left_cancel₀ (by norm_num : (2 : ℂ) ≠ 0)
+    simpa [pauliCoefficients] using htrace
+
 /-- Physical in-plane current vertex with direction-indexed coefficients. -/
 noncomputable def inPlaneCurrentOperator
     (e v : ℝ) (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
