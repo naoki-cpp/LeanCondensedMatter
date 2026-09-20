@@ -100,13 +100,20 @@ theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
     (d.pairingInMixedOrder τ τ' σ).partner
         (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =
       mixedTimeOrderedAtomicLegPosition τ τ' σ (d.atomicLegPartner leg) := by
+  have hpos :
+      mixedTimeAmbientPositionEquiv τ τ' σ
+          (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =
+        (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm leg := by
+    apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+    rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+      mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
+      Equiv.apply_symm_apply]
   apply (mixedTimeOrderedAtomicLegEquiv τ τ' σ).injective
   rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
     ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    d.mixedTimeAmbientPositionEquiv_partner]
-  rw [TwoPointDiagram.atomicLegPartner,
-    (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm_apply_apply]
+    d.mixedTimeAmbientPositionEquiv_partner,
+    hpos,
+    TwoPointDiagram.atomicLegPartner]
 
 end Common
 end SecondQuantization
