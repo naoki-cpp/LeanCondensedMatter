@@ -83,7 +83,7 @@ theorem interactionPart_slotSplitVacuumComponentPart
   exact vac.componentBlock_componentRepresentative C
 
 /-- The quartic-to-ambient vacuum component map is injective. -/
-theorem slotSplitVacuumComponentPart_injective :
+private theorem slotSplitVacuumComponentPart_injective :
     Function.Injective (slotSplitVacuumComponentPart h ext vac) := by
   intro C D hCD
   apply Subtype.ext
@@ -95,7 +95,7 @@ theorem slotSplitVacuumComponentPart_injective :
 
 /-- If the external piece is externally connected, an interaction vertex in an ambient vacuum
 component must lie on the quartic right side. -/
-theorem not_mem_left_of_mem_vacuumComponentPart
+private theorem not_mem_left_of_mem_vacuumComponentPart
     (hext : ext.IsExternallyConnected)
     (B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts)
     (w : ↥S) (hwB : (Sum.inr w : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S))) :
@@ -124,7 +124,7 @@ theorem not_mem_left_of_mem_vacuumComponentPart
 
 /-- With an externally connected left piece, every ambient vacuum component comes from a quartic
 right-side component. -/
-theorem slotSplitVacuumComponentPart_surjective
+private theorem slotSplitVacuumComponentPart_surjective
     (hext : ext.IsExternallyConnected) :
     Function.Surjective (slotSplitVacuumComponentPart h ext vac) := by
   intro B

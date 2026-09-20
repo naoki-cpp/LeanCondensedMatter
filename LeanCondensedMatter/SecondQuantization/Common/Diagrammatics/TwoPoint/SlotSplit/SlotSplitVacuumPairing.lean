@@ -42,7 +42,7 @@ theorem slotSplitVacuumSlot_strictMono (T : Finset (Fin n)) :
     (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).strictMono hab
 
 /-- The order embedding of fixed-order vacuum legs into ambient mixed-order leg positions. -/
-noncomputable def slotSplitVacuumMixedOrderEmbedding
+private noncomputable def slotSplitVacuumMixedOrderEmbedding
     (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
@@ -52,15 +52,6 @@ noncomputable def slotSplitVacuumMixedOrderEmbedding
     (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
       (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
       τ τ' σ hσ)
-
-@[simp]
-theorem slotSplitVacuumMixedOrderEmbedding_apply
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ p =
-      mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p :=
-  rfl
 
 /-- A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the
 right-leg embedding of the canonical slot split. -/
@@ -96,7 +87,7 @@ theorem slotSplitVacuumOrderedLeg_eq_slotSplitRight
 
 /-- The ambient standard-leg partner on the vacuum side of `ofSlotSplit` is the fixed-order
 quartic partner embedded back into the ambient two-point leg enumeration. -/
-theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
+private theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -117,7 +108,7 @@ theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
 
 /-- The mixed-order partner on a reassembled diagram is the mixed position of the corresponding
 fixed-order quartic vacuum partner. -/
-theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+private theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -137,39 +128,6 @@ theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
   rw [d.pairingInMixedOrder_partner_legPosition,
     TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg T ext vac p]
   rfl
-
-/-- On a strictly ordered inherited vacuum-time assignment, a local fixed-order quartic pair is
-normalized if and only if its two endpoints form the corresponding normalized pair in the ambient
-mixed two-point pairing. -/
-theorem TwoPointDiagram.ofSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (a b : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ a,
-        mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ b) ∈
-      (d.pairingInMixedOrder τ τ' σ).pairs ↔
-    (a, b) ∈ (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs := by
-  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let e := slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ
-  change (e a, e b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
-    (a, b) ∈ (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs
-  exact
-    (vac.pairingInOrder (slotSplitVacuumOrder T)).mem_pairs_map_iff
-      (d.pairingInMixedOrder τ τ' σ) e
-      (fun p => by
-        change (d.pairingInMixedOrder τ τ' σ).partner
-            (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ p) =
-          mixedTimeOrderedQuarticLegMapPosition
-            (slotSplitVacuumSlot T) τ τ' σ
-            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)
-        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-          T ext vac τ τ' σ p)
-      a b
 
 /-- Embed a normalized pair of the fixed-order quartic vacuum pairing into the ambient mixed
 pairing of `ofSlotSplit`. -/

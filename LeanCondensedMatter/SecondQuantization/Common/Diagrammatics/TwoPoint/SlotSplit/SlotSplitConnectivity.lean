@@ -42,7 +42,7 @@ def slotSplitVertex (h : T ⊆ S) : TwoPointVertex T → TwoPointVertex S
   | Sum.inl e => Sum.inl e
   | Sum.inr v => Sum.inr ⟨v.1, h v.2⟩
 
-theorem slotSplitVertex_injective (h : T ⊆ S) :
+private theorem slotSplitVertex_injective (h : T ⊆ S) :
     Function.Injective (slotSplitVertex h) := by
   rintro (e | v) (f | w) hEq
   · simpa [slotSplitVertex] using hEq
@@ -52,7 +52,7 @@ theorem slotSplitVertex_injective (h : T ⊆ S) :
     exact congrArg Sum.inr (Subtype.ext hEq)
 
 /-- A vertex of the external piece is never an interaction vertex outside the slot set. -/
-theorem slotSplitVertex_ne_inr_of_not_mem (h : T ⊆ S) (x : TwoPointVertex T) {w : ↥S}
+private theorem slotSplitVertex_ne_inr_of_not_mem (h : T ⊆ S) (x : TwoPointVertex T) {w : ↥S}
     (hw : (w : Fin N) ∉ T) : slotSplitVertex h x ≠ Sum.inr w := by
   cases x with
   | inl e => simp [slotSplitVertex]
@@ -77,7 +77,7 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
       simp [twoPointVertexOfLeg, slotSplitVertex]
 
 /-- Right legs carry interaction vertices outside the slot set. -/
-theorem exists_not_mem_twoPointVertexOfLeg_slotLegSplitting_inr (h : T ⊆ S)
+private theorem exists_not_mem_twoPointVertexOfLeg_slotLegSplitting_inr (h : T ⊆ S)
     (i : Fin (2 * (2 * (S \ T).card))) :
     ∃ w : ↥S, (w : Fin N) ∉ T ∧
       twoPointVertexOfLeg (slotLegSplitting h (Sum.inr i)) = Sum.inr w := by
@@ -91,7 +91,7 @@ variable (h : T ⊆ S) (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
   (vac : QuarticDiagram InternalLabel N (S \ T))
 
 /-- **A reassembled diagram induces the adjacency of its external piece.** -/
-theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
+private theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
         (slotSplitVertex h x) (slotSplitVertex h y) ↔
       ext.vertexGraph.Adj x y := by
@@ -117,7 +117,7 @@ theorem adj_ofSlotSplit_slotSplitVertex_iff (x y : TwoPointVertex T) :
         twoPointVertexOfLeg_slotLegSplitting_inl, hpartner]
 
 /-- **A walk cannot leave the external piece.** -/
-theorem exists_eq_slotSplitVertex_of_adj {x : TwoPointVertex T} {u : TwoPointVertex S}
+private theorem exists_eq_slotSplitVertex_of_adj {x : TwoPointVertex T} {u : TwoPointVertex S}
     (hadj : (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj (slotSplitVertex h x) u) :
     ∃ y : TwoPointVertex T, u = slotSplitVertex h y := by
   obtain ⟨hne, leg, hleg, hpartner⟩ := hadj
@@ -134,7 +134,7 @@ theorem exists_eq_slotSplitVertex_of_adj {x : TwoPointVertex T} {u : TwoPointVer
       exact absurd (hvert.symm.trans hleg).symm (slotSplitVertex_ne_inr_of_not_mem h x hw)
 
 /-- The external piece maps into the reassembled diagram as a graph homomorphism. -/
-noncomputable def ofSlotSplitHom :
+private noncomputable def ofSlotSplitHom :
     ext.vertexGraph →g (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph where
   toFun := slotSplitVertex h
   map_rel' := fun {_ _} hab =>
@@ -149,7 +149,7 @@ theorem reachable_ofSlotSplit_of_reachable {x y : TwoPointVertex T}
 
 /-- **Every walk of a reassembled diagram starting in the external piece stays in it**, and its
 image is a walk of that piece. -/
-theorem exists_reachable_of_walk_ofSlotSplit :
+private theorem exists_reachable_of_walk_ofSlotSplit :
     ∀ {u v : TwoPointVertex S},
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Walk u v →
         ∀ x : TwoPointVertex T, u = slotSplitVertex h x →
@@ -167,7 +167,7 @@ theorem exists_reachable_of_walk_ofSlotSplit :
         ((adj_ofSlotSplit_slotSplitVertex_iff h ext vac x x').1 (hx' ▸ hadj)))
 
 /-- Reachability from a vertex of the external piece is reachability inside that piece. -/
-theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
+private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
         (slotSplitVertex h x) (slotSplitVertex h y) ↔
       ext.vertexGraph.Reachable x y := by
