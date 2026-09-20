@@ -71,9 +71,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
   rw [finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
     v m probeEnergy broadening disorderStrength hbar pMax hregular]
   congr 1
-  funext direction
-  fin_cases direction <;>
-    simp [Matrix.transpose, inPlaneRotationMatrix]
+
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
     (source : Fin 2) (e v m probeEnergy broadening hbar pMax : ℝ) :
