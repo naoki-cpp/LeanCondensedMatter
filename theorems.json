@@ -4555,6 +4555,74 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} (F : (i : ι) → Equiv.Perm (β i)),\n  (∀ (i : ι), Combinatorics.IsPairing (F i)) → Combinatorics.IsPairing (Equiv.sigmaCongrRight F)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.IsPairing.sigmaCongrRight",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": "A dependent sum of pairing permutations is again a pairing permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {p : Equiv.Perm α} {q : Equiv.Perm β},\n  Combinatorics.IsPairing p → Combinatorics.IsPairing q → Combinatorics.IsPairing (Equiv.sumCongr p q)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.IsPairing.sumCongr",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": "The disjoint sum of two pairing permutations is again a pairing permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) {S : Finset α},\n  S ≠ ∅ → Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S",
     "standardAxioms": [
@@ -19061,6 +19129,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] [Nontrivial α] (σ : Equiv.Perm α),\n  σ.IsCycleOn Set.univ ↔ σ.cycleType = {Fintype.card α}",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card",
+    "module": "LeanCondensedMatter.Permutation.OrbitPartition",
+    "externalAxioms": [],
+    "docString": "On a nontrivial finite type, a permutation is a single orbit on the whole type\nexactly when its cycle type is the singleton containing the ambient cardinality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (π : Finpartition s) (order : Fin s.card ≃ ↥s)\n  (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders),\n  π.assembleOrder orders (π.shuffleOfOrder order orders h) = order",
     "standardAxioms": [
       "Classical.choice",
@@ -22953,7 +23060,8 @@
     "dependents": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
     ],
     "dependencies": [
       "InternalSpace.trace_pauliBasis"
@@ -22963,9 +23071,10 @@
     "compiledConsumers": [
       "InternalSpace.trace_halfIdentity_add_pauliCombination_mul_halfIdentity_add_pauliCombination",
       "InternalSpace.trace_pauliCombination_mul_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52753,6 +52862,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Function.Injective fun band => QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_injective",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Away from the band degeneracy, the two band energies are distinct. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bandEnergy QuantumTheory.Transport.Models.MassiveDirac.Band.lower v m px\n      py =\n    -QuantumTheory.Transport.Models.MassiveDirac.energy v m px py",
     "standardAxioms": [
@@ -53006,6 +53150,43 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator band v m px py ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "Every band projector is a nonzero bounded operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bandProjector band v m px py +\n      QuantumTheory.Transport.Models.MassiveDirac.bandProjector\n        (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) v m px py =\n    1",
     "standardAxioms": [
@@ -53072,6 +53253,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
@@ -53083,9 +53265,10 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Transport.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68388,6 +68571,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  Matrix.trace (QuantumTheory.Transport.Models.MassiveDirac.bandProjector band v m px py) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Spectral",
+    "externalAxioms": [],
+    "docString": "Each massive-Dirac band projector has trace one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero"
+    ],
+    "dependencies": [
+      "InternalSpace.trace_pauliCombination",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjector_eq_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  2 * |m| ≤ |QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py|",
     "standardAxioms": [
       "Classical.choice",
@@ -68545,6 +68770,84 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (direction : Fin 2) (v : ℝ), IsSelfAdjoint (QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.velocityOperator_isSelfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+    "externalAxioms": [],
+    "docString": "The direction-indexed velocity operator is self-adjoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.velocity_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (direction : Fin 2) (v : ℝ), Matrix.IsHermitian (QuantumTheory.Transport.Models.MassiveDirac.velocity direction v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.velocity_isHermitian",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+    "externalAxioms": [],
+    "docString": "The velocity matrix is Hermitian in either in-plane direction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.velocityOperator_isSelfAdjoint"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator.0.QuantumTheory.Transport.Models.MassiveDirac.directionPauli_isHermitian"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.velocityOperator_isSelfAdjoint"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140093,72 +140396,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} (p : Equiv.Perm α) (q : Equiv.Perm β),\n  Function.Involutive ⇑p → Function.Involutive ⇑q → Function.Involutive ⇑(Equiv.sumCongr p q)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.sumCongr_involutive",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} (p : Equiv.Perm α) (q : Equiv.Perm β),\n  (∀ (x : α), p x ≠ x) → (∀ (x : β), q x ≠ x) → ∀ (x : α ⊕ β), (Equiv.sumCongr p q) x ≠ x",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.sumCongr_ne_self",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (Q : Combinatorics.Pairing n) {j j' : Fin (2 * (n + 1))},\n  j = j' → ∀ (hj : j ≠ 0) (hj' : j' ≠ 0), Q.insertFirstPair j hj = Q.insertFirstPair j' hj'",
     "standardAxioms": [
@@ -141348,45 +141585,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ), Set.univ.Nontrivial",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.finAddTwo_univ_nontrivial",
-    "module": "LeanCondensedMatter.Permutation.AssignmentCycleTrace",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isCycle_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_support_eq_univ_add_two"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isCycle_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_support_eq_univ_add_two"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ), Fintype.card { σ // σ.IsCycleOn Set.univ } = (n + 1).factorial",
     "standardAxioms": [
       "Classical.choice",
@@ -141487,8 +141685,7 @@
       "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.cycleAssignmentKernelSum_fullCycle_add_two"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isCycle_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_support_eq_univ_add_two"
+      "Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -141496,130 +141693,6 @@
       "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.cycleAssignmentKernelSum_fullCycle_add_two"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (σ : Equiv.Perm (Fin (n + 2))), σ.IsCycleOn Set.univ → σ.IsCycle",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isCycle_add_two",
-    "module": "LeanCondensedMatter.Permutation.AssignmentCycleTrace",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.isCycleOn_univ_iff_cycleType_add_two"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.finAddTwo_univ_nontrivial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.isCycleOn_univ_iff_cycleType_add_two"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (σ : Equiv.Perm (Fin (n + 2))), σ.IsCycleOn Set.univ → σ.support = Finset.univ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_support_eq_univ_add_two",
-    "module": "LeanCondensedMatter.Permutation.AssignmentCycleTrace",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.isCycleOn_univ_iff_cycleType_add_two"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.finAddTwo_univ_nontrivial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isConj_finRotate_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.isCycleOn_univ_iff_cycleType_add_two"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (σ : Equiv.Perm (Fin (n + 2))), σ.IsCycleOn Set.univ ↔ σ.cycleType = {n + 2}",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.isCycleOn_univ_iff_cycleType_add_two",
-    "module": "LeanCondensedMatter.Permutation.AssignmentCycleTrace",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_isCycle_add_two",
-      "_private.LeanCondensedMatter.Permutation.AssignmentCycleTrace.0.Combinatorics.fullCycle_support_eq_univ_add_two"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147977,76 +148050,6 @@
       "SecondQuantization.Common.QuarticDiagram.componentDecompose_reassemble"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_2} {β : ι → Type u_3} (F : (i : ι) → Equiv.Perm (β i)),\n  (∀ (i : ι), Function.Involutive ⇑(F i)) → Function.Involutive ⇑(Equiv.sigmaCongrRight F)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.sigmaCongrRight_involutive",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_2} {β : ι → Type u_3} (F : (i : ι) → Equiv.Perm (β i)),\n  (∀ (i : ι) (x : β i), (F i) x ≠ x) → ∀ (p : (i : ι) × β i), (Equiv.sigmaCongrRight F) p ≠ p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.sigmaCongrRight_ne_self",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -160169,7 +160172,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -160181,7 +160184,8 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
     "directWrapperOf": "InternalSpace.pauliBasis_isHermitian",
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
+      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian",
+      "QuantumTheory.Transport.Models.MassiveDirac.velocity_isHermitian"
     ],
     "dependencies": [
       "InternalSpace.pauliBasis_isHermitian"
@@ -160189,9 +160193,10 @@
     "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian"
+      "QuantumTheory.Transport.Models.MassiveDirac.current_isHermitian",
+      "QuantumTheory.Transport.Models.MassiveDirac.velocity_isHermitian"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
