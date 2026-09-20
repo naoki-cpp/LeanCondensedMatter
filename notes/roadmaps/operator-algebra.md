@@ -94,9 +94,10 @@ a self-adjoint `LinearPMap` without such a functional calculus; it does not defi
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
-`β > 0`, a bounded positive heat operator `Kβ` together with the explicit spectral trace-class
-and positive-trace hypotheses needed by the canonical `DensityOperator` normalization. The
-statement that `Kβ = exp (-β H)` for a semibounded unbounded self-adjoint Hamiltonian belongs to
+`β > 0`, a bounded positive heat operator `Kβ` together with explicit spectral trace-class data
+and nonzeroness. Positivity plus spectral trace class and nonzeroness imply strictly positive trace,
+and `DensityOperator.normalizePositive` is the canonical normalization boundary. The statement that
+`Kβ = exp (-β H)` for a semibounded unbounded self-adjoint Hamiltonian belongs to
 the upstream domain-aware analysis layer and must retain the Hamiltonian domain and lower-bound
 assumptions explicitly. A future heat-semigroup or unbounded functional-calculus implementation can
 supply that bridge without changing the density-state normalization API.
@@ -109,9 +110,10 @@ Hilbert basis `b` and energies `E` for which the supplied heat operator satisfie
 Kβ (b i) = exp (-β E i) • b i
 ```
 
-and then identify the normalized heat-operator density state with
-`purePointGibbsDensityOperator b E β` under the existing Boltzmann summability hypothesis. A
-general spectral-data-first boundary should wait for a genuine spectral-measure/functional-calculus
+The quantum Gibbs layer uses this basis action and spectral-trace-class data to derive Boltzmann
+summability, identifies the bundled heat trace with the pure-point partition function, and identifies
+`DensityOperator.normalizePositive Kβ ...` with `purePointGibbsDensityOperator b E β`. A general
+spectral-data-first boundary should wait for a genuine spectral-measure/functional-calculus
 API rather than extending the pure-point representation beyond what it proves.
 
 The following remain open or only partially covered:
