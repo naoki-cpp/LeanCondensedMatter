@@ -35,6 +35,17 @@ noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (bandProjector band v m px py)
 
+/-- Every band projector is a nonzero bounded operator. -/
+theorem bandProjectorOperator_ne_zero (band : Band) (v m px py : ℝ) :
+    bandProjectorOperator band v m px py ≠ 0 := by
+  intro hzero
+  have hmatrix : bandProjector band v m px py = 0 := by
+    apply (Matrix.toEuclideanCLM :
+      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    simpa [bandProjectorOperator, matrixOperator] using hzero
+  have htrace := congrArg Matrix.trace hmatrix
+  simpa using htrace
+
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
     (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) : ℂ :=

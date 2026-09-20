@@ -130,6 +130,12 @@ private theorem directionPauli_isHermitian (direction : Fin 2) :
     (directionPauli direction).IsHermitian := by
   exact InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)
 
+/-- The velocity matrix is Hermitian in either in-plane direction. -/
+theorem velocity_isHermitian (direction : Fin 2) (v : ℝ) :
+    (velocity direction v).IsHermitian := by
+  unfold velocity
+  exact (directionPauli_isHermitian direction).smul (by simp [isSelfAdjoint_iff])
+
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
@@ -144,6 +150,13 @@ theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator v m px py) := by
   simpa [hamiltonianOperator, matrixOperator] using
     (hamiltonian_isHermitian v m px py).isSelfAdjoint.map
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+
+/-- The direction-indexed velocity operator is self-adjoint. -/
+theorem velocityOperator_isSelfAdjoint (direction : Fin 2) (v : ℝ) :
+    IsSelfAdjoint (velocityOperator direction v) := by
+  simpa [velocityOperator, matrixOperator] using
+    (velocity_isHermitian direction v).isSelfAdjoint.map
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The direction-indexed current operator is self-adjoint. -/

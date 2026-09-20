@@ -41,6 +41,13 @@ theorem bandProjector_eq_pauliCombination
               diracPauliCoefficients v m px py)) := by
   simp [bandProjector, hamiltonian_eq_pauliCombination]
 
+/-- Each massive-Dirac band projector has trace one. -/
+@[simp] theorem trace_bandProjector (band : Band) (v m px py : ℝ) :
+    Matrix.trace (bandProjector band v m px py) = 1 := by
+  rw [bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
+    InternalSpace.trace_pauliCombination]
+  norm_num [Matrix.trace]
+
 /-- The Hamiltonian normalized by the positive Dirac energy. Away from the degeneracy this is an
 involution, and the two spectral projectors are its `±1` eigenspace projectors. -/
 private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
@@ -107,6 +114,22 @@ theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
 /-- The two band signs square to one. -/
 @[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by
   cases band <;> simp
+
+/-- Away from the band degeneracy, the two band energies are distinct. -/
+theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    Function.Injective (fun band : Band => bandEnergy band v m px py) := by
+  intro a b hab
+  cases a <;> cases b
+  · rfl
+  · exfalso
+    simp [bandEnergy] at hab
+    apply hE
+    linarith
+  · exfalso
+    simp [bandEnergy] at hab
+    apply hE
+    linarith
+  · rfl
 
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
