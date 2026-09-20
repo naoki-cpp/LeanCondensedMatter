@@ -54,10 +54,10 @@ theorem IsPairing.sigmaCongrRight {ι : Type*} {β : ι → Type*}
     IsPairing (Equiv.sigmaCongrRight F) := by
   constructor
   · rintro ⟨i, x⟩
-    simp [hF i |>.1 x]
+    simp [(hF i).1 x]
   · rintro ⟨i, x⟩
     simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
-    exact hF i |>.2 x
+    exact (hF i).2 x
 
 instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
     Decidable (IsPairing partner) :=
