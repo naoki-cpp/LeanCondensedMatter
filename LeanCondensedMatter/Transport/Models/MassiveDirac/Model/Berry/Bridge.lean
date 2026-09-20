@@ -128,29 +128,41 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
     2 * (data.hamiltonianDerivativeMatrixElement 0 (oppositeBand band) band *
       data.hamiltonianDerivativeMatrixElement 1 band (oppositeBand band)).im /
         interbandEnergyGap band v m px py ^ 2
+  have hgapEq :
+      data.energy band - data.energy (oppositeBand band) =
+        interbandEnergyGap band v m px py := by
+    change
+      (pointwiseEigenbasisData v m px py hE).energy band -
+          (pointwiseEigenbasisData v m px py hE).energy (oppositeBand band) =
+        interbandEnergyGap band v m px py
+    exact pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap
+      band v m px py hE
+  have hgap : data.energy band - data.energy (oppositeBand band) ≠ 0 := by
+    rw [hgapEq]
+    exact interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
     0 1 band hself hnondegenerate]
   rw [sum_band]
   cases band with
   | lower =>
       simp only [reduceCtorEq, ↓reduceIte, oppositeBand_lower, zero_add]
-      have hgap : data.energy .lower - data.energy .upper ≠ 0 := by
-        rw [show data.energy .lower - data.energy .upper =
-          interbandEnergyGap .lower v m px py by rfl]
-        exact interbandEnergyGap_ne_zero_of_energy_ne_zero .lower v m px py hE
-      rw [mul_div_real_gap_im _ _ _ hgap]
-      rw [show data.energy .lower - data.energy .upper =
-        interbandEnergyGap .lower v m px py by rfl]
+      have hgapLower : data.energy .lower - data.energy .upper ≠ 0 := by
+        simpa only [oppositeBand_lower] using hgap
+      have hgapEqLower :
+          data.energy .lower - data.energy .upper =
+            interbandEnergyGap .lower v m px py := by
+        simpa only [oppositeBand_lower] using hgapEq
+      rw [mul_div_real_gap_im _ _ _ hgapLower, hgapEqLower]
       ring
   | upper =>
       simp only [reduceCtorEq, ↓reduceIte, oppositeBand_upper, add_zero]
-      have hgap : data.energy .upper - data.energy .lower ≠ 0 := by
-        rw [show data.energy .upper - data.energy .lower =
-          interbandEnergyGap .upper v m px py by rfl]
-        exact interbandEnergyGap_ne_zero_of_energy_ne_zero .upper v m px py hE
-      rw [mul_div_real_gap_im _ _ _ hgap]
-      rw [show data.energy .upper - data.energy .lower =
-        interbandEnergyGap .upper v m px py by rfl]
+      have hgapUpper : data.energy .upper - data.energy .lower ≠ 0 := by
+        simpa only [oppositeBand_upper] using hgap
+      have hgapEqUpper :
+          data.energy .upper - data.energy .lower =
+            interbandEnergyGap .upper v m px py := by
+        simpa only [oppositeBand_upper] using hgapEq
+      rw [mul_div_real_gap_im _ _ _ hgapUpper, hgapEqUpper]
       ring
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away

@@ -69,17 +69,6 @@ theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointw
   unfold forceMatrixBerryCurvature
   ring
 
-/-- Closed-form compatibility corollary of the generic pointwise Berry-curvature transport
-consumer. -/
-theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    2 * (currentBandBlockTrace 0 1 band (oppositeBand band) e v m px py).im /
-        interbandEnergyGap band v m px py ^ 2 =
-      e ^ 2 * berryCurvature band v m px py := by
-  rw [two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
-      band e v m px py hE,
-    pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE]
-
 /-- Bastin operator integrand with the generic Green operators replaced by their exact massive-Dirac
 projector expansions. -/
 noncomputable def projectorBastinOperatorIntegrand
