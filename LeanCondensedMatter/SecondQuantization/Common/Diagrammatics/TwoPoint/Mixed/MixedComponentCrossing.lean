@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Crossing decomposition for mixed-time two-point pairings
 
-This module reindexes the crossing count of a generic mixed-order two-point pairing by full connected
-components. The construction and parity decomposition are statistics-independent; the final weight
-formula is parameterized by `Statistics` rather than specialized to fermions.
+This module owns the component-internal crossing counts and exchange-statistics weights of a generic
+mixed-order two-point pairing. The quartic off-diagonal parity argument and the resulting global
+factorization live in `MixedComponentCrossingEven`.
 -/
 
 namespace SecondQuantization
