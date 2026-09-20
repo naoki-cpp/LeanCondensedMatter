@@ -168,15 +168,8 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
         ∑' a, (β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     hnMLTarget.trans hBTarget.symm
   have hterm_eq : ∀ a, Real.negMulLog (p a) =
-      β * (p a * h a) + p a * Real.log Z - p a + q a / Z := by
-    intro a
-    apply le_antisymm (hbound a)
-    by_contra hnot
-    have hlt : Real.negMulLog (p a) <
-        β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
-      lt_of_not_ge hnot
-    have hsumlt := Summable.tsum_lt_tsum hbound hlt hnML_summable hB_summable
-    exact (ne_of_lt hsumlt) hnML_eq_B
+      β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
+    pointwise_eq_of_tsum_eq_of_le hbound hnML_summable hB_summable hnML_eq_B
   have hp_pos : ∀ a, 0 < p a := fun a => by
     exact lt_of_le_of_ne (ρ.eigenvalue_nonneg a) (Ne.symm a.1.2)
   have hscalar : ∀ a, p a = q a / Z ∧ -Real.log (q a) = β * h a := fun a => by
