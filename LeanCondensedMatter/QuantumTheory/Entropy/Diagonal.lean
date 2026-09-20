@@ -17,6 +17,32 @@ open ContinuousLinearMap
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- Summable diagonal entropy weights make the entropy operator spectrally summable. -/
+theorem DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal
+    (ρ : DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
+    (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
+    (hsum : Summable fun i => ‖Real.negMulLog (w i)‖) :
+    HasSummableRealEigenvalues (entropyOp ρ) := by
+  let a : ι → ℝ := fun i => Real.negMulLog (w i)
+  have hw_nonneg : ∀ i, 0 ≤ w i := ρ.diagonal_weight_nonneg b w happly
+  have hw_le_one : ∀ i, w i ≤ 1 :=
+    ρ.diagonal_weight_le_one b w happly hw_nonneg
+  have ha_nonneg : ∀ i, 0 ≤ a i := fun i =>
+    Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
+  have ha : Summable fun i => ‖a i‖ := by
+    simpa [a] using hsum
+  have hac : Summable fun i => ‖(a i : ℂ)‖ := by
+    simpa using ha
+  have hop :
+      entropyOp ρ = HilbertBasis.diagonalOp b (fun i => (a i : ℂ)) := by
+    apply ContinuousLinearMap.ext_on
+      (Submodule.dense_iff_topologicalClosure_eq_top.mpr b.dense_span)
+    rintro _ ⟨i, rfl⟩
+    rw [entropyOp_apply_eigenvector ρ (by simpa using happly i)]
+    rw [HilbertBasis.diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
+  rw [hop]
+  exact (HilbertBasis.diagonalOpSpectralTraceClass b a ha ha_nonneg).summable
+
 /-- The entropy-operator trace is the sum of `-wᵢ log wᵢ` in a diagonal presentation. -/
 theorem entropyOpSpectralTraceClass_hasSum_diagonal (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
