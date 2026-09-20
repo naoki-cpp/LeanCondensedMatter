@@ -117,13 +117,16 @@ the represented bounded operator. -/
 theorem inPlanePauliVertexCLM_injective :
     Function.Injective inPlanePauliVertexCLM := by
   intro left right h
+  have hoperator :
+      inPlanePauliVertexOperator left = inPlanePauliVertexOperator right := by
+    simpa only [inPlanePauliVertexCLM_apply] using h
   have hmatrix :
       left 0 • sigmaX + left 1 • sigmaY =
         right 0 • sigmaX + right 1 • sigmaY := by
     apply
       (Matrix.toEuclideanCLM :
         Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [inPlanePauliVertexCLM, inPlanePauliVertexOperator, matrixOperator] using h
+    simpa [inPlanePauliVertexOperator, matrixOperator] using hoperator
   let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
     fun coefficients axis =>
       match axis with
