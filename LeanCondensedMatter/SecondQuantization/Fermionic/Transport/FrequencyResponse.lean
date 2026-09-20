@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
 
 set_option linter.style.header false
 
@@ -41,6 +40,23 @@ variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
+/-- Neutral response channel for the finite-lattice directional charge current.
+
+The measured and source operators are the same directional current, while the explicit first-order
+observable variation is the Peierls contact operator. -/
+noncomputable def boundedDirectionalResponseChannel
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q : ℝ) :
+    QuantumTheory.LinearResponse.ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  observableVariation := boundedDirectionalContact geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+
 /-- Retarded part of the finite-time, adiabatically regularized directional-current coefficient.
 
 The observation-time source value has been factored out, leaving the canonical lag phase
@@ -72,8 +88,8 @@ noncomputable def boundedDirectionalContactExpectation
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K) T)
 
-/-- Total finite-time adiabatic directional-current coefficient: retarded state response plus the
-explicit geometric contact response. This is not yet named a DC conductivity. -/
+/-- Total finite-time adiabatic directional-current coefficient carried by the neutral response
+channel. This is not yet named a DC conductivity. -/
 noncomputable def finiteTimeAdiabaticDirectionalCoefficient
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
@@ -81,10 +97,25 @@ noncomputable def finiteTimeAdiabaticDirectionalCoefficient
       (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η T : ℝ) : ℂ :=
-  finiteTimeAdiabaticDirectionalRetardedCoefficient
-      system expectation geometry direction K q ω η T +
-    boundedDirectionalContactExpectation
-      system expectation geometry direction K q T
+  (boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
+    system expectation ω η T
+
+/-- Expanding the channel-level finite-time response recovers the historical retarded-plus-contact
+directional-current coefficient exactly. -/
+theorem finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q ω η T : ℝ) :
+    finiteTimeAdiabaticDirectionalCoefficient
+        system expectation geometry direction K q ω η T =
+      finiteTimeAdiabaticDirectionalRetardedCoefficient
+          system expectation geometry direction K q ω η T +
+        boundedDirectionalContactExpectation
+          system expectation geometry direction K q T := by
+  rfl
 
 end
 end Transport

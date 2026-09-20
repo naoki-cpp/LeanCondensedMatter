@@ -470,7 +470,7 @@
     {
       "id": "transportFrequencyResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching"]
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
     },
     {
       "id": "transportHarmonicResponse",

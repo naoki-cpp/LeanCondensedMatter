@@ -113,7 +113,7 @@ theorem finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag
         expectation
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  unfold finiteTimeAdiabaticDirectionalCoefficient
+  rw [finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact]
   rw [finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
     system expectation hstationary geometry direction K q ω η hT]
   unfold boundedDirectionalContactExpectation
