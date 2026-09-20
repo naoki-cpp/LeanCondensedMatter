@@ -14,10 +14,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentOrderedSimplex
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentShufflePermutation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
@@ -38,9 +34,8 @@ Two-point diagrams with two distinguished external legs, full connected-componen
 generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
 products, slot-split vacuum pairing transport, vacuum-pair image/component equivalences and
-componentwise pair/crossing transport, interaction-time ordered-simplex shuffles and their canonical
-representative, ambient shuffle permutations, interaction-slot relabeling and mixed-order covariance,
-generic mixed-order pairings, standalone external-piece transport and pair equivalence, component pair
+componentwise pair/crossing transport, generic mixed-order pairings, standalone external-piece
+transport and pair equivalence, component pair
 fibers and their dependent-sum decomposition, crossing
 decomposition and even-crossing factorization, pair transport, and fixed-order chamber locality.
 -/

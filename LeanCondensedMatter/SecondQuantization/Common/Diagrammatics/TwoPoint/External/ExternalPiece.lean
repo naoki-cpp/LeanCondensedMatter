@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
 
@@ -24,11 +24,6 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {n : ℕ}
-
-/-- The external component owns as many interaction slots as its component-local ordered simplex. -/
-theorem TwoPointDiagram.externalInteractionPart_card
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
-    d.externalInteractionPart.card = d.interactionComponentSize d.externalComponentPart := rfl
 
 /-- The external component as a standalone two-point diagram on any consecutive slot set whose
 size is identified with the external interaction-part cardinality. -/
