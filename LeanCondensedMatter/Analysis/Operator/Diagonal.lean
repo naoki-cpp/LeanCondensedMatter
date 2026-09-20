@@ -1,17 +1,17 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.Compact
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 
 /-!
-# Diagonal operators from summable Hilbert-basis weights
+# Hilbert-basis diagonal operators
 
 This module constructs the bounded operator
 
 `∑' i, a i • |b i⟩⟨b i|`
 
-from a Hilbert basis `b` and an absolutely summable scalar family `a`. This is the operator-level
-foundation needed to build genuine infinite-dimensional Gibbs states from a discrete energy basis,
-without representing the generally unbounded Hamiltonian itself as a bounded continuous linear map.
+from a Hilbert basis `b` and an absolutely summable scalar family `a`. This neutral operator layer
+is reused by Fredholm, density-state, and Gibbs constructions; it does not assert positivity or
+spectral trace-class membership.
 -/
 
 noncomputable section
@@ -62,8 +62,7 @@ omit [CompleteSpace H] in
 /-- Every term of the diagonal operator series is compact. -/
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
     IsCompactOperator (diagonalTerm b a i) := by
-  change IsCompactOperator
-    (fun x : H => a i • InnerProductSpace.rankOne ℂ (b i) (b i) x)
+  change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
   exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/

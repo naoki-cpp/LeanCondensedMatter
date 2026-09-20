@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 /-!

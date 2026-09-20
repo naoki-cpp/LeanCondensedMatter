@@ -9,6 +9,8 @@ import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt
+import LeanCondensedMatter.Analysis.Operator.Compact
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.Analysis.Operator.Fredholm
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
 import LeanCondensedMatter.Analysis.Operator.TraceClass

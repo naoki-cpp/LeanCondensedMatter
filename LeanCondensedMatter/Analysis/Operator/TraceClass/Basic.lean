@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
-import Mathlib.Analysis.Normed.Operator.Compact.Basic
 
 set_option linter.style.header false
 
@@ -20,14 +19,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 namespace ContinuousLinearMap
 
 variable {T : H →L[ℂ] H}
-
-omit [CompleteSpace H] in
-/-- Rank-one operators on a Hilbert space are compact. -/
-theorem isCompactOperator_rankOne (x y : H) :
-    IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
-  rw [InnerProductSpace.rankOne_def']
-  exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
-    (ContinuousLinearMap.toSpanSingleton ℂ x)
 
 /-- The absolute values of the indexed nonzero real eigenvalues of `T`, with multiplicity, are
 summable.

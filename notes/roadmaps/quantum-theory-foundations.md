@@ -34,6 +34,10 @@ evolution.
 Reusable unitary-conjugation facts for compact spectral trace-class operators live under
 `Analysis/Operator/TraceClass/` rather than in the physics layer.
 
+The reusable Hilbert-basis diagonal operator construction lives under
+`Analysis/Operator/Diagonal.lean`; density and Gibbs constructors consume that neutral API through
+the TraceClass adapters where positivity and spectral trace data are required.
+
 ## Density operators, physical pure states, expectations, and purity
 
 Status: `proved` for the current spectral trace-class density model and density-backed physical pure
