@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
-import LeanCondensedMatter.Transport.Core.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
 
