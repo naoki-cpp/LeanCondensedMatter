@@ -123,6 +123,19 @@ summability, identifies the bundled heat trace with the pure-point partition fun
 spectral-data-first boundary should wait for a genuine spectral-measure/functional-calculus
 API rather than extending the pure-point representation beyond what it proves.
 
+The current Gibbs variational and uniqueness proofs do **not** extend to this boundary merely by
+replacing the normalized state. They quantify over an arbitrary density operator and use bounded
+Hamiltonian matrix elements on every density eigenvector, together with Peierls--Bogoliubov for the
+bounded operator exponential. For unbounded pure-point energy data, the existing
+`PurePointGibbsEnergyIntegrable` condition controls only the Gibbs distribution itself; it does not
+define finite energy for an arbitrary competing density state. A genuine extension therefore needs
+a competitor-side finite-energy/domain condition and an inequality mechanism that remains valid
+there. In the diagonal/classical subcase this can be developed directly from countable probability
+weights and energy summability; a fully quantum noncommuting variational principle requires
+additional unbounded relative-entropy/form-domain or lower-semicontinuity infrastructure. The
+bounded uniqueness proof also depends on equality in Peierls--Bogoliubov, so it should remain in the
+bounded `Observable` layer until such infrastructure exists.
+
 The following remain open or only partially covered:
 
 - a general non-self-adjoint trace-class/Schatten ideal and trace;
