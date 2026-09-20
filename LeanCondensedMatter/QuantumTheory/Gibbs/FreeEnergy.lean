@@ -70,8 +70,7 @@ only have total mass at most `Z`; the logarithmic estimate supplies the energy t
 theorem summable_negMulLog_and_tsum_le_gibbs
     {ι : Type*} (p q energy : ι → ℝ) (β Z : ℝ)
     (hp_nonneg : ∀ i, 0 ≤ p i)
-    (hp_summable : Summable p)
-    (hp_tsum : ∑' i, p i = 1)
+    (hp_hasSum : HasSum p 1)
     (henergy : Summable fun i => p i * energy i)
     (hq_summable : Summable q)
     (hq_tsum_le : ∑' i, q i ≤ Z)
@@ -81,6 +80,8 @@ theorem summable_negMulLog_and_tsum_le_gibbs
     Summable (fun i => Real.negMulLog (p i)) ∧
       ∑' i, Real.negMulLog (p i) ≤
         β * (∑' i, p i * energy i) + Real.log Z := by
+  have hp_summable : Summable p := hp_hasSum.summable
+  have hp_tsum : ∑' i, p i = 1 := hp_hasSum.tsum_eq
   have hqZ_summable : Summable (fun i => q i / Z) :=
     hq_summable.div_const Z
   have hplogZ_summable : Summable (fun i => p i * Real.log Z) :=
@@ -214,10 +215,12 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H]
     simpa [Z, hq_def] using hbound
   have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
+  have hp_hasSum : HasSum p 1 := by
+    simpa [hpsum] using hp_summable.hasSum
   obtain ⟨hnML_summable, hfinal⟩ :=
     summable_negMulLog_and_tsum_le_gibbs
       p q h β Z (fun a => ρ.eigenvalue_nonneg a)
-      hp_summable hpsum hph_summable
+      hp_hasSum hph_summable
       hq_summable_and_le.1 hq_summable_and_le.2 hqpos hZpos hstep2
   obtain ⟨hEntropyNeTop, hToReal⟩ :=
     vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
