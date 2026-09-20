@@ -130,6 +130,34 @@ Annotated reference list. One entry per source: full citation, what it is used f
 
 ### Current definitions and Berry geometry
 
+- **M. I. Dyakonov and V. I. Perel.** “Current-induced spin orientation of
+  electrons in semiconductors.” *Physics Letters* **35A**(6), 459–460 (1971).
+  DOI: [10.1016/0375-9601(71)90196-4](https://doi.org/10.1016/0375-9601(71)90196-4).
+  - **Project use:** Historical primary source for current-induced spin
+    orientation and the spin-orbit-scattering origin of an extrinsic spin Hall
+    signal; it motivates the impurity/boundary branch of the spin-Hall roadmap.
+  - **Caveat:** This is not a finite Kubo theorem and does not determine the
+    project's modern current or conductivity conventions.
+
+- **Jairo Sinova, Dimitrie Culcer, Qian Niu, N. A. Sinitsyn, T. Jungwirth, and
+  A. H. MacDonald.** “Universal intrinsic spin Hall effect.” *Physical Review
+  Letters* **92**, 126603 (2004). DOI:
+  [10.1103/PhysRevLett.92.126603](https://doi.org/10.1103/PhysRevLett.92.126603).
+  - **Project use:** Primary clean Rashba benchmark for the intrinsic transverse
+    spin response and the R1–R2 finite-model specialization.
+  - **Caveat:** The advertised universal value is regime- and limit-dependent;
+    the repository must state band occupancy, broadening, and order of limits
+    instead of importing it as a generic theorem.
+
+- **Jun-ichiro Inoue, Gerrit E. W. Bauer, and Laurens W. Molenkamp.**
+  “Suppression of the persistent spin Hall current by defect scattering.”
+  *Physical Review B* **70**, 041303(R) (2004). DOI:
+  [10.1103/PhysRevB.70.041303](https://doi.org/10.1103/PhysRevB.70.041303).
+  - **Project use:** Primary provenance for the isotropic short-range disorder
+    vertex-cancellation benchmark and the forward-scattering exception in R3.
+  - **Caveat:** The cancellation is model- and disorder-assumption-specific;
+    it is not a universal statement about every spin-orbit system.
+
 - **Junren Shi, Ping Zhang, Di Xiao, and Qian Niu.** “Proper Definition of Spin Current in
   Spin-Orbit Coupled Systems.” *Physical Review Letters* **96**, 076604 (2006). DOI:
   [10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604).
@@ -156,6 +184,62 @@ Annotated reference list. One entry per source: full citation, what it is used f
   - **Caveat:** Many formulas assume a smooth isolated nondegenerate band and use local gauges.
     Degeneracies, global gauge patching, and the project's totalized definitions require separate
     hypotheses.
+
+### Spin Hall conversion and validation boundaries
+
+- **Y. K. Kato, R. C. Myers, A. C. Gossard, and D. D. Awschalom.** “Observation
+  of the spin Hall effect in semiconductors.” *Science* **306**, 1910–1913
+  (2004). DOI: [10.1126/science.1105514](https://doi.org/10.1126/science.1105514).
+  - **Project use:** Experimental provenance for edge spin accumulation and for
+    deciding which boundary observable a later finite-sample model should expose.
+  - **Caveat:** Kerr rotation, sample edges, and strain-dependent spin
+    relaxation are validation/device layers, not inputs to the finite algebraic
+    response theorems.
+
+- **T. Kimura, Y. Otani, T. Sato, T. Takahashi, and S. Maekawa.** “Room-
+  temperature reversible spin Hall effect.” *Physical Review Letters* **98**,
+  156601 (2007). DOI:
+  [10.1103/PhysRevLett.98.156601](https://doi.org/10.1103/PhysRevLett.98.156601).
+  - **Project use:** Experimental direct/inverse-conversion and Onsager-
+    reciprocity benchmark for R6.
+  - **Caveat:** Device contacts and measurement conventions must be separated
+    from the abstract reciprocal response theorem.
+
+- **Y. Niimi, Y. Kawanishi, D. H. Wei, C. Deranlot, H. X. Yang, M. Chshiev,
+  T. Valet, A. Fert, and Y. Otani.** “Giant spin Hall effect induced by skew
+  scattering from bismuth impurities inside thin film CuBi alloys.” *Physical
+  Review Letters* **109**, 156602 (2012). DOI:
+  [10.1103/PhysRevLett.109.156602](https://doi.org/10.1103/PhysRevLett.109.156602).
+  - **Project use:** Extrinsic skew-scattering sign and scale benchmark for R5.
+  - **Caveat:** The material-specific spin Hall angle is not a universal Lean
+    constant; only an explicitly declared finite impurity model is in scope.
+
+- **Kazuya Ando and Eiji Saitoh.** “Observation of the inverse spin Hall effect
+  in silicon.” *Nature Communications* **3**, 629 (2012). DOI:
+  [10.1038/ncomms1640](https://doi.org/10.1038/ncomms1640).
+  - **Project use:** Experimental inverse-SHE validation and a reminder that
+    spin Hall angle extraction requires geometry, interface, and unit data.
+  - **Caveat:** The room-temperature silicon device is not a finite response
+    theorem and is intentionally downstream of R6–R7.
+
+- **A. Manchon, H. C. Koo, J. Nitta, S. M. Frolov, and R. A. Duine.** “New
+  perspectives for Rashba spin–orbit coupling.” *Nature Materials* **14**,
+  871–882 (2015). DOI:
+  [10.1038/nmat4360](https://doi.org/10.1038/nmat4360).
+  - **Project use:** Secondary vocabulary and synthesis for Rashba spin-orbit
+    coupling and spin-to-charge conversion.
+  - **Caveat:** Reviews are not primary provenance for the project's theorem
+    statements.
+
+- **A. Manchon, J. Železný, I. M. Miron, T. Jungwirth, J. Sinova, A. Thiaville,
+  K. Garello, and P. Gambardella.** “Current-induced spin–orbit torques in
+  ferromagnetic and antiferromagnetic systems.” *Reviews of Modern Physics*
+  **91**, 035004 (2019). DOI:
+  [10.1103/RevModPhys.91.035004](https://doi.org/10.1103/RevModPhys.91.035004).
+  - **Project use:** Secondary boundary reference for distinguishing spin Hall
+    conversion from interface spin-orbit torque in R6–R7.
+  - **Caveat:** Torque, spin pumping, and device calibration are separate from
+    the bulk spin-current theorem unless a model-specific bridge is proved.
 
 ### Analytic foundations and roadmap boundaries
 

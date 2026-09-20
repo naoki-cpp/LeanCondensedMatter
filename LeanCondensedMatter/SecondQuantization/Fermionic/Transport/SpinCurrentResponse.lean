@@ -24,7 +24,12 @@ bond current, so the response kernel is genuinely mixed:
 No equality between spin current and charge current is assumed. The velocity is supplied as a
 one-particle operator so later finite Rashba/Dirac models can instantiate it with the velocity derived
 from their Hamiltonian. Conductivity normalization and source-dependent contact terms remain separate
-from this causal cross-response kernel.
+from this causal cross-response kernel. The conventional-current/proper-current distinction is
+motivated by Shi, Zhang, Xiao, and Niu, *Phys. Rev. Lett.* **96**, 076604 (2006),
+[doi:10.1103/PhysRevLett.96.076604](https://doi.org/10.1103/PhysRevLett.96.076604); this module
+does not identify the conventional operator with their torque-dipole-completed current. The finite
+Rashba, disorder-vertex, and inverse-response follow-ups are tracked in
+`notes/roadmaps/spin-hall.md`.
 -/
 
 namespace SecondQuantization
