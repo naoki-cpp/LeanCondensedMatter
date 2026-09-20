@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
@@ -18,7 +19,8 @@ set_option linter.style.header false
 /-!
 # Gibbs-state theory
 
-Public routing module for Gibbs states, heat-operator compatibility, free energy, one-particle
+Public routing module for Gibbs states, heat-operator compatibility, pure-point thermodynamics,
+free energy, one-particle
 Boltzmann kernels, thermal exchange-cycle series, variational principles, and uniqueness
 infrastructure exported by
 `LeanCondensedMatter.QuantumTheory`.
