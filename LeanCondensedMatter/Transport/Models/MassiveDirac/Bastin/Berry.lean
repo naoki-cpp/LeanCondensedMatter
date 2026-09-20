@@ -30,6 +30,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 
 noncomputable section
 
+open BerryGeometry
 open QuantumTheory.Transport
 
 /-- An opposite-band ordered current block is exactly `e²` times the gauge-independent force-matrix
@@ -54,18 +55,30 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
       simp [current, forceMatrixTraceNumerator]
       ring
 
-/-- Normalizing the Hall interband current block by the squared interband gap directly reproduces
-`e²` times the clean Berry curvature away from the Dirac degeneracy. -/
+/-- Normalizing the Hall interband current block by the squared interband gap reproduces
+`e²` times the generic pointwise Berry curvature. This is the transport consumer of the canonical
+Massive-Dirac spectral bridge. -/
+theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
+    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    2 * (currentBandBlockTrace 0 1 band (oppositeBand band) e v m px py).im /
+        interbandEnergyGap band v m px py ^ 2 =
+      e ^ 2 * (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band := by
+  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator 0 1]
+  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
+  rw [pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature band v m px py hE]
+  unfold forceMatrixBerryCurvature
+  ring
+
+/-- Closed-form compatibility corollary of the generic pointwise Berry-curvature transport
+consumer. -/
 theorem two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     2 * (currentBandBlockTrace 0 1 band (oppositeBand band) e v m px py).im /
         interbandEnergyGap band v m px py ^ 2 =
       e ^ 2 * berryCurvature band v m px py := by
-  rw [currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator 0 1]
-  simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero]
-  rw [← forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
-  unfold forceMatrixBerryCurvature
-  ring
+  rw [two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature
+      band e v m px py hE,
+    pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE]
 
 /-- Bastin operator integrand with the generic Green operators replaced by their exact massive-Dirac
 projector expansions. -/
