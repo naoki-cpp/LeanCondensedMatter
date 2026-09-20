@@ -30,6 +30,7 @@ noncomputable def purePointGibbsCompetitor [Nonempty ι]
     Summable.of_norm (summable_norm_negMulLog_purePointGibbsProbability E β hsum hint)
   energyIntegrable := hint
 
+/-- The canonical Gibbs competitor carries the normalized pure-point Gibbs probability. -/
 @[simp]
 theorem purePointGibbsCompetitor_probability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β)
