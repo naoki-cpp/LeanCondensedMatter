@@ -35,13 +35,13 @@ variable {α : Type*} [DecidableEq α] [Fintype α]
 /-- On a nontrivial finite type, a permutation is a single orbit on the whole type
 exactly when its cycle type is the singleton containing the ambient cardinality. -/
 theorem isCycleOn_univ_iff_cycleType_eq_singleton_card [Nontrivial α] (σ : Perm α) :
-    σ.IsCycleOn (Set.univ : Set α) ↔ σ.cycleType = {Fintype.card α} := by
-  have huniv : (Set.univ : Set α).Nontrivial := Set.nontrivial_univ
+    σ.IsCycleOn (_root_.Set.univ : _root_.Set α) ↔ σ.cycleType = {Fintype.card α} := by
+  have huniv : (_root_.Set.univ : _root_.Set α).Nontrivial := _root_.Set.nontrivial_univ
   constructor
   · intro hσ
     have hcycle : σ.IsCycle := by
       rw [Equiv.Perm.isCycle_iff_exists_isCycleOn]
-      exact ⟨Set.univ, huniv, hσ, by simp⟩
+      exact ⟨_root_.Set.univ, huniv, hσ, by simp⟩
     have hsupp : σ.support = (Finset.univ : Finset α) := by
       ext a
       simp only [Finset.mem_univ, iff_true]
@@ -52,15 +52,15 @@ theorem isCycleOn_univ_iff_cycleType_eq_singleton_card [Nontrivial α] (σ : Per
       apply (Equiv.Perm.card_cycleType_eq_one).1
       simp [htype]
     have hsingleton :
-        ({#σ.support} : Multiset ℕ) = {Fintype.card α} := by
+        ({σ.support.card} : Multiset ℕ) = {Fintype.card α} := by
       calc
-        ({#σ.support} : Multiset ℕ) = σ.cycleType := hcycle.cycleType.symm
+        ({σ.support.card} : Multiset ℕ) = σ.cycleType := hcycle.cycleType.symm
         _ = {Fintype.card α} := htype
-    have hcard : #σ.support = Fintype.card α := by
+    have hcard : σ.support.card = Fintype.card α := by
       simpa using hsingleton
     have hsupp : σ.support = (Finset.univ : Finset α) :=
       (Finset.card_eq_iff_eq_univ σ.support).1 hcard
-    have hset : {x : α | σ x ≠ x} = Set.univ := by
+    have hset : {x : α | σ x ≠ x} = _root_.Set.univ := by
       ext x
       simp [← Equiv.Perm.mem_support, hsupp]
     rw [← hset]
