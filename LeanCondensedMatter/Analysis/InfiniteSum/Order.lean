@@ -1,4 +1,4 @@
-import Mathlib.Analysis.Normed.Ring.InfiniteSum
+import Mathlib.Topology.Algebra.InfiniteSum.Real
 
 set_option linter.style.header false
 
