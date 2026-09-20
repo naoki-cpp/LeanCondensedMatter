@@ -31,7 +31,7 @@ namespace QuantumTheory.Transport.Models.MassiveDirac
 noncomputable section
 
 open BerryGeometry
-open QuantumTheory.Transport
+open ContinuousLinearMap
 
 /-- An opposite-band ordered current block is exactly `e²` times the gauge-independent force-matrix
 numerator. -/
