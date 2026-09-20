@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 
 /-!
