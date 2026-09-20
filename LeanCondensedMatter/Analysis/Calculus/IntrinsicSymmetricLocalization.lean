@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
+import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
 
 set_option linter.style.header false
 
