@@ -89,7 +89,7 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
 
 /-- Every normalized pair from the standalone quartic vacuum piece belongs to an ambient vacuum
 component after reassembly. -/
-theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts
+private theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -113,7 +113,7 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumCompo
 
 /-- The quartic normalized-pair embedding with codomain restricted to ambient vacuum-component
 pairs. -/
-noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
+private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -132,7 +132,7 @@ noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
     exact congrArg Subtype.val hpq
 
 @[simp]
-theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_apply
+private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_apply
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -190,7 +190,7 @@ theorem TwoPointDiagram.card_mixedVacuumComponentPair
 
 /-- For an externally connected left piece, the ambient vacuum components contain exactly the
 interaction vertices of the standalone quartic right piece. -/
-theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
+private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -225,7 +225,7 @@ theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
 
 /-- The type of all ambient mixed vacuum pairs has the same cardinality as the normalized pairs of
 the standalone quartic vacuum pairing. -/
-theorem TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair
+private theorem TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -242,7 +242,7 @@ theorem TwoPointDiagram.ofSlotSplit_card_mixedVacuumPair
 
 /-- Under external connectedness, every ambient mixed pair lying in a vacuum component comes from a
 unique normalized pair of the standalone quartic vacuum pairing. -/
-theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
+private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
