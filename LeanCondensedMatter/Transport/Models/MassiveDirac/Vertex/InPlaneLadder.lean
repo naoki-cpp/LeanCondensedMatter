@@ -266,6 +266,19 @@ theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
       (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
       inPlaneLadderBareXSource
 
+
+/-- At the operator boundary, the explicit massive-Dirac solution is the embedded generic
+resummed ladder vertex on the in-plane invariant subspace. -/
+theorem inPlanePauliVertexEmbedding_solved_eq_resummedLadderVertex
+    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
+    inPlanePauliVertexEmbedding (inPlaneLadderSolvedVector rung) =
+      inPlanePauliVertexEmbedding
+        (resummedLadderVertex
+          (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+          inPlaneLadderBareXSource) := by
+  exact congrArg inPlanePauliVertexEmbedding
+    (inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet)
+
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` as a corollary of the generic
 resummation fixed-point theorem. -/
 theorem inPlaneLadderSolvedVector_fixedPoint
