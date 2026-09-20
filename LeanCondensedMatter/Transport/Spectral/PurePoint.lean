@@ -1,0 +1,54 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+import LeanCondensedMatter.Transport.Resolvent.Spectral
+
+set_option linter.style.header false
+
+/-!
+# Pure-point spectral adapter for regulated resolvents
+
+This module is the neutral seam between generic signed-regulator resolvent algebra and supplied
+pure-point Lehmann response data. It is shared by Kubo–Bastin and Středa consumers so neither
+response representation owns or duplicates the basis-action proof.
+
+The arbitrary-regulator eigenvector action remains in `Transport.Resolvent.Spectral`; only results
+whose statements require `PurePointLehmannData` live here.
+-/
+
+namespace QuantumTheory
+namespace Transport
+
+open QuantumTheory.LinearResponse
+
+noncomputable section
+
+variable {H ι : Type*}
+variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+variable
+  (system : BoundedFreeSystem H)
+  (data : PurePointLehmannData system ι)
+
+/-- On a pure-point energy basis, the square of a resolvent with arbitrary nonzero signed regulator
+has the squared scalar denominator. -/
+theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
+    (energy regulator : ℝ) (hregulator : regulator ≠ 0) (n : ι) :
+    ((resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)) ^ 2)
+        (data.basis n) =
+      ((spectralParameterOfRegulator energy regulator - (data.energy n : ℂ))⁻¹) ^ 2 •
+        data.basis n := by
+  rw [pow_two]
+  change resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
+      (resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
+        (data.basis n)) = _
+  rw [resolvent_spectralParameterOfRegulator_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy regulator hregulator]
+  rw [map_smul]
+  rw [resolvent_spectralParameterOfRegulator_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy regulator hregulator]
+  rw [smul_smul, pow_two]
+
+end
+end Transport
+end QuantumTheory
