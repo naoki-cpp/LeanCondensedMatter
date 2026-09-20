@@ -53,15 +53,6 @@ private noncomputable def slotSplitVacuumMixedOrderEmbedding
       (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
       τ τ' σ hσ)
 
-@[simp]
-private theorem slotSplitVacuumMixedOrderEmbedding_apply
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ p =
-      mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p :=
-  rfl
-
 /-- A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the
 right-leg embedding of the canonical slot split. -/
 theorem slotSplitVacuumOrderedLeg_eq_slotSplitRight
