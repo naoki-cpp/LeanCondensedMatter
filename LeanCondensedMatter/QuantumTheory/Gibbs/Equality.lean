@@ -4,9 +4,9 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
 /-!
 # Equality cases for Gibbs variational inequalities
 
-This file isolates the strict scalar and operator-positivity steps needed to characterize equality
-in the Gibbs–Klein free-energy bound. Operator-level equality and uniqueness of the Gibbs minimizer
-are developed on top of these reusable lemmas.
+This file isolates the operator-positivity steps needed to characterize equality in the bounded
+Gibbs–Klein free-energy bound. The scalar Gibbs inequality and its equality case are owned by
+`FreeEnergy.lean`, next to the countable summation lemmas shared by bounded and pure-point proofs.
 -/
 
 namespace QuantumTheory
