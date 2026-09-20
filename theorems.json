@@ -407,7 +407,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -419,15 +419,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right"
+      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right"
+      "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53003,7 +53005,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53018,8 +53020,10 @@
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53038,7 +53042,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53050,15 +53054,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy"
+      "QuantumTheory.Transport.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy"
+      "QuantumTheory.Transport.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53134,7 +53142,9 @@
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_fermiSurface_iff",
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_occupiedRegion_iff",
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
-      "QuantumTheory.Transport.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff"
+      "QuantumTheory.Transport.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -53144,9 +53154,11 @@
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_fermiSurface_iff",
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_occupiedRegion_iff",
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
-      "QuantumTheory.Transport.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff"
+      "QuantumTheory.Transport.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53189,6 +53201,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.mem_upperBand_radialOccupiedRegion_iff_lt_metallicFermiRadius"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator band v m px py =\n    ((InnerProductSpace.rankOne ℂ)\n        ((QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis band))\n      ((QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis band)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": "Away from the Dirac degeneracy, the gauge-independent band projector is the rank-one\nprojector onto the corresponding vector of the generic pointwise Berry eigenbasis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -53283,15 +53336,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator band v m px py ≠ 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -53302,14 +53355,18 @@
     "docString": "Every band projector is a nonzero bounded operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.trace_bandProjector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59905,6 +59962,44 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator μ ν band v m px py =\n    (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py\n            hE).hamiltonianDerivativeMatrixElement\n        μ (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) band *\n      (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py\n            hE).hamiltonianDerivativeMatrixElement\n        ν band (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Bridge",
+    "externalAxioms": [],
+    "docString": "The gauge-independent interband force numerator is exactly the product of the corresponding\ngeneric Hamiltonian-derivative matrix elements. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis",
+      "QuantumTheory.Transport.finiteDimensionalOperatorTrace_toEuclideanCLM"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator 0 1 band v m px py =\n      -↑(v ^ 4 * px * py / QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ^ 2) -\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band * m * v ^ 2 /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m px py) *\n          Complex.I",
     "standardAxioms": [
@@ -60059,7 +60154,9 @@
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonShiftOperator",
       "QuantumTheory.Transport.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
@@ -60069,14 +60166,17 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.boundedFreeSystem",
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator",
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent",
       "QuantumTheory.Transport.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonShiftOperator",
       "QuantumTheory.Transport.Models.MassiveDirac.star_pauliGreenOperatorOfRegulator",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Transport.Models.MassiveDirac.im_inner_self_pauliGreenOperatorOfRegulator_apply",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60094,10 +60194,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator",
@@ -60107,7 +60207,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.MassiveDirac.shiftedHamiltonian_mul_bandProjectorOperator"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.MassiveDirac.shiftedHamiltonian_mul_bandProjectorOperator",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_mul_bandProjector"
@@ -60115,9 +60216,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.MassiveDirac.shiftedHamiltonian_mul_bandProjectorOperator"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Transport.Models.MassiveDirac.shiftedHamiltonian_mul_bandProjectorOperator",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63715,6 +63817,76 @@
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_polar_eq"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ) (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0)\n  (band : QuantumTheory.Transport.Models.MassiveDirac.Band),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).energy band =\n    QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData_energy",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ) (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0) (direction : Fin 2),\n  (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).hamiltonianDerivative direction =\n    QuantumTheory.Transport.Models.MassiveDirac.velocityOperator direction v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData_hamiltonianDerivative",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68921,7 +69093,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68938,8 +69110,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72174,6 +72348,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -72184,9 +72359,10 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90920,25 +91096,25 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
+      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart"
+      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
+      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90969,7 +91145,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart"
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart"
     ],
     "dependencies": [
       "SimpleGraph.componentBlock_eq_iff_mem",
@@ -90978,96 +91154,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (B : ↥d.componentPartition.parts),\n  d.ComponentMeetsExternal B ↔ B = d.externalComponentPart",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "A component part meets the external sector exactly when it is the canonical common external\ncomponent part. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
-      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
-      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (B : ↥d.componentPartition.parts),\n  B = d.externalComponentPart ∨ B ∈ d.vacuumComponentParts",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "Every component part is either the common external part or a vacuum part. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "SecondQuantization.Common.TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-      "SecondQuantization.Common.TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91279,48 +91368,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.externalComponentPart ∉ d.vacuumComponentParts",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "The canonical external component is not a vacuum component. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.externalComponent 0 = d.externalComponent 1",
     "standardAxioms": [
       "Classical.choice",
@@ -91340,9 +91387,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
@@ -91351,50 +91397,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected → Sum.inl 1 ∉ ↑d.externalComponentPart",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
-    "externalAxioms": [],
-    "docString": "If the two external vertices were disconnected, external vertex `1` would not lie in the\ncomponent of external vertex `0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SimpleGraph.mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.disconnectedExternalLegDataEquiv"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92008,7 +92014,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl"
     ],
     "dependencies": [
@@ -92018,7 +92024,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl"
     ],
     "compiledConsumerCount": 2,
@@ -92059,8 +92065,12 @@
     "dependencies": [
       "Combinatorics.Pairing.isPairing_partnerSubtypePerm",
       "Combinatorics.even_card_of_fixedPointFreeInvolution",
+      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
+      "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.card_disconnectedExternalBlockLegs"
+      "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
+      "SimpleGraph.self_mem_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92088,7 +92098,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92100,8 +92110,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty"
     ],
     "dependencies": [
       "SimpleGraph.mem_componentBlock",
@@ -92110,10 +92119,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq"
+      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92132,7 +92140,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92144,8 +92152,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty"
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -92154,10 +92161,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty"
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92272,7 +92278,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
@@ -92288,7 +92294,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
@@ -92385,50 +92391,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected ↔ d.externalInteractionPart = S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "A two-point diagram is externally connected exactly when the canonical external component owns\nall interaction slots. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart",
-      "SimpleGraph.componentBlock_eq_iff_mem",
-      "SimpleGraph.componentBlock_mem_componentPartition",
-      "SimpleGraph.self_mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected ↔ d.HasNoVacuumComponent",
     "standardAxioms": [
@@ -92449,8 +92411,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal"
     ],
@@ -92460,50 +92420,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal"
     ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected ↔ d.vacuumComponentParts = ∅",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
-    "externalAxioms": [],
-    "docString": "Equivalent finite-component form of external connectedness. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92619,6 +92539,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
@@ -92631,6 +92552,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
       "SecondQuantization.Common.TwoPointDiagram.vacuumBlockLegEquiv",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
@@ -92638,7 +92560,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPositionDataEquiv_direct"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92739,46 +92661,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (v : ↥S),\n  ↑v ∈ d.externalInteractionPart ∨\n    ∃ B ∈ d.vacuumComponentParts, ↑v ∈ SecondQuantization.Common.TwoPointDiagram.interactionPart ↑B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "Every interaction vertex lies either in the common external component or in a vacuum component. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
-      "SimpleGraph.componentBlock_mem_componentPartition",
-      "SimpleGraph.self_mem_componentBlock"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (B : Finset (SecondQuantization.Common.TwoPointVertex S)) (v : Fin N),\n  v ∈ SecondQuantization.Common.TwoPointDiagram.interactionPart B ↔ ∃ (hv : v ∈ S), Sum.inr ⟨v, hv⟩ ∈ B",
     "standardAxioms": [
@@ -92800,7 +92682,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
       "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit"
@@ -92810,12 +92691,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.mem_interactionPart_subtype",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
       "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92846,8 +92726,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
@@ -92862,8 +92742,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
@@ -92904,9 +92784,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
+      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
@@ -92916,14 +92795,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
+      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93836,8 +93714,8 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts",
-      "SecondQuantization.Common.TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum"
+      "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.mem_vacuumComponentParts"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -94576,47 +94454,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  Finset.univ = insert d.externalComponentPart d.vacuumComponentParts",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": "The full finite type of component parts is the disjoint insertion of the common external part\ninto the finite set of vacuum parts. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132801,7 +132638,6 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
     ],
     "dependencies": [],
@@ -132811,10 +132647,9 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132915,7 +132750,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {V : Type u_1} [inst : DecidableEq V] [inst_1 : Fintype V] (G : SimpleGraph V) (v : V),\n  G.componentBlock v ∈ G.componentPartition.parts",
     "standardAxioms": [
       "Classical.choice",
@@ -132934,18 +132769,12 @@
     "docString": "Every connected-component block occurs as a part of the component partition. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132977,7 +132806,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
@@ -132986,6 +132814,7 @@
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "SimpleGraph.componentBlock_eq_of_reachable",
       "SimpleGraph.self_mem_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
     "dependencies": [],
@@ -132993,7 +132822,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
@@ -133002,6 +132830,7 @@
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "SimpleGraph.componentBlock_eq_of_reachable",
       "SimpleGraph.self_mem_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
     "compiledConsumerCount": 11,
@@ -133088,9 +132917,8 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
     ],
@@ -133104,13 +132932,12 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
-      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq",
-      "SecondQuantization.Common.TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart",
       "SimpleGraph.componentBlock_eq_iff_reachable",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147704,7 +147531,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected →\n    Fintype.card { leg // d.legInComponent (d.externalComponent 0) leg } =\n      1 + 4 * (SecondQuantization.Common.TwoPointDiagram.interactionPart (d.externalComponent 0)).card",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected → Sum.inl 1 ∉ ↑d.externalComponentPart",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147716,16 +147543,18 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.card_disconnectedExternalBlockLegs",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "If the two external vertices were disconnected, external vertex `1` would not lie in the\ncomponent of external vertex `0`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SimpleGraph.mem_componentBlock"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -159484,6 +159313,260 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Module.End.HasEigenvalue ↑(QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n      ↑(QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (target source : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0),\n  (QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator target v m px py)\n      ((QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis source) =\n    if source = target then\n      (QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis source\n    else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis"
+    ],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.hamiltonian_eigenvector",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_lower",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_upper",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_spectralExpression"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator band v m px py =\n    (1 / 2) •\n      (1 +\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.bandSign band /\n              QuantumTheory.Transport.Models.MassiveDirac.energy v m px py) •\n          QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_eq_spectralExpression",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "Module.finrank ℂ QuantumTheory.Transport.Models.MassiveDirac.DiracHilbert = 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.diracHilbert_finrank",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    ∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band),\n      (QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator v m px py)\n          ((QuantumTheory.Transport.Models.MassiveDirac.bandEigenbasis✝ v m px py) band) =\n        ↑(QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) •\n          (QuantumTheory.Transport.Models.MassiveDirac.bandEigenbasis✝ v m px py) band",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.diracHilbert_finrank",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pointwiseEigenbasisData"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues✝ v m px py 0 =\n        QuantumTheory.Transport.Models.MassiveDirac.bandEnergy QuantumTheory.Transport.Models.MassiveDirac.Band.upper v\n          m px py ∧\n      QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues✝ v m px py 1 =\n        QuantumTheory.Transport.Models.MassiveDirac.bandEnergy QuantumTheory.Transport.Models.MassiveDirac.Band.lower v\n          m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_lower",
+      "QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_upper",
+      "QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.bandEnergy_hasEigenvalue",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.diracHilbert_finrank"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
