@@ -31,8 +31,9 @@ generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCon
 Transport/
 ├── Core/          physical volume, continuum measure, normalization, conductivity tensor
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
+├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, angular harmonics, polar Fourier reduction, relaxation time
-├── KuboBastin/    Lehmann-to-resolvent and finite spectral sums
+├── KuboBastin/    Lehmann-to-resolvent response algebra and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
 ```
@@ -65,11 +66,16 @@ side-indexed physical owners, while conventional retarded/advanced names are ret
 specializations.
 
 Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
+`Resolvent.Spectral` specializes those facts to the arbitrary signed-regulator transport parameter
+without importing response data. `Spectral.PurePoint` is the neutral adapter that combines this
+generic resolvent action with `PurePointLehmannData`; Kubo–Bastin and Středa both consume that
+adapter rather than owning duplicate pure-point spectral proofs.
+
 `Resolvent.SelfEnergy` owns the representation-independent two-sided Dyson relation
 `IsSelfEnergy G₀ G Σ` and its inverse-difference characterization when compatible inverses are
 available.
 
-`KuboBastin` owns the finite/pure-point spectral response bridge. `Streda` owns the static
+`KuboBastin` owns the finite/pure-point response algebra built on that spectral adapter. `Streda` owns the static
 surface/sea operator and traced response representation. `Core.ConductivityTensor` is independent of
 either representation.
 
