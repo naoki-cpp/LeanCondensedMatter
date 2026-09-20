@@ -19,7 +19,7 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S T : Finset (Fin N)}
 
 /-- On one corresponding vacuum component, the ambient two-point vertex product agrees with the
 vertex product on the quartic component restriction. -/
-theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
+private theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
     {M : Type*} [CommMonoid M]
     (h : T ⊆ S)
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
