@@ -160,7 +160,7 @@ theorem inPlaneLadderShift_isUnit
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
     intro left right h
     apply hmatrix
-    simpa only [inPlaneShiftMatrix_mulVec, map_sub, one_apply,
+    simpa only [inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
       inPlaneLadderCLM_apply] using h
   have hsurjective : Function.Surjective (1 - inPlaneLadderCLM rung) :=
     LinearMap.surjective_of_injective
@@ -256,7 +256,7 @@ theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
   have hleft :
       (1 - inPlaneLadderCLM rung) (inPlaneLadderSolvedVector rung) =
         inPlaneLadderBareXSource := by
-    simpa only [map_sub, one_apply, inPlaneLadderCLM_apply] using
+    simpa only [sub_apply, one_apply_eq_self, inPlaneLadderCLM_apply] using
       inPlaneLadderSolvedVector_shift rung hdet
   rw [hleft]
   symm
