@@ -36,6 +36,29 @@ theorem IsPairing.permCongr {α β : Type*} {partner : Equiv.Perm α}
     apply e.injective
     simpa using hx
 
+/-- The disjoint sum of two pairing permutations is again a pairing permutation. -/
+theorem IsPairing.sumCongr {α β : Type*} {p : Equiv.Perm α} {q : Equiv.Perm β}
+    (hp : IsPairing p) (hq : IsPairing q) :
+    IsPairing (Equiv.sumCongr p q) := by
+  constructor
+  · rintro (x | x)
+    · exact congrArg Sum.inl (hp.1 x)
+    · exact congrArg Sum.inr (hq.1 x)
+  · rintro (x | x)
+    · exact fun h => hp.2 x (Sum.inl.inj h)
+    · exact fun h => hq.2 x (Sum.inr.inj h)
+
+/-- A dependent sum of pairing permutations is again a pairing permutation. -/
+theorem IsPairing.sigmaCongrRight {ι : Type*} {β : ι → Type*}
+    (F : ∀ i, Equiv.Perm (β i)) (hF : ∀ i, IsPairing (F i)) :
+    IsPairing (Equiv.sigmaCongrRight F) := by
+  constructor
+  · rintro ⟨i, x⟩
+    simp [(hF i).1 x]
+  · rintro ⟨i, x⟩
+    simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
+    exact (hF i).2 x
+
 instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
     Decidable (IsPairing partner) :=
   inferInstanceAs (Decidable (
