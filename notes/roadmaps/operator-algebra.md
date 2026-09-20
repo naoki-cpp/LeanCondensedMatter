@@ -82,12 +82,44 @@ Domain-aware unbounded infrastructure is no longer wholly absent. The repository
 maximal diagonal domains, dense-domain/closedness/adjoint/self-adjointness results for real diagonal
 weights, bounded completed CAR operators, and product-domain/free-Hamiltonian relations.
 
-These results do not amount to a general unbounded spectral theory. In particular, the following
-remain open or only partially covered:
+These results do not amount to a general unbounded spectral theory. On the pinned Mathlib
+v4.33.1 (`0df444a360eaa60ab8c11dca51a86af692955474`), `LinearPMap` provides the domain-aware
+adjoint, dense-domain consequences of self-adjointness, and closedness of self-adjoint operators.
+Neither the pinned Mathlib API nor the current project supplies a general unbounded self-adjoint
+functional calculus, projection-valued spectral measure calculus, semibounded quadratic-form
+package tied to `LinearPMap`, or a strongly continuous positive heat-semigroup construction.
+The project-local resolvent/Cayley/Stone line constructs strongly continuous unitary evolution from
+a self-adjoint `LinearPMap` without such a functional calculus; it does not define
+`exp (-β H)`.
+
+For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
+**heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
+`β > 0`, a bounded positive heat operator `Kβ` together with the explicit spectral trace-class
+and positive-trace hypotheses needed by the canonical `DensityOperator` normalization. The
+statement that `Kβ = exp (-β H)` for a semibounded unbounded self-adjoint Hamiltonian belongs to
+the upstream domain-aware analysis layer and must retain the Hamiltonian domain and lower-bound
+assumptions explicitly. A future heat-semigroup or unbounded functional-calculus implementation can
+supply that bridge without changing the density-state normalization API.
+
+The countable pure-point construction remains the spectral-data specialization, not a second
+general interface. Its compatibility theorem with the heat-operator boundary should require a
+Hilbert basis `b` and energies `E` for which the supplied heat operator satisfies
+
+```text
+Kβ (b i) = exp (-β E i) • b i
+```
+
+and then identify the normalized heat-operator density state with
+`purePointGibbsDensityOperator b E β` under the existing Boltzmann summability hypothesis. A
+general spectral-data-first boundary should wait for a genuine spectral-measure/functional-calculus
+API rather than extending the pure-point representation beyond what it proves.
+
+The following remain open or only partially covered:
 
 - a general non-self-adjoint trace-class/Schatten ideal and trace;
-- unbounded self-adjoint functional calculus sufficient for general interacting Hamiltonians;
-- compact-resolvent/heat-semigroup infrastructure for genuine infinite-dimensional Gibbs theory;
+- the Hamiltonian-to-heat bridge for semibounded unbounded self-adjoint operators;
+- unbounded self-adjoint functional calculus or equivalent heat-semigroup infrastructure;
+- compact-resolvent criteria implying trace-class heat operators;
 - completed bosonic ladder/number operator domains and analytic closure;
 - general interacting completed-space Dyson theory;
 - infinite-volume and thermodynamic limits.
