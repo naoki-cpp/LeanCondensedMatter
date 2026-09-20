@@ -91,6 +91,9 @@ package tied to `LinearPMap`, or a strongly continuous positive heat-semigroup c
 The project-local resolvent/Cayley/Stone line constructs strongly continuous unitary evolution from
 a self-adjoint `LinearPMap` without such a functional calculus; it does not define
 `exp (-β H)`.
+Its consumer-facing endpoint is routed through
+`Analysis/Operator/Unbounded/StoneEvolution.lean`; resolvent approximation, convergence, and
+domain-transport proofs remain implementation-stage machinery behind that route.
 
 For genuine infinite-dimensional Gibbs theory, the first general equilibrium boundary is therefore
 **heat-operator first** rather than Hamiltonian first. The quantum layer may accept, at a fixed
