@@ -2,13 +2,28 @@
   "scopedImportGraphs": [
     {
       "id": "genericTransportBoundary",
-      "sourceRoots": ["LeanCondensedMatter/Transport"],
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport"
+      ],
       "layers": [
-        {"id": "transport", "modulePrefixes": ["LeanCondensedMatter.Transport"]},
-        {"id": "secondQuantization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization"]}
+        {
+          "id": "transport",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport"
+          ]
+        },
+        {
+          "id": "secondQuantization",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "transport", "downstream": "secondQuantization"}
+        {
+          "upstream": "transport",
+          "downstream": "secondQuantization"
+        }
       ]
     },
     {
@@ -18,24 +33,88 @@
         "LeanCondensedMatter/Transport"
       ],
       "layers": [
-        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.FiniteTrace"]},
-        {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceKernel"]},
-        {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite"]},
-        {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
-        {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Moments"]},
-        {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Resolvent"]},
-        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born"]},
-        {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.SCBA"]}
+        {
+          "id": "finiteTrace",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Operator.FiniteTrace"
+          ]
+        },
+        {
+          "id": "stredaTraceKernel",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Streda.TraceKernel"
+          ]
+        },
+        {
+          "id": "finiteDisorder",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Disorder.Finite"
+          ]
+        },
+        {
+          "id": "resolvent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Resolvent.Basic"
+          ]
+        },
+        {
+          "id": "moments",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Disorder.Moments"
+          ]
+        },
+        {
+          "id": "disorderResolvent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Disorder.Resolvent"
+          ]
+        },
+        {
+          "id": "born",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Disorder.Born"
+          ]
+        },
+        {
+          "id": "scba",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.Disorder.SCBA"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
-        {"upstream": "finiteDisorder", "downstream": "moments"},
-        {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
-        {"upstream": "resolvent", "downstream": "disorderResolvent"},
-        {"upstream": "moments", "downstream": "born"},
-        {"upstream": "disorderResolvent", "downstream": "born"},
-        {"upstream": "moments", "downstream": "scba"},
-        {"upstream": "resolvent", "downstream": "scba"}
+        {
+          "upstream": "finiteTrace",
+          "downstream": "stredaTraceKernel"
+        },
+        {
+          "upstream": "finiteDisorder",
+          "downstream": "moments"
+        },
+        {
+          "upstream": "finiteDisorder",
+          "downstream": "disorderResolvent"
+        },
+        {
+          "upstream": "resolvent",
+          "downstream": "disorderResolvent"
+        },
+        {
+          "upstream": "moments",
+          "downstream": "born"
+        },
+        {
+          "upstream": "disorderResolvent",
+          "downstream": "born"
+        },
+        {
+          "upstream": "moments",
+          "downstream": "scba"
+        },
+        {
+          "upstream": "resolvent",
+          "downstream": "scba"
+        }
       ]
     },
     {
@@ -45,19 +124,112 @@
         "LeanCondensedMatter/Analysis/Calculus"
       ],
       "layers": [
-        {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.ZetaCommutator"]},
-        {"id": "linearCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.LinearCommutator"]},
-        {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
-        {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]},
-        {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.BalanceLaw"]},
-        {"id": "symmetricLocalization", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]}
+        {
+          "id": "zetaCommutator",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Operator.ZetaCommutator"
+          ]
+        },
+        {
+          "id": "linearCommutator",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Operator.LinearCommutator"
+          ]
+        },
+        {
+          "id": "symmetrizedProduct",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
+          ]
+        },
+        {
+          "id": "currentRepresentation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"
+          ]
+        },
+        {
+          "id": "intrinsicBalanceLaw",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw"
+          ]
+        },
+        {
+          "id": "balanceLaw",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.BalanceLaw"
+          ]
+        },
+        {
+          "id": "balanceLawAdapter",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"
+          ]
+        },
+        {
+          "id": "symmetricLocalizationAlgebra",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
+          ]
+        },
+        {
+          "id": "intrinsicSymmetricLocalization",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization"
+          ]
+        },
+        {
+          "id": "symmetricLocalization",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "zetaCommutator", "downstream": "linearCommutator"},
-        {"upstream": "linearCommutator", "downstream": "symmetrizedProduct"},
-        {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
-        {"upstream": "balanceLaw", "downstream": "symmetricLocalization"},
-        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalization"}
+        {
+          "upstream": "zetaCommutator",
+          "downstream": "linearCommutator"
+        },
+        {
+          "upstream": "linearCommutator",
+          "downstream": "symmetrizedProduct"
+        },
+        {
+          "upstream": "currentRepresentation",
+          "downstream": "intrinsicBalanceLaw"
+        },
+        {
+          "upstream": "currentRepresentation",
+          "downstream": "balanceLaw"
+        },
+        {
+          "upstream": "intrinsicBalanceLaw",
+          "downstream": "balanceLawAdapter"
+        },
+        {
+          "upstream": "balanceLaw",
+          "downstream": "balanceLawAdapter"
+        },
+        {
+          "upstream": "symmetrizedProduct",
+          "downstream": "symmetricLocalizationAlgebra"
+        },
+        {
+          "upstream": "intrinsicBalanceLaw",
+          "downstream": "intrinsicSymmetricLocalization"
+        },
+        {
+          "upstream": "symmetricLocalizationAlgebra",
+          "downstream": "intrinsicSymmetricLocalization"
+        },
+        {
+          "upstream": "balanceLaw",
+          "downstream": "symmetricLocalization"
+        },
+        {
+          "upstream": "symmetricLocalizationAlgebra",
+          "downstream": "symmetricLocalization"
+        }
       ]
     },
     {
@@ -68,72 +240,215 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Field"
       ],
       "layers": [
-        {"id": "analysisCurrent", "modulePrefixes": [
-          "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
-          "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-          "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
-          "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",
-          "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
-          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"
-        ]},
-        {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
-        {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}
+        {
+          "id": "analysisCurrent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Analysis.Operator.ZetaCommutator",
+            "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
+            "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
+            "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",
+            "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw",
+            "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+            "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter",
+            "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
+            "LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization",
+            "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"
+          ]
+        },
+        {
+          "id": "fermionicFieldBridge",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"
+          ]
+        },
+        {
+          "id": "quantumMechanics",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "analysisCurrent", "downstream": "fermionicFieldBridge"}
+        {
+          "upstream": "analysisCurrent",
+          "downstream": "fermionicFieldBridge"
+        }
       ]
     },
     {
       "id": "singleParticleCurrentLayers",
-      "sourceRoots": ["LeanCondensedMatter/QuantumMechanics/SingleParticle"],
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle"
+      ],
       "layers": [
-        {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
-        {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
-        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent"]},
-        {"id": "schwartzCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D"]},
-        {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
+        {
+          "id": "localizedTransport",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+          ]
+        },
+        {
+          "id": "symmetrizedVelocity",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+          ]
+        },
+        {
+          "id": "conventionalCurrent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent"
+          ]
+        },
+        {
+          "id": "schwartzCurrent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D"
+          ]
+        },
+        {
+          "id": "schwartzSpinCurrent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
-        {"upstream": "symmetrizedVelocity", "downstream": "conventionalCurrent"},
-        {"upstream": "symmetrizedVelocity", "downstream": "schwartzCurrent"},
-        {"upstream": "symmetrizedVelocity", "downstream": "schwartzSpinCurrent"}
+        {
+          "upstream": "localizedTransport",
+          "downstream": "symmetrizedVelocity"
+        },
+        {
+          "upstream": "symmetrizedVelocity",
+          "downstream": "conventionalCurrent"
+        },
+        {
+          "upstream": "symmetrizedVelocity",
+          "downstream": "schwartzCurrent"
+        },
+        {
+          "upstream": "symmetrizedVelocity",
+          "downstream": "schwartzSpinCurrent"
+        }
       ]
     },
     {
       "id": "fermionicTransportCurrentAdapters",
-      "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport"
+      ],
       "layers": [
-        {"id": "boundedOneBody", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
-        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse"]}
+        {
+          "id": "boundedOneBody",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+          ]
+        },
+        {
+          "id": "conventionalCurrent",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "boundedOneBody", "downstream": "conventionalCurrent"}
+        {
+          "upstream": "boundedOneBody",
+          "downstream": "conventionalCurrent"
+        }
       ]
     },
     {
       "id": "linearResponseLayers",
-      "sourceRoots": ["LeanCondensedMatter/QuantumTheory/LinearResponse"],
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse"
+      ],
       "layers": [
-        {"id": "expectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"]},
-        {"id": "freeDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"]},
-        {"id": "pureStateDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"]},
-        {"id": "densityExpectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"]},
-        {"id": "stationarity", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"]},
-        {"id": "pictureEquivalence", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"]},
-        {"id": "conservationLaws", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"]},
-        {"id": "equationsOfMotion", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"]}
+        {
+          "id": "expectation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"
+          ]
+        },
+        {
+          "id": "freeDynamics",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"
+          ]
+        },
+        {
+          "id": "pureStateDynamics",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"
+          ]
+        },
+        {
+          "id": "densityExpectation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"
+          ]
+        },
+        {
+          "id": "stationarity",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"
+          ]
+        },
+        {
+          "id": "pictureEquivalence",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
+          ]
+        },
+        {
+          "id": "conservationLaws",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"
+          ]
+        },
+        {
+          "id": "equationsOfMotion",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "expectation", "downstream": "densityExpectation"},
-        {"upstream": "expectation", "downstream": "stationarity"},
-        {"upstream": "freeDynamics", "downstream": "pureStateDynamics"},
-        {"upstream": "freeDynamics", "downstream": "stationarity"},
-        {"upstream": "pureStateDynamics", "downstream": "pictureEquivalence"},
-        {"upstream": "densityExpectation", "downstream": "conservationLaws"},
-        {"upstream": "stationarity", "downstream": "conservationLaws"},
-        {"upstream": "pictureEquivalence", "downstream": "conservationLaws"},
-        {"upstream": "pictureEquivalence", "downstream": "equationsOfMotion"}
+        {
+          "upstream": "expectation",
+          "downstream": "densityExpectation"
+        },
+        {
+          "upstream": "expectation",
+          "downstream": "stationarity"
+        },
+        {
+          "upstream": "freeDynamics",
+          "downstream": "pureStateDynamics"
+        },
+        {
+          "upstream": "freeDynamics",
+          "downstream": "stationarity"
+        },
+        {
+          "upstream": "pureStateDynamics",
+          "downstream": "pictureEquivalence"
+        },
+        {
+          "upstream": "densityExpectation",
+          "downstream": "conservationLaws"
+        },
+        {
+          "upstream": "stationarity",
+          "downstream": "conservationLaws"
+        },
+        {
+          "upstream": "pictureEquivalence",
+          "downstream": "conservationLaws"
+        },
+        {
+          "upstream": "pictureEquivalence",
+          "downstream": "equationsOfMotion"
+        }
       ]
     },
     {
@@ -143,13 +458,34 @@
         "LeanCondensedMatter/QuantumTheory/LinearResponse"
       ],
       "layers": [
-        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
-        {"id": "entropyDiagonal", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"]},
-        {"id": "purePointDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics"]}
+        {
+          "id": "diagonalFormula",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+          ]
+        },
+        {
+          "id": "entropyDiagonal",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
+          ]
+        },
+        {
+          "id": "purePointDynamics",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "diagonalFormula", "downstream": "entropyDiagonal"},
-        {"upstream": "diagonalFormula", "downstream": "purePointDynamics"}
+        {
+          "upstream": "diagonalFormula",
+          "downstream": "entropyDiagonal"
+        },
+        {
+          "upstream": "diagonalFormula",
+          "downstream": "purePointDynamics"
+        }
       ]
     },
     {
@@ -161,19 +497,64 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
       ],
       "layers": [
-        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
-        {"id": "purePoint", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"]},
-        {"id": "finiteHilbert", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"]},
-        {"id": "finiteExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"]},
-        {"id": "entropy", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy"]},
-        {"id": "freeEntropy", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"]}
+        {
+          "id": "diagonalFormula",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+          ]
+        },
+        {
+          "id": "purePoint",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
+          ]
+        },
+        {
+          "id": "finiteHilbert",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
+          ]
+        },
+        {
+          "id": "finiteExpectation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"
+          ]
+        },
+        {
+          "id": "entropy",
+          "modulePrefixes": [
+            "LeanCondensedMatter.QuantumTheory.Entropy"
+          ]
+        },
+        {
+          "id": "freeEntropy",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "diagonalFormula", "downstream": "purePoint"},
-        {"upstream": "purePoint", "downstream": "finiteExpectation"},
-        {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},
-        {"upstream": "entropy", "downstream": "freeEntropy"},
-        {"upstream": "purePoint", "downstream": "freeEntropy"}
+        {
+          "upstream": "diagonalFormula",
+          "downstream": "purePoint"
+        },
+        {
+          "upstream": "purePoint",
+          "downstream": "finiteExpectation"
+        },
+        {
+          "upstream": "finiteHilbert",
+          "downstream": "finiteExpectation"
+        },
+        {
+          "upstream": "entropy",
+          "downstream": "freeEntropy"
+        },
+        {
+          "upstream": "purePoint",
+          "downstream": "freeEntropy"
+        }
       ]
     },
     {
@@ -183,11 +564,24 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed"
       ],
       "layers": [
-        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]},
-        {"id": "completedThermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]}
+        {
+          "id": "completedSpace",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"
+          ]
+        },
+        {
+          "id": "completedThermal",
+          "modulePrefixes": [
+            "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"
+          ]
+        }
       ],
       "edges": [
-        {"upstream": "completedSpace", "downstream": "completedThermal"}
+        {
+          "upstream": "completedSpace",
+          "downstream": "completedThermal"
+        }
       ]
     }
   ],
