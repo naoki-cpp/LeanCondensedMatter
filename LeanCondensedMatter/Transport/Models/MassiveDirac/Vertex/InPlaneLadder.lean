@@ -258,16 +258,6 @@ theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
       (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
       inPlaneLadderBareXSource (inPlaneLadderSolvedVector rung) hfixed
 
-/-- The explicit solution remains equal after embedding into the in-plane Pauli-operator subspace. -/
-theorem inPlanePauliVertexCLM_solvedVector_eq_resummedLadderVertex
-    (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
-    inPlanePauliVertexCLM (inPlaneLadderSolvedVector rung) =
-      inPlanePauliVertexCLM
-        (resummedLadderVertex
-          (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
-          inPlaneLadderBareXSource) := by
-  rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet]
-
 /-- The explicit coefficient vector solves `Γ = eₓ + L Γ` as a corollary of the generic resummed
 ladder fixed-point theorem. -/
 theorem inPlaneLadderSolvedVector_fixedPoint
