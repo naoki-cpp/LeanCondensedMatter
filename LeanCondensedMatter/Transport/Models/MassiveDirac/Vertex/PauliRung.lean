@@ -275,7 +275,6 @@ theorem integral_polarPauliOperator_inPlane_eq
   rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
   simp [inPlanePauliVertexOperator]
 
-
 /-- The full-angle Pauli rung intertwines the physical operator embedding with the bundled
 two-component ladder endomorphism. In particular, the in-plane Pauli subspace is preserved. -/
 theorem integral_polarPauliOperator_inPlane_eq_clm
