@@ -47,23 +47,6 @@ noncomputable def TwoPointDiagram.externalInteractionPart
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Finset (Fin N) :=
   TwoPointDiagram.interactionPart (d.externalComponent 0)
 
-/-- A component part meets the external sector exactly when it is the canonical common external
-component part. -/
-private theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) :
-    d.ComponentMeetsExternal B ↔ B = d.externalComponentPart := by
-  constructor
-  · intro hB
-    obtain ⟨e, hEq⟩ := (d.componentMeetsExternal_iff_eq_externalComponent B).1 hB
-    apply Subtype.ext
-    fin_cases e
-    · exact hEq
-    · exact hEq.trans d.externalComponent_zero_eq_one.symm
-  · intro hB
-    rw [hB]
-    exact ⟨0, d.externalVertex_mem_externalComponentPart 0⟩
-
 /-- A component part is vacuum exactly when it differs from the canonical external part. -/
 @[simp]
 theorem TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart
@@ -71,35 +54,18 @@ theorem TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart
     (B : d.componentPartition.parts) :
     d.ComponentIsVacuum B ↔ B ≠ d.externalComponentPart := by
   unfold TwoPointDiagram.ComponentIsVacuum
-  rw [d.componentMeetsExternal_iff_eq_externalComponentPart B]
-
-/-- The canonical external component is not a vacuum component. -/
-private theorem TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.externalComponentPart ∉ d.vacuumComponentParts := by
-  rw [d.mem_vacuumComponentParts,
-    d.componentIsVacuum_iff_ne_externalComponentPart]
-  simp
-
-/-- Every component part is either the common external part or a vacuum part. -/
-private theorem TwoPointDiagram.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) :
-    B = d.externalComponentPart ∨ B ∈ d.vacuumComponentParts := by
-  by_cases hB : B = d.externalComponentPart
-  · exact Or.inl hB
-  · exact Or.inr ((d.mem_vacuumComponentParts B).2
-      ((d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB))
-
-/-- The full finite type of component parts is the disjoint insertion of the common external part
-into the finite set of vacuum parts. -/
-private theorem TwoPointDiagram.univ_componentParts_eq_insert_external_vacuum
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    (Finset.univ : Finset d.componentPartition.parts) =
-      insert d.externalComponentPart d.vacuumComponentParts := by
-  ext B
-  simp only [Finset.mem_univ, true_iff, Finset.mem_insert]
-  exact d.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts B
+  constructor
+  · intro hVac hEq
+    apply hVac
+    rw [hEq]
+    exact ⟨0, d.externalVertex_mem_externalComponentPart 0⟩
+  · intro hNe hMeet
+    obtain ⟨e, hEq⟩ := (d.componentMeetsExternal_iff_eq_externalComponent B).1 hMeet
+    apply hNe
+    apply Subtype.ext
+    fin_cases e
+    · exact hEq
+    · exact hEq.trans d.externalComponent_zero_eq_one.symm
 
 /-- A commutative product over all component parts splits into the external part and all vacuum
 parts. -/
@@ -110,9 +76,22 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
     (∏ B : d.componentPartition.parts, f B) =
       f d.externalComponentPart * d.vacuumComponentParts.prod f := by
   classical
+  have hparts :
+      (Finset.univ : Finset d.componentPartition.parts) =
+        insert d.externalComponentPart d.vacuumComponentParts := by
+    ext B
+    simp only [Finset.mem_univ, true_iff, Finset.mem_insert]
+    by_cases hB : B = d.externalComponentPart
+    · exact Or.inl hB
+    · exact Or.inr ((d.mem_vacuumComponentParts B).2
+        ((d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB))
+  have hExternal :
+      d.externalComponentPart ∉ d.vacuumComponentParts := by
+    rw [d.mem_vacuumComponentParts,
+      d.componentIsVacuum_iff_ne_externalComponentPart]
+    simp
   change (Finset.univ : Finset d.componentPartition.parts).prod f = _
-  rw [d.univ_componentParts_eq_insert_external_vacuum,
-    Finset.prod_insert d.externalComponentPart_not_mem_vacuumComponentParts]
+  rw [hparts, Finset.prod_insert hExternal]
 
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
 theorem TwoPointDiagram.interactionPart_component_unique
