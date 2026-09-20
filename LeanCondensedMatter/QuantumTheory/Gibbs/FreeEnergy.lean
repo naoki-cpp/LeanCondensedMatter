@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 
 /-!
@@ -86,25 +87,12 @@ open scoped ComplexOrder
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- Comparison test packaged with `tsum` monotonicity. -/
-theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
+private theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
     (hf_nonneg : ∀ i, 0 ≤ f i) (hfg : ∀ i, f i ≤ g i) (hg : Summable g) :
     Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
   have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
   ⟨hf, hf.tsum_mono hg hfg⟩
 
-
-/-- If two summable real families are pointwise ordered and have the same total sum, then they are
-equal term by term. -/
-theorem pointwise_eq_of_tsum_eq_of_le {ι : Type*} {f g : ι → ℝ}
-    (hfg : ∀ i, f i ≤ g i) (hf : Summable f) (hg : Summable g)
-    (hsum : ∑' i, f i = ∑' i, g i) :
-    ∀ i, f i = g i := by
-  intro i
-  apply le_antisymm (hfg i)
-  by_contra hnot
-  have hlt : f i < g i := lt_of_not_ge hnot
-  have hsumlt := Summable.tsum_lt_tsum hfg hlt hf hg
-  exact (ne_of_lt hsumlt) hsum
 
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
