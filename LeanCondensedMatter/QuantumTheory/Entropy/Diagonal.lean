@@ -40,7 +40,6 @@ theorem DensityOperator.entropyOp_hasSummableRealEigenvalues_of_diagonal
     rintro _ ⟨i, rfl⟩
     rw [entropyOp_apply_eigenvector ρ (by simpa using happly i)]
     rw [HilbertBasis.diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
-    rfl
   rw [hop]
   exact (HilbertBasis.diagonalOpSpectralTraceClass b a ha ha_nonneg).summable
 
