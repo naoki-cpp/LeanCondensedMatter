@@ -158,6 +158,64 @@ noncomputable def pointwiseEigenbasisData
     (pointwiseEigenbasisData v m px py hE).hamiltonianDerivative direction =
       velocityOperator direction v := rfl
 
+
+private theorem bandProjectorOperator_eq_spectralExpression
+    (band : Band) (v m px py : ℝ) :
+    bandProjectorOperator band v m px py =
+      (1 / 2 : ℂ) •
+        ((1 : DiracHilbert →L[ℂ] DiracHilbert) +
+          (((bandSign band / energy v m px py : ℝ) : ℂ)) •
+            hamiltonianOperator v m px py) := by
+  unfold bandProjectorOperator bandProjector hamiltonianOperator matrixOperator
+  rw [map_smul, map_add, map_one, map_smul]
+
+private theorem bandProjectorOperator_apply_pointwiseEigenbasis
+    (target source : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    bandProjectorOperator target v m px py
+        ((pointwiseEigenbasisData v m px py hE).eigenbasis source) =
+      if source = target then
+        (pointwiseEigenbasisData v m px py hE).eigenbasis source
+      else 0 := by
+  rw [bandProjectorOperator_eq_spectralExpression]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.one_apply]
+  have heigen :=
+    (pointwiseEigenbasisData v m px py hE).hamiltonian_eigenvector source
+  change
+    hamiltonianOperator v m px py
+        ((pointwiseEigenbasisData v m px py hE).eigenbasis source) =
+      ((bandEnergy source v m px py : ℝ) : ℂ) •
+        (pointwiseEigenbasisData v m px py hE).eigenbasis source at heigen
+  rw [heigen]
+  cases target <;> cases source <;>
+    simp [bandEnergy, hE, div_eq_mul_inv] <;> field_simp [hE]
+
+/-- Away from the Dirac degeneracy, the gauge-independent band projector is the rank-one
+projector onto the corresponding vector of the generic pointwise Berry eigenbasis. -/
+theorem bandProjectorOperator_eq_rankOne_pointwiseEigenbasis
+    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    bandProjectorOperator band v m px py =
+      InnerProductSpace.rankOne ℂ
+        ((pointwiseEigenbasisData v m px py hE).eigenbasis band)
+        ((pointwiseEigenbasisData v m px py hE).eigenbasis band) := by
+  apply ContinuousLinearMap.ext
+  intro x
+  let data := pointwiseEigenbasisData v m px py hE
+  have hrepr := data.eigenbasis.sum_repr' x
+  conv_lhs => rw [← hrepr]
+  conv_rhs => rw [← hrepr]
+  simp only [map_sum, map_smul, InnerProductSpace.rankOne_apply]
+  apply Finset.sum_congr rfl
+  intro source _
+  by_cases hsource : source = band
+  · subst source
+    rw [bandProjectorOperator_apply_pointwiseEigenbasis]
+    simp [data]
+  · rw [bandProjectorOperator_apply_pointwiseEigenbasis]
+    simp only [if_neg hsource, smul_zero]
+    rw [data.eigenbasis.inner_eq_zero hsource]
+    simp
+
 end
 
 end QuantumTheory.Transport.Models.MassiveDirac
