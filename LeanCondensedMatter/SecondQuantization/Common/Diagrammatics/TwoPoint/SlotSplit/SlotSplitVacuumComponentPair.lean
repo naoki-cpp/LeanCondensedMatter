@@ -66,7 +66,7 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
 
 /-- Embed one restricted quartic component's normalized pairs into the corresponding ambient mixed
 vacuum-component pair fiber. -/
-noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEmbedding
+private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEmbedding
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -92,7 +92,7 @@ noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEmbedding
     exact congrArg Subtype.val hpq
 
 /-- Source and target of the componentwise vacuum-pair embedding have equal finite cardinality. -/
-theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
+private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -123,7 +123,7 @@ theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
 
 /-- One restricted quartic vacuum component's normalized pairs are equivalent to the corresponding
 ambient mixed component-pair fiber. -/
-noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
+private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -141,7 +141,7 @@ noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
           T ext vac C τ τ' σ⟩)
 
 @[simp]
-theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
+private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
@@ -158,7 +158,7 @@ theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
   rfl
 
 /-- The componentwise pair equivalence preserves and reflects crossing geometry. -/
-theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
+private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_crosses_iff
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
