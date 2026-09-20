@@ -285,11 +285,23 @@ theorem inPlaneLadderSolvedVector_fixedPoint
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     inPlaneLadderSolvedVector rung =
       inPlaneLadderBareXSource + inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
-  rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet]
-  simpa only [inPlaneLadderCLM_apply] using
-    resummedLadderVertex_fixedPoint
+  let resummed :=
+    resummedLadderVertex
       (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
       inPlaneLadderBareXSource
+  have heq : inPlaneLadderSolvedVector rung = resummed := by
+    simpa [resummed] using inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet
+  calc
+    inPlaneLadderSolvedVector rung = resummed := heq
+    _ = inPlaneLadderBareXSource + inPlaneLadderCLM rung resummed := by
+      simpa [resummed] using
+        resummedLadderVertex_fixedPoint
+          (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+          inPlaneLadderBareXSource
+    _ = inPlaneLadderBareXSource +
+        inPlaneLadderAction rung (inPlaneLadderSolvedVector rung) := by
+      rw [← heq]
+      simp only [inPlaneLadderCLM_apply]
 
 /-- The in-plane fixed point is unique under the same nonzero-determinant hypothesis, by the generic
 ladder uniqueness theorem. -/
