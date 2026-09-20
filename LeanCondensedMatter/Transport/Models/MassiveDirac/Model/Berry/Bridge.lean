@@ -76,7 +76,7 @@ def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
     interbandEnergyGap band v m px py ^ 2
 
 /-- The generic band-energy difference to the opposite band is the model interband gap. -/
-@[simp] theorem pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap
+theorem pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap
     (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (pointwiseEigenbasisData v m px py hE).energy band -
         (pointwiseEigenbasisData v m px py hE).energy (oppositeBand band) =
