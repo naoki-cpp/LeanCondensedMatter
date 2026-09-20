@@ -252,6 +252,34 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
 
+
+/-- Under ladder regularity, the finite-broadening Born-Dyson solved vector is the generic
+algebraically resummed vertex on the in-plane coefficient space. This is an inverse-based
+resummation statement only; no geometric-series convergence is asserted. -/
+theorem finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hregular : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) :
+    ∃ hinvertible :
+        IsUnit
+          (1 - inPlaneLadderCLM
+            (finiteCutoffContinuumBornDysonCurrentRungVector
+              v m probeEnergy broadening disorderStrength hbar pMax)),
+      finiteCutoffContinuumBornDysonLadderSolvedVector
+          v m probeEnergy broadening disorderStrength hbar pMax =
+        resummedLadderVertex
+          (inPlaneLadderCLM
+            (finiteCutoffContinuumBornDysonCurrentRungVector
+              v m probeEnergy broadening disorderStrength hbar pMax))
+          hinvertible inPlaneLadderBareXSource := by
+  let rung := finiteCutoffContinuumBornDysonCurrentRungVector
+    v m probeEnergy broadening disorderStrength hbar pMax
+  have hdet : inPlaneLadderDeterminant rung ≠ 0 := by
+    simpa [rung, finiteCutoffContinuumBornDysonLadderRegular] using hregular
+  refine ⟨inPlaneLadderShift_isUnit rung hdet, ?_⟩
+  simpa [finiteCutoffContinuumBornDysonLadderSolvedVector, rung] using
+    inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet
+
 @[simp]
 theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
     (v m probeEnergy broadening hbar pMax : ℝ) :
