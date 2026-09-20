@@ -104,7 +104,7 @@ noncomputable def inPlanePauliVertexCLM :
       map_smul' := by
         intro scalar coefficients
         simp [inPlanePauliVertexOperator, smul_smul]
-        module }
+        }
   exact ⟨linearMap, linearMap.continuous_of_finiteDimensional⟩
 
 @[simp]
@@ -126,7 +126,7 @@ theorem inPlanePauliVertexCLM_injective :
     apply
       (Matrix.toEuclideanCLM :
         Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [inPlanePauliVertexOperator, matrixOperator] using hoperator
+    simpa only [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hoperator
   let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
     fun coefficients axis =>
       match axis with
