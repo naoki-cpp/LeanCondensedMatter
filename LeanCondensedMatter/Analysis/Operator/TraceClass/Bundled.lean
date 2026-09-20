@@ -74,6 +74,29 @@ theorem trace_nonneg (h : SpectralTraceClass T)
   rw [h.trace_eq_spectralTrace]
   exact ContinuousLinearMap.trace_nonneg hpos
 
+/-- A nonzero positive spectral-trace-class operator has strictly positive trace. -/
+theorem trace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
+    0 < h.trace := by
+  classical
+  have hnonempty : Nonempty (EigenvectorIndex T) := by
+    by_contra hidx
+    haveI : IsEmpty (EigenvectorIndex T) := ⟨fun a => hidx ⟨a⟩⟩
+    apply hne
+    ext x
+    have hsum := hasSum_eigenvectorFamily h.compact h.symmetric x
+    simpa using hsum.tsum_eq.symm
+  let a : EigenvectorIndex T := Classical.choice hnonempty
+  have ha_nonneg : 0 ≤ a.1.1 :=
+    eigenvalue_nonneg_of_isPositive hpos.toLinearMap a
+  have ha_pos : 0 < a.1.1 :=
+    lt_of_le_of_ne ha_nonneg (Ne.symm a.1.2)
+  have hsum : Summable (fun b : EigenvectorIndex T => b.1.1) :=
+    summable_eigenvectorIndex h.summable
+  have hle : a.1.1 ≤ spectralTrace T :=
+    hsum.le_tsum a (fun b _ => eigenvalue_nonneg_of_isPositive hpos.toLinearMap b)
+  rw [← h.trace_eq_spectralTrace] at hle
+  exact lt_of_lt_of_le ha_pos hle
+
 /-- Compute the bundled spectral trace against any Hilbert basis using lossless diagonal
 expectation values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)

@@ -59,8 +59,9 @@ For a bounded Hamiltonian `Hop`, the project defines
 gibbsOp Hop β = exp (-β Hop)
 ```
 
-through continuous functional calculus. A normalized `gibbsState` is constructed from explicit
-compactness, spectral-summability, and nonzero-trace hypotheses.
+through continuous functional calculus. On a nontrivial Hilbert space, a normalized `gibbsState`
+requires compactness of this Gibbs operator; spectral summability and positive nonzero trace are
+derived from the existing operator theory.
 
 For Hamiltonians represented instead by pure-point spectral data, `QuantumTheory.Gibbs.PurePoint`
 constructs the density state directly from a Hilbert basis and real energies. Its canonical API is
@@ -78,8 +79,8 @@ Gibbs-state implementation.
 
 The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
 bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. For `β > 0`, equality
-in the Helmholtz bound holds exactly for the canonical Gibbs state under the same compactness,
-summability, and nonzero-trace hypotheses.
+in the Helmholtz bound holds exactly for the canonical Gibbs state under the same compactness and
+nontrivial-space assumptions.
 
 A bounded Hamiltonian cannot model a genuinely infinite-dimensional compact Gibbs operator: the
 operator exponential is invertible, so compactness forces finite dimensionality. Infinite-volume or
