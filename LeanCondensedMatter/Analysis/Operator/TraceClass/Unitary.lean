@@ -17,19 +17,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 namespace ContinuousLinearMap
 
-/-- The linear equivalence implemented by an operator whose adjoint is a two-sided inverse. -/
-noncomputable def unitaryLinearEquiv (U : H →L[ℂ] H)
-    (hleft : star U * U = 1) (hright : U * star U = 1) : H ≃ₗ[ℂ] H where
-  toFun := U
-  invFun := fun x => (star U) x
-  left_inv := fun x => by
-    have h := congrArg (fun A : H →L[ℂ] H => A x) hleft
-    simpa [mul_apply_eq_comp] using h
-  right_inv := fun x => by
-    have h := congrArg (fun A : H →L[ℂ] H => A x) hright
-    simpa [mul_apply_eq_comp] using h
-  map_add' := U.map_add
-  map_smul' := U.map_smul
+/-- Package the two-sided adjoint inverse laws as Mathlib's unitary subtype. -/
+def unitaryOfAdjointInverse (U : H →L[ℂ] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1) :
+    unitary (H →L[ℂ] H) :=
+  ⟨U, Unitary.mem_iff.mpr ⟨hleft, hright⟩⟩
 
 /-- Conjugation of an operator by a unitary representative. -/
 noncomputable def unitaryConjugate (U T : H →L[ℂ] H) : H →L[ℂ] H :=
@@ -51,7 +43,8 @@ eigenvalue. -/
 theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ) :
     Module.End.eigenspace ((unitaryConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ =
-      Submodule.map (unitaryLinearEquiv U hleft hright).toLinearMap
+      Submodule.map
+        (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.toLinearMap
         (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
   ext x
   constructor
@@ -86,7 +79,8 @@ theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
         (Module.End.eigenspace ((unitaryConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ) =
       Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
   rw [eigenspace_unitaryConjugate U T hleft hright μ]
-  exact (unitaryLinearEquiv U hleft hright).finrank_map_eq _
+  exact (Unitary.linearIsometryEquiv
+    (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.finrank_map_eq _
 
 /-- Absolute summability of real eigenvalues with multiplicity is invariant under unitary
 conjugation. -/
