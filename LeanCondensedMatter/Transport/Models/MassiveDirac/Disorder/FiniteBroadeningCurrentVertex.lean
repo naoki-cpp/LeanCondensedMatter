@@ -260,25 +260,22 @@ theorem finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hregular : finiteCutoffContinuumBornDysonLadderRegular
       v m probeEnergy broadening disorderStrength hbar pMax) :
-    ∃ hinvertible :
-        IsUnit
-          (1 - inPlaneLadderCLM
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax)),
-      finiteCutoffContinuumBornDysonLadderSolvedVector
-          v m probeEnergy broadening disorderStrength hbar pMax =
-        resummedLadderVertex
-          (inPlaneLadderCLM
-            (finiteCutoffContinuumBornDysonCurrentRungVector
-              v m probeEnergy broadening disorderStrength hbar pMax))
-          hinvertible inPlaneLadderBareXSource := by
-  let rung := finiteCutoffContinuumBornDysonCurrentRungVector
-    v m probeEnergy broadening disorderStrength hbar pMax
-  have hdet : inPlaneLadderDeterminant rung ≠ 0 := by
-    simpa [rung, finiteCutoffContinuumBornDysonLadderRegular] using hregular
-  refine ⟨inPlaneLadderShift_isUnit rung hdet, ?_⟩
-  simpa [finiteCutoffContinuumBornDysonLadderSolvedVector, rung] using
-    inPlaneLadderSolvedVector_eq_resummedLadderVertex rung hdet
+    finiteCutoffContinuumBornDysonLadderSolvedVector
+        v m probeEnergy broadening disorderStrength hbar pMax =
+      resummedLadderVertex
+        (inPlaneLadderCLM
+          (finiteCutoffContinuumBornDysonCurrentRungVector
+            v m probeEnergy broadening disorderStrength hbar pMax))
+        (inPlaneLadderShift_isUnit
+          (finiteCutoffContinuumBornDysonCurrentRungVector
+            v m probeEnergy broadening disorderStrength hbar pMax)
+          hregular)
+        inPlaneLadderBareXSource := by
+  simpa [finiteCutoffContinuumBornDysonLadderSolvedVector] using
+    inPlaneLadderSolvedVector_eq_resummedLadderVertex
+      (finiteCutoffContinuumBornDysonCurrentRungVector
+        v m probeEnergy broadening disorderStrength hbar pMax)
+      hregular
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonLadderSolvedVector_zero_disorder
