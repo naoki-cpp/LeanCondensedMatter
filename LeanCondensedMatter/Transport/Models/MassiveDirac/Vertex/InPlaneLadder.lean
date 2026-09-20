@@ -155,17 +155,20 @@ endomorphism to be a unit on the represented in-plane coefficient space. -/
 theorem inPlaneLadderShift_isUnit
     (rung : InPlaneCoefficientVector) (hdet : inPlaneLadderDeterminant rung ≠ 0) :
     IsUnit (1 - inPlaneLadderCLM rung) := by
-  have hinjective : Function.Injective (1 - inPlaneLadderCLM rung) := by
+  let shift : InPlaneCoefficientVector →L[ℂ] InPlaneCoefficientVector :=
+    1 - inPlaneLadderCLM rung
+  have hinjective : Function.Injective shift := by
     have hmatrix : Function.Injective (inPlaneShiftMatrix rung).mulVec :=
       Matrix.mulVec_injective_of_det_ne_zero (by simpa using hdet)
     intro left right h
     apply hmatrix
-    simpa only [inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
+    simpa only [shift, inPlaneShiftMatrix_mulVec, sub_apply, one_apply_eq_self,
       inPlaneLadderCLM_apply] using h
-  have hsurjective : Function.Surjective (1 - inPlaneLadderCLM rung) :=
-    LinearMap.surjective_of_injective
-      (f := (1 - inPlaneLadderCLM rung).toLinearMap) hinjective
-  exact ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinjective, hsurjective⟩
+  have hsurjective : Function.Surjective shift :=
+    LinearMap.surjective_of_injective (f := shift.toLinearMap) hinjective
+  have hunit : IsUnit shift :=
+    ContinuousLinearMap.isUnit_iff_bijective.mpr ⟨hinjective, hsurjective⟩
+  simpa [shift] using hunit
 
 /-- Convergence of rung vectors propagates to the shifted-ladder determinant. -/
 theorem tendsto_inPlaneLadderDeterminant
@@ -253,18 +256,22 @@ theorem inPlaneLadderSolvedVector_eq_resummedLadderVertex
   apply
     (ContinuousLinearMap.isUnit_iff_bijective.mp
       (inPlaneLadderShift_isUnit rung hdet)).1
-  have hleft :
-      (1 - inPlaneLadderCLM rung) (inPlaneLadderSolvedVector rung) =
+  have hright :
+      resummedLadderVertex
+          (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+          inPlaneLadderBareXSource -
+        inPlaneLadderAction rung
+          (resummedLadderVertex
+            (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+            inPlaneLadderBareXSource) =
         inPlaneLadderBareXSource := by
-    simpa only [sub_apply, one_apply_eq_self, inPlaneLadderCLM_apply] using
-      inPlaneLadderSolvedVector_shift rung hdet
-  rw [hleft]
-  symm
-  apply (sub_eq_iff_eq_add).2
-  simpa only [inPlaneLadderCLM_apply] using
-    resummedLadderVertex_fixedPoint
-      (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
-      inPlaneLadderBareXSource
+    apply (sub_eq_iff_eq_add).2
+    simpa only [inPlaneLadderCLM_apply] using
+      resummedLadderVertex_fixedPoint
+        (inPlaneLadderCLM rung) (inPlaneLadderShift_isUnit rung hdet)
+        inPlaneLadderBareXSource
+  simpa only [sub_apply, one_apply_eq_self, inPlaneLadderCLM_apply] using
+    (inPlaneLadderSolvedVector_shift rung hdet).trans hright.symm
 
 
 /-- At the operator boundary, the explicit massive-Dirac solution is the embedded generic
