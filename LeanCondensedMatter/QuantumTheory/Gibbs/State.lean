@@ -1,6 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Normalize
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Instances
@@ -28,6 +27,15 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 noncomputable def gibbsOp (Hop : Observable H) (β : ℝ) : H →L[ℂ] H :=
   cfc (fun x : ℝ => Real.exp (-β * x)) Hop.1
 
+private noncomputable def gibbsOpUnit (Hop : Observable H) (β : ℝ) : (H →L[ℂ] H)ˣ :=
+  cfcUnits (fun x : ℝ => Real.exp (-β * x)) Hop.1
+    (fun x _ => (Real.exp_pos _).ne') (hf := by fun_prop) (ha := Hop.2)
+
+@[simp]
+private theorem coe_gibbsOpUnit (Hop : Observable H) (β : ℝ) :
+    (gibbsOpUnit Hop β : H →L[ℂ] H) = gibbsOp Hop β := by
+  rfl
+
 /-- The Gibbs operator acts on an energy eigenvector by the Boltzmann factor. -/
 theorem gibbsOp_apply_eigenvector (Hop : Observable H) (β : ℝ) {v : H} {E : ℝ}
     (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
@@ -39,19 +47,14 @@ theorem gibbsOp_apply_eigenvector (Hop : Observable H) (β : ℝ) {v : H} {E : �
 /-- For bounded Hamiltonians, compactness of the Gibbs operator forces finite dimension. -/
 theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) : FiniteDimensional ℂ H := by
-  let u : (H →L[ℂ] H)ˣ :=
-    cfcUnits (fun x : ℝ => Real.exp (-β * x)) Hop.1
-      (fun x _ => (Real.exp_pos _).ne') (hf := by fun_prop) (ha := Hop.2)
-  have hu : (u : H →L[ℂ] H) = gibbsOp Hop β := by
-    rfl
+  let u := gibbsOpUnit Hop β
   have hcompact_u : IsCompactOperator (u : H →L[ℂ] H) := by
-    rw [hu]
-    exact hcompact
-  have hcompact_inv_mul :
-      IsCompactOperator ((↑u⁻¹ : H →L[ℂ] H) * (u : H →L[ℂ] H)) := by
-    change IsCompactOperator (⇑(↑u⁻¹ : H →L[ℂ] H) ∘ ⇑(u : H →L[ℂ] H))
-    exact hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
+    simpa [u] using hcompact
   have hcompact_one : IsCompactOperator (1 : H →L[ℂ] H) := by
+    have hcompact_inv_mul :
+        IsCompactOperator ((↑u⁻¹ : H →L[ℂ] H) * (u : H →L[ℂ] H)) := by
+      change IsCompactOperator (⇑(↑u⁻¹ : H →L[ℂ] H) ∘ ⇑(u : H →L[ℂ] H))
+      exact hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
     exact u.inv_val ▸ hcompact_inv_mul
   have hone : (⇑(1 : H →L[ℂ] H)) = (id : H → H) := by
     rfl
@@ -64,8 +67,14 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
   rw [gibbsOp, ← nonneg_iff_isPositive]
   exact cfc_nonneg (fun x _ => (Real.exp_pos _).le)
 
+/-- On a nontrivial Hilbert space, the Gibbs operator is nonzero because it is invertible. -/
+theorem gibbsOp_ne_zero [Nontrivial H] (Hop : Observable H) (β : ℝ) :
+    gibbsOp Hop β ≠ 0 := by
+  rw [← coe_gibbsOpUnit]
+  exact Units.ne_zero _
+
 /-- A compact Gibbs operator has summable nonzero real eigenvalues automatically. -/
-theorem gibbsOp_hasSummableRealEigenvalues_of_isCompact (Hop : Observable H) (β : ℝ)
+private theorem gibbsOp_hasSummableRealEigenvalues_of_isCompact (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) :
     HasSummableRealEigenvalues (gibbsOp Hop β) := by
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
@@ -74,39 +83,26 @@ theorem gibbsOp_hasSummableRealEigenvalues_of_isCompact (Hop : Observable H) (β
       (gibbsOp_isPositive Hop β).isSelfAdjoint.isSymmetric).linearIndependent.finite
   exact Summable.of_finite
 
+/-- A compact Gibbs operator carries the canonical positive spectral-trace-class data. -/
+theorem gibbsOp_spectralTraceClass (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+    SpectralTraceClass (gibbsOp Hop β) :=
+  SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β)
+    (gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact)
+
 /-- The normalized Gibbs density operator. -/
-noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : DensityOperator H := by
-  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
-    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
-  let Z : ℝ := spectralTrace (gibbsOp Hop β)
-  let r : ℝ := Z⁻¹
-  have hrne : r ≠ 0 := by
-    dsimp [r, Z]
-    exact inv_ne_zero hZ
-  have hpos : (r • gibbsOp Hop β).IsPositive := by
-    rw [show r • gibbsOp Hop β = (r : ℂ) • gibbsOp Hop β by
-      ext x
-      simp]
-    refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
-    have hZnonneg : 0 ≤ Z :=
-      trace_nonneg (gibbsOp_isPositive Hop β).toLinearMap
-    exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
-  have hsummableScaled :
-      HasSummableRealEigenvalues (r • gibbsOp Hop β) :=
-    hasSummableRealEigenvalues_smul hrne hsummable
-  let htraceClass : SpectralTraceClass (r • gibbsOp Hop β) :=
-    SpectralTraceClass.ofPositive (hcompact.smul _) hpos hsummableScaled
-  exact {
-    op := r • gibbsOp Hop β
-    pos := hpos
-    spectralTraceClass := htraceClass
-    spectralTrace_eq_one := by
-      rw [htraceClass.trace_eq_spectralTrace]
-      rw [spectralTrace_smul hrne hsummable hsummableScaled]
-      dsimp [r, Z]
-      exact inv_mul_cancel₀ hZ
-  }
+noncomputable def gibbsState [Nontrivial H] (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β)) : DensityOperator H :=
+  DensityOperator.normalizePositive
+    (gibbsOp Hop β) (gibbsOp_isPositive Hop β)
+    (gibbsOp_spectralTraceClass Hop β hcompact) (gibbsOp_ne_zero Hop β)
+
+@[simp]
+theorem gibbsState_op [Nontrivial H] (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
+    (gibbsState Hop β hcompact).op =
+      (spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β := by
+  rw [gibbsState, DensityOperator.normalizePositive_op]
+  rw [(gibbsOp_spectralTraceClass Hop β hcompact).trace_eq_spectralTrace]
 
 end QuantumTheory

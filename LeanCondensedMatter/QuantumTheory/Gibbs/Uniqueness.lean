@@ -61,10 +61,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 components needed for uniqueness: the Gibbs diagonal sum saturates the trace, every density
 eigenvalue equals the normalized Gibbs diagonal weight, and every Peierls–Bogoliubov bound is
 saturated. -/
-theorem helmholtzFreeEnergy_eq_components
+theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0)
     (hfree : energyExpValue ρ Hop -
         (1 / β) * (vonNeumannEntropy ρ).toReal =
       -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β))) :
@@ -85,8 +84,6 @@ theorem helmholtzFreeEnergy_eq_components
           diagonalExpectationValue (gibbsOp Hop β)
             (gibbsOp_isPositive Hop β).isSelfAdjoint
             (eigenvectorFamily ρ.spectralTraceClass.compact a)) := by
-  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
-    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
   set p : EigenvectorIndex ρ.op → ℝ := fun a => a.1.1 with hp_def
   set h : EigenvectorIndex ρ.op → ℝ :=
@@ -95,12 +92,12 @@ theorem helmholtzFreeEnergy_eq_components
     diagonalExpectationValue (gibbsOp Hop β)
       (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
   set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
-  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hZ
+  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hcompact
   have hd_orth : Orthonormal ℂ d :=
     orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
   let hGibbs : SpectralTraceClass (gibbsOp Hop β) :=
-    SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β) hsummable
+    gibbsOp_spectralTraceClass Hop β hcompact
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a := fun a => by
     simpa [hh_def, hq_def] using
       exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)

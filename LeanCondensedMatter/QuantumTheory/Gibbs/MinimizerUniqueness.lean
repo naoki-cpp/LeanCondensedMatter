@@ -16,17 +16,16 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 /-- For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the
 canonical Gibbs state. -/
-theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
+theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState [Nontrivial H]
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0)
-    (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
+    (hcompact : IsCompactOperator (gibbsOp Hop β)) :
     energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal =
         -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) ↔
-      ρ = gibbsState Hop β hcompact hZ := by
+      ρ = gibbsState Hop β hcompact := by
   constructor
   · intro hfree
     letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
-    let σ := gibbsState Hop β hcompact hZ
+    let σ := gibbsState Hop β hcompact
     set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
     set h : EigenvectorIndex ρ.op → ℝ :=
       fun a => diagonalExpectationValue Hop.1 Hop.2 (d a) with hh_def
@@ -35,7 +34,7 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
         (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
     set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
     obtain ⟨hqsum, hpq, hpeierls⟩ :=
-      helmholtzFreeEnergy_eq_components ρ Hop β hβ hcompact hZ hfree
+      helmholtzFreeEnergy_eq_components ρ Hop β hβ hcompact hfree
     have hd_orth : Orthonormal ℂ d :=
       orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
     have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
@@ -66,7 +65,7 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
     have honFamily : ∀ a, ρ.op (d a) = σ.op (d a) := by
       intro a
       have hρ := apply_eigenvectorFamily ρ.spectralTraceClass.compact a
-      have hσ := gibbsState_apply_eigenvector Hop β hcompact hZ (henergyEigen a)
+      have hσ := gibbsState_apply_eigenvector Hop β hcompact (henergyEigen a)
       have hcoeffReal : a.1.1 = Z⁻¹ * Real.exp (-β * h a) := by
         rw [hpq' a, hpeierls' a]
         ring
@@ -100,6 +99,6 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
     exact sub_eq_zero.mp hxker
   · intro hρ
     rw [hρ]
-    exact gibbsState_helmholtzFreeEnergy_eq Hop β hβ hcompact hZ
+    exact gibbsState_helmholtzFreeEnergy_eq Hop β hβ hcompact
 
 end QuantumTheory

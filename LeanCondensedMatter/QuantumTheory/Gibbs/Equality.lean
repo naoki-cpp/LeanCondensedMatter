@@ -72,11 +72,10 @@ theorem gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
       spectralTrace (gibbsOp Hop β)) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
-  let hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) :=
-    gibbsOp_hasSummableRealEigenvalues_of_isCompact Hop β hcompact
+  let htrace := gibbsOp_spectralTraceClass Hop β hcompact
   apply
     ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
-      hcompact (gibbsOp_isPositive Hop β) hsummable hd ?_ heq
+      htrace.compact (gibbsOp_isPositive Hop β) htrace.summable hd ?_ heq
   intro v hv
   have hpos := gibbsOp_diagonal_pos_of_norm_eq_one Hop β v hv
   rw [← coe_diagonalExpectationValue_right
