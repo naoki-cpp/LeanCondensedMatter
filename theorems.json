@@ -15270,7 +15270,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H) (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ),\n  Module.End.eigenspace (↑(U.unitaryConjugate T)) μ =\n    Submodule.map (↑(U.unitaryLinearEquiv hleft hright)) (Module.End.eigenspace (↑T) μ)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U T : H →L[ℂ] H) (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ),\n  Module.End.eigenspace (↑(U.unitaryConjugate T)) μ =\n    Submodule.map (↑(Unitary.linearIsometryEquiv (U.unitaryOfAdjointInverse hleft hright)).toLinearEquiv)\n      (Module.End.eigenspace (↑T) μ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46139,7 +46139,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -46156,10 +46156,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
