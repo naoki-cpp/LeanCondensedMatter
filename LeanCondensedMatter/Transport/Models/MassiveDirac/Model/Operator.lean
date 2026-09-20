@@ -123,10 +123,12 @@ theorem inPlanePauliVertexCLM_injective :
   have hmatrix :
       left 0 • sigmaX + left 1 • sigmaY =
         right 0 • sigmaX + right 1 • sigmaY := by
-    apply
-      (Matrix.toEuclideanCLM :
-        Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa only [inPlanePauliVertexOperator, matrixOperator, map_smul, map_add] using hoperator
+    have hmatrix' := congrArg
+      (fun A : DiracHilbert →L[ℂ] DiracHilbert =>
+        (Matrix.toEuclideanCLM :
+          Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
+      hoperator
+    simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
   let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
     fun coefficients axis =>
       match axis with
