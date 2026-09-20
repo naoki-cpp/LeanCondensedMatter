@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
-import LeanCondensedMatter.Transport.Resolvent.Spectral
+import LeanCondensedMatter.Transport.Spectral.PurePoint
 
 set_option linter.style.header false
 
