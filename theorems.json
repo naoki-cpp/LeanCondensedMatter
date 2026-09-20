@@ -12028,7 +12028,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.commutatorEvolution h) ((ConservationLaw.localizedQuantityFunctional V M m) f) =\n    (ConservationLaw.transportFunctional V h M m) f + (ConservationLaw.sourceFunctional V h M m) f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.commutatorEvolution h) ((ConservationLaw.localizedQuantityFunctional V M m) f) =\n    (ConservationLaw.transportFunctional V h M m) f + (ConservationLaw.sourceFunctional V h M m) f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12041,7 +12041,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.commutatorEvolution_localizedQuantityFunctional",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "The packaged localized quantity satisfies the same transport/source decomposition. ",
     "directWrapperTargetModule": null,
@@ -12347,7 +12347,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n    ConservationLaw.transportCommutator V h M m f + ConservationLaw.sourceCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n    ConservationLaw.transportCommutator V h M m f + ConservationLaw.sourceCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12360,7 +12360,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.linearCommutator_localizedQuantity",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "The commutator is a derivation on symmetric localization, giving transport plus source. ",
     "directWrapperTargetModule": null,
@@ -12392,7 +12392,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 →\n    ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n      ConservationLaw.transportCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 →\n    ConservationLaw.linearCommutator h (ConservationLaw.localizedQuantity V M m f) =\n      ConservationLaw.transportCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12405,7 +12405,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.linearCommutator_localizedQuantity_of_commutes",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "For a conserved quantity, the localized balance identity contains only transport. ",
     "directWrapperTargetModule": null,
@@ -12829,7 +12829,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizationCommutatorFunctional V h M) f = ConservationLaw.linearCommutator h (M f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizationCommutatorFunctional V h M) f = ConservationLaw.linearCommutator h (M f)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12842,7 +12842,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.localizationCommutatorFunctional_apply",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -12986,7 +12986,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizedQuantityFunctional V M m) f = ConservationLaw.localizedQuantity V M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.localizedQuantityFunctional V M m) f = ConservationLaw.localizedQuantity V M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12999,7 +12999,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.localizedQuantityFunctional_apply",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13021,7 +13021,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator (M f) m = 0 → ConservationLaw.localizedQuantity V M m f = M f ∘ₗ m",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator (M f) m = 0 → ConservationLaw.localizedQuantity V M m f = M f ∘ₗ m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13034,7 +13034,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.localizedQuantity_eq_comp_of_commutes",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "When localization commutes with the quantity, symmetric localization reduces to `M f ∘ m`. ",
     "directWrapperTargetModule": null,
@@ -13058,7 +13058,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.localizedQuantity V M (q • LinearMap.id) f = q • M f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.localizedQuantity V M (q • LinearMap.id) f = q • M f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13071,7 +13071,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.localizedQuantity_smul_id",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "Charge-like quantities `q I` reduce to scalar multiplication under symmetric localization. ",
     "directWrapperTargetModule": null,
@@ -13173,7 +13173,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 → ConservationLaw.sourceCommutator V h M m f = 0",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ConservationLaw.linearCommutator h m = 0 → ConservationLaw.sourceCommutator V h M m f = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13186,7 +13186,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.sourceCommutator_eq_zero_of_commutes",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "A conserved one-body quantity has no local source/torque contribution. ",
     "directWrapperTargetModule": null,
@@ -13214,7 +13214,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.sourceCommutator V h M (q • LinearMap.id) f = 0",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.sourceCommutator V h M (q • LinearMap.id) f = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13227,7 +13227,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.sourceCommutator_smul_id",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "Charge-like quantities have no source/torque term. ",
     "directWrapperTargetModule": null,
@@ -13252,7 +13252,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.sourceFunctional V h M m) f = ConservationLaw.sourceCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.sourceFunctional V h M m) f = ConservationLaw.sourceCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13265,7 +13265,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.sourceFunctional_apply",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13287,7 +13287,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (V : Type u_3) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (m A : V →ₗ[ℂ] V),\n  (ConservationLaw.symmetrizedProductRightLinear V m) A = ConservationLaw.symmetrizedProduct A m",
+    "statement": "∀ (V : Type u_2) [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (m A : V →ₗ[ℂ] V),\n  (ConservationLaw.symmetrizedProductRightLinear V m) A = ConservationLaw.symmetrizedProduct A m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13300,7 +13300,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.symmetrizedProductRightLinear_apply",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13684,7 +13684,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.transportCommutator V h M (q • LinearMap.id) f = q • ConservationLaw.linearCommutator h (M f)",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.transportCommutator V h M (q • LinearMap.id) f = q • ConservationLaw.linearCommutator h (M f)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13697,7 +13697,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.transportCommutator_smul_id",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "Charge-like quantities have transport `q [h,M(f)]`. ",
     "directWrapperTargetModule": null,
@@ -13721,7 +13721,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.transportFunctional V h M m) f = ConservationLaw.transportCommutator V h M m f",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  (ConservationLaw.transportFunctional V h M m) f = ConservationLaw.transportCommutator V h M m f",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13734,7 +13734,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.transportFunctional_apply",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -13756,7 +13756,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_3) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.transportFunctional V h M (q • LinearMap.id) =\n    q • ConservationLaw.localizationCommutatorFunctional V h M",
+    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.transportFunctional V h M (q • LinearMap.id) =\n    q • ConservationLaw.localizationCommutatorFunctional V h M",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13769,7 +13769,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "ConservationLaw.transportFunctional_smul_id",
-    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    "module": "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
     "externalAxioms": [],
     "docString": "For `m = q I`, the transport functional is `q` times the bare localization commutator. ",
     "directWrapperTargetModule": null,
@@ -41232,6 +41232,43 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (ω η T : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).finiteTimeAdiabaticResponse system expectation ω\n      η T =\n    ∫ (s : ℝ) in 0..T,\n      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η (T - s) *\n        QuantumTheory.LinearResponse.retardedSusceptibility system expectation measured source T s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_fixed",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
+    "externalAxioms": [],
+    "docString": "A fixed-observable channel has no contact contribution, so its finite-time adiabatic response is\nexactly the retarded measured/source transform. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (f : ℝ → ℝ)\n  (t : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).causalResponse system expectation f t =\n    ∫ (s : ℝ) in 0..t,\n      ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation measured source t s",
     "standardAxioms": [
       "Classical.choice",
@@ -41266,7 +41303,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (t : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).contactExpectation system expectation t = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -41274,7 +41311,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -41285,12 +41322,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_fixed"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_fixed"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118846,6 +118887,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q ω η T : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry direction\n      K q ω η T =\n    SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation geometry\n        direction K q ω η T +\n      SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation system expectation geometry direction\n        K q T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
+    "externalAxioms": [],
+    "docString": "Expanding the channel-level finite-time response recovers the historical retarded-plus-contact\ndirectional-current coefficient exactly. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n      (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry\n            direction K q ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (SecondQuantization.Fermionic.Transport.stationaryDirectionalCurrentKernel system expectation geometry\n                direction K q)\n              ω η T +\n            expectation.toContinuousLinearMap\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
     "standardAxioms": [
       "Classical.choice",
@@ -118868,6 +118948,7 @@
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact",
       "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
     ],
     "crossModuleDirectWrapper": false,
