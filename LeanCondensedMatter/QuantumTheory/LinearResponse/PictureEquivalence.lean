@@ -149,12 +149,11 @@ theorem evolvePureState_ofStateVector (ψ : StateVector H) (t : ℝ) :
   exact evolveDensityOperator_pure system ψ t
 
 /-- The free propagator as a linear isometric equivalence of the Hilbert space. -/
-noncomputable def freePropagatorLinearIsometryEquiv (t : ℝ) : H ≃ₗᵢ[ℂ] H where
-  toLinearEquiv :=
-    unitaryLinearEquiv (freePropagator system t)
-      (star_mul_freePropagator system t)
-      (freePropagator_mul_star system t)
-  norm_map' := norm_freePropagator_apply system t
+noncomputable def freePropagatorLinearIsometryEquiv (t : ℝ) : H ≃ₗᵢ[ℂ] H :=
+  Unitary.linearIsometryEquiv
+    ⟨freePropagator system t,
+      Unitary.mem_iff.mpr
+        ⟨star_mul_freePropagator system t, freePropagator_mul_star system t⟩⟩
 
 /-- Transport a Hilbert basis through the free propagator. -/
 noncomputable def evolveHilbertBasis {ι : Type*}
