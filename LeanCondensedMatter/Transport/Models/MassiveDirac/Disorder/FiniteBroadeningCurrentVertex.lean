@@ -252,7 +252,6 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
 
-
 /-- Under ladder regularity, the finite-broadening Born-Dyson solved vector is the generic
 algebraically resummed vertex on the in-plane coefficient space. This is an inverse-based
 resummation statement only; no geometric-series convergence is asserted. -/

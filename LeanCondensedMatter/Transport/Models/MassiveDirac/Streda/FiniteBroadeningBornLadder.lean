@@ -49,6 +49,29 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
   let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
   inPlaneCurrentOperator e v dressed
 
+/-- For the physical source-x channel, ladder regularity rewrites the Středa consumer directly in
+terms of the generic algebraically resummed coefficient vertex. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed
+    (e v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hregular : finiteCutoffContinuumBornDysonLadderRegular
+      v m probeEnergy broadening disorderStrength hbar pMax) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+        0 e v m probeEnergy broadening disorderStrength hbar pMax =
+      inPlaneCurrentOperator e v
+        (resummedLadderVertex
+          (inPlaneLadderCLM
+            (finiteCutoffContinuumBornDysonCurrentRungVector
+              v m probeEnergy broadening disorderStrength hbar pMax))
+          (inPlaneLadderShift_isUnit
+            (finiteCutoffContinuumBornDysonCurrentRungVector
+              v m probeEnergy broadening disorderStrength hbar pMax)
+            hregular)
+          inPlaneLadderBareXSource) := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+  rw [finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex
+    v m probeEnergy broadening disorderStrength hbar pMax hregular]
+  congr 1
+
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
     (source : Fin 2) (e v m probeEnergy broadening hbar pMax : ℝ) :

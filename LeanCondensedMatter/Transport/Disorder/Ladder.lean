@@ -23,10 +23,10 @@ conserving-approximation framework of Baym and Kadanoff, *Phys. Rev.* **124**, 2
 identity is asserted here.
 
 The public algebra is intentionally small: the RA kernel, finite fixed-point iterates, and
-conditional resummation when `I - L_RA` is a unit. The fixed-point/resummation algebra is stated
-for an arbitrary complex normed space so invariant model subspaces can use the same theorems
-directly. No convergence, geometric-series expansion, Ward identity, SCBA closure, crossed diagram,
-or thermodynamic limit is asserted here.
+conditional resummation on any normed complex coefficient space when `I - L` is a unit. The
+fixed-point/resummation algebra is stated for an arbitrary complex normed space so invariant model
+subspaces can use the same theorems directly. No convergence, geometric-series expansion, Ward
+identity, SCBA closure, crossed diagram, or thermodynamic limit is asserted here.
 -/
 
 namespace QuantumTheory
@@ -65,7 +65,8 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 /-- Finite fixed-point ladder iterate. `n = 0` is the bare vertex and each successor performs the
 exact algebraic update `Γ ↦ J + L(Γ)`. -/
 noncomputable def finiteLadderVertex
-    (ladder : V →L[ℂ] V) (bareVertex : V) : ℕ → V
+    (ladder : V →L[ℂ] V)
+    (bareVertex : V) : ℕ → V
   | 0 => bareVertex
   | n + 1 => bareVertex + ladder (finiteLadderVertex ladder bareVertex n)
 

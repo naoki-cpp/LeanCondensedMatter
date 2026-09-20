@@ -275,20 +275,19 @@ theorem integral_polarPauliOperator_inPlane_eq
   rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
   simp [inPlanePauliVertexOperator]
 
-
-/-- The retarded-advanced polar rung preserves the embedded in-plane Pauli subspace and
-intertwines there with the bundled two-component ladder action. -/
-theorem integral_polarPauliOperator_inPlane_eq_embedding
+/-- The full-angle Pauli rung intertwines the physical operator embedding with the bundled
+two-component ladder endomorphism. In particular, the in-plane Pauli subspace is preserved. -/
+theorem integral_polarPauliOperator_inPlane_eq_clm
     (aR aA bR bA dR dA : ℂ) (coefficients : InPlaneCoefficientVector) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       polarPauliOperator aR bR dR θ *
-        inPlanePauliVertexEmbedding coefficients *
+        inPlanePauliVertexCLM coefficients *
         polarPauliOperator aA bA dA θ) =
-      inPlanePauliVertexEmbedding
+      inPlanePauliVertexCLM
         (inPlaneLadderCLM
           (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
-  simpa using
-    integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA coefficients
+  simpa only [inPlanePauliVertexCLM_apply, inPlaneLadderCLM_apply] using
+    (integral_polarPauliOperator_inPlane_eq aR aA bR bA dR dA coefficients)
 
 end
 
