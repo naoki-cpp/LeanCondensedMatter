@@ -75,13 +75,6 @@ def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
-/-- The generic band-energy difference to the opposite band is the model interband gap. -/
-theorem pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseEigenbasisData v m px py hE).energy band -
-        (pointwiseEigenbasisData v m px py hE).energy (oppositeBand band) =
-      interbandEnergyGap band v m px py := rfl
-
 private theorem mul_div_real_gap_im
     (a b : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
     ((a / ((gap : ℝ) : ℂ)) * (b / ((gap : ℝ) : ℂ))).im =
@@ -131,12 +124,7 @@ theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
   have hgapEq :
       data.energy band - data.energy (oppositeBand band) =
         interbandEnergyGap band v m px py := by
-    change
-      (pointwiseEigenbasisData v m px py hE).energy band -
-          (pointwiseEigenbasisData v m px py hE).energy (oppositeBand band) =
-        interbandEnergyGap band v m px py
-    exact pointwiseEigenbasisData_energy_sub_oppositeBand_eq_interbandEnergyGap
-      band v m px py hE
+    rfl
   have hgap : data.energy band - data.energy (oppositeBand band) ≠ 0 := by
     rw [hgapEq]
     exact interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
@@ -186,31 +174,6 @@ theorem pointwiseBerryCurvature_xy_eq_berryCurvature
       berryCurvature band v m px py := by
   rw [pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature band v m px py hE,
     forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
-
-/-- Reversing the two physical momentum directions gives the negative closed curvature, inherited
-from generic Berry-curvature antisymmetry. -/
-theorem pointwiseBerryCurvature_yx_eq_neg_berryCurvature
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseEigenbasisData v m px py hE).berryCurvature 1 0 band =
-      -berryCurvature band v m px py := by
-  rw [(pointwiseEigenbasisData v m px py hE).berryCurvature_swap 0 1 band,
-    pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE]
-
-/-- Generic upper-band x-y curvature in the repository sign convention. -/
-theorem pointwiseBerryCurvature_xy_upper
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 .upper =
-      -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  rw [pointwiseBerryCurvature_xy_eq_berryCurvature .upper v m px py hE,
-    berryCurvature_upper]
-
-/-- Generic lower-band x-y curvature in the repository sign convention. -/
-theorem pointwiseBerryCurvature_xy_lower
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 .lower =
-      (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  rw [pointwiseBerryCurvature_xy_eq_berryCurvature .lower v m px py hE,
-    berryCurvature_lower]
 
 end
 
