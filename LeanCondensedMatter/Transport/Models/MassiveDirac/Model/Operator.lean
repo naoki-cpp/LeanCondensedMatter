@@ -99,6 +99,7 @@ private noncomputable def inPlanePauliVertexLinearMap :
   map_add' := by
     intro left right
     simp [inPlanePauliVertexOperator, add_smul]
+    module
   map_smul' := by
     intro scalar coefficients
     simp [inPlanePauliVertexOperator, smul_smul]
@@ -125,10 +126,12 @@ theorem inPlanePauliVertexEmbedding_injective :
   have hmatrix :
       left 0 • sigmaX + left 1 • sigmaY =
         right 0 • sigmaX + right 1 • sigmaY := by
-    apply
-      (Matrix.toEuclideanCLM :
-        Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hoperator
+    have hmatrix' := congrArg
+      (fun A : DiracHilbert →L[ℂ] DiracHilbert =>
+        (Matrix.toEuclideanCLM :
+          Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
+      hoperator
+    simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
   let coefficients : (Fin 2 → ℂ) → PauliAxis → ℂ := fun c axis =>
     match axis with
     | .x => c 0
