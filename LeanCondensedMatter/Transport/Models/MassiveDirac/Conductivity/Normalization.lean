@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Core.ContinuumMeasure
+import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 
 set_option linter.style.header false
 

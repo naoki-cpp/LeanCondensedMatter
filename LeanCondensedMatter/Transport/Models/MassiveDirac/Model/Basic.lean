@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Transport.Core.ContinuumMeasure
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -33,7 +32,7 @@ The generic charge-like current theory is the authority for the canonical `q v` 
 this model file records only its concrete electron-current realization `j_μ = -e v_μ`.
 
 With this convention the continuum measure is `d²p / (2πℏ)²`; its scalar normalization is owned by
-`Transport.Core.ContinuumMeasure`.
+`Transport.Analysis.ContinuumMeasure`.
 
 Disorder, Fermi occupation, Kubo–Středa integration, and ultraviolet regularization remain
 separate downstream phases.

@@ -29,10 +29,10 @@ generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCon
 
 ```text
 Transport/
-├── Core/          physical volume, continuum measure, normalization, conductivity tensor
+├── Core/          physical volume, normalization, conductivity tensor
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
-├── Analysis/      occupations, angular harmonics, polar Fourier reduction, relaxation time
+├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
 ├── KuboBastin/    Lehmann-to-resolvent response algebra and finite spectral sums
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
@@ -47,8 +47,9 @@ The main semantic boundaries are:
   before constructing a `Core.ConductivityTensor`;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
-`Core.ContinuumMeasure` owns the two-dimensional physical-momentum convention
-`d²p/(2πℏ)²`. `Analysis.AngularHarmonics` owns the reusable constant/first/second harmonic
+`Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
+`d²p/(2πℏ)²`; it is not a dimension-independent transport invariant. `Analysis.AngularHarmonics`
+owns the reusable constant/first/second harmonic
 coefficient decomposition and ordinary full-angle cancellation laws. `Analysis.PolarFourier`
 consumes the same coefficient data for phase-weighted radial-axis reduction while keeping the
 zeroth, first-cosine, and second-cosine kernels explicit. Model layers supply coefficient values;
