@@ -31,6 +31,33 @@ theorem gibbs_scalar_ineq (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) :
     simp only [Real.negMulLog]
     nlinarith [hmul, hcancel]
 
+
+/-- Equality in Gibbs' scalar inequality holds exactly on the diagonal `x = y`. -/
+theorem gibbs_scalar_ineq_eq_iff (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) :
+    Real.negMulLog x + x - y = -x * Real.log y ↔ x = y := by
+  constructor
+  · intro heq
+    by_contra hxy
+    have hlt : Real.negMulLog x + x - y < -x * Real.log y := by
+      rcases eq_or_lt_of_le hx with hx0 | hx0
+      · subst x
+        simp only [Real.negMulLog]
+        linarith
+      · have hratio_pos : 0 < y / x := div_pos hy hx0
+        have hratio_ne : y / x ≠ 1 := by
+          intro hratio
+          apply hxy
+          exact ((div_eq_one_iff_eq hx0.ne').mp hratio).symm
+        have hlog := Real.log_lt_sub_one_of_pos hratio_pos hratio_ne
+        rw [Real.log_div hy.ne' hx0.ne'] at hlog
+        have hcancel : x * (y / x) = y := by field_simp
+        have hmul := mul_lt_mul_of_pos_left hlog hx0
+        simp only [Real.negMulLog]
+        nlinarith [hmul, hcancel]
+    exact (ne_of_lt hlt) heq
+  · rintro rfl
+    simp [Real.negMulLog]
+
 /-- Combine `gibbs_scalar_ineq` with a bound on `-log q`. -/
 theorem negMulLog_le_of_neg_log_le {p q Z u : ℝ} (hp : 0 ≤ p) (hq : 0 < q) (hZ : 0 < Z)
     (hlog : -Real.log q ≤ u) :
@@ -64,6 +91,20 @@ theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
     Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
   have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
   ⟨hf, hf.tsum_mono hg hfg⟩
+
+
+/-- If two summable real families are pointwise ordered and have the same total sum, then they are
+equal term by term. -/
+theorem pointwise_eq_of_tsum_eq_of_le {ι : Type*} {f g : ι → ℝ}
+    (hfg : ∀ i, f i ≤ g i) (hf : Summable f) (hg : Summable g)
+    (hsum : ∑' i, f i = ∑' i, g i) :
+    ∀ i, f i = g i := by
+  intro i
+  apply le_antisymm (hfg i)
+  by_contra hnot
+  have hlt : f i < g i := lt_of_not_ge hnot
+  have hsumlt := Summable.tsum_lt_tsum hfg hlt hf hg
+  exact (ne_of_lt hsumlt) hsum
 
 /-- The Gibbs comparison series is summable whenever the normalized probability family,
 energy term, and comparison weights are summable. Its total separates into energy, normalization,
