@@ -27,6 +27,16 @@ private theorem purePointGibbsProbability_le_one [Nonempty ι]
   rw [hprob.tsum_eq] at hle
   exact hle
 
+private theorem log_purePointGibbsProbability [Nonempty ι]
+    (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
+    Real.log (purePointGibbsProbability E β i) =
+      -β * E i - Real.log (purePointPartitionFunction E β) := by
+  have hZpos := purePointPartitionFunction_pos E β hsum
+  rw [purePointGibbsProbability, purePointBoltzmannWeight,
+    Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
+    Real.log_inv, Real.log_exp]
+  ring
+
 /-- Absolute energy integrability implies absolute summability of the Shannon entropy terms of the
 pure-point Gibbs probabilities. -/
 theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
@@ -34,18 +44,13 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
     (hint : PurePointGibbsEnergyIntegrable E β) :
     Summable fun i => ‖Real.negMulLog (purePointGibbsProbability E β i)‖ := by
   let Z := purePointPartitionFunction E β
-  have hZpos : 0 < Z := by
-    simpa [Z] using purePointPartitionFunction_pos E β hsum
   have hEnergy : Summable fun i => purePointGibbsProbability E β i * E i :=
     Summable.of_norm hint
   have hProb := (hasSum_purePointGibbsProbability E β hsum).summable
   have hlog (i : ι) :
       Real.log (purePointGibbsProbability E β i) =
         -β * E i - Real.log Z := by
-    rw [purePointGibbsProbability, purePointBoltzmannWeight,
-      Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
-      Real.log_inv, Real.log_exp]
-    ring
+    simpa [Z] using log_purePointGibbsProbability E β hsum i
   have hterm (i : ι) :
       Real.negMulLog (purePointGibbsProbability E β i) =
         β * (purePointGibbsProbability E β i * E i) +
@@ -90,15 +95,9 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
   have hEnergySum :=
     hasSum_purePointGibbsEnergyExpectation E β hint
   have hProbSum := hasSum_purePointGibbsProbability E β hsum
-  have hZpos : 0 < Z := by
-    simpa [Z] using purePointPartitionFunction_pos E β hsum
   have hlog (i : ι) :
       Real.log (p i) = -β * E i - Real.log Z := by
-    simp only [p]
-    rw [purePointGibbsProbability, purePointBoltzmannWeight,
-      Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
-      Real.log_inv, Real.log_exp]
-    ring
+    simpa [p, Z] using log_purePointGibbsProbability E β hsum i
   have hterm (i : ι) :
       Real.negMulLog (p i) =
         β * (p i * E i) + Real.log Z * p i := by
