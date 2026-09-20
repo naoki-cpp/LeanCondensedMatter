@@ -1,4 +1,4 @@
-import Mathlib.Analysis.Normed.Operator.Compact.Basic
+import LeanCondensedMatter.Analysis.Operator.Compact
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 
@@ -63,12 +63,7 @@ omit [CompleteSpace H] in
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
     IsCompactOperator (diagonalTerm b a i) := by
   change IsCompactOperator (a i • InnerProductSpace.rankOne ℂ (b i) (b i))
-  have hrank : IsCompactOperator
-      (InnerProductSpace.rankOne ℂ (b i) (b i) : H →L[ℂ] H) := by
-    rw [InnerProductSpace.rankOne_def']
-    exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ (b i))).clm_comp
-      (ContinuousLinearMap.toSpanSingleton ℂ (b i))
-  exact hrank.smul (a i)
+  exact (ContinuousLinearMap.isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
