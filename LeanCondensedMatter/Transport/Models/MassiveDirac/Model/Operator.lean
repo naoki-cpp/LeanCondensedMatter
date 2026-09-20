@@ -99,11 +99,9 @@ private noncomputable def inPlanePauliVertexLinearMap :
   map_add' := by
     intro left right
     simp [inPlanePauliVertexOperator, add_smul]
-    module
   map_smul' := by
     intro scalar coefficients
     simp [inPlanePauliVertexOperator, smul_smul]
-    module
 
 /-- Canonical complex-linear embedding of in-plane coefficient vectors into the corresponding
 Pauli-operator subspace. -/
@@ -121,14 +119,16 @@ theorem inPlanePauliVertexEmbedding_apply (coefficients : Fin 2 → ℂ) :
 theorem inPlanePauliVertexEmbedding_injective :
     Function.Injective inPlanePauliVertexEmbedding := by
   intro left right h
+  have hoperator :
+      inPlanePauliVertexOperator left = inPlanePauliVertexOperator right := by
+    simpa only [inPlanePauliVertexEmbedding_apply] using h
   have hmatrix :
       left 0 • sigmaX + left 1 • sigmaY =
         right 0 • sigmaX + right 1 • sigmaY := by
     apply
       (Matrix.toEuclideanCLM :
         Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [inPlanePauliVertexEmbedding, inPlanePauliVertexLinearMap,
-      inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using h
+    simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hoperator
   let coefficients : (Fin 2 → ℂ) → PauliAxis → ℂ := fun c axis =>
     match axis with
     | .x => c 0
