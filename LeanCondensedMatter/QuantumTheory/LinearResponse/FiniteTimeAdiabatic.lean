@@ -71,7 +71,8 @@ theorem finiteTimeAdiabaticResponse_fixed
       ∫ s in (0 : ℝ)..T,
         adiabaticFrequencyPhase ω η (T - s) *
           retardedSusceptibility system expectation measured source T s := by
-  simp [finiteTimeAdiabaticResponse, retardedKernel]
+  rw [finiteTimeAdiabaticResponse, fixed_contactExpectation]
+  simp [retardedKernel, fixed]
 
 end ResponseChannel
 
