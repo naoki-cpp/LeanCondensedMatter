@@ -182,7 +182,7 @@ private theorem fullCycle_isConj_finRotate_add_two {n : ℕ}
     (σ : {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))}) :
     IsConj σ.1 (finRotate (n + 2)) := by
   rw [Equiv.Perm.isConj_iff_cycleType_eq,
-    (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2,
+    (Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2,
     Equiv.Perm.cycleType_finRotate]
   simp
 
@@ -205,8 +205,8 @@ private noncomputable def fullCycleEquivCycleTypeAddTwo (n : ℕ) :
         Finset (Equiv.Perm (Fin (n + 2)))) where
   toFun σ := ⟨σ.1, by
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    simpa using (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2⟩
-  invFun σ := ⟨σ.1, (isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).2 (by
+    simpa using (Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2⟩
+  invFun σ := ⟨σ.1, (Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).2 (by
     have h := σ.2
     simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using h)⟩
   left_inv σ := Subtype.ext rfl
