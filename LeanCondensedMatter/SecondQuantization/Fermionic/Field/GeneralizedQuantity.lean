@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
+import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 
 set_option linter.style.header false
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Fermionic many-body bridge for generalized localized quantities
 
 The representation-independent symmetric-localization realization is owned upstream by
-`Analysis.Calculus.SymmetricLocalization` under the root `ConservationLaw` namespace. This module
+`Analysis.Calculus.SymmetricLocalizationAlgebra` under the root `ConservationLaw` namespace. This module
 contains only the fermionic second-quantization bridge:
 
 ```text
