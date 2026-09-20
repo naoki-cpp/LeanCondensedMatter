@@ -6,7 +6,9 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
 This file characterizes equality in the countable diagonal Gibbs variational principle. Under the
 same explicit energy-integrability hypothesis used for pure-point thermodynamics, the normalized
 Gibbs probabilities define an admissible competitor. Equality in the Helmholtz lower bound holds
-exactly for that competitor.
+exactly for that competitor. Scalar and countable-sum equality helpers are inherited from
+`FreeEnergy.lean` through `PurePointVariational.lean`, without depending on bounded operator
+equality machinery.
 -/
 
 noncomputable section
