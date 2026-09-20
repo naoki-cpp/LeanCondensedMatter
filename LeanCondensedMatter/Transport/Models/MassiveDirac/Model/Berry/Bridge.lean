@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
 
@@ -74,6 +75,73 @@ def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator 0 1 band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
+private theorem mul_div_real_gap_im
+    (a b : ℂ) (gap : ℝ) (hgap : gap ≠ 0) :
+    ((a / ((gap : ℝ) : ℂ)) * (b / ((gap : ℝ) : ℂ))).im =
+      (a * b).im / gap ^ 2 := by
+  have hgapC : ((gap : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast hgap
+  have hprod :
+      (a / ((gap : ℝ) : ℂ)) * (b / ((gap : ℝ) : ℂ)) =
+        (((1 / gap ^ 2 : ℝ) : ℂ)) * (a * b) := by
+    field_simp [hgapC, hgap]
+    ring
+  rw [hprod, Complex.mul_im]
+  simp [div_eq_mul_inv, mul_comm]
+
+/-- The generic pointwise Berry curvature in the physical x-y directions is exactly the
+model projector/force-matrix curvature away from the Dirac degeneracy. -/
+theorem pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature
+    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =
+      forceMatrixBerryCurvature band v m px py := by
+  classical
+  let data := pointwiseEigenbasisData v m px py hE
+  have hself : ∀ direction, IsSelfAdjoint (data.hamiltonianDerivative direction) := by
+    intro direction
+    change IsSelfAdjoint (velocityOperator direction v)
+    exact velocityOperator_isSelfAdjoint direction v
+  have hnondegenerate :
+      ∀ source, source ≠ band → data.energy source ≠ data.energy band := by
+    intro source hsource hsame
+    apply hsource
+    apply bandEnergy_injective v m px py hE
+    change bandEnergy source v m px py = bandEnergy band v m px py at hsame
+    exact hsame
+  unfold forceMatrixBerryCurvature
+  rw [forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements
+    0 1 band v m px py hE]
+  change data.berryCurvature 0 1 band =
+    2 * (data.hamiltonianDerivativeMatrixElement 0 (oppositeBand band) band *
+      data.hamiltonianDerivativeMatrixElement 1 band (oppositeBand band)).im /
+        interbandEnergyGap band v m px py ^ 2
+  rw [data.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements
+    0 1 band hself hnondegenerate]
+  rw [sum_band]
+  cases band with
+  | lower =>
+      simp only [if_pos rfl, if_neg (by decide), zero_add]
+      have hgapEq :
+          data.energy .lower - data.energy .upper =
+            interbandEnergyGap .lower v m px py := by
+        rfl
+      have hgap : data.energy .lower - data.energy .upper ≠ 0 := by
+        rw [hgapEq]
+        exact interbandEnergyGap_ne_zero_of_energy_ne_zero .lower v m px py hE
+      rw [mul_div_real_gap_im _ _ _ hgap, hgapEq]
+      ring
+  | upper =>
+      simp only [if_neg (by decide), if_pos rfl, add_zero]
+      have hgapEq :
+          data.energy .upper - data.energy .lower =
+            interbandEnergyGap .upper v m px py := by
+        rfl
+      have hgap : data.energy .upper - data.energy .lower ≠ 0 := by
+        rw [hgapEq]
+        exact interbandEnergyGap_ne_zero_of_energy_ne_zero .upper v m px py hE
+      rw [mul_div_real_gap_im _ _ _ hgap, hgapEq]
+      ring
+
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
 from the band degeneracy. -/
 theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : ℝ)
@@ -86,6 +154,40 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : �
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower] <;>
     field_simp [hE]
+
+/-- Canonical specialization from the generic pointwise Berry curvature to the closed
+massive-Dirac formula. -/
+theorem pointwiseBerryCurvature_xy_eq_berryCurvature
+    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 band =
+      berryCurvature band v m px py := by
+  rw [pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature band v m px py hE,
+    forceMatrixBerryCurvature_eq_berryCurvature band v m px py hE]
+
+/-- Reversing the two physical momentum directions gives the negative closed curvature, inherited
+from generic Berry-curvature antisymmetry. -/
+theorem pointwiseBerryCurvature_yx_eq_neg_berryCurvature
+    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (pointwiseEigenbasisData v m px py hE).berryCurvature 1 0 band =
+      -berryCurvature band v m px py := by
+  rw [(pointwiseEigenbasisData v m px py hE).berryCurvature_swap 0 1 band,
+    pointwiseBerryCurvature_xy_eq_berryCurvature band v m px py hE]
+
+/-- Generic upper-band x-y curvature in the repository sign convention. -/
+theorem pointwiseBerryCurvature_xy_upper
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 .upper =
+      -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature .upper v m px py hE,
+    berryCurvature_upper]
+
+/-- Generic lower-band x-y curvature in the repository sign convention. -/
+theorem pointwiseBerryCurvature_xy_lower
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    (pointwiseEigenbasisData v m px py hE).berryCurvature 0 1 .lower =
+      (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
+  rw [pointwiseBerryCurvature_xy_eq_berryCurvature .lower v m px py hE,
+    berryCurvature_lower]
 
 end
 
