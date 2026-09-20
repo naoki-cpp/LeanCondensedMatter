@@ -26,8 +26,6 @@ noncomputable def purePointGibbsCompetitor [Nonempty ι]
   probability := purePointGibbsProbability E β
   nonneg := purePointGibbsProbability_nonneg E β hsum
   hasSum_one := hasSum_purePointGibbsProbability E β hsum
-  entropySummable :=
-    Summable.of_norm (summable_norm_negMulLog_purePointGibbsProbability E β hsum hint)
   energyIntegrable := hint
 
 /-- The canonical Gibbs competitor carries the normalized pure-point Gibbs probability. -/
@@ -60,22 +58,28 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
     simpa [q] using purePointBoltzmannWeight_summable E β hsum
   have hEnergy : Summable fun i => p.probability i * E i :=
     Summable.of_norm p.energyIntegrable
-  have hB : Summable fun i =>
-      β * (p.probability i * E i) + p.probability i * Real.log Z -
-        p.probability i + q i / Z :=
-    (((hEnergy.mul_left β).add (p.hasSum_one.summable.mul_right (Real.log Z))).sub
-      p.hasSum_one.summable).add (hqsum.div_const Z)
+  have hlog : ∀ i, -Real.log (q i) ≤ β * E i := by
+    intro i
+    have hlogEq : -Real.log (q i) = β * E i := by
+      simp [q, purePointBoltzmannWeight]
+    exact hlogEq.le
   have hbound : ∀ i, Real.negMulLog (p.probability i) ≤
       β * (p.probability i * E i) + p.probability i * Real.log Z -
         p.probability i + q i / Z := by
     intro i
-    have hlog : -Real.log (q i) = β * E i := by
-      simp [q, purePointBoltzmannWeight]
     have hb := negMulLog_le_of_neg_log_le
       (p := p.probability i) (q := q i) (Z := Z) (u := β * E i)
-      (p.nonneg i) (purePointBoltzmannWeight_pos E β i) hZpos hlog.le
+      (p.nonneg i) (purePointBoltzmannWeight_pos E β i) hZpos (hlog i)
     nlinarith [hb]
-  have hsum_le := p.entropySummable.tsum_le_tsum hbound hB
+  obtain ⟨hB, hBsumRaw⟩ :=
+    summable_gibbsComparison_and_tsum_eq
+      p.probability q E β Z p.hasSum_one hEnergy hqsum
+  have hqsum_le : ∑' i, q i ≤ Z := by
+    rfl
+  obtain ⟨hEntropySummable, hmainRaw⟩ :=
+    summable_negMulLog_and_tsum_le_gibbs
+      p.probability q E β Z p.nonneg p.hasSum_one hEnergy
+      hqsum hqsum_le (fun i => purePointBoltzmannWeight_pos E β i) hZpos hlog
   have hqZ : ∑' i, q i / Z = 1 := by
     rw [show (∑' i, q i / Z) = (∑' i, q i) / Z by
       rw [← tsum_div_const]]
@@ -85,18 +89,17 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
       ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
         p.probability i + q i / Z) =
         β * p.energy + Real.log Z := by
-    rw [(((hEnergy.mul_left β).add (p.hasSum_one.summable.mul_right (Real.log Z))).sub
-      p.hasSum_one.summable).tsum_add (hqsum.div_const Z),
-      ((hEnergy.mul_left β).add
-        (p.hasSum_one.summable.mul_right (Real.log Z))).tsum_sub p.hasSum_one.summable,
-      (hEnergy.mul_left β).tsum_add
-        (p.hasSum_one.summable.mul_right (Real.log Z)),
-      tsum_mul_left, tsum_mul_right, p.hasSum_one.tsum_eq, hqZ]
-    simp only [PurePointGibbsCompetitor.energy]
-    ring
+    calc
+      ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
+          p.probability i + q i / Z) =
+          β * (∑' i, p.probability i * E i) + Real.log Z - 1 + ∑' i, q i / Z :=
+        hBsumRaw
+      _ = β * p.energy + Real.log Z := by
+        rw [hqZ]
+        simp only [PurePointGibbsCompetitor.energy]
+        ring
   have hmain : p.entropy ≤ β * p.energy + Real.log Z := by
-    rw [PurePointGibbsCompetitor.entropy, ← hBsum]
-    exact hsum_le
+    simpa only [PurePointGibbsCompetitor.entropy, PurePointGibbsCompetitor.energy] using hmainRaw
   refine ⟨by simpa [Z] using hmain, ?_⟩
   constructor
   · intro heq
@@ -122,7 +125,7 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
             p.probability i + q i / Z :=
         lt_of_not_ge hnot
       have hsumlt :=
-        Summable.tsum_lt_tsum hbound hlt p.entropySummable hB
+        Summable.tsum_lt_tsum hbound hlt hEntropySummable hB
       exact (ne_of_lt hsumlt) hsum_eq
     intro i
     have hqpos : 0 < q i := by
