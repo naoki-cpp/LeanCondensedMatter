@@ -115,6 +115,22 @@ theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
 @[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by
   cases band <;> simp
 
+/-- Away from the band degeneracy, the two band energies are distinct. -/
+theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    Function.Injective (fun band : Band => bandEnergy band v m px py) := by
+  intro a b hab
+  cases a <;> cases b
+  · rfl
+  · exfalso
+    simp [bandEnergy] at hab
+    apply hE
+    linarith
+  · exfalso
+    simp [bandEnergy] at hab
+    apply hE
+    linarith
+  · rfl
+
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
