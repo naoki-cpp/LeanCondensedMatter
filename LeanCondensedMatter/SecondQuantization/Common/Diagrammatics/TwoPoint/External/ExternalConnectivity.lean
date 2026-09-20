@@ -31,7 +31,7 @@ noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
 
 /-- If the two external vertices were disconnected, external vertex `1` would not lie in the
 component of external vertex `0`. -/
-theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
+private theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hExt : ¬ d.ExternalVerticesConnected) :
     (Sum.inl (1 : Fin 2) : TwoPointVertex S) ∉
@@ -45,96 +45,6 @@ theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (F
     (Sum.inl (0 : Fin 2) : TwoPointVertex S)
     (Sum.inl (1 : Fin 2) : TwoPointVertex S)).1 hmem).symm
 
-/-- Under the hypothetical separation of the two external vertices, the legs in the component of
-external vertex `0` are one external leg together with four local legs for every interaction vertex
-in that component. -/
-noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : ¬ d.ExternalVerticesConnected) :
-    {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
-      Fin 1 ⊕
-        (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) where
-  toFun leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        by_cases he : e = 0
-        · exact Sum.inl 0
-        · have he1 : e = 1 := by omega
-          subst e
-          exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
-    | inr p =>
-        exact Sum.inr
-          (⟨p.1.1, (TwoPointDiagram.mem_interactionPart_subtype
-            (d.externalComponent 0) p.1).2 hleg⟩, p.2)
-  invFun leg := by
-    cases leg with
-    | inl e =>
-        exact ⟨Sum.inl 0, by
-          change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈ d.vertexGraph.componentBlock (Sum.inl 0)
-          exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)⟩
-    | inr p =>
-        let v : ↥S :=
-          ⟨p.1.1, TwoPointDiagram.interactionPart_subset
-            (d.externalComponent 0) p.1.2⟩
-        exact ⟨Sum.inr (v, p.2), by
-          change (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0
-          exact (TwoPointDiagram.mem_interactionPart_subtype
-            (d.externalComponent 0) v).1 p.1.2⟩
-  left_inv leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        fin_cases e
-        · apply Subtype.ext
-          rfl
-        · exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Subtype.ext
-        rfl
-  right_inv leg := by
-    cases leg with
-    | inl e =>
-        fin_cases e
-        rfl
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply congrArg Sum.inr
-        apply Prod.ext
-        · exact Subtype.ext (by rfl)
-        · rfl
-
-/-- Flattened legs in a hypothetically isolated external component are equivalent to one external
-leg plus its quartic interaction legs. -/
-noncomputable def TwoPointDiagram.disconnectedExternalBlockLegEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : ¬ d.ExternalVerticesConnected) :
-    {leg : Fin (2 * (2 * S.card + 1)) //
-      d.legInComponent (d.externalComponent 0) leg} ≃
-      Fin 1 ⊕
-        (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) :=
-  ((twoPointLegEquiv S).subtypeEquiv fun leg =>
-      d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
-    (d.disconnectedExternalLegDataEquiv hExt)
-
-open Classical in
-private theorem TwoPointDiagram.card_disconnectedExternalBlockLegs {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : ¬ d.ExternalVerticesConnected) :
-    Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-      d.legInComponent (d.externalComponent 0) leg} =
-      1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
-  calc
-    Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.externalComponent 0) leg} =
-        Fintype.card
-          (Fin 1 ⊕
-            (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4)) :=
-      Fintype.card_congr (d.disconnectedExternalBlockLegEquiv hExt)
-    _ = 1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
-      simp [Nat.mul_comm]
-
 /-- In every two-point diagram, the two one-legged external vertices necessarily belong to the same
 connected component. -/
 theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
@@ -142,6 +52,83 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     d.ExternalVerticesConnected := by
   classical
   by_contra hExt
+  let dataEquiv :
+      {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
+        Fin 1 ⊕
+          (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) :=
+    {
+      toFun := fun leg => by
+        rcases leg with ⟨leg, hleg⟩
+        cases leg with
+        | inl e =>
+            by_cases he : e = 0
+            · exact Sum.inl 0
+            · have he1 : e = 1 := by omega
+              subst e
+              exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
+        | inr p =>
+            exact Sum.inr
+              (⟨p.1.1, (TwoPointDiagram.mem_interactionPart_subtype
+                (d.externalComponent 0) p.1).2 hleg⟩, p.2)
+      invFun := fun leg => by
+        cases leg with
+        | inl e =>
+            exact ⟨Sum.inl 0, by
+              change (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
+                d.vertexGraph.componentBlock (Sum.inl 0)
+              exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)⟩
+        | inr p =>
+            let v : ↥S :=
+              ⟨p.1.1, TwoPointDiagram.interactionPart_subset
+                (d.externalComponent 0) p.1.2⟩
+            exact ⟨Sum.inr (v, p.2), by
+              change (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0
+              exact (TwoPointDiagram.mem_interactionPart_subtype
+                (d.externalComponent 0) v).1 p.1.2⟩
+      left_inv := fun leg => by
+        rcases leg with ⟨leg, hleg⟩
+        cases leg with
+        | inl e =>
+            fin_cases e
+            · apply Subtype.ext
+              rfl
+            · exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
+        | inr p =>
+            rcases p with ⟨v, l⟩
+            apply Subtype.ext
+            rfl
+      right_inv := fun leg => by
+        cases leg with
+        | inl e =>
+            fin_cases e
+            rfl
+        | inr p =>
+            rcases p with ⟨v, l⟩
+            apply congrArg Sum.inr
+            apply Prod.ext
+            · exact Subtype.ext (by rfl)
+            · rfl
+    }
+  let blockEquiv :
+      {leg : Fin (2 * (2 * S.card + 1)) //
+        d.legInComponent (d.externalComponent 0) leg} ≃
+        Fin 1 ⊕
+          (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) :=
+    ((twoPointLegEquiv S).subtypeEquiv fun leg =>
+        d.legInComponent_iff_unflattened d.externalComponentPart leg).trans dataEquiv
+  have hcard :
+      Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
+        d.legInComponent (d.externalComponent 0) leg} =
+        1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
+    calc
+      Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
+          d.legInComponent (d.externalComponent 0) leg} =
+          Fintype.card
+            (Fin 1 ⊕
+              (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4)) :=
+        Fintype.card_congr blockEquiv
+      _ = 1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
+        simp [Nat.mul_comm]
   have hpairing :
       Combinatorics.IsPairing (d.restrictedPartner (d.externalComponent 0)) := by
     simpa only [TwoPointDiagram.restrictedPartner] using
@@ -152,7 +139,7 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
         d.legInComponent (d.externalComponent 0) leg}) :=
     Combinatorics.even_card_of_fixedPointFreeInvolution
       (d.restrictedPartner (d.externalComponent 0)) hpairing.1 hpairing.2
-  rw [d.card_disconnectedExternalBlockLegs hExt] at hEven
+  rw [hcard] at hEven
   obtain ⟨k, hk⟩ := hEven
   omega
 
@@ -187,12 +174,6 @@ theorem TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent
     d.IsExternallyConnected ↔ d.HasNoVacuumComponent := by
   simp [TwoPointDiagram.IsExternallyConnected, d.externalVerticesConnected]
 
-/-- Equivalent finite-component form of external connectedness. -/
-theorem TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.IsExternallyConnected ↔ d.vacuumComponentParts = ∅ := by
-  rw [d.isExternallyConnected_iff_hasNoVacuumComponent,
-    d.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty]
 
 end Common
 end SecondQuantization
