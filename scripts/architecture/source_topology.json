@@ -12,6 +12,36 @@
       ]
     },
     {
+      "id": "transportPurePointSpectralBridge",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse",
+        "LeanCondensedMatter/Transport/Resolvent",
+        "LeanCondensedMatter/Transport/Spectral",
+        "LeanCondensedMatter/Transport/KuboBastin",
+        "LeanCondensedMatter/Transport/Streda"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral",
+        "LeanCondensedMatter.Transport.Spectral.PurePoint",
+        "LeanCondensedMatter.Transport.KuboBastin.PurePoint",
+        "LeanCondensedMatter.Transport.Streda.TraceSpectral"
+      ],
+      "layers": [
+        {"id": "lehmann", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]},
+        {"id": "resolventSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]},
+        {"id": "purePointAdapter", "modulePrefixes": ["LeanCondensedMatter.Transport.Spectral.PurePoint"]},
+        {"id": "kuboBastinPurePoint", "modulePrefixes": ["LeanCondensedMatter.Transport.KuboBastin.PurePoint"]},
+        {"id": "stredaTraceSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceSpectral"]}
+      ],
+      "edges": [
+        {"upstream": "lehmann", "downstream": "purePointAdapter"},
+        {"upstream": "resolventSpectral", "downstream": "purePointAdapter"},
+        {"upstream": "purePointAdapter", "downstream": "kuboBastinPurePoint"},
+        {"upstream": "purePointAdapter", "downstream": "stredaTraceSpectral"}
+      ]
+    },
+    {
       "id": "finiteDisorderClosures",
       "sourceRoots": [
         "LeanCondensedMatter/Analysis/Operator",

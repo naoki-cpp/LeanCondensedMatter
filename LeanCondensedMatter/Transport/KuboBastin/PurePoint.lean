@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
-import LeanCondensedMatter.Transport.Resolvent.Spectral
+import LeanCondensedMatter.Transport.Spectral.PurePoint
 
 set_option linter.style.header false
 
@@ -118,11 +118,10 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
           (data.energy mn.2 : ℂ))⁻¹ • data.basis mn.2 := by
     simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
       retardedSpectralParameter, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_apply_eigenvector
-        system.hamiltonian.1 system.hamiltonian.2
-        (data.hamiltonian_apply_basis mn.2)
+      resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+        system data
         (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-        (kuboBastinEnergyBroadening system.hbar eta) hregulator
+        (kuboBastinEnergyBroadening system.hbar eta) hregulator mn.2
   have hinner :
       inner ℂ (data.basis mn.2)
           (retardedResolvent system.hamiltonian.1

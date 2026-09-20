@@ -52,6 +52,7 @@
         "LeanCondensedMatter/Transport/Core/FiniteConductivityTable.lean",
         "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
         "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
+        "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
         "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
@@ -447,11 +448,19 @@
       ]
     },
     {
+      "id": "transportPurePointSpectralAdapter",
+      "path": "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+      ]
+    },
+    {
       "id": "transportKuboBastinPurePoint",
       "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+        "LeanCondensedMatter.Transport.Spectral.PurePoint"
       ]
     },
     {
@@ -465,7 +474,7 @@
     {
       "id": "transportStredaTraceSpectral",
       "path": "LeanCondensedMatter/Transport/Streda/TraceSpectral.lean",
-      "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
+      "modules": ["LeanCondensedMatter.Transport.Spectral.PurePoint"]
     },
     {
       "id": "transportFrequencyResponse",
@@ -552,6 +561,11 @@
         "LeanCondensedMatter.Transport.Models",
         "LeanCondensedMatter.Transport.AnomalousHall"
       ]
+    },
+    {
+      "id": "genericResolventSpectralBoundary",
+      "path": "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]
     }
   ],
   "forbiddenImportPrefixes": [

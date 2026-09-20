@@ -10,8 +10,9 @@ set_option linter.style.header false
 # Transport resolvent API
 
 Public umbrella for dimension-independent retarded/advanced resolvents, the abstract Dyson
-self-energy relation, their pure-point spectral action, clean real-energy derivatives, and uniqueness
-of side-indexed resolvent candidates.
+self-energy relation, generic eigenvector spectral action, clean real-energy derivatives, and
+uniqueness of side-indexed resolvent candidates. Pure-point response adapters live separately under
+`Transport.Spectral`.
 
 Canonical resolvent implementations live under `Transport/Resolvent/`; representation-independent
 analysis primitives such as Lorentzian kernels remain under `Analysis/`.
