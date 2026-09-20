@@ -251,6 +251,7 @@ noncomputable def finiteCutoffContinuumBornDysonLadderSolvedVector
   inPlaneLadderSolvedVector
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
+
 /-- Under the model regularity condition, the finite-broadening Born-Dyson solved coefficient
 vector is exactly the generic algebraically resummed ladder vertex. No geometric-series
 convergence statement is used. -/
