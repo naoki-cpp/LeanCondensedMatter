@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
+import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false

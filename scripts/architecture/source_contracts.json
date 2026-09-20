@@ -27,7 +27,11 @@
         "LeanCondensedMatter/Analysis/Operator/LinearCommutator.lean",
         "LeanCondensedMatter/Analysis/Operator/SymmetrizedProduct.lean",
         "LeanCondensedMatter/Analysis/Calculus/CurrentRepresentation.lean",
+        "LeanCondensedMatter/Analysis/Calculus/IntrinsicBalanceLaw.lean",
         "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
+        "LeanCondensedMatter/Analysis/Calculus/BalanceLawAdapter.lean",
+        "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
+        "LeanCondensedMatter/Analysis/Calculus/IntrinsicSymmetricLocalization.lean",
         "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
@@ -298,25 +302,70 @@
       ]
     },
     {
+      "id": "generalizedCurrentIntrinsicBalanceLaw",
+      "path": "LeanCondensedMatter/Analysis/Calculus/IntrinsicBalanceLaw.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+    },
+    {
       "id": "generalizedCurrentBalanceLaw",
       "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
       "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+    },
+    {
+      "id": "generalizedCurrentBalanceAdapter",
+      "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLawAdapter.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+        "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw"
+      ]
+    },
+    {
+      "id": "generalizedCurrentSymmetricLocalizationAlgebra",
+      "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]
     },
     {
       "id": "generalizedCurrentSymmetricLocalization",
       "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
       "modules": [
         "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
-        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
+      ]
+    },
+    {
+      "id": "generalizedCurrentIntrinsicSymmetricLocalization",
+      "path": "LeanCondensedMatter/Analysis/Calculus/IntrinsicSymmetricLocalization.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw",
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
       ]
     },
     {
       "id": "generalizedCurrentLocalizedTransport",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
       "modules": [
-        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra",
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
       ]
+    },
+    {
+      "id": "heisenbergBalanceAdapter",
+      "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"]
+    },
+    {
+      "id": "intrinsicLocalizedTransportBalanceAdapter",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/IntrinsicLocalizedTransport.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+      ]
+    },
+    {
+      "id": "correctedCurrentFluxLocalizationAlgebra",
+      "path": "LeanCondensedMatter/Analysis/Calculus/CorrectedCurrentFlux.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
     },
     {
       "id": "generalizedCurrentSymmetrizedVelocity",
@@ -341,7 +390,7 @@
     {
       "id": "generalizedCurrentFieldBridge",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
     },
     {
       "id": "generalizedCurrentConventionalResponse",

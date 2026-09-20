@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
+import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -178,49 +178,6 @@ noncomputable def scaleEvolution
     simp only [LinearMap.smul_apply]
     rw [B.balance f]
     exact smul_add c (B.transport f) (B.source f)
-
-/-- A represented balance law forgets its arbitrary extension away from exact differential data and
-therefore determines an intrinsic balance law. -/
-noncomputable def ofRepresented
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : BalanceLaw δ Q d) :
-    IntrinsicBalanceLaw δ Q d where
-  transport := B.current.comp d
-  transport_depends := DependsOnlyOnDifferential.of_factors (fun _ => rfl)
-  source := B.source
-  balance := by
-    intro f
-    simpa using B.balance f
-
-/-- Choosing an extension of intrinsic transport to all one-form-like tests recovers the represented
-`BalanceLaw`.  This makes the full current functional explicitly downstream representation data. -/
-noncomputable def toRepresented
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d)
-    (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : FactorsThroughDifferential d B.transport J) :
-    BalanceLaw δ Q d where
-  current := J
-  source := B.source
-  balance := by
-    intro f
-    rw [B.balance f, hJ f]
-
-/-- A chosen extension of intrinsic transport is precisely a differential current representation. -/
-def toDifferentialCurrentRepresentation
-    {δ : Obs →ₗ[𝕜] Obs}
-    {Q : Test →ₗ[𝕜] Obs}
-    {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d)
-    (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : FactorsThroughDifferential d B.transport J) :
-    DifferentialCurrentRepresentation d B.transport where
-  current := J
-  factors := hJ
 
 /-- If the source itself depends only on differential data, it may be absorbed into transport.
 The resulting law is source-free without choosing any full current functional. -/
