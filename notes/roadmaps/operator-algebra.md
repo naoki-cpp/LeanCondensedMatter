@@ -34,6 +34,10 @@ These layers are physics-independent.
 self-adjoint operators, spectral trace, positivity/additivity/scalar results, supported cyclicity,
 and Hilbert-basis formulas.
 
+The neutral Hilbert-basis diagonal operator construction is owned by
+`Analysis/Operator/Diagonal.lean`; the TraceClass diagonal modules only adapt it to positivity and
+spectral-trace-class results.
+
 This is sufficient for the current density-operator, entropy, and bounded Gibbs constructions, but it
 is not a general trace-class ideal on arbitrary non-self-adjoint maps.
 

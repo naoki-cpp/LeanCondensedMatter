@@ -80,8 +80,12 @@ is a spectral trace for compact self-adjoint operators.
 - bundled and unbundled spectral summability;
 - trace computation from arbitrary Hilbert bases;
 - positivity, scalar linearity, additivity, and supported cyclicity;
-- diagonal, positive, and scalar constructions;
+- positive and scalar constructions;
 - orthonormal-family trace bounds.
+
+`Analysis/Operator/Diagonal.lean` owns the neutral Hilbert-basis diagonal construction, including
+the absolutely summable rank-one series, basis action, and compactness. The TraceClass diagonal
+modules adapt that construction to positivity and `SpectralTraceClass`.
 
 This is not Mathlib’s general trace-class operator ideal and must not be described as a trace on all
 non-self-adjoint trace-class maps.

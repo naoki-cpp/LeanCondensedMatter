@@ -11,6 +11,11 @@ applies.
   non-self-adjoint trace-class operator, a full Schatten hierarchy, or all ideal/product closure
   theorems.
 
+- **Hilbert-basis diagonal operators are not trace-class-specific.**
+  `Analysis/Operator/Diagonal.lean` constructs the absolutely summable rank-one series and proves
+  its basis action and compactness. Positivity and spectral-trace packaging are separate adapters
+  under `Analysis/Operator/TraceClass/`.
+
 - **The Hilbert–Schmidt API does not yet supply a general trace-class product ideal.**
   The project proves basis independence, adjoint invariance, bounded-composition closure, and the
   Hilbert–Schmidt pairing. It has not yet bundled arbitrary products of two Hilbert–Schmidt
