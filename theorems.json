@@ -49822,6 +49822,162 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {E : ι → ℝ} (self : QuantumTheory.PurePointGibbsCompetitor E),\n  Summable fun i => ‖self.probability i * E i‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.PurePointGibbsCompetitor.energyIntegrable",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
+    "externalAxioms": [],
+    "docString": "The mean-energy series is absolutely summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {E : ι → ℝ} (self : QuantumTheory.PurePointGibbsCompetitor E),\n  Summable fun i => (self.probability i).negMulLog",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.PurePointGibbsCompetitor.entropySummable",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
+    "externalAxioms": [],
+    "docString": "The Shannon entropy series is summable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {E : ι → ℝ} (self : QuantumTheory.PurePointGibbsCompetitor E), HasSum self.probability 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.PurePointGibbsCompetitor.hasSum_one",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
+    "externalAxioms": [],
+    "docString": "The probabilities are normalized to total mass one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {E : ι → ℝ} (self : QuantumTheory.PurePointGibbsCompetitor E) (i : ι), 0 ≤ self.probability i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.PurePointGibbsCompetitor.nonneg",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
+    "externalAxioms": [],
+    "docString": "Each probability is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.PureState H), ∃ ψ, ↑ρ = QuantumTheory.pure ψ",
     "standardAxioms": [
       "Classical.choice",
@@ -79754,6 +79910,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.purePointBoltzmannWeight_nonneg",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos"
     ],
@@ -79762,10 +79919,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.purePointBoltzmannWeight_nonneg",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.freeGibbsConfigurationProbability_pos"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79797,6 +79955,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.hasSum_purePointGibbsProbability",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
@@ -79806,11 +79965,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.hasSum_purePointGibbsProbability",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.purePointPartitionFunction_pos",
       "SecondQuantization.Fermionic.purePointPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability.0.SecondQuantization.Fermionic.purePointBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80086,6 +80246,50 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    QuantumTheory.PurePointGibbsSummable E β →\n      ∀ (p : QuantumTheory.PurePointGibbsCompetitor E),\n        -(1 / β) * Real.log (QuantumTheory.purePointPartitionFunction E β) ≤ p.helmholtzFreeEnergy β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
+    "externalAxioms": [],
+    "docString": "Every normalized countable competitor with finite entropy and absolutely integrable energy has\nHelmholtz free energy at least the pure-point Gibbs value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.PurePointGibbsCompetitor.energyIntegrable",
+      "QuantumTheory.PurePointGibbsCompetitor.entropySummable",
+      "QuantumTheory.PurePointGibbsCompetitor.hasSum_one",
+      "QuantumTheory.PurePointGibbsCompetitor.nonneg",
+      "QuantumTheory.purePointBoltzmannWeight_pos",
+      "QuantumTheory.purePointBoltzmannWeight_summable",
+      "QuantumTheory.purePointPartitionFunction_pos",
+      "negMulLog_le_of_neg_log_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β → 0 < QuantumTheory.purePointPartitionFunction E β",
     "standardAxioms": [
@@ -80109,6 +80313,7 @@
       "QuantumTheory.hasSum_purePointGibbsProbability",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
@@ -80130,6 +80335,7 @@
       "QuantumTheory.purePointGibbsDensityOperator",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
       "QuantumTheory.purePointGibbsProbability_nonneg",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
@@ -80139,7 +80345,7 @@
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164281,7 +164487,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
     ],
     "dependencies": [
       "gibbs_scalar_ineq"
@@ -164290,9 +164497,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_le"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
