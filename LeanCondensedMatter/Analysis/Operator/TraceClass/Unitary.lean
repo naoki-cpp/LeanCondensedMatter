@@ -43,7 +43,7 @@ eigenvalue. -/
 theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) (μ : ℂ) :
     Module.End.eigenspace ((unitaryConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ =
-      Submodule.map (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.toLinearMap
+      Submodule.map (U : H →ₗ[ℂ] H)
         (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
   ext x
   constructor
@@ -78,7 +78,12 @@ theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
         (Module.End.eigenspace ((unitaryConjugate U T : H →L[ℂ] H) : H →ₗ[ℂ] H) μ) =
       Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) := by
   rw [eigenspace_unitaryConjugate U T hleft hright μ]
-  exact (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv.finrank_map_eq _
+  let e :=
+    (Unitary.linearIsometryEquiv (unitaryOfAdjointInverse U hleft hright)).toLinearEquiv
+  change Module.finrank ℂ (Submodule.map e.toLinearMap
+      (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ)) =
+    Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ)
+  exact e.finrank_map_eq _
 
 /-- Absolute summability of real eigenvalues with multiplicity is invariant under unitary
 conjugation. -/
