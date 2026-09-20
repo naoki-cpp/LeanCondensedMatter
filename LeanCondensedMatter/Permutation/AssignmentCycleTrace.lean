@@ -202,15 +202,10 @@ private theorem cycleAssignmentKernelSum_fullCycle_add_two [CommSemiring R] [Dec
 private noncomputable def fullCycleEquivCycleTypeAddTwo (n : ℕ) :
     {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))} ≃
       ↥({σ : Equiv.Perm (Fin (n + 2)) | σ.cycleType = {n + 2}} :
-        Finset (Equiv.Perm (Fin (n + 2)))) where
-  toFun σ := ⟨σ.1, by
+        Finset (Equiv.Perm (Fin (n + 2)))) :=
+  Equiv.subtypeEquivRight fun σ => by
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    simpa using (Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).1 σ.2⟩
-  invFun σ := ⟨σ.1, (Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ.1).2 (by
-    have h := σ.2
-    simpa only [Finset.mem_filter, Finset.mem_univ, true_and, Fintype.card_fin] using h)⟩
-  left_inv σ := Subtype.ext rfl
-  right_inv σ := Subtype.ext rfl
+    simpa using Equiv.Perm.isCycleOn_univ_iff_cycleType_eq_singleton_card σ
 
 private theorem fullCycle_card_add_two (n : ℕ) :
     Fintype.card

@@ -534,10 +534,7 @@ noncomputable local instance fullCycleFintype :
 private noncomputable def fullCycleEquivSingleOrbitPermUniv :
     {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} ≃
       SingleOrbitPerm (univ : Finset α) :=
-  { toFun := fun σ => ⟨σ.1, by simpa using σ.2⟩
-    invFun := fun σ => ⟨σ.1, by simpa using σ.2.2⟩
-    left_inv := fun σ => Subtype.ext rfl
-    right_inv := fun σ => Subtype.ext rfl }
+  Equiv.subtypeEquivRight fun _ => by simp
 
 /-- On the full finite index type, the connected contribution is the direct sum over permutations
 that are a single cycle on the whole type, with the universal connected-cycle weight. -/
@@ -579,11 +576,7 @@ theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
 private noncomputable def permEquivObjectUniv :
     Equiv.Perm α ≃ (permutationConnectedDecomposition α).Object (univ : Finset α) := by
   change Equiv.Perm α ≃ SupportedPerm (univ : Finset α)
-  exact
-    { toFun := fun σ => ⟨σ, by simp⟩
-      invFun := fun σ => σ.1
-      left_inv := fun _ => rfl
-      right_inv := fun σ => Subtype.ext rfl }
+  exact (Equiv.subtypeUnivEquiv fun _ => by simp).symm
 
 /-- On the full finite index type, the connected-decomposition backend is the usual direct sum over
 all permutations with weight `ζ ^ cycleDefect`. This is the bridge consumed by the perfect-pairing
