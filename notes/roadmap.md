@@ -46,6 +46,7 @@ E  transport/disorder      Kubo–Bastin/Středa, resolvents, disorder, Born/SCB
 | Exact finite-disorder averaged Green invertibility and canonical exact self-energy at nonzero broadening | C/E | `proved` | [transport roadmap](roadmaps/transport.md#proved-disorder-chain) |
 | Physical conductivity bridge from response-level Středa data with explicit normalization and limits | E | `stated` | [transport architecture](architecture/transport.md#resolvent-and-response-boundary) |
 | Trace-per-unit-volume / thermodynamic-limit transport | C/E | `idea` | [transport roadmap](roadmaps/transport.md#open-targets) |
+| Spin Hall response: Rashba model, proper current, disorder vertices, and inverse reciprocity | E | `stated` | [spin Hall roadmap](roadmaps/spin-hall.md) |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Finite-mode fermionic thermal, Dyson, and partition-function linked-cluster line | D | `proved` | [linked cluster theorem](roadmaps/linked-cluster-theorem.md) |
 | Finite-mode fermionic two-point linked-cluster theorem with external legs | D | `proved` | `SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
