@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
+import LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport
 
 set_option linter.style.header false
