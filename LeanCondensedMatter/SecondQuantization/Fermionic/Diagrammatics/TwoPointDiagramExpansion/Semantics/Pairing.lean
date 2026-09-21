@@ -112,14 +112,14 @@ noncomputable def mixedTimeOrderedAtomicOperatorFamily {n : ℕ} (ε : Mode → 
   fun p => timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)
 
 /-- The eigenvalue-shift family used by the general pairing theorem. -/
-noncomputable def mixedTimeOrderedAtomicEnergyShift {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private noncomputable def mixedTimeOrderedAtomicEnergyShift {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → ℝ :=
   fun p => externalFieldLabelEnergyShift ε
     (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p).label
 
 /-- The scalar zeta-commutator coefficient family used by the general pairing theorem. -/
-noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
+private noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) → Fin (2 * (2 * n + 1)) → ℂ :=
