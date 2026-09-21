@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
 import Mathlib.Logic.Equiv.Set
@@ -36,7 +37,7 @@ noncomputable def partEquiv (π : Finpartition s) (orders : π.PartOrders) :
 /-- Assemble a global order from part-local orders and an order-preserving shuffle. -/
 noncomputable def assembleOrder (π : Finpartition s) (orders : π.PartOrders)
     (shuffle : π.PartShuffle) : Fin s.card ≃ ↥s :=
-  shuffle.slotEquiv.symm.trans (π.partEquiv orders)
+  shuffle.slotEquiv.changeCoordinates (π.partEquiv orders)
 
 /-- A family of part-local orders is compatible with a global order when every part appears in the
 ambient slots in precisely that local order. -/
