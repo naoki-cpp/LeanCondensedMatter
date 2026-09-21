@@ -8026,6 +8026,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
@@ -8036,11 +8037,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8071,6 +8073,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
@@ -8082,11 +8085,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -90157,6 +90161,45 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts)\n  (p :\n    Fin\n      (2 * (2 * (SecondQuantization.Common.ExternalInsertionDiagram.interactionPart ↑B).card + d.externalPairCount B))),\n  d.componentDiagramLeg B ((d.restrictComponent B).pairing.partner p) = d.pairing.partner (d.componentDiagramLeg B p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The restricted component pairing partner, transported back to ambient flattened-leg\ncoordinates, agrees with the ambient pairing partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
+      "Combinatorics.PairingOn.restrict_partner_val",
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts), d.ComponentMeetsExternal B ↔ ∃ e, ↑B = d.externalComponent e",
     "standardAxioms": [
       "Classical.choice",
@@ -90565,6 +90608,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
@@ -90575,10 +90619,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
