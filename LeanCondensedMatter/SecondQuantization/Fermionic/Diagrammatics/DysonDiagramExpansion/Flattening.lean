@@ -83,7 +83,7 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε 
   | 0, q, τ => by
     have h0 : 2 * (2 * 0) = 0 := by ring
     have : IsEmpty (Fin (2 * (2 * 0))) := h0 ▸ Fin.isEmpty
-    simp [List.ofFn]
+    simp [List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
     have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
     have hcard' : 2 * (2 * n) = n * 4 := by ring
