@@ -48,9 +48,14 @@ theorem particleNumber_eq_finsupp_sum (n : Occupation Mode) :
       (Common.OccupationBasis.finiteSupport
         (Mode := Mode) (Config := Occupation Mode) n).toFinset = n.support := by
     ext i
-    simp [occupationBasis, Finsupp.mem_support_iff]
+    simp only [Set.Finite.mem_toFinset]
+    change (n i ≠ 0) ↔ i ∈ n.support
+    exact Finsupp.mem_support_iff.symm
   rw [hs]
-  simp [occupationBasis, Finsupp.sum]
+  simp only [Finsupp.sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rfl
 
 @[simp]
 theorem particleNumber_zero : particleNumber (0 : Occupation Mode) = 0 := by
