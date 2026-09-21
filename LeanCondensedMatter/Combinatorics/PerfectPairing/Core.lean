@@ -78,7 +78,7 @@ normalized pairs and crossing signs live on this finite specialization. -/
 abbrev Pairing (n : ℕ) := PairingOn (Fin (2 * n))
 
 /-- The internal equivalence used to enumerate finite `PairingOn` values through permutations. -/
-private def pairingOnEquivSubtype (α : Type*) [Fintype α] [DecidableEq α] :
+private def pairingOnEquivSubtype (α : Type*) :
     PairingOn α ≃ {partner : Equiv.Perm α // IsPairing partner} where
   toFun pairing :=
     ⟨pairing.partner, pairing.partner_involutive, pairing.partner_ne⟩
