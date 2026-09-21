@@ -176,10 +176,13 @@ disjoint union of `externallySupportedComponentParts` and `vacuumComponentParts`
 `ExternalInsertionDiagram.externalPart` extracts the finite subset of external insertion indices
 carried by a component, and external support is exactly nonemptiness of that subset. Every component
 carries an even number of external insertions, proved from the fixed-point-free restricted
-`PairingOn` and the four-leg contribution of each interaction vertex. A vacuum component has no
-external legs, so Common reindexes its surviving legs as ordinary quartic legs and exposes the induced
-`QuarticDiagram`; externally supported component restriction still requires the local external-sector
-reindexing.
+`PairingOn` and the four-leg contribution of each interaction vertex. Its local external sector is
+therefore indexed by `Fin (2 * externalPairCount)`; `externalPartOrderIso` gives the canonical
+increasing identification with the ambient external subset, preserving external insertion order for
+later sign-sensitive constructions. A vacuum component has no external legs, so Common reindexes its
+surviving legs as ordinary quartic legs and exposes the induced `QuarticDiagram`; externally
+supported component restriction still requires combining this external-sector reindexing with the
+interaction-sector restriction.
 
 The two-point expansion has its own internal layer order:
 
