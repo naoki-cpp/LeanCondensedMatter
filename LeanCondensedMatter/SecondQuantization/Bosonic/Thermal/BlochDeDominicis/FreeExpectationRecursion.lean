@@ -44,6 +44,12 @@ def orderedProduct (fields : List (FreeThermalField Mode)) :
     orderedProduct ([] : List (FreeThermalField Mode)) = LinearMap.id := by
   simp [orderedProduct, Module.End.one_eq_id]
 
+@[simp] theorem orderedProduct_cons (field : FreeThermalField Mode)
+    (fields : List (FreeThermalField Mode)) :
+    orderedProduct (field :: fields) =
+      field.operator.comp (orderedProduct fields) := by
+  simp [orderedProduct, Module.End.mul_eq_comp]
+
 end FreeThermalField
 
 variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
