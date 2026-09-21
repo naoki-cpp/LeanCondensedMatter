@@ -133,8 +133,8 @@ theorem inPlanePauliVertexCLM_injective :
     intro i j hij
     fin_cases i <;> fin_cases j <;> simp [inPlanePauliAxis] at hij ⊢
   have hDirection : LinearIndependent ℂ directionPauli := by
-    simpa [directionPauli] using
-      InternalSpace.pauliBasis_linearIndependent.comp inPlanePauliAxis hAxis
+    change LinearIndependent ℂ (InternalSpace.pauliBasis ∘ inPlanePauliAxis)
+    exact InternalSpace.pauliBasis_linearIndependent.comp inPlanePauliAxis hAxis
   have hcoeff :=
     (Fintype.linearIndependent_iffₛ.mp hDirection) left right
       (by
