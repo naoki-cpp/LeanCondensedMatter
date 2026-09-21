@@ -201,14 +201,6 @@ theorem pauliBasis_linearIndependent : LinearIndependent ℂ pauliBasis := by
     simpa using htrace
   exact (mul_eq_zero.mp hcoeff).resolve_left (by norm_num)
 
-/-- Pauli synthesis has unique axis coefficients. -/
-theorem pauliCombination_injective : Function.Injective pauliCombination := by
-  intro left right h
-  have hcoeff :=
-    (Fintype.linearIndependent_iffₛ.mp pauliBasis_linearIndependent) left right
-      (by simpa [pauliCombination] using h)
-  exact funext hcoeff
-
 /-- Tracing a synthesized Pauli vector against one basis matrix selects that coefficient. -/
 theorem trace_pauliCombination_mul_pauliBasis (u : PauliAxis → ℂ) (axis : PauliAxis) :
     Matrix.trace (pauliCombination u * pauliBasis axis) = 2 * u axis := by
