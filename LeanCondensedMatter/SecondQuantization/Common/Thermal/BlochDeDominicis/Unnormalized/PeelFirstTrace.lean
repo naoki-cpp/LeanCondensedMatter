@@ -7,7 +7,7 @@ set_option linter.style.header false
 # The trace-level peel-first identity: `PeelFirst.lean` + KMS cyclicity
 
 Wraps `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirst.lean`'s pure operator-algebra peel identity
-(`comp_prodComp_eq_of_zetaCommutator`) in the trace-level KMS cyclicity step
+(`comp_prod_eq_of_zetaCommutator`) in the trace-level KMS cyclicity step
 (`Common.traceFock_diagonalEvolution_comp_rotate`) for an arbitrary-length remaining product. Fixed
 finite cases are obtained directly by specializing this theorem rather than maintaining separate
 hand-unrolled reductions.
@@ -39,7 +39,7 @@ variable {Config : Type*}
 
 /-- **The trace-level peel-first identity**: `Common.traceFock_diagonalEvolution_comp_rotate`
 applied to the whole remaining product `B₁⋯Bₖ` (rotating `C₁` from the end back to the front)
-combined with `comp_prodComp_eq_of_zetaCommutator`'s operator identity, solving the resulting
+combined with `comp_prod_eq_of_zetaCommutator`'s operator identity, solving the resulting
 self-referential equation for `Tr[e^{-βH₀}(C₁B₁⋯Bₖ)]`. -/
 theorem traceFock_diagonalEvolution_comp_peel [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
@@ -50,16 +50,16 @@ theorem traceFock_diagonalEvolution_comp_peel [Fintype Config]
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         traceFock ((diagonalEvolution energy (-β)).comp
-          (C1.comp (prodComp (l.map Prod.fst)))) =
+          (C1.comp (List.prod (l.map Prod.fst)))) =
       traceFock ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) := by
-  have hopeq := comp_prodComp_eq_of_zetaCommutator ζ C1 l hcomm
+  have hopeq := comp_prod_eq_of_zetaCommutator ζ C1 l hcomm
   have hrot := traceFock_diagonalEvolution_comp_rotate energy β q1
-    (prodComp (l.map Prod.fst)) C1 hC1
+    (List.prod (l.map Prod.fst)) C1 hC1
   have hstep : traceFock ((diagonalEvolution energy (-β)).comp
-      (C1.comp (prodComp (l.map Prod.fst)))) =
+      (C1.comp (List.prod (l.map Prod.fst)))) =
       traceFock ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) +
         ζ ^ l.length * traceFock ((diagonalEvolution energy (-β)).comp
-          ((prodComp (l.map Prod.fst)).comp C1)) := by
+          ((List.prod (l.map Prod.fst)).comp C1)) := by
     conv_lhs => rw [hopeq]
     simp only [LinearMap.comp_add, LinearMap.comp_smul, map_add, map_smul, smul_eq_mul]
   rw [hrot, smul_eq_mul] at hstep
@@ -82,38 +82,38 @@ theorem tsumTrace_diagonalEvolution_comp_peel
     (hPeel : Summable (fun n =>
       matrixCoeff ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) n n))
     (hRotate : Summable (Function.uncurry (fun n k =>
-      matrixCoeff ((diagonalEvolution energy (-β)).comp (prodComp (l.map Prod.fst))) n k *
+      matrixCoeff ((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))) n k *
         matrixCoeff C1 k n))) :
     (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) *
         tsumTrace ((diagonalEvolution energy (-β)).comp
-          (C1.comp (prodComp (l.map Prod.fst)))) =
+          (C1.comp (List.prod (l.map Prod.fst)))) =
       tsumTrace ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) := by
-  have hopeq := comp_prodComp_eq_of_zetaCommutator ζ C1 l hcomm
+  have hopeq := comp_prod_eq_of_zetaCommutator ζ C1 l hcomm
   have hrot := tsumTrace_diagonalEvolution_comp_rotate energy β q1
-    (prodComp (l.map Prod.fst)) C1 hC1 hRotate
+    (List.prod (l.map Prod.fst)) C1 hC1 hRotate
   have hSummDCjC1 : Summable (fun n => matrixCoeff
-      ((diagonalEvolution energy (-β)).comp ((prodComp (l.map Prod.fst)).comp C1)) n n) := by
+      ((diagonalEvolution energy (-β)).comp ((List.prod (l.map Prod.fst)).comp C1)) n n) := by
     have := summable_matrixCoeff_diag_comp_of_summable_uncurry
-      ((diagonalEvolution energy (-β)).comp (prodComp (l.map Prod.fst))) C1 hRotate
+      ((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))) C1 hRotate
     rwa [LinearMap.comp_assoc] at this
-  have hDcomm : (diagonalEvolution energy (-β)).comp (C1.comp (prodComp (l.map Prod.fst))) =
+  have hDcomm : (diagonalEvolution energy (-β)).comp (C1.comp (List.prod (l.map Prod.fst))) =
       (diagonalEvolution energy (-β)).comp (peelSum ζ l) +
         ζ ^ l.length • ((diagonalEvolution energy (-β)).comp
-          ((prodComp (l.map Prod.fst)).comp C1)) := by
+          ((List.prod (l.map Prod.fst)).comp C1)) := by
     rw [hopeq, LinearMap.comp_add, LinearMap.comp_smul]
   have hpoint : (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp
-      (C1.comp (prodComp (l.map Prod.fst)))) n n) =
+      (C1.comp (List.prod (l.map Prod.fst)))) n n) =
       fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) n n +
         ζ ^ l.length * matrixCoeff ((diagonalEvolution energy (-β)).comp
-          ((prodComp (l.map Prod.fst)).comp C1)) n n := by
+          ((List.prod (l.map Prod.fst)).comp C1)) n n := by
     funext n
     rw [hDcomm]
     simpa only [← matrixCoeffLinear_apply, map_add, map_smul, smul_eq_mul]
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp
-      (C1.comp (prodComp (l.map Prod.fst)))) =
+      (C1.comp (List.prod (l.map Prod.fst)))) =
       tsumTrace ((diagonalEvolution energy (-β)).comp (peelSum ζ l)) +
         ζ ^ l.length * tsumTrace ((diagonalEvolution energy (-β)).comp
-          ((prodComp (l.map Prod.fst)).comp C1)) := by
+          ((List.prod (l.map Prod.fst)).comp C1)) := by
     rw [tsumTrace, tsumTrace, tsumTrace, hpoint,
       (hPeel.hasSum.add ((hSummDCjC1.mul_left (ζ ^ l.length)).hasSum)).tsum_eq, tsum_mul_left]
   rw [hrot, smul_eq_mul] at hstep
