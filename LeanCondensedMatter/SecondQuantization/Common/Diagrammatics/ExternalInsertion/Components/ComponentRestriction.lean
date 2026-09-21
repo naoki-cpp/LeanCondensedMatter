@@ -199,14 +199,6 @@ theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
       (d.pairing.vertexGraph_reachable_partner externalInsertionVertexOfLeg leg).symm
   rw [hEq]
 
-/-- The partner permutation restricted to the legs of one full component. -/
-noncomputable def ExternalInsertionDiagram.restrictedPartner {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : Finset (ExternalInsertionVertex E S)) :
-    Equiv.Perm {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} :=
-  (d.pairing.restrict (d.legInComponent B) fun leg =>
-    d.legInComponent_partner_iff B leg).partner
-
 /-- Every connected component contains an even number of external insertions. -/
 theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -242,9 +234,8 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
         (B : Finset (ExternalInsertionVertex E S)) leg)
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
-        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) := by
-    exact Combinatorics.even_card_of_fixedPointFreeInvolution
-      restricted.partner restricted.partner_involutive restricted.partner_ne
+        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :=
+    restricted.even_card
   rw [hcard] at hEven
   rcases hEven with ⟨k, hk⟩
   refine ⟨k - 2 * (ExternalInsertionDiagram.interactionPart
@@ -313,8 +304,8 @@ noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (
     (fun leg => d.legInComponent_partner_iff (B : Finset (ExternalInsertionVertex E S)) leg)
     (d.vacuumBlockLegEquiv B hVac)
 
-/-- The restricted vacuum pairing agrees with the ambient partner under the vacuum leg
-reindexing. -/
+/-- The restricted vacuum pairing agrees with the component-restricted ambient pairing
+under the vacuum leg reindexing. -/
 theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -322,9 +313,10 @@ theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegE
     (leg : {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg}) :
     (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
       d.vacuumBlockLegEquiv B hVac
-        (d.restrictedPartner (B : Finset (ExternalInsertionVertex E S)) leg) := by
-  simpa only [ExternalInsertionDiagram.restrictedVacuumPairing,
-    ExternalInsertionDiagram.restrictedPartner] using
+        ((d.pairing.restrict (d.legInComponent B)
+          (fun i => d.legInComponent_partner_iff
+            (B : Finset (ExternalInsertionVertex E S)) i)).partner leg) := by
+  simpa only [ExternalInsertionDiagram.restrictedVacuumPairing] using
     d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
       (fun i => d.legInComponent_partner_iff
         (B : Finset (ExternalInsertionVertex E S)) i)
