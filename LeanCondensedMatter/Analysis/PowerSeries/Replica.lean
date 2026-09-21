@@ -2,6 +2,8 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.RingTheory.Polynomial.Pochhammer
 import Mathlib.RingTheory.PowerSeries.Order
+import Mathlib.Tactic.Field
+import Mathlib.Tactic.Omega
 
 set_option linter.style.header false
 
@@ -25,7 +27,7 @@ noncomputable def replicaCoeffPolynomial (Z : PowerSeries ℂ) (m : ℕ) : Polyn
   ∑ k ∈ Finset.range (m + 1),
     Polynomial.C
         (((m.factorial : ℂ) / (k.factorial : ℂ)) * coeff m ((Z - 1) ^ k)) *
-      Polynomial.descPochhammer ℂ k
+      descPochhammer ℂ k
 
 private theorem coeff_sub_one_pow_eq_zero_of_lt
     {Z : PowerSeries ℂ} (hZ : constantCoeff Z = 1) {m k : ℕ} (h : m < k) :
@@ -35,9 +37,9 @@ private theorem coeff_sub_one_pow_eq_zero_of_lt
     (le_order_pow_of_constantCoeff_eq_zero k (by simp [hZ]))
 
 private theorem descPochhammer_eval_nat (n k : ℕ) :
-    (Polynomial.descPochhammer ℂ k).eval (n : ℂ) =
+    (descPochhammer ℂ k).eval (n : ℂ) =
       (k.factorial : ℂ) * (n.choose k : ℂ) := by
-  rw [Polynomial.descPochhammer_eval_eq_descFactorial,
+  rw [descPochhammer_eval_eq_descFactorial,
     Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
 
 /-- Evaluating the fixed-order replica polynomial at a natural replica number gives the
