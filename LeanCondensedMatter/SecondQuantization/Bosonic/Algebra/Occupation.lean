@@ -35,7 +35,8 @@ instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
   ext {m n} h := Finsupp.ext h
 
 /-- Bosonic spelling of the statistics-independent particle-number grade from `Common`. -/
-noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ := Common.particleNumber n
+noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
+  Common.particleNumber (Mode := Mode) (Config := Occupation Mode) n
 
 /-- The common particle-number grade agrees with the native finitely-supported occupation sum. -/
 theorem particleNumber_eq_finsupp_sum (n : Occupation Mode) :
