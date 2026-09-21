@@ -77,7 +77,7 @@ private theorem splitLeftMap_ne_self (i : Fin (2 * a)) : splitLeftMap e h i ≠ 
 
 /-- The pairing induced on the left part. -/
 noncomputable def Pairing.splitLeft : Pairing a :=
-  Pairing.ofPartner (Function.Involutive.toPerm _ (splitLeftMap_involutive e h))
+  PairingOn.ofPartner (Function.Involutive.toPerm _ (splitLeftMap_involutive e h))
     ⟨splitLeftMap_involutive e h, splitLeftMap_ne_self e h⟩
 
 /-- The induced left pairing is read off the ambient partner map. -/
@@ -116,7 +116,7 @@ private theorem splitRightMap_ne_self (i : Fin (2 * b)) : splitRightMap e h i �
 
 /-- The pairing induced on the right part. -/
 noncomputable def Pairing.splitRight : Pairing b :=
-  Pairing.ofPartner (Function.Involutive.toPerm _ (splitRightMap_involutive e h))
+  PairingOn.ofPartner (Function.Involutive.toPerm _ (splitRightMap_involutive e h))
     ⟨splitRightMap_involutive e h, splitRightMap_ne_self e h⟩
 
 /-- The induced right pairing is read off the ambient partner map. -/
@@ -133,7 +133,7 @@ section Assemble
 `splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
 noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     Pairing n :=
-  Pairing.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
+  PairingOn.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
     (IsPairing.permCongr
       (IsPairing.sumCongr
         ⟨P.partner_involutive, P.partner_ne⟩
@@ -168,7 +168,7 @@ section Inverse
 @[simp]
 theorem Pairing.splitLeft_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (Pairing.ofSplit e P Q).splitLeft e (Pairing.isSplit_ofSplit e P Q) = P := by
-  refine Pairing.ext (Equiv.ext fun i => ?_)
+  refine PairingOn.ext (Equiv.ext fun i => ?_)
   have h := Pairing.partner_splitLeft e (Pairing.isSplit_ofSplit e P Q) i
   rw [Pairing.ofSplit_partner_inl] at h
   exact (Sum.inl.inj (e.injective h)).symm
@@ -177,7 +177,7 @@ theorem Pairing.splitLeft_ofSplit (e : PositionSplitting a b n) (P : Pairing a) 
 @[simp]
 theorem Pairing.splitRight_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (Pairing.ofSplit e P Q).splitRight e (Pairing.isSplit_ofSplit e P Q) = Q := by
-  refine Pairing.ext (Equiv.ext fun i => ?_)
+  refine PairingOn.ext (Equiv.ext fun i => ?_)
   have h := Pairing.partner_splitRight e (Pairing.isSplit_ofSplit e P Q) i
   rw [Pairing.ofSplit_partner_inr] at h
   exact (Sum.inr.inj (e.injective h)).symm
@@ -188,7 +188,7 @@ pairing apart: every position lies in one of the parts, and its partner lies in 
 theorem Pairing.ofSplit_splitLeft_splitRight (e : PositionSplitting a b n) {P : Pairing n}
     (h : P.IsSplit e) :
     Pairing.ofSplit e (P.splitLeft e h) (P.splitRight e h) = P := by
-  refine Pairing.ext (Equiv.ext fun i => ?_)
+  refine PairingOn.ext (Equiv.ext fun i => ?_)
   obtain ⟨x, rfl⟩ := e.surjective i
   cases x with
   | inl j => rw [Pairing.ofSplit_partner_inl, Pairing.partner_splitLeft e h]
