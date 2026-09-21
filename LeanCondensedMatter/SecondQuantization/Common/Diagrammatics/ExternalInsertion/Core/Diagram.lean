@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
-import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false
 
@@ -33,13 +33,21 @@ abbrev ExternalInsertionVertex (E : ℕ) (S : Finset (Fin N)) : Type :=
 abbrev ExternalInsertionLeg (E : ℕ) (S : Finset (Fin N)) : Type :=
   Fin (2 * E) ⊕ (↥S × Fin 4)
 
-/-- Flatten all external and quartic interaction legs into the ordered finite type used by
-`Pairing`. -/
+/-- Enumerate interaction legs by increasing interaction vertex, then by local leg index. -/
+private noncomputable def externalInsertionInteractionLegEquiv (S : Finset (Fin N)) :
+    Fin (S.card * 4) ≃ ↥S × Fin 4 :=
+  (finProdFinEquiv (m := S.card) (n := 4)).symm.trans
+    ((S.orderIsoOfFin rfl).toEquiv.prodCongr (Equiv.refl (Fin 4)))
+
+/-- Flatten external and quartic interaction legs into the ordered finite type used by `Pairing`.
+
+External insertions come first in their `Fin (2 * E)` order. Interaction legs follow, ordered by
+increasing ambient interaction vertex and then by local leg index `0, 1, 2, 3`. -/
 noncomputable def externalInsertionLegEquiv (E : ℕ) (S : Finset (Fin N)) :
     Fin (2 * (2 * S.card + E)) ≃ ExternalInsertionLeg E S :=
-  Fintype.equivOfCardEq (by
-    simp [ExternalInsertionLeg]
-    omega)
+  (finCongr (by omega)).trans <|
+    finSumFinEquiv.symm.trans <|
+      Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (externalInsertionInteractionLegEquiv S)
 
 /-- The flattened leg belonging to external insertion `e`. -/
 noncomputable def externalInsertionExternalLeg (E : ℕ) (S : Finset (Fin N))
