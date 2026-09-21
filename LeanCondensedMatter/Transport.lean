@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Core
+import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.KuboBastin
 import LeanCondensedMatter.Transport.Streda
@@ -9,8 +10,10 @@ set_option linter.style.header false
 /-!
 # Transport
 
-Public entry point for the main generic transport infrastructure. The stable root groupings are
-`Transport.Core`, `Transport.Resolvent`, `Transport.KuboBastin`, `Transport.Streda`, and
+Public entry point for the main transport infrastructure. `Transport.Core` contains only the
+shared dimension-independent transport primitives, while `Transport.FiniteConductivityTable` owns
+the finite electrical-conductivity adapter built from generic Lehmann response data. The remaining
+stable root groupings are `Transport.Resolvent`, `Transport.KuboBastin`, `Transport.Streda`, and
 `Transport.Disorder`.
 
 Model-independent analytical utilities are exposed through the separate opt-in package
