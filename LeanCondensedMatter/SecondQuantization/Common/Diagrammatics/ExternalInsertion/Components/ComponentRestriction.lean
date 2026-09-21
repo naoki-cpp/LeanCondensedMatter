@@ -246,7 +246,7 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
     (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
   omega
 
-/-- Half the number of external insertions carried by one connected component. -/
+/-- The local external-sector parameter: half the number of one-legged external insertions carried by one connected component. -/
 noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) : ℕ :=
