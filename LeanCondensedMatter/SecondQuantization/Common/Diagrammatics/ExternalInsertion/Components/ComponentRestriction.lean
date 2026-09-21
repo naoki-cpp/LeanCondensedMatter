@@ -106,7 +106,7 @@ private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Fin
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
   unfold ExternalInsertionDiagram.unflattenedLegInComponent
   unfold externalInsertionVertexOfLeg
-  rfl
+  cases h : externalInsertionLegEquiv E S leg <;> simp [h]
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
