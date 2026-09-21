@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -66,8 +67,8 @@ private theorem finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n 
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β
         ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b)) =
-      Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
-        Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
+      Complex.exp ((τ (flatVertexIndex n a) * quarticLegEnergyShiftForSequence ε q a : ℝ) : ℂ) *
+        Complex.exp ((τ (flatVertexIndex n b) * quarticLegEnergyShiftForSequence ε q b : ℝ) : ℂ) *
         Common.finiteGibbsExpectation (fermionEnergy ε) β
           ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
             (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
@@ -79,8 +80,8 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
     flatVertexLegPairValue ε β q τ a b =
-      Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
-        Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
+      Complex.exp ((τ (flatVertexIndex n a) * quarticLegEnergyShiftForSequence ε q a : ℝ) : ℂ) *
+        Complex.exp ((τ (flatVertexIndex n b) * quarticLegEnergyShiftForSequence ε q b : ℝ) : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
@@ -142,14 +143,14 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
         have hgen :=
           Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
             Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
-            (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
+            (quarticLegOperatorForSequence ε q τ) (quarticLegEnergyShiftForSequence ε q)
             (flatVertexLegCommutatorCoeff ε q τ)
             (fun p => heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
               (q (flatVertexIndex S.card p)) (flatLocalLeg S.card p)
               (τ (flatVertexIndex S.card p)))
             (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
             (fun i => one_sub_zetaInt_fermion_mul_exp_ne_zero
-              (flatVertexLegEnergyShift ε q i) β)
+              (quarticLegEnergyShiftForSequence ε q i) β)
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
           flatVertexLegPairValue_eq_finiteGibbsExpectation] using hgen
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
