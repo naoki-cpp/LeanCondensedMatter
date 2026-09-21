@@ -118,7 +118,8 @@ theorem ExternalInsertionDiagram.componentPairEquiv_apply
       d.componentDiagramLegEquiv
       d.componentDiagramLegEquiv_partner
       (fun C => by
-        simpa only [ExternalInsertionDiagram.componentDiagramLegEquiv_apply] using
+        simpa only [ExternalInsertionDiagram.componentDiagramLegEquiv_apply,
+          ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
           (d.componentDiagramLegOrderEmbedding C).strictMono)
       B pr)
 
