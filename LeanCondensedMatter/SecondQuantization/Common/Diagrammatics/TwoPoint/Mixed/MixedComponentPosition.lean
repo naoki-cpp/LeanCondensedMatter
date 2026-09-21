@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit
@@ -27,7 +28,7 @@ noncomputable def mixedTimeAmbientPositionEquiv {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fin (2 * (2 * n + 1)) ≃
       Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) :=
-  (standardToMixedAtomicPositionEquiv τ τ' σ).symm.trans (finCongr (by simp))
+  (standardToMixedAtomicPositionEquiv τ τ' σ).changeCoordinates (finCongr (by simp))
 
 /-- Unflattening the standard ambient position underlying a mixed position recovers the atomic leg
 identity stored at that mixed position. -/
