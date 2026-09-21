@@ -81,7 +81,7 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
       | create i =>
           let a : ℝ := Real.sqrt (m i + 1 : ℝ)
           refine ⟨c * (a : ℂ), createOccupation i m, ?_, ?_, ?_⟩
-          · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
+          · simp only [FreeThermalField.orderedProduct_cons, LinearMap.comp_apply,
               FreeThermalField.operator]
             rw [haction, map_smul, create_basisState_eq, smul_smul]
           · intro j
