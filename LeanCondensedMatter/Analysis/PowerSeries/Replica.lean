@@ -2,8 +2,7 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.RingTheory.Polynomial.Pochhammer
 import Mathlib.RingTheory.PowerSeries.Order
-import Mathlib.Tactic.Field
-import Mathlib.Tactic.Omega
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -49,8 +48,6 @@ theorem replicaCoeffPolynomial_eval_nat
     (replicaCoeffPolynomial Z m).eval (n : ℂ) =
       (m.factorial : ℂ) * coeff m (Z ^ n) := by
   let U : PowerSeries ℂ := Z - 1
-  have hU : constantCoeff U = 0 := by
-    simp [U, hZ]
   have hEval :
       (replicaCoeffPolynomial Z m).eval (n : ℂ) =
         (m.factorial : ℂ) *
