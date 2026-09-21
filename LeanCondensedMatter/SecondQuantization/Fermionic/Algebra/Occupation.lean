@@ -67,7 +67,7 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
         (Mode := Mode) (Config := Occupation Mode) n).toFinset = n := by
     ext i
     simp [occupationBasis]
-  rw [hs]
+  rw [hs, Finset.card_eq_sum_ones]
   apply Finset.sum_congr rfl
   intro i hi
   simp [occupationBasis, hi]
