@@ -75,7 +75,7 @@ theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
     d.pairing.partner
       ((finCongr (by simp))
         ((standardToMixedAtomicPositionEquiv τ τ' σ).symm p))
-  rw [Pairing.relabel_partner]
+  rw [PairingOn.relabel_partner]
   simp only [Equiv.symm_symm]
   rw [(standardToMixedAtomicPositionEquiv τ τ' σ).symm_apply_apply]
   exact orderedTwoPointPairingCastEquiv_partner d.pairing
