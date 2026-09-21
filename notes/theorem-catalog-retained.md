@@ -163,7 +163,7 @@ or consumer structure changes.
   oriented `intervalIntegral`. This representation is the reusable bridge that lets downstream
   energy-kernel constructions place transition-localized contributions on one common integration
   domain.
-- `Combinatorics.Pairing.partner_partner` — canonical pointwise involution law for a pairing's partner
+- `Combinatorics.PairingOn.partner_partner` — canonical pointwise involution law for a pairing's partner
   map. The theorem is a high-use `[simp]` interface to the structure invariant, not a historical alias.
 - `LinearPMap.nonrealResolvent_commute` — canonical `Commute`-packaged form of pairwise nonreal
   resolvent commutation; downstream proofs use the `Commute` combinator API directly.

@@ -46,14 +46,14 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} :=
-  d.pairing.partnerSubtypePerm (d.legInBlock B) fun leg => d.legInBlock_partner_iff leg
+  (d.pairing.restrict (d.legInBlock B) fun leg => d.legInBlock_partner_iff leg).partner
 
 theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg := by
   simpa only [QuarticDiagram.restrictedPartner] using
-    d.pairing.partnerSubtypePerm_val (d.legInBlock B)
+    d.pairing.restrict_partner_val (d.legInBlock B)
       (fun i => d.legInBlock_partner_iff i) leg
 
 /-- Reconstructing a flattened leg from its vertex and local leg is the identity. -/

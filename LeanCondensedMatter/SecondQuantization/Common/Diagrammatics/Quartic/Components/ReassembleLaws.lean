@@ -266,7 +266,7 @@ private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts) :
     ((QuarticDiagram.reassemble π F).restrictComponent hB').pairing = (F B).1.pairing := by
   change (QuarticDiagram.reassemble π F).restrictedPairing hB' = (F B).1.pairing
-  apply Combinatorics.Pairing.ext
+  apply Combinatorics.PairingOn.ext
   apply Equiv.ext
   intro leg
   have hrestricted :=
@@ -419,7 +419,7 @@ theorem QuarticDiagram.reassemble_componentPartition {S : Finset (Fin N)}
     QuarticDiagram.reassemble d.componentPartition
       (fun B => d.restrictComponentConnected B.2) = d := by
   refine QuarticDiagram.ext (funext d.reassemble_componentPartition_vertexLabel) ?_
-  apply Combinatorics.Pairing.ext
+  apply Combinatorics.PairingOn.ext
   apply Equiv.ext
   intro leg
   rw [← QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg leg]

@@ -13,15 +13,15 @@ namespace Combinatorics
 
 /-- The adjacent four-position pairing `(0,1)(2,3)`. -/
 def pairingAdjacent : Pairing 2 :=
-  Pairing.ofPartner (Equiv.swap 0 1 * Equiv.swap 2 3) (by decide)
+  PairingOn.ofPartner (Equiv.swap 0 1 * Equiv.swap 2 3) (by decide)
 
 /-- The crossing four-position pairing `(0,2)(1,3)`. -/
 def pairingCrossing : Pairing 2 :=
-  Pairing.ofPartner (Equiv.swap 0 2 * Equiv.swap 1 3) (by decide)
+  PairingOn.ofPartner (Equiv.swap 0 2 * Equiv.swap 1 3) (by decide)
 
 /-- The nested four-position pairing `(0,3)(1,2)`. -/
 def pairingNested : Pairing 2 :=
-  Pairing.ofPartner (Equiv.swap 0 3 * Equiv.swap 1 2) (by decide)
+  PairingOn.ofPartner (Equiv.swap 0 3 * Equiv.swap 1 2) (by decide)
 
 /-- There are exactly three perfect pairings of four ordered positions. -/
 theorem allPairings_two :
