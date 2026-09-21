@@ -31,12 +31,6 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     linearCommutator S T v = S (T v) - T (S v) :=
   rfl
 
-/-- The ordinary commutator is the `ζ = 1` specialization of the generic `ζ`-commutator. -/
-theorem linearCommutator_eq_zetaCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (S T : V →ₗ[ℂ] V) :
-    linearCommutator S T = LinearMap.zetaCommutator 1 S T := by
-  simp [linearCommutator, LinearMap.zetaCommutator]
-
 /-- Leibniz rule for a commutator with a composition on the right:
 `[M, A B] = [M,A] B + A [M,B]`. -/
 theorem linearCommutator_comp_right
@@ -44,8 +38,8 @@ theorem linearCommutator_comp_right
     (M A B : V →ₗ[ℂ] V) :
     linearCommutator M (A.comp B) =
       (linearCommutator M A).comp B + A.comp (linearCommutator M B) := by
-  simp only [linearCommutator_eq_zetaCommutator]
-  simpa using (LinearMap.zetaCommutator_comp_right (1 : ℂ) 1 M A B)
+  simpa [linearCommutator, LinearMap.zetaCommutator] using
+    (LinearMap.zetaCommutator_comp_right (1 : ℂ) 1 M A B)
 
 /-- A commutator is additive over subtraction in its second argument. -/
 theorem linearCommutator_sub_right
