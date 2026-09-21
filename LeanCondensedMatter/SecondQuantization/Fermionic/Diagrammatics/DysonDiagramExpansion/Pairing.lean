@@ -25,27 +25,12 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The time-labelled fermionic field carried by one flattened quartic Dyson leg. -/
-private noncomputable def flatVertexLegField {n : ℕ}
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n))) : TimedField Mode :=
-  ⟨τ (flatVertexIndex n p),
-    quarticLocalLegExternalFieldLabel (q (flatVertexIndex n p)) (flatLocalLeg n p)⟩
-
-omit [Fintype Mode] in
-private theorem timedFieldOperator_flatVertexLegField_eq {n : ℕ}
-    (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n))) :
-    timedFieldOperator ε (flatVertexLegField q τ p) =
-      quarticLegOperatorForSequence ε q τ p := by
-  rw [flatVertexLegField, timedFieldOperator_quarticLocalLeg]
-  rfl
-
 /-- Canonical free Gibbs density-state contraction of two flattened quartic Dyson legs. -/
 noncomputable def flatVertexLegPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
-  timedFieldPairContraction ε β (flatVertexLegField q τ a) (flatVertexLegField q τ b)
+  timedFieldPairContraction ε β
+    (quarticLegFieldForSequence q τ a) (quarticLegFieldForSequence q τ b)
 
 private theorem flatVertexLegPairValue_eq_finiteGibbsExpectation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
@@ -55,7 +40,7 @@ private theorem flatVertexLegPairValue_eq_finiteGibbsExpectation {n : ℕ}
         ((quarticLegOperatorForSequence ε q τ a).comp
           (quarticLegOperatorForSequence ε q τ b)) := by
   rw [flatVertexLegPairValue, timedFieldPairContraction,
-    timedFieldOperator_flatVertexLegField_eq, timedFieldOperator_flatVertexLegField_eq,
+    timedFieldOperator_quarticLegFieldForSequence, timedFieldOperator_quarticLegFieldForSequence,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 /-- Canonical scalar value of a flattened-leg pairing. -/
