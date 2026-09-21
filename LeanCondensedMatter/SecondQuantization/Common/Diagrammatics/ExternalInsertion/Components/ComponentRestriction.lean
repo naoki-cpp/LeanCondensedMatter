@@ -254,7 +254,7 @@ noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)
     (B : Finset (ExternalInsertionVertex E S))).card / 2
 
 /-- The external sector of one component has twice its local external-pair count. -/
-theorem ExternalInsertionDiagram.externalPart_card_eq_two_mul_externalPairCount
+private theorem ExternalInsertionDiagram.externalPart_card_eq_two_mul_externalPairCount
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) :
