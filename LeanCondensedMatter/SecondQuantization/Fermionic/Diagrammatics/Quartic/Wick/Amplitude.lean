@@ -13,8 +13,8 @@ set_option linter.style.header false
 # Ordered-simplex quartic Wick-diagram amplitudes
 
 This module assembles vertex-order transport and scalar ordered-simplex integration into the
-quartic Wick-diagram amplitude. Pair contractions are defined through the canonical free Gibbs
-density-state expectation; finite Gibbs coordinate formulas remain downstream evaluation tools.
+quartic Wick-diagram amplitude. Pair contractions use the canonical time-labelled-field free-Gibbs
+kernel; finite Gibbs coordinate formulas remain downstream evaluation tools.
 -/
 
 namespace SecondQuantization
