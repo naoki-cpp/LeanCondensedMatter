@@ -139,9 +139,9 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
         rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-          ← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
+          ← prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
         have hgen :=
-          Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+          Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
             Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
             (quarticLegOperatorForSequence ε q τ) (quarticLegEnergyShiftForSequence ε q)
             (flatVertexLegCommutatorCoeff ε q τ)
