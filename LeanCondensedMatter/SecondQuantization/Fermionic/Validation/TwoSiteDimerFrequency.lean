@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLehmann
 
 set_option linter.style.header false

@@ -49,7 +49,7 @@
       "id": "canonicalTransportOwners",
       "paths": [
         "LeanCondensedMatter/Transport/Core/ConductivityNormalization.lean",
-        "LeanCondensedMatter/Transport/Core/FiniteConductivityTable.lean",
+        "LeanCondensedMatter/Transport/FiniteConductivityTable.lean",
         "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
         "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
         "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
@@ -417,7 +417,7 @@
     {
       "id": "transportFiniteConductivitySpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
-      "modules": ["LeanCondensedMatter.Transport.Core.FiniteConductivityTable"]
+      "modules": ["LeanCondensedMatter.Transport.FiniteConductivityTable"]
     },
     {
       "id": "transportKuboBastinSpectralSpecialization",
