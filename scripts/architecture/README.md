@@ -13,7 +13,7 @@ source-topology change                  Lean library / build-input change
         ↓                                           ↓
 Python source audit                              lake build --wfail
 files / direct imports / DAGs / reachability             ↓
-/ narrow layout rules                         duplicate declaration audit
+/ narrow source rules                         duplicate declaration audit
                                                / sorryAx audit / lake lint
 ```
 
@@ -85,7 +85,9 @@ does not create a permanent rule that the old path may never exist again.
 Python owns properties of repository source topology. It parses Lean imports, but it is not a Lean
 semantic parser. Source syntax should be inspected only when syntax or layout is itself the invariant.
 Focused Python checkers are reserved for rules that do not fit the uniform graph or source-contract
-data shapes. Only checkers explicitly listed in `check_architecture.py` participate in CI; a local
+data shapes, such as exact public-umbrella import boundaries where an umbrella shares a module prefix
+with its implementation subtree. They must not freeze retired paths or proof-stage directory layouts.
+Only checkers explicitly listed in `check_architecture.py` participate in CI; a local
 `check_*.py` script is not enrolled automatically.
 
 Lean owns properties of the elaborated environment. `CheckSemanticBoundaries.lean` provides a
