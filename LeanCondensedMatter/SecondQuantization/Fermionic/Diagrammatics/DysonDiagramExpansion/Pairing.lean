@@ -32,6 +32,7 @@ private noncomputable def flatVertexLegField {n : ℕ}
   ⟨τ (flatVertexIndex n p),
     quarticLocalLegExternalFieldLabel (q (flatVertexIndex n p)) (flatLocalLeg n p)⟩
 
+omit [Fintype Mode] in
 private theorem timedFieldOperator_flatVertexLegField_eq {n : ℕ}
     (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ)
     (p : Fin (2 * (2 * n))) :
