@@ -99,7 +99,7 @@ instance {α : Type*} [Fintype α] [DecidableEq α] : DecidableEq (PairingOn α)
   Equiv.decidableEq (pairingOnEquivSubtype α)
 
 @[ext]
-theorem Pairing.ext {α : Type*} {left right : PairingOn α}
+theorem PairingOn.ext {α : Type*} {left right : PairingOn α}
     (h : left.partner = right.partner) : left = right := by
   cases left
   cases right
@@ -107,12 +107,12 @@ theorem Pairing.ext {α : Type*} {left right : PairingOn α}
   rfl
 
 @[simp]
-theorem Pairing.partner_partner {α : Type*} (pairing : PairingOn α) (i : α) :
+theorem PairingOn.partner_partner {α : Type*} (pairing : PairingOn α) (i : α) :
     pairing.partner (pairing.partner i) = i :=
   pairing.partner_involutive i
 
 /-- Construct a pairing bundle from an internally checked fixed-point-free involution. -/
-def Pairing.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPairing partner) :
+def PairingOn.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPairing partner) :
     PairingOn α where
   partner := partner
   partner_involutive := hpartner.1
