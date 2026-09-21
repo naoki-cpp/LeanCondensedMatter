@@ -305,12 +305,16 @@
     {
       "id": "generalizedCurrentIntrinsicBalanceLaw",
       "path": "LeanCondensedMatter/Analysis/Calculus/IntrinsicBalanceLaw.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"
+      ]
     },
     {
       "id": "generalizedCurrentBalanceLaw",
       "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"
+      ]
     },
     {
       "id": "generalizedCurrentBalanceAdapter",
@@ -323,7 +327,9 @@
     {
       "id": "generalizedCurrentSymmetricLocalizationAlgebra",
       "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalizationAlgebra.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
+      ]
     },
     {
       "id": "generalizedCurrentSymmetricLocalization",
@@ -353,7 +359,9 @@
     {
       "id": "heisenbergBalanceAdapter",
       "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLawAdapter"
+      ]
     },
     {
       "id": "intrinsicLocalizedTransportBalanceAdapter",
@@ -366,32 +374,44 @@
     {
       "id": "correctedCurrentFluxLocalizationAlgebra",
       "path": "LeanCondensedMatter/Analysis/Calculus/CorrectedCurrentFlux.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
+      ]
     },
     {
       "id": "generalizedCurrentSymmetrizedVelocity",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
-      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"
+      ]
     },
     {
       "id": "generalizedCurrentConventional",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/ConventionalCurrent.lean",
-      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+      ]
     },
     {
       "id": "generalizedCurrentSchwartz",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
-      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+      ]
     },
     {
       "id": "generalizedCurrentSchwartzSpin",
       "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
-      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+      "modules": [
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
+      ]
     },
     {
       "id": "generalizedCurrentFieldBridge",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
-      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"]
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalizationAlgebra"
+      ]
     },
     {
       "id": "generalizedCurrentConventionalResponse",
@@ -412,32 +432,44 @@
     {
       "id": "transportFermionicSpecializations",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
-      "modules": ["LeanCondensedMatter.Transport.Core.ConductivityNormalization"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Core.ConductivityNormalization"
+      ]
     },
     {
       "id": "transportFiniteConductivitySpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
-      "modules": ["LeanCondensedMatter.Transport.FiniteConductivityTable"]
+      "modules": [
+        "LeanCondensedMatter.Transport.FiniteConductivityTable"
+      ]
     },
     {
       "id": "transportKuboBastinSpectralSpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
-      "modules": ["LeanCondensedMatter.Transport.KuboBastin.Finite"]
+      "modules": [
+        "LeanCondensedMatter.Transport.KuboBastin.Finite"
+      ]
     },
     {
       "id": "transportKuboBastinOccupationSpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinOccupation.lean",
-      "modules": ["LeanCondensedMatter.Transport.KuboBastin.Occupation"]
+      "modules": [
+        "LeanCondensedMatter.Transport.KuboBastin.Occupation"
+      ]
     },
     {
       "id": "transportKuboBastinCommonEnergySpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinCommonEnergy.lean",
-      "modules": ["LeanCondensedMatter.Transport.KuboBastin.CommonEnergy"]
+      "modules": [
+        "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy"
+      ]
     },
     {
       "id": "transportStaticKuboBastinSpecialization",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
-      "modules": ["LeanCondensedMatter.Transport.Streda.GeneralizedStatic"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Streda.GeneralizedStatic"
+      ]
     },
     {
       "id": "transportStredaTraceKernel",
@@ -474,27 +506,37 @@
     {
       "id": "transportStredaTraceSpectral",
       "path": "LeanCondensedMatter/Transport/Streda/TraceSpectral.lean",
-      "modules": ["LeanCondensedMatter.Transport.Spectral.PurePoint"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Spectral.PurePoint"
+      ]
     },
     {
       "id": "transportFrequencyResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"
+      ]
     },
     {
       "id": "transportHarmonicResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource"
+      ]
     },
     {
       "id": "transportStationaryResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"
+      ]
     },
     {
       "id": "transportInfiniteTimeResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic"
+      ]
     },
     {
       "id": "transportDisorderResolvent",
@@ -507,7 +549,9 @@
     {
       "id": "transportDisorderMoments",
       "path": "LeanCondensedMatter/Transport/Disorder/Moments.lean",
-      "modules": ["LeanCondensedMatter.Transport.Disorder.Finite"]
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Finite"
+      ]
     },
     {
       "id": "transportDisorderBorn",
@@ -528,7 +572,130 @@
     {
       "id": "thermalPublicUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
-      "modules": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"]
+      "modules": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed"
+      ]
+    },
+    {
+      "id": "transportPublicUmbrella",
+      "path": "LeanCondensedMatter/Transport.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Core",
+        "LeanCondensedMatter.Transport.FiniteConductivityTable",
+        "LeanCondensedMatter.Transport.Resolvent",
+        "LeanCondensedMatter.Transport.KuboBastin",
+        "LeanCondensedMatter.Transport.Streda",
+        "LeanCondensedMatter.Transport.Disorder"
+      ]
+    },
+    {
+      "id": "transportModelsUmbrella",
+      "path": "LeanCondensedMatter/Transport/Models.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac"
+      ]
+    },
+    {
+      "id": "massiveDiracPublicUmbrella",
+      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Propagator",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Streda",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Longitudinal",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall"
+      ]
+    },
+    {
+      "id": "transportCoreUmbrella",
+      "path": "LeanCondensedMatter/Transport/Core.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor"
+      ]
+    },
+    {
+      "id": "transportResolventUmbrella",
+      "path": "LeanCondensedMatter/Transport/Resolvent.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Resolvent.Uniqueness"
+      ]
+    },
+    {
+      "id": "transportResolventSpectralHierarchy",
+      "path": "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Resolvent.Basic"
+      ]
+    },
+    {
+      "id": "transportResolventEnergyDerivativeHierarchy",
+      "path": "LeanCondensedMatter/Transport/Resolvent/EnergyDerivative.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Resolvent.Basic"
+      ]
+    },
+    {
+      "id": "transportResolventUniquenessHierarchy",
+      "path": "LeanCondensedMatter/Transport/Resolvent/Uniqueness.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Resolvent.Basic"
+      ]
+    },
+    {
+      "id": "transportKuboBastinUmbrella",
+      "path": "LeanCondensedMatter/Transport/KuboBastin.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.KuboBastin.PurePoint",
+        "LeanCondensedMatter.Transport.KuboBastin.Finite"
+      ]
+    },
+    {
+      "id": "transportStredaUmbrella",
+      "path": "LeanCondensedMatter/Transport/Streda.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
+        "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation"
+      ]
+    },
+    {
+      "id": "transportStredaResponseMatrixRepresentation",
+      "path": "LeanCondensedMatter/Transport/Streda/ResponseMatrixRepresentation.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
+        "LeanCondensedMatter.Transport.Streda.TraceRepresentation"
+      ]
+    },
+    {
+      "id": "transportDisorderUmbrella",
+      "path": "LeanCondensedMatter/Transport/Disorder.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.AveragedSelfEnergy"
+      ]
+    },
+    {
+      "id": "transportAveragedSelfEnergy",
+      "path": "LeanCondensedMatter/Transport/Disorder/AveragedSelfEnergy.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Resolvent",
+        "LeanCondensedMatter.Transport.Resolvent.SelfEnergy"
+      ]
+    },
+    {
+      "id": "massiveDiracModelUmbrella",
+      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/Model.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator",
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral"
+      ]
+    },
+    {
+      "id": "massiveDiracBastinUmbrella",
+      "path": "LeanCondensedMatter/Transport/Models/MassiveDirac/Bastin.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.PoleExtraction"
+      ]
     }
   ],
   "exactImports": [
@@ -550,7 +717,9 @@
     {
       "id": "quantumConservationUmbrella",
       "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
+      ]
     }
   ],
   "forbiddenImports": [
@@ -565,7 +734,37 @@
     {
       "id": "genericResolventSpectralBoundary",
       "path": "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"
+      ]
+    },
+    {
+      "id": "transportResolventUmbrellaLorentzian",
+      "path": "LeanCondensedMatter/Transport/Resolvent.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
+      ]
+    },
+    {
+      "id": "transportKuboBastinPurePointBoundary",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.KuboBastin.Finite"
+      ]
+    },
+    {
+      "id": "transportStredaResponseMatrixBoundary",
+      "path": "LeanCondensedMatter/Transport/Streda/ResponseMatrix.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor"
+      ]
+    },
+    {
+      "id": "transportStredaResponseMatrixRepresentationBoundary",
+      "path": "LeanCondensedMatter/Transport/Streda/ResponseMatrixRepresentation.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor"
+      ]
     }
   ],
   "forbiddenImportPrefixes": [
@@ -576,6 +775,13 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
+      ]
+    },
+    {
+      "id": "transportConductivityTensorBoundary",
+      "path": "LeanCondensedMatter/Transport/Core/ConductivityTensor.lean",
+      "prefixes": [
+        "LeanCondensedMatter.Transport.Streda"
       ]
     }
   ]
