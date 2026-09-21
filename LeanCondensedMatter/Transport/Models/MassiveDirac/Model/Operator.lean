@@ -3,7 +3,6 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
-import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
 set_option linter.style.header false
 
@@ -130,14 +129,12 @@ theorem inPlanePauliVertexCLM_injective :
           Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
       hoperator
     simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
-  have hxy : LinearIndependent ℂ ![sigmaX, sigmaY] := by
-    simpa [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] using
-      directionPauli_linearIndependent
-  have hcoeff := hxy.eq_of_pair hmatrix
-  funext direction
-  fin_cases direction
-  · exact hcoeff.1
-  · exact hcoeff.2
+  have hcoeff :=
+    (Fintype.linearIndependent_iffₛ.mp directionPauli_linearIndependent) left right
+      (by
+        simpa [Fin.sum_univ_two, directionPauli, inPlanePauliAxis,
+          InternalSpace.pauliBasis] using hmatrix)
+  exact funext hcoeff
 
 /-- Physical in-plane current vertex with direction-indexed coefficients. -/
 noncomputable def inPlaneCurrentOperator
