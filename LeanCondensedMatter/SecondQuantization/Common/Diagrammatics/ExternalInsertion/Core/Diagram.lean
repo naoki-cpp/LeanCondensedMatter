@@ -33,6 +33,12 @@ abbrev ExternalInsertionVertex (E : ℕ) (S : Finset (Fin N)) : Type :=
 abbrev ExternalInsertionLeg (E : ℕ) (S : Finset (Fin N)) : Type :=
   Fin (2 * E) ⊕ (↥S × Fin 4)
 
+/-- The vertex incident to an unflattened external-insertion leg. -/
+def externalInsertionLegVertex {S : Finset (Fin N)} :
+    ExternalInsertionLeg E S → ExternalInsertionVertex E S
+  | .inl e => .inl e
+  | .inr p => .inr p.1
+
 /-- Flatten all external and quartic interaction legs into the ordered finite type used by
 `Pairing`. -/
 noncomputable def externalInsertionLegEquiv (E : ℕ) (S : Finset (Fin N)) :
@@ -54,9 +60,14 @@ noncomputable def externalInsertionInteractionLeg {E : ℕ} {S : Finset (Fin N)}
 /-- The vertex incident to a flattened external-insertion diagram leg. -/
 noncomputable def externalInsertionVertexOfLeg {E : ℕ} {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + E))) : ExternalInsertionVertex E S :=
-  match externalInsertionLegEquiv E S leg with
-  | Sum.inl e => Sum.inl e
-  | Sum.inr p => Sum.inr p.1
+  externalInsertionLegVertex (externalInsertionLegEquiv E S leg)
+
+@[simp]
+theorem externalInsertionLegVertex_externalInsertionLegEquiv {E : ℕ} {S : Finset (Fin N)}
+    (leg : Fin (2 * (2 * S.card + E))) :
+    externalInsertionLegVertex (externalInsertionLegEquiv E S leg) =
+      externalInsertionVertexOfLeg leg :=
+  rfl
 
 @[simp]
 theorem externalInsertionVertexOfLeg_externalLeg (E : ℕ) (S : Finset (Fin N))
