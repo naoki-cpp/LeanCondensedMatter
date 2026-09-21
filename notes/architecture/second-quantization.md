@@ -190,9 +190,12 @@ its partner-transport theorem states that this embedding intertwines the restric
 pairing partners. The canonical leg order makes this map an `OrderEmbedding`; the induced
 `componentNormalizedPairEmbedding` therefore preserves and reflects pairing crossings. The
 component leg embeddings jointly exhaust the ambient leg set, yielding `componentPairEquiv` from
-the dependent sum of component-local normalized pairs to all ambient normalized pairs. A vacuum
-component has no external legs, so Common also reindexes its surviving legs as ordinary quartic legs
-and exposes the induced `QuarticDiagram`.
+the dependent sum of component-local normalized pairs to all ambient normalized pairs. Unlike the
+pure-quartic case, distinct external-insertion components can interleave in the ambient leg order, so
+their crossing contribution is retained explicitly as `interComponentCrossingCount`; the global
+crossing count and exchange weight split into local component terms plus this residual factor. A
+vacuum component has no external legs, so Common also reindexes its surviving legs as ordinary
+quartic legs and exposes the induced `QuarticDiagram`.
 
 The two-point expansion has its own internal layer order:
 
