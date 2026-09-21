@@ -17,6 +17,13 @@ coordinate systems parametrize the same source type. -/
 def changeCoordinates {α β γ : Type*} (source : α ≃ β) (target : α ≃ γ) : β ≃ γ :=
   source.symm.trans target
 
+/-- Evaluate a coordinate change at an arbitrary point in the source coordinate space. -/
+@[simp]
+theorem changeCoordinates_apply {α β γ : Type*}
+    (source : α ≃ β) (target : α ≃ γ) (y : β) :
+    source.changeCoordinates target y = target (source.symm y) := by
+  rfl
+
 /-- Changing coordinates sends the `source` representation of an element to its `target`
 representation. -/
 @[simp]
