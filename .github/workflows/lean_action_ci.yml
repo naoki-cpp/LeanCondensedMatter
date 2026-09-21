@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
+      source: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.source == 'true' }}
       lean: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.lean == 'true' }}
 
     steps:
@@ -28,26 +29,43 @@ jobs:
           persist-credentials: false
           fetch-depth: 20
 
-      - name: Detect Lean-related changes
+      - name: Detect CI-related changes
         id: filter
         if: github.event_name != 'workflow_dispatch'
         uses: dorny/paths-filter@0e4a8c6effa4802afeda77dc8d303f8176d7dfad # v3.0.3
         with:
           base: ${{ github.ref }}
           filters: |
+            source:
+              - 'LeanCondensedMatter.lean'
+              - 'LeanCondensedMatter/**/*.lean'
+              - 'scripts/check_architecture.py'
+              - 'scripts/check_architecture_graphs.py'
+              - 'scripts/check_source_contracts.py'
+              - 'scripts/check_transport_hierarchy.py'
+              - 'scripts/check_diagrammatics_layer_architecture.py'
+              - 'scripts/architecture_audit_common.py'
+              - 'scripts/architecture_graph_scopes.py'
+              - 'scripts/architecture/*.json'
+              - '.github/workflows/lean_action_ci.yml'
             lean:
-              - '**/*.lean'
+              - 'LeanCondensedMatter.lean'
+              - 'LeanCondensedMatter/**/*.lean'
               - 'lean-toolchain'
               - 'lakefile.toml'
               - 'lake-manifest.json'
-              - 'scripts/**/*.py'
-              - 'scripts/architecture/**'
+              - 'scripts/CheckDuplicates.lean'
+              - 'scripts/CheckNoSorry.lean'
+              - 'scripts/CheckUnusedHypotheses.lean'
+              - 'scripts/TheoremCatalog.lean'
+              - 'scripts/TheoremReplacementAudit.lean'
+              - 'scripts/merge_theorem_replacements.py'
               - '.github/workflows/lean_action_ci.yml'
               - '.github/workflows/insights.yml'
 
   source-checks:
     needs: changes
-    if: needs.changes.outputs.lean == 'true'
+    if: needs.changes.outputs.source == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
 
@@ -171,16 +189,20 @@ jobs:
       - name: Verify required checks
         env:
           CHANGES_RESULT: ${{ needs.changes.result }}
+          SOURCE_RELATED: ${{ needs.changes.outputs.source }}
           LEAN_RELATED: ${{ needs.changes.outputs.lean }}
           SOURCE_CHECKS_RESULT: ${{ needs.source-checks.result }}
           BUILD_RESULT: ${{ needs.build.result }}
           COMPILED_CHECKS_RESULT: ${{ needs.compiled-checks.result }}
         run: |
           test "$CHANGES_RESULT" = success
-          if [ "$LEAN_RELATED" != true ]; then
-            echo "No Lean-related changes; Lean code checks were skipped."
-            exit 0
+          if [ "$SOURCE_RELATED" = true ]; then
+            test "$SOURCE_CHECKS_RESULT" = success
           fi
-          test "$SOURCE_CHECKS_RESULT" = success
-          test "$BUILD_RESULT" = success
-          test "$COMPILED_CHECKS_RESULT" = success
+          if [ "$LEAN_RELATED" = true ]; then
+            test "$BUILD_RESULT" = success
+            test "$COMPILED_CHECKS_RESULT" = success
+          fi
+          if [ "$SOURCE_RELATED" != true ] && [ "$LEAN_RELATED" != true ]; then
+            echo "No source-architecture or Lean-build checks were needed."
+          fi
