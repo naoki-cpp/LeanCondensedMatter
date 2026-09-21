@@ -41,6 +41,7 @@ private noncomputable def orderedQuarticLegField {S : Finset (Fin N)}
   ⟨τ slotLeg.1,
     quarticLocalLegExternalFieldLabel (d.vertexLabel (order slotLeg.1)) slotLeg.2⟩
 
+omit [Fintype Mode] in
 private theorem timedFieldOperator_orderedQuarticLegField_eq
     (ε : Mode → ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
