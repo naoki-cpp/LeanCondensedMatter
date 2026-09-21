@@ -12284,52 +12284,12 @@
       "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
     ],
     "dependencies": [
-      "ConservationLaw.linearCommutator_eq_zetaCommutator",
       "LinearMap.zetaCommutator_comp_right"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (S T : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator S T = LinearMap.zetaCommutator 1 S T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_eq_zetaCommutator",
-    "module": "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
-    "externalAxioms": [],
-    "docString": "The ordinary commutator is the `ζ = 1` specialization of the generic `ζ`-commutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_comp_right"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_comp_right"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -58653,48 +58613,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (hregular :\n    QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderRegular v m probeEnergy broadening\n      disorderStrength hbar pMax),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n      broadening disorderStrength hbar pMax =\n    QuantumTheory.Transport.resummedLadderVertex\n      (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonCurrentRungVector v m probeEnergy\n          broadening disorderStrength hbar pMax))\n      ⋯ QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
-    "externalAxioms": [],
-    "docString": "Under ladder regularity, the finite-broadening Born-Dyson solved vector is the generic\nalgebraically resummed vertex on the in-plane coefficient space. This is an inverse-based\nresummation statement only; no geometric-series convergence is asserted. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector v m probeEnergy\n      broadening 0 hbar pMax =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderBareXSource",
     "standardAxioms": [
       "Classical.choice",
@@ -59108,8 +59026,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderShift_isUnit",
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -61285,7 +61203,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
@@ -61298,13 +61215,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61421,7 +61337,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
@@ -61436,7 +61352,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonLadderSolvedVector_eq_resummedLadderVertex",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_x_eq_resummed",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderSolvedVector_fixedPoint",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadder_fixedPoint_unique"
     ],
@@ -61578,7 +61494,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -61590,17 +61506,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
-      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_clm"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
-      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_clm"
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61985,7 +61899,6 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_clm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -62000,48 +61913,9 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_clm",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (aR aA bR bA dR dA : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ *\n          QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM coefficients *\n        QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aA bA dA θ =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM\n      ((QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderCLM\n          (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aR aA dR dA))\n        coefficients)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq_clm",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.PauliRung",
-    "externalAxioms": [],
-    "docString": "The full-angle Pauli rung intertwines the physical operator embedding with the bundled\ntwo-component ladder endomorphism. In particular, the in-plane Pauli subspace is preserved. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_apply",
-      "QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
