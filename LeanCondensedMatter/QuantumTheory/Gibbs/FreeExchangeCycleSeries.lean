@@ -46,7 +46,8 @@ theorem constantCoeff_freeExchangeGrandPartitionSeries
   · subst ζ
     simp [freeExchangeGrandPartitionSeries]
   · subst ζ
-    simp [freeExchangeGrandPartitionSeries]
+    have hne : (-1 : ℂ) ≠ 1 := by norm_num
+    simp [freeExchangeGrandPartitionSeries, hne]
 
 /-- The formal logarithm of the shared Bose/Fermi free grand product is the exchange-weighted
 modewise trace-log. -/
