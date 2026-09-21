@@ -2,6 +2,7 @@ import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Matrix.Notation
+import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -187,6 +188,26 @@ theorem trace_pauliBasis_mul_pauliCombination (axis : PauliAxis) (u : PauliAxis 
     trace_pauliCombination_mul_pauliCombination]
   cases axis <;>
     simp [pauliBasisCoeff, dotProduct_pauliAxis]
+
+/-- The three Pauli matrices form a linearly independent family over `ℂ`. -/
+theorem pauliBasis_linearIndependent : LinearIndependent ℂ pauliBasis := by
+  rw [Fintype.linearIndependent_iff]
+  intro coefficients hzero axis
+  change pauliCombination coefficients = 0 at hzero
+  have htrace := congrArg
+    (fun M : PauliMatrix => Matrix.trace (pauliBasis axis * M)) hzero
+  rw [trace_pauliBasis_mul_pauliCombination] at htrace
+  have hcoeff : (2 : ℂ) * coefficients axis = 0 := by
+    simpa using htrace
+  exact (mul_eq_zero.mp hcoeff).resolve_left (by norm_num)
+
+/-- Pauli synthesis has unique axis coefficients. -/
+theorem pauliCombination_injective : Function.Injective pauliCombination := by
+  intro left right h
+  have hcoeff :=
+    (Fintype.linearIndependent_iffₛ.mp pauliBasis_linearIndependent) left right
+      (by simpa [pauliCombination] using h)
+  exact funext hcoeff
 
 /-- Tracing a synthesized Pauli vector against one basis matrix selects that coefficient. -/
 theorem trace_pauliCombination_mul_pauliBasis (u : PauliAxis → ℂ) (axis : PauliAxis) :
