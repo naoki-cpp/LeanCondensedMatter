@@ -11,7 +11,8 @@ For a finite spectral index `ι`, provide
 Eₙ, pₙ, Aₘₙ, Bₘₙ
 ```
 
-as a `QuantumTheory.LinearResponse.FiniteLehmannTable ι`. Evaluate it directly with
+as a `QuantumTheory.LinearResponse.FiniteLehmannTable ι`, provided independently by
+`LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable`. Evaluate it directly with
 
 ```text
 finiteLehmannTableResponse ℏ ω η table
@@ -31,8 +32,10 @@ the scalar evaluation is exactly the existing `purePointLehmannSeries`.
 ## Electrical conductivity workflow
 
 Electrical conductivity additionally needs an explicit contact/observable-variation expectation and
-physical volume. Provide the measured/source spectral data plus contact value as a
-`QuantumTheory.Transport.FiniteConductivityTable ι` and evaluate it directly with
+physical volume. That extra physical adapter is owned by
+`LeanCondensedMatter.Transport.FiniteConductivityTable`, not by `Transport.Core`. Provide the
+measured/source spectral data plus contact value as a `QuantumTheory.Transport.FiniteConductivityTable
+ι` and evaluate it directly with
 
 ```text
 finiteConductivityTableValue volume ℏ ω η table
