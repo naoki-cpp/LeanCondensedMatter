@@ -182,10 +182,10 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators,
+    mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
     Common.finiteGibbsExpectation_smul]
   have hgen :=
-    Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+    Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
       Common.Statistics.fermion (fermionEnergy ε) β (2 * n + 1)
       (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ)
       (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
