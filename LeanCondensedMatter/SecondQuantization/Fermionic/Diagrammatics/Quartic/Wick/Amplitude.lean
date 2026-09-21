@@ -70,7 +70,7 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv
           ((orderedQuarticLegOperator ε d order τ a).comp
-            (orderedQuarticLegOperator ε d order τ b))) :=
+            (orderedQuarticLegOperator ε d order τ b))) := by
   rw [orderedQuarticPairValue, timedFieldPairContraction,
     timedFieldOperator_orderedQuarticLegField_eq,
     timedFieldOperator_orderedQuarticLegField_eq]
