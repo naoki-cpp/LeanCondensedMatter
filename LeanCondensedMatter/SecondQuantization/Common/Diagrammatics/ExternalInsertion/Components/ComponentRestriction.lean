@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.InvolutionCard
 
 set_option linter.style.header false
 
@@ -108,6 +109,80 @@ private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Fin
   unfold externalInsertionVertexOfLeg
   cases externalInsertionLegEquiv E S leg <;> rfl
 
+/-- The legs of one component, before flattening, split into its external insertions and
+the four local legs of its interaction vertices. -/
+private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
+      ↥(ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))) ⊕
+        (↥(ExternalInsertionDiagram.interactionPart
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) where
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        exact Sum.inl ⟨e, (ExternalInsertionDiagram.mem_externalPart
+          (B : Finset (ExternalInsertionVertex E S)) e).2 hleg⟩
+    | inr p =>
+        exact Sum.inr (⟨p.1.1,
+          (ExternalInsertionDiagram.mem_interactionPart_subtype
+            (B : Finset (ExternalInsertionVertex E S)) p.1).2 hleg⟩, p.2)
+  invFun leg := by
+    cases leg with
+    | inl e =>
+        exact ⟨Sum.inl e.1, by
+          change (Sum.inl e.1 : ExternalInsertionVertex E S) ∈
+            (B : Finset (ExternalInsertionVertex E S))
+          exact (ExternalInsertionDiagram.mem_externalPart
+            (B : Finset (ExternalInsertionVertex E S)) e.1).1 e.2⟩
+    | inr p =>
+        let v : ↥S :=
+          ⟨p.1.1, ExternalInsertionDiagram.interactionPart_subset
+            (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
+        exact ⟨Sum.inr (v, p.2), by
+          change (Sum.inr v : ExternalInsertionVertex E S) ∈
+            (B : Finset (ExternalInsertionVertex E S))
+          exact (ExternalInsertionDiagram.mem_interactionPart_subtype
+            (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
+  left_inv leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        apply Subtype.ext
+        rfl
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply Subtype.ext
+        rfl
+  right_inv leg := by
+    cases leg with
+    | inl e =>
+        apply congrArg Sum.inl
+        exact Subtype.ext (by rfl)
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply congrArg Sum.inr
+        apply Prod.ext
+        · exact Subtype.ext (by rfl)
+        · rfl
+
+/-- Reindex the flattened legs of one component by its external and interaction data. -/
+private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    {leg : Fin (2 * (2 * S.card + E)) //
+      d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} ≃
+      ↥(ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))) ⊕
+        (↥(ExternalInsertionDiagram.interactionPart
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
+  ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
+      d.legInComponent_iff_unflattened B leg).trans
+    (d.componentLegDataEquiv B)
+
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -124,13 +199,51 @@ theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
       (d.pairing.vertexGraph_reachable_partner externalInsertionVertexOfLeg leg).symm
   rw [hEq]
 
-/-- The partner permutation restricted to the legs of one full component. -/
-noncomputable def ExternalInsertionDiagram.restrictedPartner {S : Finset (Fin N)}
+/-- Every connected component contains an even number of external insertions. -/
+theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : Finset (ExternalInsertionVertex E S)) :
-    Equiv.Perm {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} :=
-  (d.pairing.restrict (d.legInComponent B) fun leg =>
-    d.legInComponent_partner_iff B leg).partner
+    (B : d.componentPartition.parts) :
+    Even (ExternalInsertionDiagram.externalPart
+      (B : Finset (ExternalInsertionVertex E S))).card := by
+  classical
+  let blockEquiv := d.componentBlockLegDataEquiv B
+  have hcard :
+      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
+        (ExternalInsertionDiagram.externalPart
+          (B : Finset (ExternalInsertionVertex E S))).card +
+          4 * (ExternalInsertionDiagram.interactionPart
+            (B : Finset (ExternalInsertionVertex E S))).card := by
+    calc
+      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+          d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
+          Fintype.card
+            (↥(ExternalInsertionDiagram.externalPart
+              (B : Finset (ExternalInsertionVertex E S))) ⊕
+              (↥(ExternalInsertionDiagram.interactionPart
+                (B : Finset (ExternalInsertionVertex E S))) × Fin 4)) :=
+        Fintype.card_congr blockEquiv
+      _ = (ExternalInsertionDiagram.externalPart
+            (B : Finset (ExternalInsertionVertex E S))).card +
+            4 * (ExternalInsertionDiagram.interactionPart
+              (B : Finset (ExternalInsertionVertex E S))).card := by
+        rw [Fintype.card_sum, Fintype.card_prod, Fintype.card_coe,
+          Fintype.card_coe, Fintype.card_fin]
+        omega
+  let restricted :=
+    d.pairing.restrict
+      (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
+      (fun leg => d.legInComponent_partner_iff
+        (B : Finset (ExternalInsertionVertex E S)) leg)
+  have hEven :
+      Even (Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :=
+    restricted.even_card
+  rw [hcard] at hEven
+  rcases hEven with ⟨k, hk⟩
+  refine ⟨k - 2 * (ExternalInsertionDiagram.interactionPart
+    (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
+  omega
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
@@ -194,8 +307,8 @@ noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (
     (fun leg => d.legInComponent_partner_iff (B : Finset (ExternalInsertionVertex E S)) leg)
     (d.vacuumBlockLegEquiv B hVac)
 
-/-- The restricted vacuum pairing agrees with the ambient partner under the vacuum leg
-reindexing. -/
+/-- The restricted vacuum pairing agrees with the component-restricted ambient pairing
+under the vacuum leg reindexing. -/
 theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -203,9 +316,10 @@ theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegE
     (leg : {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg}) :
     (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
       d.vacuumBlockLegEquiv B hVac
-        (d.restrictedPartner (B : Finset (ExternalInsertionVertex E S)) leg) := by
-  simpa only [ExternalInsertionDiagram.restrictedVacuumPairing,
-    ExternalInsertionDiagram.restrictedPartner] using
+        ((d.pairing.restrict (d.legInComponent B)
+          (fun i => d.legInComponent_partner_iff
+            (B : Finset (ExternalInsertionVertex E S)) i)).partner leg) := by
+  simpa only [ExternalInsertionDiagram.restrictedVacuumPairing] using
     d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
       (fun i => d.legInComponent_partner_iff
         (B : Finset (ExternalInsertionVertex E S)) i)
