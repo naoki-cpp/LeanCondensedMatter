@@ -88,7 +88,7 @@ theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin 
   simpa only [ExternalInsertionDiagram.componentPartition] using hB
 
 /-- Membership of an unflattened leg in a component part. -/
-def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
+private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
   match leg with
@@ -98,7 +98,7 @@ def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
       (B : Finset (ExternalInsertionVertex E S))
 
 /-- Flattening preserves the component-membership predicate. -/
-theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
+private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔
@@ -134,7 +134,7 @@ noncomputable def ExternalInsertionDiagram.restrictedPartner {S : Finset (Fin N)
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
-noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
+private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
