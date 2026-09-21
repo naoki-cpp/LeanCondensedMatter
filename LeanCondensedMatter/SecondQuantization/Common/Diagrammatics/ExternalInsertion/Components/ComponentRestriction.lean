@@ -509,6 +509,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
           ((S.orderIsoOfFin rfl).symm vS).val <
             ((S.orderIsoOfFin rfl).symm wS).val :=
         (S.orderIsoOfFin rfl).symm.strictMono hvwS
+      dsimp [vS, wS] at hamb
       omega
 
 /-- The canonical order embedding of one restricted component's flattened legs into the ambient
