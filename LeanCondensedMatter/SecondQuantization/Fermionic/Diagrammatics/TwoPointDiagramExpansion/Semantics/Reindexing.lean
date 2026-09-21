@@ -60,7 +60,7 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
         (((Common.orderedTwoPointPairingCastEquiv n d.1.pairing).relabel
           (standardToMixedAtomicPositionEquiv τ τ' σ).symm).relabel
             (standardToMixedAtomicPositionEquiv τ τ' σ)) = d.1.pairing
-      rw [Pairing.relabel_relabel_symm]
+      rw [PairingOn.relabel_relabel_symm]
       exact (Common.orderedTwoPointPairingCastEquiv n).left_inv d.1.pairing
   right_inv x := by
     obtain ⟨labels, pairing⟩ := x
@@ -83,7 +83,7 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
               p.relabel (standardToMixedAtomicPositionEquiv τ τ' σ).symm)
             ((Common.orderedTwoPointPairingCastEquiv n).right_inv
               (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)))
-        _ = pairing := Pairing.relabel_symm_relabel pairing
+        _ = pairing := PairingOn.relabel_symm_relabel pairing
           (standardToMixedAtomicPositionEquiv τ τ' σ)
 
 noncomputable instance FixedExternalTwoPointWickDiagram.instFintype

@@ -111,7 +111,7 @@ noncomputable def TwoPointDiagram.slotCongr (e : ↥T ≃ ↥U)
   externalLabel := d.externalLabel
   vertexLabel v := d.vertexLabel (e.symm v)
   pairing :=
-    Pairing.ofPartner ((twoPointLegCongr e).permCongr d.pairing.partner)
+    PairingOn.ofPartner ((twoPointLegCongr e).permCongr d.pairing.partner)
       ⟨by
         intro i
         simp [Equiv.permCongr_apply],
@@ -223,7 +223,7 @@ noncomputable def TwoPointDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
   left_inv d := by
     refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
     · simp [TwoPointDiagram.slotCongr]
-    · refine Pairing.ext (Equiv.ext fun i => ?_)
+    · refine PairingOn.ext (Equiv.ext fun i => ?_)
       change (twoPointLegCongr e.symm).permCongr
         ((twoPointLegCongr e).permCongr d.pairing.partner) i = _
       rw [twoPointLegCongr_symm]
@@ -231,7 +231,7 @@ noncomputable def TwoPointDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
   right_inv d := by
     refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
     · simp [TwoPointDiagram.slotCongr]
-    · refine Pairing.ext (Equiv.ext fun i => ?_)
+    · refine PairingOn.ext (Equiv.ext fun i => ?_)
       change (twoPointLegCongr e).permCongr
         ((twoPointLegCongr e.symm).permCongr d.pairing.partner) i = _
       rw [twoPointLegCongr_symm]

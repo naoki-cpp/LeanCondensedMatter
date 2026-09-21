@@ -110,7 +110,7 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
         simp at h'
 
 private def sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : Pairing m :=
-  Pairing.ofPartner (sidePartner e σ) (isPairing_sidePartner e σ)
+  PairingOn.ofPartner (sidePartner e σ) (isPairing_sidePartner e σ)
 
 @[simp]
 private theorem sidePairing_partner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
@@ -123,7 +123,7 @@ private theorem isBipartite_sidePairing (e : SideSplitting m) (σ : Equiv.Perm (
 
 private theorem sidePairing_sideMatching (e : SideSplitting m) {P : Pairing m}
     (h : P.IsBipartite e) : sidePairing e (P.sideMatching e h) = P := by
-  refine Pairing.ext (Equiv.ext fun x => ?_)
+  refine PairingOn.ext (Equiv.ext fun x => ?_)
   obtain ⟨y, rfl⟩ := e.surjective x
   cases y with
   | inl i => rw [sidePairing_partner, sidePartner_inl, ← Pairing.partner_sideMatching e h i]

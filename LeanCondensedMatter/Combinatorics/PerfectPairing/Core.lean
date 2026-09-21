@@ -6,16 +6,18 @@ import Mathlib.GroupTheory.Perm.Fin
 set_option linter.style.header false
 
 /-!
-# `Pairing n`: the type, its finite enumeration, and normalized pairs
+# Perfect pairings on arbitrary types and ordered finite positions
 
-A perfect pairing of `Fin (2 * n)` is represented by its partner permutation: a fixed-point-free
-involution. Mathlib supplies finite permutations but no naturally suitable bundled perfect-pairing
-type with the linear order needed for crossing signs, so this file owns only that small predicate.
-This representation enumerates `(2 * n)!` permutations and filters the valid ones, instead of
-enumerating the powerset of all possible ordered pairs. It also gives recursive applications direct
-access to the unique partner of every position.
+`PairingOn α` bundles a fixed-point-free involution on an arbitrary type `α`. The traditional
+`Pairing n` is its ordered finite specialization to `Fin (2 * n)`, where the linear order supports
+normalized pairs, crossings, and recursive finite combinatorics.
 
-`Pairing.pairs` normalizes each partner orbit to `(a, b)` with `a < b`, one per orbit.
+Mathlib supplies finite permutations but no naturally suitable bundled fixed-point-free involution
+for this use. The finite specialization enumerates permutations of `Fin (2 * n)` and filters the
+valid ones, while the generic bundle remains independent of finiteness and ordering.
+
+`Pairing.pairs` normalizes each finite ordered partner orbit to `(a, b)` with `a < b`, one per
+orbit.
 -/
 
 namespace Combinatorics
@@ -59,22 +61,25 @@ theorem IsPairing.sigmaCongrRight {ι : Type*} {β : ι → Type*}
     simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
     exact (hF i).2 x
 
-instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
-    Decidable (IsPairing partner) :=
+instance decidableIsPairing {α : Type*} [Fintype α] [DecidableEq α]
+    (partner : Equiv.Perm α) : Decidable (IsPairing partner) :=
   inferInstanceAs (Decidable (
     (∀ i, partner (partner i) = i) ∧ ∀ i, partner i ≠ i))
 
-/-- A perfect pairing of the ordered positions `Fin (2 * n)`, represented through the stable
-`partner` interface rather than exposing the subtype used for finite enumeration. -/
-structure Pairing (n : ℕ) where
-  /-- The fixed-point-free involution sending each position to its paired partner. -/
-  partner : Equiv.Perm (Fin (2 * n))
+/-- A perfect pairing on an arbitrary type: a fixed-point-free involutive permutation. -/
+structure PairingOn (α : Type*) where
+  /-- The fixed-point-free involution sending each element to its paired partner. -/
+  partner : Equiv.Perm α
   partner_involutive : Function.Involutive partner
   partner_ne : ∀ i, partner i ≠ i
 
-/-- The internal equivalence used to enumerate `Pairing n` through finite permutations. -/
-private def pairingEquivSubtype (n : ℕ) :
-    Pairing n ≃ {partner : Equiv.Perm (Fin (2 * n)) // IsPairing partner} where
+/-- A perfect pairing of the ordered positions `Fin (2 * n)`. Ordering-dependent notions such as
+normalized pairs and crossing signs live on this finite specialization. -/
+abbrev Pairing (n : ℕ) := PairingOn (Fin (2 * n))
+
+/-- The internal equivalence used to enumerate finite `PairingOn` values through permutations. -/
+private def pairingOnEquivSubtype (α : Type*) :
+    PairingOn α ≃ {partner : Equiv.Perm α // IsPairing partner} where
   toFun pairing :=
     ⟨pairing.partner, pairing.partner_involutive, pairing.partner_ne⟩
   invFun pairing :=
@@ -86,29 +91,29 @@ private def pairingEquivSubtype (n : ℕ) :
     rfl
   right_inv pairing := Subtype.ext rfl
 
-instance (n : ℕ) : Fintype (Pairing n) :=
-  Fintype.ofEquiv {partner : Equiv.Perm (Fin (2 * n)) // IsPairing partner}
-    (pairingEquivSubtype n).symm
+instance {α : Type*} [Fintype α] [DecidableEq α] : Fintype (PairingOn α) :=
+  Fintype.ofEquiv {partner : Equiv.Perm α // IsPairing partner}
+    (pairingOnEquivSubtype α).symm
 
-instance (n : ℕ) : DecidableEq (Pairing n) :=
-  Equiv.decidableEq (pairingEquivSubtype n)
+instance {α : Type*} [Fintype α] [DecidableEq α] : DecidableEq (PairingOn α) :=
+  Equiv.decidableEq (pairingOnEquivSubtype α)
 
 @[ext]
-theorem Pairing.ext {left right : Pairing n} (h : left.partner = right.partner) :
-    left = right := by
+theorem PairingOn.ext {α : Type*} {left right : PairingOn α}
+    (h : left.partner = right.partner) : left = right := by
   cases left
   cases right
   cases h
   rfl
 
 @[simp]
-theorem Pairing.partner_partner (pairing : Pairing n) (i : Fin (2 * n)) :
+theorem PairingOn.partner_partner {α : Type*} (pairing : PairingOn α) (i : α) :
     pairing.partner (pairing.partner i) = i :=
   pairing.partner_involutive i
 
-/-- Construct the stable `Pairing` interface from an internally checked partner permutation. -/
-def Pairing.ofPartner (partner : Equiv.Perm (Fin (2 * n))) (hpartner : IsPairing partner) :
-    Pairing n where
+/-- Construct a pairing bundle from an internally checked fixed-point-free involution. -/
+def PairingOn.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPairing partner) :
+    PairingOn α where
   partner := partner
   partner_involutive := hpartner.1
   partner_ne := hpartner.2

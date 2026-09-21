@@ -135,8 +135,8 @@ noncomputable def TwoPointDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg} :=
-  d.pairing.partnerSubtypePerm (d.legInComponent B) fun leg =>
-    d.legInComponent_partner_iff B leg
+  (d.pairing.restrict (d.legInComponent B) fun leg =>
+    d.legInComponent_partner_iff B leg).partner
 
 /-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
 theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
@@ -145,7 +145,7 @@ theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg := by
   simpa only [TwoPointDiagram.restrictedPartner] using
-    d.pairing.partnerSubtypePerm_val (d.legInComponent B)
+    d.pairing.restrict_partner_val (d.legInComponent B)
       (fun i => d.legInComponent_partner_iff B i) leg
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
