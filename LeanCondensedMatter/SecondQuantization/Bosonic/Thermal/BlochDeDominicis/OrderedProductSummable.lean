@@ -123,8 +123,8 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
       | annihilate i =>
           by_cases hi : m i = 0
           · refine ⟨0, m, ?_, ?_, ?_⟩
-            · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
-                FreeThermalField.operator]
+            · simp only [FreeThermalField.orderedProduct, List.map_cons, List.prod_cons,
+                Module.End.mul_eq_comp, LinearMap.comp_apply, FreeThermalField.operator]
               rw [haction, map_smul, annihilate_basisState_of_zero hi, smul_zero]
               simp
             · intro j
@@ -135,8 +135,8 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
               exact pow_nonneg hB0 _
           · let a : ℝ := Real.sqrt (m i : ℝ)
             refine ⟨c * (a : ℂ), removeOccupation i m, ?_, ?_, ?_⟩
-            · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
-                FreeThermalField.operator]
+            · simp only [FreeThermalField.orderedProduct, List.map_cons, List.prod_cons,
+                Module.End.mul_eq_comp, LinearMap.comp_apply, FreeThermalField.operator]
               rw [haction, map_smul, annihilate_basisState_of_pos hi, smul_smul]
             · intro j
               simp only [List.length_cons]
