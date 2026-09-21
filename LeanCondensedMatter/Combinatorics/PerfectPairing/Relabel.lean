@@ -23,7 +23,7 @@ def PairingOn.transport {α β : Type*} (P : PairingOn β) (e : α ≃ β) : Pai
 theorem PairingOn.transport_partner {α β : Type*} (P : PairingOn β)
     (e : α ≃ β) (i : α) :
     (P.transport e).partner i = e.symm (P.partner (e i)) := by
-  simp [PairingOn.transport]
+  simp [PairingOn.transport, Equiv.permCongr_apply]
 
 /-- `PairingOn.transport` as an equivalence for a fixed ambient equivalence. -/
 def PairingOn.transportEquiv {α β : Type*} (e : α ≃ β) :
