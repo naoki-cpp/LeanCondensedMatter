@@ -129,8 +129,14 @@ theorem inPlanePauliVertexCLM_injective :
           Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
       hoperator
     simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
+  have hAxis : Function.Injective inPlanePauliAxis := by
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp [inPlanePauliAxis] at hij ⊢
+  have hDirection : LinearIndependent ℂ directionPauli := by
+    simpa [directionPauli] using
+      InternalSpace.pauliBasis_linearIndependent.comp inPlanePauliAxis hAxis
   have hcoeff :=
-    (Fintype.linearIndependent_iffₛ.mp directionPauli_linearIndependent) left right
+    (Fintype.linearIndependent_iffₛ.mp hDirection) left right
       (by
         simpa [Fin.sum_univ_two, directionPauli, inPlanePauliAxis,
           InternalSpace.pauliBasis] using hmatrix)
