@@ -287,6 +287,20 @@ the operator-integral compatibility theorem on the analytic side, and basis, adj
 self-adjointness criteria on the Hilbert side. The two realizations are not identified merely because
 they are finite-dimensional.
 
+## Free exchange grand-partition boundary
+
+The statistics-independent finite-mode formal grand-product backend is owned upstream by
+`QuantumTheory.Gibbs.FreeExchangeCycleSeries`, next to the diagonal one-particle Boltzmann kernel
+and the exchange-weighted connected-cycle series. Its grand-product construction is explicitly
+restricted to the physical exchange weights `ζ = +1` and `ζ = -1`; the generic permutation
+connected-cycle series remains available for arbitrary exchange weight where its stated algebraic
+hypotheses hold.
+
+The bosonic and fermionic thermal layers keep only domain-facing specializations of that formal
+backend. Fermionic determinant identities remain in the fermionic physical-consumer layer, while
+bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
+thermal layer. The formal series is never evaluated at `t = 1` as part of this bridge.
+
 ## Bosonic boundary
 
 Bosonic algebraic and free thermal results may reuse Common infrastructure, but finite fermionic trace
