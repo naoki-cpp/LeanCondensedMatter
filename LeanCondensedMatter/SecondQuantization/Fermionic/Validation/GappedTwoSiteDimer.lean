@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerFrequency
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerOperatorBridge
 import Mathlib.Tactic.Module
