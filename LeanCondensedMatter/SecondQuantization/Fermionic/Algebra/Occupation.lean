@@ -56,7 +56,8 @@ noncomputable instance occupationBasis : Common.OccupationBasis Mode (Occupation
 
 /-- Fermionic spelling of the statistics-independent particle-number grade from `Common`. -/
 omit [DecidableEq Mode] in
-noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ := Common.particleNumber n
+noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
+  Common.particleNumber (Mode := Mode) (Config := Occupation Mode) n
 
 omit [DecidableEq Mode] in
 theorem particleNumber_eq_card (n : Occupation Mode) :
