@@ -55,13 +55,6 @@ noncomputable def freeGibbsPairContraction
   (freeGibbsDensityOperator ε β).expectation
     (Common.finiteHilbertOperatorAlgEquiv (A.comp B))
 
-/-- The free Gibbs pair contraction is the corresponding finite Gibbs expectation. -/
-theorem freeGibbsPairContraction_eq_finiteGibbsExpectation
-    (ε : Mode → ℝ) (β : ℝ)
-    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    freeGibbsPairContraction ε β A B =
-      Common.finiteGibbsExpectation (fermionEnergy ε) β (A.comp B) := by
-  rw [freeGibbsPairContraction, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 end Fermionic
 end SecondQuantization
