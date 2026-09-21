@@ -361,6 +361,142 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_p
           (B : Finset (ExternalInsertionVertex E S)) i)]
       rfl
 
+
+private theorem ExternalInsertionDiagram.componentDiagramLeg_external
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) (e : Fin (2 * d.externalPairCount B)) :
+    d.componentDiagramLeg B
+        (externalInsertionExternalLeg (d.externalPairCount B)
+          (ExternalInsertionDiagram.interactionPart
+            (B : Finset (ExternalInsertionVertex E S))) e) =
+      externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1 := by
+  apply (externalInsertionLegEquiv E S).injective
+  simp [ExternalInsertionDiagram.componentDiagramLeg,
+    ExternalInsertionDiagram.componentBlockLegEquiv,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    ExternalInsertionDiagram.componentLegDataEquiv,
+    externalInsertionExternalLeg]
+
+private theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts)
+    (v : ↥(ExternalInsertionDiagram.interactionPart
+      (B : Finset (ExternalInsertionVertex E S)))) (l : Fin 4) :
+    d.componentDiagramLeg B
+        (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) =
+      externalInsertionInteractionLeg (E := E)
+        ⟨v.1, ExternalInsertionDiagram.interactionPart_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l := by
+  apply (externalInsertionLegEquiv E S).injective
+  simp [ExternalInsertionDiagram.componentDiagramLeg,
+    ExternalInsertionDiagram.componentBlockLegEquiv,
+    ExternalInsertionDiagram.componentBlockLegDataEquiv,
+    ExternalInsertionDiagram.componentLegDataEquiv,
+    externalInsertionInteractionLeg]
+
+/-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
+order. -/
+theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    StrictMono (d.componentDiagramLeg B) := by
+  let T :=
+    ExternalInsertionDiagram.interactionPart
+      (B : Finset (ExternalInsertionVertex E S))
+  let localEquiv := externalInsertionLegEquiv (d.externalPairCount B) T
+  intro a b hab
+  let la := localEquiv a
+  let lb := localEquiv b
+  have ha : localEquiv.symm la = a := by simp [la]
+  have hb : localEquiv.symm lb = b := by simp [lb]
+  rw [← ha, ← hb] at hab ⊢
+  rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
+  · change
+      externalInsertionExternalLeg (d.externalPairCount B) T e <
+        externalInsertionExternalLeg (d.externalPairCount B) T f at hab
+    rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
+    change
+      (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
+        (externalInsertionExternalLeg E S (d.externalPartOrderIso B f).1).val
+    have hef : e < f := by
+      change
+        (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
+          (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
+      simpa using hab
+    simpa using (d.externalPartOrderIso B).strictMono hef
+  · change
+      externalInsertionExternalLeg (d.externalPairCount B) T e <
+        externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
+    rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
+    change
+      (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
+        (externalInsertionInteractionLeg (E := E)
+          ⟨w.1, ExternalInsertionDiagram.interactionPart_subset
+            (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
+    simp
+    exact Nat.lt_of_lt_of_le (d.externalPartOrderIso B e).1.isLt (by omega)
+  · change
+      externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
+        externalInsertionExternalLeg (d.externalPairCount B) T f at hab
+    change
+      (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
+        (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
+    simp at hab
+    omega
+  · change
+      externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
+        externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
+    rw [d.componentDiagramLeg_interaction B, d.componentDiagramLeg_interaction B]
+    change
+      (externalInsertionInteractionLeg (E := E)
+        ⟨v.1, ExternalInsertionDiagram.interactionPart_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩ l).val <
+        (externalInsertionInteractionLeg (E := E)
+          ⟨w.1, ExternalInsertionDiagram.interactionPart_subset
+            (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
+    change
+      (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
+        (externalInsertionInteractionLeg (E := d.externalPairCount B) w k).val at hab
+    simp at hab ⊢
+    by_cases hvw : v = w
+    · subst w
+      have hlk : l.val < k.val := by omega
+      omega
+    · have hrank :
+          ((T.orderIsoOfFin rfl).symm v).val <
+            ((T.orderIsoOfFin rfl).symm w).val := by
+        omega
+      have hvwT : v < w := (T.orderIsoOfFin rfl).strictMono hrank
+      let vS : ↥S :=
+        ⟨v.1, ExternalInsertionDiagram.interactionPart_subset
+          (B : Finset (ExternalInsertionVertex E S)) v.2⟩
+      let wS : ↥S :=
+        ⟨w.1, ExternalInsertionDiagram.interactionPart_subset
+          (B : Finset (ExternalInsertionVertex E S)) w.2⟩
+      have hvwS : vS < wS := by
+        change v.1 < w.1
+        exact hvwT
+      have hamb :
+          ((S.orderIsoOfFin rfl).symm vS).val <
+            ((S.orderIsoOfFin rfl).symm wS).val :=
+        (S.orderIsoOfFin rfl).symm.strictMono hvwS
+      omega
+
+/-- The canonical order embedding of one restricted component's flattened legs into the ambient
+external-insertion leg order. -/
+noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
+      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) ↪o
+      Fin (2 * (2 * S.card + E)) :=
+  OrderEmbedding.ofStrictMono (d.componentDiagramLeg B)
+    (d.componentDiagramLeg_strictMono B)
+
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
 private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
