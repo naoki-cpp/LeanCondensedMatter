@@ -132,7 +132,7 @@ section Assemble
 
 /-- **Assemble a pairing from a pairing on each part.** Inverse construction to `splitLeft` and
 `splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
-noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     Pairing n :=
   (P.sumCongr Q).transport e.symm
 
