@@ -30,6 +30,8 @@ generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCon
 ```text
 Transport/
 ├── Core/          physical volume, normalization, conductivity tensor
+├── FiniteConductivityTable.lean
+│                  finite Lehmann + contact + positive-volume E-field normalization
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
@@ -45,6 +47,9 @@ The main semantic boundaries are:
 - Středa response matrices are response-level objects, not physical conductivity tensors;
 - physical prefactors, volume or continuum normalization, and limiting procedures remain explicit
   before constructing a `Core.ConductivityTensor`;
+- `FiniteConductivityTable` is an electrical-conductivity adapter downstream of the generic
+  `QuantumTheory.LinearResponse.FiniteLehmannTable`; the generic Lehmann evaluator does not depend
+  on contact terms, physical volume, driving frequency normalization, or electric-field conversion;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
