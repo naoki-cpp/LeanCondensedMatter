@@ -2,7 +2,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairTimeTransport
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.PairContractionRegularity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentDysonValue
 
 set_option linter.style.header false
@@ -24,8 +24,19 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- Fixed standard-leg contractions are continuous in the ambient interaction-time assignment. -/
+private theorem continuous_orderedTwoPointLegPairContraction
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (x y : OrderedTwoPointLeg n) :
+    Continuous (fun σ : Fin n → ℝ =>
+      orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
+  rcases x with x | x <;> rcases y with y | y <;>
+    simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
+      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, timedFieldPairContraction_eq] <;>
+    fun_prop
+
 /-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
+private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
@@ -39,7 +50,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeC
             (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)))
 
 /-- The Dyson-signed chamber representative is globally continuous. -/
-theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
+private theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
@@ -54,7 +65,7 @@ theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTime
             (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2))))
 
 /-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
+private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
@@ -95,7 +106,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepr
 
 /-- A mixed-component Dyson fixed-time value is globally measurable after assembling its finite
 chamberwise-continuous representatives along the mixed-order signature partition. -/
-theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
+private theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (B : d.1.componentPartition.parts) :
