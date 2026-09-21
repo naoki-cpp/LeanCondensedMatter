@@ -21,7 +21,10 @@ SecondQuantization.Fermionic, SecondQuantization.Bosonic
 
 The algebraic foundations support arbitrary mode types with finite-support states. Finiteness enters
 only where a theorem explicitly enumerates modes/configurations or uses finite-dimensional trace,
-operator integration, or diagram sums.
+operator integration, or diagram sums. `SecondQuantization.Common.OccupationBasis` owns the
+statistics-independent total particle-number grade; fermionic and bosonic occupation modules supply
+their concrete instances and prove the grade agrees with `Finset.card` and the native `Finsupp.sum`,
+respectively.
 
 ## Fermionic line
 
