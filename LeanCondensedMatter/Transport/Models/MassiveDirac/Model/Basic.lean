@@ -62,18 +62,9 @@ abbrev PauliAxis := InternalSpace.PauliAxis
 /-- Embed an in-plane Cartesian direction into the model-independent Pauli axes. -/
 def inPlanePauliAxis : Fin 2 → PauliAxis := ![.x, .y]
 
-theorem inPlanePauliAxis_injective : Function.Injective inPlanePauliAxis := by
-  intro left right h
-  fin_cases left <;> fin_cases right <;> simp [inPlanePauliAxis] at h ⊢
-
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli (direction : Fin 2) : Matrix2 :=
   InternalSpace.pauliBasis (inPlanePauliAxis direction)
-
-/-- The in-plane Pauli matrices inherit linear independence from the full Pauli basis. -/
-theorem directionPauli_linearIndependent : LinearIndependent ℂ directionPauli := by
-  simpa [directionPauli] using
-    InternalSpace.pauliBasis_linearIndependent.comp inPlanePauliAxis inPlanePauliAxis_injective
 
 /-- Axis-indexed coefficient vector `d(p) = (v pₓ, v pᵧ, m)` of the clean Dirac Hamiltonian. -/
 def diracPauliCoefficients (v m px py : ℝ) : PauliAxis → ℂ
