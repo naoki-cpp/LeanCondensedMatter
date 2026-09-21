@@ -9,7 +9,9 @@ set_option linter.style.header false
 
 This package provides the paired diagram core for an even finite family of one-legged external
 insertions and quartic interaction vertices, the external-supported/vacuum connected-component
-split, and restriction of vacuum components to ordinary quartic diagrams. Restriction of
-externally supported components and amplitude factorization remain downstream additions driven by
-concrete higher-point consumers.
+split, generic component restriction, and restriction of vacuum components to ordinary quartic
+diagrams. The core leg enumeration places external insertions first and interaction legs afterward
+in increasing vertex/local-leg order, providing a fixed ordered basis for later crossing/sign
+transport. Amplitude factorization remains downstream work driven by concrete higher-point
+consumers.
 -/
