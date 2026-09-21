@@ -56,7 +56,8 @@ noncomputable def particleNumber {Mode Config : Type*} [OccupationBasis Mode Con
 
 @[simp]
 theorem particleNumber_vacuum {Mode Config : Type*} [OccupationBasis Mode Config] :
-    particleNumber (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
+    particleNumber (Mode := Mode) (Config := Config)
+      (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
   classical
   simp [particleNumber, OccupationBasis.occupation_vacuum]
 
