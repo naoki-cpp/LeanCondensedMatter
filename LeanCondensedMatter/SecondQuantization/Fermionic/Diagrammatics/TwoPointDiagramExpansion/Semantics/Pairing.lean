@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Lo
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
@@ -158,10 +159,9 @@ noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (a b : Fin (2 * (2 * n + 1))) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
-        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b)))
+  timedFieldPairContraction ε β
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)
 
 /-- Canonical scalar value of one mixed-time pairing through the shared generic evaluator. -/
 noncomputable def orderedTwoPointPairingValue {n : ℕ}
@@ -200,7 +200,8 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
   rw [ofFn_mixedTimeOrderedAtomicOperatorFamily_eq] at hgen
   rw [hgen]
   simp only [orderedTwoPointPairingValue, Combinatorics.Pairing.evaluation,
-    mixedTimeOrderedAtomicPairValue,
+    mixedTimeOrderedAtomicPairValue, timedFieldPairContraction,
+    mixedTimeOrderedAtomicOperatorFamily,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 end Fermionic
