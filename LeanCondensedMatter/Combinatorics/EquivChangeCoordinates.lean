@@ -39,7 +39,7 @@ theorem changeCoordinates_symm {α β γ : Type*} (source : α ≃ β) (target :
     (source.changeCoordinates target).symm = target.changeCoordinates source := by
   ext x
   obtain ⟨y, rfl⟩ := target.surjective x
-  simp
+  simp [Equiv.changeCoordinates]
 
 /-- Coordinate changes compose through an intermediate representation. -/
 theorem changeCoordinates_trans {α β γ δ : Type*}
