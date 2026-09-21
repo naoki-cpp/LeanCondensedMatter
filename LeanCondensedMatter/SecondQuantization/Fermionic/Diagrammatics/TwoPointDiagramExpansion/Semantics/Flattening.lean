@@ -126,8 +126,9 @@ theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}
     induction events with
     | nil => rfl
     | cons event events ih =>
-        rw [List.flatMap_cons, List.map_cons, List.prod_append, List.prod_cons,
-          Module.End.mul_eq_comp, prod_twoPointTimedEventAtomicOperators, ih]
+        rw [List.flatMap_cons, List.map_cons, List.prod_append, List.prod_cons]
+        simp only [Module.End.mul_eq_comp]
+        rw [prod_twoPointTimedEventAtomicOperators, ih]
   rw [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators, hprod]
 
 end Fermionic
