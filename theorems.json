@@ -21041,6 +21041,43 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) {S : Finset α},\n  S ≠ ∅ → (Finpartition.replicaPolynomial κ S).coeff 1 = κ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.replicaPolynomial_coeff_one",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": "For nonempty support, the coefficient linear in the replica count is exactly the one-block\ncontribution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {a : Finset α} (σ : Finpartition a)\n  (Q : (B : Finset α) → B ∈ σ.parts → Finpartition B) {B : Finset α} (hB : B ∈ σ.parts), (σ.bind Q).restrict ⋯ = Q B hB",
     "standardAxioms": [
@@ -128563,7 +128600,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.flatVertexLegPairValue ε β q τ a b =\n    Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n a) *\n              SecondQuantization.Fermionic.flatVertexLegEnergyShift ε q a) *\n        Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n b) *\n              SecondQuantization.Fermionic.flatVertexLegEnergyShift ε q b) *\n      (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n a))\n              (SecondQuantization.Common.flatLocalLeg n a) ∘ₗ\n            SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n b))\n              (SecondQuantization.Common.flatLocalLeg n b)))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.flatVertexLegPairValue ε β q τ a b =\n    Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n a) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q a) *\n        Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n b) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q b) *\n      (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n a))\n              (SecondQuantization.Common.flatLocalLeg n a) ∘ₗ\n            SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n b))\n              (SecondQuantization.Common.flatLocalLeg n b)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130603,9 +130640,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prodComp",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct",
     "externalAxioms": [],
-    "docString": "**A single vertex's evolved operator, flattened into a `Common.prodComp` of its four\nindividually-evolved atomic legs**: uses the multiplicativity of the canonical Heisenberg algebra\nequivalence on `c₁† c₂† a₂ a₁`, matching `quarticLocalLegOperator`'s\n`0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention exactly. ",
+    "docString": "A single evolved quartic vertex is the composed product of its four individually evolved local\nlegs in the canonical local-leg order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -132110,7 +132147,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p =\n    Complex.exp\n        ↑(τ (SecondQuantization.Common.flatVertexIndex n p) *\n            SecondQuantization.Fermionic.flatVertexLegEnergyShift ε q p) •\n      SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n p))\n        (SecondQuantization.Common.flatLocalLeg n p)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ p =\n    Complex.exp\n        ↑(τ (SecondQuantization.Common.flatVertexIndex n p) *\n            SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q p) •\n      SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n p))\n        (SecondQuantization.Common.flatLocalLeg n p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132123,9 +132160,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
     "externalAxioms": [],
-    "docString": "**Every flattened leg operator is, up to its own `Complex.exp` eigenvalue-shift scalar, a bare\natomic `quarticLocalLegOperator`** — the normal form used by the flattened commutator calculation\nand by consumers specializing the general evolved-leg eigenoperator theorem. ",
+    "docString": "Every flattened quartic leg operator is its bare local-leg operator multiplied by the expected\nimaginary-time exponential. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -133234,9 +133271,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
     "externalAxioms": [],
-    "docString": "Mapping the canonical quartic leg field to its operator recovers the existing operator family. ",
+    "docString": "Mapping the canonical quartic leg field to its operator recovers the operator family. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -138753,6 +138790,45 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {S : Finset α} (hS : S ≠ ∅) (π : Finpartition S),\n  π.parts.card = 1 → π = Finpartition.indiscrete hS",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.replicaPolynomial_coeff_one"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.replicaPolynomial_coeff_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155038,7 +155114,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ a ∘ₗ\n        SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ b) =\n    Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n a) *\n              SecondQuantization.Fermionic.flatVertexLegEnergyShift ε q a) *\n        Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n b) *\n              SecondQuantization.Fermionic.flatVertexLegEnergyShift ε q b) *\n      SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n a))\n            (SecondQuantization.Common.flatLocalLeg n a) ∘ₗ\n          SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n b))\n            (SecondQuantization.Common.flatLocalLeg n b))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ a ∘ₗ\n        SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ b) =\n    Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n a) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q a) *\n        Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n b) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q b) *\n      SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n a))\n            (SecondQuantization.Common.flatLocalLeg n a) ∘ₗ\n          SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n b))\n            (SecondQuantization.Common.flatLocalLeg n b))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
