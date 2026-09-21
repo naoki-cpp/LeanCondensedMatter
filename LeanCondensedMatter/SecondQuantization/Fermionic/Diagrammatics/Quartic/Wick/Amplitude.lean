@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
@@ -33,16 +33,32 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
     Fin (2 * (2 * S.card)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ
 
+/-- The time-labelled field at a flattened leg position for a fixed vertex order. -/
+private noncomputable def orderedQuarticLegField {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
+    (τ : Fin S.card → ℝ) (p : Fin (2 * (2 * S.card))) : TimedField Mode :=
+  let slotLeg := Common.orderedQuarticLegEquiv S.card p
+  ⟨τ slotLeg.1,
+    quarticLocalLegExternalFieldLabel (d.vertexLabel (order slotLeg.1)) slotLeg.2⟩
+
+private theorem timedFieldOperator_orderedQuarticLegField_eq
+    (ε : Mode → ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
+    (τ : Fin S.card → ℝ) (p : Fin (2 * (2 * S.card))) :
+    timedFieldOperator ε (orderedQuarticLegField d order τ p) =
+      orderedQuarticLegOperator ε d order τ p := by
+  rw [orderedQuarticLegField, timedFieldOperator_quarticLocalLeg]
+  rfl
+
 /-! ## Pair contraction values -/
 
 /-- The canonical free Gibbs density-state value of two flattened leg positions. -/
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      ((orderedQuarticLegOperator ε d order τ a).comp
-        (orderedQuarticLegOperator ε d order τ b)))
+  timedFieldPairContraction ε β
+    (orderedQuarticLegField d order τ a)
+    (orderedQuarticLegField d order τ b)
 
 /-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
 operator product. -/
@@ -55,7 +71,9 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
         (Common.finiteHilbertOperatorAlgEquiv
           ((orderedQuarticLegOperator ε d order τ a).comp
             (orderedQuarticLegOperator ε d order τ b))) :=
-  rfl
+  rw [orderedQuarticPairValue, timedFieldPairContraction,
+    timedFieldOperator_orderedQuarticLegField_eq,
+    timedFieldOperator_orderedQuarticLegField_eq]
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
@@ -97,11 +115,8 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
               (quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2))) := by
-  simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
-    smul_smul, Common.finiteGibbsExpectation_smul]
-  ring
+  simpa [orderedQuarticPairValue, timedFieldPairContraction_eq,
+    orderedQuarticLegField]
 
 /-- A pair value is continuous in the time assignment. -/
 theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
