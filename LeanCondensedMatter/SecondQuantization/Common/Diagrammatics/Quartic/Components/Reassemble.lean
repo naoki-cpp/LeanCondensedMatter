@@ -53,7 +53,7 @@ theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     Combinatorics.Pairing (2 * S.card) :=
-  Combinatorics.Pairing.ofPartner
+  Combinatorics.PairingOn.ofPartner
     ((QuarticDiagram.bigLegEquiv π).symm.permCongr
       (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
     (IsPairing.permCongr
