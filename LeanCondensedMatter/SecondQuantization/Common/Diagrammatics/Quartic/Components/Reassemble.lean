@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected
 
 set_option linter.style.header false
@@ -53,14 +54,8 @@ theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     Combinatorics.Pairing (2 * S.card) :=
-  Combinatorics.PairingOn.ofPartner
-    ((QuarticDiagram.bigLegEquiv π).symm.permCongr
-      (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
-    (IsPairing.permCongr
-      (IsPairing.sigmaCongrRight
-        (fun B => (F B).1.pairing.partner)
-        (fun B => ⟨(F B).1.pairing.partner_involutive, (F B).1.pairing.partner_ne⟩))
-      (QuarticDiagram.bigLegEquiv π).symm)
+  (Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
+    (QuarticDiagram.bigLegEquiv π)
 
 /-- Reassemble an ambient labelled quartic diagram from connected diagrams on partition parts. -/
 noncomputable def QuarticDiagram.reassemble {S : Finset (Fin N)} (π : Finpartition S)

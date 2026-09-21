@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
 
 set_option linter.style.header false
@@ -110,16 +111,7 @@ noncomputable def TwoPointDiagram.slotCongr (e : ↥T ≃ ↥U)
     TwoPointDiagram ExternalLabel InternalLabel M U where
   externalLabel := d.externalLabel
   vertexLabel v := d.vertexLabel (e.symm v)
-  pairing :=
-    PairingOn.ofPartner ((twoPointLegCongr e).permCongr d.pairing.partner)
-      ⟨by
-        intro i
-        simp [Equiv.permCongr_apply],
-       by
-        intro i hi
-        apply d.pairing.partner_ne ((twoPointLegCongr e).symm i)
-        have := congrArg (twoPointLegCongr e).symm hi
-        simpa [Equiv.permCongr_apply] using this⟩
+  pairing := d.pairing.transport (twoPointLegCongr e).symm
 
 @[simp]
 theorem TwoPointDiagram.slotCongr_externalLabel (e : ↥T ≃ ↥U)
@@ -137,8 +129,7 @@ theorem TwoPointDiagram.slotCongr_partner (e : ↥T ≃ ↥U)
     (leg : Fin (2 * (2 * T.card + 1))) :
     (d.slotCongr (M := M) e).pairing.partner (twoPointLegCongr e leg) =
       twoPointLegCongr e (d.pairing.partner leg) := by
-  change (twoPointLegCongr e).permCongr d.pairing.partner (twoPointLegCongr e leg) = _
-  simp [Equiv.permCongr_apply]
+  simp [TwoPointDiagram.slotCongr]
 
 /-- **The transport is an isomorphism of vertex graphs.** -/
 theorem TwoPointDiagram.slotCongr_adj_iff (e : ↥T ≃ ↥U)
@@ -223,19 +214,17 @@ noncomputable def TwoPointDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
   left_inv d := by
     refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
     · simp [TwoPointDiagram.slotCongr]
-    · refine PairingOn.ext (Equiv.ext fun i => ?_)
-      change (twoPointLegCongr e.symm).permCongr
-        ((twoPointLegCongr e).permCongr d.pairing.partner) i = _
+    · change (d.pairing.transport (twoPointLegCongr e).symm).transport
+        (twoPointLegCongr e.symm).symm = d.pairing
       rw [twoPointLegCongr_symm]
-      simp [Equiv.permCongr_apply]
+      simp
   right_inv d := by
     refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
     · simp [TwoPointDiagram.slotCongr]
-    · refine PairingOn.ext (Equiv.ext fun i => ?_)
-      change (twoPointLegCongr e).permCongr
-        ((twoPointLegCongr e.symm).permCongr d.pairing.partner) i = _
+    · change (d.pairing.transport (twoPointLegCongr e.symm).symm).transport
+        (twoPointLegCongr e).symm = d.pairing
       rw [twoPointLegCongr_symm]
-      simp [Equiv.permCongr_apply]
+      simp
 
 end Common
 end SecondQuantization

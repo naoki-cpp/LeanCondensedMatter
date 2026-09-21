@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 
 set_option linter.style.header false
@@ -131,29 +132,21 @@ section Assemble
 
 /-- **Assemble a pairing from a pairing on each part.** Inverse construction to `splitLeft` and
 `splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
-noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     Pairing n :=
-  PairingOn.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
-    (IsPairing.permCongr
-      (IsPairing.sumCongr
-        ⟨P.partner_involutive, P.partner_ne⟩
-        ⟨Q.partner_involutive, Q.partner_ne⟩) e)
+  (P.sumCongr Q).transport e.symm
 
 @[simp]
 theorem Pairing.ofSplit_partner_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (i : Fin (2 * a)) :
     (Pairing.ofSplit e P Q).partner (e (Sum.inl i)) = e (Sum.inl (P.partner i)) := by
-  change e (Equiv.sumCongr P.partner Q.partner (e.symm (e (Sum.inl i)))) = _
-  rw [e.symm_apply_apply]
-  rfl
+  simp [Pairing.ofSplit]
 
 @[simp]
 theorem Pairing.ofSplit_partner_inr (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (i : Fin (2 * b)) :
     (Pairing.ofSplit e P Q).partner (e (Sum.inr i)) = e (Sum.inr (Q.partner i)) := by
-  change e (Equiv.sumCongr P.partner Q.partner (e.symm (e (Sum.inr i)))) = _
-  rw [e.symm_apply_apply]
-  rfl
+  simp [Pairing.ofSplit]
 
 /-- An assembled pairing is split by the splitting it was assembled along. -/
 theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :

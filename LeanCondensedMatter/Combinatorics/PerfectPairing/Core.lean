@@ -111,12 +111,47 @@ theorem PairingOn.partner_partner {α : Type*} (pairing : PairingOn α) (i : α)
     pairing.partner (pairing.partner i) = i :=
   pairing.partner_involutive i
 
+/-- The bundled partner permutation satisfies the fixed-point-free involution predicate. -/
+theorem PairingOn.isPairing {α : Type*} (pairing : PairingOn α) :
+    IsPairing pairing.partner :=
+  ⟨pairing.partner_involutive, pairing.partner_ne⟩
+
 /-- Construct a pairing bundle from an internally checked fixed-point-free involution. -/
 def PairingOn.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPairing partner) :
     PairingOn α where
   partner := partner
   partner_involutive := hpartner.1
   partner_ne := hpartner.2
+
+/-- The disjoint sum of two pairings. -/
+def PairingOn.sumCongr {α β : Type*} (left : PairingOn α) (right : PairingOn β) :
+    PairingOn (α ⊕ β) :=
+  PairingOn.ofPartner (Equiv.sumCongr left.partner right.partner)
+    (IsPairing.sumCongr left.isPairing right.isPairing)
+
+@[simp]
+theorem PairingOn.sumCongr_partner_inl {α β : Type*}
+    (left : PairingOn α) (right : PairingOn β) (x : α) :
+    (left.sumCongr right).partner (Sum.inl x) = Sum.inl (left.partner x) := by
+  rfl
+
+@[simp]
+theorem PairingOn.sumCongr_partner_inr {α β : Type*}
+    (left : PairingOn α) (right : PairingOn β) (x : β) :
+    (left.sumCongr right).partner (Sum.inr x) = Sum.inr (right.partner x) := by
+  rfl
+
+/-- The dependent sum of a family of pairings. -/
+def PairingOn.sigmaCongrRight {ι : Type*} {β : ι → Type*}
+    (F : ∀ i, PairingOn (β i)) : PairingOn (Σ i, β i) :=
+  PairingOn.ofPartner (Equiv.sigmaCongrRight fun i => (F i).partner)
+    (IsPairing.sigmaCongrRight (fun i => (F i).partner) fun i => (F i).isPairing)
+
+@[simp]
+theorem PairingOn.sigmaCongrRight_partner {ι : Type*} {β : ι → Type*}
+    (F : ∀ i, PairingOn (β i)) (i : ι) (x : β i) :
+    (PairingOn.sigmaCongrRight F).partner ⟨i, x⟩ = ⟨i, (F i).partner x⟩ := by
+  rfl
 
 /-- The finite enumeration of all perfect pairings of `Fin (2 * n)`. -/
 def allPairings (n : ℕ) : Finset (Pairing n) := Finset.univ
