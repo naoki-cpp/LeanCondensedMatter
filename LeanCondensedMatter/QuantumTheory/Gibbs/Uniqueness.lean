@@ -118,32 +118,23 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
     rw [hGibbs.trace_eq_spectralTrace] at hbound
     simpa [Z, hq_def] using hbound
-  have hqZ_summable : Summable (fun a => q a / Z) :=
-    hq_summable_and_le.1.div_const Z
-  have hplogZ_summable : Summable (fun a => p a * Real.log Z) :=
-    hp_summable.mul_right _
-  have hB_summable : Summable
-      (fun a => β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
-    ((hph_summable.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
-  have hnegMulLog_nonneg : ∀ a, 0 ≤ Real.negMulLog (p a) :=
-    fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a)
-  obtain ⟨hnML_summable, hsum_le⟩ :=
-    summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
-  obtain ⟨-, hToReal⟩ :=
-    vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
-  have hsum_eq :
-      ∑' a, (β * (p a * h a) + p a * Real.log Z - p a + q a / Z) =
-        β * (∑' a, p a * h a) + Real.log Z * (∑' a, p a) -
-          (∑' a, p a) + ∑' a, q a / Z := by
-    rw [(((hph_summable.mul_left β).add hplogZ_summable).sub hp_summable).tsum_add
-      hqZ_summable, ((hph_summable.mul_left β).add hplogZ_summable).tsum_sub hp_summable,
-      (hph_summable.mul_left β).tsum_add hplogZ_summable, tsum_mul_left,
-      show (fun a => p a * Real.log Z) = (fun a => Real.log Z * p a) by
-        funext a
-        ring, tsum_mul_left]
   have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
-  rw [hphsum, hpsum] at hsum_eq
+  have hp_hasSum : HasSum p 1 := by
+    simpa [hpsum] using hp_summable.hasSum
+  obtain ⟨hB_summable, hsum_eq⟩ :=
+    summable_gibbsComparison_and_tsum_eq
+      p q h β Z hp_hasSum hph_summable hq_summable_and_le.1
+  obtain ⟨hnML_summable, _⟩ :=
+    summable_negMulLog_and_tsum_le_gibbs
+      p q h β Z (fun a => ρ.eigenvalue_nonneg a)
+      hp_hasSum hph_summable
+      hq_summable_and_le.1 hq_summable_and_le.2 hqpos hZpos hstep2
+  have hsum_le :=
+    hnML_summable.tsum_le_tsum hbound hB_summable
+  obtain ⟨-, hToReal⟩ :=
+    vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
+  rw [hphsum] at hsum_eq
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
     tsum_div_le_one hq_summable_and_le.2 hZpos
   have hEntropyTarget :
@@ -177,15 +168,8 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H]
         ∑' a, (β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     hnMLTarget.trans hBTarget.symm
   have hterm_eq : ∀ a, Real.negMulLog (p a) =
-      β * (p a * h a) + p a * Real.log Z - p a + q a / Z := by
-    intro a
-    apply le_antisymm (hbound a)
-    by_contra hnot
-    have hlt : Real.negMulLog (p a) <
-        β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
-      lt_of_not_ge hnot
-    have hsumlt := Summable.tsum_lt_tsum hbound hlt hnML_summable hB_summable
-    exact (ne_of_lt hsumlt) hnML_eq_B
+      β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
+    pointwise_eq_of_tsum_eq_of_le hbound hnML_summable hB_summable hnML_eq_B
   have hp_pos : ∀ a, 0 < p a := fun a => by
     exact lt_of_le_of_ne (ρ.eigenvalue_nonneg a) (Ne.symm a.1.2)
   have hscalar : ∀ a, p a = q a / Z ∧ -Real.log (q a) = β * h a := fun a => by
