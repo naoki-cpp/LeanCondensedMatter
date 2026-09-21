@@ -103,6 +103,38 @@ low-order statements are obtained by specializing the canonical general formal a
 endpoints rather than by separate public wrappers. `LowOrder` remains opt-in and is not part of
 the canonical `LinkedCluster` umbrella.
 
+## Replica-method proof track
+
+An independent algebraic proof track should recover the formal linked-cluster endpoint by replica
+counting rather than partition-lattice Möbius inversion. For a finite support `S`, the
+statistics-independent core is a polynomial in a formal replica-count variable `N`,
+
+```text
+R_S(N) = ∑_{π : Finpartition S} N^(number of blocks of π) × partitionProduct κ π.
+```
+
+For nonempty `S`, the coefficient linear in `N` receives a contribution only from the one-block
+partition and therefore equals `κ S`. The factor `N^(number of blocks)` should also be identified
+with the number of independent replica labelings of the connected components, so the formal
+polynomial retains the combinatorial meaning of the replica construction.
+
+On the power-series side, the target is a fixed-order replica-count polynomial whose evaluation at
+a natural number `n` gives the corresponding factorial-normalized coefficient of `Z^n`. Its
+coefficient linear in the replica-count variable should equal the same-order coefficient of
+`logOf Z`. This replaces an analytic `n → 0` continuation by finite polynomial coefficient
+extraction.
+
+The proof should reuse the forward connected-decomposition structure and multiplicative-weight
+factorization, but remain independent of `ConnectedDecompositionInversion`,
+`cumulantFromMoment`, and the existing formal-log/cumulant endpoint. This dependency boundary is
+what makes the replica route a meaningful kernel-checked cross-check of the current Möbius proof.
+
+Reusable finite-set replica machinery belongs in `Combinatorics`; generic formal power-series
+replica algebra belongs in `Analysis/PowerSeries`. Fermionic diagrammatics should consume those
+generic results only at the final Dyson/Wick specialization. Public declarations should represent
+independent replica or polynomial concepts rather than duplicate aliases for the existing
+linked-cluster endpoint.
+
 ## Open work
 
 - pre-normalized arbitrary higher-point source moments and their vacuum normalization;
