@@ -106,7 +106,6 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion"
       ],
       "layers": [
-        {"id": "umbrella", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion"]},
         {"id": "semantics", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics"]},
         {"id": "factorization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization"]},
         {"id": "analysis", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis"]},

@@ -5,16 +5,22 @@ not a history of previous module layouts.
 
 ## Execution
 
-Pull-request CI keeps the blocking path small:
+Pull-request CI keeps the blocking path small and selects source-topology and compiled checks
+independently:
 
 ```text
-Python source audit
-  files / direct imports / DAGs / reachability / narrow layout rules
-        ↓
-lake build --wfail
-        ↓
-duplicate declaration audit / sorryAx audit / lake lint
+source-topology change                  Lean library / build-input change
+        ↓                                           ↓
+Python source audit                              lake build --wfail
+files / direct imports / DAGs / reachability             ↓
+/ narrow source rules                         duplicate declaration audit
+                                               / sorryAx audit / lake lint
 ```
+
+Ordinary Lean library changes normally exercise both branches. Source-audit-only tooling does not
+force a library build, while advisory theorem-catalog tooling remains outside the pull-request gate.
+On `main`, advisory-tooling changes may request a build cache so the separate Lean Insights workflow
+can run against the merged commit.
 
 Run the source audit with:
 
@@ -79,7 +85,9 @@ does not create a permanent rule that the old path may never exist again.
 Python owns properties of repository source topology. It parses Lean imports, but it is not a Lean
 semantic parser. Source syntax should be inspected only when syntax or layout is itself the invariant.
 Focused Python checkers are reserved for rules that do not fit the uniform graph or source-contract
-data shapes. Only checkers explicitly listed in `check_architecture.py` participate in CI; a local
+data shapes, such as exact public-umbrella import boundaries where an umbrella shares a module prefix
+with its implementation subtree. They must not freeze retired paths or proof-stage directory layouts.
+Only checkers explicitly listed in `check_architecture.py` participate in CI; a local
 `check_*.py` script is not enrolled automatically.
 
 Lean owns properties of the elaborated environment. `CheckSemanticBoundaries.lean` provides a

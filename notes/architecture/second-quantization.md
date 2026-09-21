@@ -172,7 +172,10 @@ The generic external-insertion component layer classifies each connected compone
 externally supported or vacuum. `ExternalInsertionDiagram.HasNoVacuumComponent` requires every
 interaction vertex to lie in a component meeting at least one external insertion; it does not require
 distinct external insertions to lie in the same component. The finite component partition is the
-disjoint union of `externallySupportedComponentParts` and `vacuumComponentParts`.
+disjoint union of `externallySupportedComponentParts` and `vacuumComponentParts`. A vacuum
+component has no external legs, so Common reindexes its surviving legs as ordinary quartic legs and
+exposes the induced `QuarticDiagram`; externally supported component restriction remains a separate
+higher-point construction.
 
 The two-point expansion has its own internal layer order:
 

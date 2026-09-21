@@ -135,8 +135,6 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg}) := by
-    change Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-      d.legInComponent (d.externalComponent 0) leg})
     simpa [restricted, TwoPointDiagram.restrictedPartner] using
       Combinatorics.even_card_of_fixedPointFreeInvolution
         restricted.partner restricted.partner_involutive restricted.partner_ne
