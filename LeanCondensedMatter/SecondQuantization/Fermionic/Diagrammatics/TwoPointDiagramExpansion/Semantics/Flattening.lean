@@ -33,7 +33,7 @@ noncomputable def twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ
         imaginaryTimeEvolve ε (σ v) (quarticLocalLegOperator (q v) l)
 
 @[simp]
-theorem twoPointTimedEventAtomicOperators_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private theorem twoPointTimedEventAtomicOperators_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (e : Fin 2) :
     twoPointTimedEventAtomicOperators ε i j τ τ' q σ (Sum.inl e) =
       [externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e)] :=
@@ -48,12 +48,12 @@ theorem twoPointTimedEventAtomicOperators_interaction {n : ℕ} (ε : Mode → �
   rfl
 
 /-- The number of atomic operators contributed by one mixed event. -/
-def twoPointTimedEventAtomicArity {n : ℕ} : TwoPointTimedEvent n → ℕ
+private def twoPointTimedEventAtomicArity {n : ℕ} : TwoPointTimedEvent n → ℕ
   | .inl _ => 1
   | .inr _ => 4
 
 @[simp]
-theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (event : TwoPointTimedEvent n) :
     (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event).length =
@@ -61,7 +61,7 @@ theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (
   cases event <;> simp [twoPointTimedEventAtomicArity]
 
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
-theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (event : TwoPointTimedEvent n) :
     Common.prodComp (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event) =
@@ -96,7 +96,7 @@ private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
 
 /-- A two-point insertion with `n` quartic vertices contains exactly `4n + 2` atomic operators. -/
 @[simp]
-theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length = 2 * (2 * n + 1) := by
   rw [mixedTimeOrderedAtomicOperators, List.length_flatMap]
