@@ -22,50 +22,26 @@ per operator it passes, landing `C₁` at the very end:
 
 `peelSum` depends only on `ζ` and the `(Bⱼ, cⱼ)` list — *not* on `C₁` (`C₁` appears only in `hcomm`
 and on the left/right of the original operator product) — defined *recursively*, mirroring the
-substitution steps directly (`peelSum ζ ((B,c) :: t) = c•(prodComp of t's operators) + ζ•(B ∘
+substitution steps directly (`peelSum ζ ((B,c) :: t) = c•(product of t's operators) + ζ•(B ∘
 peelSum ζ t)`), rather than as a closed `Finset.sum`-over-erasures formula matching the physics
 notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`
 connects the two.
 
 **Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
-here. The trace-level KMS-rotation wrapping that solves the resulting self-referential trace
-equation is done separately in
+here. Ordered operator lists use Mathlib's `List.prod` on endomorphisms. The trace-level KMS-rotation
+wrapping that solves the resulting self-referential trace equation is done separately in
 `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`.
 
 **`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s
 recursively-defined terms. `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` further converts this into
-the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Prod.fst)`, via
-`List.eraseIdx`) that lets each term be matched individually against
-`Combinatorics.Pairing`.
+the indexed erasure formula (`ζʲ • cⱼ • product of (l.eraseIdx j |>.map Prod.fst)`, via
+`List.eraseIdx`) that lets each term be matched individually against `Combinatorics.Pairing`.
 -/
 
 namespace SecondQuantization
 namespace Common
 
 variable {Config : Type*}
-
-/-- **The composed product of a list of operators**, `B₁ ∘ B₂ ∘ ⋯ ∘ Bₖ`, right-associated with
-`id` at the end of an empty list. -/
-noncomputable def prodComp :
-    List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →
-      AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
-  | [] => LinearMap.id
-  | B :: t => B.comp (prodComp t)
-
-@[simp] theorem prodComp_nil :
-    (prodComp [] : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = LinearMap.id := rfl
-
-theorem prodComp_cons (B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (t : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
-    prodComp (B :: t) = B.comp (prodComp t) := rfl
-
-/-- **`prodComp` distributes over list concatenation**: `prodComp (l₁ ++ l₂) = prodComp l₁ ∘
-prodComp l₂` — by induction on `l₁`, using `LinearMap.comp_assoc` at each step. -/
-theorem prodComp_append (l₁ l₂ : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
-    prodComp (l₁ ++ l₂) = (prodComp l₁).comp (prodComp l₂) := by
-  induction l₁ with
-  | nil => simp
-  | cons B t ih => rw [List.cons_append, prodComp_cons, prodComp_cons, ih, LinearMap.comp_assoc]
 
 /-- **The recursive "peeled" sum**: mirrors the exact substitution steps of pushing `C₁`
 rightward through a list of `(operator, scalar ζ-commutator coefficient)` pairs one at a time.
@@ -74,19 +50,21 @@ noncomputable def peelSum (ζ : ℂ) :
     List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) →
       AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
   | [] => 0
-  | (B, c) :: t => c • prodComp (t.map Prod.fst) + ζ • (B.comp (peelSum ζ t))
+  | (B, c) :: t =>
+      c • (t.map Prod.fst).prod + ζ • (B.comp (peelSum ζ t))
 
 /-- **The individual terms `peelSum` sums**, one per position in `l`, in order: at position `j`
-(0-indexed), the term is `ζ^j·cⱼ•(remaining product with `Bⱼ` erased)`. Defined recursively in
+(0-indexed), the term is `ζ^j·cⱼ•(remaining product with Bⱼ erased)`. Defined recursively in
 lockstep with `peelSum` itself, so `peelSum_eq_peelTerms_sum` below is close to definitional. -/
 noncomputable def peelTerms (ζ : ℂ) :
     List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) →
       List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
   | [] => []
-  | (B, c) :: t => (c • prodComp (t.map Prod.fst)) :: (peelTerms ζ t).map (fun x => ζ • (B.comp x))
+  | (B, c) :: t =>
+      (c • (t.map Prod.fst).prod) :: (peelTerms ζ t).map (fun x => ζ • (B.comp x))
 
 /-- **`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s
-recursive definition, `Σⱼ ζʲcⱼ•(remaining product with `Bⱼ` erased)` as a `List.sum` rather than
+recursive definition, `Σⱼ ζʲcⱼ•(remaining product with Bⱼ erased)` as a `List.sum` rather than
 an index/`Finset.sum`-over-erasures formula (`l.eraseIdx`) matching the physics notes'
 `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter (`PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`
 gives that indexed form). -/
@@ -108,15 +86,16 @@ theorem peelSum_eq_peelTerms_sum (ζ : ℂ)
 /-- **Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each
 pair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having
 picked up `ζ^{l.length}`. -/
-theorem comp_prodComp_eq_of_zetaCommutator (ζ : ℂ)
+theorem comp_prod_eq_of_zetaCommutator (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
     (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
-    C1.comp (prodComp (l.map Prod.fst)) =
-      peelSum ζ l + ζ ^ l.length • ((prodComp (l.map Prod.fst)).comp C1) := by
+    C1.comp ((l.map Prod.fst).prod) =
+      peelSum ζ l + ζ ^ l.length • ((l.map Prod.fst).prod.comp C1) := by
   induction l with
-  | nil => simp [peelSum]
+  | nil =>
+      simp [peelSum, Module.End.one_eq_id]
   | cons p t ih =>
     have hp : ∀ x, C1 (p.1 x) = p.2 • x + ζ • p.1 (C1 x) := by
       intro x
@@ -127,10 +106,9 @@ theorem comp_prodComp_eq_of_zetaCommutator (ζ : ℂ)
     apply LinearMap.ext
     intro x
     have hihp := DFunLike.congr_fun ihp x
-    simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply] at hihp
-    simp only [List.map_cons, List.length_cons, prodComp_cons, peelSum, LinearMap.comp_apply,
-      LinearMap.add_apply, LinearMap.smul_apply]
-    rw [hp (prodComp (t.map Prod.fst) x), hihp]
+    simp only [List.map_cons, List.length_cons, List.prod_cons, Module.End.mul_eq_comp, peelSum,
+      LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply] at hihp ⊢
+    rw [hp ((t.map Prod.fst).prod x), hihp]
     simp only [map_add, map_smul, smul_add, smul_smul, pow_succ]
     module
 
