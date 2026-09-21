@@ -9,9 +9,10 @@ set_option linter.style.header false
 # Mixed two-point density-state pair contractions
 
 A fermionic atomic field at imaginary time is an explicit exponential scalar multiplying a bare
-creation or annihilation operator. This module owns the two-point semantic pair-contraction API: fixed standard-leg descriptors and
-transport between mixed-order pairs and standard two-point legs. The representation-independent
-free-Gibbs contraction of time-labelled fields is owned by `Fermionic.Thermal`.
+creation or annihilation operator. This module owns the two-point semantic pair-contraction API:
+fixed standard-leg descriptors and transport between mixed-order pairs and standard two-point legs.
+The diagram-independent free-Gibbs contraction of time-labelled fields is owned by
+`Fermionic.Thermal`.
 -/
 
 namespace SecondQuantization
@@ -160,10 +161,9 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwo
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1)
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.2) := by
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-    mixedTimeOrderedAtomicPairValue orderedTwoPointLegPairContraction timedFieldPairContraction
-    freeGibbsPairContraction
-  rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField,
-    mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField]
+    mixedTimeOrderedAtomicPairValue orderedTwoPointLegPairContraction
+  rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
+    mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField]
 
 end Fermionic
 end SecondQuantization
