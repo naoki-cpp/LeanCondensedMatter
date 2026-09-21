@@ -184,9 +184,11 @@ therefore indexed by `Fin (2 * externalPairCount)`; `externalPartOrderIso` gives
 increasing identification with the ambient external subset, preserving external insertion order for
 later sign-sensitive constructions. `ExternalInsertionDiagram.restrictComponent` combines that
 external-sector ordering with the extracted interaction sector and the partner-invariant restricted
-pairing to produce a standalone external-insertion diagram for any connected component. A vacuum
-component has no external legs, so Common also reindexes its surviving legs as ordinary quartic legs
-and exposes the induced `QuarticDiagram`.
+pairing to produce a standalone external-insertion diagram for any connected component.
+`componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
+its partner-transport theorem states that this embedding intertwines the restricted and ambient
+pairing partners. A vacuum component has no external legs, so Common also reindexes its surviving
+legs as ordinary quartic legs and exposes the induced `QuarticDiagram`.
 
 The two-point expansion has its own internal layer order:
 
