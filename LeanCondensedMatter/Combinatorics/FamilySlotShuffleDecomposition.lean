@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
