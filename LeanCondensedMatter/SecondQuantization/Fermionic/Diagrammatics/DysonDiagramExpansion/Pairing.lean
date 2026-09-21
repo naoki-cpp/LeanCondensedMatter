@@ -28,10 +28,9 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 noncomputable def flatVertexLegPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      ((quarticLegOperatorForSequence ε q τ a).comp
-        (quarticLegOperatorForSequence ε q τ b)))
+  freeGibbsPairContraction ε β
+    (quarticLegOperatorForSequence ε q τ a)
+    (quarticLegOperatorForSequence ε q τ b)
 
 /-- Canonical scalar value of a flattened-leg pairing. -/
 noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
@@ -75,7 +74,7 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  simpa only [flatVertexLegPairValue,
+  simpa only [flatVertexLegPairValue, freeGibbsPairContraction,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
     finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq ε β q τ a b
 
@@ -142,7 +141,8 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             (fun i => one_sub_zetaInt_fermion_mul_exp_ne_zero
               (flatVertexLegEnergyShift ε q i) β)
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
-          flatVertexLegPairValue, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+          flatVertexLegPairValue, freeGibbsPairContraction,
+          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
           using hgen
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
