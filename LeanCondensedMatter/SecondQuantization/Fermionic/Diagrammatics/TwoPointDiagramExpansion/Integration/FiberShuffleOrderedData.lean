@@ -121,7 +121,7 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
         (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion * z)
       (Finset.prod_congr rfl fun pr _ => ?_)
     rw [orderedQuarticPairValue_eq, flatVertexLegPairValue_eq]
-    simp [flatVertexLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg]
+    simp [quarticLegEnergyShiftForSequence, Common.flatVertexIndex, Common.flatLocalLeg]
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
