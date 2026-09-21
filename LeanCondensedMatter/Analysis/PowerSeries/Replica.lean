@@ -83,23 +83,17 @@ theorem replicaCoeffPolynomial_eval_nat
         ∑ k ∈ Finset.range (n + 1),
           (n.choose k : ℂ) * coeff m (U ^ k) := by
     rcases le_total n m with hnm | hmn
-    · apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hnm))
+    · symm
+      apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hnm))
       intro k hkm hkn
       have hnk : n < k := by
-        have hkge : n + 1 ≤ k := by
-          exact Nat.le_of_not_gt (by
-            intro hklt
-            exact hkn (Finset.mem_range.mpr hklt))
+        simp only [Finset.mem_range] at hkm hkn
         omega
       rw [Nat.choose_eq_zero_of_lt hnk, Nat.cast_zero, zero_mul]
-    · symm
-      apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hmn))
+    · apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hmn))
       intro k hkn hkm
       have hmk : m < k := by
-        have hkge : m + 1 ≤ k := by
-          exact Nat.le_of_not_gt (by
-            intro hklt
-            exact hkm (Finset.mem_range.mpr hklt))
+        simp only [Finset.mem_range] at hkn hkm
         omega
       rw [coeff_sub_one_pow_eq_zero_of_lt hZ hmk, mul_zero]
   rw [hEval, hTruncate, ← hPow]
