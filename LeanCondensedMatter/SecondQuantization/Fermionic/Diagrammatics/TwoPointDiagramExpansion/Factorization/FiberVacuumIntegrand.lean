@@ -136,7 +136,8 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
         (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-    mixedTimeOrderedAtomicPairValue orderedQuarticPairValue
+  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation]
+  unfold mixedTimeOrderedAtomicPairValue timedFieldPairContraction
   change (freeGibbsDensityOperator ε β).expectation
       (Common.finiteHilbertOperatorAlgEquiv
         ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
@@ -144,7 +145,13 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
               (slotSplitVacuumSlot T) τ τ' σ pr.1.1)).comp
           (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
             (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ pr.1.2)))) = _
+              (slotSplitVacuumSlot T) τ τ' σ pr.1.2)))) =
+    (freeGibbsDensityOperator ε β).expectation
+      (Common.finiteHilbertOperatorAlgEquiv
+        ((orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T) pr.1.1).comp
+          (orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T) pr.1.2)))
   rw [fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
       ε T ext vac τ τ' σ pr.1.1,
     fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
