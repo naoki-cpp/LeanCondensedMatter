@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
 import Mathlib.Data.Finset.Sort
@@ -398,7 +399,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
 
 /-- The component-local flattened-leg embedding preserves the canonical external-insertion leg
 order. -/
-theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
+private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) :
@@ -496,6 +497,37 @@ noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
       Fin (2 * (2 * S.card + E)) :=
   OrderEmbedding.ofStrictMono (d.componentDiagramLeg B)
     (d.componentDiagramLeg_strictMono B)
+
+
+/-- Embed normalized pairs of a restricted component into the ambient pairing using the canonical
+component leg order embedding. -/
+noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    (d.restrictComponent B).pairing.NormalizedPair ↪ d.pairing.NormalizedPair :=
+  (d.restrictComponent B).pairing.normalizedPairEmbedding d.pairing
+    (d.componentDiagramLegOrderEmbedding B)
+    (fun p => by
+      simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
+        (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm)
+
+/-- The canonical component normalized-pair embedding preserves and reflects geometric crossings. -/
+theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts)
+    (p q : (d.restrictComponent B).pairing.NormalizedPair) :
+    Crosses (d.componentNormalizedPairEmbedding B p).1
+        (d.componentNormalizedPairEmbedding B q).1 ↔
+      Crosses p.1 q.1 := by
+  simpa [ExternalInsertionDiagram.componentNormalizedPairEmbedding] using
+    (d.restrictComponent B).pairing.normalizedPairEmbedding_crosses_iff d.pairing
+      (d.componentDiagramLegOrderEmbedding B)
+      (fun i => by
+        simpa [ExternalInsertionDiagram.componentDiagramLegOrderEmbedding] using
+          (d.componentDiagramLeg_restrictComponent_pairing_partner B i).symm)
+      p q
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
