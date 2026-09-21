@@ -129,21 +129,17 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
         Fintype.card_congr blockEquiv
       _ = 1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
         simp [Nat.mul_comm]
-  have hpairing :
-      Combinatorics.IsPairing (d.restrictedPartner (d.externalComponent 0)) := by
-    change Combinatorics.IsPairing
-      (d.pairing.restrict (d.legInComponent (d.externalComponent 0))
-        (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner
-    exact
-      ⟨(d.pairing.restrict (d.legInComponent (d.externalComponent 0))
-          (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner_involutive,
-        (d.pairing.restrict (d.legInComponent (d.externalComponent 0))
-          (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner_ne⟩
+  let restricted :=
+    d.pairing.restrict (d.legInComponent (d.externalComponent 0))
+      (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.externalComponent 0) leg}) :=
-    Combinatorics.even_card_of_fixedPointFreeInvolution
-      (d.restrictedPartner (d.externalComponent 0)) hpairing.1 hpairing.2
+        d.legInComponent (d.externalComponent 0) leg}) := by
+    change Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
+      d.legInComponent (d.externalComponent 0) leg})
+    simpa [restricted, TwoPointDiagram.restrictedPartner] using
+      Combinatorics.even_card_of_fixedPointFreeInvolution
+        restricted.partner restricted.partner_involutive restricted.partner_ne
   rw [hcard] at hEven
   obtain ⟨k, hk⟩ := hEven
   omega
