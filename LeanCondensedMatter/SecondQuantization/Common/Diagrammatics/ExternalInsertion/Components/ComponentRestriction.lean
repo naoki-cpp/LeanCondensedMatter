@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
+import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false
 
@@ -244,6 +245,35 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
   refine ⟨k - 2 * (ExternalInsertionDiagram.interactionPart
     (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
   omega
+
+/-- Half the number of external insertions carried by one connected component. -/
+noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) : ℕ :=
+  (ExternalInsertionDiagram.externalPart
+    (B : Finset (ExternalInsertionVertex E S))).card / 2
+
+/-- The external sector of one component has twice its local external-pair count. -/
+theorem ExternalInsertionDiagram.externalPart_card_eq_two_mul_externalPairCount
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    (ExternalInsertionDiagram.externalPart
+      (B : Finset (ExternalInsertionVertex E S))).card =
+      2 * d.externalPairCount B := by
+  rw [ExternalInsertionDiagram.externalPairCount]
+  exact (Nat.two_mul_div_two_of_even (d.externalPart_card_even B)).symm
+
+/-- Increasing reindexing of a component's ambient external insertions by its local external slots. -/
+noncomputable def ExternalInsertionDiagram.externalPartOrderIso {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    Fin (2 * d.externalPairCount B) ≃o
+      ↥(ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))) :=
+  (ExternalInsertionDiagram.externalPart
+    (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
+      (d.externalPart_card_eq_two_mul_externalPairCount B)
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
