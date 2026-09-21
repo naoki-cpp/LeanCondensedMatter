@@ -13,8 +13,9 @@ Mode := Mode →₀ ℕ` for bosons) together with a per-mode occupation number 
 (`i ∈ n ↦ 1`/`0` for fermions, `n i` directly for bosons). `OccupationBasis` packages just that
 common shape — a `vacuum`, an `occupation : Config → Mode → ℕ` reading off each mode's particle
 count, and the basic facts (`vacuum` has none, each state has finite support, the reading is
-faithful) — without unifying `Config` itself: fermionic and bosonic occupation-state types stay
-genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion caps the former at
+faithful) — without unifying `Config` itself. The same finite-support contract canonically defines
+the statistics-independent total `particleNumber` grade. Fermionic and bosonic occupation-state
+types stay genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion caps the former at
 `0`/`1`), each supplying its own instance of this structure.
 
 The concrete instances (`SecondQuantization.Fermionic.occupationBasis` and
