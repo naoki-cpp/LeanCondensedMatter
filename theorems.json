@@ -7808,6 +7808,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
@@ -7815,10 +7816,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8256,6 +8258,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
@@ -8266,11 +8269,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -22720,6 +22724,47 @@
   },
   {
     "terminal": false,
+    "statement": "LinearIndependent ℂ InternalSpace.pauliBasis",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.pauliBasis_linearIndependent",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "The three Pauli matrices form a linearly independent family over `ℂ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective"
+    ],
+    "dependencies": [
+      "InternalSpace.trace_pauliBasis_mul_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (u v : InternalSpace.PauliAxis → ℂ),\n  InternalSpace.pauliCombination (u + v) = InternalSpace.pauliCombination u + InternalSpace.pauliCombination v",
     "standardAxioms": [
       "Classical.choice",
@@ -22783,7 +22828,6 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
@@ -22796,11 +22840,10 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_halfIdentity_sub_pauliCombination_mul_scaledPauliX_mul_halfIdentity_add_pauliCombination_mul_scaledPauliY",
       "QuantumTheory.Transport.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
       "QuantumTheory.Transport.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23220,8 +23263,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "InternalSpace.pauliBasis_linearIndependent",
       "InternalSpace.trace_pauliCombination_mul_pauliBasis",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "dependencies": [
@@ -23232,8 +23275,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "InternalSpace.pauliBasis_linearIndependent",
       "InternalSpace.trace_pauliCombination_mul_pauliBasis",
-      "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_injective",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Transport.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
     "compiledConsumerCount": 3,
@@ -31072,7 +31115,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -31084,8 +31127,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
     "dependencies": [
       "PowerSeries.logOf_mul",
@@ -31094,10 +31136,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -31128,7 +31169,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
     "dependencies": [
       "PowerSeries.logOf_mul",
@@ -31137,7 +31178,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -31244,7 +31285,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -31256,17 +31297,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61546,8 +61585,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "InternalSpace.pauliCombination_eq_components",
-      "InternalSpace.trace_pauliBasis_mul_pauliCombination",
+      "InternalSpace.pauliBasis_linearIndependent",
       "QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexCLM_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -77257,6 +77295,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  PowerSeries.constantCoeff (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β) = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.constantCoeff_freeExchangeGrandPartitionSeries",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
+    "externalAxioms": [],
+    "docString": "The shared Bose/Fermi free grand product has unit constant coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.constantCoeff_freeGrandPartitionSeries",
+      "SecondQuantization.Fermionic.constantCoeff_freeGrandPartitionSeries"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.constantCoeff_freeGrandPartitionSeries",
+      "SecondQuantization.Fermionic.constantCoeff_freeGrandPartitionSeries"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ) (ha : Summable fun i => ‖a i‖)\n  (ha_nonneg : ∀ (i : ι), 0 ≤ a i) (hZ : 0 < ∑' (i : ι), a i) (i : ι),\n  (QuantumTheory.diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) =\n    ↑(QuantumTheory.normalizedDiagonalWeight a i) • b i",
     "standardAxioms": [
       "Classical.choice",
@@ -79221,6 +79300,93 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries ζ (QuantumTheory.freeBoltzmannModeKernel ε β)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
+    "externalAxioms": [],
+    "docString": "For either physical exchange weight, the logarithm of the shared free grand product equals the\nconnected-cycle series of the free Boltzmann kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
+      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "dependencies": [
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log",
+      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
+      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β).logOf =\n    -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
+    "externalAxioms": [],
+    "docString": "The formal logarithm of the shared Bose/Fermi free grand product is the exchange-weighted\nmodewise trace-log. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "dependencies": [
+      "PowerSeries.logOf_finset_prod",
+      "PowerSeries.logOf_inv",
+      "PowerSeries.logOf_one_add_smul_X"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [CompleteSpace H]\n  (b : HilbertBasis ι ℂ H) (a : ι → ℝ),\n  (Summable fun i => ‖a i‖) →\n    (∀ (i : ι), 0 ≤ a i) → 0 < ∑' (i : ι), a i → ∀ (i : ι), QuantumTheory.normalizedDiagonalWeight a i ≤ 1",
     "standardAxioms": [
@@ -79392,7 +79558,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -79404,8 +79570,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
     ],
     "dependencies": [
       "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
@@ -79414,10 +79579,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83559,7 +83723,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.constantCoeff_freeExchangeGrandPartitionSeries"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -86450,49 +86616,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Bosonic.freeGrandPartitionSeries ε β).logOf =\n    -∑ i, (PowerSeries.rescale (-Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeConnectedCycleSeries",
-    "externalAxioms": [],
-    "docString": "The formal logarithm of the free-boson grand product is\n`-Σᵢ log(1 - t exp(-β εᵢ))`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "dependencies": [
-      "PowerSeries.logOf_finset_prod",
-      "PowerSeries.logOf_inv",
-      "PowerSeries.logOf_one_add_smul_X"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Bosonic.freeGrandPartitionSeries ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries 1 (QuantumTheory.freeBoltzmannModeKernel ε β)",
     "standardAxioms": [
@@ -86514,8 +86637,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-      "SecondQuantization.Bosonic.logOf_freeGrandPartitionSeries_eq_neg_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -87234,7 +87356,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.particleNumber_createOccupation"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -87298,6 +87422,53 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.particleNumber n = Finsupp.sum n fun x k => k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.Occupation",
+    "externalAxioms": [],
+    "docString": "The common particle-number grade agrees with the native finitely-supported occupation sum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.particleNumber_add",
+      "SecondQuantization.Bosonic.particleNumber_eq_sum_univ",
+      "SecondQuantization.Bosonic.particleNumber_singleOccupation",
+      "SecondQuantization.Bosonic.particleNumber_zero"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.OccupationBasis.finiteSupport"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.particleNumber_add",
+      "SecondQuantization.Bosonic.particleNumber_eq_sum_univ",
+      "SecondQuantization.Bosonic.particleNumber_singleOccupation",
+      "SecondQuantization.Bosonic.particleNumber_zero"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.particleNumber n = ∑ i, n i",
     "standardAxioms": [
       "Classical.choice",
@@ -87320,7 +87491,9 @@
       "SecondQuantization.Bosonic.occupation_le_particleNumber",
       "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -87404,7 +87577,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.particleNumber_createOccupation"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -87438,8 +87613,8 @@
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.Occupation",
     "externalAxioms": [],
     "docString": null,
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.Occupation",
-    "directWrapperOf": "SecondQuantization.Bosonic.particleNumber_zero",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.particleNumber_zero"
@@ -87480,7 +87655,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.particleNumber_vacuum"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -89956,6 +90133,127 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S : Finset (Fin N)} (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)),\n  SecondQuantization.Common.ExternalInsertionDiagram.interactionPart B ⊆ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.interactionPart_subset",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The interaction part of a full component is contained in the ambient interaction-vertex set. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  {B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)},\n  B ∈ d.componentPartition.parts →\n    ∀ (leg : Fin (2 * (2 * S.card + E))),\n      d.legInComponent B leg ↔ SecondQuantization.Common.externalInsertionVertexOfLeg leg ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "For an actual component-partition part, a leg belongs to the component exactly when its incident\nvertex belongs to that part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
+    ],
+    "dependencies": [
+      "SimpleGraph.componentBlock_eq_iff_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Component-leg membership is invariant under the pairing partner permutation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.vertexGraph_reachable_partner",
+      "SimpleGraph.componentBlock_eq_of_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedPartner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts), B ∈ d.externallySupportedComponentParts ↔ d.ComponentMeetsExternal B",
     "standardAxioms": [
@@ -89985,6 +90283,84 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedComponentParts_disjoint_vacuumComponentParts"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} {S : Finset (Fin N)} (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (v : Fin N),\n  v ∈ SecondQuantization.Common.ExternalInsertionDiagram.interactionPart B ↔ ∃ (hv : v ∈ S), Sum.inr ⟨v, hv⟩ ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Membership in the interaction part is membership of the corresponding interaction vertex in the\nfull component part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interactionPart_subset",
+      "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart_subtype"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interactionPart_subset",
+      "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart_subtype"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {E N : ℕ} {S : Finset (Fin N)} (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (v : ↥S),\n  ↑v ∈ SecondQuantization.Common.ExternalInsertionDiagram.interactionPart B ↔ Sum.inr v ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart_subtype",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Membership in the interaction part for a vertex already carrying its ambient-membership proof. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mem_interactionPart"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90026,6 +90402,44 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((d.restrictedPartner ↑B) leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The restricted vacuum pairing agrees with the ambient partner under the vacuum leg\nreindexing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.restrictAlongEquiv_partner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90098,7 +90512,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [self : SecondQuantization.Common.OccupationBasis Mode Config] (n : Config),\n  {i | SecondQuantization.Common.OccupationBasis.occupation n i ≠ 0}.Finite",
     "standardAxioms": [],
     "soleCompiledConsumerPrivate": false,
@@ -90113,23 +90527,32 @@
     "docString": "Every occupation state has only finitely many occupied modes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum",
+      "SecondQuantization.Common.particleNumber_vacuum",
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.particleNumber_eq_finsupp_sum",
+      "SecondQuantization.Common.particleNumber",
+      "SecondQuantization.Common.particleNumber_vacuum",
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [self : SecondQuantization.Common.OccupationBasis Mode Config] (i : Mode),\n  SecondQuantization.Common.OccupationBasis.occupation (SecondQuantization.Common.OccupationBasis.vacuum Mode) i = 0",
     "standardAxioms": [],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90140,12 +90563,16 @@
     "docString": "The vacuum has no particles in any mode. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.particleNumber_vacuum"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.particleNumber_vacuum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -106801,6 +107228,44 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config],\n  SecondQuantization.Common.particleNumber (SecondQuantization.Common.OccupationBasis.vacuum Mode) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.particleNumber_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.OccupationBasis.finiteSupport",
+      "SecondQuantization.Common.OccupationBasis.occupation_vacuum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125667,7 +126132,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.constantCoeff_freeExchangeGrandPartitionSeries"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -129847,55 +130314,12 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log"
+      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (SecondQuantization.Fermionic.freeGrandPartitionSeries ε β).logOf =\n    ∑ i, (PowerSeries.rescale (Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_sum_log",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeConnectedCycleSeries",
-    "externalAxioms": [],
-    "docString": "The formal logarithm of the free-fermion grand product is the sum of the modewise\n`log(1 + t exp(-β εᵢ))` series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "dependencies": [
-      "PowerSeries.logOf_finset_prod",
-      "PowerSeries.logOf_one_add_smul_X"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130904,6 +131328,55 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.particleNumber n = Finset.card n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.particleNumber_eq_card",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.particleNumber_insertOccupation_of_mem",
+      "SecondQuantization.Fermionic.particleNumber_insertOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.particleNumber_removeOccupation_of_mem",
+      "SecondQuantization.Fermionic.particleNumber_removeOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.particleNumber_vacuum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.OccupationBasis.finiteSupport"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.particleNumber_insertOccupation_of_mem",
+      "SecondQuantization.Fermionic.particleNumber_insertOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.particleNumber_removeOccupation_of_mem",
+      "SecondQuantization.Fermionic.particleNumber_removeOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.particleNumber_vacuum"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : DecidableEq Mode] {i : Mode} {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    SecondQuantization.Fermionic.particleNumber (SecondQuantization.Fermionic.insertOccupation i n) =\n      SecondQuantization.Fermionic.particleNumber n",
     "standardAxioms": [
@@ -130924,7 +131397,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -130961,7 +131436,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -131000,7 +131477,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -131037,7 +131516,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -131055,6 +131536,7 @@
     "terminal": true,
     "statement": "∀ {Mode : Type u_1}, SecondQuantization.Fermionic.particleNumber SecondQuantization.Fermionic.vacuum = 0",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -131071,12 +131553,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.particleNumber_eq_card"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -133780,6 +134265,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
@@ -133789,11 +134275,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_eq_externalComponent",
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
       "SecondQuantization.Common.TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_component_unique",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133869,6 +134356,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SimpleGraph.componentBlock_eq_iff_reachable"
@@ -133879,11 +134367,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
       "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147426,6 +147915,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.completedDiagonalOperator_isClosed"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  d.legInComponent (↑B) leg ↔\n    SecondQuantization.Common.ExternalInsertionDiagram.unflattenedLegInComponent✝ d B\n      ((SecondQuantization.Common.externalInsertionLegEquiv E S) leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Flattening preserves the component-membership predicate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumBlockLegEquiv"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
