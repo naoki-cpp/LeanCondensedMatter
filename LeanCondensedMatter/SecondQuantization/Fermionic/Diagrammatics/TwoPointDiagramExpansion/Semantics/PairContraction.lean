@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 
 set_option linter.style.header false
 
@@ -9,11 +9,9 @@ set_option linter.style.header false
 # Mixed two-point density-state pair contractions
 
 A fermionic atomic field at imaginary time is an explicit exponential scalar multiplying a bare
-creation or annihilation operator. This module owns the semantic pair-contraction API: the canonical
-free Gibbs contraction, fixed standard-leg descriptors, and transport between mixed-order pairs and
-standard two-point legs.
-
-Analytic regularity of these contractions is owned by `Analysis/PairContractionRegularity`.
+creation or annihilation operator. This module owns the two-point semantic pair-contraction API: fixed standard-leg descriptors and
+transport between mixed-order pairs and standard two-point legs. The representation-independent
+free-Gibbs contraction of time-labelled fields is owned by `Fermionic.Thermal`.
 -/
 
 namespace SecondQuantization
@@ -23,30 +21,6 @@ open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- Canonical free Gibbs density-state contraction of two time-labelled fermionic fields. -/
-noncomputable def timedFieldPairContraction
-    (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
-
-/-- Closed form of a density-state pair contraction after extracting the two imaginary-time
-exponential factors. -/
-theorem timedFieldPairContraction_eq
-    (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) :
-    timedFieldPairContraction ε β A B =
-      Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
-        Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
-          (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperatorAlgEquiv
-              ((bareExternalFieldOperator A.label).comp
-                (bareExternalFieldOperator B.label))) := by
-  simp only [timedFieldPairContraction,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-    Common.finiteGibbsExpectation_smul]
 
 /-- The field label carried by one fixed standard two-point leg. -/
 def orderedTwoPointLegFieldLabel {n : ℕ} (i j : Mode)
