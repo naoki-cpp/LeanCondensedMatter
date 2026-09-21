@@ -67,18 +67,6 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
             (LinearMap.comp_eq_add_smul_comp_of_zetaCommutator_eq (1 : ℂ)
               (comm_create_create i j))
 
-/-- The bosonic ordered product is the Common right-associated operator product. -/
-theorem FreeThermalField.orderedProduct_eq_common_operatorProduct
-    (fields : List (FreeThermalField Mode)) :
-    FreeThermalField.orderedProduct fields =
-      Common.BlochDeDominicis.operatorProduct FreeThermalField.operator fields := by
-  induction fields with
-  | nil => rfl
-  | cons C t ih =>
-    simp only [FreeThermalField.orderedProduct,
-        Common.BlochDeDominicis.operatorProduct_cons]
-    rw [ih]
-
 /-- Bare bosonic CCR peel sum, before Gibbs/KMS rotation. -/
 noncomputable def FreeThermalField.operatorPeelSum (C : FreeThermalField Mode)
     (fields : List (FreeThermalField Mode)) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
@@ -91,13 +79,12 @@ theorem FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum
     (C.operator).comp (FreeThermalField.orderedProduct fields) =
       C.operatorPeelSum fields +
         (FreeThermalField.orderedProduct fields).comp C.operator := by
-  have h := Common.BlochDeDominicis.operator_comp_operatorProduct_eq_operatorPeelSum
+  have h := Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum
     FreeThermalField.operator FreeThermalField.exchangeValue (1 : ℂ)
     (fun C D => by
       simpa using FreeThermalField.operator_comp_operator_eq_exchangeValue C D)
     C fields
-  rw [← FreeThermalField.orderedProduct_eq_common_operatorProduct] at h
-  simpa [FreeThermalField.operatorPeelSum] using h
+  simpa [FreeThermalField.orderedProduct, FreeThermalField.operatorPeelSum] using h
 
 end
 end Bosonic
