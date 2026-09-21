@@ -166,7 +166,10 @@ diagram data, but the mature two-point representation remains independent so its
 normal forms are preserved. A bridge is introduced only when a concrete higher-point consumer needs
 semantic transport between the two representations. Odd external sectors are outside this
 paired-diagram representation and should be handled by a separate vanishing statement when a
-physical consumer requires them.
+physical consumer requires them. Flattened leg order is explicit: external insertions come first,
+followed by interaction vertices in increasing ambient index and local legs in `0,1,2,3` order.
+This fixed enumeration, rather than an arbitrary finite-type equivalence, is the ordering boundary
+used by later fermionic crossing/sign transport.
 
 The generic external-insertion component layer classifies each connected component as either
 externally supported or vacuum. `ExternalInsertionDiagram.HasNoVacuumComponent` requires every
