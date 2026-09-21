@@ -3404,7 +3404,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -3439,7 +3441,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -3959,107 +3963,6 @@
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.ext"
     ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total),\n  shuffle.relativeAmbientPermutation shuffle = Equiv.refl (Fin total)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_self",
-    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
-    "externalAxioms": [],
-    "docString": "A family shuffle has the identity ambient permutation relative to itself. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (base target : Combinatorics.FamilySlotShuffleTo size total)\n  (x : (i : ι) × Fin (size i)), (base.relativeAmbientPermutation target) (base.slotEquiv x) = target.slotEquiv x",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv",
-    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
-    "externalAxioms": [],
-    "docString": "The relative ambient permutation sends every slot in `base` to the corresponding slot in\n`target`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (base middle target : Combinatorics.FamilySlotShuffleTo size total),\n  Equiv.trans (base.relativeAmbientPermutation middle) (middle.relativeAmbientPermutation target) =\n    base.relativeAmbientPermutation target",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_trans",
-    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
-    "externalAxioms": [],
-    "docString": "Relative ambient permutations compose through an intermediate family shuffle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -19384,6 +19287,160 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (source : α ≃ β) (target : α ≃ γ) (y : β),\n  (source.changeCoordinates target) y = target (source.symm y)",
+    "standardAxioms": [
+      "Quot.sound"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.changeCoordinates_apply",
+    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
+    "externalAxioms": [],
+    "docString": "Evaluate a coordinate change at an arbitrary point in the source coordinate space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.FamilySlotShuffle.mem_headSlots_iff",
+      "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
+      "Equiv.changeCoordinates_self",
+      "Equiv.changeCoordinates_trans",
+      "Finpartition.assembleOrder_shuffleOfOrder",
+      "Finpartition.partOrdersCompatible_assembleOrder",
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.FamilySlotShuffle.mem_headSlots_iff",
+      "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
+      "Equiv.changeCoordinates_self",
+      "Equiv.changeCoordinates_trans",
+      "Finpartition.assembleOrder_shuffleOfOrder",
+      "Finpartition.partOrdersCompatible_assembleOrder",
+      "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
+    ],
+    "compiledConsumerCount": 7,
+    "axioms": [
+      "Quot.sound"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} (e : α ≃ β), e.changeCoordinates e = Equiv.refl β",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.changeCoordinates_self",
+    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
+    "externalAxioms": [],
+    "docString": "A coordinate system differs from itself by the identity equivalence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (source : α ≃ β) (target : α ≃ γ),\n  (source.changeCoordinates target).symm = target.changeCoordinates source",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.changeCoordinates_symm",
+    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
+    "externalAxioms": [],
+    "docString": "Reversing a coordinate change swaps its source and target systems. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.partOrdersCompatible_assembleOrder"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.partOrdersCompatible_assembleOrder"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} {δ : Type u_4} (first : α ≃ β) (middle : α ≃ γ) (last : α ≃ δ),\n  (first.changeCoordinates middle).trans (middle.changeCoordinates last) = first.changeCoordinates last",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Equiv.changeCoordinates_trans",
+    "module": "LeanCondensedMatter.Combinatorics.EquivChangeCoordinates",
+    "externalAxioms": [],
+    "docString": "Coordinate changes compose through an intermediate representation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (π : Finpartition s) (order : Fin s.card ≃ ↥s)\n  (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders),\n  π.assembleOrder orders (π.shuffleOfOrder order orders h) = order",
     "standardAxioms": [
       "Classical.choice",
@@ -19405,7 +19462,9 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -20447,7 +20506,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffleTo.strictMono"
+      "Combinatorics.FamilySlotShuffleTo.strictMono",
+      "Equiv.changeCoordinates_apply",
+      "Equiv.changeCoordinates_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90726,7 +90787,9 @@
       "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Equiv.changeCoordinates_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
