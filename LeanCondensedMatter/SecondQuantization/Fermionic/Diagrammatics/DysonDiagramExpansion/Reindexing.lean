@@ -35,7 +35,7 @@ theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (F
     Combinatorics.Pairing.evaluation]
   refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
   rw [orderedQuarticPairValue_eq, flatVertexLegPairValue_eq]
-  simp [flatVertexLegEnergyShift, flatVertexIndex, flatLocalLeg]
+  simp [flatVertexLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg]
 
 /-- Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical
 evaluator form. -/
