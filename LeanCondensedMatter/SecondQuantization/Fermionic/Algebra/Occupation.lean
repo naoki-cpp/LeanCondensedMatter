@@ -21,7 +21,7 @@ grade is owned by `Common.OccupationBasis`; this module supplies the fermionic i
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- **Fermionic occupation-number state.** The set of occupied modes; Pauli exclusion means each
 mode is either occupied (present) or empty (absent), with no multiplicity. -/
@@ -34,7 +34,6 @@ def vacuum : Occupation Mode := ∅
 occupation number as `1`/`0` (occupied/empty), while the concrete configuration remains a
 `Finset Mode`. The instance is noncomputable only to avoid imposing decidable equality on users
 of the shared occupation-basis interface. -/
-omit [DecidableEq Mode] in
 noncomputable instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) := by
   classical
   refine
@@ -55,11 +54,9 @@ noncomputable instance occupationBasis : Common.OccupationBasis Mode (Occupation
       by_cases hm : i ∈ m <;> by_cases hn : i ∈ n <;> simp_all
 
 /-- Fermionic spelling of the statistics-independent particle-number grade from `Common`. -/
-omit [DecidableEq Mode] in
 noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
   Common.particleNumber (Mode := Mode) (Config := Occupation Mode) n
 
-omit [DecidableEq Mode] in
 theorem particleNumber_eq_card (n : Occupation Mode) :
     particleNumber n = n.card := by
   classical
@@ -69,18 +66,22 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
       (Common.OccupationBasis.finiteSupport
         (Mode := Mode) (Config := Occupation Mode) n).toFinset = n := by
     ext i
-    simp [occupationBasis]
+    simp only [Set.Finite.mem_toFinset]
+    change ((if i ∈ n then 1 else 0) ≠ 0) ↔ i ∈ n
+    by_cases hi : i ∈ n <;> simp [hi]
   rw [hs, Finset.card_eq_sum_ones]
   apply Finset.sum_congr rfl
   intro i hi
-  simp [occupationBasis, hi]
+  change (if i ∈ n then 1 else 0) = 1
+  simp [hi]
 
-omit [DecidableEq Mode] in
 @[simp]
 theorem particleNumber_vacuum :
     particleNumber (vacuum : Occupation Mode) = 0 := by
   rw [particleNumber_eq_card]
   exact Finset.card_empty
+
+variable [DecidableEq Mode]
 
 /-- **Occupying mode `i`.** Adds `i` to the occupied set; a no-op if `i` was already occupied
 (Pauli exclusion — this is the set-level bookkeeping only, without the sign factor that
