@@ -79,7 +79,7 @@ theorem operatorPeelTerms_eq_ofFn
               (i.succ : Fin (t.length + 1)).isLt) •
           orderedProduct ((D :: t).eraseIdx (i.succ : Fin (t.length + 1)))
       simp only [Fin.val_succ, List.getElem_cons_succ, List.eraseIdx_cons_succ,
-        FreeThermalField.orderedProduct]
+        FreeThermalField.orderedProduct_cons]
       apply LinearMap.ext
       intro x
       simp only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul]
