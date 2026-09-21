@@ -161,6 +161,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwo
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.2) := by
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     mixedTimeOrderedAtomicPairValue orderedTwoPointLegPairContraction timedFieldPairContraction
+    freeGibbsPairContraction
   rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField,
     mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField]
 
