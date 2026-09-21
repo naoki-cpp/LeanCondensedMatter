@@ -40,6 +40,11 @@ theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
     exact hy.symm
   exact hM.even_card
 
+/-- A finite type carrying a perfect pairing has even cardinality. -/
+theorem PairingOn.even_card {α : Type*} [Fintype α] (P : PairingOn α) :
+    Even (Fintype.card α) :=
+  even_card_of_fixedPointFreeInvolution P.partner P.partner_involutive P.partner_ne
+
 /-- **A set of positions closed under `partner` has even size.** Its elements come in pairs, so it
 carries half as many pairs — the hypothesis a two-part splitting of the positions needs. -/
 theorem Pairing.even_card_of_partner_mem {n : ℕ} (P : Pairing n) {A : Finset (Fin (2 * n))}
