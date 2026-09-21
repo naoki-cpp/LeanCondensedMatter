@@ -65,7 +65,6 @@ theorem replicaCoeffPolynomial_eval_nat
     have hkfac : (k.factorial : ℂ) ≠ 0 := by
       exact_mod_cast k.factorial_ne_zero
     field_simp [hkfac]
-    ring
   have hPow :
       coeff m (Z ^ n) =
         ∑ k ∈ Finset.range (n + 1),
@@ -73,9 +72,12 @@ theorem replicaCoeffPolynomial_eval_nat
     have hZU : Z = U + 1 := by
       simp [U]
     rw [hZU, add_pow]
-    simp only [map_sum, one_pow, mul_one, coeff_mul_natCast]
+    simp only [map_sum, one_pow, mul_one]
     apply Finset.sum_congr rfl
     intro k hk
+    change coeff m (U ^ k * C (n.choose k : ℂ)) =
+      (n.choose k : ℂ) * coeff m (U ^ k)
+    rw [coeff_mul_C]
     ring
   have hTruncate :
       (∑ k ∈ Finset.range (m + 1),
@@ -88,13 +90,15 @@ theorem replicaCoeffPolynomial_eval_nat
       intro k hkm hkn
       have hnk : n < k := by
         simp only [Finset.mem_range] at hkm hkn
-        omega
+        exact Nat.lt_of_not_ge fun hk =>
+          hkn (Nat.lt_succ_of_le hk)
       rw [Nat.choose_eq_zero_of_lt hnk, Nat.cast_zero, zero_mul]
     · apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hmn))
       intro k hkn hkm
       have hmk : m < k := by
         simp only [Finset.mem_range] at hkn hkm
-        omega
+        exact Nat.lt_of_not_ge fun hk =>
+          hkm (Nat.lt_succ_of_le hk)
       rw [coeff_sub_one_pow_eq_zero_of_lt hZ hmk, mul_zero]
   rw [hEval, hTruncate, ← hPow]
 
