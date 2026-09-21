@@ -50,7 +50,7 @@ theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
   | create i =>
       cases g with
       | annihilate j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator] using
+          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator, Module.End.mul_eq_comp] using
             create_comp_annihilate_mem_freeGibbsDomain ε β hpos j i
       | create j =>
           change freeGibbsSummable ε β
@@ -71,24 +71,24 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
       cases g with
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
               ((_root_.SecondQuantization.Bosonic.annihilate i).comp
                 (_root_.SecondQuantization.Bosonic.annihilate j))
               (matrixCoeff_annihilate_comp_annihilate i j))
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i j
   | create i =>
       cases g with
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             freeGibbsExpectation_create_comp_annihilate_concrete ε β hpos i j
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
               ((_root_.SecondQuantization.Bosonic.create i).comp
                 (_root_.SecondQuantization.Bosonic.create j))
