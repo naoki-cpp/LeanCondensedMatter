@@ -91,7 +91,11 @@ theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin 
 def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
-  externalInsertionLegVertex leg ∈ (B : Finset (ExternalInsertionVertex E S))
+  match leg with
+  | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
+      (B : Finset (ExternalInsertionVertex E S))
+  | .inr p => (Sum.inr p.1 : ExternalInsertionVertex E S) ∈
+      (B : Finset (ExternalInsertionVertex E S))
 
 /-- Flattening preserves the component-membership predicate. -/
 theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
@@ -101,7 +105,8 @@ theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin
       d.unflattenedLegInComponent B (externalInsertionLegEquiv E S leg) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
   unfold ExternalInsertionDiagram.unflattenedLegInComponent
-  rw [externalInsertionLegVertex_externalInsertionLegEquiv]
+  unfold externalInsertionVertexOfLeg
+  rfl
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
