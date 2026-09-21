@@ -47,9 +47,9 @@ noncomputable def TwoPointDiagram.mixedRestrictedPartner
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :
     Equiv.Perm (d.MixedComponentPosition τ τ' σ B) :=
-  (d.pairingInMixedOrder τ τ' σ).partnerSubtypePerm
+  ((d.pairingInMixedOrder τ τ' σ).restrict
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
-    (fun p => by rw [d.mixedPositionComponent_partner])
+    (fun p => by rw [d.mixedPositionComponent_partner])).partner
 
 /-- The restricted mixed partner has the ambient mixed position as its underlying value. -/
 theorem TwoPointDiagram.mixedRestrictedPartner_val
@@ -60,7 +60,7 @@ theorem TwoPointDiagram.mixedRestrictedPartner_val
     (d.mixedRestrictedPartner τ τ' σ B p : Fin (2 * (2 * n + 1))) =
       (d.pairingInMixedOrder τ τ' σ).partner p := by
   simpa only [TwoPointDiagram.mixedRestrictedPartner] using
-    (d.pairingInMixedOrder τ τ' σ).partnerSubtypePerm_val
+    (d.pairingInMixedOrder τ τ' σ).restrict_partner_val
       (fun q => d.mixedPositionComponent τ τ' σ q = B)
       (fun q => by rw [d.mixedPositionComponent_partner]) p
 
