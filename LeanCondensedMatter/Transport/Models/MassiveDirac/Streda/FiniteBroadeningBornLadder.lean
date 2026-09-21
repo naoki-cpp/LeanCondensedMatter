@@ -68,13 +68,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
             hregular)
           inPlaneLadderBareXSource) := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-  rw [show
-    finiteCutoffContinuumBornDysonLadderSolvedVector
-        v m probeEnergy broadening disorderStrength hbar pMax =
-      inPlaneLadderSolvedVector
-        (finiteCutoffContinuumBornDysonCurrentRungVector
-          v m probeEnergy broadening disorderStrength hbar pMax) by
-    rfl]
+  unfold finiteCutoffContinuumBornDysonLadderSolvedVector
   rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex
     (finiteCutoffContinuumBornDysonCurrentRungVector
       v m probeEnergy broadening disorderStrength hbar pMax)
