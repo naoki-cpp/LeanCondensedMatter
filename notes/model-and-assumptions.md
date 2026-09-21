@@ -139,7 +139,7 @@ arbitrary interacting Gibbs state has a pairing-only moment expansion. The canon
 endpoint is
 
 ```lean
-SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
 ```
 
 The generic pairing recursion is independent of occupation bases and finite-dimensional traces. The
