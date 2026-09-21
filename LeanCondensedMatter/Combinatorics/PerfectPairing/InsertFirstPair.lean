@@ -63,7 +63,7 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
         simp only [mul_assoc]
       _ = 1 := by
         rw [Equiv.swap_mul_self, hextSq, one_mul]
-  refine Pairing.ofPartner (Equiv.swap 0 j * extended) ⟨?_, ?_⟩
+  refine PairingOn.ofPartner (Equiv.swap 0 j * extended) ⟨?_, ?_⟩
   · intro x
     have hx := congrArg (fun p : Equiv.Perm (Fin (2 * (n + 1))) => p x) hinsertedSq
     simpa [Equiv.Perm.mul_apply] using hx
@@ -145,7 +145,7 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
     intro k
     rw [Pairing.eraseZeroOrderIso]
     exact orderIso_congr hPj (P.partner_ne 0) hj k
-  apply Pairing.ext
+  apply PairingOn.ext
   apply Equiv.ext
   intro i
   apply P.eraseZeroOrderIso.injective
@@ -157,7 +157,7 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
 theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
       (pairing.partner_ne 0) = pairing := by
-  apply Pairing.ext
+  apply PairingOn.ext
   apply Equiv.ext
   intro x
   by_cases hx0 : x = 0
