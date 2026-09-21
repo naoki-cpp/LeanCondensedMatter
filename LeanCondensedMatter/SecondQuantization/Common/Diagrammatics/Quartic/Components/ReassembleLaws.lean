@@ -253,11 +253,7 @@ private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
     (QuarticDiagram.reassemble π F).pairing.partner
         ((QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩) =
       (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
-  have hlhs : (QuarticDiagram.reassemble π F).pairing.partner =
-      (QuarticDiagram.bigLegEquiv π).symm.permCongr
-        (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner) := rfl
-  rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm, Equiv.apply_symm_apply]
-  rfl
+  simp [QuarticDiagram.reassemble, QuarticDiagram.reassemblePairing]
 
 private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     {S : Finset (Fin N)} (π : Finpartition S)
