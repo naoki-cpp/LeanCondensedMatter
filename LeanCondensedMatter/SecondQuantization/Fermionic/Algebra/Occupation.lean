@@ -10,9 +10,11 @@ Pauli exclusion means a fermionic occupation-number state is fully determined by
 occupied — no mode can hold more than one particle — so `Occupation Mode := Finset Mode` (the set
 of occupied modes), unlike the bosonic case's `Mode →₀ ℕ` in `Bosonic/Algebra/Occupation.lean`.
 
-This file owns the occupation-number bookkeeping: vacuum, particle number, and inserting, removing,
-or toggling a mode in the occupied set. Creation and annihilation operators are defined separately
-in `CreationAnnihilation.lean`, and their canonical anticommutation relations are proved in
+This file owns the fermionic occupation-number bookkeeping: the concrete vacuum and inserting,
+removing, or toggling a mode in the occupied set. The statistics-independent total particle-number
+grade is owned by `Common.OccupationBasis`; this module supplies the fermionic instance and its
+`Finset.card` specialization. Creation and annihilation operators are defined separately in
+`CreationAnnihilation.lean`, and their canonical anticommutation relations are proved in
 `CanonicalAnticommutationRelations.lean`.
 -/
 
