@@ -131,9 +131,14 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
         simp [Nat.mul_comm]
   have hpairing :
       Combinatorics.IsPairing (d.restrictedPartner (d.externalComponent 0)) := by
-    simpa only [TwoPointDiagram.restrictedPartner] using
-      d.pairing.isPairing_partnerSubtypePerm (d.legInComponent (d.externalComponent 0))
-        (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)
+    change Combinatorics.IsPairing
+      (d.pairing.restrict (d.legInComponent (d.externalComponent 0))
+        (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner
+    exact
+      ⟨(d.pairing.restrict (d.legInComponent (d.externalComponent 0))
+          (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner_involutive,
+        (d.pairing.restrict (d.legInComponent (d.externalComponent 0))
+          (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)).partner_ne⟩
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg}) :=
