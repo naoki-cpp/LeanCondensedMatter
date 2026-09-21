@@ -26,7 +26,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     (energy : Config → ℝ) (β : ℝ) :
     ExpectationPairingRecursion
       (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) s where
-  expectation := fun l => finiteGibbsExpectation energy β (prodComp l)
+  expectation := fun l => finiteGibbsExpectation energy β l.prod
   pairValue := fun A B => finiteGibbsExpectation energy β (A.comp B)
   admissible := fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
     (∀ i, heisenbergEvolve energy (-β) (C i) =
