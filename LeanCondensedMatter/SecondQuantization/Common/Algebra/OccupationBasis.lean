@@ -1,4 +1,4 @@
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
 
 set_option linter.style.header false
