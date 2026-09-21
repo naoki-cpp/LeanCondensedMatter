@@ -48,13 +48,5 @@ theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
 
-/-- Canonical free Gibbs contraction of two algebraic Fock operators. -/
-noncomputable def freeGibbsPairContraction
-    (ε : Mode → ℝ) (β : ℝ)
-    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv (A.comp B))
-
-
 end Fermionic
 end SecondQuantization
