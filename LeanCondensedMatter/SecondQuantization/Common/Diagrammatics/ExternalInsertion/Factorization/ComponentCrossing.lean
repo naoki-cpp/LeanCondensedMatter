@@ -46,7 +46,6 @@ private theorem ExternalInsertionDiagram.componentCrossingCount_self
       simp only [Equiv.refl_apply]
       rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
       have hmono : StrictMono (fun i => d.componentDiagramLeg B i) := by
-        change StrictMono (fun i => d.componentDiagramLeg B i)
         exact (d.componentDiagramLegOrderEmbedding B).strictMono
       exact Combinatorics.crosses_map_iff
         (d.componentDiagramLeg B) hmono
