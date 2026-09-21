@@ -1,3 +1,4 @@
+import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Set.Finite.Basic
 
 set_option linter.style.header false
@@ -43,6 +44,20 @@ class OccupationBasis (Mode Config : Type*) where
   finiteSupport : ∀ n, Set.Finite {i | occupation n i ≠ 0}
   /-- The occupation-number reading determines the state. -/
   ext : ∀ {m n}, (∀ i, occupation m i = occupation n i) → m = n
+
+/-- **The total particle-number grade** of an occupation-basis state. The sum is taken over the
+finite support supplied by `OccupationBasis`, so the definition works for arbitrary mode types
+without a `Fintype Mode` assumption. -/
+noncomputable def particleNumber {Mode Config : Type*} [OccupationBasis Mode Config]
+    (n : Config) : ℕ :=
+  (OccupationBasis.finiteSupport (Mode := Mode) (Config := Config) n).toFinset.sum
+    (OccupationBasis.occupation (Mode := Mode) (Config := Config) n)
+
+@[simp]
+theorem particleNumber_vacuum {Mode Config : Type*} [OccupationBasis Mode Config] :
+    particleNumber (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
+  classical
+  simp [particleNumber, OccupationBasis.occupation_vacuum]
 
 end Common
 end SecondQuantization
