@@ -55,7 +55,7 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       unfold FreeThermalField.operatorPeelSum
       rw [Common.BlochDeDominicis.operatorPeelSum]
       simp only [one_smul]
-      rw [← orderedProduct_eq_common_operatorProduct]
+      rw [orderedProduct]
 
 /-- Closed position-indexed form of the bosonic CCR peel terms. -/
 theorem operatorPeelTerms_eq_ofFn
