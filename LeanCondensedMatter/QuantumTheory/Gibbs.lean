@@ -4,6 +4,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
