@@ -69,12 +69,6 @@ theorem ExternalInsertionDiagram.interactionPart_subset {S : Finset (Fin N)}
   obtain ⟨hvS, _⟩ := (ExternalInsertionDiagram.mem_interactionPart B v).1 hv
   exact hvS
 
-/-- The vertex incident to an unflattened external-insertion leg. -/
-def externalInsertionLegVertex {S : Finset (Fin N)} :
-    ExternalInsertionLeg E S → ExternalInsertionVertex E S
-  | .inl e => .inl e
-  | .inr p => .inr p.1
-
 /-- A flattened leg belongs to `B` when the component block of its incident vertex is `B`. -/
 def ExternalInsertionDiagram.legInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -107,8 +101,7 @@ theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin
       d.unflattenedLegInComponent B (externalInsertionLegEquiv E S leg) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
   unfold ExternalInsertionDiagram.unflattenedLegInComponent
-  unfold externalInsertionVertexOfLeg externalInsertionLegVertex
-  rfl
+  rw [externalInsertionLegVertex_externalInsertionLegEquiv]
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
