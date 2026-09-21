@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.InvolutionCard
 
 set_option linter.style.header false
 
@@ -108,6 +109,80 @@ private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Fin
   unfold externalInsertionVertexOfLeg
   cases externalInsertionLegEquiv E S leg <;> rfl
 
+/-- The legs of one component, before flattening, split into its external insertions and
+the four local legs of its interaction vertices. -/
+private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
+      ↥(ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))) ⊕
+        (↥(ExternalInsertionDiagram.interactionPart
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) where
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        exact Sum.inl ⟨e, (ExternalInsertionDiagram.mem_externalPart
+          (B : Finset (ExternalInsertionVertex E S)) e).2 hleg⟩
+    | inr p =>
+        exact Sum.inr (⟨p.1.1,
+          (ExternalInsertionDiagram.mem_interactionPart_subtype
+            (B : Finset (ExternalInsertionVertex E S)) p.1).2 hleg⟩, p.2)
+  invFun leg := by
+    cases leg with
+    | inl e =>
+        exact ⟨Sum.inl e.1, by
+          change (Sum.inl e.1 : ExternalInsertionVertex E S) ∈
+            (B : Finset (ExternalInsertionVertex E S))
+          exact (ExternalInsertionDiagram.mem_externalPart
+            (B : Finset (ExternalInsertionVertex E S)) e.1).1 e.2⟩
+    | inr p =>
+        let v : ↥S :=
+          ⟨p.1.1, ExternalInsertionDiagram.interactionPart_subset
+            (B : Finset (ExternalInsertionVertex E S)) p.1.2⟩
+        exact ⟨Sum.inr (v, p.2), by
+          change (Sum.inr v : ExternalInsertionVertex E S) ∈
+            (B : Finset (ExternalInsertionVertex E S))
+          exact (ExternalInsertionDiagram.mem_interactionPart_subtype
+            (B : Finset (ExternalInsertionVertex E S)) v).1 p.1.2⟩
+  left_inv leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e =>
+        apply Subtype.ext
+        rfl
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply Subtype.ext
+        rfl
+  right_inv leg := by
+    cases leg with
+    | inl e =>
+        apply congrArg Sum.inl
+        exact Subtype.ext (by rfl)
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply congrArg Sum.inr
+        apply Prod.ext
+        · exact Subtype.ext (by rfl)
+        · rfl
+
+/-- Reindex the flattened legs of one component by its external and interaction data. -/
+private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    {leg : Fin (2 * (2 * S.card + E)) //
+      d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} ≃
+      ↥(ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))) ⊕
+        (↥(ExternalInsertionDiagram.interactionPart
+          (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
+  ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
+      d.legInComponent_iff_unflattened B leg).trans
+    (d.componentLegDataEquiv B)
+
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -131,6 +206,50 @@ noncomputable def ExternalInsertionDiagram.restrictedPartner {S : Finset (Fin N)
     Equiv.Perm {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} :=
   (d.pairing.restrict (d.legInComponent B) fun leg =>
     d.legInComponent_partner_iff B leg).partner
+
+/-- Every connected component contains an even number of external insertions. -/
+theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    Even (ExternalInsertionDiagram.externalPart
+      (B : Finset (ExternalInsertionVertex E S))).card := by
+  let blockEquiv := d.componentBlockLegDataEquiv B
+  have hcard :
+      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
+        (ExternalInsertionDiagram.externalPart
+          (B : Finset (ExternalInsertionVertex E S))).card +
+          4 * (ExternalInsertionDiagram.interactionPart
+            (B : Finset (ExternalInsertionVertex E S))).card := by
+    calc
+      Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+          d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
+          Fintype.card
+            (↥(ExternalInsertionDiagram.externalPart
+              (B : Finset (ExternalInsertionVertex E S))) ⊕
+              (↥(ExternalInsertionDiagram.interactionPart
+                (B : Finset (ExternalInsertionVertex E S))) × Fin 4)) :=
+        Fintype.card_congr blockEquiv
+      _ = (ExternalInsertionDiagram.externalPart
+            (B : Finset (ExternalInsertionVertex E S))).card +
+            4 * (ExternalInsertionDiagram.interactionPart
+              (B : Finset (ExternalInsertionVertex E S))).card := by
+        simp [Nat.mul_comm]
+  let restricted :=
+    d.pairing.restrict
+      (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
+      (fun leg => d.legInComponent_partner_iff
+        (B : Finset (ExternalInsertionVertex E S)) leg)
+  have hEven :
+      Even (Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
+        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) := by
+    exact Combinatorics.even_card_of_fixedPointFreeInvolution
+      restricted.partner restricted.partner_involutive restricted.partner_ne
+  rw [hcard] at hEven
+  rcases hEven with ⟨k, hk⟩
+  refine ⟨k - 2 * (ExternalInsertionDiagram.interactionPart
+    (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
+  omega
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
