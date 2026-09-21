@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
 
 set_option linter.style.header false
