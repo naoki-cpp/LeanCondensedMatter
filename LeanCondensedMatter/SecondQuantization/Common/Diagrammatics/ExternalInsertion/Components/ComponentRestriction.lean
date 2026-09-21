@@ -418,6 +418,11 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
   · change
       externalInsertionExternalLeg (d.externalPairCount B) T e <
         externalInsertionExternalLeg (d.externalPairCount B) T f at hab
+    change
+      d.componentDiagramLeg B
+          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
+        d.componentDiagramLeg B
+          (externalInsertionExternalLeg (d.externalPairCount B) T f)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
     change
       (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
@@ -431,6 +436,11 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
   · change
       externalInsertionExternalLeg (d.externalPairCount B) T e <
         externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
+    change
+      d.componentDiagramLeg B
+          (externalInsertionExternalLeg (d.externalPairCount B) T e) <
+        d.componentDiagramLeg B
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
     change
       (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
@@ -450,6 +460,11 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
   · change
       externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
         externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
+    change
+      d.componentDiagramLeg B
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) <
+        d.componentDiagramLeg B
+          (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_interaction B, d.componentDiagramLeg_interaction B]
     change
       (externalInsertionInteractionLeg (E := E)
