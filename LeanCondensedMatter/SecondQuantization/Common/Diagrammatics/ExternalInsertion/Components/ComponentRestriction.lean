@@ -205,6 +205,7 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
     (B : d.componentPartition.parts) :
     Even (ExternalInsertionDiagram.externalPart
       (B : Finset (ExternalInsertionVertex E S))).card := by
+  classical
   let blockEquiv := d.componentBlockLegDataEquiv B
   have hcard :
       Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
@@ -226,7 +227,9 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
             (B : Finset (ExternalInsertionVertex E S))).card +
             4 * (ExternalInsertionDiagram.interactionPart
               (B : Finset (ExternalInsertionVertex E S))).card := by
-        simp [Nat.mul_comm]
+        rw [Fintype.card_sum, Fintype.card_prod, Fintype.card_coe,
+          Fintype.card_coe, Fintype.card_fin]
+        omega
   let restricted :=
     d.pairing.restrict
       (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
