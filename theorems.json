@@ -6532,7 +6532,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.adj_ofSlotSplit_slotSplitVertex_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity.0.SecondQuantization.Common.exists_eq_slotSplitVertex_of_adj"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.sumCongr_partner_inl",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -6579,7 +6582,10 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumConnectivity.0.SecondQuantization.Common.exists_eq_slotSplitVacuumVertex_of_adj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.sumCongr_partner_inr",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -7600,6 +7606,40 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} (pairing : Combinatorics.PairingOn α), Combinatorics.IsPairing pairing.partner",
+    "standardAxioms": [
+      "Quot.sound"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.isPairing",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": "The bundled partner permutation satisfies the fixed-point-free involution predicate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.partner_involutive",
+      "Combinatorics.PairingOn.partner_ne"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Quot.sound"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} (self : Combinatorics.PairingOn α), Function.Involutive ⇑self.partner",
     "standardAxioms": [
@@ -7620,6 +7660,7 @@
     "dependents": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
       "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.isPairing",
       "Combinatorics.PairingOn.partner_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_involutive"
     ],
@@ -7629,10 +7670,11 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
       "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.isPairing",
       "Combinatorics.PairingOn.partner_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_involutive"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound"
     ],
@@ -7667,6 +7709,7 @@
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.isPairing",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
@@ -7686,6 +7729,7 @@
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
       "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.isPairing",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
@@ -7693,7 +7737,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_ne_self",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Quot.sound"
     ],
@@ -7764,6 +7808,7 @@
     "terminal": false,
     "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α) (i : α),\n  (P.relabel e).partner i = (Equiv.symm e) (P.partner (e i))",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7800,6 +7845,7 @@
     ],
     "compiledConsumerCount": 5,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7811,6 +7857,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α), P.relabel (Equiv.refl α) = P",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7836,6 +7883,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7847,6 +7895,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α), (P.relabel (Equiv.symm e)).relabel e = P",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7872,6 +7921,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7883,6 +7933,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α), (P.relabel e).relabel (Equiv.symm e) = P",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7908,6 +7959,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7919,6 +7971,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e f : Equiv.Perm α),\n  (P.relabel e).relabel f = P.relabel (Equiv.trans f e)",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7944,6 +7997,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7955,6 +8009,7 @@
     "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} (pairing : Combinatorics.PairingOn α) (p : α → Prop)\n  (hpartner : ∀ (i : α), p i ↔ p (pairing.partner i)) (e : { i // p i } ≃ β) (i : { i // p i }),\n  (pairing.restrictAlongEquiv p hpartner e).partner (e i) = e ((pairing.restrict p hpartner).partner i)",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -7987,6 +8042,7 @@
     ],
     "compiledConsumerCount": 3,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8041,8 +8097,122 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} (F : (i : ι) → Combinatorics.PairingOn (β i)) (i : ι) (x : β i),\n  (Combinatorics.PairingOn.sigmaCongrRight F).partner ⟨i, x⟩ = ⟨i, (F i).partner x⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sigmaCongrRight_partner",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} (left : Combinatorics.PairingOn α) (right : Combinatorics.PairingOn β) (x : α),\n  (left.sumCongr right).partner (Sum.inl x) = Sum.inl (left.partner x)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sumCongr_partner_inl",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.ofSplit_partner_inl"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplit_partner_inl"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} (left : Combinatorics.PairingOn α) (right : Combinatorics.PairingOn β) (x : β),\n  (left.sumCongr right).partner (Sum.inr x) = Sum.inr (right.partner x)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.sumCongr_partner_inr",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.ofSplit_partner_inr"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplit_partner_inr"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} (P : Combinatorics.PairingOn β) (e : α ≃ β) (i : α),\n  (P.transport e).partner i = e.symm (P.partner (e i))",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8059,28 +8229,37 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.ofSplit_partner_inl",
+      "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.PairingOn.relabel_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
+      "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplit_partner_inl",
+      "Combinatorics.Pairing.ofSplit_partner_inr",
       "Combinatorics.PairingOn.relabel_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
+      "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 11,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8092,6 +8271,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} {β : Type u_2} (P : Combinatorics.PairingOn β) (e : α ≃ β), (P.transport e).transport e.symm = P",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8117,6 +8297,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8128,6 +8309,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (P : Combinatorics.PairingOn γ) (e : β ≃ γ) (f : α ≃ β),\n  (P.transport e).transport f = P.transport (f.trans e)",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8153,6 +8335,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8164,6 +8347,7 @@
     "terminal": true,
     "statement": "∀ {α : Type u_1} {β : Type u_2} (P : Combinatorics.PairingOn α) (e : α ≃ β), (P.transport e.symm).transport e = P",
     "standardAxioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -8189,6 +8373,7 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -95896,7 +96081,9 @@
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece.0.SecondQuantization.Common.TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -149004,7 +149191,10 @@
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.sigmaCongrRight_partner",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
