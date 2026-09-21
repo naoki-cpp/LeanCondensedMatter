@@ -481,11 +481,21 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     · subst w
       have hlk : l.val < k.val := by omega
       omega
-    · have hrank :
+    · have hrank_ne :
+          ((T.orderIsoOfFin rfl).symm v).val ≠
+            ((T.orderIsoOfFin rfl).symm w).val := by
+        intro h
+        apply hvw
+        apply (T.orderIsoOfFin rfl).symm.injective
+        exact Fin.ext h
+      have hl : l.val < 4 := l.isLt
+      have hk : k.val < 4 := k.isLt
+      have hrank :
           ((T.orderIsoOfFin rfl).symm v).val <
             ((T.orderIsoOfFin rfl).symm w).val := by
         omega
-      have hvwT : v < w := (T.orderIsoOfFin rfl).strictMono hrank
+      have hvwT : v < w := by
+        simpa using (T.orderIsoOfFin rfl).strictMono hrank
       let vS : ↥S :=
         ⟨v.1, ExternalInsertionDiagram.interactionPart_subset
           (B : Finset (ExternalInsertionVertex E S)) v.2⟩
