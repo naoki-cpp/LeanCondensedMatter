@@ -7,16 +7,17 @@ import Mathlib.Data.Finset.Sort
 set_option linter.style.header false
 
 /-!
-# Restricting vacuum components of external-insertion diagrams
+# Restricting components of external-insertion diagrams
 
-This module extracts the interaction vertices belonging to a full external-plus-interaction
-component and restricts the ambient pairing to its legs. For a vacuum component, no external leg is
-present, so the restricted legs can be reindexed directly as the four local legs of an ordinary
-quartic diagram.
+This module extracts the external and interaction sectors belonging to one connected component and
+restricts the ambient pairing to its legs. The generic restriction is again an
+`ExternalInsertionDiagram` on the component-local external and interaction sectors. For a vacuum
+component, no external leg is present, so the same ambient component can also be reindexed directly
+as the four local legs of an ordinary quartic diagram.
 
 The construction is statistics-independent. Partner-invariant pairing restriction is owned by
 `Combinatorics.PerfectPairing.Restriction`; this module supplies the external-insertion component
-predicate and the vacuum-specific leg reindexing.
+predicate and the domain-specific leg reindexing.
 -/
 
 namespace SecondQuantization
@@ -246,7 +247,8 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
     (B : Finset (ExternalInsertionVertex E S))).card, ?_⟩
   omega
 
-/-- The local external-sector parameter: half the number of one-legged external insertions carried by one connected component. -/
+/-- The local external-sector parameter: half the number of one-legged external insertions
+carried by one connected component. -/
 noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts) : ℕ :=
@@ -274,6 +276,41 @@ noncomputable def ExternalInsertionDiagram.externalPartOrderIso {S : Finset (Fin
   (ExternalInsertionDiagram.externalPart
     (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
       (d.externalPart_card_eq_two_mul_externalPairCount B)
+
+/-- Reindex the flattened legs of one component as the flattened legs of its local
+external-insertion diagram. -/
+private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    {leg : Fin (2 * (2 * S.card + E)) //
+      d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} ≃
+      Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :=
+  (d.componentBlockLegDataEquiv B).trans <|
+    (Equiv.sumCongr (d.externalPartOrderIso B).toEquiv (Equiv.refl _)).symm.trans <|
+      (externalInsertionLegEquiv (d.externalPairCount B)
+        (ExternalInsertionDiagram.interactionPart
+          (B : Finset (ExternalInsertionVertex E S)))).symm
+
+/-- Restrict one connected component to a standalone external-insertion diagram on its local
+external and interaction sectors. -/
+noncomputable def ExternalInsertionDiagram.restrictComponent {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    ExternalInsertionDiagram ExternalLabel InternalLabel (d.externalPairCount B) N
+      (ExternalInsertionDiagram.interactionPart
+        (B : Finset (ExternalInsertionVertex E S))) where
+  externalLabel e := d.externalLabel (d.externalPartOrderIso B e).1
+  vertexLabel v :=
+    d.vertexLabel ⟨v.1, ExternalInsertionDiagram.interactionPart_subset
+      (B : Finset (ExternalInsertionVertex E S)) v.2⟩
+  pairing :=
+    d.pairing.restrictAlongEquiv
+      (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
+      (fun leg => d.legInComponent_partner_iff
+        (B : Finset (ExternalInsertionVertex E S)) leg)
+      (d.componentBlockLegEquiv B)
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/

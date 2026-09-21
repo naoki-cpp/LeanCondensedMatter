@@ -179,10 +179,11 @@ carries an even number of external insertions, proved from the fixed-point-free 
 `PairingOn` and the four-leg contribution of each interaction vertex. Its local external sector is
 therefore indexed by `Fin (2 * externalPairCount)`; `externalPartOrderIso` gives the canonical
 increasing identification with the ambient external subset, preserving external insertion order for
-later sign-sensitive constructions. A vacuum component has no external legs, so Common reindexes its
-surviving legs as ordinary quartic legs and exposes the induced `QuarticDiagram`; externally
-supported component restriction still requires combining this external-sector reindexing with the
-interaction-sector restriction.
+later sign-sensitive constructions. `ExternalInsertionDiagram.restrictComponent` combines that
+external-sector ordering with the extracted interaction sector and the partner-invariant restricted
+pairing to produce a standalone external-insertion diagram for any connected component. A vacuum
+component has no external legs, so Common also reindexes its surviving legs as ordinary quartic legs
+and exposes the induced `QuarticDiagram`.
 
 The two-point expansion has its own internal layer order:
 
