@@ -447,7 +447,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
         (externalInsertionInteractionLeg (E := E)
           ⟨w.1, ExternalInsertionDiagram.interactionPart_subset
             (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
-    simp
+    simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
     exact Nat.lt_of_lt_of_le (d.externalPartOrderIso B e).1.isLt (by omega)
   · change
       externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
@@ -476,7 +476,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     change
       (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
         (externalInsertionInteractionLeg (E := d.externalPairCount B) w k).val at hab
-    simp at hab ⊢
+    simp only [externalInsertionInteractionLeg_val] at hab ⊢
     by_cases hvw : v = w
     · subst w
       have hlk : l.val < k.val := by omega
