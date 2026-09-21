@@ -26,20 +26,52 @@ abbrev Occupation (Mode : Type*) := Mode →₀ ℕ
 /-- The zero-particle occupation configuration. -/
 def vacuum : Occupation Mode := 0
 
-/-- The total particle number `Σᵢ n(i)`. -/
-def particleNumber (n : Occupation Mode) : ℕ := n.sum fun _ k => k
+/-- The shared occupation-basis interface for bosonic occupation states. -/
+instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
+  vacuum := vacuum
+  occupation n i := n i
+  occupation_vacuum i := by simp [vacuum]
+  finiteSupport n := (n.support.finite_toSet).subset fun i hi => Finsupp.mem_support_iff.2 hi
+  ext {m n} h := Finsupp.ext h
+
+/-- Bosonic spelling of the statistics-independent particle-number grade from `Common`. -/
+noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
+  Common.particleNumber (Mode := Mode) (Config := Occupation Mode) n
+
+/-- The common particle-number grade agrees with the native finitely-supported occupation sum. -/
+theorem particleNumber_eq_finsupp_sum (n : Occupation Mode) :
+    particleNumber n = n.sum fun _ k => k := by
+  classical
+  change Common.particleNumber (Mode := Mode) n = n.sum fun _ k => k
+  unfold Common.particleNumber
+  have hs :
+      (Common.OccupationBasis.finiteSupport
+        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n.support := by
+    ext i
+    simp only [Set.Finite.mem_toFinset]
+    change (n i ≠ 0) ↔ i ∈ n.support
+    exact Finsupp.mem_support_iff.symm
+  rw [hs]
+  simp only [Finsupp.sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rfl
 
 @[simp]
 theorem particleNumber_zero : particleNumber (0 : Occupation Mode) = 0 := by
-  simp [particleNumber]
+  rw [particleNumber_eq_finsupp_sum]
+  simp
 
 @[simp]
-theorem particleNumber_vacuum : particleNumber (vacuum : Occupation Mode) = 0 :=
-  particleNumber_zero
+theorem particleNumber_vacuum : particleNumber (vacuum : Occupation Mode) = 0 := by
+  simpa [vacuum] using (Common.particleNumber_vacuum
+    (Mode := Mode) (Config := Occupation Mode))
 
 theorem particleNumber_add (m n : Occupation Mode) :
-    particleNumber (m + n) = particleNumber m + particleNumber n :=
-  Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
+    particleNumber (m + n) = particleNumber m + particleNumber n := by
+  rw [particleNumber_eq_finsupp_sum, particleNumber_eq_finsupp_sum,
+    particleNumber_eq_finsupp_sum]
+  exact Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
 
 section FiniteMode
 
@@ -48,7 +80,8 @@ variable [Fintype Mode]
 /-- On a finite mode type, the total particle number is the sum of the mode occupations. -/
 theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
     particleNumber n = ∑ i, n i := by
-  simp only [particleNumber, Finsupp.sum]
+  rw [particleNumber_eq_finsupp_sum]
+  simp only [Finsupp.sum]
   apply Finset.sum_subset (Finset.subset_univ _)
   intro i _ hi
   simp only [Finsupp.mem_support_iff, not_not] at hi
@@ -77,7 +110,8 @@ theorem singleOccupation_apply_ne {i j : Mode} (h : j ≠ i) : singleOccupation 
 @[simp]
 theorem particleNumber_singleOccupation (i : Mode) :
     particleNumber (singleOccupation i : Occupation Mode) = 1 := by
-  simp [particleNumber, singleOccupation]
+  rw [particleNumber_eq_finsupp_sum]
+  simp [singleOccupation]
 
 /-- Add one particle in mode `i`. -/
 noncomputable def createOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
@@ -96,14 +130,6 @@ theorem createOccupation_apply_same (i : Mode) (n : Occupation Mode) :
 theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
     createOccupation i n j = n j := by
   simp [createOccupation, singleOccupation, h]
-
-/-- The shared occupation-basis interface for bosonic occupation states. -/
-instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
-  vacuum := vacuum
-  occupation n i := n i
-  occupation_vacuum i := by simp [vacuum]
-  finiteSupport n := (n.support.finite_toSet).subset fun i hi => Finsupp.mem_support_iff.2 hi
-  ext {m n} h := Finsupp.ext h
 
 /-- Remove one particle from mode `i`, with zero left unchanged. -/
 noncomputable def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
