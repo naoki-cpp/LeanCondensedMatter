@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Disorder.Ladder
-import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import Mathlib.Topology.Instances.Matrix
 import Mathlib.Tactic
 

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Vertex.InPlaneLadder
 import Mathlib.Tactic
 
