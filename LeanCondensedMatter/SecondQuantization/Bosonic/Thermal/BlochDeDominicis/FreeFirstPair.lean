@@ -66,10 +66,7 @@ omit [Fintype Mode] in
 theorem orderedProduct_append_singleton
     (l : List (FreeThermalField Mode)) (C : FreeThermalField Mode) :
     orderedProduct (l ++ [C]) = (orderedProduct l).comp C.operator := by
-  rw [orderedProduct_eq_common_operatorProduct,
-    Common.BlochDeDominicis.operatorProduct_append,
-    ← orderedProduct_eq_common_operatorProduct]
-  simp
+  simp [orderedProduct, List.map_append, List.prod_append, Module.End.mul_eq_comp]
 
 /-- Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. -/
 theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
