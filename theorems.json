@@ -7553,6 +7553,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : Fintype α] (P : Combinatorics.PairingOn α), Even (Fintype.card α)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.even_card",
+    "module": "LeanCondensedMatter.Combinatorics.InvolutionCard",
+    "externalAxioms": [],
+    "docString": "A finite type carrying a perfect pairing has even cardinality. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.partner_involutive",
+      "Combinatorics.PairingOn.partner_ne",
+      "Combinatorics.even_card_of_fixedPointFreeInvolution"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {left right : Combinatorics.PairingOn α}, left.partner = right.partner → left = right",
     "standardAxioms": [
       "Quot.sound"
@@ -7671,8 +7716,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
+      "Combinatorics.PairingOn.even_card",
       "Combinatorics.PairingOn.partner_partner",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_involutive"
     ],
     "dependencies": [],
@@ -7680,8 +7725,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
+      "Combinatorics.PairingOn.even_card",
       "Combinatorics.PairingOn.partner_partner",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_involutive"
     ],
     "compiledConsumerCount": 4,
@@ -7718,8 +7763,8 @@
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
+      "Combinatorics.PairingOn.even_card",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self",
@@ -7737,8 +7782,8 @@
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
+      "Combinatorics.PairingOn.even_card",
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion.0.Combinatorics.Pairing.eraseZeroOrderIso_eq_succ_succAbove",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction.0.Combinatorics.PairingOn.restrictPartnerPerm_ne_self",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_ne_self",
@@ -9244,14 +9289,14 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.even_card_of_partner_mem",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+      "Combinatorics.PairingOn.even_card"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.even_card_of_partner_mem",
-      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
+      "Combinatorics.PairingOn.even_card"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -89903,6 +89948,43 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts),\n  d.ComponentMeetsExternal B ↔ (SecondQuantization.Common.ExternalInsertionDiagram.externalPart ↑B).Nonempty",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_externalPart_nonempty",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition",
+    "externalAxioms": [],
+    "docString": "A component meets the external sector exactly when its extracted external part is nonempty. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.mem_externalPart"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  {d₁ d₂ : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S},\n  d₁.externalLabel = d₂.externalLabel → d₁.vertexLabel = d₂.vertexLabel → d₁.pairing = d₂.pairing → d₁ = d₂",
     "standardAxioms": [
@@ -89964,6 +90046,44 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ext"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts), Even (SecondQuantization.Common.ExternalInsertionDiagram.externalPart ↑B).card",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "Every connected component contains an even number of external insertions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.even_card",
+      "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90195,6 +90315,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "dependencies": [
@@ -90204,10 +90325,49 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedPartner",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalPart_card_even",
       "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} {S : Finset (Fin N)} (B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)) (e : Fin (2 * E)),\n  e ∈ SecondQuantization.Common.ExternalInsertionDiagram.externalPart B ↔ Sum.inl e ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.mem_externalPart",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition",
+    "externalAxioms": [],
+    "docString": "Membership in the external part is membership of the corresponding external vertex in the full\ncomponent part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_externalPart_nonempty"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMeetsExternal_iff_externalPart_nonempty"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90377,7 +90537,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((d.restrictedPartner ↑B) leg)",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((Combinatorics.PairingOn.restrict d.pairing (d.legInComponent ↑B) ⋯).partner leg)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90392,7 +90552,7 @@
     "name": "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
     "externalAxioms": [],
-    "docString": "The restricted vacuum pairing agrees with the ambient partner under the vacuum leg\nreindexing. ",
+    "docString": "The restricted vacuum pairing agrees with the component-restricted ambient pairing\nunder the vacuum leg reindexing. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -93598,9 +93758,7 @@
       "SecondQuantization.Common.interactionPart_externalComponent_ofSlotSplit"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.partner_involutive",
-      "Combinatorics.PairingOn.partner_ne",
-      "Combinatorics.even_card_of_fixedPointFreeInvolution",
+      "Combinatorics.PairingOn.even_card",
       "SecondQuantization.Common.TwoPointDiagram.interactionPart_subset",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_unflattened",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_partner_iff",
@@ -147937,7 +148095,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -147955,9 +148113,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumBlockLegEquiv"
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumBlockLegEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentBlockLegDataEquiv"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
