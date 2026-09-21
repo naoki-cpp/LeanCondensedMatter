@@ -17,7 +17,7 @@ Möbius inversion or finite-set cumulant inversion.
 
 open scoped BigOperators
 
-namespace Combinatorics
+namespace Finpartition
 
 variable {α R : Type*} [DecidableEq α] [CommSemiring R]
 
@@ -26,11 +26,11 @@ variable {α R : Type*} [DecidableEq α] [CommSemiring R]
 Each partition contributes its block-product weight in degree equal to its number of blocks. -/
 noncomputable def replicaPolynomial (κ : Finset α → R) (S : Finset α) : Polynomial R :=
   ∑ π : Finpartition S,
-    Polynomial.C (Finpartition.partitionProduct κ π) * Polynomial.X ^ π.parts.card
+    Polynomial.C (partitionProduct κ π) * Polynomial.X ^ π.parts.card
 
 private theorem finpartition_eq_indiscrete_of_card_parts_eq_one
     {S : Finset α} (hS : S ≠ ∅) (π : Finpartition S) (hπ : π.parts.card = 1) :
-    π = Finpartition.indiscrete hS := by
+    π = indiscrete hS := by
   obtain ⟨B, hparts⟩ := Finset.card_eq_one.mp hπ
   have hBS : B = S := by
     simpa [hparts] using π.sup_parts
@@ -45,19 +45,13 @@ theorem replicaPolynomial_coeff_one (κ : Finset α → R) {S : Finset α} (hS :
   classical
   rw [replicaPolynomial, Polynomial.finsetSum_coeff]
   change (∑ π : Finpartition S,
-    (Polynomial.C (Finpartition.partitionProduct κ π) *
+    (Polynomial.C (partitionProduct κ π) *
       Polynomial.X ^ π.parts.card).coeff 1) = κ S
   rw [Fintype.sum_eq_single (Finpartition.indiscrete hS) (fun π hπ => by
     have hcard : 1 ≠ π.parts.card := by
       intro h
       exact hπ (finpartition_eq_indiscrete_of_card_parts_eq_one hS π h.symm)
     simp [hcard])]
-  simp [Finpartition.partitionProduct]
+  simp [partitionProduct]
 
-/-- The number of ways to assign one of `n` replica labels independently to every block of a
-partition is `n` raised to the number of blocks. -/
-theorem card_replicaLabelings {S : Finset α} (π : Finpartition S) (n : ℕ) :
-    Fintype.card (π.parts → Fin n) = n ^ π.parts.card := by
-  rw [Fintype.card_fun, Fintype.card_coe, Fintype.card_fin]
-
-end Combinatorics
+end Finpartition
