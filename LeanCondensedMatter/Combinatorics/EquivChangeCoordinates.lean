@@ -24,14 +24,6 @@ theorem changeCoordinates_apply {α β γ : Type*}
     source.changeCoordinates target y = target (source.symm y) := by
   rfl
 
-/-- Changing coordinates sends the `source` representation of an element to its `target`
-representation. -/
-@[simp]
-theorem changeCoordinates_apply_source {α β γ : Type*}
-    (source : α ≃ β) (target : α ≃ γ) (x : α) :
-    source.changeCoordinates target (source x) = target x := by
-  simp [Equiv.changeCoordinates]
-
 /-- A coordinate system differs from itself by the identity equivalence. -/
 @[simp]
 theorem changeCoordinates_self {α β : Type*} (e : α ≃ β) :
