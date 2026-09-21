@@ -22,6 +22,7 @@ jobs:
     outputs:
       source: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.source == 'true' }}
       lean: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.lean == 'true' }}
+      advisory: ${{ steps.filter.outputs.advisory == 'true' }}
 
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -56,11 +57,12 @@ jobs:
               - 'lake-manifest.json'
               - 'scripts/CheckDuplicates.lean'
               - 'scripts/CheckNoSorry.lean'
+              - '.github/workflows/lean_action_ci.yml'
+            advisory:
               - 'scripts/CheckUnusedHypotheses.lean'
               - 'scripts/TheoremCatalog.lean'
               - 'scripts/TheoremReplacementAudit.lean'
               - 'scripts/merge_theorem_replacements.py'
-              - '.github/workflows/lean_action_ci.yml'
               - '.github/workflows/insights.yml'
 
   source-checks:
@@ -79,7 +81,7 @@ jobs:
 
   build:
     needs: changes
-    if: needs.changes.outputs.lean == 'true'
+    if: needs.changes.outputs.lean == 'true' || (github.event_name == 'push' && needs.changes.outputs.advisory == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
@@ -131,7 +133,8 @@ jobs:
   # These independent compiled checks are intentionally parallel: they all consume the same
   # successful build and optimize pull-request wall-clock time rather than runner-minutes.
   compiled-checks:
-    needs: build
+    needs: [changes, build]
+    if: needs.changes.outputs.lean == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -191,6 +194,8 @@ jobs:
           CHANGES_RESULT: ${{ needs.changes.result }}
           SOURCE_RELATED: ${{ needs.changes.outputs.source }}
           LEAN_RELATED: ${{ needs.changes.outputs.lean }}
+          ADVISORY_RELATED: ${{ needs.changes.outputs.advisory }}
+          EVENT_NAME: ${{ github.event_name }}
           SOURCE_CHECKS_RESULT: ${{ needs.source-checks.result }}
           BUILD_RESULT: ${{ needs.build.result }}
           COMPILED_CHECKS_RESULT: ${{ needs.compiled-checks.result }}
@@ -202,7 +207,11 @@ jobs:
           if [ "$LEAN_RELATED" = true ]; then
             test "$BUILD_RESULT" = success
             test "$COMPILED_CHECKS_RESULT" = success
+          elif [ "$EVENT_NAME" = push ] && [ "$ADVISORY_RELATED" = true ]; then
+            test "$BUILD_RESULT" = success
           fi
           if [ "$SOURCE_RELATED" != true ] && [ "$LEAN_RELATED" != true ]; then
-            echo "No source-architecture or Lean-build checks were needed."
+            if [ "$EVENT_NAME" != push ] || [ "$ADVISORY_RELATED" != true ]; then
+              echo "No source-architecture or Lean-build checks were needed."
+            fi
           fi
