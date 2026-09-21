@@ -35,8 +35,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) ∧
     (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0)
   expectation_nil := by
-    simp [Module.End.one_eq_id]
-    exact finiteGibbsExpectation_id energy β
+    simpa [Module.End.one_eq_id] using finiteGibbsExpectation_id energy β
   admissible_erase := by
     rintro n C ⟨q, c, hC, hcomm, hne⟩ j
     exact ⟨fun i => q ((j.succAbove i).succ), fun i i' => c ((j.succAbove i).succ)
