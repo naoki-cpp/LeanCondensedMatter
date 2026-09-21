@@ -228,12 +228,5 @@ noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (
       (B : Finset (ExternalInsertionVertex E S)) v.2⟩
   pairing := d.restrictedVacuumPairing B hVac
 
-@[simp]
-theorem ExternalInsertionDiagram.restrictVacuumComponent_pairing {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
-    (d.restrictVacuumComponent B hVac).pairing = d.restrictedVacuumPairing B hVac :=
-  rfl
-
 end Common
 end SecondQuantization
