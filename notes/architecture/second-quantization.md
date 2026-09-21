@@ -187,8 +187,10 @@ external-sector ordering with the extracted interaction sector and the partner-i
 pairing to produce a standalone external-insertion diagram for any connected component.
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
-pairing partners. A vacuum component has no external legs, so Common also reindexes its surviving
-legs as ordinary quartic legs and exposes the induced `QuarticDiagram`.
+pairing partners. The canonical leg order makes this map an `OrderEmbedding`; the induced
+`componentNormalizedPairEmbedding` therefore preserves and reflects pairing crossings. A vacuum
+component has no external legs, so Common also reindexes its surviving legs as ordinary quartic legs
+and exposes the induced `QuarticDiagram`.
 
 The two-point expansion has its own internal layer order:
 
