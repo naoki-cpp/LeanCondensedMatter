@@ -525,6 +525,27 @@ noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
     (d.componentDiagramLeg_strictMono B)
 
 
+/-- The image of the canonical component leg embedding is exactly the ambient legs incident to that
+connected component. -/
+theorem ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts)
+    (leg : Fin (2 * (2 * S.card + E))) :
+    (∃ p, d.componentDiagramLeg B p = leg) ↔
+      d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg := by
+  constructor
+  · rintro ⟨p, rfl⟩
+    exact ((d.componentBlockLegEquiv B).symm p).2
+  · intro hleg
+    let leg' :
+        {leg : Fin (2 * (2 * S.card + E)) //
+          d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} :=
+      ⟨leg, hleg⟩
+    refine ⟨d.componentBlockLegEquiv B leg', ?_⟩
+    simp [ExternalInsertionDiagram.componentDiagramLeg, leg']
+
+
 /-- Embed normalized pairs of a restricted component into the ambient pairing using the canonical
 component leg order embedding. -/
 noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
