@@ -48,9 +48,9 @@ theorem replicaPolynomial_coeff_one (κ : Finset α → R) {S : Finset α} (hS :
     (Polynomial.C (Finpartition.partitionProduct κ π) *
       Polynomial.X ^ π.parts.card).coeff 1) = κ S
   rw [Fintype.sum_eq_single (Finpartition.indiscrete hS) (fun π hπ => by
-    have hcard : π.parts.card ≠ 1 := by
+    have hcard : 1 ≠ π.parts.card := by
       intro h
-      exact hπ (finpartition_eq_indiscrete_of_card_parts_eq_one hS π h)
+      exact hπ (finpartition_eq_indiscrete_of_card_parts_eq_one hS π h.symm)
     simp [hcard])]
   simp [Finpartition.partitionProduct]
 
