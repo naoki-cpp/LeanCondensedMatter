@@ -31,7 +31,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 /-- For an externally connected left piece and strictly decreasing inherited vacuum times, the
 signed fixed-time amplitude of the reassembled diagram is the product of the standalone external
 piece amplitude and the standalone fixed-order quartic vacuum integrand. -/
-theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
+private theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {n : ℕ} (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
@@ -77,15 +77,6 @@ noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
   connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq
     (Mode := Mode) (i := i) (j := j) shuffle.leftSlots shuffle.card_leftSlots
 
-/-- Read the vacuum half of a shuffle fiber in its inherited increasing order.  The resulting
-ordered data has order `k`, independently of which ambient slots the shuffle assigns to it. -/
-noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
-    (shuffle : BinaryShuffle.SlotShuffle m k) :
-    QuarticWickDiagram Mode (m + k)
-        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
-      Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
-  Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv
-
 /-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
 diagram and one order-`k` vacuum label/pairing datum. -/
 noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
@@ -97,7 +88,7 @@ noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
       ({ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} ×
         Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :=
   Equiv.prodCongr (connectedFixedExternalShuffleLeftEquiv shuffle)
-    (fixedExternalShuffleVacuumOrderedDataEquiv shuffle)
+    (Common.quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv)
 
 /-- The canonical fixed-fiber pointwise product can be written with the vacuum factor entirely in
 ordered-data coordinates. -/
@@ -124,13 +115,13 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
           (σ ∘ slotSplitVacuumSlot T)
           (vac.pairingInOrder (slotSplitVacuumOrder T)) := by
     simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-      Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
+      Combinatorics.Pairing.evaluation]
     refine congrArg
       (fun z : ℂ =>
         (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion * z)
       (Finset.prod_congr rfl fun pr _ => ?_)
-    rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-      orderedQuarticLegOperator]
+    rw [orderedQuarticPairValue_eq, flatVertexLegPairValue_eq]
+    simp [flatVertexLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg]
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand

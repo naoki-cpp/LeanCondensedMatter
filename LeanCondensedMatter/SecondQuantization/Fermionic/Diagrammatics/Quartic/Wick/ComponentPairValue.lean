@@ -50,8 +50,9 @@ theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : �
         (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b) =
       orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
         (shuffle.timeAssignment τ B) a b := by
-  unfold orderedQuarticPairValue
-  rw [orderedQuarticLegOperator_componentOrderedLeg,
+  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+    orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+    orderedQuarticLegOperator_componentOrderedLeg,
     orderedQuarticLegOperator_componentOrderedLeg]
 
 end Fermionic

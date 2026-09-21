@@ -72,7 +72,7 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_exte
         (d.1.externalPieceComponentPairEquiv τ τ' σ x).1.2 = x.1.1.2 :=
       congrArg Prod.snd hpos
     unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-    simp only [mixedTimeOrderedAtomicPairValue, mixedTimeOrderedAtomicOperatorFamily]
+    simp only [mixedTimeOrderedAtomicPairValue]
     rw [← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition τ τ' σ,
       ← d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition τ τ' σ,
       hfirst, hsecond]

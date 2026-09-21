@@ -32,10 +32,10 @@ theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (F
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro τ
   simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
+    Combinatorics.Pairing.evaluation]
   refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    orderedQuarticLegOperator]
+  rw [orderedQuarticPairValue_eq, flatVertexLegPairValue_eq]
+  simp [flatVertexLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg]
 
 /-- Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical
 evaluator form. -/
