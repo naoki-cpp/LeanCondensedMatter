@@ -46,6 +46,39 @@ def ExternalInsertionDiagram.ComponentMeetsExternal {S : Finset (Fin N)}
     (Sum.inl e : ExternalInsertionVertex E S) ∈
       (B : Finset (ExternalInsertionVertex E S))
 
+open Classical in
+/-- The external insertions contained in a full external-plus-interaction component part. -/
+noncomputable def ExternalInsertionDiagram.externalPart {S : Finset (Fin N)}
+    (B : Finset (ExternalInsertionVertex E S)) : Finset (Fin (2 * E)) :=
+  Finset.univ.filter fun e =>
+    (Sum.inl e : ExternalInsertionVertex E S) ∈ B
+
+/-- Membership in the external part is membership of the corresponding external vertex in the full
+component part. -/
+@[simp]
+theorem ExternalInsertionDiagram.mem_externalPart {S : Finset (Fin N)}
+    (B : Finset (ExternalInsertionVertex E S)) (e : Fin (2 * E)) :
+    e ∈ ExternalInsertionDiagram.externalPart B ↔
+      (Sum.inl e : ExternalInsertionVertex E S) ∈ B := by
+  classical
+  simp [ExternalInsertionDiagram.externalPart]
+
+/-- A component meets the external sector exactly when its extracted external part is nonempty. -/
+theorem ExternalInsertionDiagram.componentMeetsExternal_iff_externalPart_nonempty
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts) :
+    d.ComponentMeetsExternal B ↔
+      (ExternalInsertionDiagram.externalPart
+        (B : Finset (ExternalInsertionVertex E S))).Nonempty := by
+  constructor
+  · rintro ⟨e, he⟩
+    exact ⟨e, (ExternalInsertionDiagram.mem_externalPart
+      (B : Finset (ExternalInsertionVertex E S)) e).2 he⟩
+  · rintro ⟨e, he⟩
+    exact ⟨e, (ExternalInsertionDiagram.mem_externalPart
+      (B : Finset (ExternalInsertionVertex E S)) e).1 he⟩
+
 /-- A component part is a vacuum component when it contains no external insertion. -/
 def ExternalInsertionDiagram.ComponentIsVacuum {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
