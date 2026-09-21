@@ -59,6 +59,21 @@ noncomputable def externalInsertionInteractionLeg {E : ℕ} {S : Finset (Fin N)}
     (v : ↥S) (l : Fin 4) : Fin (2 * (2 * S.card + E)) :=
   (externalInsertionLegEquiv E S).symm (Sum.inr (v, l))
 
+@[simp]
+theorem externalInsertionExternalLeg_val (E : ℕ) (S : Finset (Fin N))
+    (e : Fin (2 * E)) :
+    (externalInsertionExternalLeg E S e).val = e.val := by
+  simp [externalInsertionExternalLeg, externalInsertionLegEquiv]
+
+@[simp]
+theorem externalInsertionInteractionLeg_val {E : ℕ} {S : Finset (Fin N)}
+    (v : ↥S) (l : Fin 4) :
+    (externalInsertionInteractionLeg (E := E) v l).val =
+      2 * E + l.val + 4 * ((S.orderIsoOfFin rfl).symm v).val := by
+  simp [externalInsertionInteractionLeg, externalInsertionLegEquiv,
+    externalInsertionInteractionLegEquiv, finProdFinEquiv]
+  omega
+
 /-- The vertex incident to a flattened external-insertion diagram leg. -/
 noncomputable def externalInsertionVertexOfLeg {E : ℕ} {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + E))) : ExternalInsertionVertex E S :=
