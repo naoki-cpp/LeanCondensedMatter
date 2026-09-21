@@ -36,11 +36,13 @@ def operator : FreeThermalField Mode → (FockSpace Mode →ₗ[ℂ] FockSpace M
   | .create i => Bosonic.create i
 
 /-- Ordered composition of free thermal fields, with the leftmost list entry acting last. -/
-def orderedProduct : List (FreeThermalField Mode) → (FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-  | [] => LinearMap.id
-  | field :: fields => (operator field).comp (orderedProduct fields)
+def orderedProduct (fields : List (FreeThermalField Mode)) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  (fields.map operator).prod
 
-@[simp] theorem orderedProduct_nil : orderedProduct ([] : List (FreeThermalField Mode)) = LinearMap.id := rfl
+@[simp] theorem orderedProduct_nil :
+    orderedProduct ([] : List (FreeThermalField Mode)) = LinearMap.id := by
+  simp [orderedProduct, Module.End.one_eq_id]
 
 end FreeThermalField
 
