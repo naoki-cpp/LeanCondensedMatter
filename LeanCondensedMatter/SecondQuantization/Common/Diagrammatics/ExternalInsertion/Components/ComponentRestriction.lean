@@ -132,16 +132,6 @@ noncomputable def ExternalInsertionDiagram.restrictedPartner {S : Finset (Fin N)
   d.pairing.partnerSubtypePerm (d.legInComponent B) fun leg =>
     d.legInComponent_partner_iff B leg
 
-/-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
-theorem ExternalInsertionDiagram.restrictedPartner_val {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : Finset (ExternalInsertionVertex E S))
-    (leg : {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg}) :
-    (d.restrictedPartner B leg : Fin (2 * (2 * S.card + E))) = d.pairing.partner leg := by
-  simpa only [ExternalInsertionDiagram.restrictedPartner] using
-    d.pairing.partnerSubtypePerm_val (d.legInComponent B)
-      (fun i => d.legInComponent_partner_iff B i) leg
-
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
 noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
