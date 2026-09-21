@@ -162,6 +162,28 @@ theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairin
     Fintype.sum_sigma, Fintype.sum_prod_type]
   rfl
 
+
+open Classical in
+/-- The total oriented crossing count between distinct components. -/
+noncomputable def Pairing.interComponentCrossingCount [Fintype ι] (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) : ℕ :=
+  ∑ BC ∈ (Finset.univ : Finset ι).offDiag,
+    pairing.componentCrossingCount e BC.1 BC.2
+
+/-- The global crossing count splits exactly into component-internal crossings and crossings between
+distinct components. -/
+theorem Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter [Fintype ι]
+    (pairing : Pairing n) (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
+    pairing.crossingCount =
+      (∑ B : ι, pairing.componentCrossingCount e B B) +
+        pairing.interComponentCrossingCount e := by
+  classical
+  rw [pairing.crossingCount_eq_sum_componentCrossingCount e]
+  simp_rw [← Finset.sum_product']
+  rw [← Finset.diag_union_offDiag,
+    Finset.sum_union (Finset.disjoint_diag_offDiag _), Finset.sum_diag]
+  rfl
+
 /-- When the two orientations between distinct components cancel modulo two, the crossing count has
 the parity of the sum of the component-internal crossing counts. -/
 theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
