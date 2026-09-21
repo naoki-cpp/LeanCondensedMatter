@@ -134,10 +134,8 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
       (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
-        d.legInComponent (d.externalComponent 0) leg}) := by
-    simpa [restricted, TwoPointDiagram.restrictedPartner] using
-      Combinatorics.even_card_of_fixedPointFreeInvolution
-        restricted.partner restricted.partner_involutive restricted.partner_ne
+        d.legInComponent (d.externalComponent 0) leg}) :=
+    restricted.even_card
   rw [hcard] at hEven
   obtain ⟨k, hk⟩ := hEven
   omega
