@@ -2,7 +2,8 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.
 import LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.LegFamily
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
 
@@ -21,44 +22,6 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `Common.prodComp` -/
-
-omit [Fintype Mode] in
-/-- **A single vertex's evolved operator, flattened into a `Common.prodComp` of its four
-individually-evolved atomic legs**: uses the multiplicativity of the canonical Heisenberg algebra
-equivalence on `c₁† c₂† a₂ a₁`, matching `quarticLocalLegOperator`'s
-`0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention exactly. -/
-theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
-    (q : QuarticVertexLabel Mode) (τ : ℝ) :
-    interactionPicture ε (quarticVertexOperator q) τ =
-      Common.prodComp
-        (List.ofFn (fun l : Fin 4 => imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l))) := by
-  change Common.heisenbergEvolve (fermionEnergy ε) τ
-      ((create q.create₁).comp
-        ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))) = _
-  simp only [← Module.End.mul_eq_comp, map_mul]
-  simp [Module.End.mul_eq_comp, Common.prodComp, quarticLocalLegOperator,
-    Common.quarticLocalLegOperator, List.ofFn_succ, imaginaryTimeEvolve]
-
-omit [Fintype Mode] in
-/-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
-label and local leg selected by the Common quartic flattening coordinates. Named so the general
-theorem's own `q : Fin (2 * (2 * n)) → ℝ` eigenvalue-shift family can be stated as
-`flatVertexLegEnergyShift ε q` directly. -/
-noncomputable def flatVertexLegEnergyShift {n : ℕ} (ε : Mode → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (p : Fin (2 * (2 * n))) : ℝ :=
-  quarticLocalLegEnergyShift ε (q (flatVertexIndex n p)) (flatLocalLeg n p)
-
-omit [Fintype Mode] in
-/-- **Every flattened leg operator is, up to its own `Complex.exp` eigenvalue-shift scalar, a bare
-atomic `quarticLocalLegOperator`** — the normal form used by the flattened commutator calculation
-and by consumers specializing the general evolved-leg eigenoperator theorem. -/
-theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    quarticLegOperatorForSequence ε q τ p =
-      Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) •
-        quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [quarticLegOperatorForSequence, imaginaryTimeEvolve_quarticLocalLegOperator]
-  rfl
 
 omit [Fintype Mode] in
 private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
@@ -185,8 +148,8 @@ family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and 
 local-leg exchange coefficient. -/
 noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) : ℂ :=
-  Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) *
-    Complex.exp ((τ (flatVertexIndex n p') * flatVertexLegEnergyShift ε q p' : ℝ) : ℂ) *
+  Complex.exp ((τ (flatVertexIndex n p) * quarticLegEnergyShiftForSequence ε q p : ℝ) : ℂ) *
+    Complex.exp ((τ (flatVertexIndex n p') * quarticLegEnergyShiftForSequence ε q p' : ℝ) : ℂ) *
     Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
       (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
       (flatLocalLeg n p) (flatLocalLeg n p')
