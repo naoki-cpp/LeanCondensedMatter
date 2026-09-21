@@ -26,7 +26,7 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
     (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
-    finiteGibbsExpectation energy β (C1.comp (prodComp (l.map Prod.fst))) =
+    finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
       finiteGibbsExpectation energy β (peelSum ζ l) /
         (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
@@ -42,7 +42,7 @@ theorem finiteGibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : �
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
     finiteGibbsExpectation energy β (peelSum ζ l) =
       ∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
-        finiteGibbsExpectation energy β (prodComp ((l.eraseIdx j).map Prod.fst)) := by
+        finiteGibbsExpectation energy β (List.prod ((l.eraseIdx j).map Prod.fst)) := by
   have hmap : ∀ L : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
       finiteGibbsExpectation energy β L.sum =
         (L.map (finiteGibbsExpectation energy β)).sum := by
@@ -62,7 +62,7 @@ theorem finiteGibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : �
   simpa only [finiteGibbsExpectation, smul_smul, smul_eq_mul, mul_assoc] using
     (finiteGibbsExpectationLinearMap energy β).map_smul
       (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2)
-      (prodComp ((l.eraseIdx j).map Prod.fst))
+      (List.prod ((l.eraseIdx j).map Prod.fst))
 
 /-- The normalized peel identity, as an indexed `Finset.sum`. -/
 theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
@@ -72,9 +72,9 @@ theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : �
     (hcomm : ∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 =
       p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
-    finiteGibbsExpectation energy β (C1.comp (prodComp (l.map Prod.fst))) =
+    finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
       (∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
-          finiteGibbsExpectation energy β (prodComp ((l.eraseIdx j).map Prod.fst))) /
+          finiteGibbsExpectation energy β (List.prod ((l.eraseIdx j).map Prod.fst))) /
         (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   rw [finiteGibbsExpectation_peel energy β q1 ζ C1 l hC1 hcomm hne,
     finiteGibbsExpectation_peelSum_eq_sum]
