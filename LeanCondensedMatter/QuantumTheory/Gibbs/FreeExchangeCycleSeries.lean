@@ -42,7 +42,11 @@ theorem constantCoeff_freeExchangeGrandPartitionSeries
     (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ) :
     PowerSeries.constantCoeff (freeExchangeGrandPartitionSeries ζ hζ ε β) = 1 := by
   classical
-  simp [freeExchangeGrandPartitionSeries]
+  rcases hζ with hζ | hζ
+  · subst ζ
+    simp [freeExchangeGrandPartitionSeries]
+  · subst ζ
+    simp [freeExchangeGrandPartitionSeries]
 
 /-- The formal logarithm of the shared Bose/Fermi free grand product is the exchange-weighted
 modewise trace-log. -/
@@ -54,7 +58,7 @@ theorem logOf_freeExchangeGrandPartitionSeries_eq_sum_log
           (-ζ * Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
   rcases hζ with hζ | hζ
   · subst ζ
-    simp only [freeExchangeGrandPartitionSeries, if_pos rfl]
+    simp only [freeExchangeGrandPartitionSeries]
     calc
       PowerSeries.logOf
           (∏ i : Mode,
