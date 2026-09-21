@@ -3,6 +3,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
+import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
 set_option linter.style.header false
 
@@ -129,31 +130,14 @@ theorem inPlanePauliVertexCLM_injective :
           Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).symm A)
       hoperator
     simpa [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul] using hmatrix'
-  let pauliCoefficients : (Fin 2 → ℂ) → InternalSpace.PauliAxis → ℂ :=
-    fun coefficients axis =>
-      match axis with
-      | .x => coefficients 0
-      | .y => coefficients 1
-      | .z => 0
-  have hrepresentation (coefficients : Fin 2 → ℂ) :
-      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
-        InternalSpace.pauliCombination (pauliCoefficients coefficients) := by
-    simp [pauliCoefficients, InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY]
-  rw [hrepresentation left, hrepresentation right] at hmatrix
+  have hxy : LinearIndependent ℂ ![sigmaX, sigmaY] := by
+    simpa [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] using
+      directionPauli_linearIndependent
+  have hcoeff := hxy.eq_of_pair hmatrix
   funext direction
   fin_cases direction
-  · have htrace := congrArg
-      (fun M : Matrix2 => Matrix.trace (InternalSpace.pauliBasis .x * M)) hmatrix
-    rw [InternalSpace.trace_pauliBasis_mul_pauliCombination,
-      InternalSpace.trace_pauliBasis_mul_pauliCombination] at htrace
-    apply mul_left_cancel₀ (by norm_num : (2 : ℂ) ≠ 0)
-    simpa [pauliCoefficients] using htrace
-  · have htrace := congrArg
-      (fun M : Matrix2 => Matrix.trace (InternalSpace.pauliBasis .y * M)) hmatrix
-    rw [InternalSpace.trace_pauliBasis_mul_pauliCombination,
-      InternalSpace.trace_pauliBasis_mul_pauliCombination] at htrace
-    apply mul_left_cancel₀ (by norm_num : (2 : ℂ) ≠ 0)
-    simpa [pauliCoefficients] using htrace
+  · exact hcoeff.1
+  · exact hcoeff.2
 
 /-- Physical in-plane current vertex with direction-indexed coefficients. -/
 noncomputable def inPlaneCurrentOperator
