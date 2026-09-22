@@ -110,22 +110,22 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     {leg : TwoPointLeg S // d.unflattenedLegInComponent B leg} ≃
-      ↥(TwoPointDiagram.interactionSector (B : Finset (TwoPointVertex S))) × Fin 4 where
+      ↥(interactionSector (B : Finset (TwoPointVertex S))) × Fin 4 where
   toFun leg := by
     rcases leg with ⟨leg, hleg⟩
     cases leg with
     | inl e => exact False.elim (hVac ⟨e, hleg⟩)
     | inr p =>
         exact (⟨p.1.1,
-          (TwoPointDiagram.mem_interactionSector_subtype
+          (mem_interactionSector_subtype
             (B : Finset (TwoPointVertex S)) p.1).2 hleg⟩, p.2)
   invFun p :=
     let v : ↥S :=
-      ⟨p.1.1, TwoPointDiagram.interactionSector_subset
+      ⟨p.1.1, interactionSector_subset
         (B : Finset (TwoPointVertex S)) p.1.2⟩
     ⟨Sum.inr (v, p.2), by
       change (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S))
-      exact (TwoPointDiagram.mem_interactionSector_subtype
+      exact (mem_interactionSector_subtype
         (B : Finset (TwoPointVertex S)) v).1 p.1.2⟩
   left_inv leg := by
     rcases leg with ⟨leg, hleg⟩
@@ -146,18 +146,18 @@ noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg} ≃
-      Fin (2 * (2 * (TwoPointDiagram.interactionSector
+      Fin (2 * (2 * (interactionSector
         (B : Finset (TwoPointVertex S))).card)) :=
   ((twoPointLegEquiv S).subtypeEquiv fun leg => d.legInComponent_iff_unflattened B leg).trans
     ((d.vacuumLegDataEquiv B hVac).trans
-      (quarticLegEquiv (TwoPointDiagram.interactionSector
+      (quarticLegEquiv (interactionSector
         (B : Finset (TwoPointVertex S)))).symm)
 
 /-- The perfect pairing induced on a vacuum component. -/
 noncomputable def TwoPointDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
-    Pairing (2 * (TwoPointDiagram.interactionSector
+    Pairing (2 * (interactionSector
       (B : Finset (TwoPointVertex S))).card) :=
   d.pairing.restrictAlongEquiv (d.legInComponent B)
     (fun leg => d.legInComponent_partner_iff B leg) (d.vacuumBlockLegEquiv B hVac)
@@ -167,9 +167,9 @@ noncomputable def TwoPointDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     QuarticDiagram InternalLabel N
-      (TwoPointDiagram.interactionSector (B : Finset (TwoPointVertex S))) where
+      (interactionSector (B : Finset (TwoPointVertex S))) where
   vertexLabel v :=
-    d.vertexLabel ⟨v.1, TwoPointDiagram.interactionSector_subset
+    d.vertexLabel ⟨v.1, interactionSector_subset
       (B : Finset (TwoPointVertex S)) v.2⟩
   pairing := d.restrictedVacuumPairing B hVac
 
