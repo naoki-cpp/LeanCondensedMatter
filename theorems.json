@@ -20997,6 +20997,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) (S : Finset α)\n  (n : ℕ), Polynomial.eval (↑n) (Finpartition.replicaPolynomial κ S) = ∑ π, ∑ x, Finpartition.partitionProduct κ π",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.replicaPolynomial_eval_nat_eq_sum_labelings",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": "Evaluating the replica polynomial at a natural replica number is the sum over independent\nreplica labelings of the blocks of every partition. Each labeling carries the partition's block\nweight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {a : Finset α} (σ : Finpartition a)\n  (Q : (B : Finset α) → B ∈ σ.parts → Finpartition B) {B : Finset α} (hB : B ∈ σ.parts), (σ.bind Q).restrict ⋯ = Q B hB",
     "standardAxioms": [
