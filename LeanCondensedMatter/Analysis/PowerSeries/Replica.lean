@@ -112,10 +112,7 @@ private theorem coeff_one_descPochhammer_succ (k : ℕ) :
   | zero => simp
   | succ k ih =>
       rw [descPochhammer_succ_right]
-      change
-        (descPochhammer R (k + 1) *
-            (Polynomial.X - Polynomial.C (k + 1 : R))).coeff 1 =
-          (-1 : R) ^ (k + 1) * ((k + 1).factorial : R)
+      rw [show (k + 1 : Polynomial R) = Polynomial.C (k + 1 : R) by simp]
       rw [show 1 = 0 + 1 by rfl, Polynomial.coeff_mul_X_sub_C]
       rw [Polynomial.coeff_zero_eq_eval_zero,
         descPochhammer_ne_zero_eval_zero (R := R) (Nat.succ_ne_zero k), ih]
@@ -126,12 +123,14 @@ private theorem inv_factorial_mul_coeff_one_descPochhammer [CharZero R] (k : ℕ
     (k.factorial : R)⁻¹ * (descPochhammer R k).coeff 1 =
       coeff k (log R) := by
   cases k with
-  | zero => simp
+  | zero => simp [Polynomial.coeff_one]
   | succ k =>
       rw [coeff_one_descPochhammer_succ, coeff_log]
       simp only [Nat.succ_ne_zero, if_false]
       simp [Nat.factorial_succ, pow_succ, div_eq_mul_inv]
-      ring
+      have hkfac : (k.factorial : R) ≠ 0 :=
+        Nat.cast_ne_zero.mpr k.factorial_ne_zero
+      rw [mul_inv_cancel₀ hkfac, one_mul]
 
 /-- The coefficient linear in the formal replica count is the factorial-normalized coefficient
 of the formal logarithm. This is the algebraic replica identity, with no analytic continuation in
@@ -150,13 +149,13 @@ theorem replicaCoeffPolynomial_coeff_one [CharZero R]
     rw [finsum_eq_sum_of_support_subset (s := Finset.range (m + 1))]
     · simp only [smul_eq_mul]
     · intro k hk
-      simp only [Function.mem_support] at hk
-      simp only [Finset.mem_range]
+      change coeff k (log R) • coeff m (U ^ k) ≠ 0 at hk
+      apply Finset.mem_range.mpr
       by_contra hkm
       have hmk : m < k := Nat.succ_le_iff.mp (Nat.le_of_not_gt hkm)
       have hzero : coeff m (U ^ k) = 0 := by
         simpa [U] using coeff_sub_one_pow_eq_zero_of_lt hZ hmk
-      simp [hzero] at hk
+      exact hk (by simp [hzero])
   rw [replicaCoeffPolynomial, Polynomial.finsetSum_coeff, hLog, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro k hk
