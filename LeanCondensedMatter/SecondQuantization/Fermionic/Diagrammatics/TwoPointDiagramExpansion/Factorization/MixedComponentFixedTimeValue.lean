@@ -32,11 +32,11 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (g : QuarticVertexLabel Mode → ℂ)
     (B : d.1.componentPartition.parts) : ℂ :=
-  ∏ v : ↥(Common.TwoPointDiagram.interactionPart
+  ∏ v : ↥(Common.TwoPointDiagram.interactionSector
       (B : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n))))),
     g (d.1.vertexLabel
-      ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
+      ⟨v.1, Common.TwoPointDiagram.interactionSector_subset
         (B : Finset (Common.TwoPointVertex
           (Finset.univ : Finset (Fin n)))) v.2⟩)
 
@@ -91,11 +91,11 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
           (Equiv.prod_comp e
             (fun v : ↥(Finset.univ : Finset (Fin n)) => g (d.1.vertexLabel v)))
       _ = ∏ B : d.1.componentPartition.parts,
-          ∏ v : ↥(Common.TwoPointDiagram.interactionPart
+          ∏ v : ↥(Common.TwoPointDiagram.interactionSector
             (B : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))),
             g (d.1.vertexLabel
-              ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
+              ⟨v.1, Common.TwoPointDiagram.interactionSector_subset
                 (B : Finset (Common.TwoPointVertex
                   (Finset.univ : Finset (Fin n)))) v.2⟩) :=
         d.1.prod_vertexLabel_eq_prod_componentInteractionParts g
