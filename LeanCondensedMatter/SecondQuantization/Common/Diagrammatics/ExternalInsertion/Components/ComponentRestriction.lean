@@ -353,7 +353,10 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_p
       rfl
 
 
-private theorem ExternalInsertionDiagram.componentDiagramLeg_external
+/-- On an external slot, the component leg embedding is the ambient external slot selected by
+the component's increasing external-sector order. -/
+@[simp]
+theorem ExternalInsertionDiagram.componentDiagramLeg_external
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) (e : Fin (2 * d.externalPairCount B)) :
@@ -369,7 +372,10 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_external
     ExternalInsertionDiagram.componentLegDataEquiv,
     externalInsertionExternalLeg]
 
-private theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
+/-- On an interaction slot, the component leg embedding is the corresponding ambient interaction
+vertex and local quartic leg. -/
+@[simp]
+theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
