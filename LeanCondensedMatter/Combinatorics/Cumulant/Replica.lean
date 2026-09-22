@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
