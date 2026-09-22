@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
 import LeanCondensedMatter.Combinatorics.Cumulant.Replica
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import Mathlib.RingTheory.PowerSeries.Derivative
 import Mathlib.Tactic.FieldSimp
@@ -233,5 +234,29 @@ theorem replicaCoeffPolynomial_eq_replicaPolynomial
               Finpartition.partitionProduct κ ρ :=
         Finpartition.sum_partitionProduct_momentFromCumulant_partsCard_eq κ s k
   rw [hcoeff]
+
+
+/-- Replica-method form of the generic formal linked-cluster theorem.  If the
+factorial-normalized coefficients of a unit-constant formal power series are the object moments of
+a multiplicative connected decomposition, then the factorial-normalized formal-log coefficient is
+the connected contribution.  The proof factors through the equality of the two replica
+polynomials, not through cumulant inversion. -/
+theorem factorial_mul_coeff_logOf_eq_connectedContribution_replica
+    {Z : PowerSeries R} (hZ : constantCoeff Z = 1)
+    {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
+    (hMoment : ∀ T : Finset α,
+      (T.card.factorial : R) * coeff T.card Z = W.objectMoment T)
+    {s : Finset α} (hs : s ≠ ∅) :
+    (s.card.factorial : R) * coeff s.card (logOf Z) =
+      W.connectedContribution s := by
+  have hpoly := congrArg (fun p : Polynomial R => p.coeff 1)
+    (replicaCoeffPolynomial_eq_replicaPolynomial hZ W.connectedContribution s (fun T => by
+      calc
+        (T.card.factorial : R) * coeff T.card Z = W.objectMoment T := hMoment T
+        _ = Finpartition.momentFromCumulant W.connectedContribution T :=
+          W.objectMoment_eq_momentFromCumulant T))
+  rw [PowerSeries.replicaCoeffPolynomial_coeff_one hZ s.card,
+    Finpartition.replicaPolynomial_coeff_one W.connectedContribution hs] at hpoly
+  exact hpoly
 
 end Combinatorics
