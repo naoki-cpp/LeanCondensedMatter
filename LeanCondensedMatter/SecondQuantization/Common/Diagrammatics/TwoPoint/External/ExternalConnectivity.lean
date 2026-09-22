@@ -28,20 +28,6 @@ noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
   ⟨d.vertexGraph.componentBlock (Sum.inl 0),
     d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0)⟩
 
-/-- External connectedness is equivalent to absence of vacuum parts together with equality of the
-two external component blocks. -/
-theorem TwoPointDiagram.isExternallyConnected_iff {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.IsExternallyConnected ↔
-      vacuumComponentParts d.vertexGraph = ∅ ∧
-        d.vertexGraph.componentBlock (Sum.inl (0 : Fin 2)) =
-          d.vertexGraph.componentBlock (Sum.inl (1 : Fin 2)) := by
-  rw [TwoPointDiagram.IsExternallyConnected,
-    hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty]
-  apply and_congr Iff.rfl
-  exact (d.vertexGraph.componentBlock_eq_iff_reachable
-    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).symm
-
 /-- If the two external vertices were disconnected, external vertex `1` would not lie in the
 component of external vertex `0`. -/
 private theorem TwoPointDiagram.externalOne_not_mem_externalComponentPart {S : Finset (Fin N)}
