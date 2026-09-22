@@ -99,7 +99,13 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
       by_cases hlt : blockOrder B < blockOrder C
       · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
         have hz := hpairCast B C hBC
+        have hselBC : selected B C = inv B C := by
+          simp only [selected, hlt, if_pos]
+        have hselCB : selected C B = 0 := by
+          simp only [selected, hnlt, if_neg]
         simp only [Prod.swap_prod_mk]
+        rw [hselBC, hselCB]
+        simp only [Nat.cast_zero, sub_zero]
         calc
           (cross B C : ZMod 2) - (inv B C : ZMod 2) + (cross C B : ZMod 2) =
               ((cross B C : ZMod 2) + (cross C B : ZMod 2)) - (inv B C : ZMod 2) := by
@@ -114,7 +120,13 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
           · exact absurd h hneOrder
           · exact h
         have hz := hpairCast C B hBC.symm
+        have hselBC : selected B C = 0 := by
+          simp only [selected, hlt, if_neg]
+        have hselCB : selected C B = inv C B := by
+          simp only [selected, hrev, if_pos]
         simp only [Prod.swap_prod_mk]
+        rw [hselBC, hselCB]
+        simp only [Nat.cast_zero, sub_zero]
         calc
           (cross B C : ZMod 2) + ((cross C B : ZMod 2) - (inv C B : ZMod 2)) =
               ((cross C B : ZMod 2) + (cross B C : ZMod 2)) - (inv C B : ZMod 2) := by
