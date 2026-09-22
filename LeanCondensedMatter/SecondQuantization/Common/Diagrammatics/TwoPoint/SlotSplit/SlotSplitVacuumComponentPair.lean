@@ -51,14 +51,14 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   change B = D
   let w : ↥(Finset.univ : Finset (Fin n)) := ⟨v.1, Finset.mem_univ _⟩
-  apply d.interactionPart_component_unique w B D
-  · apply (TwoPointDiagram.mem_interactionPart_subtype
+  apply d.interactionSector_component_unique w B D
+  · apply (mem_interactionSector_subtype
       (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) w).2
     change slotSplitVacuumVertex v ∈ d.vertexGraph.componentBlock (slotSplitVacuumVertex v)
     exact d.vertexGraph.self_mem_componentBlock (slotSplitVacuumVertex v)
   · rw [show D = (slotSplitVacuumComponentPart
         (Finset.subset_univ T) ext vac C).1 by rfl,
-      interactionPart_slotSplitVacuumComponentPart]
+      interactionSector_slotSplitVacuumComponentPart]
     change (v.1 : Fin n) ∈ (C : Finset (Fin n))
     change (v.1 : Fin n) ∈ vac.componentBlock v
     unfold QuarticDiagram.componentBlock
@@ -114,9 +114,9 @@ private theorem TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
       simpa using
         ((vac.restrictComponent C.2).pairingInOrder
           (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T) C)).card_normalizedPair
-    _ = 2 * (TwoPointDiagram.interactionPart
+    _ = 2 * (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
-      rw [interactionPart_slotSplitVacuumComponentPart]
+      rw [interactionSector_slotSplitVacuumComponentPart]
     _ = Fintype.card (d.MixedComponentPair τ τ' σ B.1) := by
       symm
       exact d.card_mixedVacuumComponentPair τ τ' σ B

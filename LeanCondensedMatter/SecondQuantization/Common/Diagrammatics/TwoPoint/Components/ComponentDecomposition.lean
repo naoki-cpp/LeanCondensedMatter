@@ -25,27 +25,27 @@ components. -/
 noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     ↥S ≃ Σ B : d.componentPartition.parts,
-      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) :=
+      ↥(interactionSector (B : Finset (TwoPointVertex S))) :=
   d.componentPartition.equivSigmaSubfinsets S
     (fun v => (Sum.inr v : TwoPointVertex S))
     (fun _ => Finset.mem_univ _)
-    (fun B => TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S)))
-    (fun B => TwoPointDiagram.interactionPart_subset (B : Finset (TwoPointVertex S)))
-    (fun B v => TwoPointDiagram.mem_interactionPart_subtype
+    (fun B => interactionSector (B : Finset (TwoPointVertex S)))
+    (fun B => interactionSector_subset (B : Finset (TwoPointVertex S)))
+    (fun B v => mem_interactionSector_subtype
       (B : Finset (TwoPointVertex S)) v)
 
 @[simp]
 theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (x : Σ B : d.componentPartition.parts,
-      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S)))) :
+      ↥(interactionSector (B : Finset (TwoPointVertex S)))) :
     ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
   rfl
 
 /-- The interaction slots carried by the canonical external component. -/
 noncomputable def TwoPointDiagram.externalInteractionPart
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Finset (Fin N) :=
-  TwoPointDiagram.interactionPart (d.externalComponent 0)
+  interactionSector (d.externalComponent 0)
 
 /-- A component part is vacuum exactly when it differs from the canonical external part. -/
 @[simp]
@@ -94,12 +94,12 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
   rw [hparts, Finset.prod_insert hExternal]
 
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
-theorem TwoPointDiagram.interactionPart_component_unique
+theorem TwoPointDiagram.interactionSector_component_unique
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (v : ↥S) (B C : d.componentPartition.parts)
-    (hvB : (v : Fin N) ∈ TwoPointDiagram.interactionPart
+    (hvB : (v : Fin N) ∈ interactionSector
       (B : Finset (TwoPointVertex S)))
-    (hvC : (v : Fin N) ∈ TwoPointDiagram.interactionPart
+    (hvC : (v : Fin N) ∈ interactionSector
       (C : Finset (TwoPointVertex S))) :
     B = C := by
   apply Subtype.ext
@@ -109,11 +109,11 @@ theorem TwoPointDiagram.interactionPart_component_unique
     simpa only [TwoPointDiagram.componentPartition] using C.2
   have hB : d.vertexGraph.componentBlock (Sum.inr v) = (B : Finset (TwoPointVertex S)) :=
     (d.vertexGraph.componentBlock_eq_iff_mem hBgraph (Sum.inr v)).2
-      ((TwoPointDiagram.mem_interactionPart_subtype
+      ((mem_interactionSector_subtype
         (B : Finset (TwoPointVertex S)) v).1 hvB)
   have hC : d.vertexGraph.componentBlock (Sum.inr v) = (C : Finset (TwoPointVertex S)) :=
     (d.vertexGraph.componentBlock_eq_iff_mem hCgraph (Sum.inr v)).2
-      ((TwoPointDiagram.mem_interactionPart_subtype
+      ((mem_interactionSector_subtype
         (C : Finset (TwoPointVertex S)) v).1 hvC)
   exact hB.symm.trans hC
 
