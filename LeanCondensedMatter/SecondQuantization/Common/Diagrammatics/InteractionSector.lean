@@ -19,6 +19,7 @@ namespace Common
 
 variable {External Vertex : Type*}
 
+open Classical in
 /-- Ambient interaction vertices represented in the right summand of `B`. -/
 noncomputable def interactionSector {S : Finset Vertex}
     (B : Finset (External ⊕ ↥S)) : Finset Vertex :=
