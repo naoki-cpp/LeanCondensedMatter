@@ -146,7 +146,7 @@ private theorem slotSplitVacuumComponentPart_surjective
           exact vac.componentPartition.part_mem.2 v.2⟩
       refine ⟨C, ?_⟩
       apply Subtype.ext
-      apply interactionSector_component_unique
+      apply TwoPointDiagram.interactionSector_component_unique
         (d := TwoPointDiagram.ofSlotSplit h ext vac) w
       · rw [interactionSector_slotSplitVacuumComponentPart]
         change (w : Fin N) ∈ vac.componentPartition.part (v : Fin N)
