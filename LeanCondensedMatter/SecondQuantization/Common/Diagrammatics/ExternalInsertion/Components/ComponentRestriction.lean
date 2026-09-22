@@ -21,9 +21,9 @@ component, no external leg is present, so the same ambient component can also be
 as the four local legs of an ordinary quartic diagram.
 
 The construction is statistics-independent. Partner-invariant pairing restriction is owned by
-`Combinatorics.PerfectPairing.Restriction`; this module supplies the external-insertion component
-predicate, domain-specific leg reindexing, and the canonical family shuffle formed by all component
-leg embeddings.
+`Combinatorics.PerfectPairing.Restriction`, while external/vacuum component predicates are owned by
+the shared external-component layer. This module supplies domain-specific leg reindexing and the
+canonical family shuffle formed by all component leg embeddings.
 -/
 
 namespace SecondQuantization
