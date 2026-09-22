@@ -47,16 +47,19 @@ theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legI
       d.pairing.componentCrossingCount d.componentPairEquiv C B) % 2 =
       d.componentLegInversionCount B C % 2 := by
   rw [← d.pairing.componentGeometricCrossingCount_eq_oriented_add d.componentPairEquiv B C]
-  exact d.pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-    d.componentPairEquiv
-    (fun D => (d.restrictComponent D).pairing.pairEndpointEquiv)
-    (fun D p => d.componentDiagramLeg D p)
-    (fun D p k => by
-      fin_cases k <;>
-        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
-          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
-          d.componentPairEquiv_apply])
-    B C hBC
+  simpa [ExternalInsertionDiagram.componentLegInversionCount,
+    FamilySlotShuffleTo.blockInversionCount, hBC,
+    ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply] using
+    (d.pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      d.componentPairEquiv
+      (fun D => (d.restrictComponent D).pairing.pairEndpointEquiv)
+      (fun D p => d.componentDiagramLeg D p)
+      (fun D p k => by
+        fin_cases k <;>
+          simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
+            Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
+            d.componentPairEquiv_apply])
+      B C hBC)
 
 private theorem ExternalInsertionDiagram.componentCrossingCount_self
     {S : Finset (Fin N)}
