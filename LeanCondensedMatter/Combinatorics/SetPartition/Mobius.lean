@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
+import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import Mathlib.Combinatorics.Enumerative.IncidenceAlgebra
 
@@ -43,5 +43,30 @@ theorem mu_eq_prod_restrict {R : Type*} [CommRing R]
   change mu R (π.restrict (σ.le B.2)) (σ.restrict (σ.le B.2)) =
     mu R (π.restrict (σ.le B.2)) ⊤
   rw [restrict_self_part_eq_top σ B.2]
+
+/-- The Möbius function from a partition to the top depends only on its block set. -/
+theorem mu_to_top_eq_mu_bot_top_parts {R : Type*} [CommRing R] (π : Finpartition a) :
+    mu R π ⊤ = mu R (⊥ : Finpartition π.parts) ⊤ := by
+  classical
+  let e := coarseningsOrderIsoBlockPartitions π
+  let x : {σ : Finpartition a // π ≤ σ} := ⟨π, le_rfl⟩
+  let y : {σ : Finpartition a // π ≤ σ} := ⟨⊤, le_top⟩
+  have hex : e x = (⊥ : Finpartition π.parts) := by
+    apply le_antisymm
+    · have hxy : x ≤ e.symm (⊥ : Finpartition π.parts) := (e.symm ⊥).2
+      simpa using e.monotone hxy
+    · exact bot_le
+  have hey : e y = (⊤ : Finpartition π.parts) := by
+    apply le_antisymm
+    · exact le_top
+    · have hxy : e.symm (⊤ : Finpartition π.parts) ≤ y := by
+        change (e.symm (⊤ : Finpartition π.parts)).1 ≤ (⊤ : Finpartition a)
+        exact le_top
+      simpa using e.monotone hxy
+  have hiso := IncidenceAlgebra.mu_orderIso_apply (R := R) e x y
+  have hambient := IncidenceAlgebra.mu_subtype_ge_apply (R := R) x y
+  rw [hex, hey] at hiso
+  exact (hiso.trans hambient).symm
+
 
 end Finpartition
