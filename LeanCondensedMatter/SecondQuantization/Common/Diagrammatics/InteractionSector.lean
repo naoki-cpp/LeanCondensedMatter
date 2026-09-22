@@ -10,8 +10,8 @@ A diagram component is represented as a finite subset of a sum whose right summa
 ambient interaction vertices. This module extracts those interaction vertices back into the ambient
 finite vertex type.
 
-The sum-side filtering itself is provided by Mathlib's `Finset.toRight`; this module owns only the
-diagrammatic interpretation and the ambient-`Finset` reindexing used by common diagram families.
+This module owns the diagrammatic interpretation while keeping the filtered ambient-vertex normal
+form used by the existing component APIs.
 -/
 
 namespace SecondQuantization
@@ -22,7 +22,8 @@ variable {External Vertex : Type*}
 /-- Ambient interaction vertices represented in the right summand of `B`. -/
 noncomputable def interactionSector {S : Finset Vertex}
     (B : Finset (External ⊕ ↥S)) : Finset Vertex :=
-  B.toRight.map (Function.Embedding.subtype (fun v => v ∈ S))
+  S.filter fun v =>
+    ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : External ⊕ ↥S) ∈ B
 
 /-- Membership in the interaction sector is membership of the corresponding right-summand vertex. -/
 theorem mem_interactionSector {S : Finset Vertex}
@@ -30,13 +31,12 @@ theorem mem_interactionSector {S : Finset Vertex}
     v ∈ interactionSector B ↔
       ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : External ⊕ ↥S) ∈ B := by
   classical
+  unfold interactionSector
+  rw [Finset.mem_filter]
   constructor
-  · intro hv
-    rcases Finset.mem_map.1 hv with ⟨w, hw, rfl⟩
-    exact ⟨w.2, Finset.mem_toRight.1 hw⟩
-  · rintro ⟨hv, hB⟩
-    exact Finset.mem_map.2
-      ⟨⟨v, hv⟩, Finset.mem_toRight.2 hB, rfl⟩
+  · exact And.right
+  · intro h
+    exact ⟨h.choose, h⟩
 
 /-- Membership form for a vertex already carrying its ambient-membership proof. -/
 @[simp]
