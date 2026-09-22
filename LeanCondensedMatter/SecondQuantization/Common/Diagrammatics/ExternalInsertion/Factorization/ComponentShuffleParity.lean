@@ -238,7 +238,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
         change
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
-        simpa only [externalInsertionExternalLeg_val] using hltVal
+        exact hltVal
       rw [if_pos hleg, if_pos hlt]
     · have hltVal :
           ¬ (d.externalSectorOrderIso C f).1.val <
@@ -254,7 +254,7 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
         change
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val at h
-        simpa only [externalInsertionExternalLeg_val] using h
+        exact h
       rw [if_neg hleg, if_neg hlt]
   have hzero :
       (∑ q : ↥(interactionSector
