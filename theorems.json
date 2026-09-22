@@ -9894,6 +9894,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} (n : ℕ) (s : Finset α) (f g : α → α → ℕ),\n  (∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a b + f b a ≡ g a b + g b a [MOD n]) →\n    ∑ p ∈ s.offDiag, f p.1 p.2 ≡ ∑ p ∈ s.offDiag, g p.1 p.2 [MOD n]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "externalAxioms": [],
+    "docString": "Two off-diagonal sums are congruent modulo `n` when each unordered pair has the same\ncombined contribution modulo `n`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} (n : ℕ) (s : Finset α) (f : α → α → ℕ),\n  (∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a b + f b a ≡ 0 [MOD n]) → ∑ p ∈ s.offDiag, f p.1 p.2 ≡ 0 [MOD n]",
     "standardAxioms": [
       "Classical.choice",
@@ -9915,7 +9956,9 @@
     "dependents": [
       "Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -20982,6 +21025,43 @@
     "dependents": [],
     "dependencies": [
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {F : Type u_3} [inst : CommRing F] {α : Type u_4} [inst_1 : DecidableEq α] (κ : Finset α → F) (S : Finset α),\n  Finpartition.replicaPolynomial κ S =\n    ∑ π,\n      ∑ k ∈ Finset.range (π.parts.card + 1),\n        Polynomial.C (↑(π.parts.card.stirlingSecond k) * Finpartition.partitionProduct κ π) * descPochhammer F k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.replicaPolynomial_eq_sum_stirlingSecond_descPochhammer",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": "The replica polynomial in the descending-factorial basis.  The Stirling number of the second\nkind converts the monomial replica factor for a partition into the falling-factorial basis used by\nthe fixed-order power-series replica polynomial. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90118,7 +90198,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B C : ↥d.componentPartition.parts),\n  B ≠ C →\n    (d.pairing.componentCrossingCount d.componentPairEquiv B C +\n          d.pairing.componentCrossingCount d.componentPairEquiv C B) %\n        2 =\n      d.componentLegInversionCount B C % 2",
     "standardAxioms": [
       "Classical.choice",
@@ -90126,7 +90206,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90137,7 +90217,9 @@
     "docString": "For distinct components, the parity of the two oriented crossing counts is exactly the parity\nof the canonical ambient leg inversions between those components. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
       "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
@@ -90146,8 +90228,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90693,6 +90777,44 @@
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal",
       "SecondQuantization.Common.ExternalInsertionDiagram.mem_vacuumComponentParts"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.componentPartition.parts ≃ Fin (Fintype.card ↥d.componentPartition.parts)),\n  d.interComponentCrossingCount % 2 = d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
+    "externalAxioms": [],
+    "docString": "The residual inter-component crossing parity is the total block-inversion parity of the\ncanonical component-leg shuffle, relative to any explicit ordering of the connected components. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103715,87 +103837,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : Fintype Mode] (energy : Config → ℝ) (τ : ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  (SecondQuantization.Common.heisenbergEvolve energy τ)\n      (SecondQuantization.Common.quarticInteraction create annihilate g) =\n    ∑ q,\n      g q •\n        (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticVertexOperator create annihilate q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.heisenbergEvolve_quarticInteraction",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
-    "externalAxioms": [],
-    "docString": "Diagonal Heisenberg evolution distributes over the all-label finite-mode interaction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticInteraction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode))\n  (energy : Config → ℝ) (τ : ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n  (SecondQuantization.Common.heisenbergEvolve energy τ)\n      (SecondQuantization.Common.quarticInteractionOn support create annihilate g) =\n    ∑ q ∈ support,\n      g q •\n        (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticVertexOperator create annihilate q)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.heisenbergEvolve_quarticInteractionOn",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
-    "externalAxioms": [],
-    "docString": "Diagonal Heisenberg evolution distributes over a finitely supported quartic interaction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteraction"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticVertexOperator create annihilate q) =\n        Complex.exp (↑τ * ↑(SecondQuantization.Common.quarticVertexEnergyShift ε q)) •\n          SecondQuantization.Common.quarticVertexOperator create annihilate q",
     "standardAxioms": [
       "Classical.choice",
@@ -103803,10 +103845,10 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator",
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
@@ -103814,16 +103856,12 @@
     "docString": "A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130140,8 +130178,7 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
@@ -130156,10 +130193,9 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130231,8 +130267,7 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
@@ -130247,10 +130282,9 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_ne",
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130451,86 +130485,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ : ℝ),\n  SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticInteraction g) τ =\n    ∑ q,\n      g q • SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.interactionPicture_quarticInteraction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.QuarticInteraction",
-    "externalAxioms": [],
-    "docString": "The all-label quartic interaction evolves as the finite sum of its evolved vertices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticInteraction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (τ : ℝ),\n  SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q) τ =\n    Complex.exp (↑τ * (↑(ε q.create₁) + ↑(ε q.create₂) - ↑(ε q.annihilate₁) - ↑(ε q.annihilate₂))) •\n      SecondQuantization.Fermionic.quarticVertexOperator q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.QuarticInteraction",
-    "externalAxioms": [],
-    "docString": "A single quartic vertex is an eigenoperator of the free interaction-picture evolution with its\ntotal free-energy shift. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138870,6 +138824,86 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {F : Type u_3} [inst : CommRing F] (b : ℕ),\n  Polynomial.X ^ b = ∑ k ∈ Finset.range (b + 1), Polynomial.C ↑(b.stirlingSecond k) * descPochhammer F k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.replicaPolynomial_eq_sum_stirlingSecond_descPochhammer"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.descPochhammer_mul_X"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.replicaPolynomial_eq_sum_stirlingSecond_descPochhammer"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {F : Type u_3} [inst : CommRing F] (k : ℕ),\n  descPochhammer F k * Polynomial.X = Polynomial.C ↑k * descPochhammer F k + descPochhammer F (k + 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.descPochhammer_mul_X",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155021,7 +155055,6 @@
       "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Common.matrixCoeff_comp",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "SecondQuantization.Fermionic.interactionPicture_quarticInteraction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_fintype_sum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_neg_apply",
