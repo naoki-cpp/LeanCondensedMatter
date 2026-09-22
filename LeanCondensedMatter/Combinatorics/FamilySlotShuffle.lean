@@ -29,13 +29,16 @@ structure FamilySlotShuffleTo (size : ι → ℕ) (total : ℕ) where
   slotEquiv : (Σ i : ι, Fin (size i)) ≃ Fin total
   strictMono : ∀ i, StrictMono (fun j => slotEquiv ⟨i, j⟩)
 
-/-- Number of ambient-order inversions in which a slot of block `j` occurs before a slot of block
-`i`.  The orientation is explicit so consumers can choose the block order supplied by their own
-semantics rather than imposing an order on the family index type here. -/
+/-- Number of ambient-order inversions in which a slot of a distinct block `j` occurs
+before a slot of block `i`. The diagonal is zero, so this records only inter-block inversions.
+The orientation is explicit so consumers can choose the block order supplied by their own semantics
+rather than imposing an order on the family index type here. -/
 noncomputable def FamilySlotShuffleTo.blockInversionCount {size : ι → ℕ} {total : ℕ}
     (shuffle : FamilySlotShuffleTo size total) (i j : ι) : ℕ :=
-  ∑ p : Fin (size i), ∑ q : Fin (size j),
-    if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
+  if i = j then 0
+  else
+    ∑ p : Fin (size i), ∑ q : Fin (size j),
+      if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
 
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
