@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
-import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -7,8 +7,11 @@ set_option linter.style.header false
 # Explicit Möbius formula for finite set partitions
 
 The bottom-to-top Möbius coefficient of a nonempty partition lattice is
-`(-1)^(n - 1) * (n - 1)!`. Coarsening equivalence then gives the corresponding formula from an
-arbitrary partition to the top, and the existing restriction product gives every interval.
+`(-1)^(n - 1) * (n - 1)!`. The proof is finite and combinatorial: an atomic moment function is
+shown directly to be the moment transform of the factorial-sign block weight, and Möbius inversion
+then identifies that weight with the bottom-to-top coefficient. Coarsening equivalence gives the
+corresponding formula from an arbitrary partition to the top, and restriction factorization gives
+every interval.
 -/
 
 open scoped BigOperators
@@ -18,8 +21,17 @@ variable {α : Type*} [DecidableEq α]
 
 namespace Finpartition
 
-private def atomMoment (S : Finset α) : ℂ :=
-  if S.card ≤ 1 then 1 else 0
+private def atomMomentCard (n : ℕ) : ℤ :=
+  if n ≤ 1 then 1 else 0
+
+private def atomCumulantCard (n : ℕ) : ℤ :=
+  if n = 0 then 0 else (-1 : ℤ) ^ (n - 1) * (n - 1).factorial
+
+private def atomMoment (S : Finset α) : ℤ :=
+  atomMomentCard S.card
+
+private def atomCumulant (S : Finset α) : ℤ :=
+  atomCumulantCard S.card
 
 private theorem partitionProduct_atomMoment_bot (S : Finset α) :
     partitionProduct atomMoment (⊥ : Finpartition S) = 1 := by
@@ -29,7 +41,7 @@ private theorem partitionProduct_atomMoment_bot (S : Finset α) :
   intro B hB
   rw [mem_bot_iff] at hB
   obtain ⟨x, hx, rfl⟩ := hB
-  simp [atomMoment]
+  simp [atomMoment, atomMomentCard]
 
 private theorem partitionProduct_atomMoment_ne_bot {S : Finset α} (π : Finpartition S)
     (hπ : π ≠ ⊥) : partitionProduct atomMoment π = 0 := by
@@ -49,10 +61,10 @@ private theorem partitionProduct_atomMoment_ne_bot {S : Finset α} (π : Finpart
     exact hπ (le_antisymm hπbot bot_le)
   obtain ⟨B, hB, hlargeB⟩ := hlarge
   rw [partitionProduct]
-  exact Finset.prod_eq_zero hB (by simp [atomMoment, hlargeB])
+  exact Finset.prod_eq_zero hB (by simp [atomMoment, atomMomentCard, hlargeB])
 
 private theorem cumulantFromMoment_atomMoment_eq_mu (S : Finset α) :
-    cumulantFromMoment atomMoment S = mu ℂ (⊥ : Finpartition S) ⊤ := by
+    cumulantFromMoment atomMoment S = mu ℤ (⊥ : Finpartition S) ⊤ := by
   classical
   rw [cumulantFromMoment,
     Finset.sum_eq_single (⊥ : Finpartition S)
@@ -60,74 +72,76 @@ private theorem cumulantFromMoment_atomMoment_eq_mu (S : Finset α) :
       (fun h => absurd (Finset.mem_univ _) h),
     partitionProduct_atomMoment_bot, mul_one]
 
-private theorem factorial_coeff_one_add_X {β : Type*} (S : Finset β) :
-    (S.card.factorial : ℂ) *
-        PowerSeries.coeff S.card (1 + PowerSeries.X : PowerSeries ℂ) = atomMoment S := by
-  cases hcard : S.card with
-  | zero => simp [atomMoment, hcard]
-  | succ n =>
-    cases n with
-    | zero => simp [atomMoment, hcard]
-    | succ n => simp [atomMoment, hcard, PowerSeries.coeff_X]
-
-private theorem factorial_coeff_log_one_add_X (n : ℕ) (hn : n ≠ 0) :
-    (n.factorial : ℂ) *
-        PowerSeries.coeff n
-          (PowerSeries.logOf (1 + PowerSeries.X : PowerSeries ℂ)) =
-      (((-1 : ℤ) ^ (n - 1) * (n - 1).factorial : ℤ) : ℂ) := by
+private theorem atomCumulantCard_sum (n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (Nat.choose n k : ℤ) * atomCumulantCard (k + 1) * atomMomentCard (n - k)) =
+      atomMomentCard (n + 1) := by
   cases n with
-  | zero => exact (hn rfl).elim
-  | succ m =>
-    rw [PowerSeries.logOf_one_add_X]
-    have hderiv := congrArg (PowerSeries.coeff m)
-      (PowerSeries.deriv_log (A := ℂ))
-    simp only [PowerSeries.coeff_derivative, PowerSeries.coeff_mk] at hderiv
-    have hmap : algebraMap ℚ ℂ ((-1 : ℚ) ^ m) = (-1 : ℂ) ^ m := by simp
-    rw [hmap] at hderiv
-    simp only [Nat.succ_sub_one]
-    calc
-      ((m + 1).factorial : ℂ) * PowerSeries.coeff (m + 1) (PowerSeries.log ℂ) =
-          (m.factorial : ℂ) *
-            (PowerSeries.coeff (m + 1) (PowerSeries.log ℂ) * (m + 1 : ℂ)) := by
-              rw [Nat.factorial_succ]
-              push_cast
-              ring
-      _ = (m.factorial : ℂ) * (-1 : ℂ) ^ m := by rw [hderiv]
-      _ = (((-1 : ℤ) ^ m * m.factorial : ℤ) : ℂ) := by
-        push_cast
-        ring
+  | zero =>
+      simp [atomCumulantCard, atomMomentCard]
+  | succ n =>
+      rw [Finset.sum_range_succ, Finset.sum_range_succ]
+      have hzero :
+          (∑ k ∈ Finset.range n,
+            (Nat.choose (n + 1) k : ℤ) * atomCumulantCard (k + 1) *
+              atomMomentCard (n + 1 - k)) = 0 := by
+        apply Finset.sum_eq_zero
+        intro k hk
+        have hklt : k < n := Finset.mem_range.mp hk
+        have hnot : ¬n + 1 - k ≤ 1 := by omega
+        simp [atomMomentCard, hnot]
+      rw [hzero, zero_add]
+      simp [atomCumulantCard, atomMomentCard, Nat.factorial_succ, pow_succ]
+      ring
 
-private theorem mu_bot_top_complex {S : Finset α} (hS : S ≠ ∅) :
-    mu ℂ (⊥ : Finpartition S) ⊤ =
-      (((-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial : ℤ) : ℂ) := by
-  have hcard : S.card ≠ 0 :=
-    Finset.card_ne_zero.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
-  have hbridge :=
-    Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment
-      (Z := (1 + PowerSeries.X : PowerSeries ℂ)) (by simp) hS
-  have hmom :
-      (fun T : Finset α =>
-        (T.card.factorial : ℂ) *
-          PowerSeries.coeff T.card (1 + PowerSeries.X : PowerSeries ℂ)) = atomMoment := by
-    funext T
-    exact factorial_coeff_one_add_X T
-  rw [hmom, factorial_coeff_log_one_add_X S.card hcard,
-    cumulantFromMoment_atomMoment_eq_mu] at hbridge
-  exact hbridge.symm
-
-private theorem intCast_mu_apply {β : Type*} [PartialOrder β] [LocallyFiniteOrder β]
-    [DecidableEq β] (x y : β) :
-    ((mu ℤ x y : ℤ) : ℂ) = mu ℂ x y := by
-  simpa using map_mu_apply (Int.castRingHom ℂ) x y
+private theorem momentFromAtomCumulant_eq_atomMoment (S : Finset α) :
+    momentFromCumulant atomCumulant S = atomMoment S := by
+  classical
+  refine Finset.strongInductionOn S ?_
+  intro S ih
+  by_cases hS : S = ∅
+  · subst S
+    simp [atomMoment, atomMomentCard]
+  · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hS
+    rw [momentFromCumulant_eq_sum_blockContaining atomCumulant ha]
+    have hsmall : ∀ B : BlockContaining S a,
+        momentFromCumulant atomCumulant (S \ B.1) = atomMoment (S \ B.1) := by
+      intro B
+      exact ih (S \ B.1) (Finset.sdiff_ssubset B.2.1 ⟨a, B.2.2⟩)
+    simp_rw [hsmall]
+    have hcardDiff : ∀ B : BlockContaining S a,
+        (S \ B.1).card = S.card - B.1.card := by
+      intro B
+      rw [Finset.card_sdiff, Finset.inter_eq_left.mpr B.2.1]
+    simp_rw [atomCumulant, atomMoment, hcardDiff]
+    rw [sum_blockContaining_card S a ha
+      (fun j => atomCumulantCard j * atomMomentCard (S.card - j))]
+    let n := S.card - 1
+    have hcard : S.card = n + 1 := by
+      dsimp [n]
+      have hpos : 0 < S.card := Finset.card_pos.mpr ⟨a, ha⟩
+      omega
+    rw [hcard]
+    simpa [mul_assoc, Nat.add_sub_add_right] using atomCumulantCard_sum n
 
 /-- For a nonempty finite set, the Möbius coefficient from the discrete partition to the
 indiscrete partition is `(-1)^(n - 1) (n - 1)!`. -/
 theorem mu_bot_top_eq_factorial {S : Finset α} (hS : S ≠ ∅) :
     mu ℤ (⊥ : Finpartition S) ⊤ =
       (-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial := by
-  apply Int.cast_injective (α := ℂ)
-  rw [intCast_mu_apply]
-  exact mu_bot_top_complex hS
+  have hmoment : momentFromCumulant (atomCumulant : Finset α → ℤ) =
+      (atomMoment : Finset α → ℤ) := by
+    funext T
+    exact momentFromAtomCumulant_eq_atomMoment T
+  have hcard : S.card ≠ 0 :=
+    Finset.card_ne_zero.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
+  calc
+    mu ℤ (⊥ : Finpartition S) ⊤ = cumulantFromMoment atomMoment S :=
+      (cumulantFromMoment_atomMoment_eq_mu S).symm
+    _ = cumulantFromMoment (momentFromCumulant atomCumulant) S := by rw [hmoment]
+    _ = atomCumulant S := cumulantFromMoment_momentFromCumulant atomCumulant hS
+    _ = (-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial := by
+      simp [atomCumulant, atomCumulantCard, hcard]
 
 /-- Total bottom-to-top formula, including the empty partition lattice. -/
 theorem mu_bot_top_eq_factorial_ite (S : Finset α) :
