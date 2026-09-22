@@ -133,8 +133,9 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
     Fintype.card {P : Finpartition s // P.parts.card = k} =
       Nat.stirlingSecond s.card k := by
   classical
+  revert k
   refine Finset.strongInductionOn s ?_
-  intro s ih
+  intro s ih k
   by_cases hs : s = ∅
   · subst s
     cases k with
