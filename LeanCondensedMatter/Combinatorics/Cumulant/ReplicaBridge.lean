@@ -73,6 +73,7 @@ private theorem egfBlockCoeff_succ_succ
       (n.factorial : R) =
         (n.choose j : R) * (j.factorial : R) * ((n - j).factorial : R) := by
     norm_cast
+    exact hchoose.symm
   have hkfac : (k.factorial : R) ≠ 0 :=
     Nat.cast_ne_zero.mpr k.factorial_ne_zero
   rw [Nat.factorial_succ]
