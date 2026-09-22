@@ -190,4 +190,48 @@ theorem replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum
           (fun T : Finset α => (T.card.factorial : R) * coeff T.card Z) π.1 := by
   exact egfBlockCoeff_eq_fixedBlockMomentSum hZ s k
 
+
+/-- Under the forward finite-set moment relation, the fixed-order power-series replica polynomial
+is exactly the finite-set replica polynomial.  This is the algebraic bridge between the two replica
+constructions and uses no moment-cumulant inversion. -/
+theorem replicaCoeffPolynomial_eq_replicaPolynomial
+    {Z : PowerSeries R} (hZ : constantCoeff Z = 1)
+    (κ : Finset α → R) (s : Finset α)
+    (hMoment : ∀ T : Finset α,
+      (T.card.factorial : R) * coeff T.card Z =
+        Finpartition.momentFromCumulant κ T) :
+    PowerSeries.replicaCoeffPolynomial Z s.card =
+      Finpartition.replicaPolynomial κ s := by
+  classical
+  rw [PowerSeries.replicaCoeffPolynomial,
+    Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hmfun :
+      (fun T : Finset α => (T.card.factorial : R) * coeff T.card Z) =
+        Finpartition.momentFromCumulant κ := by
+    funext T
+    exact hMoment T
+  have hcoeff :
+      (((s.card.factorial : R) / (k.factorial : R)) *
+          coeff s.card ((Z - 1) ^ k)) =
+        ∑ ρ : Finpartition s,
+          (Nat.stirlingSecond ρ.parts.card k : R) *
+            Finpartition.partitionProduct κ ρ := by
+    calc
+      (((s.card.factorial : R) / (k.factorial : R)) *
+          coeff s.card ((Z - 1) ^ k)) =
+          ∑ π : {π : Finpartition s // π.parts.card = k},
+            Finpartition.partitionProduct
+              (fun T : Finset α => (T.card.factorial : R) * coeff T.card Z) π.1 :=
+        replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum hZ s k
+      _ = ∑ π : {π : Finpartition s // π.parts.card = k},
+            Finpartition.partitionProduct (Finpartition.momentFromCumulant κ) π.1 := by
+              rw [hmfun]
+      _ = ∑ ρ : Finpartition s,
+            (Nat.stirlingSecond ρ.parts.card k : R) *
+              Finpartition.partitionProduct κ ρ :=
+        Finpartition.sum_partitionProduct_momentFromCumulant_partsCard_eq κ s k
+  rw [hcoeff]
+
 end Combinatorics
