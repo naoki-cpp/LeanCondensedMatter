@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Data.Fintype.BigOperators
