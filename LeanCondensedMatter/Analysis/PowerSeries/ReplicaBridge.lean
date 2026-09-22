@@ -28,7 +28,7 @@ private noncomputable def egfBlockCoeff (Z : PowerSeries R) (n k : ℕ) : R :=
   ((n.factorial : R) / (k.factorial : R)) * coeff n ((Z - 1) ^ k)
 
 private theorem egfBlockCoeff_succ_succ
-    {Z : PowerSeries R} (hZ : constantCoeff Z = 1) (n k : ℕ) :
+    (Z : PowerSeries R) (n k : ℕ) :
     egfBlockCoeff Z (n + 1) (k + 1) =
       ∑ j ∈ Finset.range (n + 1),
         (n.choose j : R) *
@@ -38,7 +38,14 @@ private theorem egfBlockCoeff_succ_succ
   have hderiv := congrArg (coeff n) (PowerSeries.derivative_pow U (k + 1))
   rw [PowerSeries.coeff_derivative, Nat.add_sub_cancel] at hderiv
   rw [PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk] at hderiv
-  simp_rw [PowerSeries.coeff_natCast_mul, PowerSeries.coeff_derivative] at hderiv
+  have hnatCoeff : ∀ i : ℕ,
+      coeff i (((k + 1 : ℕ) : PowerSeries R) * U ^ k) =
+        (k + 1 : R) * coeff i (U ^ k) := by
+    intro i
+    change coeff i (PowerSeries.C (k + 1 : R) * U ^ k) =
+      (k + 1 : R) * coeff i (U ^ k)
+    rw [PowerSeries.coeff_C_mul]
+  simp_rw [hnatCoeff, PowerSeries.coeff_derivative] at hderiv
   have hmain :
       egfBlockCoeff Z (n + 1) (k + 1) =
         ((n.factorial : R) / (k.factorial : R)) *
@@ -121,7 +128,9 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
             apply Subtype.ext
             exact Subsingleton.elim _ _
         }
-        simp [egfBlockCoeff, Finpartition.partitionProduct, hZ]
+        have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by
+          simp
+        simp [egfBlockCoeff, Finpartition.partitionProduct, hparts]
     | succ k =>
         letI : IsEmpty {π : Finpartition (∅ : Finset α) // π.parts.card = k + 1} :=
           ⟨fun π => by
@@ -152,7 +161,19 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
               egfBlockCoeff Z (s \ B.1).card k := by
           intro B
           exact (ih (s \ B.1) (Finset.sdiff_ssubset B.2.1 ⟨a, B.2.2⟩) k).symm
-        simp_rw [hsmall]
+        have hcollapse :
+            (∑ B : Finpartition.BlockContaining s a,
+              ∑ Q : {Q : Finpartition (s \ B.1) // Q.parts.card = k},
+                ((B.1.card.factorial : R) * coeff B.1.card Z) *
+                  Finpartition.partitionProduct
+                    (fun T : Finset α => (T.card.factorial : R) * coeff T.card Z) Q.1) =
+              ∑ B : Finpartition.BlockContaining s a,
+                ((B.1.card.factorial : R) * coeff B.1.card Z) *
+                  egfBlockCoeff Z (s \ B.1).card k := by
+          apply Fintype.sum_congr
+          intro B
+          rw [← hsmall B, Finset.mul_sum]
+        rw [hcollapse]
         calc
           (∑ B : Finpartition.BlockContaining s a,
               ((B.1.card.factorial : R) * coeff B.1.card Z) *
@@ -176,7 +197,7 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
                   omega
                 rw [hcard]
                 simpa [Nat.add_sub_add_right, mul_assoc] using
-                  (egfBlockCoeff_succ_succ (R := R) hZ (s.card - 1) k).symm
+                  (egfBlockCoeff_succ_succ (R := R) Z (s.card - 1) k).symm
 
 /-- The falling-factorial coefficient in the power-series replica polynomial is the sum of
 products of factorial-normalized moments over set partitions with the corresponding number of
