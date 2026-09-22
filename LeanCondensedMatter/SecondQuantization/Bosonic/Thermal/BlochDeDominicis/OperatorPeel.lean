@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel
+import LeanCondensedMatter.Analysis.Operator.ZetaCommutator
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false
@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Bosonic free-thermal operator peel
 
-Instantiates the Common scalar-exchange peel identity for free bosonic creation/annihilation fields.
+Instantiates the generic linear-map exchange peel identity for free bosonic creation/annihilation fields.
 -/
 
 namespace SecondQuantization
@@ -70,7 +70,7 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
 /-- Bare bosonic CCR peel sum, before Gibbs/KMS rotation. -/
 noncomputable def FreeThermalField.operatorPeelSum (C : FreeThermalField Mode)
     (fields : List (FreeThermalField Mode)) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Common.BlochDeDominicis.operatorPeelSum FreeThermalField.operator
+  LinearMap.operatorPeelSum FreeThermalField.operator
     FreeThermalField.exchangeValue 1 C fields
 
 /-- Repeated CCR exchange of the first free thermal field through an arbitrary finite tail. -/
@@ -79,7 +79,7 @@ theorem FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum
     (C.operator).comp (FreeThermalField.orderedProduct fields) =
       C.operatorPeelSum fields +
         (FreeThermalField.orderedProduct fields).comp C.operator := by
-  have h := Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum
+  have h := LinearMap.operator_comp_prod_eq_operatorPeelSum
     FreeThermalField.operator FreeThermalField.exchangeValue (1 : ℂ)
     (fun C D => by
       simpa using FreeThermalField.operator_comp_operator_eq_exchangeValue C D)
