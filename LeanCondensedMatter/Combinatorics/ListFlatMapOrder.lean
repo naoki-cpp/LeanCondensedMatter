@@ -1,5 +1,5 @@
 import Mathlib.Data.List.Basic
-import Mathlib.Tactic
+import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
 
