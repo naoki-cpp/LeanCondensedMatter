@@ -82585,6 +82585,7 @@
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_nil",
       "SecondQuantization.Bosonic.freeGibbsExpectation_id",
       "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
@@ -82671,9 +82672,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
     ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_eq_common_operatorProduct"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -82760,7 +82759,10 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_cons",
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_nil"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -82847,8 +82849,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_eq_common_operatorProduct",
-      "SecondQuantization.Common.BlochDeDominicis.operator_comp_operatorProduct_eq_operatorPeelSum"
+      "SecondQuantization.Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -82923,10 +82924,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_eq_common_operatorProduct",
-      "SecondQuantization.Common.BlochDeDominicis.operatorProduct_append"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -82944,7 +82942,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (fields : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n  SecondQuantization.Bosonic.FreeThermalField.orderedProduct fields =\n    SecondQuantization.Common.BlochDeDominicis.operatorProduct SecondQuantization.Bosonic.FreeThermalField.operator\n      fields",
+    "statement": "∀ {Mode : Type u_1} (field : SecondQuantization.Bosonic.FreeThermalField Mode)\n  (fields : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n  SecondQuantization.Bosonic.FreeThermalField.orderedProduct (field :: fields) =\n    field.operator ∘ₗ SecondQuantization.Bosonic.FreeThermalField.orderedProduct fields",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82952,30 +82950,28 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": false,
+    "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_eq_common_operatorProduct",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
+    "name": "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_cons",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion",
     "externalAxioms": [],
-    "docString": "The bosonic ordered product is the Common right-associated operator product. ",
+    "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_eq_operatorPeelTerms_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_eq_operatorPeelTerms_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82986,7 +82982,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1}, SecondQuantization.Bosonic.FreeThermalField.orderedProduct [] = LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -83005,12 +83001,18 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelTerms_eq_ofFn"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89373,7 +89375,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing",
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
+      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing"
     ],
     "dependencies": [
@@ -89388,7 +89390,7 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing",
       "SecondQuantization.Bosonic.freeGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
+      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing"
     ],
     "compiledConsumerCount": 4,
@@ -89719,7 +89721,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → LinearMap.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.prodComp (List.ofFn C)) =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → LinearMap.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (List.ofFn C).prod =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89731,7 +89733,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
+    "name": "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
     "externalAxioms": [],
     "docString": "**The general finite-temperature Bloch–de Dominicis theorem.** The original linked-diagram\nand finite-temperature pairing development is C. Bloch and C. de Dominicis, *Nuclear Physics*\n**7**, 459–479 (1958),\n[doi:10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).\nFor the unified bosonic/fermionic thermal Wick argument motivating this pairing formula, see M. Gaudin, *Nuclear\nPhysics* **15**, 89–91 (1960),\n[doi:10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6). This theorem is\nthe finite-Gibbs recursion specialization described above; it does not claim the infinite-volume\nor interacting-state generality of the original diagrammatic development. ",
@@ -89837,7 +89839,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (l₁ l₂ : List Label),\n  SecondQuantization.Common.BlochDeDominicis.operatorProduct operator (l₁ ++ l₂) =\n    SecondQuantization.Common.BlochDeDominicis.operatorProduct operator l₁ ∘ₗ\n      SecondQuantization.Common.BlochDeDominicis.operatorProduct operator l₂",
+    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (contraction : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), operator C ∘ₗ operator D = contraction C D • LinearMap.id + ζ • operator D ∘ₗ operator C) →\n    ∀ (C : Label) (l : List Label),\n      operator C ∘ₗ (List.map operator l).prod =\n        SecondQuantization.Common.BlochDeDominicis.operatorPeelSum operator contraction ζ C l +\n          ζ ^ l.length • (List.map operator l).prod ∘ₗ operator C",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89849,122 +89851,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operatorProduct_append",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
-    "externalAxioms": [],
-    "docString": "Products respect list concatenation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.operatorProduct_cons"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (C : Label) (t : List Label),\n  SecondQuantization.Common.BlochDeDominicis.operatorProduct operator (C :: t) =\n    operator C ∘ₗ SecondQuantization.Common.BlochDeDominicis.operatorProduct operator t",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operatorProduct_cons",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.BlochDeDominicis.operatorProduct_append"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.BlochDeDominicis.operatorProduct_append"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M]\n  (operator : Label → M →ₗ[ℂ] M), SecondQuantization.Common.BlochDeDominicis.operatorProduct operator [] = LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operatorProduct_nil",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (contraction : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), operator C ∘ₗ operator D = contraction C D • LinearMap.id + ζ • operator D ∘ₗ operator C) →\n    ∀ (C : Label) (l : List Label),\n      operator C ∘ₗ SecondQuantization.Common.BlochDeDominicis.operatorProduct operator l =\n        SecondQuantization.Common.BlochDeDominicis.operatorPeelSum operator contraction ζ C l +\n          ζ ^ l.length • SecondQuantization.Common.BlochDeDominicis.operatorProduct operator l ∘ₗ operator C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operator_comp_operatorProduct_eq_operatorPeelSum",
+    "name": "SecondQuantization.Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
     "externalAxioms": [],
     "docString": "Repeated scalar exchange through an arbitrary tail. ",
@@ -97875,7 +97762,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n    C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l) =\n      SecondQuantization.Common.peelSum ζ l +\n        ζ ^ l.length • SecondQuantization.Common.prodComp (List.map Prod.fst l) ∘ₗ C1",
+    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n    C1 ∘ₗ (List.map Prod.fst l).prod =\n      SecondQuantization.Common.peelSum ζ l + ζ ^ l.length • (List.map Prod.fst l).prod ∘ₗ C1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97887,7 +97774,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.comp_prodComp_eq_of_zetaCommutator",
+    "name": "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
     "externalAxioms": [],
     "docString": "**Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each\npair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having\npicked up `ζ^{l.length}`. ",
@@ -102443,7 +102330,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β\n            (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n          SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102486,7 +102373,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ) (ζ : ℂ)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) =\n    ∑ j,\n      ζ ^ ↑j * l[↑j].2 *\n        SecondQuantization.Common.finiteGibbsExpectation energy β\n          (SecondQuantization.Common.prodComp (List.map Prod.fst (l.eraseIdx ↑j)))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ) (ζ : ℂ)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  SecondQuantization.Common.finiteGibbsExpectation energy β (SecondQuantization.Common.peelSum ζ l) =\n    ∑ j,\n      ζ ^ ↑j * l[↑j].2 *\n        SecondQuantization.Common.finiteGibbsExpectation energy β (List.map Prod.fst (l.eraseIdx ↑j)).prod",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102528,7 +102415,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β\n            (C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β\n                  (SecondQuantization.Common.prodComp (List.map Prod.fst (l.eraseIdx ↑j)))) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β (List.map Prod.fst (l.eraseIdx ↑j)).prod) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108086,7 +107973,7 @@
     "name": "SecondQuantization.Common.peelSum_eq_peelTerms_sum",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
     "externalAxioms": [],
-    "docString": "**`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s\nrecursive definition, `Σⱼ ζʲcⱼ•(remaining product with `Bⱼ` erased)` as a `List.sum` rather than\nan index/`Finset.sum`-over-erasures formula (`l.eraseIdx`) matching the physics notes'\n`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter (`PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`\ngives that indexed form). ",
+    "docString": "**`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s\nrecursive definition, `Σⱼ ζʲcⱼ•(remaining product with Bⱼ erased)` as a `List.sum` rather than\nan index/`Finset.sum`-over-erasures formula (`l.eraseIdx`) matching the physics notes'\n`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter (`PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`\ngives that indexed form). ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -108110,7 +107997,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  SecondQuantization.Common.peelTerms ζ l =\n    List.ofFn fun j => ζ ^ ↑j • l[↑j].2 • SecondQuantization.Common.prodComp (List.map Prod.fst (l.eraseIdx ↑j))",
+    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  SecondQuantization.Common.peelTerms ζ l =\n    List.ofFn fun j => ζ ^ ↑j • l[↑j].2 • (List.map Prod.fst (l.eraseIdx ↑j)).prod",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108138,123 +108025,6 @@
       "SecondQuantization.Common.finiteGibbsExpectation_peelSum_eq_sum"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  (l₁ l₂ : List (SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)),\n  SecondQuantization.Common.prodComp (l₁ ++ l₂) =\n    SecondQuantization.Common.prodComp l₁ ∘ₗ SecondQuantization.Common.prodComp l₂",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.prodComp_append",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
-    "externalAxioms": [],
-    "docString": "**`prodComp` distributes over list concatenation**: `prodComp (l₁ ++ l₂) = prodComp l₁ ∘\nprodComp l₂` — by induction on `l₁`, using `LinearMap.comp_assoc` at each step. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.prodComp_cons"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  (B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (t : List (SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)),\n  SecondQuantization.Common.prodComp (B :: t) = B ∘ₗ SecondQuantization.Common.prodComp t",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.prodComp_cons",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.prodComp_append",
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.prodComp_append",
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1}, SecondQuantization.Common.prodComp [] = LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.prodComp_nil",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109672,7 +109442,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ\n              C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n        SecondQuantization.Common.traceFock\n          (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n          SecondQuantization.Common.traceFock\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n        SecondQuantization.Common.traceFock\n          (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -109687,7 +109457,7 @@
     "name": "SecondQuantization.Common.traceFock_diagonalEvolution_comp_peel",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace",
     "externalAxioms": [],
-    "docString": "**The trace-level peel-first identity**: `Common.traceFock_diagonalEvolution_comp_rotate`\napplied to the whole remaining product `B₁⋯Bₖ` (rotating `C₁` from the end back to the front)\ncombined with `comp_prodComp_eq_of_zetaCommutator`'s operator identity, solving the resulting\nself-referential equation for `Tr[e^{-βH₀}(C₁B₁⋯Bₖ)]`. ",
+    "docString": "**The trace-level peel-first identity**: `Common.traceFock_diagonalEvolution_comp_rotate`\napplied to the whole remaining product `B₁⋯Bₖ` (rotating `C₁` from the end back to the front)\ncombined with `comp_prod_eq_of_zetaCommutator`'s operator identity, solving the resulting\nself-referential equation for `Tr[e^{-βH₀}(C₁B₁⋯Bₖ)]`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -109695,7 +109465,7 @@
       "SecondQuantization.Common.finiteGibbsExpectation_peel"
     ],
     "dependencies": [
-      "SecondQuantization.Common.comp_prodComp_eq_of_zetaCommutator",
+      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator",
       "SecondQuantization.Common.traceFock_diagonalEvolution_comp_rotate"
     ],
     "crossModuleDirectWrapper": false,
@@ -110063,7 +109833,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff\n                  (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ\n                    SecondQuantization.Common.prodComp (List.map Prod.fst l))\n                  n k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ\n                  C1 ∘ₗ SecondQuantization.Common.prodComp (List.map Prod.fst l)) =\n            SecondQuantization.Common.tsumTrace\n              (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, LinearMap.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      (Summable fun n =>\n          SecondQuantization.Common.matrixCoeff\n            (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l) n n) →\n        Summable\n            (Function.uncurry fun n k =>\n              SecondQuantization.Common.matrixCoeff\n                  (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ (List.map Prod.fst l).prod) n k *\n                SecondQuantization.Common.matrixCoeff C1 k n) →\n          (1 - ζ ^ l.length * Complex.exp ↑(q1 * β)) *\n              SecondQuantization.Common.tsumTrace\n                (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ C1 ∘ₗ (List.map Prod.fst l).prod) =\n            SecondQuantization.Common.tsumTrace\n              (SecondQuantization.Common.diagonalEvolution energy (-β) ∘ₗ SecondQuantization.Common.peelSum ζ l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110083,7 +109853,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.comp_prodComp_eq_of_zetaCommutator",
+      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator",
       "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate"
     ],
@@ -127614,14 +127384,14 @@
       "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
+      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
       "SecondQuantization.Fermionic.continuous_flatVertexLegPairingEvaluation",
       "SecondQuantization.Fermionic.dysonVertexMoment_eq_freeGibbsDensityOperator_expectation",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
       "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation",
       "intervalIntegral.orderedSimplexIntegral_congr",
@@ -129368,11 +129138,11 @@
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient"
     ],
     "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing",
+      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
       "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators",
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.ofFn_mixedTimeOrderedAtomicOperatorFamily_eq"
@@ -130759,7 +130529,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (τ : ℝ),\n  SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q) τ =\n    SecondQuantization.Common.prodComp\n      (List.ofFn fun l =>\n        SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.quarticLocalLegOperator q l))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (q : SecondQuantization.Common.QuarticVertexLabel Mode)\n  (τ : ℝ),\n  SecondQuantization.Fermionic.interactionPicture ε (SecondQuantization.Fermionic.quarticVertexOperator q) τ =\n    (List.ofFn fun l =>\n        SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ\n          (SecondQuantization.Fermionic.quarticLocalLegOperator q l)).prod",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130771,20 +130541,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prodComp",
+    "name": "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct",
     "externalAxioms": [],
     "docString": "A single evolved quartic vertex is the composed product of its four individually evolved local\nlegs in the canonical local-leg order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -131171,7 +130941,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  SecondQuantization.Fermionic.mixedTimeOrderedVertexComp ε i j τ τ' q σ =\n    SecondQuantization.Fermionic.twoPointExternalOrderSign τ τ' •\n      SecondQuantization.Common.prodComp (SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators ε i j τ τ' q σ)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  SecondQuantization.Fermionic.mixedTimeOrderedVertexComp ε i j τ τ' q σ =\n    SecondQuantization.Fermionic.twoPointExternalOrderSign τ τ' •\n      (SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).prod",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131183,7 +130953,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators",
+    "name": "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening",
     "externalAxioms": [],
     "docString": "The event-level mixed time-ordered product is exactly the fermionic external-order sign times\nthe composed product of its `4n + 2` atomic creation/annihilation operators. ",
@@ -131193,9 +130963,7 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
     ],
     "dependencies": [
-      "SecondQuantization.Common.prodComp_append",
-      "SecondQuantization.Common.prodComp_cons",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -132123,7 +131891,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  SecondQuantization.Common.prodComp (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)) =\n    SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)).prod =\n    SecondQuantization.Fermionic.nestedVertexOperatorComp ε n q τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132135,10 +131903,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
+    "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
     "externalAxioms": [],
-    "docString": "**`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `nestedVertexOperatorComp_succ`,\n`interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and\n`Common.prodComp_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
+    "docString": "**`nestedVertexOperatorComp`, flattened into a `List.prod` of its `4n` atomic legs** —\nby induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case\nreduces, via `nestedVertexOperatorComp_succ`,\n`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and\n`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε\nq τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)\n(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into\n`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at\nvertex `0` directly; the `right` branch uses the general finite-block coordinate theorem\n`FiniteIndex.eq_cast_mul_add_blockEquiv` to express an *arbitrary* position `k` of the smaller\n`n`-fold piece in `i' * 4 + j'` form, then matches both sides via\n`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`\nfor the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as\nnaturals. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -134232,14 +134000,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.map_timedFieldOperator_twoPointTimedEventAtomicFields"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing.0.SecondQuantization.Fermionic.map_timedFieldOperator_twoPointTimedEventAtomicFields"
     ],
     "compiledConsumerCount": 2,
@@ -134361,13 +134129,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -147711,6 +147479,7 @@
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le"
     ],
     "dependencies": [
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_cons",
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
       "SecondQuantization.Bosonic.annihilate_basisState_of_zero",
       "SecondQuantization.Bosonic.createOccupation_apply_ne",
@@ -156376,7 +156145,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  SecondQuantization.Common.prodComp\n      (SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators ε i j τ τ' q σ event) =\n    SecondQuantization.Fermionic.twoPointTimedEventOperator ε i j τ τ' q σ event",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  (SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators ε i j τ τ' q σ event).prod =\n    SecondQuantization.Fermionic.twoPointTimedEventOperator ε i j τ τ' q σ event",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156388,17 +156157,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening",
     "externalAxioms": [],
     "docString": "Expanding one mixed event into atomic operators preserves its represented operator product. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prodComp",
+      "SecondQuantization.Fermionic.interactionPicture_quarticVertexOperator_eq_prod",
       "SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_interaction",
       "SecondQuantization.Fermionic.twoPointTimedEventOperator_interaction",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_external"
@@ -156406,7 +156175,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators"
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -156439,13 +156208,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prodComp_twoPointTimedEventAtomicOperators"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
