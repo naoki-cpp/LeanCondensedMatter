@@ -28,8 +28,9 @@ Importing this module provides the core pairing type, normalized endpoints, pair
 the minimal bipartite matching API, scalar pairing evaluation, pairing-induced vertex graphs,
 partner-invariant restriction and reindexing, order-preserving pairing embeddings, component
 pair decompositions, relabeling, crossing statistics, erase/insert infrastructure, and the
-first-pair product/sum decompositions used by the Bloch--de Dominicis development. The four-position enumeration and the exchange-weighted sum
-backend are separate modules and must be imported explicitly when needed.
+first-pair product/sum decompositions used by the Bloch--de Dominicis development. The
+four-position enumeration, abstract first-pair recursion, and exchange-weighted sum backend remain
+separate modules and must be imported explicitly when needed.
 
 This entry point stays purely at the pairing-structure level. The separate `Permutation.PairingBridge`
 module owns only the crossing-weighted pairing sum and its parity-sensitive bridge to the generic
