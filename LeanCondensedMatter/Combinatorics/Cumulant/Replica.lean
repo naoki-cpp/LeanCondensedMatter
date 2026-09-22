@@ -108,7 +108,7 @@ private theorem X_pow_eq_sum_stirlingSecond_descPochhammer (b : ℕ) :
               (Polynomial.C (Nat.stirlingSecond b (k + 1) : F) *
                 descPochhammer F (k + 1))) b,
           Nat.stirlingSecond_eq_zero_of_lt b.lt_add_one]
-        simp [mul_left_comm, mul_comm]
+        simp [mul_assoc, mul_left_comm, mul_comm]
       rw [pow_succ, ih, Finset.sum_mul,
         Finset.sum_range_succ'
           (fun k => Polynomial.C (Nat.stirlingSecond (b + 1) k : F) *
@@ -116,7 +116,10 @@ private theorem X_pow_eq_sum_stirlingSecond_descPochhammer (b : ℕ) :
       simp only [mul_assoc, descPochhammer_mul_X, mul_add, Finset.sum_add_distrib, hshift,
         Nat.stirlingSecond_succ_succ, Nat.cast_add, Nat.cast_mul, map_add, map_mul,
         Nat.stirlingSecond_succ_zero, Nat.cast_zero, map_zero, zero_mul, add_zero]
-      exact add_comm _ _
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_congr rfl
+      intro k hk
+      ring
 
 /-- The replica polynomial in the descending-factorial basis.  The Stirling number of the second
 kind converts the monomial replica factor for a partition into the falling-factorial basis used by
@@ -136,7 +139,7 @@ theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro k hk
-  simp [mul_assoc, mul_comm, mul_left_comm]
+  simp [mul_assoc, mul_comm]
 
 end Ring
 
