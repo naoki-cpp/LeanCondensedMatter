@@ -119,8 +119,12 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
     d.componentLegPosition C (Sum.inr (w, k)) <
         d.componentLegPosition B (Sum.inr (v, l)) ↔
       d.ambientInteractionVertex C w < d.ambientInteractionVertex B v := by
-  simp only [d.componentLegPosition_interaction,
-    externalInsertionInteractionLeg_val]
+  rw [d.componentLegPosition_interaction, d.componentLegPosition_interaction]
+  change
+    (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex C w) k).val <
+        (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex B v) l).val ↔
+      d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
+  simp only [externalInsertionInteractionLeg_val]
   let vS := d.ambientInteractionVertex B v
   let wS := d.ambientInteractionVertex C w
   have hvw : vS ≠ wS := d.ambientInteractionVertex_ne B C hBC v w
@@ -130,7 +134,7 @@ private theorem ExternalInsertionDiagram.componentInteractionLeg_lt_iff
     intro h
     apply hvw
     apply (S.orderIsoOfFin rfl).symm.injective
-    exact Fin.ext h
+    exact Fin.ext h.symm
   constructor
   · intro h
     have hk : k.val < 4 := k.isLt
@@ -158,8 +162,11 @@ private theorem ExternalInsertionDiagram.componentExternal_lt_interaction
       (B : Finset (ExternalInsertionVertex E S)))) (l : Fin 4) :
     d.componentLegPosition C (Sum.inl e) <
       d.componentLegPosition B (Sum.inr (v, l)) := by
-  simp only [d.componentLegPosition_external, d.componentLegPosition_interaction,
-    externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+  rw [d.componentLegPosition_external, d.componentLegPosition_interaction]
+  change
+    (externalInsertionExternalLeg E S (d.externalSectorOrderIso C e).1).val <
+      (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex B v) l).val
+  rw [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
   have he := (d.externalSectorOrderIso C e).1.isLt
   omega
 
@@ -172,8 +179,11 @@ private theorem ExternalInsertionDiagram.componentInteraction_not_lt_external
     (e : Fin (2 * d.externalPairCount B)) :
     ¬ d.componentLegPosition C (Sum.inr (v, l)) <
       d.componentLegPosition B (Sum.inl e) := by
-  simp only [d.componentLegPosition_external, d.componentLegPosition_interaction,
-    externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+  rw [d.componentLegPosition_interaction, d.componentLegPosition_external]
+  change
+    ¬ (externalInsertionInteractionLeg (E := E) (d.ambientInteractionVertex C v) l).val <
+      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
+  rw [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
   have he := (d.externalSectorOrderIso B e).1.isLt
   omega
 
