@@ -40,6 +40,19 @@ noncomputable def FamilySlotShuffleTo.blockInversionCount {size : ι → ℕ} {t
     ∑ p : Fin (size i), ∑ q : Fin (size j),
       if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
 
+@[simp]
+theorem FamilySlotShuffleTo.blockInversionCount_self {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    shuffle.blockInversionCount i i = 0 := by
+  simp [FamilySlotShuffleTo.blockInversionCount]
+
+theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) {i j : ι} (hij : i ≠ j) :
+    shuffle.blockInversionCount i j =
+      ∑ p : Fin (size i), ∑ q : Fin (size j),
+        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0 := by
+  simp [FamilySlotShuffleTo.blockInversionCount, hij]
+
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
     {σ τ : FamilySlotShuffleTo size total}
