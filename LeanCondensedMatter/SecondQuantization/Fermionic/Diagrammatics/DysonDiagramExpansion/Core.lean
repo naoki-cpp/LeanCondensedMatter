@@ -4,7 +4,8 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -230,7 +231,10 @@ private theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : 
           ∑ q0 : QuarticVertexLabel Mode,
             g q0 • ((L.comp (interactionPicture ε (quarticVertexOperator q0) σ)).comp
               (Common.dysonCoeff (fermionEnergy ε) V n σ)) := by
-        rw [hV, interactionPicture_quarticInteraction]
+        rw [hV]
+        simp only [interactionPicture, Common.interactionPicture, quarticInteraction,
+          Common.quarticInteraction, Common.quarticInteractionOn, quarticVertexOperator,
+          map_sum, map_smul]
         ext x
         simp [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.comp_assoc]
       rw [e2, finiteGibbsExpectation_fintype_sum]
