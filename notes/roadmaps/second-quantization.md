@@ -33,7 +33,7 @@ operators, imaginary-time evolution, free Gibbs theory, KMS identities, and Bloc
 pairing. The canonical finite Gibbs pairing endpoint is
 
 ```lean
-SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
 ```
 
 The connected perturbative line proves three finite-mode endpoints:

@@ -102,7 +102,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   *Nuclear Physics* **15**, 89–91 (1960). DOI:
   [10.1016/0029-5582(60)90285-6](https://doi.org/10.1016/0029-5582(60)90285-6).
   - **Project use:** Primary source motivating the common bosonic/fermionic thermal Wick induction
-    specialized to finite configurations by `finiteGibbsExpectation_prodComp_eq_sum_pairing`.
+    specialized to finite configurations by `finiteGibbsExpectation_prod_eq_sum_pairing`.
   - **Caveat:** The argument assumes a Gaussian noninteracting equilibrium state with the required
     mode factorization. The current theorem uses `[Fintype Config]`; a full bosonic expectation needs
     a summability-aware implementation, and this is not an interacting-state Wick theorem without
@@ -123,7 +123,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   composé d’un grand nombre de particules.” *Nuclear Physics* **7**, 459–479 (1958). DOI:
   [10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).
   - **Project use:** Original linked-diagram and finite-temperature pairing provenance for
-    `finiteGibbsExpectation_prodComp_eq_sum_pairing` in
+    `finiteGibbsExpectation_prod_eq_sum_pairing` in
     `SecondQuantization/Common/Thermal/BlochDeDominicis/Induction.lean`.
   - **Caveat:** The theorem is a finite noninteracting Gibbs recursion specialization; it does not
     assert the original paper's interacting or infinite-volume analytic generality.

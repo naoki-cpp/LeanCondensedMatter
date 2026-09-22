@@ -62,19 +62,19 @@ private theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode �
   cases event <;> simp [twoPointTimedEventAtomicArity]
 
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
-private theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (event : TwoPointTimedEvent n) :
-    Common.prodComp (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event) =
+    List.prod (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event) =
       twoPointTimedEventOperator ε i j τ τ' q σ event := by
   cases event with
   | inl e =>
       rw [twoPointTimedEventAtomicOperators_external]
-      simp [twoPointTimedEventOperator, Common.prodComp]
+      simp [twoPointTimedEventOperator, Module.End.mul_eq_comp, Module.End.one_eq_id]
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
-      exact (interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)).symm
+      exact (interactionPicture_quarticVertexOperator_eq_prod ε (q v) (σ v)).symm
 
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -111,23 +111,24 @@ private theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → 
 
 /-- The event-level mixed time-ordered product is exactly the fermionic external-order sign times
 the composed product of its `4n + 2` atomic creation/annihilation operators. -/
-theorem mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators {n : ℕ}
+theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointExternalOrderSign τ τ' •
-        Common.prodComp (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ) := by
+        List.prod (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ) := by
   have hprod : ∀ events : List (TwoPointTimedEvent n),
-      Common.prodComp
+      List.prod
           (events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)) =
-        Common.prodComp
+        List.prod
           (events.map (twoPointTimedEventOperator ε i j τ τ' q σ)) := by
     intro events
     induction events with
     | nil => rfl
     | cons event events ih =>
-        rw [List.flatMap_cons, List.map_cons, Common.prodComp_append, Common.prodComp_cons,
-          prodComp_twoPointTimedEventAtomicOperators, ih]
+        rw [List.flatMap_cons, List.map_cons, List.prod_append, List.prod_cons]
+        simp only [Module.End.mul_eq_comp]
+        rw [prod_twoPointTimedEventAtomicOperators, ih]
   rw [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators, hprod]
 
 end Fermionic

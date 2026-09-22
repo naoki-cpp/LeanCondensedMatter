@@ -19,7 +19,7 @@ Representative public theorems include:
 
 - `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` — statistics-independent formal-log / connected-decomposition bridge;
 - `Combinatorics.NormalizedSetFunction.moment_cumulant` — reconstruction of normalized finite-set moments from cumulants;
-- `SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` — finite-temperature Bloch–de Dominicis pairing;
+- `SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing` — finite-temperature Bloch–de Dominicis pairing;
 - `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — formal finite-mode linked-cluster theorem;
 - `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` — analytic finite-dimensional linked-cluster theorem;
 - `SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` — finite-mode two-point linked-cluster theorem.

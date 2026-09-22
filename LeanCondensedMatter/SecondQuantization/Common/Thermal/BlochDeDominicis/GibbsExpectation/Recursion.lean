@@ -26,7 +26,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     (energy : Config → ℝ) (β : ℝ) :
     ExpectationPairingRecursion
       (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) s where
-  expectation := fun l => finiteGibbsExpectation energy β (prodComp l)
+  expectation := fun l => finiteGibbsExpectation energy β l.prod
   pairValue := fun A B => finiteGibbsExpectation energy β (A.comp B)
   admissible := fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
     (∀ i, heisenbergEvolve energy (-β) (C i) =
@@ -35,8 +35,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) ∧
     (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0)
   expectation_nil := by
-    simp only [prodComp_nil]
-    exact finiteGibbsExpectation_id energy β
+    simpa [Module.End.one_eq_id] using finiteGibbsExpectation_id energy β
   admissible_erase := by
     rintro n C ⟨q, c, hC, hcomm, hne⟩ j
     exact ⟨fun i => q ((j.succAbove i).succ), fun i i' => c ((j.succAbove i).succ)
@@ -45,10 +44,10 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       fun i => hne _⟩
   expectation_succ := by
     rintro m C ⟨q, c, hC, hcomm, hne⟩
-    have h1 : finiteGibbsExpectation energy β (prodComp (List.ofFn C)) =
+    have h1 : finiteGibbsExpectation energy β (List.prod (List.ofFn C)) =
         finiteGibbsExpectation energy β
-          ((C 0).comp (prodComp (List.ofFn (fun i : Fin (2 * m + 1) => C i.succ)))) := by
-      rw [List.ofFn_succ, prodComp_cons]
+          ((C 0).comp (List.prod (List.ofFn (fun i : Fin (2 * m + 1) => C i.succ)))) := by
+      rw [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
       rfl
     set l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) :=
       List.ofFn (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ)) with hl
@@ -77,11 +76,11 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     rw [hlmap] at hpeel
     have hreindex :
         (∑ i : Fin l.length, (s.zetaInt : ℂ) ^ (i : ℕ) * l[(i : ℕ)].2 *
-            finiteGibbsExpectation energy β (prodComp ((l.eraseIdx (i : ℕ)).map Prod.fst))) =
+            finiteGibbsExpectation energy β (List.prod ((l.eraseIdx (i : ℕ)).map Prod.fst))) =
           ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
             (l[(j : ℕ)]'(by rw [hlen]; exact j.isLt)).2 *
               finiteGibbsExpectation energy β
-                (prodComp ((l.eraseIdx (j : ℕ)).map Prod.fst)) := by
+                (List.prod ((l.eraseIdx (j : ℕ)).map Prod.fst)) := by
       rw [← Equiv.sum_comp (finCongr hlen.symm)]
       apply Finset.sum_congr rfl
       intro j _

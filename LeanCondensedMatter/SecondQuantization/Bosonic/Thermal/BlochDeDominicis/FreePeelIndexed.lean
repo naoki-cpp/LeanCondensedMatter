@@ -55,7 +55,7 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
       unfold FreeThermalField.operatorPeelSum
       rw [Common.BlochDeDominicis.operatorPeelSum]
       simp only [one_smul]
-      rw [← orderedProduct_eq_common_operatorProduct]
+      rw [orderedProduct]
 
 /-- Closed position-indexed form of the bosonic CCR peel terms. -/
 theorem operatorPeelTerms_eq_ofFn
@@ -79,7 +79,7 @@ theorem operatorPeelTerms_eq_ofFn
               (i.succ : Fin (t.length + 1)).isLt) •
           orderedProduct ((D :: t).eraseIdx (i.succ : Fin (t.length + 1)))
       simp only [Fin.val_succ, List.getElem_cons_succ, List.eraseIdx_cons_succ,
-        FreeThermalField.orderedProduct]
+        FreeThermalField.orderedProduct_cons]
       apply LinearMap.ext
       intro x
       simp only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul]

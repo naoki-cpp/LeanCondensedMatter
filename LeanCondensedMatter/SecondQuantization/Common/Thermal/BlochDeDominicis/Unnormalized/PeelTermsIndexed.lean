@@ -31,7 +31,7 @@ theorem peelTerms_eq_ofFn (ζ : ℂ)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
     peelTerms ζ l =
       List.ofFn (fun j : Fin l.length =>
-        ζ ^ (j : ℕ) • (l[(j : ℕ)]'j.isLt).2 • prodComp ((l.eraseIdx j).map Prod.fst)) := by
+        ζ ^ (j : ℕ) • (l[(j : ℕ)]'j.isLt).2 • List.prod ((l.eraseIdx j).map Prod.fst)) := by
   induction l with
   | nil => simp [peelTerms]
   | cons p t ih =>
@@ -43,13 +43,13 @@ theorem peelTerms_eq_ofFn (ζ : ℂ)
     congr 1
     funext i
     change ζ • (B.comp
-        (ζ ^ (i : ℕ) • (t[(i : ℕ)]'i.isLt).2 • prodComp ((t.eraseIdx i).map Prod.fst))) =
+        (ζ ^ (i : ℕ) • (t[(i : ℕ)]'i.isLt).2 • List.prod ((t.eraseIdx i).map Prod.fst))) =
       ζ ^ ((i.succ : Fin (t.length + 1)) : ℕ) •
           ((((B, c) :: t))[((i.succ : Fin (t.length + 1)) : ℕ)]'
             (i.succ : Fin (t.length + 1)).isLt).2 •
-        prodComp ((((B, c) :: t).eraseIdx (i.succ : Fin (t.length + 1))).map Prod.fst)
+        List.prod ((((B, c) :: t).eraseIdx (i.succ : Fin (t.length + 1))).map Prod.fst)
     simp only [Fin.val_succ, List.getElem_cons_succ, List.eraseIdx_cons_succ, List.map_cons,
-      prodComp_cons, pow_succ, LinearMap.comp_smul, smul_smul]
+      List.prod_cons, Module.End.mul_eq_comp, pow_succ, LinearMap.comp_smul, smul_smul]
     congr 1
     ring
 

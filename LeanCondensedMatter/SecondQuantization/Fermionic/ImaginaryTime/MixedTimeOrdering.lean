@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
@@ -64,7 +63,7 @@ noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j 
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   twoPointExternalOrderSign τ τ' •
-    Common.prodComp ((orderedTwoPointTimedEvents τ τ' σ).map
+    List.prod ((orderedTwoPointTimedEvents τ τ' σ).map
       (twoPointTimedEventOperator ε i j τ τ' q σ))
 
 set_option linter.unusedSimpArgs false in
@@ -91,14 +90,14 @@ theorem mixedTimeOrderedVertexComp_zero_of_gt (ε : Mode → ℝ) (i j : Mode)
     mixedTimeOrderedVertexComp ε i j τ τ' q σ = twoPointTimeOrderedProduct ε i j τ τ' := by
   rw [twoPointTimeOrderedProduct_of_gt ε i j h, mixedTimeOrderedVertexComp,
     orderedTwoPointTimedEvents_zero_of_gt σ h]
-  simp [twoPointExternalOrderSign, not_lt_of_ge h.le, Common.prodComp]
+  simp [twoPointExternalOrderSign, not_lt_of_ge h.le, Module.End.mul_eq_comp, Module.End.one_eq_id]
 
 theorem mixedTimeOrderedVertexComp_zero_of_lt (ε : Mode → ℝ) (i j : Mode)
     (q : Fin 0 → QuarticVertexLabel Mode) (σ : Fin 0 → ℝ) {τ τ' : ℝ} (h : τ < τ') :
     mixedTimeOrderedVertexComp ε i j τ τ' q σ = twoPointTimeOrderedProduct ε i j τ τ' := by
   rw [twoPointTimeOrderedProduct_of_lt ε i j h, mixedTimeOrderedVertexComp,
     orderedTwoPointTimedEvents_zero_of_lt σ h]
-  simp [twoPointExternalOrderSign, h, Common.prodComp]
+  simp [twoPointExternalOrderSign, h, Module.End.mul_eq_comp, Module.End.one_eq_id]
 
 end Fermionic
 end SecondQuantization

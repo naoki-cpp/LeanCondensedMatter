@@ -5,7 +5,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.OperatorProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
 
 set_option linter.style.header false
 
@@ -21,7 +20,7 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `Common.prodComp` -/
+/-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `List.prod` -/
 
 omit [Fintype Mode] in
 private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
@@ -63,11 +62,11 @@ theorem heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode 
   ring
 
 omit [Fintype Mode] in
-/-- **`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —
+/-- **`nestedVertexOperatorComp`, flattened into a `List.prod` of its `4n` atomic legs** —
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
 reduces, via `nestedVertexOperatorComp_succ`,
-`interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and
-`Common.prodComp_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
+`interactionPicture_quarticVertexOperator_eq_prod`, the inductive hypothesis, and
+`List.prod_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
 q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
 (tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
 `4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at
@@ -77,23 +76,23 @@ vertex `0` directly; the `right` branch uses the general finite-block coordinate
 `quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`
 for the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as
 naturals. -/
-theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
+theorem prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
-      Common.prodComp (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
+      List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
         nestedVertexOperatorComp ε n q τ
   | 0, q, τ => by
     have h0 : 2 * (2 * 0) = 0 := by ring
     have : IsEmpty (Fin (2 * (2 * 0))) := h0 ▸ Fin.isEmpty
-    simp [List.ofFn]
+    simp [List.ofFn, Module.End.one_eq_id]
   | n + 1, q, τ => by
     have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
     have hcard' : 2 * (2 * n) = n * 4 := by ring
     have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
-    rw [nestedVertexOperatorComp_succ, interactionPicture_quarticVertexOperator_eq_prodComp,
-      ← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp ε n
+    rw [nestedVertexOperatorComp_succ, interactionPicture_quarticVertexOperator_eq_prod,
+      ← prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp ε n
         (fun i => q i.succ) (fun i => τ i.succ),
-      ← Common.prodComp_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
-    refine congrArg Common.prodComp
+      ← Module.End.mul_eq_comp, ← List.prod_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
+    refine congrArg List.prod
       (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
     · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
           Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
