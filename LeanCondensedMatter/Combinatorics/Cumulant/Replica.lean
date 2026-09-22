@@ -215,6 +215,52 @@ theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
   intro k hk
   simp [mul_assoc, mul_comm]
 
+
+/-- The replica polynomial in the descending-factorial basis, grouped by the number of outer
+blocks.  The coefficient of the `k`-th descending factorial is the Stirling-weighted sum over all
+fine partitions. -/
+theorem replicaPolynomial_eq_sum_descPochhammer_stirling
+    {α : Type*} [DecidableEq α] (κ : Finset α → F) (S : Finset α) :
+    replicaPolynomial κ S =
+      ∑ k ∈ Finset.range (S.card + 1),
+        Polynomial.C
+            (∑ π : Finpartition S,
+              (Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
+          descPochhammer F k := by
+  classical
+  rw [replicaPolynomial_eq_sum_stirlingSecond_descPochhammer]
+  have hext : ∀ π : Finpartition S,
+      (∑ k ∈ Finset.range (π.parts.card + 1),
+          Polynomial.C
+              ((Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
+            descPochhammer F k) =
+        ∑ k ∈ Finset.range (S.card + 1),
+          Polynomial.C
+              ((Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
+            descPochhammer F k := by
+    intro π
+    apply Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ π.card_parts_le_card))
+    intro k hkS hkπ
+    have hlt : π.parts.card < k := by
+      simp only [Finset.mem_range] at hkS hkπ
+      exact Nat.lt_of_not_ge fun hk =>
+        hkπ (Nat.lt_succ_of_le hk)
+    rw [Nat.stirlingSecond_eq_zero_of_lt hlt]
+    simp
+  simp_rw [hext]
+  change
+    (∑ π ∈ (Finset.univ : Finset (Finpartition S)),
+      ∑ k ∈ Finset.range (S.card + 1),
+        Polynomial.C
+            ((Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
+          descPochhammer F k) = _
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [← Finset.sum_mul]
+  congr 1
+  rw [← map_sum]
+
 end Ring
 
 end Finpartition
