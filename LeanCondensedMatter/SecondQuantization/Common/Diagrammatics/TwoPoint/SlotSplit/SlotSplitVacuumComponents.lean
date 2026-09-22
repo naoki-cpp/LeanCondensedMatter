@@ -72,11 +72,11 @@ noncomputable def slotSplitVacuumComponentPart
 /-- The ambient interaction part of the image component is exactly the original quartic component. -/
 theorem interactionSector_slotSplitVacuumComponentPart
     (C : vac.componentPartition.parts) :
-    TwoPointDiagram.interactionSector
+    interactionSector
         ((slotSplitVacuumComponentPart h ext vac C).1.1 :
           Finset (TwoPointVertex S)) =
       (C : Finset (Fin N)) := by
-  change TwoPointDiagram.interactionSector
+  change interactionSector
       ((TwoPointDiagram.ofSlotSplit h ext vac).componentBlock
         (slotSplitVacuumVertex (vac.componentRepresentative C))) = _
   rw [interactionSector_componentBlock_slotSplitVacuumVertex]
@@ -88,7 +88,7 @@ private theorem slotSplitVacuumComponentPart_injective :
   intro C D hCD
   apply Subtype.ext
   have hparts := congrArg (fun B => B.1.1) hCD
-  have hint := congrArg TwoPointDiagram.interactionSector hparts
+  have hint := congrArg interactionSector hparts
   rw [interactionSector_slotSplitVacuumComponentPart,
     interactionSector_slotSplitVacuumComponentPart] at hint
   exact hint
@@ -146,14 +146,14 @@ private theorem slotSplitVacuumComponentPart_surjective
           exact vac.componentPartition.part_mem.2 v.2⟩
       refine ⟨C, ?_⟩
       apply Subtype.ext
-      apply TwoPointDiagram.interactionSector_component_unique
+      apply interactionSector_component_unique
         (d := TwoPointDiagram.ofSlotSplit h ext vac) w
       · rw [interactionSector_slotSplitVacuumComponentPart]
         change (w : Fin N) ∈ vac.componentPartition.part (v : Fin N)
         have hwv : (w : Fin N) = (v : Fin N) := rfl
         rw [hwv]
         exact vac.componentPartition.mem_part v.2
-      · exact (TwoPointDiagram.mem_interactionSector_subtype
+      · exact (mem_interactionSector_subtype
           (B.1 : Finset (TwoPointVertex S)) w).2 hxB
 
 /-- Connected components of the quartic vacuum piece are equivalent to vacuum components of the
