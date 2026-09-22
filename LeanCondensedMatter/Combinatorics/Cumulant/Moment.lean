@@ -42,7 +42,7 @@ theorem momentFromCumulant_empty (κ : Finset α → R) :
 
 private theorem partitionProduct_distinguishedBlockEquiv_symm
     (κ : Finset α → R) {s : Finset α} {a : α} (ha : a ∈ s)
-    (x : Σ B : BlockContaining s a, Finpartition (s \\ B.1)) :
+    (x : Σ B : BlockContaining s a, Finpartition (s \ B.1)) :
     partitionProduct κ ((distinguishedBlockEquiv s a ha).symm x) =
       κ x.1.1 * partitionProduct κ x.2 := by
   classical
@@ -51,7 +51,7 @@ private theorem partitionProduct_distinguishedBlockEquiv_symm
     κ B.1 * ∏ C ∈ Q.parts, κ C
   rw [Finset.prod_insert]
   intro hB
-  have haDiff : a ∈ s \\ B.1 := Q.le hB B.2.2
+  have haDiff : a ∈ s \ B.1 := Q.le hB B.2.2
   exact (Finset.mem_sdiff.mp haDiff).2 B.2.2
 
 /-- The moment sum splits by the block containing a distinguished element. -/
@@ -59,7 +59,7 @@ theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → R)
     {s : Finset α} {a : α} (ha : a ∈ s) :
     momentFromCumulant κ s =
       ∑ B : BlockContaining s a,
-        κ B.1 * momentFromCumulant κ (s \\ B.1) := by
+        κ B.1 * momentFromCumulant κ (s \ B.1) := by
   classical
   rw [momentFromCumulant, ← Equiv.sum_comp (distinguishedBlockEquiv s a ha).symm,
     Fintype.sum_sigma]
