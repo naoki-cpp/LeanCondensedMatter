@@ -236,6 +236,102 @@ noncomputable def ExternalInsertionDiagram.externalPartOrderIso {S : Finset (Fin
     (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
       (d.externalPart_card_eq_two_mul_externalPairCount B)
 
+/-- The canonical order-preserving shuffle of component-local external insertions into the
+ambient external-insertion order. -/
+noncomputable def ExternalInsertionDiagram.componentExternalShuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    FamilySlotShuffleTo
+      (fun B : d.componentPartition.parts => 2 * d.externalPairCount B)
+      (2 * E) where
+  slotEquiv :=
+    Equiv.ofBijective
+      (fun x => (d.externalPartOrderIso x.1 x.2).1)
+      (by
+        constructor
+        · rintro ⟨B, e⟩ ⟨C, f⟩ h
+          have heB :
+              (Sum.inl (d.externalPartOrderIso B e).1 :
+                ExternalInsertionVertex E S) ∈
+                (B : Finset (ExternalInsertionVertex E S)) :=
+            (ExternalInsertionDiagram.mem_externalPart
+              (B : Finset (ExternalInsertionVertex E S))
+              (d.externalPartOrderIso B e).1).1
+                (d.externalPartOrderIso B e).2
+          have hfC :
+              (Sum.inl (d.externalPartOrderIso C f).1 :
+                ExternalInsertionVertex E S) ∈
+                (C : Finset (ExternalInsertionVertex E S)) :=
+            (ExternalInsertionDiagram.mem_externalPart
+              (C : Finset (ExternalInsertionVertex E S))
+              (d.externalPartOrderIso C f).1).1
+                (d.externalPartOrderIso C f).2
+          have heC :
+              (Sum.inl (d.externalPartOrderIso B e).1 :
+                ExternalInsertionVertex E S) ∈
+                (C : Finset (ExternalInsertionVertex E S)) := by
+            simpa only [h] using hfC
+          have hB :
+              (B : Finset (ExternalInsertionVertex E S)) ∈
+                d.vertexGraph.componentPartition.parts := by
+            simpa only [ExternalInsertionDiagram.componentPartition] using B.2
+          have hC :
+              (C : Finset (ExternalInsertionVertex E S)) ∈
+                d.vertexGraph.componentPartition.parts := by
+            simpa only [ExternalInsertionDiagram.componentPartition] using C.2
+          have hblockB :
+              d.vertexGraph.componentBlock
+                  (Sum.inl (d.externalPartOrderIso B e).1) =
+                (B : Finset (ExternalInsertionVertex E S)) :=
+            (d.vertexGraph.componentBlock_eq_iff_mem hB _).2 heB
+          have hblockC :
+              d.vertexGraph.componentBlock
+                  (Sum.inl (d.externalPartOrderIso B e).1) =
+                (C : Finset (ExternalInsertionVertex E S)) :=
+            (d.vertexGraph.componentBlock_eq_iff_mem hC _).2 heC
+          have hBC : B = C :=
+            Subtype.ext (hblockB.symm.trans hblockC)
+          subst C
+          have hef : e = f := by
+            apply (d.externalPartOrderIso B).injective
+            apply Subtype.ext
+            exact h
+          subst f
+          rfl
+        · intro e
+          let B : d.componentPartition.parts :=
+            ⟨d.componentBlock (Sum.inl e), by
+              unfold ExternalInsertionDiagram.componentBlock
+              exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
+          have heB :
+              (Sum.inl e : ExternalInsertionVertex E S) ∈
+                (B : Finset (ExternalInsertionVertex E S)) := by
+            change (Sum.inl e : ExternalInsertionVertex E S) ∈
+              d.vertexGraph.componentBlock (Sum.inl e)
+            exact d.vertexGraph.self_mem_componentBlock (Sum.inl e)
+          have hext :
+              e ∈ ExternalInsertionDiagram.externalPart
+                (B : Finset (ExternalInsertionVertex E S)) :=
+            (ExternalInsertionDiagram.mem_externalPart
+              (B : Finset (ExternalInsertionVertex E S)) e).2 heB
+          let local : Fin (2 * d.externalPairCount B) :=
+            (d.externalPartOrderIso B).symm ⟨e, hext⟩
+          refine ⟨⟨B, local⟩, ?_⟩
+          change (d.externalPartOrderIso B local).1 = e
+          simp [local])
+  strictMono := fun B e f hef =>
+    (d.externalPartOrderIso B).strictMono hef
+
+@[simp]
+theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts)
+    (e : Fin (2 * d.externalPairCount B)) :
+    d.componentExternalShuffle.slotEquiv ⟨B, e⟩ =
+      (d.externalPartOrderIso B e).1 :=
+  rfl
+
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
