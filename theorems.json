@@ -90132,7 +90132,8 @@
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "dependencies": [
       "Combinatorics.pow_eq_of_mod_two_eq"
@@ -90144,9 +90145,10 @@
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90627,7 +90629,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 =\n    d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2",
     "standardAxioms": [
       "Classical.choice",
@@ -90635,7 +90637,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90646,15 +90648,19 @@
     "docString": "The total ordered inter-component inversion parity of the full component-leg shuffle is exactly\nthe parity of the external-only component shuffle. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
+    ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90977,7 +90983,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  d.interComponentCrossingCount % 2 = d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2",
     "standardAxioms": [
       "Classical.choice",
@@ -90985,7 +90991,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90996,15 +91002,19 @@
     "docString": "The residual inter-component crossing parity is the total block-inversion parity of the\ncanonical component-leg shuffle, relative to any explicit ordering of the connected components. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
+    ],
     "dependencies": [
       "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91140,7 +91150,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (s : SecondQuantization.Common.Statistics)\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  Combinatorics.Pairing.weight s d.pairing =\n    ↑s.zetaInt ^ d.interComponentCrossingCount * ∏ B, Combinatorics.Pairing.weight s (d.restrictComponent B).pairing",
     "standardAxioms": [
       "Classical.choice",
@@ -91148,7 +91158,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91159,14 +91169,18 @@
     "docString": "The exchange-statistics weight factors into the residual inter-component exchange sign and the\nproduct of component-local pairing weights. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+    ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130454,6 +130468,49 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  ↑SecondQuantization.Common.Statistics.fermion.zetaInt ^ d.interComponentCrossingCount =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
+    "externalAxioms": [],
+    "docString": "The residual inter-component fermionic pairing weight is exactly the exchange sign required to\nregroup the odd external insertions by connected component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external",
+      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (V : Mode → Mode → ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.interactionHamiltonian V) (SecondQuantization.Fermionic.basisState n) =\n    (∑ i ∈ n, ∑ j ∈ n, ↑(V i j)) • SecondQuantization.Fermionic.basisState n",
     "standardAxioms": [
@@ -131601,6 +131658,44 @@
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion d.pairing =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n      ∏ B, Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (d.restrictComponent B).pairing",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
+    "externalAxioms": [],
+    "docString": "Fermionic pairing weight factorization for arbitrary external-insertion components: the only\nglobal sign left after multiplying component-local pairing weights is the external-component order\nsign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.weight_eq_inter_mul_prod_components",
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
