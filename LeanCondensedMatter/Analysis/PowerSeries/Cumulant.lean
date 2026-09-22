@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
+import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 
 set_option linter.style.header false
