@@ -1,8 +1,8 @@
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import Mathlib.Combinatorics.Enumerative.Stirling
 import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Logic.Equiv.Prod
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
+import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
 
