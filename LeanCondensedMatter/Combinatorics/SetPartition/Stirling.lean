@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import Mathlib.Combinatorics.Enumerative.Stirling
 import Mathlib.Data.Nat.Choose.Sum
@@ -202,5 +203,26 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
                 rw [hcard]
                 simpa [Nat.add_sub_add_right] using
                   sum_choose_mul_stirlingSecond_complement (s.card - 1) k
+
+
+/-- Coarsenings of `π` with exactly `k` blocks are counted by the Stirling number of the second
+kind on the block set of `π`. -/
+theorem card_coarsenings_parts_eq_stirlingSecond {s : Finset α}
+    (π : Finpartition s) (k : ℕ) :
+    Fintype.card
+        {σ : {σ : Finpartition s // π ≤ σ} // σ.1.parts.card = k} =
+      Nat.stirlingSecond π.parts.card k := by
+  classical
+  let e := coarseningsEquivBlockPartitions π
+  calc
+    Fintype.card
+        {σ : {σ : Finpartition s // π ≤ σ} // σ.1.parts.card = k} =
+        Fintype.card {Q : Finpartition π.parts // Q.parts.card = k} := by
+          apply Fintype.card_congr
+          refine Equiv.subtypeEquiv e ?_
+          intro σ
+          rw [card_parts_coarseningsEquivBlockPartitions]
+    _ = Nat.stirlingSecond π.parts.card k :=
+      card_parts_eq_stirlingSecond π.parts k
 
 end Finpartition
