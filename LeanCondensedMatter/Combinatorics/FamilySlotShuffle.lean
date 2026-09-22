@@ -29,6 +29,33 @@ structure FamilySlotShuffleTo (size : ι → ℕ) (total : ℕ) where
   slotEquiv : (Σ i : ι, Fin (size i)) ≃ Fin total
   strictMono : ∀ i, StrictMono (fun j => slotEquiv ⟨i, j⟩)
 
+/-- Number of ambient-order inversions in which a slot of a distinct block `j` occurs
+before a slot of block `i`. The diagonal is zero, so this records only inter-block inversions.
+The orientation is explicit so consumers can choose the block order supplied by their own semantics
+rather than imposing an order on the family index type here. -/
+noncomputable def FamilySlotShuffleTo.blockInversionCount {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i j : ι) : ℕ := by
+  classical
+  exact if i = j then 0
+    else
+      ∑ p : Fin (size i), ∑ q : Fin (size j),
+        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
+
+@[simp]
+theorem FamilySlotShuffleTo.blockInversionCount_self {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    shuffle.blockInversionCount i i = 0 := by
+  classical
+  simp [FamilySlotShuffleTo.blockInversionCount]
+
+theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) {i j : ι} (hij : i ≠ j) :
+    shuffle.blockInversionCount i j =
+      ∑ p : Fin (size i), ∑ q : Fin (size j),
+        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0 := by
+  classical
+  simp [FamilySlotShuffleTo.blockInversionCount, hij]
+
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
     {σ τ : FamilySlotShuffleTo size total}

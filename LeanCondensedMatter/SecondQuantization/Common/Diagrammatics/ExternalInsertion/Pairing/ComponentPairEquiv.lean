@@ -21,73 +21,15 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
-/-- The component-local leg embeddings, taken over every connected component, form an equivalence
-onto the full ambient flattened-leg enumeration. -/
-private noncomputable def ExternalInsertionDiagram.componentDiagramLegEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    (Σ B : d.componentPartition.parts,
-      Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
-        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) ≃
-      Fin (2 * (2 * S.card + E)) :=
-  Equiv.ofBijective
-    (fun x => d.componentDiagramLeg x.1 x.2)
-    (by
-      constructor
-      · rintro ⟨B, p⟩ ⟨C, q⟩ h
-        have hpB :
-            d.legInComponent (B : Finset (ExternalInsertionVertex E S))
-              (d.componentDiagramLeg B p) :=
-          (d.exists_componentDiagramLeg_eq_iff B _).1 ⟨p, rfl⟩
-        have hqC :
-            d.legInComponent (C : Finset (ExternalInsertionVertex E S))
-              (d.componentDiagramLeg C q) :=
-          (d.exists_componentDiagramLeg_eq_iff C _).1 ⟨q, rfl⟩
-        have hpC :
-            d.legInComponent (C : Finset (ExternalInsertionVertex E S))
-              (d.componentDiagramLeg B p) := by
-          simpa only [h] using hqC
-        have hBCval :
-            (B : Finset (ExternalInsertionVertex E S)) =
-              (C : Finset (ExternalInsertionVertex E S)) := by
-          unfold ExternalInsertionDiagram.legInComponent at hpB hpC
-          exact hpB.symm.trans hpC
-        have hBC : B = C := Subtype.ext hBCval
-        subst C
-        have hpq : p = q :=
-          (d.componentDiagramLegOrderEmbedding B).injective h
-        subst q
-        rfl
-      · intro leg
-        let B : d.componentPartition.parts :=
-          ⟨d.componentBlock (externalInsertionVertexOfLeg leg), by
-            unfold ExternalInsertionDiagram.componentBlock
-            exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
-        have hleg :
-            d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg := by
-          rfl
-        obtain ⟨p, hp⟩ := (d.exists_componentDiagramLeg_eq_iff B leg).2 hleg
-        exact ⟨⟨B, p⟩, hp⟩)
-
-@[simp]
-private theorem ExternalInsertionDiagram.componentDiagramLegEquiv_apply
+private theorem ExternalInsertionDiagram.componentLegShuffle_partner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
-    d.componentDiagramLegEquiv ⟨B, p⟩ = d.componentDiagramLeg B p :=
-  rfl
-
-private theorem ExternalInsertionDiagram.componentDiagramLegEquiv_partner
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
-    (p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
-      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
-    d.pairing.partner (d.componentDiagramLegEquiv ⟨B, p⟩) =
-      d.componentDiagramLegEquiv ⟨B, (d.restrictComponent B).pairing.partner p⟩ := by
-  simpa only [ExternalInsertionDiagram.componentDiagramLegEquiv_apply] using
+    d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
+      d.componentLegShuffle.slotEquiv ⟨B, (d.restrictComponent B).pairing.partner p⟩ := by
+  simpa only [ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply] using
     (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm
 
 /-- Component-local normalized pairs, over all connected components, are equivalent to the ambient
@@ -99,8 +41,8 @@ noncomputable def ExternalInsertionDiagram.componentPairEquiv
       d.pairing.NormalizedPair :=
   d.pairing.normalizedPairSigmaEquiv
     (fun B => (d.restrictComponent B).pairing)
-    d.componentDiagramLegEquiv
-    d.componentDiagramLegEquiv_partner
+    d.componentLegShuffle.slotEquiv
+    d.componentLegShuffle_partner
 
 @[simp]
 theorem ExternalInsertionDiagram.componentPairEquiv_apply
@@ -111,12 +53,12 @@ theorem ExternalInsertionDiagram.componentPairEquiv_apply
     (d.componentPairEquiv ⟨B, pr⟩).1 =
       (d.componentDiagramLeg B pr.1.1, d.componentDiagramLeg B pr.1.2) := by
   simpa only [ExternalInsertionDiagram.componentPairEquiv,
-    ExternalInsertionDiagram.componentDiagramLegEquiv_apply] using
+    ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply] using
     (Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
       d.pairing
       (fun C => (d.restrictComponent C).pairing)
-      d.componentDiagramLegEquiv
-      d.componentDiagramLegEquiv_partner
+      d.componentLegShuffle.slotEquiv
+      d.componentLegShuffle_partner
       (fun C => by
         change StrictMono (fun p => d.componentDiagramLeg C p)
         exact (d.componentDiagramLegOrderEmbedding C).strictMono)

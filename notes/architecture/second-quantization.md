@@ -187,10 +187,12 @@ external-sector ordering with the extracted interaction sector and the partner-i
 pairing to produce a standalone external-insertion diagram for any connected component.
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
-pairing partners. The canonical leg order makes this map an `OrderEmbedding`; the induced
-`componentNormalizedPairEmbedding` therefore preserves and reflects pairing crossings. The
-component leg embeddings jointly exhaust the ambient leg set, yielding `componentPairEquiv` from
-the dependent sum of component-local normalized pairs to all ambient normalized pairs. Unlike the
+pairing partners. The canonical leg order makes this map an `OrderEmbedding`; taken over all components these
+embeddings form `componentLegShuffle`, the order-preserving family shuffle onto the ambient leg
+set. Its generic block-inversion count is the canonical measure of inter-component leg exchange.
+The induced `componentNormalizedPairEmbedding` preserves and reflects pairing crossings, while
+`componentPairEquiv` identifies the dependent sum of component-local normalized pairs with all
+ambient normalized pairs. Unlike the
 pure-quartic case, distinct external-insertion components can interleave in the ambient leg order, so
 their crossing contribution is retained explicitly as `interComponentCrossingCount`; the global
 crossing count and exchange weight split into local component terms plus this residual factor. A
