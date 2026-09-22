@@ -94,7 +94,7 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
   rw [hparts, Finset.prod_insert hExternal]
 
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
-theorem interactionSector_component_unique
+theorem TwoPointDiagram.interactionSector_component_unique
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (v : ↥S) (B C : d.componentPartition.parts)
     (hvB : (v : Fin N) ∈ interactionSector
