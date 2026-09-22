@@ -61,6 +61,90 @@ theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legI
           d.componentPairEquiv_apply])
     B C hBC
 
+/-- The residual inter-component crossing parity is the total block-inversion parity of the
+canonical component-leg shuffle, relative to any explicit ordering of the connected components. -/
+theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (blockOrder :
+      d.componentPartition.parts ≃ Fin (Fintype.card d.componentPartition.parts)) :
+    d.interComponentCrossingCount % 2 =
+      d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 := by
+  classical
+  let cross := fun B C : d.componentPartition.parts =>
+    d.pairing.componentCrossingCount d.componentPairEquiv B C
+  let inv := fun B C : d.componentPartition.parts =>
+    d.componentLegInversionCount B C
+  let selected := fun B C : d.componentPartition.parts =>
+    if blockOrder B < blockOrder C then inv B C else 0
+  let offDiag := (Finset.univ : Finset d.componentPartition.parts).offDiag
+  have hpairCast (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+      (cross B C : ZMod 2) + (cross C B : ZMod 2) = (inv B C : ZMod 2) := by
+    have hmod := d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC
+    have hz :
+        ((cross B C + cross C B : ℕ) : ZMod 2) = (inv B C : ZMod 2) :=
+      (ZMod.natCast_eq_natCast_iff _ _ 2).2 hmod
+    simpa only [Nat.cast_add] using hz
+  have hzero :
+      (∑ BC ∈ offDiag,
+        ((cross BC.1 BC.2 : ZMod 2) - (selected BC.1 BC.2 : ZMod 2))) = 0 := by
+    refine Finset.sum_involution
+      (s := offDiag)
+      (f := fun BC =>
+        ((cross BC.1 BC.2 : ZMod 2) - (selected BC.1 BC.2 : ZMod 2)))
+      (fun BC _ => BC.swap) ?_ ?_ ?_ ?_
+    · rintro ⟨B, C⟩ hmem
+      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
+      simp only [Finset.mem_offDiag, Finset.mem_univ, true_and] at hmem
+      by_cases hlt : blockOrder B < blockOrder C
+      · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
+        have hz := hpairCast B C hmem
+        simp only [Prod.swap, selected, hlt, if_pos, hnlt, if_neg, Nat.cast_zero, sub_zero]
+        calc
+          (cross B C : ZMod 2) - (inv B C : ZMod 2) + (cross C B : ZMod 2) =
+              ((cross B C : ZMod 2) + (cross C B : ZMod 2)) - (inv B C : ZMod 2) := by
+            ring
+          _ = 0 := by rw [hz]; simp
+      · have hneOrder : blockOrder B ≠ blockOrder C := by
+          intro h
+          exact hmem (blockOrder.injective h)
+        have hrev : blockOrder C < blockOrder B := by
+          rcases lt_trichotomy (blockOrder B) (blockOrder C) with h | h | h
+          · exact absurd h hlt
+          · exact absurd h hneOrder
+          · exact h
+        have hz := hpairCast C B hmem.symm
+        simp only [Prod.swap, selected, hlt, if_neg, hrev, if_pos, Nat.cast_zero,
+          sub_zero]
+        calc
+          (cross B C : ZMod 2) + ((cross C B : ZMod 2) - (inv C B : ZMod 2)) =
+              ((cross C B : ZMod 2) + (cross B C : ZMod 2)) - (inv C B : ZMod 2) := by
+            ring
+          _ = 0 := by rw [hz]; simp
+    · rintro ⟨B, C⟩ hmem _
+      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
+      simp only [Finset.mem_offDiag, Finset.mem_univ, true_and] at hmem
+      intro hswap
+      exact hmem (congrArg Prod.fst hswap).symm
+    · rintro ⟨B, C⟩ hmem
+      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
+      change (C, B) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag
+      simpa only [Finset.mem_offDiag, Finset.mem_univ, true_and] using hmem.symm
+    · rintro ⟨B, C⟩ hmem
+      rfl
+  have hsum :
+      (∑ BC ∈ offDiag, (cross BC.1 BC.2 : ZMod 2)) =
+        ∑ BC ∈ offDiag, (selected BC.1 BC.2 : ZMod 2) := by
+    rw [Finset.sum_sub_distrib] at hzero
+    exact sub_eq_zero.mp hzero
+  change Nat.ModEq 2 d.interComponentCrossingCount
+    (d.componentLegShuffle.orderedBlockInversionCount blockOrder)
+  apply (ZMod.natCast_eq_natCast_iff _ _ 2).1
+  simpa [ExternalInsertionDiagram.interComponentCrossingCount,
+    FamilySlotShuffleTo.orderedBlockInversionCount,
+    ExternalInsertionDiagram.componentLegInversionCount,
+    cross, inv, selected, offDiag] using hsum
+
 private theorem ExternalInsertionDiagram.componentCrossingCount_self
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
