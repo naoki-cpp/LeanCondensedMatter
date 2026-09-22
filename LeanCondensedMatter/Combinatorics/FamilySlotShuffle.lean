@@ -1,4 +1,5 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fintype.Sigma
@@ -66,6 +67,29 @@ noncomputable def FamilySlotShuffleTo.orderedBlockInversionCount [Fintype ι]
   ∑ ij ∈ (Finset.univ : Finset ι).offDiag,
     if blockOrder ij.1 < blockOrder ij.2
     then shuffle.blockInversionCount ij.1 ij.2 else 0
+
+/-- Pointwise modular agreement of inter-block inversion counts transports to the total ordered
+inter-block inversion count for the same block order. -/
+theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq
+    [Fintype ι] {size₁ size₂ : ι → ℕ} {total₁ total₂ n : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total₁)
+    (τ : FamilySlotShuffleTo size₂ total₂)
+    (blockOrder : ι ≃ Fin (Fintype.card ι))
+    (h : ∀ i j, i ≠ j →
+      Nat.ModEq n (σ.blockInversionCount i j) (τ.blockInversionCount i j)) :
+    Nat.ModEq n
+      (σ.orderedBlockInversionCount blockOrder)
+      (τ.orderedBlockInversionCount blockOrder) := by
+  classical
+  unfold FamilySlotShuffleTo.orderedBlockInversionCount
+  refine Nat.ModEq.sum (n := n) ?_
+  intro ij hij
+  simp only [Finset.mem_offDiag] at hij
+  by_cases hlt : blockOrder ij.1 < blockOrder ij.2
+  · simp only [hlt, if_pos]
+    exact h ij.1 ij.2 hij.2.2
+  · simp only [hlt, if_false]
+    exact Nat.ModEq.refl 0
 
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
