@@ -25,7 +25,7 @@ private theorem ExternalInsertionDiagram.componentLegShuffle_partner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.componentPartition.parts)
-    (p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionSector
+    (p : Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
       d.componentLegShuffle.slotEquiv ⟨B, (d.restrictComponent B).pairing.partner p⟩ := by
