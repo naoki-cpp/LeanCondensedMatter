@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 
 set_option linter.style.header false
 
@@ -21,67 +20,6 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
-
-/-- The component-local leg embeddings, taken over every connected component, form the canonical
-order-preserving family shuffle onto the full ambient flattened-leg enumeration. -/
-noncomputable def ExternalInsertionDiagram.componentLegShuffle
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    FamilySlotShuffleTo
-      (fun B : d.componentPartition.parts =>
-        2 * (2 * (ExternalInsertionDiagram.interactionPart
-          (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))
-      (2 * (2 * S.card + E)) where
-  slotEquiv :=
-    Equiv.ofBijective
-      (fun x => d.componentDiagramLeg x.1 x.2)
-      (by
-        constructor
-        · rintro ⟨B, p⟩ ⟨C, q⟩ h
-          have hpB :
-              d.legInComponent (B : Finset (ExternalInsertionVertex E S))
-                (d.componentDiagramLeg B p) :=
-            (d.exists_componentDiagramLeg_eq_iff B _).1 ⟨p, rfl⟩
-          have hqC :
-              d.legInComponent (C : Finset (ExternalInsertionVertex E S))
-                (d.componentDiagramLeg C q) :=
-            (d.exists_componentDiagramLeg_eq_iff C _).1 ⟨q, rfl⟩
-          have hpC :
-              d.legInComponent (C : Finset (ExternalInsertionVertex E S))
-                (d.componentDiagramLeg B p) := by
-            simpa only [h] using hqC
-          have hBCval :
-              (B : Finset (ExternalInsertionVertex E S)) =
-                (C : Finset (ExternalInsertionVertex E S)) := by
-            unfold ExternalInsertionDiagram.legInComponent at hpB hpC
-            exact hpB.symm.trans hpC
-          have hBC : B = C := Subtype.ext hBCval
-          subst C
-          have hpq : p = q :=
-            (d.componentDiagramLegOrderEmbedding B).injective h
-          subst q
-          rfl
-        · intro leg
-          let B : d.componentPartition.parts :=
-            ⟨d.componentBlock (externalInsertionVertexOfLeg leg), by
-              unfold ExternalInsertionDiagram.componentBlock
-              exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
-          have hleg :
-              d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg := by
-            rfl
-          obtain ⟨p, hp⟩ := (d.exists_componentDiagramLeg_eq_iff B leg).2 hleg
-          exact ⟨⟨B, p⟩, hp⟩)
-  strictMono := fun B => (d.componentDiagramLegOrderEmbedding B).strictMono
-
-@[simp]
-theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
-    (p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
-      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
-    d.componentLegShuffle.slotEquiv ⟨B, p⟩ = d.componentDiagramLeg B p :=
-  rfl
 
 private theorem ExternalInsertionDiagram.componentLegShuffle_partner
     {S : Finset (Fin N)}
