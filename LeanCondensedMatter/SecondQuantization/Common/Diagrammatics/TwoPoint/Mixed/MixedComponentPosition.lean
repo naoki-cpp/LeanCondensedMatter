@@ -94,7 +94,7 @@ noncomputable def TwoPointDiagram.mixedExternalPositionEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.MixedComponentPosition τ τ' σ d.externalComponentPart ≃
-      Fin (2 * (2 * (TwoPointDiagram.interactionSector
+      Fin (2 * (2 * (interactionSector
         (d.externalComponent 0)).card + 1)) :=
   (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart).trans
     d.externalComponentLegEquiv.symm
@@ -106,7 +106,7 @@ noncomputable def TwoPointDiagram.mixedVacuumPositionEquiv {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
     (hVac : d.ComponentIsVacuum B) :
     d.MixedComponentPosition τ τ' σ B ≃
-      Fin (2 * (2 * (TwoPointDiagram.interactionSector
+      Fin (2 * (2 * (interactionSector
         (B : Finset (TwoPointVertex
           (Finset.univ : Finset (Fin n))))).card)) :=
   (d.mixedComponentPositionEquiv τ τ' σ B).trans
