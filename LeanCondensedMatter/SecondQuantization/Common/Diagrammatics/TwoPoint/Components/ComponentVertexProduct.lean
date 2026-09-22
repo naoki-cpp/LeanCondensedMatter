@@ -23,22 +23,22 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
     (w : InternalLabel → M) :
     (∏ v : ↥S, w (d.vertexLabel v)) =
       ∏ B : d.componentPartition.parts,
-        ∏ v : ↥(TwoPointDiagram.interactionPart
+        ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
-          w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
+          w (d.vertexLabel ⟨v.1, interactionSector_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
   calc
     (∏ v : ↥S, w (d.vertexLabel v)) =
         ∏ B : d.componentPartition.parts,
-          ∏ v : ↥(TwoPointDiagram.interactionPart
+          ∏ v : ↥(interactionSector
             (B : Finset (TwoPointVertex S))),
             w (d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) :=
       Fintype.prod_equiv_sigma d.interactionVertexComponentEquiv
         (fun v => w (d.vertexLabel v))
     _ = ∏ B : d.componentPartition.parts,
-        ∏ v : ↥(TwoPointDiagram.interactionPart
+        ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
-          w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
+          w (d.vertexLabel ⟨v.1, interactionSector_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
       apply Fintype.prod_congr
       intro B
@@ -52,10 +52,10 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
 theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     (-1 : ℂ) ^ S.card =
-      (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
+      (-1 : ℂ) ^ (interactionSector
         (d.externalComponent 0)).card *
         d.vacuumComponentParts.prod (fun B =>
-          (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
+          (-1 : ℂ) ^ (interactionSector
             (B : Finset (TwoPointVertex S))).card) := by
   have h := d.prod_vertexLabel_eq_prod_componentInteractionParts (fun _ => (-1 : ℂ))
   rw [d.prod_componentParts_eq_external_mul_prod_vacuum] at h
