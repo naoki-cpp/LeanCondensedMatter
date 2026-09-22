@@ -122,14 +122,15 @@ private theorem momentFromAtomCumulant_eq_atomMoment (S : Finset α) :
       have hpos : 0 < S.card := Finset.card_pos.mpr ⟨a, ha⟩
       omega
     rw [hcard]
-    simpa [Nat.add_sub_add_right] using atomCumulantCard_sum n
+    simpa [mul_assoc, Nat.add_sub_add_right] using atomCumulantCard_sum n
 
 /-- For a nonempty finite set, the Möbius coefficient from the discrete partition to the
 indiscrete partition is `(-1)^(n - 1) (n - 1)!`. -/
 theorem mu_bot_top_eq_factorial {S : Finset α} (hS : S ≠ ∅) :
     mu ℤ (⊥ : Finpartition S) ⊤ =
       (-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial := by
-  have hmoment : momentFromCumulant atomCumulant = atomMoment := by
+  have hmoment : momentFromCumulant (atomCumulant : Finset α → ℤ) =
+      (atomMoment : Finset α → ℤ) := by
     funext T
     exact momentFromAtomCumulant_eq_atomMoment T
   have hcard : S.card ≠ 0 :=
