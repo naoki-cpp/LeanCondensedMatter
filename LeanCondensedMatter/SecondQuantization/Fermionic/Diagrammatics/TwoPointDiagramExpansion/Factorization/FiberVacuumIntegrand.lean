@@ -87,7 +87,8 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
           (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p) =
         ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
           quarticLocalLegExternalFieldLabel
-            (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ := by
+            (Common.quarticLocalLeg
+              (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2)⟩ := by
     have hp :
         (Common.orderedQuarticLegEquiv
           ((Finset.univ : Finset (Fin n)) \ T).card).symm q = p :=
@@ -116,7 +117,8 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
   change timedFieldOperator ε
       ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
         quarticLocalLegExternalFieldLabel
-          (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ = _
+          (Common.quarticLocalLeg
+            (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2)⟩ = _
   rw [timedFieldOperator_quarticLocalLeg]
   rfl
 

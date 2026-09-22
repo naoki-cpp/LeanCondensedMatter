@@ -37,7 +37,7 @@ noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
     TwoPointTimedEvent n → List (TimedField Mode)
   | .inl e => [⟨twoPointExternalTimes τ τ' e, twoPointExternalLabels i j e⟩]
   | .inr v => List.ofFn fun l : Fin 4 =>
-      ⟨σ v, quarticLocalLegExternalFieldLabel (q v) l⟩
+      ⟨σ v, quarticLocalLegExternalFieldLabel (Common.quarticLocalLeg (q v) l)⟩
 
 omit [LinearOrder Mode] in
 private theorem twoPointTimedEventAtomicFields_length {n : ℕ} (i j : Mode)
@@ -61,7 +61,8 @@ private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
       rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
         List.map_ofFn]
       exact congrArg List.ofFn (funext fun l => by
-        simpa [Function.comp_def] using timedFieldOperator_quarticLocalLeg ε (σ v) (q v) l)
+        simpa [Function.comp_def, quarticLocalLegOperator, Common.quarticLocalLegOperator] using
+          timedFieldOperator_quarticLocalLeg ε (σ v) (Common.quarticLocalLeg (q v) l))
 
 /-- The complete mixed-time-ordered list of time-labelled atomic fields. -/
 noncomputable def mixedTimeOrderedAtomicFields {n : ℕ} (i j : Mode)
