@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
+import LeanCondensedMatter.Combinatorics.SetPartition.Stirling
 import Mathlib.Algebra.Polynomial.Coeff
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Combinatorics.Enumerative.Stirling
@@ -73,6 +74,79 @@ theorem replicaPolynomial_eval_nat_eq_sum_labelings
   rw [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
   simp [Fintype.card_fin, nsmul_eq_mul, mul_comm]
 
+
+
+
+private def fixedCardRefinementSigmaEquiv
+    {S : Finset α} (k : ℕ) :
+    (Σ σ : {σ : Finpartition S // σ.parts.card = k},
+      {ρ : Finpartition S // ρ ≤ σ.1}) ≃
+      Σ ρ : Finpartition S,
+        {σ : {σ : Finpartition S // ρ ≤ σ} // σ.1.parts.card = k} where
+  toFun x := ⟨x.2.1, ⟨⟨x.1.1, x.2.2⟩, x.1.2⟩⟩
+  invFun x := ⟨⟨x.2.1.1, x.2.2⟩, ⟨x.1, x.2.1.2⟩⟩
+  left_inv x := by
+    rcases x with ⟨⟨σ, hσ⟩, ⟨ρ, hρ⟩⟩
+    rfl
+  right_inv x := by
+    rcases x with ⟨ρ, ⟨⟨σ, hρ⟩, hσ⟩⟩
+    rfl
+
+/-- Summing products of moments over outer partitions with `k` blocks can be reindexed by the
+underlying fine partition.  The multiplicity of a fine partition is the Stirling number counting
+its `k`-block coarsenings. -/
+theorem sum_partitionProduct_momentFromCumulant_partsCard_eq
+    (κ : Finset α → R) (S : Finset α) (k : ℕ) :
+    (∑ σ : {σ : Finpartition S // σ.parts.card = k},
+        partitionProduct (momentFromCumulant κ) σ.1) =
+      ∑ ρ : Finpartition S,
+        (Nat.stirlingSecond ρ.parts.card k : R) * partitionProduct κ ρ := by
+  classical
+  have houter : ∀ σ : {σ : Finpartition S // σ.parts.card = k},
+      partitionProduct (momentFromCumulant κ) σ.1 =
+        ∑ ρ : {ρ : Finpartition S // ρ ≤ σ.1}, partitionProduct κ ρ.1 := by
+    intro σ
+    have hIic :
+        (∑ ρ : {ρ : Finpartition S // ρ ≤ σ.1}, partitionProduct κ ρ.1) =
+          ∑ ρ ∈ Finset.Iic σ.1, partitionProduct κ ρ := by
+      rw [← Finset.sum_coe_sort (Finset.Iic σ.1) (partitionProduct κ)]
+      refine Fintype.sum_equiv
+        (Equiv.subtypeEquivRight (fun ρ => Finset.mem_Iic (a := σ.1).symm))
+        (fun ρ : {ρ : Finpartition S // ρ ≤ σ.1} => partitionProduct κ ρ.1)
+        (fun ρ : {ρ : Finpartition S // ρ ∈ Finset.Iic σ.1} =>
+          partitionProduct κ ρ.1) fun x => ?_
+      rw [Equiv.subtypeEquivRight_apply]
+    rw [← sum_Iic_partitionProduct_eq κ σ.1, ← hIic]
+  calc
+    (∑ σ : {σ : Finpartition S // σ.parts.card = k},
+        partitionProduct (momentFromCumulant κ) σ.1) =
+        ∑ σ : {σ : Finpartition S // σ.parts.card = k},
+          ∑ ρ : {ρ : Finpartition S // ρ ≤ σ.1}, partitionProduct κ ρ.1 := by
+            apply Fintype.sum_congr
+            intro σ
+            exact houter σ
+    _ = ∑ x :
+        (Σ σ : {σ : Finpartition S // σ.parts.card = k},
+          {ρ : Finpartition S // ρ ≤ σ.1}), partitionProduct κ x.2.1 := by
+          rw [Fintype.sum_sigma]
+    _ = ∑ x :
+        (Σ ρ : Finpartition S,
+          {σ : {σ : Finpartition S // ρ ≤ σ} // σ.1.parts.card = k}),
+          partitionProduct κ x.1 := by
+          refine Fintype.sum_equiv (fixedCardRefinementSigmaEquiv (S := S) k)
+            (fun x => partitionProduct κ x.2.1)
+            (fun x => partitionProduct κ x.1) ?_
+          intro x
+          rfl
+    _ = ∑ ρ : Finpartition S,
+        ∑ _ : {σ : {σ : Finpartition S // ρ ≤ σ} // σ.1.parts.card = k},
+          partitionProduct κ ρ := by
+          rw [Fintype.sum_sigma]
+    _ = ∑ ρ : Finpartition S,
+        (Nat.stirlingSecond ρ.parts.card k : R) * partitionProduct κ ρ := by
+          apply Fintype.sum_congr
+          intro ρ
+          simp [card_coarsenings_parts_eq_stirlingSecond, nsmul_eq_mul]
 
 
 section Ring
