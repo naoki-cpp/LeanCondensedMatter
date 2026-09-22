@@ -130,7 +130,7 @@ private theorem inv_factorial_mul_coeff_one_descPochhammer [CharZero R] (k : ℕ
       simp [Nat.factorial_succ, pow_succ, div_eq_mul_inv]
       have hkfac : (k.factorial : R) ≠ 0 :=
         Nat.cast_ne_zero.mpr k.factorial_ne_zero
-      field_simp [hkfac] <;> ring
+      field_simp [hkfac]
 
 /-- The coefficient linear in the formal replica count is the factorial-normalized coefficient
 of the formal logarithm. This is the algebraic replica identity, with no analytic continuation in
@@ -163,6 +163,7 @@ theorem replicaCoeffPolynomial_coeff_one [CharZero R]
   rw [← inv_factorial_mul_coeff_one_descPochhammer (R := R) k]
   have hkfac : (k.factorial : R) ≠ 0 :=
     Nat.cast_ne_zero.mpr k.factorial_ne_zero
-  field_simp [hkfac] <;> ring
+  field_simp [hkfac]
+  ring
 
 end PowerSeries
