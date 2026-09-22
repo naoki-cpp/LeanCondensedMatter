@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
