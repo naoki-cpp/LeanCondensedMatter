@@ -248,17 +248,19 @@ noncomputable def ExternalInsertionDiagram.componentExternalShuffle
   slotEquiv :=
     (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
       (d.externalPartOrderIso B).toEquiv).trans <|
-      (d.componentPartition.equivSigmaSubfinsets
-        (Finset.univ : Finset (Fin (2 * E)))
-        (fun e => (Sum.inl e.1 : ExternalInsertionVertex E S))
-        (fun _ => Finset.mem_univ _)
-        (fun B => ExternalInsertionDiagram.externalPart
-          (B : Finset (ExternalInsertionVertex E S)))
-        (fun _ => Finset.subset_univ _)
-        (fun B e => ExternalInsertionDiagram.mem_externalPart
-          (B : Finset (ExternalInsertionVertex E S)) e.1)).symm |>.trans
-      (Equiv.subtypeUnivEquiv (fun e : Fin (2 * E) => Finset.mem_univ e))
-  strictMono := fun B _ _ hef =>
+      ((Equiv.subtypeUnivEquiv
+        (fun e : Fin (2 * E) => Finset.mem_univ e)).symm.trans <|
+        d.componentPartition.equivSigmaSubfinsets
+          (Finset.univ : Finset (Fin (2 * E)))
+          (fun e => (Sum.inl (e : Fin (2 * E)) :
+            ExternalInsertionVertex E S))
+          (fun _ => Finset.mem_univ _)
+          (fun B => ExternalInsertionDiagram.externalPart
+            (B : Finset (ExternalInsertionVertex E S)))
+          (fun _ => Finset.subset_univ _)
+          (fun B e => ExternalInsertionDiagram.mem_externalPart
+            (B : Finset (ExternalInsertionVertex E S)) e)).symm
+  strictMono := fun B e f hef =>
     (d.externalPartOrderIso B).strictMono hef
 
 @[simp]
@@ -268,7 +270,7 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
     (B : d.componentPartition.parts)
     (e : Fin (2 * d.externalPairCount B)) :
     d.componentExternalShuffle.slotEquiv ⟨B, e⟩ =
-      (d.externalPartOrderIso B e).1 :=
+      (d.externalPartOrderIso B e).1 := by
   rfl
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
