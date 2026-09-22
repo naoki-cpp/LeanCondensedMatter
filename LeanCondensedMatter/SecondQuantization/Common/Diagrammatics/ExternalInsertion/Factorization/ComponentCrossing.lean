@@ -48,7 +48,7 @@ theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legI
       d.componentLegInversionCount B C % 2 := by
   rw [← d.pairing.componentGeometricCrossingCount_eq_oriented_add d.componentPairEquiv B C]
   simpa [ExternalInsertionDiagram.componentLegInversionCount,
-    FamilySlotShuffleTo.blockInversionCount, hBC,
+    d.componentLegShuffle.blockInversionCount_of_ne hBC,
     ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply] using
     (d.pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
       d.componentPairEquiv
