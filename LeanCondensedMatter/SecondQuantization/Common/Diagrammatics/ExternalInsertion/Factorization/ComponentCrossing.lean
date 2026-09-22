@@ -28,6 +28,40 @@ noncomputable def ExternalInsertionDiagram.interComponentCrossingCount
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) : ℕ :=
   d.pairing.interComponentCrossingCount d.componentPairEquiv
 
+
+/-- Number of ambient leg-order inversions from component `C` across component `B`, measured
+through the canonical component-local leg embeddings. -/
+noncomputable def ExternalInsertionDiagram.componentLegInversionCount
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.componentPartition.parts) : ℕ :=
+  ∑ p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
+      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)),
+    ∑ q : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
+      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C)),
+      if d.componentDiagramLeg C q < d.componentDiagramLeg B p then 1 else 0
+
+/-- For distinct components, the parity of the two oriented crossing counts is exactly the parity
+of the canonical ambient leg inversions between those components. -/
+theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+    (d.pairing.componentCrossingCount d.componentPairEquiv B C +
+      d.pairing.componentCrossingCount d.componentPairEquiv C B) % 2 =
+      d.componentLegInversionCount B C % 2 := by
+  rw [← d.pairing.componentGeometricCrossingCount_eq_oriented_add d.componentPairEquiv B C]
+  exact d.pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+    d.componentPairEquiv
+    (fun D => (d.restrictComponent D).pairing.pairEndpointEquiv)
+    (fun D p => d.componentDiagramLeg D p)
+    (fun D p k => by
+      fin_cases k <;>
+        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
+          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
+          d.componentPairEquiv_apply])
+    B C hBC
+
 private theorem ExternalInsertionDiagram.componentCrossingCount_self
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
