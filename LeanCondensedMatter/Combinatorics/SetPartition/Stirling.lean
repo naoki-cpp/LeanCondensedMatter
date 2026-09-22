@@ -97,42 +97,6 @@ private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
   rw [h]
   exact sum_choose_mul_stirlingSecond n k
 
-private theorem card_parts_distinguishedBlockEquiv_symm
-    {s : Finset α} {a : α} (ha : a ∈ s)
-    (x : Σ B : BlockContaining s a, Finpartition (s \ B.1)) :
-    ((distinguishedBlockEquiv s a ha).symm x).parts.card = x.2.parts.card + 1 := by
-  rcases x with ⟨B, Q⟩
-  change
-    (Q.extend (Finset.ne_empty_of_mem B.2.2) disjoint_sdiff_self_left
-      (Finset.sdiff_union_of_subset B.2.1)).parts.card = Q.parts.card + 1
-  exact card_extend Q B.1 s
-
-private def subtypeSigmaSndEquiv {ι : Type*} {β : ι → Type*}
-    (q : (i : ι) → β i → Prop) :
-    {x : Σ i, β i // q x.1 x.2} ≃ Σ i, {b : β i // q i b} where
-  toFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
-  invFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
-  left_inv x := by
-    rcases x with ⟨⟨i, b⟩, hb⟩
-    rfl
-  right_inv x := by
-    rcases x with ⟨i, ⟨b, hb⟩⟩
-    rfl
-
-private def partsCardSuccEquiv
-    {s : Finset α} {a : α} (ha : a ∈ s) (k : ℕ) :
-    {P : Finpartition s // P.parts.card = k + 1} ≃
-      Σ B : BlockContaining s a,
-        {Q : Finpartition (s \ B.1) // Q.parts.card = k} := by
-  let e := distinguishedBlockEquiv s a ha
-  refine (Equiv.subtypeEquiv e ?_).trans
-    (subtypeSigmaSndEquiv
-      (fun B : BlockContaining s a => fun Q : Finpartition (s \ B.1) => Q.parts.card = k))
-  intro P
-  have hcard : P.parts.card = (e P).2.parts.card + 1 := by
-    simpa [e] using card_parts_distinguishedBlockEquiv_symm ha (e P)
-  omega
-
 /-- Finite partitions with exactly `k` blocks are counted by the Stirling number of the second
 kind. -/
 theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
