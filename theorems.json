@@ -3902,6 +3902,80 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total) {i j : ι},\n  i ≠ j →\n    shuffle.blockInversionCount i j = ∑ p, ∑ q, if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
+    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} (shuffle : Combinatorics.FamilySlotShuffleTo size total) (i : ι),\n  shuffle.blockInversionCount i i = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.FamilySlotShuffleTo.blockInversionCount_self",
+    "module": "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {size : ι → ℕ} {total : ℕ} {σ τ : Combinatorics.FamilySlotShuffleTo size total},\n  σ.slotEquiv = τ.slotEquiv → σ = τ",
     "standardAxioms": [
       "Quot.sound",
@@ -7593,7 +7667,7 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -7615,7 +7689,7 @@
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "compiledConsumerCount": 17,
     "axioms": [
@@ -8173,13 +8247,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -8295,7 +8369,7 @@
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [],
@@ -8311,7 +8385,7 @@
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 11,
@@ -12423,7 +12497,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A ∘ₗ B) =\n    ConservationLaw.linearCommutator M A ∘ₗ B + A ∘ₗ ConservationLaw.linearCommutator M B",
     "standardAxioms": [
       "Classical.choice",
@@ -12431,7 +12505,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -12442,18 +12516,14 @@
     "docString": "Leibniz rule for a commutator with a composition on the right:\n`[M, A B] = [M,A] B + A [M,B]`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
+    "dependents": [],
     "dependencies": [
       "LinearMap.zetaCommutator_comp_right"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12537,206 +12607,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (ConservationLaw.orbitalAngularMomentumZ X Y Px Py) =\n    ConservationLaw.linearCommutator M X ∘ₗ Py + X ∘ₗ ConservationLaw.linearCommutator M Py -\n      (ConservationLaw.linearCommutator M Y ∘ₗ Px + Y ∘ₗ ConservationLaw.linearCommutator M Px)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ",
-    "module": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "externalAxioms": [],
-    "docString": "Expansion of a localization commutator with algebraic orbital angular momentum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
-    ],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_comp_right",
-      "ConservationLaw.linearCommutator_sub_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (ℏ : ℝ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = (Complex.I * ↑ℏ) • Dx →\n        ConservationLaw.linearCommutator M Py = (Complex.I * ↑ℏ) • Dy →\n          ConservationLaw.linearCommutator M (ConservationLaw.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ ((Complex.I * ↑ℏ) • Dy) - Y ∘ₗ ((Complex.I * ↑ℏ) • Dx)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_continuum_sign",
-    "module": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "externalAxioms": [],
-    "docString": "Continuum-sign specialization for `Pᵢ = -i ℏ ∂ᵢ`:\n`[M_f,L_z] = X (iℏ D_y) - Y (iℏ D_x)` once the momentum commutators have been identified with\nmultiplication by the derivatives of the localizer. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "directWrapperOf": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      (ConservationLaw.linearCommutator M (ConservationLaw.orbitalAngularMomentumZ X Y Px Py) ≠ 0 ↔\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px ≠ 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
-    "module": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "externalAxioms": [],
-    "docString": "Exact nonvanishing criterion under position-localizer commutation.\n\nThis makes the obstruction explicit: continuum-like `L_z` fails to commute with localization exactly\nwhen the derivative-localization combination on the right is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M (ConservationLaw.orbitalAngularMomentumZ X Y Px Py) =\n        X ∘ₗ ConservationLaw.linearCommutator M Py - Y ∘ₗ ConservationLaw.linearCommutator M Px",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_commutes_position",
-    "module": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "externalAxioms": [],
-    "docString": "If localization commutes with position, its orbital commutator is controlled entirely by the\nmomentum-localization commutators:\n\n`[M,L_z] = X [M,Pᵧ] - Y [M,Pₓ]`.\n",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
-    ],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_ne_zero_iff",
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M X Y Px Py Dx Dy : V →ₗ[ℂ] V) (c : ℂ),\n  ConservationLaw.linearCommutator M X = 0 →\n    ConservationLaw.linearCommutator M Y = 0 →\n      ConservationLaw.linearCommutator M Px = c • Dx →\n        ConservationLaw.linearCommutator M Py = c • Dy →\n          ConservationLaw.linearCommutator M (ConservationLaw.orbitalAngularMomentumZ X Y Px Py) =\n            X ∘ₗ (c • Dy) - Y ∘ₗ (c • Dx)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_derivative_localizers",
-    "module": "LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum",
-    "externalAxioms": [],
-    "docString": "Specialization when the momentum-localization commutators are represented by supplied\n\"derivative localizer\" operators `Dx` and `Dy` with a common scalar coefficient `c`.\n\nFor continuum momentum `Pᵢ = -i ℏ ∂ᵢ`, the physical coefficient is `c = i ℏ` and `Di` is\nmultiplication by `∂ᵢ f`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
-    ],
-    "dependencies": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_of_commutes_position"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ_continuum_sign"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12833,7 +12703,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (M A B : V →ₗ[ℂ] V),\n  ConservationLaw.linearCommutator M (A - B) =\n    ConservationLaw.linearCommutator M A - ConservationLaw.linearCommutator M B",
     "standardAxioms": [
       "Classical.choice",
@@ -12841,7 +12711,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -12852,16 +12722,12 @@
     "docString": "A commutator is additive over subtraction in its second argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.linearCommutator_orbitalAngularMomentumZ"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25677,6 +25543,80 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ) (C : Label), LinearMap.operatorPeelSum operator exchangeCoeff ζ C [] = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearMap.operatorPeelSum_nil",
+    "module": "LeanCondensedMatter.Analysis.Operator.ExchangePeel",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), operator C ∘ₗ operator D = exchangeCoeff C D • LinearMap.id + ζ • operator D ∘ₗ operator C) →\n    ∀ (C : Label) (l : List Label),\n      operator C ∘ₗ (List.map operator l).prod =\n        LinearMap.operatorPeelSum operator exchangeCoeff ζ C l + ζ ^ l.length • (List.map operator l).prod ∘ₗ operator C",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearMap.operator_comp_prod_eq_operatorPeelSum",
+    "module": "LeanCondensedMatter.Analysis.Operator.ExchangePeel",
+    "externalAxioms": [],
+    "docString": "Repeatedly apply a scalar exchange relation while pushing one endomorphism through a finite\nordered product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {V : Type u_1} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (ζ : ℂ) (A B C : V →ₗ[ℂ] V),\n  LinearMap.zetaCommutator ζ (A + B) C = LinearMap.zetaCommutator ζ A C + LinearMap.zetaCommutator ζ B C",
     "standardAxioms": [
       "Classical.choice",
@@ -31698,6 +31638,44 @@
       "SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {R : Type u_1} [inst : Field R] [inst_1 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (m : ℕ), (Z.replicaCoeffPolynomial m).coeff 1 = ↑m.factorial * (PowerSeries.coeff m) Z.logOf",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "PowerSeries.replicaCoeffPolynomial_coeff_one",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Replica",
+    "externalAxioms": [],
+    "docString": "The coefficient linear in the formal replica count is the factorial-normalized coefficient\nof the formal logarithm. This is the algebraic replica identity, with no analytic continuation in\nthe replica number. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.coeff_sub_one_pow_eq_zero_of_lt",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.inv_factorial_mul_coeff_one_descPochhammer"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82838,7 +82816,7 @@
     "name": "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
     "externalAxioms": [],
-    "docString": "Concrete free bosonic fields satisfy the scalar exchange relation used by the Common peel. ",
+    "docString": "Concrete free bosonic fields satisfy the scalar relation used by the generic exchange peel. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -82890,8 +82868,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue",
-      "SecondQuantization.Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum"
+      "LinearMap.operator_comp_prod_eq_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_operator_eq_exchangeValue"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -89845,80 +89823,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (contraction : Label → Label → ℂ) (ζ : ℂ) (C : Label),\n  SecondQuantization.Common.BlochDeDominicis.operatorPeelSum operator contraction ζ C [] = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operatorPeelSum_nil",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : _root_.Module ℂ M] (operator : Label → M →ₗ[ℂ] M)\n  (contraction : Label → Label → ℂ) (ζ : ℂ),\n  (∀ (C D : Label), operator C ∘ₗ operator D = contraction C D • LinearMap.id + ζ • operator D ∘ₗ operator C) →\n    ∀ (C : Label) (l : List Label),\n      operator C ∘ₗ (List.map operator l).prod =\n        SecondQuantization.Common.BlochDeDominicis.operatorPeelSum operator contraction ζ C l +\n          ζ ^ l.length • (List.map operator l).prod ∘ₗ operator C",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.operator_comp_prod_eq_operatorPeelSum",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.OperatorPeel",
-    "externalAxioms": [],
-    "docString": "Repeated scalar exchange through an arbitrary tail. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (s : SecondQuantization.Common.Statistics) {a b : ℕ}, a % 2 = b % 2 → ↑s.zetaInt ^ a = ↑s.zetaInt ^ b",
     "standardAxioms": [
@@ -90078,13 +89982,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -90117,17 +90021,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator",
       "SecondQuantization.Common.exchangeCommutator_annihilate_create_self",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.exchangeCommutator_create_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator",
       "SecondQuantization.Common.exchangeCommutator_annihilate_create_self",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate",
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.exchangeCommutator_create_annihilate"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -90160,13 +90064,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -90200,6 +90104,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
       "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentPairEquiv_apply"
@@ -90239,7 +90144,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
@@ -90250,9 +90155,44 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts)\n  (p :\n    Fin\n      (2 * (2 * (SecondQuantization.Common.ExternalInsertionDiagram.interactionPart ↑B).card + d.externalPairCount B))),\n  d.componentLegShuffle.slotEquiv ⟨B, p⟩ = d.componentDiagramLeg B p",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90401,7 +90341,7 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91373,15 +91313,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -91414,17 +91354,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -91708,7 +91648,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.componentPartition_reassemble",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": "The component partition of a reassembled family is the original partition. ",
     "directWrapperTargetModule": null,
@@ -91718,7 +91658,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv.0.SecondQuantization.Common.QuarticDiagram.componentFamily_reassemble_heq"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91969,7 +91909,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
@@ -91982,7 +91922,7 @@
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -92016,16 +91956,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -92059,7 +91999,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_componentDiagramLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
       "SecondQuantization.Common.localLegOfLeg_legOfVertexLocal"
@@ -92068,7 +92008,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_componentDiagramLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -92443,7 +92383,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": "Reassembling a diagram's connected component restrictions recovers the diagram. ",
     "directWrapperTargetModule": null,
@@ -92453,8 +92393,8 @@
       "Combinatorics.PairingOn.ext",
       "SecondQuantization.Common.QuarticDiagram.ext",
       "SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92577,7 +92517,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92585,7 +92525,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -92612,7 +92552,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": "Restricting a reassembled diagram to one partition block recovers that block's diagram. ",
     "directWrapperTargetModule": null,
@@ -92622,8 +92562,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.ext",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92793,8 +92733,8 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
@@ -92805,8 +92745,8 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -92841,8 +92781,8 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.restrict_partner_val",
@@ -92853,8 +92793,8 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -92928,7 +92868,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal"
@@ -92938,7 +92878,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -93066,6 +93006,50 @@
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode] (s : SecondQuantization.Common.Statistics)\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config]\n  (a b : SecondQuantization.Common.QuarticLocalLeg Mode),\n  SecondQuantization.Common.exchangeCommutator s\n      (a.operator (SecondQuantization.Common.ExchangeAlgebra.create s)\n        (SecondQuantization.Common.ExchangeAlgebra.annihilate s))\n      (b.operator (SecondQuantization.Common.ExchangeAlgebra.create s)\n        (SecondQuantization.Common.ExchangeAlgebra.annihilate s)) =\n    SecondQuantization.Common.QuarticLocalLeg.exchangeCoeff s a b • LinearMap.id",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange",
+    "externalAxioms": [],
+    "docString": "Two quartic local legs have a scalar exchange bracket determined by statistics and leg semantics. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExchangeAlgebra.annihilate_annihilate",
+      "SecondQuantization.Common.ExchangeAlgebra.annihilate_create",
+      "SecondQuantization.Common.ExchangeAlgebra.create_create",
+      "SecondQuantization.Common.exchangeCommutator_create_annihilate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101383,7 +101367,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_swap_of_sq_eq_one",
@@ -101393,51 +101377,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode] (s : SecondQuantization.Common.Statistics)\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config]\n  (q q' : SecondQuantization.Common.QuarticVertexLabel Mode) (l l' : Fin 4),\n  SecondQuantization.Common.exchangeCommutator s\n      (SecondQuantization.Common.quarticLocalLegOperator (SecondQuantization.Common.ExchangeAlgebra.create s)\n        (SecondQuantization.Common.ExchangeAlgebra.annihilate s) q l)\n      (SecondQuantization.Common.quarticLocalLegOperator (SecondQuantization.Common.ExchangeAlgebra.create s)\n        (SecondQuantization.Common.ExchangeAlgebra.annihilate s) q' l') =\n    SecondQuantization.Common.quarticLocalLegExchangeCoeff s q q' l l' • LinearMap.id",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange",
-    "externalAxioms": [],
-    "docString": "Two local quartic legs have a scalar exchange bracket determined by statistics and leg semantics. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExchangeAlgebra.annihilate_annihilate",
-      "SecondQuantization.Common.ExchangeAlgebra.annihilate_create",
-      "SecondQuantization.Common.ExchangeAlgebra.create_create",
-      "SecondQuantization.Common.exchangeCommutator_create_annihilate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -104974,14 +104914,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -111455,16 +111395,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -134468,7 +134408,7 @@
     ],
     "dependencies": [
       "LinearMap.zetaCommutator_smul_smul",
-      "SecondQuantization.Common.exchangeCommutator_quarticLocalLegOperator",
+      "SecondQuantization.Common.QuarticLocalLeg.exchangeCommutator_operator",
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul"
     ],
     "crossModuleDirectWrapper": false,
@@ -134829,8 +134769,8 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition.0.SimpleGraph.componentSetoidOn_rel_iff_reachable"
@@ -134841,8 +134781,8 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "SecondQuantization.Common.interactionPart_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -138624,6 +138564,45 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {R : Type u_1} [inst : Field R] (k : ℕ), (descPochhammer R (k + 1)).coeff 1 = (-1) ^ k * ↑k.factorial",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.coeff_one_descPochhammer_succ",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Replica",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.inv_factorial_mul_coeff_one_descPochhammer"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.inv_factorial_mul_coeff_one_descPochhammer"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Field R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 → ∀ {m k : ℕ}, m < k → (PowerSeries.coeff m) ((Z - 1) ^ k) = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -138631,7 +138610,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -138643,15 +138622,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "PowerSeries.replicaCoeffPolynomial_coeff_one",
       "PowerSeries.replicaCoeffPolynomial_eval_nat"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "PowerSeries.replicaCoeffPolynomial_coeff_one",
       "PowerSeries.replicaCoeffPolynomial_eval_nat"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138689,6 +138670,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "PowerSeries.replicaCoeffPolynomial_eval_nat"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_1} [inst : Field R] [inst_1 : CharZero R] (k : ℕ),\n  (↑k.factorial)⁻¹ * (descPochhammer R k).coeff 1 = (PowerSeries.coeff k) (PowerSeries.log R)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.inv_factorial_mul_coeff_one_descPochhammer",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Replica",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "PowerSeries.replicaCoeffPolynomial_coeff_one"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.coeff_one_descPochhammer_succ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "PowerSeries.replicaCoeffPolynomial_coeff_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -148665,43 +148687,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts)\n  (p :\n    Fin\n      (2 * (2 * (SecondQuantization.Common.ExternalInsertionDiagram.interactionPart ↑B).card + d.externalPairCount B))),\n  (SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv✝ d) ⟨B, p⟩ = d.componentDiagramLeg B p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts)\n  (p :\n    Fin\n      (2 * (2 * (SecondQuantization.Common.ExternalInsertionDiagram.interactionPart ↑B).card + d.externalPairCount B))),\n  d.pairing.partner ((SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv✝ d) ⟨B, p⟩) =\n    (SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv✝ d)\n      ⟨B, (d.restrictComponent B).pairing.partner p⟩",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.componentPartition.parts)\n  (p :\n    Fin\n      (2 * (2 * (SecondQuantization.Common.ExternalInsertionDiagram.interactionPart ↑B).card + d.externalPairCount B))),\n  d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =\n    d.componentLegShuffle.slotEquiv ⟨B, (d.restrictComponent B).pairing.partner p⟩",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148713,7 +148700,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLegEquiv_partner",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
     "externalAxioms": [],
     "docString": null,
@@ -148960,14 +148947,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
@@ -148976,7 +148963,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149002,23 +148989,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149044,22 +149031,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149085,20 +149072,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149124,23 +149111,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "dependencies": [
       "SimpleGraph.mem_componentBlockOn",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149166,22 +149153,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -149207,20 +149194,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149246,24 +149233,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149289,8 +149276,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149299,8 +149286,8 @@
       "SecondQuantization.Common.QuarticDiagram.componentPartition_reassemble"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149331,23 +149318,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "dependencies": [
       "SimpleGraph.mem_componentBlockOn",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_eq_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149373,8 +149360,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149394,8 +149381,8 @@
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
       "SecondQuantization.Common.localLegOfLeg_legOfVertexLocal",
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149426,8 +149413,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_vertexLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149465,20 +149452,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149504,14 +149491,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.sigmaCongrRight_partner",
@@ -149520,7 +149507,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149546,22 +149533,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149587,22 +149574,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149628,23 +149615,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_same_part"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149670,8 +149657,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149683,8 +149670,8 @@
       "Combinatorics.PairingOn.ext",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149715,8 +149702,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_vertexLabel",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -149725,7 +149712,7 @@
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_subtypeSubtypeEquivSubtype_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149756,22 +149743,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149797,20 +149784,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_symm_equivSigmaParts_snd",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
