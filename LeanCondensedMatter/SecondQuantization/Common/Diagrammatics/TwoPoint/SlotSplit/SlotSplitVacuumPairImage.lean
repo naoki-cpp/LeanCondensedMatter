@@ -26,7 +26,7 @@ abbrev TwoPointDiagram.MixedVacuumPair
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) :=
   {pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair //
-    d.mixedPairComponent τ τ' σ pr ∈ d.vacuumComponentParts}
+    d.mixedPairComponent τ τ' σ pr ∈ (vacuumComponentParts d.vertexGraph)}
 
 /-- The first endpoint of an embedded quartic vacuum pair lies in the ambient component generated
 by the corresponding right-side quartic vertex. -/
@@ -43,9 +43,9 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
     d.mixedPairComponent τ τ' σ
         (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
           T ext vac τ τ' σ hσ pr) =
-      ⟨d.componentBlock (slotSplitVacuumVertex (vertexOfLeg q)), by
-        unfold TwoPointDiagram.componentBlock
-        exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩ := by
+      ⟨d.vertexGraph.componentBlock (slotSplitVacuumVertex (vertexOfLeg q)),
+        d.vertexGraph.componentBlock_mem_componentPartition
+          (slotSplitVacuumVertex (vertexOfLeg q))⟩ := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let p := pr.1.1
   let q := orderedLegToDiagramLeg
@@ -79,13 +79,13 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
         slotSplitVacuumVertex (vertexOfLeg q) := by
     rw [hleg, twoPointVertexOfLeg_slotLegSplitting_inr_exact]
   apply Subtype.ext
-  change d.componentBlock
+  change d.vertexGraph.componentBlock
       (twoPointVertexOfLeg
         (mixedTimeAmbientPositionEquiv τ τ' σ
           (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
             T ext vac τ τ' σ hσ pr).1.1)) = _
   rw [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply]
-  exact congrArg d.componentBlock hvertex
+  exact congrArg d.vertexGraph.componentBlock hvertex
 
 /-- Every normalized pair from the standalone quartic vacuum piece belongs to an ambient vacuum
 component after reassembly. -/
@@ -99,13 +99,13 @@ private theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_mem_vac
     let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
     d.mixedPairComponent τ τ' σ
         (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-          T ext vac τ τ' σ hσ pr) ∈ d.vacuumComponentParts := by
+          T ext vac τ τ' σ hσ pr) ∈ (vacuumComponentParts d.vertexGraph) := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let q := orderedLegToDiagramLeg
     ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
   change d.mixedPairComponent τ τ' σ
       (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-        T ext vac τ τ' σ hσ pr) ∈ d.vacuumComponentParts
+        T ext vac τ τ' σ hσ pr) ∈ (vacuumComponentParts d.vertexGraph)
   rw [TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
   exact componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
@@ -136,7 +136,7 @@ ambient vacuum components. -/
 noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (Σ B : ↥d.vacuumComponentParts, d.MixedComponentPair τ τ' σ B.1) ≃
+    (Σ B : ↥(vacuumComponentParts d.vertexGraph), d.MixedComponentPair τ τ' σ B.1) ≃
       d.MixedVacuumPair τ τ' σ where
   toFun x :=
     ⟨x.2.1, by
@@ -146,7 +146,7 @@ noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
     ⟨⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩, ⟨pr.1, rfl⟩⟩
   left_inv := by
     rintro ⟨B, pr⟩
-    let B' : ↥d.vacuumComponentParts :=
+    let B' : ↥(vacuumComponentParts d.vertexGraph) :=
       ⟨d.mixedPairComponent τ τ' σ pr.1, by
         rw [pr.2]
         exact B.2⟩
@@ -166,12 +166,12 @@ noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
 in that component. -/
 theorem TwoPointDiagram.card_mixedVacuumComponentPair
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : ↥d.vacuumComponentParts) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : ↥(vacuumComponentParts d.vertexGraph)) :
     Fintype.card (d.MixedComponentPair τ τ' σ B.1) =
       2 * (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
-  let hVac : d.ComponentIsVacuum B.1 :=
-    (d.mem_vacuumComponentParts B.1).1 B.2
+  let hVac : ComponentIsVacuum (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
+    (mem_vacuumComponentParts d.vertexGraph B.1).1 B.2
   rw [Fintype.card_congr (d.mixedVacuumComponentPairEquiv τ τ' σ B.1 hVac)]
   simpa using (d.restrictedVacuumPairing B.1 hVac).card_normalizedPair
 
@@ -183,19 +183,19 @@ private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.IsExternallyConnected) :
     let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    (∑ B : ↥d.vacuumComponentParts,
+    (∑ B : ↥(vacuumComponentParts d.vertexGraph),
       (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card) =
       ((Finset.univ : Finset (Fin n)) \ T).card := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let e := slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext vac hext
-  let F : ↥d.vacuumComponentParts → ℕ := fun B =>
+  let F : ↥(vacuumComponentParts d.vertexGraph) → ℕ := fun B =>
     (interactionSector
       (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card
-  change (∑ B : ↥d.vacuumComponentParts, F B) = _
+  change (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) = _
   calc
-    (∑ B : ↥d.vacuumComponentParts, F B) =
+    (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) =
         ∑ C : vac.componentPartition.parts, F (e C) :=
       (Equiv.sum_comp e F).symm
     _ = ∑ C : vac.componentPartition.parts, (C : Finset (Fin n)).card := by

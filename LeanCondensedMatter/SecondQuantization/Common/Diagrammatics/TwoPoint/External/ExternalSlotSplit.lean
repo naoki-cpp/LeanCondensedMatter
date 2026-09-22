@@ -27,20 +27,20 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 noncomputable def TwoPointDiagram.externalSlotLegSplitting {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     Combinatorics.PositionSplitting
-      (2 * (interactionSector (d.externalComponent 0)).card + 1)
-      (2 * (S \ interactionSector (d.externalComponent 0)).card)
+      (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1)
+      (2 * (S \ interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card)
       (2 * S.card + 1) :=
-  slotLegSplitting (interactionSector_subset (d.externalComponent 0))
+  slotLegSplitting (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
 
 /-- The left part consists of external-component legs. -/
 private theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl
     {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (i : Fin (2 * (2 * (interactionSector (d.externalComponent 0)).card + 1))) :
+    (i : Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1))) :
     d.legInComponent (d.externalComponentPart : Finset (TwoPointVertex S))
       (d.externalSlotLegSplitting (Sum.inl i)) := by
   obtain ⟨x, rfl⟩ := (twoPointLegEquiv
-    (interactionSector (d.externalComponent 0))).symm.surjective i
+    (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)))).symm.surjective i
   refine (d.legInComponent_iff_unflattened d.externalComponentPart _).2 ?_
   cases x with
   | inl e =>
@@ -51,8 +51,8 @@ private theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl
       obtain ⟨v, l⟩ := p
       rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_left_interaction,
         Equiv.apply_symm_apply]
-      exact (mem_interactionSector_subtype (d.externalComponent 0)
-        ⟨v.1, interactionSector_subset (d.externalComponent 0) v.2⟩).1 v.2
+      exact (mem_interactionSector_subtype (d.vertexGraph.componentBlock (Sum.inl 0))
+        ⟨v.1, interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)) v.2⟩).1 v.2
 
 /-- Every external-component leg comes from the left part. -/
 private theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset (Fin N)}
@@ -68,15 +68,15 @@ private theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset 
       rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_external]
   | inr p =>
       obtain ⟨v, l⟩ := p
-      have hv : (v : Fin N) ∈ interactionSector (d.externalComponent 0) :=
-        (mem_interactionSector_subtype (d.externalComponent 0) v).2 hleg
+      have hv : (v : Fin N) ∈ interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)) :=
+        (mem_interactionSector_subtype (d.vertexGraph.componentBlock (Sum.inl 0)) v).2 hleg
       refine ⟨(twoPointLegEquiv _).symm (Sum.inr (⟨v.1, hv⟩, l)), ?_⟩
       rw [TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting_left_interaction]
 
 /-- The canonical left split positions are exactly the ambient legs of the external component. -/
 noncomputable def TwoPointDiagram.externalComponentLegEquiv {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    Fin (2 * (2 * (interactionSector (d.externalComponent 0)).card + 1)) ≃
+    Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1)) ≃
       {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponentPart : Finset (TwoPointVertex S)) leg} :=
   Equiv.ofBijective
@@ -95,7 +95,7 @@ noncomputable def TwoPointDiagram.externalComponentLegEquiv {S : Finset (Fin N)}
 @[simp]
 theorem TwoPointDiagram.externalComponentLegEquiv_apply {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (i : Fin (2 * (2 * (interactionSector (d.externalComponent 0)).card + 1))) :
+    (i : Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1))) :
     (d.externalComponentLegEquiv i : Fin (2 * (2 * S.card + 1))) =
       d.externalSlotLegSplitting (Sum.inl i) :=
   rfl
@@ -122,9 +122,9 @@ the vacuum piece carries all the others and is in general disconnected. -/
 noncomputable def TwoPointDiagram.externalVacuumSplit {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     TwoPointDiagram ExternalLabel InternalLabel N
-        (interactionSector (d.externalComponent 0)) ×
-      QuarticDiagram InternalLabel N (S \ interactionSector (d.externalComponent 0)) :=
-  TwoPointDiagram.slotSplitEquiv (interactionSector_subset (d.externalComponent 0))
+        (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) ×
+      QuarticDiagram InternalLabel N (S \ interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) :=
+  TwoPointDiagram.slotSplitEquiv (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
     ⟨d, d.isSplit_externalSlotLegSplitting⟩
 
 /-- The canonical external split piece preserves the ambient external labels. -/
@@ -139,17 +139,17 @@ slot. -/
 @[simp]
 theorem TwoPointDiagram.externalVacuumSplit_fst_vertexLabel {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥(interactionSector (d.externalComponent 0))) :
+    (v : ↥(interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)))) :
     d.externalVacuumSplit.1.vertexLabel v =
       d.vertexLabel ⟨v.1, interactionSector_subset
-        (d.externalComponent 0) v.2⟩ :=
+        (d.vertexGraph.componentBlock (Sum.inl 0)) v.2⟩ :=
   rfl
 
 /-- The canonical external split pairing is read directly from the ambient partner map along the
 left slot embedding. -/
 theorem TwoPointDiagram.externalVacuumSplit_fst_partner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (i : Fin (2 * (2 * (interactionSector (d.externalComponent 0)).card + 1))) :
+    (i : Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1))) :
     d.pairing.partner (d.externalSlotLegSplitting (Sum.inl i)) =
       d.externalSlotLegSplitting (Sum.inl (d.externalVacuumSplit.1.pairing.partner i)) := by
   exact Pairing.partner_splitLeft d.externalSlotLegSplitting
@@ -159,7 +159,7 @@ theorem TwoPointDiagram.externalVacuumSplit_fst_partner {S : Finset (Fin N)}
 partner on the external component. -/
 private theorem TwoPointDiagram.externalComponentLegEquiv_partner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (i : Fin (2 * (2 * (interactionSector (d.externalComponent 0)).card + 1))) :
+    (i : Fin (2 * (2 * (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1))) :
     d.externalComponentLegEquiv (d.externalVacuumSplit.1.pairing.partner i) =
       d.restrictedPartner (d.externalComponentPart : Finset (TwoPointVertex S))
         (d.externalComponentLegEquiv i) := by
@@ -181,7 +181,7 @@ theorem TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner
 /-- **Reassembling the two pieces returns the diagram.** -/
 theorem TwoPointDiagram.ofSlotSplit_externalVacuumSplit {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    TwoPointDiagram.ofSlotSplit (interactionSector_subset (d.externalComponent 0))
+    TwoPointDiagram.ofSlotSplit (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
         d.externalVacuumSplit.1 d.externalVacuumSplit.2 = d :=
   TwoPointDiagram.ofSlotSplit_slotSplit _ d d.isSplit_externalSlotLegSplitting
 

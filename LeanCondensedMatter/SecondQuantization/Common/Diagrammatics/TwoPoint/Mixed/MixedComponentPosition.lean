@@ -48,20 +48,16 @@ theorem twoPointLegEquiv_mixedTimeAmbientPositionEquiv {n : ℕ}
 noncomputable def TwoPointDiagram.mixedPositionComponent {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
-    d.componentPartition.parts :=
-  ⟨d.componentBlock
+    d.vertexGraph.componentPartition.parts :=
+  ⟨d.vertexGraph.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p)),
-    by
-      change d.vertexGraph.componentBlock
-          (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p)) ∈
-        d.vertexGraph.componentPartition.parts
-      exact d.vertexGraph.componentBlock_mem_componentPartition _⟩
+    d.vertexGraph.componentBlock_mem_componentPartition _⟩
 
 /-- Equality with a mixed-position component is exactly standard component-leg membership after
 transport back from mixed time order. -/
 theorem TwoPointDiagram.mixedPositionComponent_eq_iff_legInComponent {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * n + 1))) :
     d.mixedPositionComponent τ τ' σ p = B ↔
       d.legInComponent (B : Finset (TwoPointVertex
@@ -77,14 +73,14 @@ theorem TwoPointDiagram.mixedPositionComponent_eq_iff_legInComponent {n : ℕ}
 /-- Mixed-time positions belonging to one full diagram component. -/
 abbrev TwoPointDiagram.MixedComponentPosition {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :=
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :=
   {p : Fin (2 * (2 * n + 1)) // d.mixedPositionComponent τ τ' σ p = B}
 
 /-- Positions of one mixed-time component are equivalent to the standard flattened legs of that
 component. -/
 noncomputable def TwoPointDiagram.mixedComponentPositionEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPosition τ τ' σ B ≃ d.ComponentLeg B :=
   (mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv fun p =>
     d.mixedPositionComponent_eq_iff_legInComponent τ τ' σ B p
@@ -95,7 +91,7 @@ noncomputable def TwoPointDiagram.mixedExternalPositionEquiv {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.MixedComponentPosition τ τ' σ d.externalComponentPart ≃
       Fin (2 * (2 * (interactionSector
-        (d.externalComponent 0)).card + 1)) :=
+        (d.vertexGraph.componentBlock (Sum.inl 0))).card + 1)) :=
   (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart).trans
     d.externalComponentLegEquiv.symm
 
@@ -103,8 +99,9 @@ noncomputable def TwoPointDiagram.mixedExternalPositionEquiv {n : ℕ}
 diagram. -/
 noncomputable def TwoPointDiagram.mixedVacuumPositionEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     d.MixedComponentPosition τ τ' σ B ≃
       Fin (2 * (2 * (interactionSector
         (B : Finset (TwoPointVertex

@@ -24,7 +24,7 @@ variable {ExternalLabel InternalLabel : Type*}
 assignments, used only to prove chamber locality. -/
 private noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPosition τ τ' σ B ≃ d.MixedComponentPosition τ τ' υ B :=
   (d.mixedComponentPositionEquiv τ τ' σ B).trans
     (d.mixedComponentPositionEquiv τ τ' υ B).symm
@@ -32,7 +32,7 @@ private noncomputable def TwoPointDiagram.mixedComponentPositionTimeEquiv {n : �
 /-- Time transport preserves the atomic leg represented by a mixed component position. -/
 private theorem TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
     mixedTimeOrderedAtomicLegEquiv τ τ' υ
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
@@ -53,7 +53,7 @@ private theorem TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv
 /-- Component position transport preserves strict order inside one mixed-order chamber. -/
 private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
     (p q : d.MixedComponentPosition τ τ' σ B) :
     p.1 < q.1 ↔
@@ -111,8 +111,8 @@ private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
 private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (pr : d.MixedComponentPair τ τ' σ B) :
     d.mixedVacuumComponentPairEquiv τ τ' υ B hVac
         (d.mixedComponentPairTimeEquiv τ τ' σ υ B pr) =
@@ -124,7 +124,7 @@ private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
 private theorem TwoPointDiagram.mixedComponentPairEndpoints_pair_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) {m : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) {m : ℕ}
     (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m)
     (hpartner : ∀ pos,
@@ -162,8 +162,8 @@ private theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv
 private theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (p : d.MixedComponentPosition τ τ' σ B) :
     d.mixedVacuumPositionEquiv τ τ' υ B hVac
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
@@ -174,7 +174,7 @@ private theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (pr : d.MixedComponentPair τ τ' σ B) :
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
@@ -238,7 +238,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
         simpa using congrArg Prod.snd hcoords
       · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.fst hcoords
-  · have hVac : d.ComponentIsVacuum B :=
+  · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
       (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     have hlocal :
@@ -291,7 +291,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
 private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
@@ -341,7 +341,7 @@ private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_posi
 private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
@@ -431,7 +431,7 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
 private theorem TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
@@ -454,7 +454,7 @@ underlying standard atomic legs in their normalized order. -/
 theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
     (pr : d.MixedComponentPair τ τ' σ B) :
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
@@ -501,7 +501,7 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (s : Statistics) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
       d.mixedComponentWeight s τ τ' υ B := by

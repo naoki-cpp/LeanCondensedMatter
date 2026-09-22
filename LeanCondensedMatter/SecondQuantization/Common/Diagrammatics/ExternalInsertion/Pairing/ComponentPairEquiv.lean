@@ -24,7 +24,7 @@ variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 private theorem ExternalInsertionDiagram.componentLegShuffle_partner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
@@ -37,7 +37,7 @@ diagram's normalized pairs. -/
 noncomputable def ExternalInsertionDiagram.componentPairEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    (Σ B : d.componentPartition.parts, (d.restrictComponent B).pairing.NormalizedPair) ≃
+    (Σ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.NormalizedPair) ≃
       d.pairing.NormalizedPair :=
   d.pairing.normalizedPairSigmaEquiv
     (fun B => (d.restrictComponent B).pairing)
@@ -48,7 +48,7 @@ noncomputable def ExternalInsertionDiagram.componentPairEquiv
 theorem ExternalInsertionDiagram.componentPairEquiv_apply
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (pr : (d.restrictComponent B).pairing.NormalizedPair) :
     (d.componentPairEquiv ⟨B, pr⟩).1 =
       (d.componentDiagramLeg B pr.1.1, d.componentDiagramLeg B pr.1.2) := by

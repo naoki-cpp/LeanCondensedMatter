@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
@@ -20,9 +21,9 @@ component, no external leg is present, so the same ambient component can also be
 as the four local legs of an ordinary quartic diagram.
 
 The construction is statistics-independent. Partner-invariant pairing restriction is owned by
-`Combinatorics.PerfectPairing.Restriction`; this module supplies the external-insertion component
-predicate, domain-specific leg reindexing, and the canonical family shuffle formed by all component
-leg embeddings.
+`Combinatorics.PerfectPairing.Restriction`, while external/vacuum component predicates are owned by
+the shared external-component layer. This module supplies domain-specific leg reindexing and the
+canonical family shuffle formed by all component leg embeddings.
 -/
 
 namespace SecondQuantization
@@ -37,23 +38,22 @@ def ExternalInsertionDiagram.legInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : Finset (ExternalInsertionVertex E S))
     (leg : Fin (2 * (2 * S.card + E))) : Prop :=
-  d.componentBlock (externalInsertionVertexOfLeg leg) = B
+  d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg) = B
 
 /-- For an actual component-partition part, a leg belongs to the component exactly when its incident
 vertex belongs to that part. -/
 theorem ExternalInsertionDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    {B : Finset (ExternalInsertionVertex E S)} (hB : B ∈ d.componentPartition.parts)
+    {B : Finset (ExternalInsertionVertex E S)} (hB : B ∈ d.vertexGraph.componentPartition.parts)
     (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔ externalInsertionVertexOfLeg leg ∈ B := by
-  unfold ExternalInsertionDiagram.legInComponent ExternalInsertionDiagram.componentBlock
-  apply d.vertexGraph.componentBlock_eq_iff_mem
-  simpa only [ExternalInsertionDiagram.componentPartition] using hB
+  unfold ExternalInsertionDiagram.legInComponent
+  exact d.vertexGraph.componentBlock_eq_iff_mem hB (externalInsertionVertexOfLeg leg)
 
 /-- Membership of an unflattened leg in a component part. -/
 private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
+    (B : d.vertexGraph.componentPartition.parts) (leg : ExternalInsertionLeg E S) : Prop :=
   match leg with
   | .inl e => (Sum.inl e : ExternalInsertionVertex E S) ∈
       (B : Finset (ExternalInsertionVertex E S))
@@ -63,7 +63,7 @@ private def ExternalInsertionDiagram.unflattenedLegInComponent {S : Finset (Fin 
 /-- Flattening preserves the component-membership predicate. -/
 private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))) :
+    (B : d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔
       d.unflattenedLegInComponent B (externalInsertionLegEquiv E S leg) := by
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
@@ -75,9 +75,9 @@ private theorem ExternalInsertionDiagram.legInComponent_iff_unflattened {S : Fin
 the four local legs of its interaction vertices. -/
 private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
-      ↥(ExternalInsertionDiagram.externalPart
+      ↥(Finset.toLeft
         (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
           (B : Finset (ExternalInsertionVertex E S))) × Fin 4) where
@@ -85,8 +85,7 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
     rcases leg with ⟨leg, hleg⟩
     cases leg with
     | inl e =>
-        exact Sum.inl ⟨e, (ExternalInsertionDiagram.mem_externalPart
-          (B : Finset (ExternalInsertionVertex E S)) e).2 hleg⟩
+        exact Sum.inl ⟨e, Finset.mem_toLeft.2 hleg⟩
     | inr p =>
         exact Sum.inr (⟨p.1.1,
           (mem_interactionSector_subtype
@@ -97,8 +96,7 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
         exact ⟨Sum.inl e.1, by
           change (Sum.inl e.1 : ExternalInsertionVertex E S) ∈
             (B : Finset (ExternalInsertionVertex E S))
-          exact (ExternalInsertionDiagram.mem_externalPart
-            (B : Finset (ExternalInsertionVertex E S)) e.1).1 e.2⟩
+          exact Finset.mem_toLeft.1 e.2⟩
     | inr p =>
         let v : ↥S :=
           ⟨p.1.1, interactionSector_subset
@@ -134,10 +132,10 @@ private noncomputable def ExternalInsertionDiagram.componentLegDataEquiv {S : Fi
 private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     {leg : Fin (2 * (2 * S.card + E)) //
       d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} ≃
-      ↥(ExternalInsertionDiagram.externalPart
+      ↥(Finset.toLeft
         (B : Finset (ExternalInsertionVertex E S))) ⊕
         (↥(interactionSector
           (B : Finset (ExternalInsertionVertex E S))) × Fin 4) :=
@@ -153,26 +151,24 @@ theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold ExternalInsertionDiagram.legInComponent
   have hEq :
-      d.componentBlock (externalInsertionVertexOfLeg leg) =
-        d.componentBlock (externalInsertionVertexOfLeg (d.pairing.partner leg)) := by
-    change d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg) =
-      d.vertexGraph.componentBlock (externalInsertionVertexOfLeg (d.pairing.partner leg))
-    exact d.vertexGraph.componentBlock_eq_of_reachable
+      d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg) =
+        d.vertexGraph.componentBlock (externalInsertionVertexOfLeg (d.pairing.partner leg)) :=
+    d.vertexGraph.componentBlock_eq_of_reachable
       (d.pairing.vertexGraph_reachable_partner externalInsertionVertexOfLeg leg).symm
   rw [hEq]
 
 /-- Every connected component contains an even number of external insertions. -/
-theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
+theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
-    Even (ExternalInsertionDiagram.externalPart
+    (B : d.vertexGraph.componentPartition.parts) :
+    Even (Finset.toLeft
       (B : Finset (ExternalInsertionVertex E S))).card := by
   classical
   let blockEquiv := d.componentBlockLegDataEquiv B
   have hcard :
       Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
         d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
-        (ExternalInsertionDiagram.externalPart
+        (Finset.toLeft
           (B : Finset (ExternalInsertionVertex E S))).card +
           4 * (interactionSector
             (B : Finset (ExternalInsertionVertex E S))).card := by
@@ -180,12 +176,12 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
       Fintype.card {leg : Fin (2 * (2 * S.card + E)) //
           d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} =
           Fintype.card
-            (↥(ExternalInsertionDiagram.externalPart
+            (↥(Finset.toLeft
               (B : Finset (ExternalInsertionVertex E S))) ⊕
               (↥(interactionSector
                 (B : Finset (ExternalInsertionVertex E S))) × Fin 4)) :=
         Fintype.card_congr blockEquiv
-      _ = (ExternalInsertionDiagram.externalPart
+      _ = (Finset.toLeft
             (B : Finset (ExternalInsertionVertex E S))).card +
             4 * (interactionSector
               (B : Finset (ExternalInsertionVertex E S))).card := by
@@ -211,31 +207,31 @@ theorem ExternalInsertionDiagram.externalPart_card_even {S : Finset (Fin N)}
 carried by one connected component. -/
 noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) : ℕ :=
-  (ExternalInsertionDiagram.externalPart
+    (B : d.vertexGraph.componentPartition.parts) : ℕ :=
+  (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).card / 2
 
 /-- The external sector of one component has twice its local external-pair count. -/
-private theorem ExternalInsertionDiagram.externalPart_card_eq_two_mul_externalPairCount
+private theorem ExternalInsertionDiagram.externalSector_card_eq_two_mul_externalPairCount
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
-    (ExternalInsertionDiagram.externalPart
+    (B : d.vertexGraph.componentPartition.parts) :
+    (Finset.toLeft
       (B : Finset (ExternalInsertionVertex E S))).card =
       2 * d.externalPairCount B := by
   rw [ExternalInsertionDiagram.externalPairCount]
-  exact (Nat.two_mul_div_two_of_even (d.externalPart_card_even B)).symm
+  exact (Nat.two_mul_div_two_of_even (d.externalSector_card_even B)).symm
 
 /-- Increasing reindexing of a component's ambient external insertions by its local external slots. -/
-noncomputable def ExternalInsertionDiagram.externalPartOrderIso {S : Finset (Fin N)}
+noncomputable def ExternalInsertionDiagram.externalSectorOrderIso {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * d.externalPairCount B) ≃o
-      ↥(ExternalInsertionDiagram.externalPart
+      ↥(Finset.toLeft
         (B : Finset (ExternalInsertionVertex E S))) :=
-  (ExternalInsertionDiagram.externalPart
+  (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
-      (d.externalPart_card_eq_two_mul_externalPairCount B)
+      (d.externalSector_card_eq_two_mul_externalPairCount B)
 
 /-- The canonical order-preserving shuffle of component-local external insertions into the
 ambient external-insertion order. -/
@@ -243,34 +239,33 @@ noncomputable def ExternalInsertionDiagram.componentExternalShuffle
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     FamilySlotShuffleTo
-      (fun B : d.componentPartition.parts => 2 * d.externalPairCount B)
+      (fun B : d.vertexGraph.componentPartition.parts => 2 * d.externalPairCount B)
       (2 * E) where
   slotEquiv :=
-    (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
-      (d.externalPartOrderIso B).toEquiv).trans <|
+    (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
+      (d.externalSectorOrderIso B).toEquiv).trans <|
       ((Equiv.subtypeUnivEquiv
         (fun e : Fin (2 * E) => Finset.mem_univ e)).symm.trans <|
-        d.componentPartition.equivSigmaSubfinsets
+        d.vertexGraph.componentPartition.equivSigmaSubfinsets
           (Finset.univ : Finset (Fin (2 * E)))
           (fun e => (Sum.inl (e : Fin (2 * E)) :
             ExternalInsertionVertex E S))
           (fun _ => Finset.mem_univ _)
-          (fun B => ExternalInsertionDiagram.externalPart
+          (fun B => Finset.toLeft
             (B : Finset (ExternalInsertionVertex E S)))
           (fun _ => Finset.subset_univ _)
-          (fun B e => ExternalInsertionDiagram.mem_externalPart
-            (B : Finset (ExternalInsertionVertex E S)) e)).symm
+          (fun _ _ => Finset.mem_toLeft)).symm
   strictMono := fun B _ _ hef =>
-    (d.externalPartOrderIso B).strictMono hef
+    (d.externalSectorOrderIso B).strictMono hef
 
 @[simp]
 theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (e : Fin (2 * d.externalPairCount B)) :
     d.componentExternalShuffle.slotEquiv ⟨B, e⟩ =
-      (d.externalPartOrderIso B e).1 := by
+      (d.externalSectorOrderIso B e).1 := by
   rfl
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
@@ -278,13 +273,13 @@ external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     {leg : Fin (2 * (2 * S.card + E)) //
       d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg} ≃
       Fin (2 * (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :=
   (d.componentBlockLegDataEquiv B).trans <|
-    (Equiv.sumCongr (d.externalPartOrderIso B).toEquiv (Equiv.refl _)).symm.trans <|
+    (Equiv.sumCongr (d.externalSectorOrderIso B).toEquiv (Equiv.refl _)).symm.trans <|
       (externalInsertionLegEquiv (d.externalPairCount B)
         (interactionSector
           (B : Finset (ExternalInsertionVertex E S)))).symm
@@ -293,11 +288,11 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
 external and interaction sectors. -/
 noncomputable def ExternalInsertionDiagram.restrictComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     ExternalInsertionDiagram ExternalLabel InternalLabel (d.externalPairCount B) N
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))) where
-  externalLabel e := d.externalLabel (d.externalPartOrderIso B e).1
+  externalLabel e := d.externalLabel (d.externalSectorOrderIso B e).1
   vertexLabel v :=
     d.vertexLabel ⟨v.1, interactionSector_subset
       (B : Finset (ExternalInsertionVertex E S)) v.2⟩
@@ -312,7 +307,7 @@ noncomputable def ExternalInsertionDiagram.restrictComponent {S : Finset (Fin N)
 enumeration. -/
 noncomputable def ExternalInsertionDiagram.componentDiagramLeg {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) →
       Fin (2 * (2 * S.card + E)) :=
@@ -323,7 +318,7 @@ coordinates, agrees with the ambient pairing partner. -/
 theorem ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.componentDiagramLeg B ((d.restrictComponent B).pairing.partner p) =
@@ -361,12 +356,12 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_p
 private theorem ExternalInsertionDiagram.componentDiagramLeg_external
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (e : Fin (2 * d.externalPairCount B)) :
+    (B : d.vertexGraph.componentPartition.parts) (e : Fin (2 * d.externalPairCount B)) :
     d.componentDiagramLeg B
         (externalInsertionExternalLeg (d.externalPairCount B)
           (interactionSector
             (B : Finset (ExternalInsertionVertex E S))) e) =
-      externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1 := by
+      externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
   apply (externalInsertionLegEquiv E S).injective
   simp [ExternalInsertionDiagram.componentDiagramLeg,
     ExternalInsertionDiagram.componentBlockLegEquiv,
@@ -377,7 +372,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_external
 private theorem ExternalInsertionDiagram.componentDiagramLeg_interaction
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (v : ↥(interactionSector
       (B : Finset (ExternalInsertionVertex E S)))) (l : Fin 4) :
     d.componentDiagramLeg B
@@ -397,7 +392,7 @@ order. -/
 private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     StrictMono (d.componentDiagramLeg B) := by
   let T :=
     interactionSector
@@ -420,14 +415,14 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
           (externalInsertionExternalLeg (d.externalPairCount B) T f)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_external B]
     change
-      (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
-        (externalInsertionExternalLeg E S (d.externalPartOrderIso B f).1).val
+      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
+        (externalInsertionExternalLeg E S (d.externalSectorOrderIso B f).1).val
     have hef : e < f := by
       change
         (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
           (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
       simpa using hab
-    simpa using (d.externalPartOrderIso B).strictMono hef
+    simpa using (d.externalSectorOrderIso B).strictMono hef
   · change
       externalInsertionExternalLeg (d.externalPairCount B) T e <
         externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
@@ -438,12 +433,12 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
           (externalInsertionInteractionLeg (E := d.externalPairCount B) w k)
     rw [d.componentDiagramLeg_external B, d.componentDiagramLeg_interaction B]
     change
-      (externalInsertionExternalLeg E S (d.externalPartOrderIso B e).1).val <
+      (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val <
         (externalInsertionInteractionLeg (E := E)
           ⟨w.1, interactionSector_subset
             (B : Finset (ExternalInsertionVertex E S)) w.2⟩ k).val
     simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
-    exact Nat.lt_of_lt_of_le (d.externalPartOrderIso B e).1.isLt (by omega)
+    exact Nat.lt_of_lt_of_le (d.externalSectorOrderIso B e).1.isLt (by omega)
   · change
       externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
         externalInsertionExternalLeg (d.externalPairCount B) T f at hab
@@ -512,7 +507,7 @@ external-insertion leg order. -/
 noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) ↪o
       Fin (2 * (2 * S.card + E)) :=
@@ -525,7 +520,7 @@ connected component. -/
 theorem ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (leg : Fin (2 * (2 * S.card + E))) :
     (∃ p, d.componentDiagramLeg B p = leg) ↔
       d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg := by
@@ -547,7 +542,7 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     FamilySlotShuffleTo
-      (fun B : d.componentPartition.parts =>
+      (fun B : d.vertexGraph.componentPartition.parts =>
         2 * (2 * (interactionSector
           (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))
       (2 * (2 * S.card + E)) where
@@ -581,10 +576,10 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
           subst q
           rfl
         · intro leg
-          let B : d.componentPartition.parts :=
-            ⟨d.componentBlock (externalInsertionVertexOfLeg leg), by
-              unfold ExternalInsertionDiagram.componentBlock
-              exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
+          let B : d.vertexGraph.componentPartition.parts :=
+            ⟨d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg),
+              d.vertexGraph.componentBlock_mem_componentPartition
+                (externalInsertionVertexOfLeg leg)⟩
           have hleg :
               d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg := by
             rfl
@@ -596,7 +591,7 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
 theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.componentLegShuffle.slotEquiv ⟨B, p⟩ = d.componentDiagramLeg B p :=
@@ -608,7 +603,7 @@ component leg order embedding. -/
 noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     (d.restrictComponent B).pairing.NormalizedPair ↪ d.pairing.NormalizedPair :=
   (d.restrictComponent B).pairing.normalizedPairEmbedding d.pairing
     (d.componentDiagramLegOrderEmbedding B)
@@ -620,7 +615,7 @@ noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
 theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts)
+    (B : d.vertexGraph.componentPartition.parts)
     (p q : (d.restrictComponent B).pairing.NormalizedPair) :
     Crosses (d.componentNormalizedPairEmbedding B p).1
         (d.componentNormalizedPairEmbedding B q).1 ↔
@@ -637,7 +632,7 @@ theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
 interaction vertices. -/
 private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     {leg : ExternalInsertionLeg E S // d.unflattenedLegInComponent B leg} ≃
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))) × Fin 4 where
@@ -675,7 +670,7 @@ private noncomputable def ExternalInsertionDiagram.vacuumLegDataEquiv {S : Finse
 /-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} ≃
       Fin (2 * (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card)) :=
@@ -688,7 +683,7 @@ noncomputable def ExternalInsertionDiagram.vacuumBlockLegEquiv {S : Finset (Fin 
 /-- The perfect pairing induced on a vacuum component. -/
 noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     Pairing (2 * (interactionSector
       (B : Finset (ExternalInsertionVertex E S))).card) :=
   d.pairing.restrictAlongEquiv (d.legInComponent B)
@@ -700,7 +695,7 @@ under the vacuum leg reindexing. -/
 theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B)
+    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S)))
     (leg : {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg}) :
     (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
       d.vacuumBlockLegEquiv B hVac
@@ -716,7 +711,7 @@ theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegE
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
     QuarticDiagram InternalLabel N
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))) where

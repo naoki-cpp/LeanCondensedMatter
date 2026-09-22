@@ -22,14 +22,14 @@ noncomputable def TwoPointDiagram.mixedPairComponent
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
-    d.componentPartition.parts :=
+    d.vertexGraph.componentPartition.parts :=
   d.mixedPositionComponent τ τ' σ pr.1.1
 
 /-- Normalized mixed-time pairs assigned to one full diagram component. -/
 abbrev TwoPointDiagram.MixedComponentPair
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :=
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :=
   {pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair //
     d.mixedPairComponent τ τ' σ pr = B}
 
@@ -38,7 +38,7 @@ component. -/
 noncomputable def TwoPointDiagram.mixedComponentPairEndpointEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPair τ τ' σ B × Fin 2 ≃ d.MixedComponentPosition τ τ' σ B :=
   (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEndpointEquiv
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
@@ -49,7 +49,7 @@ one of the same normalized mixed pair. -/
 theorem TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (pr : d.MixedComponentPair τ τ' σ B) :
     d.mixedRestrictedPartner τ τ' σ B
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) =
@@ -79,8 +79,8 @@ restricted vacuum pairing. -/
 noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     d.MixedComponentPair τ τ' σ B ≃ (d.restrictedVacuumPairing B hVac).NormalizedPair :=
   (d.pairingInMixedOrder τ τ' σ).normalizedPairSubtypeEquivOfEndpointEquiv
     (fun p => d.mixedPositionComponent τ τ' σ p = B)

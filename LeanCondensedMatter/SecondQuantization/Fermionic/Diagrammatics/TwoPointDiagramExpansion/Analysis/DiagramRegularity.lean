@@ -39,7 +39,7 @@ private theorem continuous_orderedTwoPointLegPairContraction
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
+    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
     (Fin n → ℝ) → ℂ :=
   fun σ => d.mixedComponentDysonSign B *
     (d.mixedComponentVertexWeight g B *
@@ -53,7 +53,7 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFi
 private theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
+    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
     Continuous (d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
   exact continuous_const.mul
@@ -68,7 +68,7 @@ private theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonF
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
+    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ₀ σ) :
     d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
       d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
@@ -109,7 +109,7 @@ chamberwise-continuous representatives along the mixed-order signature partition
 private theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (B : d.1.componentPartition.parts) :
+    (τ τ' : ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
     Measurable (fun σ : Fin n → ℝ =>
       d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) := by
   classical
@@ -168,7 +168,7 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
       intervalIntegral.MeasurableLocallyBounded
         (fun σ : Fin n → ℝ =>
           twoPointExternalOrderSign τ τ' *
-            ∏ B : d.1.componentPartition.parts,
+            ∏ B : d.1.vertexGraph.componentPartition.parts,
               d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) :=
     (intervalIntegral.measurableLocallyBounded_const _).mul
       (intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
@@ -192,7 +192,7 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
   have heq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
       fun σ : Fin n → ℝ =>
         twoPointExternalOrderSign τ τ' *
-          ∏ B : d.1.componentPartition.parts,
+          ∏ B : d.1.vertexGraph.componentPartition.parts,
             d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
     funext σ
     exact d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components ε β g τ τ' σ

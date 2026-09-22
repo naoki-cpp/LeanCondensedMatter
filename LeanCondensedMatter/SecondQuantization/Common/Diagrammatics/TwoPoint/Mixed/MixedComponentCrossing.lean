@@ -21,7 +21,7 @@ open Combinatorics
 noncomputable def TwoPointDiagram.mixedComponentOrientedCrossingCount
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
   (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
     (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C
 
@@ -29,14 +29,14 @@ noncomputable def TwoPointDiagram.mixedComponentOrientedCrossingCount
 noncomputable def TwoPointDiagram.mixedComponentCrossingCount
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) : ℕ :=
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) : ℕ :=
   d.mixedComponentOrientedCrossingCount τ τ' σ B B
 
 /-- Exchange-statistics weight associated with crossings internal to one mixed-time component. -/
 noncomputable def TwoPointDiagram.mixedComponentWeight
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (s : Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) : ℂ :=
+    (s : Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) : ℂ :=
   (s.zetaInt : ℂ) ^ d.mixedComponentCrossingCount τ τ' σ B
 
 

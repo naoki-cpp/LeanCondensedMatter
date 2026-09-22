@@ -18,14 +18,14 @@ namespace Common
 noncomputable def TwoPointDiagram.mixedComponentPairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     d.MixedComponentPair τ τ' σ B ≃ d.MixedComponentPair τ τ' υ B := by
   classical
   by_cases hB : B = d.externalComponentPart
   · subst B
     exact (d.mixedExternalComponentPairEquiv τ τ' σ).trans
       (d.mixedExternalComponentPairEquiv τ τ' υ).symm
-  · have hVac : d.ComponentIsVacuum B :=
+  · have hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
       (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
     exact (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac).trans
       (d.mixedVacuumComponentPairEquiv τ τ' υ B hVac).symm

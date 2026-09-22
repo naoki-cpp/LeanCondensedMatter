@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Data.Fintype.EquivFin
 
@@ -14,9 +15,9 @@ vertices and four legs at every interaction vertex.
 
 Two connectedness notions are deliberately separated:
 
-* `HasNoVacuumComponent` says that every interaction vertex lies in a component meeting the
-  external sector.  This is the condition produced by cancellation of vacuum bubbles in a
-  normalized correlation function.
+* `HasNoVacuumComponent d.vertexGraph` says that every interaction vertex lies in a component
+  meeting the external sector. This is the condition produced by cancellation of vacuum bubbles in
+  a normalized correlation function.
 * `IsExternallyConnected` additionally requires the two external vertices to lie in the same
   component.  This is the connected two-point Green-function condition.
 -/
@@ -117,13 +118,6 @@ noncomputable def TwoPointDiagram.vertexGraph {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) : SimpleGraph (TwoPointVertex S) :=
   d.pairing.vertexGraph twoPointVertexOfLeg
 
-/-- Every interaction component meets at least one of the two external vertices.  Equivalently, the
-diagram has no vacuum component. -/
-def TwoPointDiagram.HasNoVacuumComponent {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Prop :=
-  ∀ v : ↥S, ∃ e : Fin 2,
-    d.vertexGraph.Reachable (Sum.inl e : TwoPointVertex S) (Sum.inr v)
-
 /-- The two external vertices belong to the same graph component. -/
 def TwoPointDiagram.ExternalVerticesConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Prop :=
@@ -135,25 +129,18 @@ def TwoPointDiagram.ExternalVerticesConnected {S : Finset (Fin N)}
 connected to one another. -/
 def TwoPointDiagram.IsExternallyConnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Prop :=
-  d.HasNoVacuumComponent ∧ d.ExternalVerticesConnected
-
-/-- A globally preconnected two-point graph has no vacuum component. -/
-theorem TwoPointDiagram.hasNoVacuumComponent_of_preconnected {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (h : d.vertexGraph.Preconnected) :
-    d.HasNoVacuumComponent := by
-  intro v
-  exact ⟨0, h _ _⟩
+  HasNoVacuumComponent d.vertexGraph ∧ d.ExternalVerticesConnected
 
 /-- Global preconnectedness implies connectedness relative to the two external vertices. -/
 theorem TwoPointDiagram.isExternallyConnected_of_preconnected {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (h : d.vertexGraph.Preconnected) :
     d.IsExternallyConnected :=
-  ⟨d.hasNoVacuumComponent_of_preconnected h, h _ _⟩
+  ⟨hasNoVacuumComponent_of_preconnected d.vertexGraph h, h _ _⟩
 
 /-- Two-point diagrams with no vacuum component. -/
 def VacuumFreeTwoPointDiagram (ExternalLabel InternalLabel : Type*) (N : ℕ)
     (S : Finset (Fin N)) : Type _ :=
-  {d : TwoPointDiagram ExternalLabel InternalLabel N S // d.HasNoVacuumComponent}
+  {d : TwoPointDiagram ExternalLabel InternalLabel N S // HasNoVacuumComponent d.vertexGraph}
 
 /-- Two-point diagrams connected relative to both external vertices. -/
 def ExternallyConnectedTwoPointDiagram (ExternalLabel InternalLabel : Type*) (N : ℕ)
@@ -163,7 +150,7 @@ def ExternallyConnectedTwoPointDiagram (ExternalLabel InternalLabel : Type*) (N 
 noncomputable instance VacuumFreeTwoPointDiagram.instFintype [Fintype ExternalLabel]
     [Fintype InternalLabel] {S : Finset (Fin N)} :
     Fintype (VacuumFreeTwoPointDiagram ExternalLabel InternalLabel N S) :=
-  Fintype.ofFinite {d : TwoPointDiagram ExternalLabel InternalLabel N S // d.HasNoVacuumComponent}
+  Fintype.ofFinite {d : TwoPointDiagram ExternalLabel InternalLabel N S // HasNoVacuumComponent d.vertexGraph}
 
 noncomputable instance ExternallyConnectedTwoPointDiagram.instFintype [Fintype ExternalLabel]
     [Fintype InternalLabel] {S : Finset (Fin N)} :

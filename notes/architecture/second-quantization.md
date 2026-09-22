@@ -171,20 +171,27 @@ followed by interaction vertices in increasing ambient index and local legs in `
 This fixed enumeration, rather than an arbitrary finite-type equivalence, is the ordering boundary
 used by later fermionic crossing/sign transport.
 
-The generic external-insertion component layer classifies each connected component as either
-externally supported or vacuum. `ExternalInsertionDiagram.HasNoVacuumComponent` requires every
-interaction vertex to lie in a component meeting at least one external insertion; it does not require
-distinct external insertions to lie in the same component. The finite component partition is the
-disjoint union of `externallySupportedComponentParts` and `vacuumComponentParts`.
-`ExternalInsertionDiagram.externalPart` extracts the finite subset of external insertion indices
-carried by a component, and external support is exactly nonemptiness of that subset. Every component
-carries an even number of external insertions, proved from the fixed-point-free restricted
-`PairingOn` and the four-leg contribution of each interaction vertex. Its local external sector is
-therefore indexed by `Fin (2 * externalPairCount)`; `externalPartOrderIso` gives the canonical
-increasing identification with the ambient external subset, preserving external insertion order for
-later sign-sensitive constructions. `ExternalInsertionDiagram.restrictComponent` combines that
-external-sector ordering with the extracted interaction sector and the partner-invariant restricted
-pairing to produce a standalone external-insertion diagram for any connected component.
+External-component semantics are shared at the Common diagrammatics boundary for any finite
+vertex graph of the form `External ⊕ Internal`. `ComponentMeetsExternal`,
+`ComponentIsVacuum`, and `HasNoVacuumComponent` are graph-level notions;
+`externallySupportedComponentParts` and `vacuumComponentParts` classify the parts of
+`SimpleGraph.componentPartition` directly. Diagram families use
+`SimpleGraph.componentPartition` and `SimpleGraph.componentBlock` without family-specific
+forwarding APIs. For two-point diagrams, `IsExternallyConnected` remains a separate semantic
+condition and the parity of the two one-legged external vertices proves that their component blocks
+always coincide.
+
+For an external-insertion component, Mathlib's `Finset.toLeft` is the canonical finite external
+sector, while `interactionSector` extracts its ambient interaction vertices. External support is
+exactly nonemptiness of `toLeft`. Every component carries an even number of external insertions,
+proved from the fixed-point-free restricted pairing and the four-leg contribution of each
+interaction vertex. Its local external sector is therefore indexed by
+`Fin (2 * externalPairCount)`; `ExternalInsertionDiagram.externalSectorOrderIso` gives the
+canonical increasing identification with the ambient external subset, preserving external insertion
+order for later sign-sensitive constructions. `ExternalInsertionDiagram.restrictComponent`
+combines that external-sector ordering with the extracted interaction sector and the
+partner-invariant restricted pairing to produce a standalone external-insertion diagram for any
+connected component.
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
 pairing partners. The canonical leg order makes this map an `OrderEmbedding`; taken over all components these
