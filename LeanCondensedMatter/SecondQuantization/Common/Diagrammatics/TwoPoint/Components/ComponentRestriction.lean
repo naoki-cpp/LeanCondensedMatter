@@ -13,9 +13,10 @@ component and restricts the ambient pairing to its legs. For a vacuum component,
 reindexed as the four local legs of an ordinary quartic diagram, producing the diagram needed for
 vacuum-bubble factorization.
 
-Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`; this
-module supplies the two-point component predicate and the vacuum-specific leg reindexing. Restriction
-to the component containing the external legs and amplitude factorization are developed separately.
+Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`, while
+external/vacuum component predicates are owned by the shared external-component layer. This module
+supplies the two-point-specific component-leg membership and vacuum leg reindexing. Restriction to
+the component containing the external legs and amplitude factorization are developed separately.
 -/
 
 namespace SecondQuantization
