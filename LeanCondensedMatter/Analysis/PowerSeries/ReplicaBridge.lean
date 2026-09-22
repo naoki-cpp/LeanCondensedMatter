@@ -42,9 +42,8 @@ private theorem egfBlockCoeff_succ_succ
       coeff i (((k + 1 : ℕ) : PowerSeries R) * U ^ k) =
         (k + 1 : R) * coeff i (U ^ k) := by
     intro i
-    change coeff i (PowerSeries.C (k + 1 : R) * U ^ k) =
-      (k + 1 : R) * coeff i (U ^ k)
-    rw [PowerSeries.coeff_C_mul]
+    rw [← map_natCast (PowerSeries.C : R →+* PowerSeries R) (k + 1),
+      PowerSeries.coeff_C_mul]
   simp_rw [hnatCoeff, PowerSeries.coeff_derivative] at hderiv
   have hmain :
       egfBlockCoeff Z (n + 1) (k + 1) =
@@ -55,7 +54,9 @@ private theorem egfBlockCoeff_succ_succ
     simp only [Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one]
     have hkfac : (k.factorial : R) ≠ 0 :=
       Nat.cast_ne_zero.mpr k.factorial_ne_zero
-    have hk1 : (k + 1 : R) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k)
+    have hk1 : (k + 1 : R) ≠ 0 := by
+      simpa [Nat.cast_add, Nat.cast_one] using
+        (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k) : ((k + 1 : ℕ) : R) ≠ 0)
     rw [hderiv]
     field_simp [hkfac, hk1]
     ring
@@ -68,7 +69,13 @@ private theorem egfBlockCoeff_succ_succ
           ((n.factorial : R) / (k.factorial : R)) *
             (coeff (n - j) (U ^ k) * (coeff (j + 1) U * (j + 1 : R))) := by
     rw [← Finset.sum_range_reflect]
-    simp
+    apply Finset.sum_congr rfl
+    intro j hj
+    have hjn : j ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hj)
+    have hsub : n - (n - j) = j := Nat.sub_sub_cancel hjn
+    have hcastSub : (n : R) - (n - j : ℕ) = (j : R) := by
+      rw [← Nat.cast_sub (Nat.sub_le n j), hsub]
+    rw [hsub, hcastSub]
   rw [hreflect]
   apply Finset.sum_congr rfl
   intro j hj
@@ -90,6 +97,7 @@ private theorem egfBlockCoeff_succ_succ
   rw [hchooseR]
   ring
 
+omit [CharZero R] in
 private theorem partitionProduct_partsCardSuccEquiv_symm
     (m : Finset α → R) {s : Finset α} {a : α} (ha : a ∈ s) (k : ℕ)
     (x : Σ B : Finpartition.BlockContaining s a,
@@ -128,8 +136,12 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
             apply Subtype.ext
             exact Subsingleton.elim _ _
         }
-        have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by
-          simp
+        have hparts :
+            (default :
+              {π : Finpartition (∅ : Finset α) // π.parts.card = 0}).1.parts = ∅ := by
+          exact (Finpartition.parts_eq_empty_iff
+            (P := (default :
+              {π : Finpartition (∅ : Finset α) // π.parts.card = 0}).1)).2 rfl
         simp [egfBlockCoeff, Finpartition.partitionProduct, hparts]
     | succ k =>
         letI : IsEmpty {π : Finpartition (∅ : Finset α) // π.parts.card = k + 1} :=
@@ -174,6 +186,7 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
           intro B
           rw [← hsmall B, Finset.mul_sum]
         rw [hcollapse]
+        symm
         calc
           (∑ B : Finpartition.BlockContaining s a,
               ((B.1.card.factorial : R) * coeff B.1.card Z) *
@@ -193,6 +206,7 @@ private theorem egfBlockCoeff_eq_fixedBlockMomentSum
                         (fun b => ((b.factorial : R) * coeff b Z) *
                           egfBlockCoeff Z (s.card - b) k)
           _ = egfBlockCoeff Z s.card (k + 1) := by
+                have hpos : 0 < s.card := Finset.card_pos.mpr ⟨a, ha⟩
                 have hcard : s.card = (s.card - 1) + 1 := by
                   omega
                 rw [hcard]
