@@ -91,19 +91,19 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
         QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T) where
   toFun d :=
     (⟨⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
-          (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2),
+          (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2),
         d.1.2⟩,
       Common.isExternallyConnected_slotSplitExternal (Finset.subset_univ T) d.2 _⟩,
      d.1.1.slotSplitVacuum (Finset.subset_univ T)
-       (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2))
+       (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2))
   invFun p :=
     ⟨⟨Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) p.1.1.1 p.2, p.1.1.2⟩,
-      Common.interactionPart_externalComponent_ofSlotSplit (Finset.subset_univ T)
+      Common.interactionSector_externalComponent_ofSlotSplit (Finset.subset_univ T)
         p.1.1.1 p.2 p.1.2⟩
   left_inv d :=
     Subtype.ext (Subtype.ext
       (Common.TwoPointDiagram.ofSlotSplit_slotSplit (Finset.subset_univ T) d.1.1
-        (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2)))
+        (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2)))
   right_inv p := by
     obtain ⟨⟨⟨ext, hlabel⟩, hconn⟩, vac⟩ := p
     simp only [Prod.mk.injEq]
@@ -135,7 +135,7 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
       d.1.externalPieceOfCardEq hsize =
         fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h
           ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
-              (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+              (Common.isSplit_slotLegSplitting_of_interactionSector_eq
                 (Finset.subset_univ T) d.2),
             d.1.2⟩ := by
     obtain ⟨d0, hd⟩ := d
@@ -146,7 +146,7 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
     have hsplit :
         d0.1.externalVacuumSplit.1 =
           d0.1.slotSplitExternal (Finset.subset_univ d0.1.externalInteractionPart)
-            (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+            (Common.isSplit_slotLegSplitting_of_interactionSector_eq
               (Finset.subset_univ d0.1.externalInteractionPart) rfl) := by
       rfl
     have hcongr := congrArg
@@ -160,13 +160,13 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
           (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
           (d0.1.slotSplitExternal
             (Finset.subset_univ d0.1.externalInteractionPart)
-            (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+            (Common.isSplit_slotLegSplitting_of_interactionSector_eq
               (Finset.subset_univ d0.1.externalInteractionPart) rfl))
     exact hcongr
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
   have hext :
       ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
-          (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+          (Common.isSplit_slotLegSplitting_of_interactionSector_eq
             (Finset.subset_univ T) d.2), d.1.2⟩ = p.1.1 := by
     exact congrArg (fun q => q.1.1) hright
   rw [hext] at hpiece
