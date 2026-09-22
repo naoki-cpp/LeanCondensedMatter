@@ -21,7 +21,7 @@ variable {α : Type*} [DecidableEq α]
 private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
     (∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond i k) =
       Nat.stirlingSecond (n + 1) (k + 1) := by
-  induction n with
+  induction n generalizing k with
   | zero =>
       cases k <;> simp [Nat.stirlingSecond]
   | succ n ih =>
@@ -149,9 +149,9 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
             apply Subtype.ext
             exact Subsingleton.elim _ _
         }
-        simp [Nat.stirlingSecond]
+        simp
     | succ k =>
-        simp only [Nat.stirlingSecond_zero_succ]
+        change Fintype.card {P : Finpartition (∅ : Finset α) // P.parts.card = k + 1} = 0
         rw [Fintype.card_eq_zero_iff]
         exact ⟨fun P => by
           have hparts : P.1.parts = ∅ :=
@@ -191,7 +191,8 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
           _ = Nat.stirlingSecond s.card (k + 1) := by
                 have hpos : 0 < s.card := Finset.card_pos.mpr ⟨a, ha⟩
                 have hcard : s.card = (s.card - 1) + 1 := by omega
-                simpa [hcard, Nat.add_sub_add_right] using
+                rw [hcard]
+                simpa [Nat.add_sub_add_right] using
                   sum_choose_mul_stirlingSecond_complement (s.card - 1) k
 
 end Finpartition
