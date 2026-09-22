@@ -40,7 +40,7 @@ theorem momentFromCumulant_empty (κ : Finset α → R) :
   simp [partitionProduct, hparts]
 
 
-private theorem partitionProduct_distinguishedBlockEquiv_symm
+theorem partitionProduct_distinguishedBlockEquiv_symm
     (κ : Finset α → R) {s : Finset α} {a : α} (ha : a ∈ s)
     (x : Σ B : BlockContaining s a, Finpartition (s \ B.1)) :
     partitionProduct κ ((distinguishedBlockEquiv s a ha).symm x) =
