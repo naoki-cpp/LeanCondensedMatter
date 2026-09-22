@@ -191,6 +191,18 @@ def coarseningsEquivBlockPartitions (π : Finpartition a) :
   left_inv σ := Subtype.ext (lift_quotientByCoarsening_eq σ.2)
   right_inv Q := quotient_liftBlockPartition_eq π Q
 
+/-- Passing from a coarsening of `π` to the induced partition of the block set preserves the
+number of blocks. -/
+theorem card_parts_coarseningsEquivBlockPartitions (π : Finpartition a)
+    (σ : {σ : Finpartition a // π ≤ σ}) :
+    (coarseningsEquivBlockPartitions π σ).parts.card = σ.1.parts.card := by
+  classical
+  change (σ.1.parts.image (blockFiber π)).card = σ.1.parts.card
+  rw [Finset.card_image_iff]
+  intro B hB C hC hBC
+  have hflat := congrArg flattenBlock hBC
+  simpa [flatten_blockFiber_eq σ.2 hB, flatten_blockFiber_eq σ.2 hC] using hflat
+
 /-- Order-isomorphism form of `coarseningsEquivBlockPartitions`. -/
 def coarseningsOrderIsoBlockPartitions (π : Finpartition a) :
     {σ : Finpartition a // π ≤ σ} ≃o Finpartition π.parts where
