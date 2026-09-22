@@ -1,9 +1,9 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.Polynomial.Coeff
 import Mathlib.Algebra.Polynomial.Eval.Defs
-import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.Combinatorics.Enumerative.Stirling
 import Mathlib.RingTheory.Polynomial.Pochhammer
+import Mathlib.Tactic.Ring
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
@@ -74,24 +74,49 @@ theorem replicaPolynomial_eval_nat_eq_sum_labelings
   simp [Fintype.card_fin, nsmul_eq_mul, mul_comm]
 
 
-section Field
 
-variable {F : Type*} [Field F] [CharZero F]
+section Ring
+
+variable {F : Type*} [CommRing F]
+
+private theorem descPochhammer_mul_X (k : ℕ) :
+    descPochhammer F k * Polynomial.X =
+      Polynomial.C (k : F) * descPochhammer F k + descPochhammer F (k + 1) := by
+  rw [descPochhammer_succ_right, ← Polynomial.C_eq_natCast]
+  ring
 
 private theorem X_pow_eq_sum_stirlingSecond_descPochhammer (b : ℕ) :
     (Polynomial.X : Polynomial F) ^ b =
       ∑ k ∈ Finset.range (b + 1),
-        Polynomial.C (Nat.stirlingSecond b k : F) * Polynomial.descPochhammer F k := by
-  apply Polynomial.eq_of_infinite_eval_eq
-  have hInfinite : Set.Infinite (Set.range fun n : ℕ => (n : F)) :=
-    Set.infinite_range_of_injective Nat.cast_injective
-  refine hInfinite.mono ?_
-  rintro x ⟨n, rfl⟩
-  simp only [Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_finsetSum,
-    Polynomial.eval_mul, Polynomial.eval_C, Polynomial.descPochhammer_eval_eq_descFactorial]
-  have hcast := congrArg (fun z : ℕ => (z : F))
-    (Nat.pow_eq_sum_stirlingSecond_mul_descFactorial n b)
-  simpa only [Nat.cast_pow, Nat.cast_sum, Nat.cast_mul] using hcast
+        Polynomial.C (Nat.stirlingSecond b k : F) * descPochhammer F k := by
+  induction b with
+  | zero => simp
+  | succ b ih =>
+      have hshift :
+          (∑ k ∈ Finset.range (b + 1),
+              Polynomial.C (Nat.stirlingSecond b k : F) *
+                (Polynomial.C (k : F) * descPochhammer F k)) =
+            ∑ k ∈ Finset.range (b + 1),
+              Polynomial.C (k + 1 : F) *
+                (Polynomial.C (Nat.stirlingSecond b (k + 1) : F) *
+                  descPochhammer F (k + 1)) := by
+        rw [Finset.sum_range_succ'
+            (fun k => Polynomial.C (Nat.stirlingSecond b k : F) *
+              (Polynomial.C (k : F) * descPochhammer F k)) b,
+          Finset.sum_range_succ
+            (fun k => Polynomial.C (k + 1 : F) *
+              (Polynomial.C (Nat.stirlingSecond b (k + 1) : F) *
+                descPochhammer F (k + 1))) b,
+          Nat.stirlingSecond_eq_zero_of_lt b.lt_add_one]
+        simp [mul_left_comm, mul_comm]
+      rw [pow_succ, ih, Finset.sum_mul,
+        Finset.sum_range_succ'
+          (fun k => Polynomial.C (Nat.stirlingSecond (b + 1) k : F) *
+            descPochhammer F k) (b + 1)]
+      simp only [mul_assoc, descPochhammer_mul_X, mul_add, Finset.sum_add_distrib, hshift,
+        Nat.stirlingSecond_succ_succ, Nat.cast_add, Nat.cast_mul, map_add, map_mul,
+        Nat.stirlingSecond_succ_zero, Nat.cast_zero, map_zero, zero_mul, add_zero]
+      exact add_comm _ _
 
 /-- The replica polynomial in the descending-factorial basis.  The Stirling number of the second
 kind converts the monomial replica factor for a partition into the falling-factorial basis used by
@@ -102,7 +127,7 @@ theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
       ∑ π : Finpartition S, ∑ k ∈ Finset.range (π.parts.card + 1),
         Polynomial.C
             ((Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
-          Polynomial.descPochhammer F k := by
+          descPochhammer F k := by
   classical
   rw [replicaPolynomial]
   apply Finset.sum_congr rfl
@@ -113,6 +138,6 @@ theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
   intro k hk
   simp [mul_assoc, mul_comm, mul_left_comm]
 
-end Field
+end Ring
 
 end Finpartition
