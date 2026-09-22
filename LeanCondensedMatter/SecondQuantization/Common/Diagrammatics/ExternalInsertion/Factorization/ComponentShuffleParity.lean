@@ -216,7 +216,23 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
   unfold ExternalInsertionDiagram.componentLegInversionInner
     ExternalInsertionDiagram.componentExternalInversionInner
   rw [Fintype.sum_sum_type]
-  simp only [d.componentLegPosition_external, externalInsertionExternalLeg_val]
+  have hext :
+      (∑ f : Fin (2 * d.externalPairCount C),
+        if d.componentLegPosition C (Sum.inl f) <
+          d.componentLegPosition B (Sum.inl e) then 1 else 0) =
+        ∑ f : Fin (2 * d.externalPairCount C),
+          if (d.externalSectorOrderIso C f).1 <
+            (d.externalSectorOrderIso B e).1 then 1 else 0 := by
+    apply Finset.sum_congr rfl
+    intro f _
+    rw [d.componentLegPosition_external, d.componentLegPosition_external]
+    change
+      (if (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
+          (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
+        then 1 else 0) =
+        if (d.externalSectorOrderIso C f).1 < (d.externalSectorOrderIso B e).1
+        then 1 else 0
+    rw [externalInsertionExternalLeg_val, externalInsertionExternalLeg_val]
   have hzero :
       (∑ q : ↥(interactionSector
           (C : Finset (ExternalInsertionVertex E S))) × Fin 4,
@@ -224,8 +240,8 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
           d.componentLegPosition B (Sum.inl e) then 1 else 0) = 0 := by
     apply Finset.sum_eq_zero
     intro q _
-    simp [d.componentInteraction_not_lt_external B C q.1 q.2 e]
-  rw [hzero, add_zero]
+    rw [if_neg (d.componentInteraction_not_lt_external B C q.1 q.2 e)]
+  rw [hext, hzero, add_zero]
 
 private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two
     {S : Finset (Fin N)}
@@ -244,16 +260,16 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
           if d.componentLegPosition C (Sum.inl e) <
             d.componentLegPosition B (Sum.inr (v, l)) then 1 else 0) =
           2 * d.externalPairCount C := by
-      simp [d.componentExternal_lt_interaction B C]
+      calc
+        _ = ∑ _e : Fin (2 * d.externalPairCount C), 1 := by
+          apply Finset.sum_congr rfl
+          intro e _
+          rw [if_pos (d.componentExternal_lt_interaction B C e v l)]
+        _ = 2 * d.externalPairCount C := by simp
     rw [hext]
     exact ⟨d.externalPairCount C, by omega⟩
   · rw [Fintype.sum_prod_type]
     refine Finset.dvd_sum fun w _ => ?_
-    have huniform (k : Fin 4) :
-        (d.componentLegPosition C (Sum.inr (w, k)) <
-          d.componentLegPosition B (Sum.inr (v, l))) =
-        (d.ambientInteractionVertex C w < d.ambientInteractionVertex B v) := by
-      exact propext (d.componentInteractionLeg_lt_iff B C hBC v l w k)
     have hcount :
         (∑ k : Fin 4,
           if d.componentLegPosition C (Sum.inr (w, k)) <
@@ -266,7 +282,17 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
               d.ambientInteractionVertex B v then 1 else 0) := by
           apply Finset.sum_congr rfl
           intro k _
-          rw [huniform k]
+          by_cases hlt :
+              d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
+          · have hfull :=
+              (d.componentInteractionLeg_lt_iff B C hBC v l w k).2 hlt
+            simp [hfull, hlt]
+          · have hfull :
+                ¬ d.componentLegPosition C (Sum.inr (w, k)) <
+                  d.componentLegPosition B (Sum.inr (v, l)) := by
+              intro h
+              exact hlt ((d.componentInteractionLeg_lt_iff B C hBC v l w k).1 h)
+            simp [hfull, hlt]
         _ = 4 * (if d.ambientInteractionVertex C w <
               d.ambientInteractionVertex B v then 1 else 0) := by
           simp
@@ -336,8 +362,8 @@ theorem ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_t
     intro p _
     cases p with
     | inl e =>
+        simp only [g]
         rw [d.componentLegInversionInner_external B C e]
-        exact Nat.ModEq.refl _
     | inr p =>
         rcases p with ⟨v, l⟩
         simpa [Nat.ModEq, g] using
