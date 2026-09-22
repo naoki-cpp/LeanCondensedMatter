@@ -56,6 +56,17 @@ theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total
   classical
   simp [FamilySlotShuffleTo.blockInversionCount, hij]
 
+/-- Total inter-block inversion count relative to an explicit ordering of the blocks.
+
+The order selects exactly one orientation of every unordered pair of distinct blocks. Keeping that
+choice explicit avoids imposing an arbitrary order on the family index type. -/
+noncomputable def FamilySlotShuffleTo.orderedBlockInversionCount [Fintype ι]
+    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total)
+    (blockOrder : ι ≃ Fin (Fintype.card ι)) : ℕ :=
+  ∑ ij ∈ (Finset.univ : Finset ι).offDiag,
+    if blockOrder ij.1 < blockOrder ij.2
+    then shuffle.blockInversionCount ij.1 ij.2 else 0
+
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
     {σ τ : FamilySlotShuffleTo size total}
