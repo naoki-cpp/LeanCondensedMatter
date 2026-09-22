@@ -226,13 +226,26 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
     apply Finset.sum_congr rfl
     intro f _
     rw [d.componentLegPosition_external, d.componentLegPosition_external]
-    change
-      (if (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
-          (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
-        then 1 else 0) =
-        if (d.externalSectorOrderIso C f).1 < (d.externalSectorOrderIso B e).1
-        then 1 else 0
-    rw [externalInsertionExternalLeg_val, externalInsertionExternalLeg_val]
+    by_cases hlt :
+        (d.externalSectorOrderIso C f).1 < (d.externalSectorOrderIso B e).1
+    · have hleg :
+          externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
+            externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
+        change
+          (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
+            (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
+        simpa only [externalInsertionExternalLeg_val] using hlt
+      rw [if_pos hleg, if_pos hlt]
+    · have hleg :
+          ¬ externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
+            externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
+        intro h
+        apply hlt
+        change
+          (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
+            (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val at h
+        simpa only [externalInsertionExternalLeg_val] using h
+      rw [if_neg hleg, if_neg hlt]
   have hzero :
       (∑ q : ↥(interactionSector
           (C : Finset (ExternalInsertionVertex E S))) × Fin 4,
@@ -286,13 +299,13 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_interaction_
               d.ambientInteractionVertex C w < d.ambientInteractionVertex B v
           · have hfull :=
               (d.componentInteractionLeg_lt_iff B C hBC v l w k).2 hlt
-            simp [hfull, hlt]
+            rw [if_pos hfull, if_pos hlt]
           · have hfull :
                 ¬ d.componentLegPosition C (Sum.inr (w, k)) <
                   d.componentLegPosition B (Sum.inr (v, l)) := by
               intro h
               exact hlt ((d.componentInteractionLeg_lt_iff B C hBC v l w k).1 h)
-            simp [hfull, hlt]
+            rw [if_neg hfull, if_neg hlt]
         _ = 4 * (if d.ambientInteractionVertex C w <
               d.ambientInteractionVertex B v then 1 else 0) := by
           simp
