@@ -86,6 +86,7 @@ General cautions distilled from past sessions; detailed incident records live in
 
 - **One branch per unit of work**, cut from up-to-date `main`, named `type/short-slug` matching the commit type.
 - **A PR is created for every unit of work.**
+- **Review after implementation and iterate to a clean review.** Once implementation is complete, review the full change, fix every actionable finding, and repeat the review-and-fix cycle until a review pass finds no remaining actionable issues.
 - **Merging requires an explicit instruction from the user** and passing required CI; merges are squash merges with branch deletion, followed by syncing local `main`.
 
 ## Commit conventions

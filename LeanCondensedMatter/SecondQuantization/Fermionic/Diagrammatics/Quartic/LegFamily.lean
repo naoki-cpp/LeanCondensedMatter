@@ -25,7 +25,8 @@ noncomputable def quarticLegFieldForSequence {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     TimedField Mode :=
   let slotLeg := Common.orderedQuarticLegEquiv n p
-  ⟨τ slotLeg.1, quarticLocalLegExternalFieldLabel (q slotLeg.1) slotLeg.2⟩
+  ⟨τ slotLeg.1, quarticLocalLegExternalFieldLabel
+    (Common.quarticLocalLeg (q slotLeg.1) slotLeg.2)⟩
 
 /-- The atomic operator at a flattened leg position for an arbitrary vertex-label sequence and time
 assignment. -/
@@ -41,7 +42,13 @@ theorem timedFieldOperator_quarticLegFieldForSequence (ε : Mode → ℝ) {n : �
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     timedFieldOperator ε (quarticLegFieldForSequence q τ p) =
       quarticLegOperatorForSequence ε q τ p := by
-  rw [quarticLegFieldForSequence, quarticLegOperatorForSequence, timedFieldOperator_quarticLocalLeg]
+  rw [quarticLegFieldForSequence, quarticLegOperatorForSequence]
+  simpa [quarticLocalLegOperator, Common.quarticLocalLegOperator] using
+    (timedFieldOperator_quarticLocalLeg ε
+      (τ (Common.orderedQuarticLegEquiv n p).1)
+      (Common.quarticLocalLeg
+        (q (Common.orderedQuarticLegEquiv n p).1)
+        (Common.orderedQuarticLegEquiv n p).2))
 
 omit [Fintype Mode] in
 /-- The free-evolution energy shift of a flattened quartic leg in an arbitrary vertex-label
@@ -59,8 +66,20 @@ theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
       Complex.exp ((τ (flatVertexIndex n p) *
         quarticLegEnergyShiftForSequence ε q p : ℝ) : ℂ) •
         quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [quarticLegOperatorForSequence, imaginaryTimeEvolve_quarticLocalLegOperator]
-  rfl
+  rw [quarticLegOperatorForSequence]
+  simpa [imaginaryTimeEvolve, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+    quarticLegEnergyShiftForSequence, quarticLocalLegEnergyShift,
+    Common.flatVertexIndex, Common.flatLocalLeg] using
+    (Common.QuarticLocalLeg.heisenbergEvolve_operator
+      (fermionEnergy ε) ε create annihilate
+      (Common.quarticLocalLeg
+        (q (Common.orderedQuarticLegEquiv n p).1)
+        (Common.orderedQuarticLegEquiv n p).2)
+      (τ (Common.orderedQuarticLegEquiv n p).1)
+      (fun i => imaginaryTimeEvolve_create ε
+        (τ (Common.orderedQuarticLegEquiv n p).1) i)
+      (fun i => imaginaryTimeEvolve_annihilate ε
+        (τ (Common.orderedQuarticLegEquiv n p).1) i))
 
 end Fermionic
 end SecondQuantization
