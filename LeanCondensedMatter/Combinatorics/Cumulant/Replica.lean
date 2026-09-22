@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
@@ -53,5 +54,20 @@ theorem replicaPolynomial_coeff_one (κ : Finset α → R) {S : Finset α} (hS :
       exact hπ (finpartition_eq_indiscrete_of_card_parts_eq_one hS π h.symm)
     simp [hcard])]
   simp [partitionProduct]
+
+
+/-- Evaluating the replica polynomial at a natural replica number is the sum over independent
+replica labelings of the blocks of every partition. Each labeling carries the partition's block
+weight. -/
+theorem replicaPolynomial_eval_nat_eq_sum_labelings
+    (κ : Finset α → R) (S : Finset α) (n : ℕ) :
+    (replicaPolynomial κ S).eval (n : R) =
+      ∑ π : Finpartition S, ∑ _ : π.parts → Fin n, partitionProduct κ π := by
+  classical
+  rw [replicaPolynomial, Polynomial.eval_finsetSum]
+  apply Finset.sum_congr rfl
+  intro π hπ
+  rw [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
+  simp [Fintype.card_fin, nsmul_eq_mul, mul_comm]
 
 end Finpartition
