@@ -165,7 +165,7 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
             (Finpartition.parts_eq_empty_iff (P := P.1)).2 rfl
           have hcard := P.2
           rw [hparts] at hcard
-          omega⟩
+          simp at hcard⟩
   · cases k with
     | zero =>
         have hpos : 0 < s.card :=
