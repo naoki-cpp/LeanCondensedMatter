@@ -108,22 +108,40 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
     simp [hcross]
     omega
 
-/-- An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. -/
-theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
-    (n : ℕ) (s : Finset α) (f : α → α → ℕ)
-    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
-    Nat.ModEq n (∑ p ∈ s.offDiag, f p.1 p.2) 0 := by
+/-- Two off-diagonal sums are congruent modulo `n` when each unordered pair has the same
+combined contribution modulo `n`. -/
+theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
+    (n : ℕ) (s : Finset α) (f g : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b →
+      Nat.ModEq n (f a b + f b a) (g a b + g b a)) :
+    Nat.ModEq n
+      (∑ p ∈ s.offDiag, f p.1 p.2)
+      (∑ p ∈ s.offDiag, g p.1 p.2) := by
   classical
-  have hoff : (∑ p ∈ s.offDiag, (f p.1 p.2 : ZMod n)) = 0 := by
+  have hzero :
+      (∑ p ∈ s.offDiag,
+        ((f p.1 p.2 : ZMod n) - (g p.1 p.2 : ZMod n))) = 0 := by
     refine Finset.sum_involution
       (s := s.offDiag)
-      (f := fun p => (f p.1 p.2 : ZMod n))
+      (f := fun p =>
+        ((f p.1 p.2 : ZMod n) - (g p.1 p.2 : ZMod n)))
       (fun p _ => p.swap) ?_ ?_ ?_ ?_
     · rintro ⟨a, b⟩ hp
       simp only [Finset.mem_offDiag] at hp
-      simpa using
-        (ZMod.natCast_eq_natCast_iff (f a b + f b a) 0 n).2
+      have hz :
+          ((f a b + f b a : ℕ) : ZMod n) =
+            ((g a b + g b a : ℕ) : ZMod n) :=
+        (ZMod.natCast_eq_natCast_iff _ _ n).2
           (hpair a hp.1 b hp.2.1 hp.2.2)
+      simp only [Prod.swap_prod_mk]
+      calc
+        (f a b : ZMod n) - (g a b : ZMod n) +
+            ((f b a : ZMod n) - (g b a : ZMod n)) =
+          ((f a b + f b a : ℕ) : ZMod n) -
+            ((g a b + g b a : ℕ) : ZMod n) := by
+              simp only [Nat.cast_add]
+              ring
+        _ = 0 := by rw [hz]; simp
     · rintro ⟨a, b⟩ hp _
       simp only [Finset.mem_offDiag] at hp
       intro hswap
@@ -134,8 +152,22 @@ theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
       exact ⟨hp.2.1, hp.1, hp.2.2.symm⟩
     · rintro ⟨a, b⟩ hp
       rfl
-  apply (ZMod.natCast_eq_natCast_iff _ 0 n).1
-  simpa using hoff
+  apply (ZMod.natCast_eq_natCast_iff _ _ n).1
+  have hsum :
+      (∑ p ∈ s.offDiag, (f p.1 p.2 : ZMod n)) =
+        ∑ p ∈ s.offDiag, (g p.1 p.2 : ZMod n) := by
+    rw [Finset.sum_sub_distrib] at hzero
+    exact sub_eq_zero.mp hzero
+  simpa using hsum
+
+/-- An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. -/
+theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
+    (n : ℕ) (s : Finset α) (f : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
+    Nat.ModEq n (∑ p ∈ s.offDiag, f p.1 p.2) 0 := by
+  simpa using
+    finset_sum_offDiag_modEq_of_pair_add_modEq n s f (fun _ _ => 0)
+      (fun a ha b hb hab => by simpa using hpair a ha b hb hab)
 
 /-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
 diagonal modulo `n`. -/

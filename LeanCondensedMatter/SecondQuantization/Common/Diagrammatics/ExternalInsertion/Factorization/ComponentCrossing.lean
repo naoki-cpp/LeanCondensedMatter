@@ -61,6 +61,46 @@ theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legI
           d.componentPairEquiv_apply])
     B C hBC
 
+/-- The residual inter-component crossing parity is the total block-inversion parity of the
+canonical component-leg shuffle, relative to any explicit ordering of the connected components. -/
+theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (blockOrder :
+      d.componentPartition.parts ≃ Fin (Fintype.card d.componentPartition.parts)) :
+    d.interComponentCrossingCount % 2 =
+      d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 := by
+  classical
+  let cross := fun B C : d.componentPartition.parts =>
+    d.pairing.componentCrossingCount d.componentPairEquiv B C
+  let inv := fun B C : d.componentPartition.parts =>
+    d.componentLegInversionCount B C
+  let selected := fun B C : d.componentPartition.parts =>
+    if blockOrder B < blockOrder C then inv B C else 0
+  have hsum :=
+    finset_sum_offDiag_modEq_of_pair_add_modEq
+      2 (Finset.univ : Finset d.componentPartition.parts) cross selected
+      (fun B _ C _ hBC => by
+        by_cases hlt : blockOrder B < blockOrder C
+        · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
+          simpa [Nat.ModEq, selected, hlt, hnlt, inv, cross] using
+            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount B C hBC
+        · have hneOrder : blockOrder B ≠ blockOrder C := by
+            intro h
+            exact hBC (blockOrder.injective h)
+          have hrev : blockOrder C < blockOrder B := by
+            rcases lt_trichotomy (blockOrder B) (blockOrder C) with h | h | h
+            · exact absurd h hlt
+            · exact absurd h hneOrder
+            · exact h
+          simpa [Nat.ModEq, selected, hlt, hrev, inv, cross, add_comm] using
+            d.componentCrossingCount_add_swap_mod_two_eq_legInversionCount C B hBC.symm)
+  simpa [Nat.ModEq, ExternalInsertionDiagram.interComponentCrossingCount,
+    Combinatorics.Pairing.interComponentCrossingCount,
+    FamilySlotShuffleTo.orderedBlockInversionCount,
+    ExternalInsertionDiagram.componentLegInversionCount,
+    cross, inv, selected] using hsum
+
 private theorem ExternalInsertionDiagram.componentCrossingCount_self
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
