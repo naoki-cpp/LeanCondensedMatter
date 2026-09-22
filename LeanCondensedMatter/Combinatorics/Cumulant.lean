@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.Cumulant.Replica
-import LeanCondensedMatter.Combinatorics.Cumulant.ReplicaBridge
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
