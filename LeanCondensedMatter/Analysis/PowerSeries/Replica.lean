@@ -1,5 +1,6 @@
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.RingTheory.Polynomial.Pochhammer
+import Mathlib.RingTheory.PowerSeries.Log
 import Mathlib.RingTheory.PowerSeries.Order
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
@@ -103,5 +104,67 @@ theorem replicaCoeffPolynomial_eval_nat [CharZero R]
           hkm (Nat.lt_succ_of_le hk)
       rw [coeff_sub_one_pow_eq_zero_of_lt hZ hmk, mul_zero]
   rw [hEval, hTruncate, ← hPow]
+
+
+private theorem coeff_one_descPochhammer_succ (k : ℕ) :
+    (descPochhammer R (k + 1)).coeff 1 = (-1 : R) ^ k * (k.factorial : R) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [descPochhammer_succ_right]
+      change
+        (descPochhammer R (k + 1) *
+            (Polynomial.X - Polynomial.C (k + 1 : R))).coeff 1 =
+          (-1 : R) ^ (k + 1) * ((k + 1).factorial : R)
+      rw [show 1 = 0 + 1 by rfl, Polynomial.coeff_mul_X_sub_C]
+      rw [Polynomial.coeff_zero_eq_eval_zero,
+        descPochhammer_ne_zero_eval_zero (R := R) (Nat.succ_ne_zero k), ih]
+      simp [Nat.factorial_succ, pow_succ]
+      ring
+
+private theorem inv_factorial_mul_coeff_one_descPochhammer [CharZero R] (k : ℕ) :
+    (k.factorial : R)⁻¹ * (descPochhammer R k).coeff 1 =
+      coeff k (log R) := by
+  cases k with
+  | zero => simp
+  | succ k =>
+      rw [coeff_one_descPochhammer_succ, coeff_log]
+      simp only [Nat.succ_ne_zero, if_false]
+      simp [Nat.factorial_succ, pow_succ, div_eq_mul_inv]
+      ring
+
+/-- The coefficient linear in the formal replica count is the factorial-normalized coefficient
+of the formal logarithm. This is the algebraic replica identity, with no analytic continuation in
+the replica number. -/
+theorem replicaCoeffPolynomial_coeff_one [CharZero R]
+    {Z : PowerSeries R} (hZ : constantCoeff Z = 1) (m : ℕ) :
+    (replicaCoeffPolynomial Z m).coeff 1 =
+      (m.factorial : R) * coeff m (logOf Z) := by
+  let U : PowerSeries R := Z - 1
+  have hU : HasSubst U :=
+    HasSubst.of_constantCoeff_zero' (by simp [U, hZ])
+  have hLog :
+      coeff m (logOf Z) =
+        ∑ k ∈ Finset.range (m + 1), coeff k (log R) * coeff m (U ^ k) := by
+    rw [logOf_eq, coeff_subst' hU]
+    rw [finsum_eq_sum_of_support_subset (s := Finset.range (m + 1))]
+    · simp only [smul_eq_mul]
+    · intro k hk
+      simp only [Function.mem_support] at hk
+      simp only [Finset.mem_range]
+      by_contra hkm
+      have hmk : m < k := Nat.succ_le_iff.mp (Nat.le_of_not_gt hkm)
+      have hzero : coeff m (U ^ k) = 0 := by
+        simpa [U] using coeff_sub_one_pow_eq_zero_of_lt hZ hmk
+      simp [hzero] at hk
+  rw [replicaCoeffPolynomial, Polynomial.finsetSum_coeff, hLog, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [Polynomial.coeff_C_mul]
+  rw [← inv_factorial_mul_coeff_one_descPochhammer (R := R) k]
+  have hkfac : (k.factorial : R) ≠ 0 :=
+    Nat.cast_ne_zero.mpr k.factorial_ne_zero
+  field_simp [hkfac]
+  ring
 
 end PowerSeries
