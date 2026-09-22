@@ -35,7 +35,7 @@ noncomputable def TwoPointDiagram.externalPieceOfCardEq
       (Finset.univ : Finset (Fin m)) :=
   d.externalVacuumSplit.1.slotCongr
     (standardSlotEquivOfCardEq
-      (TwoPointDiagram.interactionSector (d.externalComponent 0)) h)
+      (interactionSector (d.externalComponent 0)) h)
 
 @[simp]
 theorem TwoPointDiagram.externalPieceOfCardEq_externalLabel
@@ -69,7 +69,7 @@ theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
     TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
   exact congrArg d.vertexLabel
     (Subtype.ext (standardSlotEquivOfCardEq_symm_coe
-      (TwoPointDiagram.interactionSector (d.externalComponent 0)) h
+      (interactionSector (d.externalComponent 0)) h
       ⟨v, Finset.mem_univ v⟩))
 
 @[simp]
@@ -115,7 +115,7 @@ private theorem TwoPointDiagram.externalSlotLegSplitting_external_externalPart
       (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm (Sum.inl e) := by
   unfold TwoPointDiagram.externalSlotLegSplitting
   convert slotLegSplitting_external
-    (TwoPointDiagram.interactionSector_subset (d.externalComponent 0)) e using 1
+    (interactionSector_subset (d.externalComponent 0)) e using 1
   · simp only [TwoPointDiagram.externalInteractionPart]
     apply Fin.ext
     rfl
@@ -130,7 +130,7 @@ private theorem TwoPointDiagram.externalSlotLegSplitting_interaction_externalPar
         (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
   unfold TwoPointDiagram.externalSlotLegSplitting
   convert slotLegSplitting_left_interaction
-    (TwoPointDiagram.interactionSector_subset (d.externalComponent 0)) v l using 1
+    (interactionSector_subset (d.externalComponent 0)) v l using 1
   · simp only [TwoPointDiagram.externalInteractionPart]
     apply Fin.ext
     rfl
