@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
+import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
 

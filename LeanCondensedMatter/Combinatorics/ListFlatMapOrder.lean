@@ -1,5 +1,5 @@
-import Mathlib.Data.List.Basic
-import Mathlib.Tactic
+import Mathlib.Data.List.Nodup
+import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
 
@@ -138,7 +138,7 @@ theorem idxOf_flatMap_lt_of_idxOf_lt
       · subst a
         rcases hb with hbEq | hb
         · subst b
-          exact (lt_irrefl _ hab).elim
+          exact (Nat.lt_irrefl _ hab).elim
         · have hyTail : y ∈ tail.flatMap f := by
             rw [List.mem_flatMap]
             exact ⟨b, hb, hy⟩
