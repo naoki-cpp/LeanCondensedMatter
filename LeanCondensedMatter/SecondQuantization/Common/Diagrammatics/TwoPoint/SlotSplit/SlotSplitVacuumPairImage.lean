@@ -168,7 +168,7 @@ theorem TwoPointDiagram.card_mixedVacuumComponentPair
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : ↥d.vacuumComponentParts) :
     Fintype.card (d.MixedComponentPair τ τ' σ B.1) =
-      2 * (TwoPointDiagram.interactionSector
+      2 * (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
   let hVac : d.ComponentIsVacuum B.1 :=
     (d.mem_vacuumComponentParts B.1).1 B.2
@@ -184,14 +184,14 @@ private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
     (hext : ext.IsExternallyConnected) :
     let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
     (∑ B : ↥d.vacuumComponentParts,
-      (TwoPointDiagram.interactionSector
+      (interactionSector
         (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card) =
       ((Finset.univ : Finset (Fin n)) \ T).card := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let e := slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext vac hext
   let F : ↥d.vacuumComponentParts → ℕ := fun B =>
-    (TwoPointDiagram.interactionSector
+    (interactionSector
       (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card
   change (∑ B : ↥d.vacuumComponentParts, F B) = _
   calc
@@ -201,7 +201,7 @@ private theorem TwoPointDiagram.ofSlotSplit_sum_vacuumComponentInteractionCard
     _ = ∑ C : vac.componentPartition.parts, (C : Finset (Fin n)).card := by
       apply Fintype.sum_congr
       intro C
-      change (TwoPointDiagram.interactionSector
+      change (interactionSector
           ((e C).1.1 : Finset (TwoPointVertex
             (Finset.univ : Finset (Fin n))))).card = _
       rw [slotSplitVacuumComponentEquiv_apply,
