@@ -258,7 +258,7 @@ noncomputable def ExternalInsertionDiagram.componentExternalShuffle
         (fun B e => ExternalInsertionDiagram.mem_externalPart
           (B : Finset (ExternalInsertionVertex E S)) e.1)).symm |>.trans
       (Equiv.subtypeUnivEquiv (fun e : Fin (2 * E) => Finset.mem_univ e))
-  strictMono := fun B e f hef =>
+  strictMono := fun B _ _ hef =>
     (d.externalPartOrderIso B).strictMono hef
 
 @[simp]
