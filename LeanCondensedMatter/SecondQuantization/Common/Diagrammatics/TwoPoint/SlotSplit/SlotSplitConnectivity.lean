@@ -182,11 +182,11 @@ private theorem reachable_ofSlotSplit_iff (x y : TwoPointVertex T) :
 the external piece really is externally connected. -/
 theorem interactionSector_externalComponent_ofSlotSplit
     (hext : ext.IsExternallyConnected) :
-    TwoPointDiagram.interactionSector
+    interactionSector
         ((TwoPointDiagram.ofSlotSplit h ext vac).externalComponent 0) = T := by
   classical
   ext v
-  rw [TwoPointDiagram.mem_interactionSector]
+  rw [mem_interactionSector]
   constructor
   · rintro ⟨hv, hmem⟩
     have hreach :=
@@ -221,7 +221,7 @@ theorem interactionSector_externalComponent_ofSlotSplit
 leg splitting. -/
 theorem isSplit_slotLegSplitting_of_interactionSector_eq
     {d : TwoPointDiagram ExternalLabel InternalLabel N S}
-    (hd : TwoPointDiagram.interactionSector (d.externalComponent 0) = T) :
+    (hd : interactionSector (d.externalComponent 0) = T) :
     d.pairing.IsSplit (slotLegSplitting h) := by
   subst hd
   exact d.isSplit_externalSlotLegSplitting
@@ -229,17 +229,17 @@ theorem isSplit_slotLegSplitting_of_interactionSector_eq
 /-- **The external piece of such a diagram is externally connected.** -/
 theorem isExternallyConnected_slotSplitExternal
     {d : TwoPointDiagram ExternalLabel InternalLabel N S}
-    (hd : TwoPointDiagram.interactionSector (d.externalComponent 0) = T)
+    (hd : interactionSector (d.externalComponent 0) = T)
     (hsplit : d.pairing.IsSplit (slotLegSplitting h)) :
     (d.slotSplitExternal h hsplit).IsExternallyConnected := by
   rw [TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent]
   intro v
   refine ⟨0, ?_⟩
-  have hvT : (v : Fin N) ∈ TwoPointDiagram.interactionSector (d.externalComponent 0) := by
+  have hvT : (v : Fin N) ∈ interactionSector (d.externalComponent 0) := by
     rw [hd]
     exact v.2
   have hmem : (Sum.inr ⟨v.1, h v.2⟩ : TwoPointVertex S) ∈ d.externalComponent 0 :=
-    (TwoPointDiagram.mem_interactionSector_subtype (d.externalComponent 0) ⟨v.1, h v.2⟩).1 hvT
+    (mem_interactionSector_subtype (d.externalComponent 0) ⟨v.1, h v.2⟩).1 hvT
   have hreach : d.vertexGraph.Reachable (Sum.inr ⟨v.1, h v.2⟩) (Sum.inl 0) :=
     (d.vertexGraph.mem_componentBlock (Sum.inl 0) (Sum.inr ⟨v.1, h v.2⟩)).1 hmem
   have hD : TwoPointDiagram.ofSlotSplit h (d.slotSplitExternal h hsplit)
@@ -260,7 +260,7 @@ consisting of an externally connected two-point diagram on `T` and an arbitrary 
 diagrams as a Cauchy product. -/
 noncomputable def TwoPointDiagram.externalFiberEquiv :
     {d : TwoPointDiagram ExternalLabel InternalLabel N S //
-        TwoPointDiagram.interactionSector (d.externalComponent 0) = T} ≃
+        interactionSector (d.externalComponent 0) = T} ≃
       {ext : TwoPointDiagram ExternalLabel InternalLabel N T // ext.IsExternallyConnected} ×
         QuarticDiagram InternalLabel N (S \ T) where
   toFun d :=
