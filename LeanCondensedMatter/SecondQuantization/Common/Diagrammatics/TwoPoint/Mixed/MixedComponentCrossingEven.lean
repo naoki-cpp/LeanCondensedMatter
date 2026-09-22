@@ -198,12 +198,12 @@ private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C) :
     d.MixedComponentPosition τ τ' σ C ≃
-      ↥(TwoPointDiagram.interactionSector
+      ↥(interactionSector
         (C : Finset (TwoPointVertex
           (Finset.univ : Finset (Fin n))))) × Fin 4 :=
   (d.mixedVacuumPositionEquiv τ τ' σ C hVac).trans
     (quarticLegEquiv
-      (TwoPointDiagram.interactionSector
+      (interactionSector
         (C : Finset (TwoPointVertex
           (Finset.univ : Finset (Fin n))))))
 
@@ -212,7 +212,7 @@ private noncomputable def TwoPointDiagram.mixedVacuumInteractionPosition
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.MixedComponentPosition τ τ' σ C :=
@@ -226,7 +226,7 @@ private theorem
     (B C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C) :
     d.mixedComponentPositionInversionCount τ τ' σ B C =
       ∑ p : d.MixedComponentPosition τ τ' σ B,
-        ∑ v : ↥(TwoPointDiagram.interactionSector
+        ∑ v : ↥(interactionSector
           (C : Finset (TwoPointVertex
             (Finset.univ : Finset (Fin n))))),
           ∑ l : Fin 4,
@@ -239,14 +239,14 @@ private theorem
   calc
     (∑ q : d.MixedComponentPosition τ τ' σ C,
         if q.1 < p.1 then 1 else 0) =
-      ∑ x : ↥(TwoPointDiagram.interactionSector
+      ∑ x : ↥(interactionSector
           (C : Finset (TwoPointVertex
             (Finset.univ : Finset (Fin n))))) × Fin 4,
         if ((d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm x).1 < p.1
         then 1 else 0 :=
       (Equiv.sum_comp (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm
         (fun q => if q.1 < p.1 then 1 else 0)).symm
-    _ = ∑ v : ↥(TwoPointDiagram.interactionSector
+    _ = ∑ v : ↥(interactionSector
           (C : Finset (TwoPointVertex
             (Finset.univ : Finset (Fin n))))),
         ∑ l : Fin 4,
@@ -262,7 +262,7 @@ private theorem
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
     (hUniform : ∀ p : d.MixedComponentPosition τ τ' σ B,
-      ∀ v : ↥(TwoPointDiagram.interactionSector
+      ∀ v : ↥(interactionSector
         (C : Finset (TwoPointVertex
           (Finset.univ : Finset (Fin n))))), ∀ l : Fin 4,
         ((d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1) =
@@ -272,7 +272,7 @@ private theorem
   rw [d.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks τ τ' σ B C hVac]
   apply Nat.mod_eq_zero_of_dvd
   refine Finset.dvd_sum fun p _ => ?_
-  let V := ↥(TwoPointDiagram.interactionSector
+  let V := ↥(interactionSector
     (C : Finset (TwoPointVertex
       (Finset.univ : Finset (Fin n)))))
   let f : V → ℕ := fun v =>
@@ -322,7 +322,7 @@ private theorem TwoPointDiagram.mixedPositionComponent_interactionLegPosition
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.mixedPositionComponent τ τ' σ
@@ -336,7 +336,7 @@ private theorem TwoPointDiagram.mixedPositionComponent_interactionLegPosition
       TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
     (C : Finset (TwoPointVertex
       (Finset.univ : Finset (Fin n))))
-  exact (TwoPointDiagram.mem_interactionSector_subtype
+  exact (mem_interactionSector_subtype
     (C : Finset (TwoPointVertex
       (Finset.univ : Finset (Fin n))))
     ⟨v.1, Finset.mem_univ v.1⟩).1 v.2
@@ -346,7 +346,7 @@ private noncomputable def TwoPointDiagram.directMixedVacuumInteractionPosition
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.MixedComponentPosition τ τ' σ C :=
@@ -359,7 +359,7 @@ private theorem TwoPointDiagram.mixedVacuumPositionDataEquiv_direct
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.mixedVacuumPositionDataEquiv τ τ' σ C hVac
@@ -390,7 +390,7 @@ private theorem TwoPointDiagram.mixedVacuumPositionDataEquiv_direct
         TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n))))
-    exact (TwoPointDiagram.mem_interactionSector_subtype
+    exact (mem_interactionSector_subtype
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n))))
       ⟨v.1, Finset.mem_univ v.1⟩).1 v.2
@@ -408,7 +408,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     d.mixedVacuumInteractionPosition τ τ' σ C hVac v l =
@@ -424,7 +424,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     (d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 =
@@ -440,7 +440,7 @@ private theorem
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.componentPartition.parts) (hBC : B ≠ C)
     (p : d.MixedComponentPosition τ τ' σ B)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) :
     mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 ∉
@@ -477,7 +477,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform
     (B C : d.componentPartition.parts) (hBC : B ≠ C)
     (hVac : d.ComponentIsVacuum C)
     (p : d.MixedComponentPosition τ τ' σ B)
-    (v : ↥(TwoPointDiagram.interactionSector
+    (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
     ((d.mixedVacuumInteractionPosition τ τ' σ C hVac v l).1 < p.1) =
