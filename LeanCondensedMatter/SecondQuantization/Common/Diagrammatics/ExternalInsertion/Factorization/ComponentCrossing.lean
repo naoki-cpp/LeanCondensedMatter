@@ -29,17 +29,13 @@ noncomputable def ExternalInsertionDiagram.interComponentCrossingCount
   d.pairing.interComponentCrossingCount d.componentPairEquiv
 
 
-/-- Number of ambient leg-order inversions from component `C` across component `B`, measured
-through the canonical component-local leg embeddings. -/
+/-- Number of ambient leg-order inversions from component `C` across component `B`.
+This is the generic block-inversion count of the canonical component-leg shuffle. -/
 noncomputable def ExternalInsertionDiagram.componentLegInversionCount
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B C : d.componentPartition.parts) : ℕ :=
-  ∑ p : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
-      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)),
-    ∑ q : Fin (2 * (2 * (ExternalInsertionDiagram.interactionPart
-      (C : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount C)),
-      if d.componentDiagramLeg C q < d.componentDiagramLeg B p then 1 else 0
+  d.componentLegShuffle.blockInversionCount B C
 
 /-- For distinct components, the parity of the two oriented crossing counts is exactly the parity
 of the canonical ambient leg inversions between those components. -/
