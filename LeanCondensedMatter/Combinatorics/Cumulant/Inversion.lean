@@ -33,49 +33,6 @@ theorem partitionProduct_top {S : Finset α} (hS : S ≠ ∅) (f : Finset α →
     rwa [Finset.mem_singleton.1 (Finpartition.parts_top_subset S hx)] at hx
   rw [partitionProduct, hparts, Finset.prod_singleton]
 
-/-- Block products factor over a partition constructed by `bind`. -/
-theorem partitionProduct_bind (f : Finset α → R) {S : Finset α} (σ : Finpartition S)
-    (Q : ∀ B ∈ σ.parts, Finpartition B) :
-    partitionProduct f (σ.bind Q) = ∏ B ∈ σ.parts.attach, partitionProduct f (Q B.1 B.2) := by
-  classical
-  change ∏ C ∈ (σ.bind Q).parts, f C = _
-  apply Finset.prod_biUnion
-  rintro ⟨b, hb⟩ - ⟨c, hc⟩ - hbc
-  rw [Function.onFun, Finset.disjoint_left]
-  rintro d hdb hdc
-  rw [Ne, Subtype.mk_eq_mk] at hbc
-  exact (Q b hb).ne_bot hdb
-    (eq_bot_iff.2 <| (le_inf ((Q b hb).le hdb) <| (Q c hc).le hdc).trans <|
-      (σ.disjoint hb hc hbc).le_bot)
-
-/-- Sum of block products over refinements factors into blockwise moments. -/
-theorem sum_Iic_partitionProduct_eq (κ : Finset α → R) {S : Finset α} (π : Finpartition S) :
-    (∑ ρ ∈ Finset.Iic π, partitionProduct κ ρ) = partitionProduct (momentFromCumulant κ) π := by
-  classical
-  have hstep1 : (∑ ρ : {ρ : Finpartition S // ρ ≤ π}, partitionProduct κ ρ.1) =
-      ∏ B : π.parts, momentFromCumulant κ (B : Finset α) := by
-    rw [← Equiv.sum_comp (refinementsEquivFiberPartitions π).symm
-      (fun ρ : {ρ : Finpartition S // ρ ≤ π} => partitionProduct κ ρ.1)]
-    have hpt : ∀ Q : ∀ B : π.parts, Finpartition (B : Finset α),
-        partitionProduct κ ((refinementsEquivFiberPartitions π).symm Q).1 =
-          ∏ B : π.parts, partitionProduct κ (Q B) := fun Q => by
-      change partitionProduct κ (π.bind fun B hB => Q ⟨B, hB⟩) = _
-      rw [partitionProduct_bind κ π (fun B hB => Q ⟨B, hB⟩), ← Finset.univ_eq_attach]
-    simp_rw [hpt]
-    have hdist := Finset.prod_univ_sum
-      (fun B : π.parts => (Finset.univ : Finset (Finpartition (B : Finset α))))
-      (fun B q => partitionProduct κ q)
-    rw [Fintype.piFinset_univ] at hdist
-    exact hdist.symm
-  have hstep2 : (∑ ρ : {ρ : Finpartition S // ρ ≤ π}, partitionProduct κ ρ.1) =
-      ∑ ρ ∈ Finset.Iic π, partitionProduct κ ρ := by
-    rw [← Finset.sum_coe_sort (Finset.Iic π) (partitionProduct κ)]
-    refine Fintype.sum_equiv (Equiv.subtypeEquivRight (fun ρ => Finset.mem_Iic (a := π).symm))
-      (fun ρ : {ρ : Finpartition S // ρ ≤ π} => partitionProduct κ ρ.1)
-      (fun ρ : {ρ : Finpartition S // ρ ∈ Finset.Iic π} => partitionProduct κ ρ.1) fun x => ?_
-    rw [Equiv.subtypeEquivRight_apply]
-  rw [← hstep2, hstep1, partitionProduct, Finset.prod_coe_sort π.parts (momentFromCumulant κ)]
-
 /-- Pointwise Möbius inversion, away from the empty finite set. -/
 theorem cumulantFromMoment_momentFromCumulant (κ : Finset α → R)
     {S : Finset α} (hS : S ≠ ⊥) :
