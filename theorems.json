@@ -86962,7 +86962,7 @@
     "dependencies": [
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Common.heisenbergEvolve_quarticLocalLegOperator"
+      "SecondQuantization.Common.QuarticLocalLeg.heisenbergEvolve_operator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93085,6 +93085,47 @@
       "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (leg : SecondQuantization.Common.QuarticLocalLeg Mode) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (leg.operator create annihilate) =\n        Complex.exp ↑(τ * SecondQuantization.Common.QuarticLocalLeg.energyShift ε leg) • leg.operator create annihilate",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.QuarticLocalLeg.heisenbergEvolve_operator",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
+    "externalAxioms": [],
+    "docString": "A local quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_quarticLocalLegOperator",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolve_quarticLocalLegOperator",
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103641,7 +103682,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -103653,7 +103694,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator"
     ],
     "dependencies": [
@@ -103662,10 +103702,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103746,47 +103785,6 @@
       "SecondQuantization.Common.heisenbergEvolve_quarticInteraction"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} (energy : Config → ℝ) (ε : Mode → ℝ)\n  (create annihilate :\n    Mode → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ),\n  (∀ (i : Mode),\n      (SecondQuantization.Common.heisenbergEvolve energy τ) (create i) = Complex.exp (↑τ * ↑(ε i)) • create i) →\n    (∀ (i : Mode),\n        (SecondQuantization.Common.heisenbergEvolve energy τ) (annihilate i) =\n          Complex.exp (-↑τ * ↑(ε i)) • annihilate i) →\n      (SecondQuantization.Common.heisenbergEvolve energy τ)\n          (SecondQuantization.Common.quarticLocalLegOperator create annihilate q l) =\n        Complex.exp ↑(τ * SecondQuantization.Common.quarticLocalLegEnergyShift ε q l) •\n          SecondQuantization.Common.quarticLocalLegOperator create annihilate q l",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.heisenbergEvolve_quarticLocalLegOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
-    "externalAxioms": [],
-    "docString": "A local quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_quarticLocalLegOperator",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127445,11 +127443,13 @@
       "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
       "SecondQuantization.Fermionic.continuous_flatVertexLegPairingEvaluation",
       "SecondQuantization.Fermionic.dysonVertexMoment_eq_freeGibbsDensityOperator_expectation",
+      "SecondQuantization.Fermionic.externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
+      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
       "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp",
+      "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
       "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation",
       "intervalIntegral.orderedSimplexIntegral_congr",
@@ -127529,6 +127529,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
@@ -127536,10 +127537,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129955,48 +129957,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (q : SecondQuantization.Common.QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ),\n  (SecondQuantization.Common.heisenbergEvolve (SecondQuantization.Fermionic.fermionEnergy ε) (-β))\n      (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ\n        (SecondQuantization.Fermionic.quarticLocalLegOperator q l)) =\n    Complex.exp ↑(SecondQuantization.Common.quarticLocalLegEnergyShift ε q l * -β) •\n      SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.quarticLocalLegOperator q l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
-    "externalAxioms": [],
-    "docString": "**A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy\nε) (-β)`, with an eigenvalue shift *independent of the dressing time* `τ`** — the fact the general\nBloch–de Dominicis theorem needs after specializing to each flattened leg. Proved via\n`Common.heisenbergEvolve_heisenbergEvolve` (the two evolutions, at `τ` and `-β`, combine into a\nsingle evolution at `τ + (-β)`) and `imaginaryTimeEvolve_quarticLocalLegOperator` (applied twice:\nonce at `τ + (-β)` to evaluate the combined evolution, once at `τ` in reverse to factor the\n`τ`-dependent piece back out) — the two resulting `Complex.exp`s combine via `exp_add`/`ring`,\nleaving only the `-β`-dependent factor. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_heisenbergEvolve",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_quarticLocalLegOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (field : SecondQuantization.Fermionic.TimedField Mode),\n  (SecondQuantization.Common.heisenbergEvolve (SecondQuantization.Fermionic.fermionEnergy ε) (-β))\n      (SecondQuantization.Fermionic.timedFieldOperator ε field) =\n    Complex.exp ↑(SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε field.label * -β) •\n      SecondQuantization.Fermionic.timedFieldOperator ε field",
     "standardAxioms": [
       "Classical.choice",
@@ -130004,7 +129964,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -130016,6 +129976,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
     ],
     "dependencies": [
@@ -130026,9 +129987,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130393,23 +130355,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
     "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticLocalLegOperator",
+      "SecondQuantization.Common.QuarticLocalLeg.heisenbergEvolve_operator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator",
       "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133235,6 +133195,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation"
     ],
@@ -133244,10 +133205,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
