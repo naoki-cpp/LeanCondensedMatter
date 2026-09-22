@@ -163,9 +163,10 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
         exact ⟨fun P => by
           have hparts : P.1.parts = ∅ :=
             (Finpartition.parts_eq_empty_iff (P := P.1)).2 rfl
-          have hcard := P.2
-          rw [hparts] at hcard
-          simp at hcard⟩
+          have hpartsCard : P.1.parts.card = 0 := by
+            rw [hparts, Finset.card_empty]
+          have hk : k + 1 = 0 := P.2.symm.trans hpartsCard
+          exact Nat.ne_of_gt (Nat.zero_lt_succ k) hk⟩
   · cases k with
     | zero =>
         have hpos : 0 < s.card :=
