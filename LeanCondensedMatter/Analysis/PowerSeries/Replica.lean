@@ -18,7 +18,7 @@ open scoped BigOperators
 
 namespace PowerSeries
 
-variable {R : Type*} [Field R] [CharZero R]
+variable {R : Type*} [Field R]
 
 /-- At fixed perturbation order `m`, the polynomial dependence of the factorial-normalized
 coefficient of `Z^n` on the replica number `n`.
@@ -45,7 +45,7 @@ private theorem descPochhammer_eval_nat (n k : ℕ) :
 
 /-- Evaluating the fixed-order replica polynomial at a natural replica number gives the
 factorial-normalized coefficient of the corresponding power of the series. -/
-theorem replicaCoeffPolynomial_eval_nat
+theorem replicaCoeffPolynomial_eval_nat [CharZero R]
     {Z : PowerSeries R} (hZ : constantCoeff Z = 1) (m n : ℕ) :
     (replicaCoeffPolynomial Z m).eval (n : R) =
       (m.factorial : R) * coeff m (Z ^ n) := by
