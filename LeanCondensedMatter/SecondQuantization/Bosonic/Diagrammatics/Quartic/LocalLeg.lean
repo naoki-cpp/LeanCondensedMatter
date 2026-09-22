@@ -32,9 +32,10 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
     imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) =
       Complex.exp (((τ * Common.quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
         quarticLocalLegOperator q l := by
-  simpa [imaginaryTimeEvolve, quarticLocalLegOperator] using
-    (Common.heisenbergEvolve_quarticLocalLegOperator
-      (freeEigenvalue ε) ε create annihilate q l τ
+  simpa [imaginaryTimeEvolve, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+    Common.quarticLocalLegEnergyShift] using
+    (Common.QuarticLocalLeg.heisenbergEvolve_operator
+      (freeEigenvalue ε) ε create annihilate (Common.quarticLocalLeg q l) τ
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 

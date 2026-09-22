@@ -145,9 +145,12 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
             (quarticLegOperatorForSequence ε q τ) (quarticLegEnergyShiftForSequence ε q)
             (flatVertexLegCommutatorCoeff ε q τ)
-            (fun p => heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
-              (q (flatVertexIndex S.card p)) (flatLocalLeg S.card p)
-              (τ (flatVertexIndex S.card p)))
+            (fun p => by
+              rw [← timedFieldOperator_quarticLegFieldForSequence ε q τ p]
+              simpa [quarticLegFieldForSequence, quarticLegEnergyShiftForSequence,
+                Common.flatVertexIndex, Common.flatLocalLeg] using
+                (heisenbergEvolve_timedFieldOperator ε β
+                  (quarticLegFieldForSequence q τ p)))
             (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
             (fun i => one_sub_zetaInt_fermion_mul_exp_ne_zero
               (quarticLegEnergyShiftForSequence ε q i) β)
