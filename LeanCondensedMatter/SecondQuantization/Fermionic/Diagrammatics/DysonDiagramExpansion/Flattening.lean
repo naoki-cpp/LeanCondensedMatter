@@ -149,9 +149,9 @@ noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) : ℂ :=
   Complex.exp ((τ (flatVertexIndex n p) * quarticLegEnergyShiftForSequence ε q p : ℝ) : ℂ) *
     Complex.exp ((τ (flatVertexIndex n p') * quarticLegEnergyShiftForSequence ε q p' : ℝ) : ℂ) *
-    Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
-      (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
-      (flatLocalLeg n p) (flatLocalLeg n p')
+    Common.QuarticLocalLeg.exchangeCoeff Common.Statistics.fermion
+      (Common.quarticLocalLeg (q (flatVertexIndex n p)) (flatLocalLeg n p))
+      (Common.quarticLocalLeg (q (flatVertexIndex n p')) (flatLocalLeg n p'))
 
 omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for two arbitrary evolved/flattened leg
@@ -165,17 +165,17 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     LinearMap.zetaCommutator_smul_smul]
-  have hlocal := Common.exchangeCommutator_quarticLocalLegOperator
+  have hlocal := Common.QuarticLocalLeg.exchangeCommutator_operator
     (Mode := Mode) (Config := Occupation Mode) Common.Statistics.fermion
-    (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
-    (flatLocalLeg n p) (flatLocalLeg n p')
+    (Common.quarticLocalLeg (q (flatVertexIndex n p)) (flatLocalLeg n p))
+    (Common.quarticLocalLeg (q (flatVertexIndex n p')) (flatLocalLeg n p'))
   change
     LinearMap.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
         (quarticLocalLegOperator (q (flatVertexIndex n p')) (flatLocalLeg n p')) =
-      Common.quarticLocalLegExchangeCoeff Common.Statistics.fermion
-          (q (flatVertexIndex n p)) (q (flatVertexIndex n p'))
-          (flatLocalLeg n p) (flatLocalLeg n p') •
+      Common.QuarticLocalLeg.exchangeCoeff Common.Statistics.fermion
+          (Common.quarticLocalLeg (q (flatVertexIndex n p)) (flatLocalLeg n p))
+          (Common.quarticLocalLeg (q (flatVertexIndex n p')) (flatLocalLeg n p')) •
         (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) at hlocal
   rw [hlocal, smul_smul, flatVertexLegCommutatorCoeff]
 
