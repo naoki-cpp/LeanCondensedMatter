@@ -25,7 +25,7 @@ variable {Mode : Type*}
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (B : d.1.componentPartition.parts) : ℂ :=
-  (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionSector
+  (-1 : ℂ) ^ (Common.interactionSector
     (B : Finset (Common.TwoPointVertex
       (Finset.univ : Finset (Fin n))))).card
 
@@ -35,10 +35,10 @@ private theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_external_mul_prod_
       d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
   calc
     (-1 : ℂ) ^ n = (-1 : ℂ) ^ (Finset.univ : Finset (Fin n)).card := by simp
-    _ = (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionSector
+    _ = (-1 : ℂ) ^ (Common.interactionSector
           (d.1.externalComponent 0)).card *
         d.1.vacuumComponentParts.prod (fun B =>
-          (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionSector
+          (-1 : ℂ) ^ (Common.interactionSector
             (B : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))).card) :=
       d.1.dysonSign_eq_external_mul_prod_vacuum
