@@ -191,6 +191,11 @@ def coarseningsEquivBlockPartitions (π : Finpartition a) :
   left_inv σ := Subtype.ext (lift_quotientByCoarsening_eq σ.2)
   right_inv Q := quotient_liftBlockPartition_eq π Q
 
+/-- Coarsenings of a finite partition form a finite type. -/
+noncomputable instance coarseningsFintype (π : Finpartition a) :
+    Fintype {σ : Finpartition a // π ≤ σ} :=
+  Fintype.ofEquiv (Finpartition π.parts) (coarseningsEquivBlockPartitions π).symm
+
 /-- Passing from a coarsening of `π` to the induced partition of the block set preserves the
 number of blocks. -/
 theorem card_parts_coarseningsEquivBlockPartitions (π : Finpartition a)
