@@ -5,6 +5,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false
@@ -235,6 +236,42 @@ noncomputable def ExternalInsertionDiagram.externalPartOrderIso {S : Finset (Fin
   (ExternalInsertionDiagram.externalPart
     (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin
       (d.externalPart_card_eq_two_mul_externalPairCount B)
+
+/-- The canonical order-preserving shuffle of component-local external insertions into the
+ambient external-insertion order. -/
+noncomputable def ExternalInsertionDiagram.componentExternalShuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    FamilySlotShuffleTo
+      (fun B : d.componentPartition.parts => 2 * d.externalPairCount B)
+      (2 * E) where
+  slotEquiv :=
+    (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
+      (d.externalPartOrderIso B).toEquiv).trans <|
+      ((Equiv.subtypeUnivEquiv
+        (fun e : Fin (2 * E) => Finset.mem_univ e)).symm.trans <|
+        d.componentPartition.equivSigmaSubfinsets
+          (Finset.univ : Finset (Fin (2 * E)))
+          (fun e => (Sum.inl (e : Fin (2 * E)) :
+            ExternalInsertionVertex E S))
+          (fun _ => Finset.mem_univ _)
+          (fun B => ExternalInsertionDiagram.externalPart
+            (B : Finset (ExternalInsertionVertex E S)))
+          (fun _ => Finset.subset_univ _)
+          (fun B e => ExternalInsertionDiagram.mem_externalPart
+            (B : Finset (ExternalInsertionVertex E S)) e)).symm
+  strictMono := fun B _ _ hef =>
+    (d.externalPartOrderIso B).strictMono hef
+
+@[simp]
+theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.componentPartition.parts)
+    (e : Fin (2 * d.externalPairCount B)) :
+    d.componentExternalShuffle.slotEquiv ⟨B, e⟩ =
+      (d.externalPartOrderIso B e).1 := by
+  rfl
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
