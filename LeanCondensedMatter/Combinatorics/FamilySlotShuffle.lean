@@ -34,16 +34,18 @@ before a slot of block `i`. The diagonal is zero, so this records only inter-blo
 The orientation is explicit so consumers can choose the block order supplied by their own semantics
 rather than imposing an order on the family index type here. -/
 noncomputable def FamilySlotShuffleTo.blockInversionCount {size : ι → ℕ} {total : ℕ}
-    (shuffle : FamilySlotShuffleTo size total) (i j : ι) : ℕ :=
-  if i = j then 0
-  else
-    ∑ p : Fin (size i), ∑ q : Fin (size j),
-      if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
+    (shuffle : FamilySlotShuffleTo size total) (i j : ι) : ℕ := by
+  classical
+  exact if i = j then 0
+    else
+      ∑ p : Fin (size i), ∑ q : Fin (size j),
+        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
 
 @[simp]
 theorem FamilySlotShuffleTo.blockInversionCount_self {size : ι → ℕ} {total : ℕ}
     (shuffle : FamilySlotShuffleTo size total) (i : ι) :
     shuffle.blockInversionCount i i = 0 := by
+  classical
   simp [FamilySlotShuffleTo.blockInversionCount]
 
 theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total : ℕ}
@@ -51,6 +53,7 @@ theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total
     shuffle.blockInversionCount i j =
       ∑ p : Fin (size i), ∑ q : Fin (size j),
         if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0 := by
+  classical
   simp [FamilySlotShuffleTo.blockInversionCount, hij]
 
 @[ext]
