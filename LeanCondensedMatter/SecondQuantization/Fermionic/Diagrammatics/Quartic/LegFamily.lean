@@ -66,8 +66,20 @@ theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
       Complex.exp ((τ (flatVertexIndex n p) *
         quarticLegEnergyShiftForSequence ε q p : ℝ) : ℂ) •
         quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [quarticLegOperatorForSequence, imaginaryTimeEvolve_quarticLocalLegOperator]
-  rfl
+  rw [quarticLegOperatorForSequence]
+  simpa [imaginaryTimeEvolve, quarticLocalLegOperator, Common.quarticLocalLegOperator,
+    quarticLegEnergyShiftForSequence, quarticLocalLegEnergyShift,
+    Common.flatVertexIndex, Common.flatLocalLeg] using
+    (Common.QuarticLocalLeg.heisenbergEvolve_operator
+      (fermionEnergy ε) ε create annihilate
+      (Common.quarticLocalLeg
+        (q (Common.orderedQuarticLegEquiv n p).1)
+        (Common.orderedQuarticLegEquiv n p).2)
+      (τ (Common.orderedQuarticLegEquiv n p).1)
+      (fun i => imaginaryTimeEvolve_create ε
+        (τ (Common.orderedQuarticLegEquiv n p).1) i)
+      (fun i => imaginaryTimeEvolve_annihilate ε
+        (τ (Common.orderedQuarticLegEquiv n p).1) i))
 
 end Fermionic
 end SecondQuantization
