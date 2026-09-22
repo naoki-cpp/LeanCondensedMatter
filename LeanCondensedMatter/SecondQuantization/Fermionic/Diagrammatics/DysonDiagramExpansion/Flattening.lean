@@ -36,32 +36,6 @@ private theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode 
   rw [quarticLegOperatorForSequence, hcoord]
 
 omit [Fintype Mode] in
-/-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
-ε) (-β)`, with an eigenvalue shift *independent of the dressing time* `τ`** — the fact the general
-Bloch–de Dominicis theorem needs after specializing to each flattened leg. Proved via
-`Common.heisenbergEvolve_heisenbergEvolve` (the two evolutions, at `τ` and `-β`, combine into a
-single evolution at `τ + (-β)`) and `imaginaryTimeEvolve_quarticLocalLegOperator` (applied twice:
-once at `τ + (-β)` to evaluate the combined evolution, once at `τ` in reverse to factor the
-`τ`-dependent piece back out) — the two resulting `Complex.exp`s combine via `exp_add`/`ring`,
-leaving only the `-β`-dependent factor. -/
-theorem heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (β : ℝ)
-    (q : QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ) :
-    Common.heisenbergEvolve (fermionEnergy ε) (-β)
-        (imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l)) =
-      Complex.exp (((quarticLocalLegEnergyShift ε q l * (-β) : ℝ)) : ℂ) •
-        imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) := by
-  have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
-      (imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l)) =
-      imaginaryTimeEvolve ε (τ + -β) (quarticLocalLegOperator q l) :=
-    Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β)
-      (quarticLocalLegOperator q l)
-  rw [step, imaginaryTimeEvolve_quarticLocalLegOperator,
-    imaginaryTimeEvolve_quarticLocalLegOperator, smul_smul, ← Complex.exp_add]
-  congr 2
-  push_cast
-  ring
-
-omit [Fintype Mode] in
 /-- **`nestedVertexOperatorComp`, flattened into a `List.prod` of its `4n` atomic legs** —
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
 reduces, via `nestedVertexOperatorComp_succ`,

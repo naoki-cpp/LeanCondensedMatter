@@ -18,21 +18,23 @@ noncomputable section
 
 variable {Mode Config : Type*}
 
+namespace QuarticLocalLeg
+
 /-- A local quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. -/
-theorem heisenbergEvolve_quarticLocalLegOperator
+theorem heisenbergEvolve_operator
     (energy : Config → ℝ) (ε : Mode → ℝ)
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (q : QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ)
+    (leg : QuarticLocalLeg Mode) (τ : ℝ)
     (hcreate : ∀ i, heisenbergEvolve energy τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
     (hannihilate : ∀ i, heisenbergEvolve energy τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
-    heisenbergEvolve energy τ (quarticLocalLegOperator create annihilate q l) =
-      Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
-        quarticLocalLegOperator create annihilate q l := by
-  simp only [quarticLocalLegOperator, quarticLocalLegEnergyShift]
-  generalize quarticLocalLeg q l = leg
+    heisenbergEvolve energy τ (leg.operator create annihilate) =
+      Complex.exp (((τ * leg.energyShift ε : ℝ) : ℂ)) •
+        leg.operator create annihilate := by
   cases leg <;> simp [hcreate, hannihilate, mul_comm]
+
+end QuarticLocalLeg
 
 /-- A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. -/
 theorem heisenbergEvolve_quarticVertexOperator
