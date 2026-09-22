@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ReassembleLaws
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble
 
 set_option linter.style.header false
 
