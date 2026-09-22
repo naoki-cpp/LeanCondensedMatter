@@ -69,9 +69,16 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
                         rw [Finset.mul_sum]
             · rfl
           simp_rw [Nat.choose_succ_succ', add_mul]
-          rw [Finset.sum_add_distrib, hrec, hshift, ih (k + 1), ih k,
-            Nat.stirlingSecond_succ_succ]
-          ring
+          rw [Finset.sum_add_distrib, hrec, hshift, ih (k + 1), ih k]
+          calc
+            (k + 1) * Nat.stirlingSecond (n + 1) (k + 1 + 1) +
+                  Nat.stirlingSecond (n + 1) (k + 1) +
+                  Nat.stirlingSecond (n + 1) (k + 1 + 1) =
+                (k + 2) * Nat.stirlingSecond (n + 1) (k + 2) +
+                  Nat.stirlingSecond (n + 1) (k + 1) := by
+                    ring
+            _ = Nat.stirlingSecond (n + 2) (k + 2) := by
+                  exact (Nat.stirlingSecond_succ_succ (n + 1) (k + 1)).symm
 
 private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
     (∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond (n - i) k) =
@@ -156,7 +163,9 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
         exact ⟨fun P => by
           have hparts : P.1.parts = ∅ :=
             (Finpartition.parts_eq_empty_iff (P := P.1)).2 rfl
-          simp [hparts] at P.2⟩
+          have hcard := P.2
+          rw [hparts] at hcard
+          omega⟩
   · cases k with
     | zero =>
         have hpos : 0 < s.card :=
