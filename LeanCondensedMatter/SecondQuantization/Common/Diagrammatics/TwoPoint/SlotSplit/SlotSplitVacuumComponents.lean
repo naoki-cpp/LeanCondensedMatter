@@ -38,14 +38,13 @@ reassembled two-point diagram. -/
 theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
     (v : ↥(S \ T)) :
     let d := TwoPointDiagram.ofSlotSplit h ext vac
-    let B : d.componentPartition.parts :=
-      ⟨d.componentBlock (slotSplitVacuumVertex v), by
-        unfold TwoPointDiagram.componentBlock
-        exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
-    B ∈ d.vacuumComponentParts := by
+    let B : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (slotSplitVacuumVertex v),
+        d.vertexGraph.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
+    B ∈ (vacuumComponentParts d.vertexGraph) := by
   dsimp only
-  rw [TwoPointDiagram.mem_vacuumComponentParts]
-  unfold TwoPointDiagram.ComponentIsVacuum TwoPointDiagram.ComponentMeetsExternal
+  rw [mem_vacuumComponentParts]
+  unfold ComponentIsVacuum ComponentMeetsExternal
   rintro ⟨e, he⟩
   have hreach :
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
@@ -60,13 +59,12 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
 /-- Send a quartic vacuum-piece component to the corresponding ambient vacuum component. -/
 noncomputable def slotSplitVacuumComponentPart
     (C : vac.componentPartition.parts) :
-    ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts :=
+    ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph) :=
   let v := vac.componentRepresentative C
   let d := TwoPointDiagram.ofSlotSplit h ext vac
-  let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (slotSplitVacuumVertex v), by
-      unfold TwoPointDiagram.componentBlock
-      exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
+  let B : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (slotSplitVacuumVertex v),
+      d.vertexGraph.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
   ⟨B, componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts h ext vac v⟩
 
 /-- The ambient interaction part of the image component is exactly the original quartic component. -/
@@ -77,7 +75,7 @@ theorem interactionSector_slotSplitVacuumComponentPart
           Finset (TwoPointVertex S)) =
       (C : Finset (Fin N)) := by
   change interactionSector
-      ((TwoPointDiagram.ofSlotSplit h ext vac).componentBlock
+      ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
         (slotSplitVacuumVertex (vac.componentRepresentative C))) = _
   rw [interactionSector_componentBlock_slotSplitVacuumVertex]
   exact vac.componentBlock_componentRepresentative C
@@ -97,7 +95,7 @@ private theorem slotSplitVacuumComponentPart_injective :
 component must lie on the quartic right side. -/
 private theorem not_mem_left_of_mem_vacuumComponentPart
     (hext : ext.IsExternallyConnected)
-    (B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts)
+    (B : ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph))
     (w : ↥S) (hwB : (Sum.inr w : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S))) :
     (w : Fin N) ∉ T := by
   intro hwT
@@ -108,9 +106,8 @@ private theorem not_mem_left_of_mem_vacuumComponentPart
     simpa [slotSplitVertex] using
       reachable_ofSlotSplit_of_reachable h ext vac he
   have hblock :
-      (TwoPointDiagram.ofSlotSplit h ext vac).componentBlock (Sum.inr w) = B.1.1 := by
-    unfold TwoPointDiagram.componentBlock
-    exact ((TwoPointDiagram.ofSlotSplit h ext vac).componentPartition.part_eq_iff_mem B.1.2).2 hwB
+      (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock (Sum.inr w) = B.1.1 := by
+    exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock_eq_iff_mem B.1.2 (Sum.inr w)).2 hwB
   have heB : (Sum.inl e : TwoPointVertex S) ∈ (B.1 : Finset (TwoPointVertex S)) := by
     rw [← hblock]
     change (Sum.inl e : TwoPointVertex S) ∈
@@ -118,8 +115,8 @@ private theorem not_mem_left_of_mem_vacuumComponentPart
     exact ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.mem_componentBlock
       (Sum.inr w) (Sum.inl e)).2 hamb
   have hVac :
-      (TwoPointDiagram.ofSlotSplit h ext vac).ComponentIsVacuum B.1 :=
-    ((TwoPointDiagram.ofSlotSplit h ext vac).mem_vacuumComponentParts B.1).1 B.2
+      ComponentIsVacuum (B.1 : Finset (TwoPointVertex S)) :=
+    (mem_vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph B.1).1 B.2
   exact hVac ⟨e, heB⟩
 
 /-- With an externally connected left piece, every ambient vacuum component comes from a quartic
@@ -129,12 +126,12 @@ private theorem slotSplitVacuumComponentPart_surjective
     Function.Surjective (slotSplitVacuumComponentPart h ext vac) := by
   intro B
   obtain ⟨x, hxB⟩ :=
-    (TwoPointDiagram.ofSlotSplit h ext vac).componentPartition.nonempty_of_mem_parts B.1.2
+    (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentPartition.nonempty_of_mem_parts B.1.2
   cases x with
   | inl e =>
       have hVac :
-          (TwoPointDiagram.ofSlotSplit h ext vac).ComponentIsVacuum B.1 :=
-        ((TwoPointDiagram.ofSlotSplit h ext vac).mem_vacuumComponentParts B.1).1 B.2
+          ComponentIsVacuum (B.1 : Finset (TwoPointVertex S)) :=
+        (mem_vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph B.1).1 B.2
       exact False.elim (hVac ⟨e, hxB⟩)
   | inr w =>
       have hwNot : (w : Fin N) ∉ T :=
@@ -161,7 +158,7 @@ reassembled two-point diagram when the external piece is externally connected. -
 noncomputable def slotSplitVacuumComponentEquiv
     (hext : ext.IsExternallyConnected) :
     vac.componentPartition.parts ≃
-      ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts :=
+      ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph) :=
   Equiv.ofBijective (slotSplitVacuumComponentPart h ext vac)
     ⟨slotSplitVacuumComponentPart_injective h ext vac,
       slotSplitVacuumComponentPart_surjective h ext vac hext⟩

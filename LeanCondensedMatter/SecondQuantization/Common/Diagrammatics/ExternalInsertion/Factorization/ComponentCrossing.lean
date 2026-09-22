@@ -34,7 +34,7 @@ This is the generic block-inversion count of the canonical component-leg shuffle
 noncomputable def ExternalInsertionDiagram.componentLegInversionCount
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.componentPartition.parts) : ℕ :=
+    (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
   d.componentLegShuffle.blockInversionCount B C
 
 /-- For distinct components, the parity of the two oriented crossing counts is exactly the parity
@@ -42,7 +42,7 @@ of the canonical ambient leg inversions between those components. -/
 theorem ExternalInsertionDiagram.componentCrossingCount_add_swap_mod_two_eq_legInversionCount
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
     (d.pairing.componentCrossingCount d.componentPairEquiv B C +
       d.pairing.componentCrossingCount d.componentPairEquiv C B) % 2 =
       d.componentLegInversionCount B C % 2 := by
@@ -67,19 +67,19 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (blockOrder :
-      d.componentPartition.parts ≃ Fin (Fintype.card d.componentPartition.parts)) :
+      d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
     d.interComponentCrossingCount % 2 =
       d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 := by
   classical
-  let cross := fun B C : d.componentPartition.parts =>
+  let cross := fun B C : d.vertexGraph.componentPartition.parts =>
     d.pairing.componentCrossingCount d.componentPairEquiv B C
-  let inv := fun B C : d.componentPartition.parts =>
+  let inv := fun B C : d.vertexGraph.componentPartition.parts =>
     d.componentLegInversionCount B C
-  let selected := fun B C : d.componentPartition.parts =>
+  let selected := fun B C : d.vertexGraph.componentPartition.parts =>
     if blockOrder B < blockOrder C then inv B C else 0
   have hsum :=
     finset_sum_offDiag_modEq_of_pair_add_modEq
-      2 (Finset.univ : Finset d.componentPartition.parts) cross selected
+      2 (Finset.univ : Finset d.vertexGraph.componentPartition.parts) cross selected
       (fun B _ C _ hBC => by
         by_cases hlt : blockOrder B < blockOrder C
         · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
@@ -104,7 +104,7 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
 private theorem ExternalInsertionDiagram.componentCrossingCount_self
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.componentPartition.parts) :
+    (B : d.vertexGraph.componentPartition.parts) :
     d.pairing.componentCrossingCount d.componentPairEquiv B B =
       (d.restrictComponent B).pairing.crossingCount := by
   classical
@@ -130,7 +130,7 @@ theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     d.pairing.crossingCount =
-      (∑ B : d.componentPartition.parts, (d.restrictComponent B).pairing.crossingCount) +
+      (∑ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.crossingCount) +
         d.interComponentCrossingCount := by
   rw [d.pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter d.componentPairEquiv]
   apply congrArg (fun n : ℕ => n + d.interComponentCrossingCount)
@@ -145,7 +145,7 @@ theorem ExternalInsertionDiagram.weight_eq_inter_mul_prod_components
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     d.pairing.weight s =
       (s.zetaInt : ℂ) ^ d.interComponentCrossingCount *
-        ∏ B : d.componentPartition.parts, (d.restrictComponent B).pairing.weight s := by
+        ∏ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.weight s := by
   classical
   simp only [Combinatorics.Pairing.weight]
   rw [d.crossingCount_eq_sum_components_add_inter, pow_add,

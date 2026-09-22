@@ -24,7 +24,7 @@ variable {Mode : Type*}
 @[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (B : d.1.componentPartition.parts) : ℂ :=
+    (B : d.1.vertexGraph.componentPartition.parts) : ℂ :=
   (-1 : ℂ) ^ (Common.interactionSector
     (B : Finset (Common.TwoPointVertex
       (Finset.univ : Finset (Fin n))))).card
@@ -32,18 +32,18 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
 private theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_external_mul_prod_vacuum_mixed
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
-      d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
+      (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign := by
   calc
     (-1 : ℂ) ^ n = (-1 : ℂ) ^ (Finset.univ : Finset (Fin n)).card := by simp
     _ = (-1 : ℂ) ^ (Common.interactionSector
-          (d.1.externalComponent 0)).card *
-        d.1.vacuumComponentParts.prod (fun B =>
+          (d.1.vertexGraph.componentBlock (Sum.inl 0))).card *
+        (Common.vacuumComponentParts d.1.vertexGraph).prod (fun B =>
           (-1 : ℂ) ^ (Common.interactionSector
             (B : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))).card) :=
       d.1.dysonSign_eq_external_mul_prod_vacuum
     _ = d.mixedComponentDysonSign d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
+        (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign := by
       rfl
 
 section Fermionic
@@ -56,7 +56,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeV
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) : ℂ :=
+    (B : d.1.vertexGraph.componentPartition.parts) : ℂ :=
   d.mixedComponentDysonSign B *
     d.mixedComponentFixedTimeValue ε β g τ τ' σ B
 
@@ -84,16 +84,16 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
       twoPointExternalOrderSign τ τ' *
-        ∏ B : d.1.componentPartition.parts,
+        ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
   have hsign :
-      (-1 : ℂ) ^ n = ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
+      (-1 : ℂ) ^ n = ∏ B : d.1.vertexGraph.componentPartition.parts, d.mixedComponentDysonSign B := by
     calc
       (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
-          d.1.vacuumComponentParts.prod d.mixedComponentDysonSign :=
+          (Common.vacuumComponentParts d.1.vertexGraph).prod d.mixedComponentDysonSign :=
         d.dysonSign_eq_external_mul_prod_vacuum_mixed
-      _ = ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
+      _ = ∏ B : d.1.vertexGraph.componentPartition.parts, d.mixedComponentDysonSign B := by
         rw [d.1.prod_componentParts_eq_external_mul_prod_vacuum]
   rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
@@ -107,7 +107,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.mixedExternalDysonFixedTimeValue ε β g τ τ' σ *
-        d.1.vacuumComponentParts.prod
+        (Common.vacuumComponentParts d.1.vertexGraph).prod
           (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) := by
   rw [d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components,
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]

@@ -43,11 +43,10 @@ private theorem slotSplitVacuumNormalizedPairEmbedding_pairComponent
         T ext vac τ τ' σ hσ pr) = _
   rw [TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
-  let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (slotSplitVacuumVertex v), by
-      unfold TwoPointDiagram.componentBlock
-      exact d.componentPartition.part_mem.2 (Finset.mem_univ _)⟩
-  let D : d.componentPartition.parts :=
+  let B : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (slotSplitVacuumVertex v),
+      d.vertexGraph.componentBlock_mem_componentPartition (slotSplitVacuumVertex v)⟩
+  let D : d.vertexGraph.componentPartition.parts :=
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   change B = D
   let w : ↥(Finset.univ : Finset (Fin n)) := ⟨v.1, Finset.mem_univ _⟩
@@ -192,7 +191,7 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
       ((vac.restrictComponent C.2).pairingInOrder
         (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T) C)).crossingCount := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let B : d.componentPartition.parts :=
+  let B : d.vertexGraph.componentPartition.parts :=
     (slotSplitVacuumComponentPart (Finset.subset_univ T) ext vac C).1
   let LocalPair := vac.LocalOrderedPair
     (vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)) C

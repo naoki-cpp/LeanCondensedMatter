@@ -73,7 +73,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T))
     (hext : ext.IsExternallyConnected) (w : InternalLabel → M) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
+    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
       ∏ v : ↥(interactionSector
         (B : Finset (TwoPointVertex S))),
         w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
@@ -82,20 +82,20 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
       ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
   classical
   calc
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
+    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
         ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
           w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
             ⟨v.1, interactionSector_subset
               (B : Finset (TwoPointVertex S)) v.2⟩)) =
-      ∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
+      ∏ B : ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph),
         ∏ v : ↥(interactionSector
           (B.1 : Finset (TwoPointVertex S))),
           w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
             ⟨v.1, interactionSector_subset
               (B.1 : Finset (TwoPointVertex S)) v.2⟩) := by
         exact Finset.prod_subtype
-          (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
+          (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)
           (fun _ => Iff.rfl) _
     _ = ∏ C : vac.componentPartition.parts,
         ∏ v : ↥(interactionSector
@@ -132,20 +132,20 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
     (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
     (vac : QuarticDiagram InternalLabel N (S \ T))
     (hext : ext.IsExternallyConnected) :
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
+    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
       (-1 : ℂ) ^ (interactionSector
         (B : Finset (TwoPointVertex S))).card) =
       (-1 : ℂ) ^ (S \ T).card := by
   classical
   calc
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
+    (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph).prod (fun B =>
         (-1 : ℂ) ^ (interactionSector
           (B : Finset (TwoPointVertex S))).card) =
-      ∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
+      ∏ B : ↥(vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph),
         (-1 : ℂ) ^ (interactionSector
           (B.1 : Finset (TwoPointVertex S))).card := by
         exact Finset.prod_subtype
-          (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
+          (vacuumComponentParts (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph)
           (fun _ => Iff.rfl) _
     _ = ∏ C : vac.componentPartition.parts,
         (-1 : ℂ) ^ (interactionSector

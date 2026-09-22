@@ -22,20 +22,20 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (w : InternalLabel → M) :
     (∏ v : ↥S, w (d.vertexLabel v)) =
-      ∏ B : d.componentPartition.parts,
+      ∏ B : d.vertexGraph.componentPartition.parts,
         ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, interactionSector_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
   calc
     (∏ v : ↥S, w (d.vertexLabel v)) =
-        ∏ B : d.componentPartition.parts,
+        ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
             (B : Finset (TwoPointVertex S))),
             w (d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) :=
       Fintype.prod_equiv_sigma d.interactionVertexComponentEquiv
         (fun v => w (d.vertexLabel v))
-    _ = ∏ B : d.componentPartition.parts,
+    _ = ∏ B : d.vertexGraph.componentPartition.parts,
         ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, interactionSector_subset
@@ -53,14 +53,14 @@ theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     (-1 : ℂ) ^ S.card =
       (-1 : ℂ) ^ (interactionSector
-        (d.externalComponent 0)).card *
-        d.vacuumComponentParts.prod (fun B =>
+        (d.vertexGraph.componentBlock (Sum.inl 0))).card *
+        (vacuumComponentParts d.vertexGraph).prod (fun B =>
           (-1 : ℂ) ^ (interactionSector
             (B : Finset (TwoPointVertex S))).card) := by
   have h := d.prod_vertexLabel_eq_prod_componentInteractionParts (fun _ => (-1 : ℂ))
   rw [d.prod_componentParts_eq_external_mul_prod_vacuum] at h
   have hext :
-      (d.externalComponentPart : Finset (TwoPointVertex S)) = d.externalComponent 0 := rfl
+      (d.externalComponentPart : Finset (TwoPointVertex S)) = d.vertexGraph.componentBlock (Sum.inl 0) := rfl
   rw [hext] at h
   simpa [Finset.card_univ, Fintype.card_coe] using h
 

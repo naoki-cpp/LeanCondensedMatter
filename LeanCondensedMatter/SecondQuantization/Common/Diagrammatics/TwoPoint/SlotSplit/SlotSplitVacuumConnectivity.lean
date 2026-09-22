@@ -163,7 +163,7 @@ theorem exists_reachable_of_walk_ofSlotSplitVacuum :
 exactly that vertex's connected component in the quartic vacuum piece. -/
 theorem interactionSector_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
     interactionSector
-        ((TwoPointDiagram.ofSlotSplit h ext vac).componentBlock
+        ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
           (slotSplitVacuumVertex v)) =
       vac.componentBlock v := by
   ext x

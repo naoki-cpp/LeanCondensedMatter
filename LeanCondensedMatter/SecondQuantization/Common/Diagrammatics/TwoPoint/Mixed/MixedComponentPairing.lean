@@ -26,18 +26,13 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
         ((d.pairingInMixedOrder τ τ' σ).partner p) =
       d.mixedPositionComponent τ τ' σ p := by
   apply Subtype.ext
-  change d.componentBlock
+  change d.vertexGraph.componentBlock
       (twoPointVertexOfLeg
         (mixedTimeAmbientPositionEquiv τ τ' σ
           ((d.pairingInMixedOrder τ τ' σ).partner p))) =
-    d.componentBlock
-      (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
-  rw [d.mixedTimeAmbientPositionEquiv_partner]
-  change d.vertexGraph.componentBlock
-      (twoPointVertexOfLeg
-        (mixedTimeAmbientPositionEquiv τ τ' σ p |> d.pairing.partner)) =
     d.vertexGraph.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
+  rw [d.mixedTimeAmbientPositionEquiv_partner]
   exact d.vertexGraph.componentBlock_eq_of_reachable
     (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg _)
 
@@ -45,7 +40,7 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
 noncomputable def TwoPointDiagram.mixedRestrictedPartner
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :
     Equiv.Perm (d.MixedComponentPosition τ τ' σ B) :=
   ((d.pairingInMixedOrder τ τ' σ).restrict
     (fun p => d.mixedPositionComponent τ τ' σ p = B)
@@ -55,7 +50,7 @@ noncomputable def TwoPointDiagram.mixedRestrictedPartner
 theorem TwoPointDiagram.mixedRestrictedPartner_val
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
     (d.mixedRestrictedPartner τ τ' σ B p : Fin (2 * (2 * n + 1))) =
       (d.pairingInMixedOrder τ τ' σ).partner p := by
@@ -70,7 +65,7 @@ standard component restricted partner. -/
 private theorem TwoPointDiagram.mixedComponentPositionEquiv_partner
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
     d.mixedComponentPositionEquiv τ τ' σ B
         (d.mixedRestrictedPartner τ τ' σ B p) =
@@ -113,8 +108,8 @@ partner. -/
 theorem TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hVac : d.ComponentIsVacuum B)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
+    (hVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (p : d.MixedComponentPosition τ τ' σ B) :
     (d.restrictedVacuumPairing B hVac).partner
         (d.mixedVacuumPositionEquiv τ τ' σ B hVac p) =

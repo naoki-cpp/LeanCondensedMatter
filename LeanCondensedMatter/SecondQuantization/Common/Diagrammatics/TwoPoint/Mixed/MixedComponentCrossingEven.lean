@@ -25,7 +25,7 @@ variable {ExternalLabel InternalLabel : Type*}
 private noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
   ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
     if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
 
@@ -33,7 +33,7 @@ private noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
 private theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) :
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.vertexGraph.componentPartition.parts) :
     d.mixedComponentGeometricCrossingCount τ τ' σ B C =
       d.mixedComponentOrientedCrossingCount τ τ' σ B C +
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
@@ -52,7 +52,7 @@ private theorem TwoPointDiagram.mixedComponentPair_endpoints_ne
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
     (p : d.MixedComponentPair τ τ' σ B)
     (q : d.MixedComponentPair τ τ' σ C) :
     p.1.1.1 ≠ q.1.1.1 ∧
@@ -72,7 +72,7 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
     (p : d.MixedComponentPair τ τ' σ B)
     (q : d.MixedComponentPair τ τ' σ C) :
     pairEndpointInversionCount p.1.1 q.1.1 % 2 =
@@ -88,7 +88,7 @@ private noncomputable def TwoPointDiagram.mixedComponentPositionInversionCount
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) : ℕ :=
+    (B C : d.vertexGraph.componentPartition.parts) : ℕ :=
   ∑ p : d.MixedComponentPosition τ τ' σ B,
     ∑ q : d.MixedComponentPosition τ τ' σ C,
       if q.1 < p.1 then 1 else 0
@@ -97,7 +97,7 @@ private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts)
+    (B C : d.vertexGraph.componentPartition.parts)
     (p : d.MixedComponentPair τ τ' σ B)
     (q : d.MixedComponentPair τ τ' σ C) :
     pairEndpointInversionCount p.1.1 q.1.1 =
@@ -110,7 +110,7 @@ private theorem TwoPointDiagram.mixedComponentPairEndpointInversionCount_eq_sum
   intro a _
   apply Finset.sum_congr rfl
   intro b _
-  have endpointVal (D : d.componentPartition.parts)
+  have endpointVal (D : d.vertexGraph.componentPartition.parts)
       (r : d.MixedComponentPair τ τ' σ D) (k : Fin 2) :
       (d.mixedComponentPairEndpointEquiv τ τ' σ D (r, k)).1 =
         (d.pairingInMixedOrder τ τ' σ).pairEndpoint (r.1, k) := by
@@ -126,7 +126,7 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C) :
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
     d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
       d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by
   classical
@@ -196,7 +196,7 @@ private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C) :
+    (C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     d.MixedComponentPosition τ τ' σ C ≃
       ↥(interactionSector
         (C : Finset (TwoPointVertex
@@ -211,7 +211,7 @@ private noncomputable def TwoPointDiagram.mixedVacuumInteractionPosition
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
+    (C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -223,7 +223,7 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C) :
+    (B C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     d.mixedComponentPositionInversionCount τ τ' σ B C =
       ∑ p : d.MixedComponentPosition τ τ' σ B,
         ∑ v : ↥(interactionSector
@@ -260,7 +260,7 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
+    (B C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (hUniform : ∀ p : d.MixedComponentPosition τ τ' σ B,
       ∀ v : ↥(interactionSector
         (C : Finset (TwoPointVertex
@@ -321,7 +321,7 @@ private theorem TwoPointDiagram.mixedPositionComponent_interactionLegPosition
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts)
+    (C : d.vertexGraph.componentPartition.parts)
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -345,7 +345,7 @@ private noncomputable def TwoPointDiagram.directMixedVacuumInteractionPosition
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts)
+    (C : d.vertexGraph.componentPartition.parts)
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -358,7 +358,7 @@ private theorem TwoPointDiagram.mixedVacuumPositionDataEquiv_direct
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
+    (C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -407,7 +407,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
+    (C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -423,7 +423,7 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (C : d.componentPartition.parts) (hVac : d.ComponentIsVacuum C)
+    (C : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
@@ -438,7 +438,7 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
     (p : d.MixedComponentPosition τ τ' σ B)
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
@@ -474,8 +474,8 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (hVac : d.ComponentIsVacuum C)
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
+    (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))))
     (p : d.MixedComponentPosition τ τ' σ B)
     (v : ↥(interactionSector
       (C : Finset (TwoPointVertex
@@ -500,8 +500,8 @@ private theorem
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (hVac : d.ComponentIsVacuum C) :
+    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C)
+    (hVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))) :
     d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
   rw [d.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
     τ τ' σ B C hBC]
@@ -517,9 +517,9 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
     (s : Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (d.pairingInMixedOrder τ τ' σ).weight s =
       d.mixedComponentWeight s τ τ' σ d.externalComponentPart *
-        d.vacuumComponentParts.prod
+        (vacuumComponentParts d.vertexGraph).prod
           (d.mixedComponentWeight s τ τ' σ) := by
-  have hEven : ∀ B C : d.componentPartition.parts, B ≠ C →
+  have hEven : ∀ B C : d.vertexGraph.componentPartition.parts, B ≠ C →
       d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
     intro B C hBC
     by_cases hC : C = d.externalComponentPart
@@ -527,7 +527,7 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
         intro h
         apply hBC
         exact h.trans hC.symm
-      have hBVac : d.ComponentIsVacuum B :=
+      have hBVac : ComponentIsVacuum (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
         (d.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
       have hcomm :
           d.mixedComponentGeometricCrossingCount τ τ' σ B C =
@@ -538,13 +538,13 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       rw [hcomm]
       exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
         τ τ' σ C B (Ne.symm hBC) hBVac
-    · have hCVac : d.ComponentIsVacuum C :=
+    · have hCVac : ComponentIsVacuum (C : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
         (d.componentIsVacuum_iff_ne_externalComponentPart C).2 hC
       exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
         τ τ' σ B C hBC hCVac
   have hparity :
       (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
-        (∑ B : d.componentPartition.parts,
+        (∑ B : d.vertexGraph.componentPartition.parts,
           d.mixedComponentCrossingCount τ τ' σ B) % 2 :=
     Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
       (d.pairingInMixedOrder τ τ' σ)
@@ -556,11 +556,11 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
         exact hEven B C hBC)
   have hcomponents :
       (d.pairingInMixedOrder τ τ' σ).weight s =
-        ∏ B : d.componentPartition.parts, d.mixedComponentWeight s τ τ' σ B := by
+        ∏ B : d.vertexGraph.componentPartition.parts, d.mixedComponentWeight s τ τ' σ B := by
     simpa only [Combinatorics.Pairing.weight, TwoPointDiagram.mixedComponentWeight] using
       BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq s
         (d.pairingInMixedOrder τ τ' σ).crossingCount
-        (fun B : d.componentPartition.parts => d.mixedComponentCrossingCount τ τ' σ B)
+        (fun B : d.vertexGraph.componentPartition.parts => d.mixedComponentCrossingCount τ τ' σ B)
         hparity
   rw [hcomponents,
     d.prod_componentParts_eq_external_mul_prod_vacuum

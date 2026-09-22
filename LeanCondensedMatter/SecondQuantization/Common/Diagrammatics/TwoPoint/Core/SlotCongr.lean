@@ -184,7 +184,7 @@ theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
 /-- **Absence of vacuum components is preserved by the transport.** -/
 theorem TwoPointDiagram.slotCongr_hasNoVacuumComponent_iff (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
-    (d.slotCongr (M := M) e).HasNoVacuumComponent ↔ d.HasNoVacuumComponent := by
+    HasNoVacuumComponent (d.slotCongr (M := M) e).vertexGraph ↔ HasNoVacuumComponent d.vertexGraph := by
   constructor
   · intro hd v
     obtain ⟨f, hf⟩ := hd (e v)

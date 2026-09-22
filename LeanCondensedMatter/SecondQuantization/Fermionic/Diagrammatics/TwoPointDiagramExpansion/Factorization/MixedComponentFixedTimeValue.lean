@@ -31,7 +31,7 @@ variable {Mode : Type*}
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (g : QuarticVertexLabel Mode → ℂ)
-    (B : d.1.componentPartition.parts) : ℂ :=
+    (B : d.1.vertexGraph.componentPartition.parts) : ℂ :=
   ∏ v : ↥(Common.interactionSector
       (B : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n))))),
@@ -50,7 +50,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) : ℂ :=
+    (B : d.1.vertexGraph.componentPartition.parts) : ℂ :=
   d.mixedComponentVertexWeight g B *
     d.mixedComponentPairingValue ε β τ τ' σ B
 
@@ -70,7 +70,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.fixedTimeAmplitude ε β g τ τ' σ =
       twoPointExternalOrderSign τ τ' *
-        ∏ B : d.1.componentPartition.parts,
+        ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentFixedTimeValue ε β g τ τ' σ B := by
   change twoPointExternalOrderSign τ τ' *
       orderedTwoPointVertexWeight g d.vertexLabelSequence *
@@ -78,7 +78,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
           (d.1.pairingInMixedOrder τ τ' σ) = _
   have hvertex :
       orderedTwoPointVertexWeight g d.vertexLabelSequence =
-        ∏ B : d.1.componentPartition.parts,
+        ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentVertexWeight g B := by
     classical
     calc
@@ -90,7 +90,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
           FixedExternalTwoPointWickDiagram.vertexLabelSequence, e] using
           (Equiv.prod_comp e
             (fun v : ↥(Finset.univ : Finset (Fin n)) => g (d.1.vertexLabel v)))
-      _ = ∏ B : d.1.componentPartition.parts,
+      _ = ∏ B : d.1.vertexGraph.componentPartition.parts,
           ∏ v : ↥(Common.interactionSector
             (B : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))),
@@ -99,18 +99,18 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
                 (B : Finset (Common.TwoPointVertex
                   (Finset.univ : Finset (Fin n)))) v.2⟩) :=
         d.1.prod_vertexLabel_eq_prod_componentInteractionParts g
-      _ = ∏ B : d.1.componentPartition.parts,
+      _ = ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentVertexWeight g B := rfl
   have hpairing :
       orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
           (d.1.pairingInMixedOrder τ τ' σ) =
-        ∏ B : d.1.componentPartition.parts,
+        ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentPairingValue ε β τ τ' σ B := by
     unfold orderedTwoPointPairingValue Combinatorics.Pairing.evaluation
     have hpairProduct :
         (∏ pr ∈ (d.1.pairingInMixedOrder τ τ' σ).pairs,
           mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence pr.1 pr.2) =
-          ∏ B : d.1.componentPartition.parts,
+          ∏ B : d.1.vertexGraph.componentPartition.parts,
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
                 pr.1.1.1 pr.1.1.2 := by
@@ -127,7 +127,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
             (fun pr =>
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                 d.vertexLabelSequence pr.1 pr.2)
-        _ = ∏ x : Σ B : d.1.componentPartition.parts,
+        _ = ∏ x : Σ B : d.1.vertexGraph.componentPartition.parts,
               d.1.MixedComponentPair τ τ' σ B,
             mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
               ((Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ) x).1.1)
@@ -138,7 +138,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
               (fun pr =>
                 mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                   d.vertexLabelSequence pr.1.1 pr.1.2)).symm
-        _ = ∏ B : d.1.componentPartition.parts,
+        _ = ∏ B : d.1.vertexGraph.componentPartition.parts,
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
                 pr.1.1.1 pr.1.1.2 := by

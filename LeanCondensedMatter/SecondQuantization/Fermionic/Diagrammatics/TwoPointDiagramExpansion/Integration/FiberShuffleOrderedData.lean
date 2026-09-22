@@ -51,7 +51,7 @@ private theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiec
   rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum ε β g τ τ' σ,
     d.mixedExternalDysonFixedTimeValue_eq_externalPiece ε β g τ τ' σ]
   rw [show
-    d.1.vacuumComponentParts.prod
+    (Common.vacuumComponentParts d.1.vertexGraph).prod
         (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
       (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.vertexWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
