@@ -1,6 +1,9 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.Polynomial.Coeff
 import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Algebra.Polynomial.Roots
+import Mathlib.Combinatorics.Enumerative.Stirling
+import Mathlib.RingTheory.Polynomial.Pochhammer
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
@@ -69,5 +72,47 @@ theorem replicaPolynomial_eval_nat_eq_sum_labelings
   intro π hπ
   rw [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]
   simp [Fintype.card_fin, nsmul_eq_mul, mul_comm]
+
+
+section Field
+
+variable {F : Type*} [Field F] [CharZero F]
+
+private theorem X_pow_eq_sum_stirlingSecond_descPochhammer (b : ℕ) :
+    (Polynomial.X : Polynomial F) ^ b =
+      ∑ k ∈ Finset.range (b + 1),
+        Polynomial.C (Nat.stirlingSecond b k : F) * Polynomial.descPochhammer F k := by
+  apply Polynomial.eq_of_infinite_eval_eq
+  have hInfinite : Set.Infinite (Set.range fun n : ℕ => (n : F)) :=
+    Set.infinite_range_of_injective Nat.cast_injective
+  refine hInfinite.mono ?_
+  rintro x ⟨n, rfl⟩
+  simp only [Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_finsetSum,
+    Polynomial.eval_mul, Polynomial.eval_C, Polynomial.descPochhammer_eval_eq_descFactorial]
+  have hcast := congrArg (fun z : ℕ => (z : F))
+    (Nat.pow_eq_sum_stirlingSecond_mul_descFactorial n b)
+  simpa only [Nat.cast_pow, Nat.cast_sum, Nat.cast_mul] using hcast
+
+/-- The replica polynomial in the descending-factorial basis.  The Stirling number of the second
+kind converts the monomial replica factor for a partition into the falling-factorial basis used by
+the fixed-order power-series replica polynomial. -/
+theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
+    {α : Type*} [DecidableEq α] (κ : Finset α → F) (S : Finset α) :
+    replicaPolynomial κ S =
+      ∑ π : Finpartition S, ∑ k ∈ Finset.range (π.parts.card + 1),
+        Polynomial.C
+            ((Nat.stirlingSecond π.parts.card k : F) * partitionProduct κ π) *
+          Polynomial.descPochhammer F k := by
+  classical
+  rw [replicaPolynomial]
+  apply Finset.sum_congr rfl
+  intro π hπ
+  rw [X_pow_eq_sum_stirlingSecond_descPochhammer]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro k hk
+  simp [mul_assoc, mul_comm, mul_left_comm]
+
+end Field
 
 end Finpartition
