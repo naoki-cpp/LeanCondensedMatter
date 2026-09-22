@@ -7,7 +7,8 @@ set_option linter.style.header false
 /-!
 # Bosonic free-thermal operator peel
 
-Instantiates the generic linear-map exchange peel identity for free bosonic creation/annihilation fields.
+Instantiates the generic linear-map exchange peel identity for free bosonic creation/annihilation
+fields.
 -/
 
 namespace SecondQuantization
@@ -30,7 +31,7 @@ noncomputable def FreeThermalField.exchangeValue :
   | .annihilate _, .annihilate _ => 0
   | .create _, .create _ => 0
 
-/-- Concrete free bosonic fields satisfy the scalar exchange relation used by the Common peel. -/
+/-- Concrete free bosonic fields satisfy the scalar relation used by the generic exchange peel. -/
 theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
     (C D : FreeThermalField Mode) :
     (C.operator).comp D.operator =
