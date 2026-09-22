@@ -140,6 +140,7 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
     (d.componentLegShuffle.orderedBlockInversionCount blockOrder)
   apply (ZMod.natCast_eq_natCast_iff _ _ 2).1
   simpa [ExternalInsertionDiagram.interComponentCrossingCount,
+    Combinatorics.Pairing.interComponentCrossingCount,
     FamilySlotShuffleTo.orderedBlockInversionCount,
     ExternalInsertionDiagram.componentLegInversionCount,
     cross, inv, selected, offDiag] using hsum
