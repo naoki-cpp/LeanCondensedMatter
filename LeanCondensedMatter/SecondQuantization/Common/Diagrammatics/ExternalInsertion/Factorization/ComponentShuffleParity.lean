@@ -228,19 +228,29 @@ private theorem ExternalInsertionDiagram.componentLegInversionInner_external
     rw [d.componentLegPosition_external, d.componentLegPosition_external]
     by_cases hlt :
         (d.externalSectorOrderIso C f).1 < (d.externalSectorOrderIso B e).1
-    · have hleg :
+    · have hltVal :
+          (d.externalSectorOrderIso C f).1.val <
+            (d.externalSectorOrderIso B e).1.val := by
+        exact hlt
+      have hleg :
           externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
             externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
         change
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val
-        simpa only [externalInsertionExternalLeg_val] using hlt
+        simpa only [externalInsertionExternalLeg_val] using hltVal
       rw [if_pos hleg, if_pos hlt]
-    · have hleg :
+    · have hltVal :
+          ¬ (d.externalSectorOrderIso C f).1.val <
+            (d.externalSectorOrderIso B e).1.val := by
+        intro h
+        apply hlt
+        exact h
+      have hleg :
           ¬ externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1 <
             externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1 := by
         intro h
-        apply hlt
+        apply hltVal
         change
           (externalInsertionExternalLeg E S (d.externalSectorOrderIso C f).1).val <
             (externalInsertionExternalLeg E S (d.externalSectorOrderIso B e).1).val at h
