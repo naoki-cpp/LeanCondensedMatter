@@ -94,12 +94,12 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
         ((cross BC.1 BC.2 : ZMod 2) - (selected BC.1 BC.2 : ZMod 2)))
       (fun BC _ => BC.swap) ?_ ?_ ?_ ?_
     · rintro ⟨B, C⟩ hmem
-      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
-      simp only [Finset.mem_offDiag, Finset.mem_univ, true_and] at hmem
+      have hBC : B ≠ C := by
+        simpa [offDiag] using hmem
       by_cases hlt : blockOrder B < blockOrder C
       · have hnlt : ¬ blockOrder C < blockOrder B := asymm hlt
-        have hz := hpairCast B C hmem
-        simp only [Prod.swap, selected, hlt, if_pos, hnlt, if_neg, Nat.cast_zero, sub_zero]
+        have hz := hpairCast B C hBC
+        simp [selected, hlt, hnlt]
         calc
           (cross B C : ZMod 2) - (inv B C : ZMod 2) + (cross C B : ZMod 2) =
               ((cross B C : ZMod 2) + (cross C B : ZMod 2)) - (inv B C : ZMod 2) := by
@@ -107,29 +107,28 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
           _ = 0 := by rw [hz]; simp
       · have hneOrder : blockOrder B ≠ blockOrder C := by
           intro h
-          exact hmem (blockOrder.injective h)
+          exact hBC (blockOrder.injective h)
         have hrev : blockOrder C < blockOrder B := by
           rcases lt_trichotomy (blockOrder B) (blockOrder C) with h | h | h
           · exact absurd h hlt
           · exact absurd h hneOrder
           · exact h
-        have hz := hpairCast C B hmem.symm
-        simp only [Prod.swap, selected, hlt, if_neg, hrev, if_pos, Nat.cast_zero,
-          sub_zero]
+        have hz := hpairCast C B hBC.symm
+        simp [selected, hlt, hrev]
         calc
           (cross B C : ZMod 2) + ((cross C B : ZMod 2) - (inv C B : ZMod 2)) =
               ((cross C B : ZMod 2) + (cross B C : ZMod 2)) - (inv C B : ZMod 2) := by
             ring
           _ = 0 := by rw [hz]; simp
     · rintro ⟨B, C⟩ hmem _
-      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
-      simp only [Finset.mem_offDiag, Finset.mem_univ, true_and] at hmem
+      have hBC : B ≠ C := by
+        simpa [offDiag] using hmem
       intro hswap
-      exact hmem (congrArg Prod.fst hswap).symm
+      exact hBC (congrArg Prod.fst hswap).symm
     · rintro ⟨B, C⟩ hmem
-      change (B, C) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag at hmem
-      change (C, B) ∈ (Finset.univ : Finset d.componentPartition.parts).offDiag
-      simpa only [Finset.mem_offDiag, Finset.mem_univ, true_and] using hmem.symm
+      have hBC : B ≠ C := by
+        simpa [offDiag] using hmem
+      simpa [offDiag] using hBC.symm
     · rintro ⟨B, C⟩ hmem
       rfl
   have hsum :
