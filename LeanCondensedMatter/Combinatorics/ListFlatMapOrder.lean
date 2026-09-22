@@ -1,4 +1,5 @@
-import Mathlib.Data.List.Basic
+import Mathlib.Data.List.Nodup
+import Mathlib.Order.Defs.PartialOrder
 import Lean.Elab.Tactic.Omega
 
 set_option linter.style.header false
