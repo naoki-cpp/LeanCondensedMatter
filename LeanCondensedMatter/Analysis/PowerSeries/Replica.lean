@@ -112,7 +112,7 @@ private theorem coeff_one_descPochhammer_succ (k : ℕ) :
   | zero => simp
   | succ k ih =>
       rw [descPochhammer_succ_right]
-      rw [show (k + 1 : Polynomial R) = Polynomial.C (k + 1 : R) by simp]
+      rw [← Polynomial.C_eq_natCast (R := R) (k + 1)]
       rw [show 1 = 0 + 1 by rfl, Polynomial.coeff_mul_X_sub_C]
       rw [Polynomial.coeff_zero_eq_eval_zero,
         descPochhammer_ne_zero_eval_zero (R := R) (Nat.succ_ne_zero k), ih]
@@ -130,7 +130,7 @@ private theorem inv_factorial_mul_coeff_one_descPochhammer [CharZero R] (k : ℕ
       simp [Nat.factorial_succ, pow_succ, div_eq_mul_inv]
       have hkfac : (k.factorial : R) ≠ 0 :=
         Nat.cast_ne_zero.mpr k.factorial_ne_zero
-      rw [mul_inv_cancel₀ hkfac, one_mul]
+      field_simp [hkfac] <;> ring
 
 /-- The coefficient linear in the formal replica count is the factorial-normalized coefficient
 of the formal logarithm. This is the algebraic replica identity, with no analytic continuation in
@@ -163,7 +163,6 @@ theorem replicaCoeffPolynomial_coeff_one [CharZero R]
   rw [← inv_factorial_mul_coeff_one_descPochhammer (R := R) k]
   have hkfac : (k.factorial : R) ≠ 0 :=
     Nat.cast_ne_zero.mpr k.factorial_ne_zero
-  field_simp [hkfac]
-  ring
+  field_simp [hkfac] <;> ring
 
 end PowerSeries
