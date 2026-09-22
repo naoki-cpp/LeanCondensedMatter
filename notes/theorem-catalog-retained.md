@@ -17,6 +17,10 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator` — canonical vertex-level
+  energy-shift eigenoperator law: a quartic vertex assembled from ladder eigenoperators evolves with
+  the total signed energy shift of its four legs. It remains independently meaningful even without a
+  current compiled consumer.
 - `QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self` — canonical
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
   that need the reversed inner-product orientation should reverse it locally rather than expose a

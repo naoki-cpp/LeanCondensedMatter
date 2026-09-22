@@ -7,8 +7,7 @@ set_option linter.style.header false
 # Imaginary-time evolution of generic quartic interactions
 
 The quartic interaction constructors are owned by `Common.Interaction.Quartic`. This module contains
-the generic diagonal Heisenberg-evolution results for quartic local legs, vertices, and finite
-interaction sums.
+the generic diagonal Heisenberg-evolution results for quartic local legs and vertices.
 -/
 
 namespace SecondQuantization
@@ -57,26 +56,6 @@ theorem heisenbergEvolve_quarticVertexOperator
   simp only [quarticVertexEnergyShift]
   push_cast
   ring
-
-/-- Diagonal Heisenberg evolution distributes over a finitely supported quartic interaction. -/
-theorem heisenbergEvolve_quarticInteractionOn
-    (support : Finset (QuarticVertexLabel Mode)) (energy : Config → ℝ) (τ : ℝ)
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    heisenbergEvolve energy τ (quarticInteractionOn support create annihilate g) =
-      ∑ q ∈ support, g q • heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) := by
-  simp only [quarticInteractionOn, map_sum, map_smul]
-
-/-- Diagonal Heisenberg evolution distributes over the all-label finite-mode interaction. -/
-theorem heisenbergEvolve_quarticInteraction [Fintype Mode]
-    (energy : Config → ℝ) (τ : ℝ)
-    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    heisenbergEvolve energy τ (quarticInteraction create annihilate g) =
-      ∑ q, g q • heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) := by
-  simpa [quarticInteraction] using
-    (heisenbergEvolve_quarticInteractionOn
-      (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) energy τ create annihilate g)
 
 end
 end Common
