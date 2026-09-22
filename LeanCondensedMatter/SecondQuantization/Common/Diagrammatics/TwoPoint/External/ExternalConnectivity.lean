@@ -55,7 +55,7 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
   let dataEquiv :
       {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
         Fin 1 ⊕
-          (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) :=
+          (↥(TwoPointDiagram.interactionSector (d.externalComponent 0)) × Fin 4) :=
     {
       toFun := fun leg => by
         rcases leg with ⟨leg, hleg⟩
@@ -68,7 +68,7 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
               exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
         | inr p =>
             exact Sum.inr
-              (⟨p.1.1, (TwoPointDiagram.mem_interactionPart_subtype
+              (⟨p.1.1, (TwoPointDiagram.mem_interactionSector_subtype
                 (d.externalComponent 0) p.1).2 hleg⟩, p.2)
       invFun := fun leg => by
         cases leg with
@@ -79,11 +79,11 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
               exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)⟩
         | inr p =>
             let v : ↥S :=
-              ⟨p.1.1, TwoPointDiagram.interactionPart_subset
+              ⟨p.1.1, TwoPointDiagram.interactionSector_subset
                 (d.externalComponent 0) p.1.2⟩
             exact ⟨Sum.inr (v, p.2), by
               change (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0
-              exact (TwoPointDiagram.mem_interactionPart_subtype
+              exact (TwoPointDiagram.mem_interactionSector_subtype
                 (d.externalComponent 0) v).1 p.1.2⟩
       left_inv := fun leg => by
         rcases leg with ⟨leg, hleg⟩
@@ -113,21 +113,21 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
       {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg} ≃
         Fin 1 ⊕
-          (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4) :=
+          (↥(TwoPointDiagram.interactionSector (d.externalComponent 0)) × Fin 4) :=
     ((twoPointLegEquiv S).subtypeEquiv fun leg =>
         d.legInComponent_iff_unflattened d.externalComponentPart leg).trans dataEquiv
   have hcard :
       Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg} =
-        1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
+        1 + 4 * (TwoPointDiagram.interactionSector (d.externalComponent 0)).card := by
     calc
       Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
           d.legInComponent (d.externalComponent 0) leg} =
           Fintype.card
             (Fin 1 ⊕
-              (↥(TwoPointDiagram.interactionPart (d.externalComponent 0)) × Fin 4)) :=
+              (↥(TwoPointDiagram.interactionSector (d.externalComponent 0)) × Fin 4)) :=
         Fintype.card_congr blockEquiv
-      _ = 1 + 4 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card := by
+      _ = 1 + 4 * (TwoPointDiagram.interactionSector (d.externalComponent 0)).card := by
         simp [Nat.mul_comm]
   let restricted :=
     d.pairing.restrict (d.legInComponent (d.externalComponent 0))
