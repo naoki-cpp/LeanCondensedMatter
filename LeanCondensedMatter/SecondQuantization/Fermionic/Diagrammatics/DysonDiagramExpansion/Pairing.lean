@@ -148,7 +148,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             (fun p => by
               rw [← timedFieldOperator_quarticLegFieldForSequence ε q τ p]
               simpa [quarticLegFieldForSequence, quarticLegEnergyShiftForSequence,
-                Common.flatVertexIndex, Common.flatLocalLeg] using
+                quarticLocalLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg] using
                 (heisenbergEvolve_timedFieldOperator ε β
                   (quarticLegFieldForSequence q τ p)))
             (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)

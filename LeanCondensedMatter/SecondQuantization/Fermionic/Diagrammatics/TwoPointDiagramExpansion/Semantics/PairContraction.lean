@@ -28,7 +28,8 @@ def orderedTwoPointLegFieldLabel {n : ℕ} (i j : Mode)
     (q : Fin n → QuarticVertexLabel Mode) :
     OrderedTwoPointLeg n → ExternalFieldLabel Mode
   | .inl e => twoPointExternalLabels i j e
-  | .inr leg => quarticLocalLegExternalFieldLabel (q leg.1.1) leg.2
+  | .inr leg => quarticLocalLegExternalFieldLabel
+      (Common.quarticLocalLeg (q leg.1.1) leg.2)
 
 /-- The imaginary time carried by one fixed standard two-point leg. -/
 def orderedTwoPointLegTime {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
