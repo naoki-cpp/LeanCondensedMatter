@@ -23,16 +23,17 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
       Nat.stirlingSecond (n + 1) (k + 1) := by
   induction n with
   | zero =>
-      cases k <;> simp
+      cases k <;> simp [Nat.stirlingSecond]
   | succ n ih =>
       cases k with
       | zero =>
+          rw [Finset.sum_range_succ'
+            (fun i => (n + 1).choose i * Nat.stirlingSecond i 0) (n + 1)]
           simp [Nat.stirlingSecond_one_right]
       | succ k =>
           rw [Finset.sum_range_succ'
             (fun i => (n + 1).choose i * Nat.stirlingSecond i (k + 1)) (n + 1)]
-          simp only [Nat.choose_zero_right, Nat.stirlingSecond_zero_succ, mul_zero, zero_add]
-          simp_rw [Nat.choose_succ_succ', Nat.stirlingSecond_succ_succ]
+          simp only [Nat.choose_zero_right, Nat.stirlingSecond_zero_succ, mul_zero]
           have hshift :
               (∑ i ∈ Finset.range (n + 1),
                   n.choose (i + 1) * Nat.stirlingSecond (i + 1) (k + 1)) =
@@ -52,21 +53,29 @@ private theorem sum_choose_mul_stirlingSecond (n k : ℕ) :
                   ∑ i ∈ Finset.range (n + 1),
                     n.choose i * Nat.stirlingSecond i k := by
             simp_rw [Nat.stirlingSecond_succ_succ, mul_add]
-            rw [Finset.sum_add_distrib, ← Finset.mul_sum]
+            rw [Finset.sum_add_distrib]
             apply congrArg₂ (· + ·)
-            · apply Finset.sum_congr rfl
-              intro i hi
-              ring
+            · calc
+                (∑ i ∈ Finset.range (n + 1),
+                    n.choose i * ((k + 1) * Nat.stirlingSecond i (k + 1))) =
+                    ∑ i ∈ Finset.range (n + 1),
+                      (k + 1) * (n.choose i * Nat.stirlingSecond i (k + 1)) := by
+                        apply Finset.sum_congr rfl
+                        intro i hi
+                        ring
+                _ = (k + 1) *
+                    (∑ i ∈ Finset.range (n + 1),
+                      n.choose i * Nat.stirlingSecond i (k + 1)) := by
+                        rw [Finset.mul_sum]
             · rfl
-          simp_rw [add_mul]
-          rw [Finset.sum_add_distrib, hrec, hshift, ih (k + 1), ih k]
-          rw [Nat.stirlingSecond_succ_succ]
+          simp_rw [Nat.choose_succ_succ', add_mul]
+          rw [Finset.sum_add_distrib, hrec, hshift, ih (k + 1), ih k,
+            Nat.stirlingSecond_succ_succ]
           ring
 
 private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
     (∑ i ∈ Finset.range (n + 1), n.choose i * Nat.stirlingSecond (n - i) k) =
       Nat.stirlingSecond (n + 1) (k + 1) := by
-  rw [← Finset.sum_range_reflect]
   have h :
       (∑ i ∈ Finset.range (n + 1),
           n.choose (n - i) * Nat.stirlingSecond (n - (n - i)) k) =
@@ -74,7 +83,11 @@ private theorem sum_choose_mul_stirlingSecond_complement (n k : ℕ) :
     apply Finset.sum_congr rfl
     intro i hi
     have hin : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
-    rw [Nat.choose_symm hin, Nat.sub_sub_cancel hin]
+    have hsub : n - (n - i) = i := by omega
+    rw [Nat.choose_symm hin, hsub]
+  rw [← Finset.sum_range_reflect]
+  have hn : n + 1 - 1 = n := by omega
+  simp_rw [hn]
   rw [h]
   exact sum_choose_mul_stirlingSecond n k
 
@@ -120,62 +133,64 @@ theorem card_parts_eq_stirlingSecond (s : Finset α) (k : ℕ) :
     Fintype.card {P : Finpartition s // P.parts.card = k} =
       Nat.stirlingSecond s.card k := by
   classical
-  induction s using Finset.strongInductionOn generalizing k with
-  | h s ih =>
-      by_cases hs : s = ∅
-      · subst s
-        cases k with
-        | zero =>
-            letI : Unique (Finpartition (∅ : Finset α)) :=
-              inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
-            letI : Unique {P : Finpartition (∅ : Finset α) // P.parts.card = 0} where
-              default := ⟨default, by simp⟩
-              uniq P := by
-                apply Subtype.ext
-                exact Subsingleton.elim _ _
-            simp [Nat.stirlingSecond]
-        | succ k =>
-            simp only [Nat.stirlingSecond_zero_succ]
-            rw [Fintype.card_eq_zero_iff]
-            exact ⟨fun P => by
-              have hparts : P.1.parts = ∅ :=
-                (Finpartition.parts_eq_empty_iff (P := P.1)).2 rfl
-              simp [hparts] at P.2⟩
-      · cases k with
-        | zero =>
-            have hpos : 0 < s.card :=
-              Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hs)
-            have hcard : s.card = (s.card - 1) + 1 := by omega
-            rw [hcard, Nat.stirlingSecond_succ_zero, Fintype.card_eq_zero_iff]
-            exact ⟨fun P => by
-              have hne : P.1.parts.Nonempty := P.1.parts_nonempty hs
-              exact (Finset.card_ne_zero.mpr hne) P.2⟩
-        | succ k =>
-            obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
-            rw [Fintype.card_congr (partsCardSuccEquiv ha k), Fintype.card_sigma]
-            have hsmall : ∀ B : BlockContaining s a,
-                Fintype.card
-                    {Q : Finpartition (s \ B.1) // Q.parts.card = k} =
-                  Nat.stirlingSecond (s \ B.1).card k := by
-              intro B
-              exact ih (s \ B.1) (Finset.sdiff_ssubset B.2.1 ⟨a, B.2.2⟩) k
-            simp_rw [hsmall]
-            calc
-              (∑ B : BlockContaining s a, Nat.stirlingSecond (s \ B.1).card k) =
-                  ∑ B : BlockContaining s a,
-                    Nat.stirlingSecond (s.card - B.1.card) k := by
-                    apply Fintype.sum_congr
-                    intro B
-                    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr B.2.1]
-              _ = ∑ j ∈ Finset.range s.card,
-                    (s.card - 1).choose j *
-                      Nat.stirlingSecond (s.card - (j + 1)) k := by
-                    exact sum_blockContaining_card s a ha
-                      (fun b => Nat.stirlingSecond (s.card - b) k)
-              _ = Nat.stirlingSecond s.card (k + 1) := by
-                    have hpos : 0 < s.card := Finset.card_pos.mpr ⟨a, ha⟩
-                    have hcard : s.card = (s.card - 1) + 1 := by omega
-                    simpa [hcard, Nat.add_sub_add_right] using
-                      sum_choose_mul_stirlingSecond_complement (s.card - 1) k
+  refine Finset.strongInductionOn s ?_
+  intro s ih
+  by_cases hs : s = ∅
+  · subst s
+    cases k with
+    | zero =>
+        letI : Unique (Finpartition (∅ : Finset α)) :=
+          inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
+        letI : Unique {P : Finpartition (∅ : Finset α) // P.parts.card = 0} := {
+          default := ⟨default, by simp⟩
+          uniq := by
+            intro P
+            apply Subtype.ext
+            exact Subsingleton.elim _ _
+        }
+        simp [Nat.stirlingSecond]
+    | succ k =>
+        simp only [Nat.stirlingSecond_zero_succ]
+        rw [Fintype.card_eq_zero_iff]
+        exact ⟨fun P => by
+          have hparts : P.1.parts = ∅ :=
+            (Finpartition.parts_eq_empty_iff (P := P.1)).2 rfl
+          simp [hparts] at P.2⟩
+  · cases k with
+    | zero =>
+        have hpos : 0 < s.card :=
+          Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hs)
+        have hcard : s.card = (s.card - 1) + 1 := by omega
+        rw [hcard, Nat.stirlingSecond_succ_zero, Fintype.card_eq_zero_iff]
+        exact ⟨fun P => by
+          have hne : P.1.parts.Nonempty := P.1.parts_nonempty hs
+          exact (Finset.card_ne_zero.mpr hne) P.2⟩
+    | succ k =>
+        obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
+        rw [Fintype.card_congr (partsCardSuccEquiv ha k), Fintype.card_sigma]
+        have hsmall : ∀ B : BlockContaining s a,
+            Fintype.card
+                {Q : Finpartition (s \ B.1) // Q.parts.card = k} =
+              Nat.stirlingSecond (s \ B.1).card k := by
+          intro B
+          exact ih (s \ B.1) (Finset.sdiff_ssubset B.2.1 ⟨a, B.2.2⟩) k
+        simp_rw [hsmall]
+        calc
+          (∑ B : BlockContaining s a, Nat.stirlingSecond (s \ B.1).card k) =
+              ∑ B : BlockContaining s a,
+                Nat.stirlingSecond (s.card - B.1.card) k := by
+                apply Fintype.sum_congr
+                intro B
+                rw [Finset.card_sdiff, Finset.inter_eq_left.mpr B.2.1]
+          _ = ∑ j ∈ Finset.range s.card,
+                (s.card - 1).choose j *
+                  Nat.stirlingSecond (s.card - (j + 1)) k := by
+                exact sum_blockContaining_card s a ha
+                  (fun b => Nat.stirlingSecond (s.card - b) k)
+          _ = Nat.stirlingSecond s.card (k + 1) := by
+                have hpos : 0 < s.card := Finset.card_pos.mpr ⟨a, ha⟩
+                have hcard : s.card = (s.card - 1) + 1 := by omega
+                simpa [hcard, Nat.add_sub_add_right] using
+                  sum_choose_mul_stirlingSecond_complement (s.card - 1) k
 
 end Finpartition
