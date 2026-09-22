@@ -314,11 +314,11 @@ noncomputable def ExternalInsertionDiagram.componentExternalShuffle
                 (B : Finset (ExternalInsertionVertex E S)) :=
             (ExternalInsertionDiagram.mem_externalPart
               (B : Finset (ExternalInsertionVertex E S)) e).2 heB
-          let local : Fin (2 * d.externalPairCount B) :=
+          let slot : Fin (2 * d.externalPairCount B) :=
             (d.externalPartOrderIso B).symm ⟨e, hext⟩
-          refine ⟨⟨B, local⟩, ?_⟩
-          change (d.externalPartOrderIso B local).1 = e
-          simp [local])
+          refine ⟨⟨B, slot⟩, ?_⟩
+          change (d.externalPartOrderIso B slot).1 = e
+          simp [slot])
   strictMono := fun B e f hef =>
     (d.externalPartOrderIso B).strictMono hef
 
