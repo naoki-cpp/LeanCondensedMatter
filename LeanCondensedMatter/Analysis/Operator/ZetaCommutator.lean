@@ -7,6 +7,8 @@ set_option linter.style.header false
 
 The fixed-sign bracket is `[A,B]_ζ = A ∘ B - ζ • (B ∘ A)`. It is not a graded commutator: `ζ` is
 a scalar, not a sign inferred from operator degrees. Products therefore use mixed signs `ζ * η`.
+This module also owns the finite exchange-peel identity obtained by repeatedly applying a supplied
+scalar exchange relation through an ordered product of endomorphisms.
 -/
 
 namespace LinearMap
