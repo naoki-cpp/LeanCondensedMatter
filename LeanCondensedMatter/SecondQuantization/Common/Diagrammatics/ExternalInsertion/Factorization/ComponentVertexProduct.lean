@@ -19,14 +19,14 @@ variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 /-- The restricted interaction-vertex label is the ambient label transported through the canonical
 component interaction-sector decomposition. -/
 @[simp]
-theorem ExternalInsertionDiagram.restrictComponent_vertexLabel_interactionVertexComponentEquiv
+theorem ExternalInsertionDiagram.restrictComponent_vertexLabel_interactionSectorComponentEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
     (v : ↥(interactionSector
       (B : Finset (ExternalInsertionVertex E S)))) :
     (d.restrictComponent B).vertexLabel v =
-      d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩) := by
+      d.vertexLabel (interactionSectorComponentEquiv d.vertexGraph.symm ⟨B, v⟩) := by
   apply congrArg d.vertexLabel
   apply Subtype.ext
   rfl
@@ -48,8 +48,8 @@ theorem ExternalInsertionDiagram.vertexWeight_eq_prod_components
         ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
             (B : Finset (ExternalInsertionVertex E S))),
-            w (d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) :=
-      Fintype.prod_equiv_sigma d.interactionVertexComponentEquiv
+            w (d.vertexLabel (interactionSectorComponentEquiv d.vertexGraph.symm ⟨B, v⟩)) :=
+      Fintype.prod_equiv_sigma interactionSectorComponentEquiv d.vertexGraph
         (fun v => w (d.vertexLabel v))
     _ = ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
