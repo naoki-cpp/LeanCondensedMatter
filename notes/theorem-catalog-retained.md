@@ -249,3 +249,6 @@ or consumer structure changes.
   permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
   count. It records the intrinsic bridge between crossing parity and permutation sign independently
   of downstream bridge implementations.
+- `Combinatorics.Pairing.insertFirstPair_eraseZeroPair` — canonical erase/insert round-trip law:
+  erasing the pair containing position zero and reinserting it recovers the original pairing. It is
+  the left-inverse law underlying `Pairing.equivSigma`, not merely one-use proof routing.
