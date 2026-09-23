@@ -100,40 +100,43 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
       if i = j then
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
       else 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  have hC :
-      Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
-        Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-    simpa [mul_comm] using
-      (Common.heisenbergEvolve_eq_smul_of_carriesShift
-        (fermionEnergy ε) (-ε i) (-β) (annihilate i)
-        (carriesEnergyShift_annihilate ε i))
-  have hcomm :
-      Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create j) =
-        (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
-      (anticomm_annihilate_create (Mode := Mode) i j)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
-  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-    (fermionEnergy ε) β (-ε i) Common.Statistics.fermion
-    (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl] at h ⊢
+  · rw [if_pos rfl]
+    have hcar := anticomm_annihilate_create (Mode := Mode) i i
+    have hocc := freeGibbsDensityOperator_expectation_numberOperator ε β i
+    rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
+    rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation] at hocc
+    rw [show (annihilate i).comp (create i) =
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) - numberOperator i by
+      apply LinearMap.ext
+      intro n
+      have h := LinearMap.congr_fun hcar n
+      simpa [numberOperator, Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
+        sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h]
+    rw [map_sub, Common.normalizedWeightedDiagonal_id, hocc]
     have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
       simpa [Common.Statistics.zetaInt_fermion, add_comm] using
         (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-    rw [h]
-    norm_num [Common.Statistics.zetaInt_fermion] at h ⊢
-    rw [← Complex.exp_neg] at h
-    rw [show (-((-(ε i * β) : ℝ) : ℂ)) = (β : ℂ) * (ε i : ℂ) by
-      push_cast
-      ring] at h
-    rw [h]
     field_simp
     ring
-  · rw [if_neg hij] at h ⊢
-    simpa using h
+  · rw [if_neg hij, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+    have hC :
+        Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
+          Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
+      simpa [mul_comm] using
+        (Common.heisenbergEvolve_eq_smul_of_carriesShift
+          (fermionEnergy ε) (-ε i) (-β) (annihilate i)
+          (carriesEnergyShift_annihilate ε i))
+    have hcomm :
+        Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create j) =
+          (0 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
+      simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion, hij] using
+        (anticomm_annihilate_create (Mode := Mode) i j)
+    have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
+    simpa using
+      (Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
+        (fermionEnergy ε) β (-ε i) Common.Statistics.fermion 0
+        (annihilate i) (create j) hC hcomm hne)
 
 /-! ## Closed forms of the free thermal Green function -/
 
