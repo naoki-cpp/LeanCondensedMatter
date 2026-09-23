@@ -20,12 +20,13 @@ n! [λⁿ] log(normalized Dyson partition series)
 
 with the sum of connected `n`-vertex quartic Wick-diagram amplitudes.
 
-The statistics-independent formal core is owned by
-`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. It takes a unit-constant formal
-power series, a multiplicative connected decomposition, and equality between the series'
-factorial-normalized finite-set moments and the decomposition's normalized object moments; it then
-identifies the formal-log coefficient directly with the connected-object contribution. The
-fermionic theorem is a concrete consumer: its only model-specific obligation at this boundary is the
+The statistics-independent formal core has two kernel-checked routes. The inversion route is
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`; the independent replica route is
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica`. The replica theorem
+takes a unit-constant formal power series, a multiplicative connected decomposition, and direct
+equality between factorial-normalized coefficients and object moments, then identifies the
+formal-log coefficient with the connected contribution using only the forward moment decomposition.
+The canonical fermionic theorem consumes this replica route; its model-specific obligation is the
 Dyson-moment/Wick-diagram identification. No source-functional wrapper is required for this formal
 partition-function endpoint.
 
@@ -77,11 +78,11 @@ from full source connectedness for higher-point external insertions.
 
 ## Statistics-independent moment boundary
 
-`Combinatorics.powerSeriesMomentSetFunction` packages factorial-normalized coefficients of a
-unit-constant formal power series as a `NormalizedSetFunction`. Connected-decomposition consumers
-compare that moment function directly with `MultiplicativeWeight.normalizedObjectMoment`; the
-generic theorem `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution` then identifies
-the corresponding formal-log coefficient with the connected-object contribution.
+The inversion route packages factorial-normalized coefficients with
+`Combinatorics.powerSeriesMomentSetFunction` and compares that normalized finite-set function with
+`MultiplicativeWeight.normalizedObjectMoment`. The replica route instead consumes the direct
+coefficient identity against `MultiplicativeWeight.objectMoment`, avoiding cumulant inversion.
+Both routes identify the same formal-log coefficient with the connected-object contribution.
 
 The bosonic coefficientwise connected theorem uses the same normalized finite-set and
 `MultiplicativeWeight` machinery directly. Statistics enter only in concrete moment realizations,
@@ -105,35 +106,35 @@ the canonical `LinkedCluster` umbrella.
 
 ## Replica-method proof track
 
-An independent algebraic proof track should recover the formal linked-cluster endpoint by replica
-counting rather than partition-lattice Möbius inversion. For a finite support `S`, the
-statistics-independent core is a polynomial in a formal replica-count variable `N`,
+The independent algebraic replica track is proved. For a finite support `S`,
+`Finpartition.replicaPolynomial` records the component-replica count
 
 ```text
 R_S(N) = ∑_{π : Finpartition S} N^(number of blocks of π) × partitionProduct κ π.
 ```
 
-For nonempty `S`, the coefficient linear in `N` receives a contribution only from the one-block
-partition and therefore equals `κ S`. The factor `N^(number of blocks)` should also be identified
-with the number of independent replica labelings of the connected components, so the formal
-polynomial retains the combinatorial meaning of the replica construction.
+For nonempty `S`, `Finpartition.replicaPolynomial_coeff_one` extracts the connected
+contribution from the coefficient linear in `N`. Replica colourings give the combinatorial
+interpretation of the factor `N^(number of blocks)`.
 
-On the power-series side, the target is a fixed-order replica-count polynomial whose evaluation at
-a natural number `n` gives the corresponding factorial-normalized coefficient of `Z^n`. Its
-coefficient linear in the replica-count variable should equal the same-order coefficient of
-`logOf Z`. This replaces an analytic `n → 0` continuation by finite polynomial coefficient
-extraction.
+On the formal-power-series side, `PowerSeries.replicaCoeffPolynomial` is the fixed-order
+replica-count polynomial. Its evaluation at a natural replica number reproduces the corresponding
+factorial-normalized coefficient of a power, and
+`PowerSeries.replicaCoeffPolynomial_coeff_one` identifies its linear replica coefficient with the
+same-order coefficient of `logOf`.
 
-The proof should reuse the forward connected-decomposition structure and multiplicative-weight
-factorization, but remain independent of `ConnectedDecompositionInversion`,
-`cumulantFromMoment`, and the existing formal-log/cumulant endpoint. This dependency boundary is
-what makes the replica route a meaningful kernel-checked cross-check of the current Möbius proof.
+`Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial` identifies the power-series and
+finite-set replica polynomials under the forward moment hypothesis, and
+`Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica` gives the generic
+linked-cluster endpoint without Möbius/cumulant inversion. The finite-mode fermionic theorem
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude`
+is proved through this replica endpoint while retaining its existing public API.
 
-Reusable finite-set replica machinery belongs in `Combinatorics`; generic formal power-series
-replica algebra belongs in `Analysis/PowerSeries`. Fermionic diagrammatics should consume those
-generic results only at the final Dyson/Wick specialization. Public declarations should represent
-independent replica or polynomial concepts rather than duplicate aliases for the existing
-linked-cluster endpoint.
+The import boundary is enforced by the `replicaLinkedClusterIndependence` source-topology rule:
+the generic replica bridge and the fermionic specialization cannot reach
+`Combinatorics.Cumulant.Inversion`, `ConnectedDecompositionInversion`, or
+`Analysis.PowerSeries.Cumulant`. This keeps the replica route a genuine kernel-checked cross-check
+of the inversion proof.
 
 ## Open work
 
