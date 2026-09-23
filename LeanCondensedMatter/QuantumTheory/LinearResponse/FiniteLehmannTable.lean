@@ -12,8 +12,9 @@ small finite benchmark models.  A finite response calculation only needs the sca
 Eₙ, pₙ, Aₘₙ = ⟨m|A|n⟩, Bₘₙ = ⟨m|B|n⟩.
 ```
 
-`FiniteLehmannTable` stores exactly these quantities.  Its evaluator uses the canonical ordered
-energy gap and transition weight from `Lehmann.lean`, then the existing `lehmannTerm`.
+`FiniteLehmannTable` stores exactly these quantities.  `finiteLehmannTableTransitionData` is the
+explicit scalar adapter to the canonical `LehmannTransitionData` seam in `Lehmann.lean`; evaluation
+then uses the record's fixed-rate frequency term.
 
 The bridge `finiteLehmannTableOfPurePoint` constructs a table from the theorem-level
 `PurePointLehmannData` API and bounded observables.  The main equality proves that evaluating the
@@ -48,6 +49,27 @@ def finiteLehmannTableTransitionWeight
     (table.probability mn.1) (table.probability mn.2)
     (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
 
+/-- Adapt one scalar-table ordered pair to the canonical Lehmann transition data. -/
+noncomputable def finiteLehmannTableTransitionData
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι)
+    (mn : ι × ι) : LehmannTransitionData :=
+  orderedLehmannTransitionData hbar
+    (table.energy mn.1) (table.energy mn.2)
+    (table.probability mn.1) (table.probability mn.2)
+    (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
+
+@[simp]
+theorem finiteLehmannTableTransitionData_energyGap
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
+    (finiteLehmannTableTransitionData hbar table mn).energyGap =
+      orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2) := rfl
+
+@[simp]
+theorem finiteLehmannTableTransitionData_weight
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
+    (finiteLehmannTableTransitionData hbar table mn).weight =
+      finiteLehmannTableTransitionWeight hbar table mn := rfl
+
 /-- Diagonal transitions vanish already at the scalar-table level. -/
 @[simp]
 theorem finiteLehmannTableTransitionWeight_diag
@@ -60,9 +82,7 @@ noncomputable def finiteLehmannTableResponse
     {ι : Type*} [Fintype ι]
     (hbar omega eta : ℝ) (table : FiniteLehmannTable ι) : ℂ :=
   ∑ mn : ι × ι,
-    lehmannTerm hbar omega eta
-      (orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2))
-      (finiteLehmannTableTransitionWeight hbar table mn)
+    (finiteLehmannTableTransitionData hbar table mn).frequencyTerm hbar omega eta
 
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -89,7 +109,10 @@ theorem finiteLehmannTableResponse_ofPurePoint
         (finiteLehmannTableOfPurePoint system data A B) =
       purePointLehmannSeries system data A B omega eta := by
   rw [purePointLehmannSeries_eq_finite_sum]
-  rfl
+  simp [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
+    LehmannTransitionData.frequencyTerm, finiteLehmannTableTransitionWeight,
+    finiteLehmannTableOfPurePoint, purePointTransitionWeight,
+    orderedLehmannTransitionData]
 
 end
 end LinearResponse
