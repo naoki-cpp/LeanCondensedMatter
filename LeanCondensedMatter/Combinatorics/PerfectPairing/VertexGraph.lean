@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
 
@@ -44,18 +43,17 @@ theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
 
 /-- Pairing partners determine the same connected-component block in the induced vertex graph. -/
 theorem Pairing.vertexGraph_componentBlock_partner {n : ℕ} {Vertex : Type*}
-    [Fintype Vertex] [DecidableEq Vertex]
-    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
+    [Fintype Vertex] [DecidableEq Vertex] (pairing : Pairing n)
+    (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
     (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg leg) =
       (pairing.vertexGraph vertexOfLeg).componentBlock (vertexOfLeg (pairing.partner leg)) :=
   (pairing.vertexGraph vertexOfLeg).componentBlock_eq_of_reachable
     (pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
 
-/-- Pairing partners determine the same ambient component block when the induced vertex graph is on
-a finite subtype. -/
+/-- Pairing partners determine the same ambient component block for a graph on a finite subtype. -/
 theorem Pairing.vertexGraph_componentBlockOn_partner {n : ℕ} {Vertex : Type*}
-    [DecidableEq Vertex] {S : Finset Vertex}
-    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → ↥S) (leg : Fin (2 * n)) :
+    [DecidableEq Vertex] {S : Finset Vertex} (pairing : Pairing n)
+    (vertexOfLeg : Fin (2 * n) → ↥S) (leg : Fin (2 * n)) :
     (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) =
       (pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg (pairing.partner leg)) :=
   (pairing.vertexGraph vertexOfLeg).componentBlockOn_eq_of_reachable
