@@ -98,6 +98,16 @@ noncomputable def finiteLehmannTableOfPurePoint
   matrixA := fun m n => inner ℂ (data.basis m) (A (data.basis n))
   matrixB := fun m n => inner ℂ (data.basis m) (B (data.basis n))
 
+/-- The scalar adapter preserves the canonical ordered transition exactly. -/
+@[simp]
+theorem finiteLehmannTableTransitionData_ofPurePoint
+    (system : BoundedFreeSystem H)
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (mn : ι × ι) :
+    finiteLehmannTableTransitionData system.hbar
+        (finiteLehmannTableOfPurePoint system data A B) mn =
+      purePointTransitionData system data A B mn := rfl
+
 /-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level pure-point
 Lehmann series.  This is the main operator-to-calculation bridge. -/
 theorem finiteLehmannTableResponse_ofPurePoint
@@ -109,10 +119,7 @@ theorem finiteLehmannTableResponse_ofPurePoint
         (finiteLehmannTableOfPurePoint system data A B) =
       purePointLehmannSeries system data A B omega eta := by
   rw [purePointLehmannSeries_eq_finite_sum]
-  simp [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
-    LehmannTransitionData.frequencyTerm, finiteLehmannTableTransitionWeight,
-    finiteLehmannTableOfPurePoint, purePointTransitionWeight,
-    orderedLehmannTransitionData]
+  simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm]
 
 end
 end LinearResponse
