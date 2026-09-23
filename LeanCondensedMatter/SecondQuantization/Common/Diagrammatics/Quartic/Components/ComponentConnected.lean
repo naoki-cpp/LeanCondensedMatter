@@ -59,7 +59,7 @@ theorem QuarticDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fin N)
   · rintro ⟨huw, leg', hu, hw⟩
     set leg := (d.blockLegEquiv hB).symm leg' with hleg
     have hleg' : d.blockLegEquiv hB leg = leg' := Equiv.apply_symm_apply _ leg'
-    rw [d.restrictComponent_pairing hB] at hw
+    change vertexOfLeg ((d.restrictedPairing hB).partner leg') = w at hw
     refine ⟨fun h => huw (d.blockVertex_injective hB h),
       (leg : Fin (2 * (2 * S.card))), ?_, ?_⟩
     · rw [← d.vertexOfLeg_blockLegEquiv_eq_iff hB leg u, hleg', hu]
@@ -75,7 +75,8 @@ theorem QuarticDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fin N)
     refine ⟨fun h => hne (congrArg (d.blockVertex hB) h),
       d.blockLegEquiv hB ⟨leg0, hleg0⟩, ?_, ?_⟩
     · exact (d.vertexOfLeg_blockLegEquiv_eq_iff hB ⟨leg0, hleg0⟩ u).mpr hu0
-    · rw [d.restrictComponent_pairing hB, d.restrictedPairing_partner_blockLegEquiv hB]
+    · change vertexOfLeg ((d.restrictedPairing hB).partner (d.blockLegEquiv hB ⟨leg0, hleg0⟩)) = w
+      rw [d.restrictedPairing_partner_blockLegEquiv hB]
       apply (d.vertexOfLeg_blockLegEquiv_eq_iff
         hB (d.restrictedPartner B ⟨leg0, hleg0⟩) w).mpr
       rw [d.restrictedPartner_val]

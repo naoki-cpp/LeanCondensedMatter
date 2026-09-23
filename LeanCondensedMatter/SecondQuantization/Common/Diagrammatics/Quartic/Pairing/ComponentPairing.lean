@@ -247,7 +247,13 @@ theorem QuarticDiagram.pairingInOrder_partner_componentOrderedLeg
     Combinatorics.PairingOn.transport_partner, Equiv.apply_symm_apply]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
-  rw [d.restrictComponent_pairing B.2]
+  change d.pairing.partner
+      (d.componentDiagramLeg B (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)) =
+    d.componentDiagramLeg B
+      (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B)
+        ((orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B)).symm
+          ((d.restrictedPairing B.2).partner
+            (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))))
   simpa only [Equiv.apply_symm_apply] using
     (d.componentDiagramLeg_restrictedPairing_partner B
       (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
