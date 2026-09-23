@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
