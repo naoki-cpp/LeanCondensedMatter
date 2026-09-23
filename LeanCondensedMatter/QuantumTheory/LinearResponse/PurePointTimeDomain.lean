@@ -7,9 +7,11 @@ set_option linter.style.header false
 # Time-domain pure-point Lehmann representation
 
 This module identifies the causal commutator susceptibility of the diagonal pure-point expectation
-with its countable transition series.  The infinite-dimensional theorem keeps every rearrangement
-hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability of the two ordered
-products entering the commutator and of the already defined physical transition weights.
+with its countable transition series.  Each physical term projects its weight from the canonical
+`LehmannTransitionData` adapter defined in `Lehmann.lean`; the corresponding energy gap is the same
+record field used by the frequency-domain path.  The infinite-dimensional theorem keeps every
+rearrangement hypothesis explicit.  `PurePointTimeDomainSummable` requires absolute summability of
+the two ordered products entering the commutator and of the physical transition weights.
 
 On the causal half-line the result is
 
@@ -103,8 +105,17 @@ noncomputable def purePointBackwardTimeTerm
 noncomputable def purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) : ℂ :=
-  purePointTransitionWeight system data A B mn *
+  (purePointTransitionData system data A B mn).weight *
     purePointTransitionPhase system data mn.1 mn.2 τ
+
+/-- The operator-derived phase agrees with the time term of the canonical transition record. -/
+theorem purePointTimeDomainTerm_eq_transitionTimeTerm
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) :
+    purePointTimeDomainTerm system data A B τ mn =
+      (purePointTransitionData system data A B mn).timeTerm system.hbar τ := by
+  simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
+    purePointTransitionPhase_eq_exp_energyDifference]
 
 /-- The physical transition term written with the explicit energy-difference exponential. -/
 theorem purePointTimeDomainTerm_eq_exp_energyDifference
@@ -115,8 +126,8 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
         Complex.exp
           (Complex.I * ((((orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ))) := by
-  rw [purePointTimeDomainTerm,
-    purePointTransitionPhase_eq_exp_energyDifference]
+  simpa [LehmannTransitionData.timeTerm] using
+    purePointTimeDomainTerm_eq_transitionTimeTerm system data A B τ mn
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
