@@ -14,7 +14,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryConnection_diagonal_im_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "A diagonal Berry connection is real, expressed as vanishing imaginary part. ",
     "directWrapperTargetModule": null,
@@ -51,7 +51,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "Force/Hamiltonian-derivative matrix-element representation of Berry curvature for a\nnondegenerate band.\n\nThis is the finite-dimensional pointwise formula needed by the clean anomalous-Hall consumer.\nSelf-adjointness of all directional Hamiltonian derivatives is an explicit hypothesis. ",
     "directWrapperTargetModule": null,
@@ -94,7 +94,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_innerProducts",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into\nband-resolved inner-product terms. ",
     "directWrapperTargetModule": null,
@@ -133,7 +133,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_swap",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "Berry curvature is antisymmetric in its two parameter directions. ",
     "directWrapperTargetModule": null,
@@ -168,7 +168,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Born--Fock formula in Berry-connection form. ",
     "directWrapperTargetModule": null,
@@ -205,7 +205,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.bornFock_inner",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Born--Fock off-diagonal eigenvector-derivative formula in parameter direction `μ`.\n\nThe nondegeneracy needed for division by the level spacing is an explicit theorem hypothesis rather\nthan a global restriction on `PointwiseEigenbasisData`. ",
     "directWrapperTargetModule": null,
@@ -251,7 +251,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.\nThe two real level-spacing factors are intentionally kept separate here; a downstream consumer may\nnormalize them to a squared denominator if desired. ",
     "directWrapperTargetModule": null,
@@ -294,7 +294,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "The band-diagonal completeness term has zero imaginary part. It therefore does not contribute\nto Berry curvature. ",
     "directWrapperTargetModule": null,
@@ -335,7 +335,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.differentiatedEigenpair",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Differentiated eigenpair equation in every parameter direction. ",
     "directWrapperTargetModule": null,
@@ -376,7 +376,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.differentiatedOrthonormality",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Differentiated orthonormality relation in every parameter direction. ",
     "directWrapperTargetModule": null,
@@ -417,7 +417,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.hamiltonian_eigenvector",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Eigenpair equation at the chosen parameter point. ",
     "directWrapperTargetModule": null,
@@ -458,7 +458,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.hamiltonian_selfAdjoint",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Self-adjointness of the Hamiltonian. ",
     "directWrapperTargetModule": null,
@@ -497,7 +497,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.hellmannFeynman",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Hellmann--Feynman theorem in parameter direction `μ`:\n`∂_μ E_n = ⟪φ_n, (∂_μ H) φ_n⟫`. ",
     "directWrapperTargetModule": null,
@@ -535,7 +535,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. ",
     "directWrapperTargetModule": null,
@@ -577,7 +577,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "Moving a self-adjoint Hamiltonian from the right slot of the inner product to the left and\nusing the eigenpair equation multiplies by the corresponding real eigenenergy. ",
     "directWrapperTargetModule": null,
@@ -589,7 +589,7 @@
     "dependencies": [
       "BerryGeometry.PointwiseEigenbasisData.hamiltonian_eigenvector",
       "BerryGeometry.PointwiseEigenbasisData.hamiltonian_selfAdjoint",
-      "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -622,7 +622,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.star_berryConnection",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": "The Berry-connection matrix is Hermitian in band indices for every parameter direction:\n`(A_mn^μ)⁎ = A_nm^μ`. In particular, off-diagonal entries are not asserted to be real. ",
     "directWrapperTargetModule": null,
@@ -663,7 +663,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.star_hamiltonianDerivativeMatrixElement",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
     "externalAxioms": [],
     "docString": "Self-adjointness of `∂_μ H` makes its band matrix Hermitian. ",
     "directWrapperTargetModule": null,
@@ -4546,109 +4546,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} {partner : Equiv.Perm α},\n  Combinatorics.IsPairing partner → ∀ (e : α ≃ β), Combinatorics.IsPairing (e.permCongr partner)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.IsPairing.permCongr",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-    "externalAxioms": [],
-    "docString": "Reindexing a fixed-point-free involution along an equivalence preserves the pairing property. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} {β : ι → Type u_2} (F : (i : ι) → Equiv.Perm (β i)),\n  (∀ (i : ι), Combinatorics.IsPairing (F i)) → Combinatorics.IsPairing (Equiv.sigmaCongrRight F)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.IsPairing.sigmaCongrRight",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-    "externalAxioms": [],
-    "docString": "A dependent sum of pairing permutations is again a pairing permutation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} {p : Equiv.Perm α} {q : Equiv.Perm β},\n  Combinatorics.IsPairing p → Combinatorics.IsPairing q → Combinatorics.IsPairing (Equiv.sumCongr p q)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.IsPairing.sumCongr",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Core",
-    "externalAxioms": [],
-    "docString": "The disjoint sum of two pairing permutations is again a pairing permutation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R) {S : Finset α},\n  S ≠ ∅ → Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S",
     "standardAxioms": [
@@ -4950,8 +4847,7 @@
     "dependents": [
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
-      "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+      "Combinatorics.NormalizedSetFunction.moment_cumulant"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -4959,10 +4855,9 @@
     "compiledConsumers": [
       "Combinatorics.NormalizedSetFunction.cumulant_moment",
       "Combinatorics.NormalizedSetFunction.ext_iff",
-      "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+      "Combinatorics.NormalizedSetFunction.moment_cumulant"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -5672,7 +5567,10 @@
       "Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.restrict_partner_val",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -7294,43 +7192,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1))\n  (x : ↥(Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0))),\n  pairing.restrictedPartner (pairing.restrictedPartner x) = x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.restrictedPartner_partner_partner",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.partner_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (τ : Equiv.Perm (Fin (2 * n))),\n  pairing.PresentsPairs τ →\n    Equiv.Perm.sign τ =\n      ((-1) ^ ∑ k, if (Combinatorics.blockPair τ k).2 < (Combinatorics.blockPair τ k).1 then 1 else 0) *\n        (-1) ^ pairing.crossingCount",
     "standardAxioms": [
@@ -7662,10 +7523,6 @@
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "Combinatorics.Pairing.splitRight_ofSplit",
       "Combinatorics.PairingOn.ext_iff",
-      "Combinatorics.PairingOn.relabel_refl",
-      "Combinatorics.PairingOn.relabel_relabel_symm",
-      "Combinatorics.PairingOn.relabel_symm_relabel",
-      "Combinatorics.PairingOn.relabel_trans",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -7684,10 +7541,6 @@
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "Combinatorics.Pairing.splitRight_ofSplit",
       "Combinatorics.PairingOn.ext_iff",
-      "Combinatorics.PairingOn.relabel_refl",
-      "Combinatorics.PairingOn.relabel_relabel_symm",
-      "Combinatorics.PairingOn.relabel_symm_relabel",
-      "Combinatorics.PairingOn.relabel_trans",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
@@ -7696,7 +7549,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 17,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Quot.sound"
     ],
@@ -7903,7 +7756,6 @@
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.Pairing.restrictedPartner_partner_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
@@ -7922,216 +7774,14 @@
       "Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.Pairing.restrictedPartner_partner_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitLeftMap_involutive",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Split.0.Combinatorics.splitRightMap_involutive",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Quot.sound"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α) (i : α),\n  (P.relabel e).partner i = (Equiv.symm e) (P.partner (e i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.relabel_partner",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.PairingOn.relabel_refl",
-      "Combinatorics.PairingOn.relabel_relabel_symm",
-      "Combinatorics.PairingOn.relabel_symm_relabel",
-      "Combinatorics.PairingOn.relabel_trans",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
-    ],
-    "dependencies": [
-      "Combinatorics.PairingOn.transport_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.PairingOn.relabel_refl",
-      "Combinatorics.PairingOn.relabel_relabel_symm",
-      "Combinatorics.PairingOn.relabel_symm_relabel",
-      "Combinatorics.PairingOn.relabel_trans",
-      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α), P.relabel (Equiv.refl α) = P",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.relabel_refl",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "Combinatorics.PairingOn.relabel_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α), (P.relabel (Equiv.symm e)).relabel e = P",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.relabel_relabel_symm",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "Combinatorics.PairingOn.relabel_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e : Equiv.Perm α), (P.relabel e).relabel (Equiv.symm e) = P",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.relabel_symm_relabel",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "Combinatorics.PairingOn.relabel_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} (P : Combinatorics.PairingOn α) (e f : Equiv.Perm α),\n  (P.relabel e).relabel f = P.relabel (Equiv.trans f e)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.PairingOn.relabel_trans",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.ext",
-      "Combinatorics.PairingOn.relabel_partner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
     ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -8204,6 +7854,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
@@ -8215,12 +7866,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -8357,20 +8009,21 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.PairingOn.transport_partner",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
-      "Combinatorics.PairingOn.relabel_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
@@ -8379,19 +8032,20 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
-      "Combinatorics.PairingOn.relabel_partner",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
       "Combinatorics.PairingOn.transport_transport_symm",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
+      "SecondQuantization.Common.TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8416,7 +8070,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.PairingOn.transport_symm_transport",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -8454,7 +8108,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.PairingOn.transport_trans",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -8492,7 +8146,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.PairingOn.transport_transport_symm",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -9533,50 +9187,8 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1) {α : Type u_1} [inst : DecidableEq α]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D ℂ),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
-    "module": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
-    "externalAxioms": [],
-    "docString": "If the factorial-normalized moments of a unit-constant formal power series are the normalized\nobject moments of a multiplicative connected decomposition, its formal-log coefficients are exactly\nthe connected-object contributions. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "dependencies": [
-      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
-      "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [inst_2 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R),\n      (∀ (T : Finset α), ↑T.card.factorial * (PowerSeries.coeff T.card) Z = W.objectMoment T) →\n        ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "statement": "∀ {Z : PowerSeries ℂ} (hZ : PowerSeries.constantCoeff Z = 1) {α : Type u_1} [inst : DecidableEq α]\n  {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D ℂ),\n  Combinatorics.powerSeriesMomentSetFunction Z hZ = W.normalizedObjectMoment →\n    ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9588,13 +9200,53 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
+    "externalAxioms": [],
+    "docString": "If the factorial-normalized moments of a unit-constant formal power series are the normalized\nobject moments of a multiplicative connected decomposition, its formal-log coefficients are exactly\nthe connected-object contributions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": true,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [inst_2 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R),\n      (∀ (T : Finset α), ↑T.card.factorial * (PowerSeries.coeff T.card) Z = W.objectMoment T) →\n        ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
     "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
     "externalAxioms": [],
     "docString": "Replica-method form of the generic formal linked-cluster theorem.  If the\nfactorial-normalized coefficients of a unit-constant formal power series are the object moments of\na multiplicative connected decomposition, then the factorial-normalized formal-log coefficient is\nthe connected contribution.  The proof factors through the equality of the two replica\npolynomials, not through cumulant inversion. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
     "dependencies": [
       "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant",
       "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial",
@@ -9603,8 +9255,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9954,58 +9608,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
+      "Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero",
       "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
+      "Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero",
       "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} (n : ℕ) (s : Finset α) (f : α → α → ℕ),\n  (∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a b + f b a ≡ 0 [MOD n]) → ∑ p ∈ s.offDiag, f p.1 p.2 ≡ 0 [MOD n]",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
-    "externalAxioms": [],
-    "docString": "An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero"
-    ],
-    "dependencies": [
-      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.finset_sum_sum_modEq_diag_of_pair_add_modEq_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10039,7 +9652,7 @@
       "Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero"
     ],
     "dependencies": [
-      "Combinatorics.finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero"
+      "Combinatorics.finset_sum_offDiag_modEq_of_pair_add_modEq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -73276,7 +72889,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_iff",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "A zero-temperature state has occupation one exactly when it lies in the strict occupied region. ",
     "directWrapperTargetModule": null,
@@ -73315,10 +72928,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "Every state of a filled band has unit occupation under the strict zero-temperature Fermi step. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "directWrapperOf": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_lt",
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.lowerBand_zeroTemperatureOccupation_eq_one"
@@ -73356,7 +72969,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_lt",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "Below the Fermi energy, the generic state occupation specialized to the zero-temperature step is\nexactly one. ",
     "directWrapperTargetModule": null,
@@ -73399,7 +73012,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_iff",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "A zero-temperature state has occupation zero exactly when it lies at or above the Fermi energy. ",
     "directWrapperTargetModule": null,
@@ -73434,10 +73047,10 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_isEmptyBand",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "Every state of an empty band has zero occupation under the strict zero-temperature Fermi step. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "directWrapperOf": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_le",
     "dependents": [],
     "dependencies": [
@@ -73471,7 +73084,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_le",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": "At or above the Fermi energy, the generic state occupation specialized to the zero-temperature\nstep is exactly zero. ",
     "directWrapperTargetModule": null,
@@ -74784,7 +74397,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -74796,17 +74409,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem"
+      "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem"
+      "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -74873,7 +74484,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric_lt_pi",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
       "QuantumTheory.Transport.lorentzianSpectralTailMass_eq_two_mul_arctan_sub",
       "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
     ],
@@ -74884,11 +74494,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric_lt_pi",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
       "QuantumTheory.Transport.lorentzianSpectralTailMass_eq_two_mul_arctan_sub",
       "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75313,133 +74922,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (fermiEnergy radius broadening : ℝ),\n  0 ≤ radius →\n    ∫ (energy : ℝ) in fermiEnergy - radius..fermiEnergy + radius,\n        QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n          QuantumTheory.Transport.lorentzianSpectralKernel (energy - fermiEnergy) broadening =\n      1 / 2 * ∫ (offset : ℝ) in -radius..radius, QuantumTheory.Transport.lorentzianSpectralKernel offset broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "On a symmetric window centered exactly at the Fermi energy, zero-temperature occupation keeps\nexactly one half of the Lorentzian spectral mass. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (center fermiEnergy radius broadening : ℝ),\n  center - radius ≤ fermiEnergy →\n    fermiEnergy ≤ center + radius →\n      ∫ (energy : ℝ) in center - radius..center + radius,\n          QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n            QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening =\n        Real.arctan ((fermiEnergy - center) / broadening) + Real.arctan (radius / broadening)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "Exact arctangent form of the Fermi-truncated finite-window integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_lorentzianSpectralKernel",
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (center fermiEnergy radius broadening : ℝ),\n  center - radius ≤ fermiEnergy →\n    fermiEnergy ≤ center + radius →\n      ∫ (energy : ℝ) in center - radius..center + radius,\n          QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n            QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening =\n        ∫ (energy : ℝ) in center - radius..fermiEnergy,\n          QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "If the Fermi energy lies in a fixed symmetric window, zero-temperature occupation truncates the\nLorentzian energy integral exactly at the Fermi energy. The strict-vs-nonstrict endpoint difference\nis a singleton and hence invisible to Lebesgue integration. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (lower upper broadening : ℝ),\n  broadening ≠ 0 →\n    IntervalIntegrable (fun offset => QuantumTheory.Transport.lorentzianSpectralKernel offset broadening)\n      MeasureTheory.volume lower upper",
     "standardAxioms": [
       "Classical.choice",
@@ -75706,7 +75188,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.mem_fermiSurface_iff",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -75741,7 +75223,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.mem_occupiedRegion_iff",
-    "module": "LeanCondensedMatter.Transport.Analysis.BandOccupation",
+    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -77365,7 +76847,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -77377,21 +76859,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window",
-      "_private.LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation.0.QuantumTheory.Transport.tendsto_arctan_neg_div_broadening"
+      "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window",
-      "_private.LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation.0.QuantumTheory.Transport.tendsto_arctan_neg_div_broadening"
+      "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77424,8 +76900,7 @@
     "dependents": [
       "QuantumTheory.Transport.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
       "QuantumTheory.Transport.tendsto_lorentzianRegularFactorIntegral",
-      "QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window"
+      "QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero"
     ],
     "dependencies": [
       "QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric",
@@ -77436,10 +76911,9 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
       "QuantumTheory.Transport.tendsto_lorentzianRegularFactorIntegral",
-      "QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window"
+      "QuantumTheory.Transport.tendsto_lorentzianSpectralTailMass_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77492,7 +76966,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (weight : ℝ → ℝ) (center value radius : ℝ),\n  0 < radius →\n    (∀ energy ∈ Set.uIcc (center - radius) (center + radius), weight energy = value) →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (energy : ℝ) in center - radius..center + radius,\n            weight energy * QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (value * Real.pi))",
     "standardAxioms": [
       "Classical.choice",
@@ -77511,21 +76985,15 @@
     "docString": "Local-constant weights inherit the `π` Lorentzian mass in the positive zero-broadening limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.Transport.integral_weight_mul_lorentzian_of_eq_const_on",
       "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77663,281 +77131,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (fermiEnergy radius : ℝ),\n  0 < radius →\n    Filter.Tendsto\n      (fun broadening =>\n        ∫ (energy : ℝ) in fermiEnergy - radius..fermiEnergy + radius,\n          QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n            QuantumTheory.Transport.lorentzianSpectralKernel (energy - fermiEnergy) broadening)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "An exact Fermi-surface pole contributes half of the full Lorentzian mass in every fixed positive\nsymmetric window. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass",
-      "QuantumTheory.Transport.tendsto_integral_lorentzianSpectralKernel_symmetric"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (center fermiEnergy radius : ℝ),\n  0 < radius →\n    Filter.Tendsto\n      (fun broadening =>\n        ∫ (energy : ℝ) in center - radius..center + radius,\n          QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n            QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds (QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight fermiEnergy center))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "Unified finite-window pole extraction at zero temperature. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (center fermiEnergy radius : ℝ),\n  0 < radius →\n    center < fermiEnergy →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (energy : ℝ) in center - radius..center + radius,\n            QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n              QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "Every fixed positive symmetric energy window around an occupied pole captures asymptotic\nzero-temperature Lorentzian weight `π`, whether or not the window crosses the Fermi level. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem",
-      "QuantumTheory.Transport.tendsto_arctan_pos_div_broadening",
-      "QuantumTheory.Transport.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
-      "QuantumTheory.Transport.zeroTemperatureOccupation_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (center fermiEnergy radius : ℝ),\n  0 < radius →\n    fermiEnergy < center →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (energy : ℝ) in center - radius..center + radius,\n            QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy *\n              QuantumTheory.Transport.lorentzianSpectralKernel (energy - center) broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": "Every fixed positive symmetric energy window around an unoccupied pole has asymptotic\nzero-temperature Lorentzian weight `0`, whether or not the window crosses the Fermi level. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem",
-      "QuantumTheory.Transport.tendsto_arctan_pos_div_broadening",
-      "QuantumTheory.Transport.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
-      "QuantumTheory.Transport.zeroTemperatureOccupation_eq_zero",
-      "_private.LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation.0.QuantumTheory.Transport.tendsto_arctan_neg_div_broadening"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_finite_window"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (fermiEnergy : ℝ), QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight fermiEnergy fermiEnergy = Real.pi / 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_at_fermi_surface",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {fermiEnergy center : ℝ},\n  center < fermiEnergy → QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight fermiEnergy center = Real.pi",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_of_occupied",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {fermiEnergy center : ℝ},\n  fermiEnergy < center → QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight fermiEnergy center = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_of_unoccupied",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {fermiEnergy energy : ℝ},\n  energy < fermiEnergy → QuantumTheory.Transport.zeroTemperatureOccupation fermiEnergy energy = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -77958,7 +77151,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_lt",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
       "QuantumTheory.Transport.zeroTemperatureOccupation_eq_one_on_center_window"
     ],
     "dependencies": [],
@@ -77966,10 +77158,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_lt",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window",
       "QuantumTheory.Transport.zeroTemperatureOccupation_eq_one_on_center_window"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78038,7 +77229,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_le",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window",
       "QuantumTheory.Transport.zeroTemperatureOccupation_eq_zero_on_center_window"
     ],
     "dependencies": [],
@@ -78046,10 +77236,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_zero_of_le",
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window",
       "QuantumTheory.Transport.zeroTemperatureOccupation_eq_zero_on_center_window"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95396,7 +94585,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairing.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPositionEquiv_partner"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.relabel_partner",
+      "Combinatorics.PairingOn.transport_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing.0.SecondQuantization.Common.orderedTwoPointPairingCastEquiv_partner"
     ],
     "crossModuleDirectWrapper": false,
@@ -128107,8 +127296,7 @@
       "SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude"
     ],
     "dependencies": [
-      "Combinatorics.NormalizedSetFunction.ext",
-      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
       "PowerSeries.constantCoeff_normalizeByConstantCoeff",
       "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
@@ -136778,45 +135966,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (r : ℝ) (z w : ℂ), inner ℂ (↑r * z) w = inner ℂ z (↑r * w)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.0.L2MultiplicationRealLine.inner_real_mul_left_eq_inner_real_mul_right",
-    "module": "LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "L2MultiplicationRealLine.realMultiplicationOperator_symmetric"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "L2MultiplicationRealLine.realMultiplicationOperator_symmetric"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (hamiltonian : H →L[ℂ] H),\n  IsSelfAdjoint hamiltonian →\n    ∀ (eigenbasis : OrthonormalBasis ι ℂ H) (energy : ι → ℝ),\n      (∀ (n : ι), hamiltonian (eigenbasis n) = ↑(energy n) • eigenbasis n) →\n        ∀ (n : ι) (x : H), inner ℂ (eigenbasis n) (hamiltonian x) = ↑(energy n) * inner ℂ (eigenbasis n) x",
     "standardAxioms": [
       "Classical.choice",
@@ -136829,8 +135978,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection.0.BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right_of_eigenbasis",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -136868,8 +136017,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection.0.BerryGeometry.PointwiseEigenbasisData.inner_simpleSpectrumEigenvectorDerivative",
-    "module": "LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection",
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection.0.BerryGeometry.PointwiseEigenbasisData.inner_simpleSpectrumEigenvectorDerivative",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -136880,6 +136029,45 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ) (z w : ℂ), inner ℂ (↑r * z) w = inner ℂ z (↑r * w)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.0.L2MultiplicationRealLine.inner_real_mul_left_eq_inner_real_mul_right",
+    "module": "LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "L2MultiplicationRealLine.realMultiplicationOperator_symmetric"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "L2MultiplicationRealLine.realMultiplicationOperator_symmetric"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139416,6 +138604,204 @@
       "Finpartition.replicaPolynomial_coeff_one"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α),\n  Combinatorics.assembleFamilyOrder F ambientEquiv (Combinatorics.familyOrdersOfOrder✝ F ambientEquiv order)\n      (Combinatorics.familyShuffleOfOrder✝ F ambientEquiv order) =\n    order",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.assembleFamilyOrder_ordersOfOrder_shuffleOfOrder",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": "Reassembling the extracted local orders and shuffle recovers the global order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.familyOrderDecompositionEquiv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι),\n  (Combinatorics.familyGlobalSlots✝ F ambientEquiv order i).card = Fintype.card (F i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlot_injective"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) {total : ℕ} (ambientEquiv : α ≃ (i : ι) × F i)\n  (order : Fin total ≃ α) (i : ι), Function.Injective fun x => order.symm (ambientEquiv.symm ⟨i, x⟩)",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlot_injective",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyGlobalSlotEquiv"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι) (j : Fin (Fintype.card (F i))),\n  order.symm (ambientEquiv.symm ⟨i, (Combinatorics.familyOrderOfOrder✝ F ambientEquiv order i) j⟩) =\n    ↑(((Combinatorics.familyGlobalSlots✝ F ambientEquiv order i).orderIsoOfFin ⋯) j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι) (localOrder : Fin (Fintype.card (F i)) ≃ F i),\n  (StrictMono fun j => order.symm (ambientEquiv.symm ⟨i, localOrder j⟩)) →\n    localOrder = Combinatorics.familyOrderOfOrder✝ F ambientEquiv order i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.card_familyGlobalSlots",
+      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -159989,47 +159375,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ distance < 0,\n  Filter.Tendsto (fun broadening => Real.arctan (distance / broadening)) (nhdsWithin 0 (Set.Ioi 0))\n    (nhds (-Real.pi / 2))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation.0.QuantumTheory.Transport.tendsto_arctan_neg_div_broadening",
-    "module": "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.tendsto_arctan_pos_div_broadening"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
