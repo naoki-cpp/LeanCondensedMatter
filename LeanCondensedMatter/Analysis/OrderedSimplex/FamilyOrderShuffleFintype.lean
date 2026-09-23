@@ -16,18 +16,25 @@ namespace Combinatorics
 
 open intervalIntegral
 
-variable {ι α : Type*} [Fintype ι] [Fintype α] [DecidableEq α]
-variable (F : ι → Type*) [∀ i, Fintype (F i)] [∀ i, DecidableEq (F i)]
+variable {ι α : Type*} [Fintype ι] [Fintype α]
+variable (F : ι → Type*) [∀ i, Fintype (F i)]
+
+/-- File-local classical decidable equality used only to enumerate finite equivalence types. -/
+local instance instDecidableEqFamilyOrderAmbient : DecidableEq α := Classical.decEq α
+
+/-- File-local classical decidable equality for the fibers, kept out of public theorem signatures. -/
+local instance instDecidableEqFamilyOrderFiber (i : ι) : DecidableEq (F i) :=
+  Classical.decEq (F i)
 
 noncomputable section
 
 /-- Sum-product factorization for ordered-simplex integrals indexed by all global orders of a
-finite family.
+finite family, under measurable local boundedness.
 
 The hypothesis `hfactor` is the only model-specific input: on an order assembled from local fiber
 orders and a family shuffle, the global integrand must be the shuffled product of the local
 integrands. -/
-theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums
+theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums_of_measurableLocallyBounded
     (total : ℕ) (hTotal : (∑ i, Fintype.card (F i)) = total)
     (ambientEquiv : α ≃ Σ i, F i) (β : ℝ)
     (globalIntegrand : (Fin total ≃ α) → (Fin total → ℝ) → ℂ)
@@ -39,7 +46,7 @@ theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums
         (shuffle : FamilySlotShuffleTo (fun i => Fintype.card (F i)) total),
         globalIntegrand (assembleFamilyOrder F ambientEquiv orders shuffle) =
           shuffle.ambientIntegrand (fun i => localIntegrand i (orders i)))
-    (hlocal : ∀ i order, Continuous (localIntegrand i order)) :
+    (hlocal : ∀ i order, MeasurableLocallyBounded (localIntegrand i order)) :
     (∑ order : Fin total ≃ α,
       orderedSimplexIntegral total β (globalIntegrand order)) =
       ∏ i, ∑ order : Fin (Fintype.card (F i)) ≃ F i,
@@ -67,7 +74,8 @@ theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums
       intro orders
       simp_rw [hfactor orders]
       exact
-        FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+        FamilySlotShuffleTo
+          .sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
           (fun i => Fintype.card (F i)) total hTotal β
           (fun i => localIntegrand i (orders i))
           (fun i => hlocal i (orders i))
@@ -81,6 +89,30 @@ theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums
           (fun i order =>
             orderedSimplexIntegral (Fintype.card (F i)) β
               (localIntegrand i order))).symm
+
+/-- Sum-product factorization for continuous local integrands indexed by all global orders of a
+finite family. -/
+theorem sum_orderedSimplexIntegral_eq_prod_localOrderSums
+    (total : ℕ) (hTotal : (∑ i, Fintype.card (F i)) = total)
+    (ambientEquiv : α ≃ Σ i, F i) (β : ℝ)
+    (globalIntegrand : (Fin total ≃ α) → (Fin total → ℝ) → ℂ)
+    (localIntegrand :
+      ∀ i, (Fin (Fintype.card (F i)) ≃ F i) →
+        (Fin (Fintype.card (F i)) → ℝ) → ℂ)
+    (hfactor :
+      ∀ (orders : FamilyOrders F)
+        (shuffle : FamilySlotShuffleTo (fun i => Fintype.card (F i)) total),
+        globalIntegrand (assembleFamilyOrder F ambientEquiv orders shuffle) =
+          shuffle.ambientIntegrand (fun i => localIntegrand i (orders i)))
+    (hlocal : ∀ i order, Continuous (localIntegrand i order)) :
+    (∑ order : Fin total ≃ α,
+      orderedSimplexIntegral total β (globalIntegrand order)) =
+      ∏ i, ∑ order : Fin (Fintype.card (F i)) ≃ F i,
+        orderedSimplexIntegral (Fintype.card (F i)) β
+          (localIntegrand i order) :=
+  sum_orderedSimplexIntegral_eq_prod_localOrderSums_of_measurableLocallyBounded
+    F total hTotal ambientEquiv β globalIntegrand localIntegrand hfactor
+    (fun i order => (hlocal i order).measurableLocallyBounded)
 
 end
 
