@@ -144,18 +144,13 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
     (d.componentLegDataEquiv B)
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
-theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
+private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : Finset (ExternalInsertionVertex E S))
     (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold ExternalInsertionDiagram.legInComponent
-  have hEq :
-      d.vertexGraph.componentBlock (externalInsertionVertexOfLeg leg) =
-        d.vertexGraph.componentBlock (externalInsertionVertexOfLeg (d.pairing.partner leg)) :=
-    d.vertexGraph.componentBlock_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner externalInsertionVertexOfLeg leg).symm
-  rw [hEq]
+  rw [d.pairing.vertexGraph_componentBlock_partner externalInsertionVertexOfLeg leg]
 
 /-- Every connected component contains an even number of external insertions. -/
 theorem ExternalInsertionDiagram.externalSector_card_even {S : Finset (Fin N)}
