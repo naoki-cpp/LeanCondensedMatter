@@ -84,6 +84,7 @@ private theorem
           endpointVal D p k)
       B C hBC
   simpa [TwoPointDiagram.mixedComponentGeometricCrossingCount,
+    Combinatorics.Pairing.componentGeometricCrossingCount,
     TwoPointDiagram.mixedComponentPositionInversionCount] using hcross
 
 private noncomputable def TwoPointDiagram.mixedVacuumPositionDataEquiv
