@@ -269,7 +269,6 @@ theorem purePointTransitionData_energyGap
     (purePointTransitionData system data A B mn).energyGap =
       orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) := rfl
 
-@[simp]
 theorem purePointTransitionData_weight
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) :
