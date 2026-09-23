@@ -208,16 +208,18 @@ theorem norm_lehmannTerm_le
         (norm_nonneg weight)
     _ = (1 / eta) * ‖weight‖ := by ring
 
-/-- An absolutely summable family of transition weights produces a summable Lehmann series at
-any strictly positive switching rate. -/
-theorem summable_lehmannTerm_of_pos
+/-- An absolutely summable family of canonical transition weights produces a summable
+fixed-rate frequency series at any strictly positive switching rate. -/
+theorem LehmannTransitionData.summable_frequencyTerm_of_pos
     {κ : Type*} (hbar omega eta : ℝ)
-    (energyGap : κ → ℝ) (weight : κ → ℂ)
-    (hweight : Summable fun j => ‖weight j‖) (heta : 0 < eta) :
-    Summable fun j => lehmannTerm hbar omega eta (energyGap j) (weight j) := by
+    (transition : κ → LehmannTransitionData)
+    (hweight : Summable fun j => ‖(transition j).weight‖) (heta : 0 < eta) :
+    Summable fun j => (transition j).frequencyTerm hbar omega eta := by
   apply (hweight.mul_left (1 / eta)).of_norm_bounded
   intro j
-  exact norm_lehmannTerm_le hbar omega eta (energyGap j) (weight j) heta
+  simpa [LehmannTransitionData.frequencyTerm] using
+    norm_lehmannTerm_le hbar omega eta
+      (transition j).energyGap (transition j).weight heta
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -241,16 +243,6 @@ structure PurePointLehmannData
 
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
-/-- The physical spectral weight
-`(i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ` of one pure-point transition. -/
-noncomputable def purePointTransitionWeight
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) : ℂ :=
-  orderedLehmannTransitionWeight system.hbar
-    (data.probability mn.1) (data.probability mn.2)
-    (inner ℂ (data.basis mn.1) (A (data.basis mn.2)))
-    (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
-
 /-- Adapt one operator-level ordered pair to the canonical Lehmann transition data. -/
 noncomputable def purePointTransitionData
     (data : PurePointLehmannData system ι)
@@ -260,6 +252,15 @@ noncomputable def purePointTransitionData
     (data.probability mn.1) (data.probability mn.2)
     (inner ℂ (data.basis mn.1) (A (data.basis mn.2)))
     (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
+
+/-- The physical spectral weight
+`(i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ` of one pure-point transition.
+
+This compatibility accessor is the `weight` projection of the canonical transition record. -/
+noncomputable def purePointTransitionWeight
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (mn : ι × ι) : ℂ :=
+  (purePointTransitionData system data A B mn).weight
 
 @[simp]
 theorem purePointTransitionData_energyGap
@@ -281,7 +282,7 @@ theorem purePointTransitionWeight_diag
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (i : ι) :
     purePointTransitionWeight system data A B (i, i) = 0 := by
-  simp [purePointTransitionWeight]
+  simp [purePointTransitionWeight, purePointTransitionData]
 
 /-- Absolute-summability condition for the countable pure-point transition weights. -/
 def PurePointLehmannSummable
@@ -307,10 +308,9 @@ theorem summable_purePointLehmannSeries_of_pos
       lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
         (purePointTransitionWeight system data A B mn) := by
-  simpa using
-    summable_lehmannTerm_of_pos system.hbar omega eta
-      (fun mn : ι × ι => orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2))
-      (purePointTransitionWeight system data A B) hsum heta
+  simpa [LehmannTransitionData.frequencyTerm] using
+    LehmannTransitionData.summable_frequencyTerm_of_pos
+      system.hbar omega eta (purePointTransitionData system data A B) hsum heta
 
 /-- In finite dimension, the absolute transition-weight condition is automatic. -/
 theorem purePointLehmannSummable_of_finite
