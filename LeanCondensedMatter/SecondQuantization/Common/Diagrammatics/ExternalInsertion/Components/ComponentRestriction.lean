@@ -149,6 +149,11 @@ private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset 
     (leg : Fin (2 * (2 * S.card + E))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold ExternalInsertionDiagram.legInComponent
+  change
+    (d.pairing.vertexGraph externalInsertionVertexOfLeg).componentBlock
+        (externalInsertionVertexOfLeg leg) = B ↔
+      (d.pairing.vertexGraph externalInsertionVertexOfLeg).componentBlock
+        (externalInsertionVertexOfLeg (d.pairing.partner leg)) = B
   rw [d.pairing.vertexGraph_componentBlock_partner externalInsertionVertexOfLeg leg]
 
 /-- Every connected component contains an even number of external insertions. -/
