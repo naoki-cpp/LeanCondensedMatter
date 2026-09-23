@@ -617,7 +617,7 @@ noncomputable def ExternalInsertionDiagram.componentNormalizedPairEmbedding
         (d.componentDiagramLeg_restrictComponent_pairing_partner B p).symm)
 
 /-- The canonical component normalized-pair embedding preserves and reflects geometric crossings. -/
-theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
+private theorem ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
@@ -697,7 +697,7 @@ noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (
 
 /-- The restricted vacuum pairing agrees with the component-restricted ambient pairing
 under the vacuum leg reindexing. -/
-theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
+private theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S)))
