@@ -40,26 +40,6 @@ abbrev ExternalInsertionDiagram.ComponentInteractionOrderShuffle
         (B : Finset (ExternalInsertionVertex E S))))
     S.card
 
-/-- The ambient interaction vertices are the disjoint union of their component interaction
-sectors. -/
-private noncomputable def ExternalInsertionDiagram.componentInteractionFamilyEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    ↥S ≃
-      Σ B : d.vertexGraph.componentPartition.parts,
-        ↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) :=
-  d.vertexGraph.componentPartition.equivSigmaSubfinsets
-    S
-    (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
-    (fun _ => Finset.mem_univ _)
-    (fun B => interactionSector
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B => interactionSector_subset
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B v => mem_interactionSector_subtype
-      (B : Finset (ExternalInsertionVertex E S)) v)
-
 /-- Assemble an ambient interaction-vertex order from component-local interaction orders and an
 order-preserving component shuffle. -/
 noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
@@ -72,7 +52,7 @@ noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    d.componentInteractionFamilyEquiv orders shuffle
+    (interactionSectorComponentEquiv d.vertexGraph) orders shuffle
 
 /-- A global interaction-vertex order is equivalent to component-local interaction orders together
 with an order-preserving component shuffle. Empty interaction sectors remain represented as
@@ -86,7 +66,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositio
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    d.componentInteractionFamilyEquiv
+    (interactionSectorComponentEquiv d.vertexGraph)
 
 end Common
 end SecondQuantization
