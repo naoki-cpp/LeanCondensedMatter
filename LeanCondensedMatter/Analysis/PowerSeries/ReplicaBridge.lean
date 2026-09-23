@@ -107,7 +107,6 @@ private theorem egfBlockCoeff_succ_succ
     have hpred : n + 1 - 1 = n := by omega
     have hsub : n - (n - j) = j := by omega
     rw [hpred, hsub]
-    simp [Nat.cast_add, Nat.cast_one]
   rw [hreflect]
   apply Finset.sum_congr rfl
   intro j hj
