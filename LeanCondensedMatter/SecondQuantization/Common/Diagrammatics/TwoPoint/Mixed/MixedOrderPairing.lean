@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPosition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
 set_option linter.style.header false
 
@@ -26,7 +26,7 @@ noncomputable def TwoPointDiagram.pairingInMixedOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1) :=
-  (orderedTwoPointPairingCastEquiv n d.pairing).relabel
+  (orderedTwoPointPairingCastEquiv n d.pairing).transport
     (standardToMixedAtomicPositionEquiv τ τ' σ).symm
 
 /-- Casting the number of pairs transports the partner permutation through the corresponding cast
@@ -70,12 +70,12 @@ theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
       d.pairing.partner (mixedTimeAmbientPositionEquiv τ τ' σ p) := by
   change (finCongr (by simp))
       ((standardToMixedAtomicPositionEquiv τ τ' σ).symm
-        (((orderedTwoPointPairingCastEquiv n d.pairing).relabel
+        (((orderedTwoPointPairingCastEquiv n d.pairing).transport
           (standardToMixedAtomicPositionEquiv τ τ' σ).symm).partner p)) =
     d.pairing.partner
       ((finCongr (by simp))
         ((standardToMixedAtomicPositionEquiv τ τ' σ).symm p))
-  rw [PairingOn.relabel_partner]
+  rw [PairingOn.transport_partner]
   simp only [Equiv.symm_symm]
   rw [(standardToMixedAtomicPositionEquiv τ τ' σ).symm_apply_apply]
   exact orderedTwoPointPairingCastEquiv_partner d.pairing

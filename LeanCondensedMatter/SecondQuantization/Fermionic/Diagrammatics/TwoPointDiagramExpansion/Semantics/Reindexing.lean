@@ -48,7 +48,7 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
       externalLabel := twoPointExternalLabels i j
       vertexLabel := fun v => x.1 v.1
       pairing := (Common.orderedTwoPointPairingCastEquiv n).symm
-        (x.2.relabel (standardToMixedAtomicPositionEquiv τ τ' σ))
+        (x.2.transport (standardToMixedAtomicPositionEquiv τ τ' σ))
     }, rfl⟩
   left_inv d := by
     apply Subtype.ext
@@ -57,10 +57,10 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
     · funext _
       rfl
     · change (Common.orderedTwoPointPairingCastEquiv n).symm
-        (((Common.orderedTwoPointPairingCastEquiv n d.1.pairing).relabel
-          (standardToMixedAtomicPositionEquiv τ τ' σ).symm).relabel
+        (((Common.orderedTwoPointPairingCastEquiv n d.1.pairing).transport
+          (standardToMixedAtomicPositionEquiv τ τ' σ).symm).transport
             (standardToMixedAtomicPositionEquiv τ τ' σ)) = d.1.pairing
-      rw [PairingOn.relabel_relabel_symm]
+      rw [PairingOn.transport_transport_symm]
       exact (Common.orderedTwoPointPairingCastEquiv n).left_inv d.1.pairing
   right_inv x := by
     obtain ⟨labels, pairing⟩ := x
@@ -69,21 +69,21 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
       rfl
     · change ((Common.orderedTwoPointPairingCastEquiv n
         ((Common.orderedTwoPointPairingCastEquiv n).symm
-          (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)))).relabel
+          (pairing.transport (standardToMixedAtomicPositionEquiv τ τ' σ)))).transport
             (standardToMixedAtomicPositionEquiv τ τ' σ).symm) = pairing
       calc
         ((Common.orderedTwoPointPairingCastEquiv n
             ((Common.orderedTwoPointPairingCastEquiv n).symm
-              (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)))).relabel
+              (pairing.transport (standardToMixedAtomicPositionEquiv τ τ' σ)))).transport
               (standardToMixedAtomicPositionEquiv τ τ' σ).symm) =
-            (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)).relabel
+            (pairing.transport (standardToMixedAtomicPositionEquiv τ τ' σ)).transport
               (standardToMixedAtomicPositionEquiv τ τ' σ).symm :=
           congrArg
             (fun p : Pairing (2 * n + 1) =>
-              p.relabel (standardToMixedAtomicPositionEquiv τ τ' σ).symm)
+              p.transport (standardToMixedAtomicPositionEquiv τ τ' σ).symm)
             ((Common.orderedTwoPointPairingCastEquiv n).right_inv
-              (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)))
-        _ = pairing := PairingOn.relabel_symm_relabel pairing
+              (pairing.transport (standardToMixedAtomicPositionEquiv τ τ' σ)))
+        _ = pairing := PairingOn.transport_symm_transport pairing
           (standardToMixedAtomicPositionEquiv τ τ' σ)
 
 noncomputable instance FixedExternalTwoPointWickDiagram.instFintype
