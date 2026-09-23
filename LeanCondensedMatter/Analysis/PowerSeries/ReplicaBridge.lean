@@ -50,18 +50,18 @@ private theorem egfBlockCoeff_succ_succ
       (n + 1 : R) * coeff (n + 1) ((Z - 1) ^ (k + 1)) =
         (k + 1 : R) *
           ∑ i ∈ Finset.range (n + 1),
-            coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            coeff i (U ^ k) * (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1)) := by
     calc
       (n + 1 : R) * coeff (n + 1) ((Z - 1) ^ (k + 1)) =
           coeff (n + 1) (U ^ (k + 1)) * (n + 1 : R) := by
-            simp [U, Nat.cast_add, Nat.cast_one, mul_comm]
+            simp [U, mul_comm]
       _ = ∑ i ∈ Finset.range (n + 1),
           (k + 1 : R) * coeff i (U ^ k) *
-            (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1)) := by
             simpa [Nat.cast_add, Nat.cast_one, mul_assoc] using hderiv
       _ = (k + 1 : R) *
           ∑ i ∈ Finset.range (n + 1),
-            coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            coeff i (U ^ k) * (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1)) := by
             rw [Finset.mul_sum]
             apply Finset.sum_congr rfl
             intro i hi
@@ -70,7 +70,7 @@ private theorem egfBlockCoeff_succ_succ
       egfBlockCoeff Z (n + 1) (k + 1) =
         ((n.factorial : R) / (k.factorial : R)) *
           ∑ i ∈ Finset.range (n + 1),
-            coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            coeff i (U ^ k) * (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1)) := by
     rw [egfBlockCoeff]
     simp only [Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one]
     have hkfac : (k.factorial : R) ≠ 0 :=
@@ -79,14 +79,24 @@ private theorem egfBlockCoeff_succ_succ
       simpa [Nat.cast_add, Nat.cast_one] using
         (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k) : ((k + 1 : ℕ) : R) ≠ 0)
     field_simp [hkfac, hk1]
-    rw [mul_comm (coeff (n + 1) ((Z - 1) ^ (k + 1))) (n + 1 : R)]
-    rw [hderiv']
-    ring
+    calc
+      (n + 1 : R) * (n.factorial : R) *
+          coeff (n + 1) ((Z - 1) ^ (k + 1)) =
+          (n.factorial : R) *
+            ((n + 1 : R) * coeff (n + 1) ((Z - 1) ^ (k + 1))) := by
+              ring
+      _ = (n.factorial : R) *
+          ((k + 1 : R) *
+            ∑ i ∈ Finset.range (n + 1),
+              coeff i (U ^ k) *
+                (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1))) := by
+              rw [hderiv']
+      _ = _ := by ring
   rw [hmain, Finset.mul_sum]
   have hreflect :
       (∑ i ∈ Finset.range (n + 1),
           ((n.factorial : R) / (k.factorial : R)) *
-            (coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)))) =
+            (coeff i (U ^ k) * (coeff (n - i + 1) U * (((n - i : ℕ) : R) + 1)))) =
         ∑ j ∈ Finset.range (n + 1),
           ((n.factorial : R) / (k.factorial : R)) *
             (coeff (n - j) (U ^ k) * (coeff (j + 1) U * (j + 1 : R))) := by
@@ -96,9 +106,8 @@ private theorem egfBlockCoeff_succ_succ
     have hjn : j ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hj)
     have hpred : n + 1 - 1 = n := by omega
     have hsub : n - (n - j) = j := by omega
-    have hcastSub : (n : R) - (n - j : ℕ) = (j : R) := by
-      rw [← Nat.cast_sub (Nat.sub_le n j), hsub]
-    rw [hpred, hsub, hcastSub]
+    rw [hpred, hsub]
+    simp [Nat.cast_add, Nat.cast_one]
   rw [hreflect]
   apply Finset.sum_congr rfl
   intro j hj
