@@ -132,7 +132,7 @@ theorem pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components
             (fun _ => Iff.rfl)
             (fun pr => localPairValue B pr.1 pr.2)).symm
   rw [pairingWeight_eq_componentExternalOrderSign_mul_prod_components d blockOrder, hpair,
-    ← Finset.prod_mul_distrib]
+    Finset.prod_mul_distrib]
   ring
 
 end Fermionic
