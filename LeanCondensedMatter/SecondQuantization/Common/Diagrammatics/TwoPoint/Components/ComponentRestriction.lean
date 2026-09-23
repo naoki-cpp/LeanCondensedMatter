@@ -71,18 +71,13 @@ theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
   rfl
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
-theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
+private theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S))
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold TwoPointDiagram.legInComponent
-  have hEq :
-      d.vertexGraph.componentBlock (twoPointVertexOfLeg leg) =
-        d.vertexGraph.componentBlock (twoPointVertexOfLeg (d.pairing.partner leg)) :=
-    d.vertexGraph.componentBlock_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg).symm
-  rw [hEq]
+  rw [d.pairing.vertexGraph_componentBlock_partner twoPointVertexOfLeg leg]
 
 /-- The partner permutation restricted to the legs of one full component. -/
 noncomputable def TwoPointDiagram.restrictedPartner {S : Finset (Fin N)}
