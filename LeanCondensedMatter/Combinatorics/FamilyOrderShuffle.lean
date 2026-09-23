@@ -23,7 +23,7 @@ abbrev FamilyOrders :=
   ∀ i, Fin (Fintype.card (F i)) ≃ F i
 
 /-- Identify local ordered slots with the disjoint union of the family fibers. -/
-noncomputable def familyOrderedEquiv (orders : FamilyOrders F) :
+private noncomputable def familyOrderedEquiv (orders : FamilyOrders F) :
     (Σ i, Fin (Fintype.card (F i))) ≃ Σ i, F i :=
   Equiv.sigmaCongrRight orders
 
@@ -36,7 +36,7 @@ noncomputable def assembleFamilyOrder {total : ℕ}
   shuffle.slotEquiv.symm.trans ((familyOrderedEquiv F orders).trans ambientEquiv.symm)
 
 /-- Ambient slots occupied by one family fiber under a global order. -/
-noncomputable def familyGlobalSlots {total : ℕ}
+private noncomputable def familyGlobalSlots {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) : Finset (Fin total) :=
   Finset.univ.image fun x : F i => order.symm (ambientEquiv.symm ⟨i, x⟩)
@@ -50,8 +50,7 @@ private theorem familyGlobalSlot_injective {total : ℕ}
   have h₂ := ambientEquiv.symm.injective h₁
   exact Sigma.mk.inj_iff.mp h₂
 
-@[simp]
-theorem card_familyGlobalSlots {total : ℕ}
+private theorem card_familyGlobalSlots {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) :
     (familyGlobalSlots F ambientEquiv order i).card = Fintype.card (F i) := by
@@ -71,7 +70,7 @@ private noncomputable def familyGlobalSlotEquiv {total : ℕ}
       simp [familyGlobalSlots]))
 
 /-- Canonical increasing-slot order on one fiber induced by a global order. -/
-noncomputable def familyOrderOfOrder {total : ℕ}
+private noncomputable def familyOrderOfOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) :
     Fin (Fintype.card (F i)) ≃ F i :=
@@ -80,7 +79,7 @@ noncomputable def familyOrderOfOrder {total : ℕ}
     (familyGlobalSlotEquiv F ambientEquiv order i).symm
 
 /-- Canonical family of local orders induced by a global order. -/
-noncomputable def familyOrdersOfOrder {total : ℕ}
+private noncomputable def familyOrdersOfOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) : FamilyOrders F :=
   fun i => familyOrderOfOrder F ambientEquiv order i
@@ -104,7 +103,7 @@ private theorem familyOrderOfOrder_slot {total : ℕ}
   exact h
 
 /-- Extract the order-preserving family shuffle induced by a global order. -/
-noncomputable def familyShuffleOfOrder {total : ℕ}
+private noncomputable def familyShuffleOfOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) :
     FamilySlotShuffleTo (fun i => Fintype.card (F i)) total where
@@ -154,8 +153,7 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ}
   exact Sigma.mk.inj_iff.mp h₂
 
 /-- Reassembling the extracted local orders and shuffle recovers the global order. -/
-@[simp]
-theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ}
+private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) :
     assembleFamilyOrder F ambientEquiv
