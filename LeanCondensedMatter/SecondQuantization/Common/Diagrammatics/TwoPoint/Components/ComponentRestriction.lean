@@ -70,7 +70,8 @@ theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
   rw [d.legInComponent_iff_vertex_mem B.2 leg]
   rfl
 
-private theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
+/-- Component-leg membership is invariant under the pairing partner permutation. -/
+theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S))
     (leg : Fin (2 * (2 * S.card + 1))) :
