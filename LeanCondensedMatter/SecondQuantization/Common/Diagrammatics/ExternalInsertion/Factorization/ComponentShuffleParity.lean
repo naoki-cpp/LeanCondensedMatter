@@ -358,49 +358,6 @@ private theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversion
   simp only [ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply]
   rfl
 
-/-- For two distinct connected components, the full flattened-leg interleaving and the
-external-only interleaving have the same inversion parity. -/
-theorem ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B C : d.vertexGraph.componentPartition.parts) (hBC : B ≠ C) :
-    Nat.ModEq 2
-      (d.componentLegShuffle.blockInversionCount B C)
-      (d.componentExternalShuffle.blockInversionCount B C) := by
-  classical
-  rw [d.componentLegShuffle_blockInversionCount_eq_sum B C hBC,
-    d.componentExternalShuffle_blockInversionCount_eq_sum B C hBC]
-  let g : ExternalInsertionLeg (d.externalPairCount B)
-      (interactionSector (B : Finset (ExternalInsertionVertex E S))) → ℕ
-    | Sum.inl e => d.componentExternalInversionInner B C e
-    | Sum.inr _ => 0
-  have hmod :
-      Nat.ModEq 2
-        (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-          (interactionSector (B : Finset (ExternalInsertionVertex E S))),
-          d.componentLegInversionInner B C p)
-        (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-          (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) := by
-    refine Nat.ModEq.sum (n := 2) ?_
-    intro p _
-    cases p with
-    | inl e =>
-        simp only [g]
-        rw [d.componentLegInversionInner_external B C e]
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        simpa [Nat.ModEq, g] using
-          d.componentLegInversionInner_interaction_mod_two B C hBC v l
-  have hg :
-      (∑ p : ExternalInsertionLeg (d.externalPairCount B)
-        (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) =
-        ∑ e : Fin (2 * d.externalPairCount B),
-          d.componentExternalInversionInner B C e := by
-    rw [Fintype.sum_sum_type]
-    simp [g]
-  rw [← hg]
-  exact hmod
-
 /-- The total ordered inter-component inversion parity of the full component-leg shuffle is exactly
 the parity of the external-only component shuffle. -/
 theorem ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external
@@ -413,9 +370,42 @@ theorem ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_
       d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 := by
   have h :=
     d.componentLegShuffle.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq
-      d.componentExternalShuffle blockOrder
-      (fun B C hBC =>
-        d.componentLegShuffle_blockInversionCount_modEq_two_external B C hBC)
+      d.componentExternalShuffle blockOrder (fun B C hBC => by
+        classical
+        
+          classical
+          rw [d.componentLegShuffle_blockInversionCount_eq_sum B C hBC,
+            d.componentExternalShuffle_blockInversionCount_eq_sum B C hBC]
+          let g : ExternalInsertionLeg (d.externalPairCount B)
+              (interactionSector (B : Finset (ExternalInsertionVertex E S))) → ℕ
+            | Sum.inl e => d.componentExternalInversionInner B C e
+            | Sum.inr _ => 0
+          have hmod :
+              Nat.ModEq 2
+                (∑ p : ExternalInsertionLeg (d.externalPairCount B)
+                  (interactionSector (B : Finset (ExternalInsertionVertex E S))),
+                  d.componentLegInversionInner B C p)
+                (∑ p : ExternalInsertionLeg (d.externalPairCount B)
+                  (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) := by
+            refine Nat.ModEq.sum (n := 2) ?_
+            intro p _
+            cases p with
+            | inl e =>
+                simp only [g]
+                rw [d.componentLegInversionInner_external B C e]
+            | inr p =>
+                rcases p with ⟨v, l⟩
+                simpa [Nat.ModEq, g] using
+                  d.componentLegInversionInner_interaction_mod_two B C hBC v l
+          have hg :
+              (∑ p : ExternalInsertionLeg (d.externalPairCount B)
+                (interactionSector (B : Finset (ExternalInsertionVertex E S))), g p) =
+                ∑ e : Fin (2 * d.externalPairCount B),
+                  d.componentExternalInversionInner B C e := by
+            rw [Fintype.sum_sum_type]
+            simp [g]
+          rw [← hg]
+          exact hmod)
   simpa [Nat.ModEq] using h
 
 end Common
