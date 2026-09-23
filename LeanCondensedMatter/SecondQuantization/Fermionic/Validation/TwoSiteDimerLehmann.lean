@@ -122,7 +122,8 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue,
+  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
+    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
     twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
     twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
     finiteLehmannTableTransitionWeight_diag,
