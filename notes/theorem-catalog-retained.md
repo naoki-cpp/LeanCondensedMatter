@@ -238,3 +238,7 @@ or consumer structure changes.
   estimate bounding truncation error by twice the distance to any fixed point of the truncation.
 - `SecondQuantization.Fermionic.norm_completedToggleLinear` — canonical norm-preservation law for the
   completed occupation-toggle map, stronger and more reusable than its downstream one-sided bound.
+- `Combinatorics.Pairing.isSplit_inr` — canonical consequence of the asymmetric `IsSplit`
+  definition: closure of the left summand under the involutive partner map forces closure of the
+  right summand as well. The current `splitRightMap` consumer is one construction using this
+  independently meaningful decomposition fact.
