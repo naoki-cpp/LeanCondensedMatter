@@ -48,7 +48,7 @@ private theorem familyGlobalSlot_injective {total : ℕ}
   intro x y h
   have h₁ := order.symm.injective h
   have h₂ := ambientEquiv.symm.injective h₁
-  exact Sigma.mk.inj_iff.mp h₂
+  exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
 private theorem card_familyGlobalSlots {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
@@ -111,19 +111,14 @@ private noncomputable def familyShuffleOfOrder {total : ℕ}
     (ambientEquiv.symm.trans order.symm)
   strictMono := by
     intro i a b hab
-    rw [show
-      (familyOrderedEquiv F (familyOrdersOfOrder F ambientEquiv order)).trans
-          (ambientEquiv.symm.trans order.symm) ⟨i, a⟩ =
+    change
+      order.symm
+          (ambientEquiv.symm
+            ⟨i, familyOrderOfOrder F ambientEquiv order i a⟩) <
         order.symm
           (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F ambientEquiv order i a⟩) by rfl,
-      show
-      (familyOrderedEquiv F (familyOrdersOfOrder F ambientEquiv order)).trans
-          (ambientEquiv.symm.trans order.symm) ⟨i, b⟩ =
-        order.symm
-          (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F ambientEquiv order i b⟩) by rfl,
-      familyOrderOfOrder_slot F ambientEquiv order i a,
+            ⟨i, familyOrderOfOrder F ambientEquiv order i b⟩)
+    rw [familyOrderOfOrder_slot F ambientEquiv order i a,
       familyOrderOfOrder_slot F ambientEquiv order i b]
     exact ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
       (card_familyGlobalSlots F ambientEquiv order i)).strictMono hab
@@ -147,10 +142,18 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ}
     (f := fun k => order.symm (ambientEquiv.symm ⟨i, localOrder k⟩))
     hmem hlocal
   have hj := congrFun hunique j
-  rw [← familyOrderOfOrder_slot F ambientEquiv order i j] at hj
-  have h₁ := order.symm.injective hj
+  have hcanonical :
+      order.symm
+          (ambientEquiv.symm
+            ⟨i, familyOrderOfOrder F ambientEquiv order i j⟩) =
+        ((familyGlobalSlots F ambientEquiv order i).orderEmbOfFin
+          (card_familyGlobalSlots F ambientEquiv order i)) j := by
+    simpa only [Finset.coe_orderIsoOfFin_apply] using
+      familyOrderOfOrder_slot F ambientEquiv order i j
+  have hslot := hj.trans hcanonical.symm
+  have h₁ := order.symm.injective hslot
   have h₂ := ambientEquiv.symm.injective h₁
-  exact Sigma.mk.inj_iff.mp h₂
+  exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
 /-- Reassembling the extracted local orders and shuffle recovers the global order. -/
 private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ}
@@ -180,6 +183,7 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
     have horders :
         familyOrdersOfOrder F ambientEquiv order = orders := by
       funext i
+      symm
       apply familyOrder_eq_of_strictMono F ambientEquiv order i (orders i)
       intro a b hab
       change shuffle.slotEquiv ⟨i, a⟩ < shuffle.slotEquiv ⟨i, b⟩
