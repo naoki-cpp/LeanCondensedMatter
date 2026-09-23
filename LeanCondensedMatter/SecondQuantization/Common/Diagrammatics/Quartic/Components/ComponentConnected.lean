@@ -23,7 +23,7 @@ noncomputable def QuarticDiagram.blockVertex {S : Finset (Fin N)}
       (fun {_} hx => d.componentPartition.le hB hx)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})
 
-theorem QuarticDiagram.blockVertex_mem {S : Finset (Fin N)}
+private theorem QuarticDiagram.blockVertex_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
     (d.blockVertex hB v : Fin N) ∈ B :=
@@ -40,7 +40,7 @@ private theorem QuarticDiagram.blockVertex_injective {S : Finset (Fin N)}
     (Subtype.ext h)
 
 /-- `blockLegEquiv` maps a leg to vertex `v` exactly when its ambient vertex is `blockVertex v`. -/
-theorem QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
+private theorem QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) (v : ↥B) :
@@ -131,7 +131,7 @@ private theorem QuarticDiagram.reachable_restrictComponent_of_walk {S : Finset (
     exact hadj
 
 /-- Restricting a diagram to a component part produces a connected diagram. -/
-theorem QuarticDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
+private theorem QuarticDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     (d.restrictComponent hB).IsConnected := by
