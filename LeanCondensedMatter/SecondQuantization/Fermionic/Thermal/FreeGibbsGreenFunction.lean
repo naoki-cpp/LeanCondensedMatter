@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -36,6 +37,16 @@ noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
       (Common.finiteHilbertOperatorAlgEquiv (twoPointTimeOrderedProduct ε i j τ τ'))
 
 /-! ## Gibbs-state bridge and BDD mixed contractions -/
+
+omit [LinearOrder Mode] in
+private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
+    (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A =
+      (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) := by
+  have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
+    funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw]
 
 private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
@@ -84,7 +95,7 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
   rw [freeGibbsGreenFunction, twoPointTimeOrderedProduct_of_gt ε i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
-    map_smul, smul_eq_mul,
+    map_smul, map_smul, smul_eq_mul,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd, if_pos rfl]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
@@ -98,11 +109,11 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
         (1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)) := by
   rw [freeGibbsGreenFunction, twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one, neg_one_smul,
-    map_neg, neg_neg,
+    map_neg, map_neg, neg_neg,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl,
-    map_smul, smul_eq_mul,
+    map_smul, map_smul, smul_eq_mul,
     freeGibbsDensityOperator_expectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
@@ -119,11 +130,8 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  rw [neg_smul,
-    map_smul,
-    map_add,
-    map_neg,
-    map_smul,
+  simp_rw [map_smul, map_add, map_neg]
+  rw [neg_smul, map_smul, map_add, map_neg, map_smul,
     smul_eq_mul, one_smul ℂ,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd,
     freeGibbsDensityOperator_expectation_numberOperator]
@@ -179,7 +187,7 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
 theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
     (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
   rw [freeGibbsGreenFunction]
-  unfold twoPointTimeOrderedProduct
+  unfold twoPointTimeOrderedProduct Common.timeOrderedProduct
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   split_ifs with hτ
   · rw [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul,
