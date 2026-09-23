@@ -116,7 +116,7 @@ theorem purePointTimeDomainTerm_eq_weight_mul_transitionPhase
       purePointTransitionWeight system data A B mn *
         purePointTransitionPhase system data mn.1 mn.2 τ := by
   simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
-    purePointTransitionPhase_eq_exp_energyDifference]
+    purePointTransitionWeight, purePointTransitionPhase_eq_exp_energyDifference]
 
 /-- The physical transition term written with the explicit energy-difference exponential. -/
 theorem purePointTimeDomainTerm_eq_exp_energyDifference
@@ -127,7 +127,8 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
         Complex.exp
           (Complex.I * ((((orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ))) := by
-  simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm]
+  simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
+    purePointTransitionWeight]
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
@@ -254,7 +255,8 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   apply tsum_congr
   intro mn
   rw [purePointTimeDomainTerm_eq_weight_mul_transitionPhase]
-  simp [purePointTransitionWeight, purePointForwardTimeTerm, purePointForwardWeight,
+  simp [purePointTransitionWeight, purePointTransitionData,
+    orderedLehmannTransitionWeight, purePointForwardTimeTerm, purePointForwardWeight,
     purePointBackwardTimeTerm, purePointBackwardWeight]
   ring
 
