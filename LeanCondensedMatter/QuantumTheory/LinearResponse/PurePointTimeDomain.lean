@@ -101,19 +101,20 @@ noncomputable def purePointBackwardTimeTerm
   purePointBackwardWeight system data A B mn *
     purePointTransitionPhase system data mn.2 mn.1 τ
 
-/-- One physical time-domain Lehmann transition. -/
+/-- One physical time-domain Lehmann transition, evaluated from the canonical transition
+record. -/
 noncomputable def purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) : ℂ :=
-  (purePointTransitionData system data A B mn).weight *
-    purePointTransitionPhase system data mn.1 mn.2 τ
+  (purePointTransitionData system data A B mn).timeTerm system.hbar τ
 
-/-- The operator-derived phase agrees with the time term of the canonical transition record. -/
-theorem purePointTimeDomainTerm_eq_transitionTimeTerm
+/-- The canonical transition time term agrees with the operator-derived Heisenberg phase. -/
+theorem purePointTimeDomainTerm_eq_weight_mul_transitionPhase
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) :
     purePointTimeDomainTerm system data A B τ mn =
-      (purePointTransitionData system data A B mn).timeTerm system.hbar τ := by
+      purePointTransitionWeight system data A B mn *
+        purePointTransitionPhase system data mn.1 mn.2 τ := by
   simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm,
     purePointTransitionPhase_eq_exp_energyDifference]
 
@@ -126,8 +127,7 @@ theorem purePointTimeDomainTerm_eq_exp_energyDifference
         Complex.exp
           (Complex.I * ((((orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ) /
             system.hbar : ℝ) : ℂ))) := by
-  simpa [LehmannTransitionData.timeTerm] using
-    purePointTimeDomainTerm_eq_transitionTimeTerm system data A B τ mn
+  simp [purePointTimeDomainTerm, LehmannTransitionData.timeTerm]
 
 /-- The countable time-domain pure-point Lehmann series. -/
 noncomputable def purePointTimeDomainSeries
@@ -163,7 +163,8 @@ theorem summable_purePointTimeDomainTerm
     Summable (purePointTimeDomainTerm system data A B τ) := by
   apply hsum.2.2.of_norm_bounded
   intro mn
-  simp [purePointTimeDomainTerm]
+  rw [purePointTimeDomainTerm_eq_weight_mul_transitionPhase]
+  simp
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
@@ -253,8 +254,8 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   rw [purePointTimeDomainSeries]
   apply tsum_congr
   intro mn
-  simp [purePointTimeDomainTerm, purePointTransitionWeight,
-    purePointForwardTimeTerm, purePointForwardWeight,
+  rw [purePointTimeDomainTerm_eq_weight_mul_transitionPhase]
+  simp [purePointTransitionWeight, purePointForwardTimeTerm, purePointForwardWeight,
     purePointBackwardTimeTerm, purePointBackwardWeight]
   ring
 
