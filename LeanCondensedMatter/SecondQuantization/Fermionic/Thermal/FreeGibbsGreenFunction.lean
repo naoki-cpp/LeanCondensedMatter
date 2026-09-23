@@ -124,10 +124,12 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
       simpa [Common.Statistics.zetaInt_fermion, add_comm] using
         (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
     rw [h]
-    simp only [Common.Statistics.zetaInt_fermion, neg_mul, neg_neg]
-    rw [show Complex.exp ((ε i : ℂ) * (β : ℂ)) =
-      Complex.exp ((β : ℂ) * (ε i : ℂ)) by rw [mul_comm]]
-    rw [one_div, ← Complex.exp_neg, neg_mul, neg_neg]
+    norm_num [Common.Statistics.zetaInt_fermion] at h ⊢
+    rw [← Complex.exp_neg] at h
+    rw [show (-((-(ε i * β) : ℝ) : ℂ)) = (β : ℂ) * (ε i : ℂ) by
+      push_cast
+      ring] at h
+    rw [h]
     field_simp
     ring
   · rw [if_neg hij] at h ⊢
@@ -194,7 +196,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
       (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-  simp only [if_pos rfl]
+  simp only [if_pos rfl] at *
   field_simp
   ring
 
