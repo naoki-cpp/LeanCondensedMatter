@@ -301,7 +301,7 @@ theorem summable_purePointLehmannSeries_of_pos
       lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
         (purePointTransitionWeight system data A B mn) := by
-  simpa [LehmannTransitionData.frequencyTerm] using
+  simpa [LehmannTransitionData.frequencyTerm, purePointTransitionWeight] using
     LehmannTransitionData.summable_frequencyTerm_of_pos
       omega eta (purePointTransitionData system data A B) hsum heta
 
@@ -322,7 +322,8 @@ theorem purePointLehmannSeries_eq_finite_sum
         lehmannTerm system.hbar omega eta
           (data.energy mn.1 - data.energy mn.2)
           (purePointTransitionWeight system data A B mn) := by
-  simp [purePointLehmannSeries, LehmannTransitionData.frequencyTerm]
+  simp [purePointLehmannSeries, LehmannTransitionData.frequencyTerm,
+    purePointTransitionWeight]
 
 end
 end LinearResponse
