@@ -92,8 +92,7 @@ theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
     (mn : ι × ι) (hη : 0 < eta) :
     (∫ τ : ℝ in Ioi 0,
       purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
-      (purePointTransitionData system data A B mn).frequencyTerm
-        system.hbar omega eta := by
+      (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
   rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
     purePointAdiabaticTransitionIntegrand_eq_transitionMode
       system data A B omega eta mn τ]
