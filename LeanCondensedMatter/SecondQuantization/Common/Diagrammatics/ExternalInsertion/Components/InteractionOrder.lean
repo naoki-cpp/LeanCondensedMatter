@@ -52,7 +52,7 @@ noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    interactionSectorComponentEquiv d.vertexGraph orders shuffle
+    (interactionSectorComponentEquiv d.vertexGraph) orders shuffle
 
 /-- A global interaction-vertex order is equivalent to component-local interaction orders together
 with an order-preserving component shuffle. Empty interaction sectors remain represented as
@@ -66,7 +66,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositio
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    interactionSectorComponentEquiv d.vertexGraph
+    (interactionSectorComponentEquiv d.vertexGraph)
 
 end Common
 end SecondQuantization
