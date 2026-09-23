@@ -168,10 +168,14 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
   classical
   unfold Pairing.normalizedPairOfEndpointEquiv
   by_cases h : e (endpointEquiv (a, 0)) < pairing.partner (e (endpointEquiv (a, 0)))
-  · left
-    simp [Pairing.pairEndpointEquiv, h, hpartner a]
-  · right
-    simp [Pairing.pairEndpointEquiv, h, hpartner a]
+  · have horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
+      simpa only [hpartner a] using h
+    left
+    simp [Pairing.pairEndpointEquiv, hpartner a, horder]
+  · have horder : ¬ e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
+      simpa only [hpartner a] using h
+    right
+    simp [Pairing.pairEndpointEquiv, hpartner a, horder]
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
