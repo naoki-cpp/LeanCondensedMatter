@@ -101,19 +101,12 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl]
-    have hcar := anticomm_annihilate_create (Mode := Mode) i i
-    have hocc := freeGibbsDensityOperator_expectation_numberOperator ε β i
-    rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
-    rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation] at hocc
-    rw [show (annihilate i).comp (create i) =
-        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) - numberOperator i by
-      apply LinearMap.ext
-      intro n
-      have h := LinearMap.congr_fun hcar n
-      simpa [numberOperator, Common.exchangeCommutator, Common.Statistics.zetaInt_fermion,
-        sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h]
-    rw [map_sub, Common.normalizedWeightedDiagonal_id, hocc]
+  · rw [if_pos rfl, ← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
+      annihilate_comp_create_self,
+      (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_sub,
+      Common.normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
+      normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
+      freeGibbsDensityOperator_expectation_numberOperator]
     have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
       simpa [Common.Statistics.zetaInt_fermion, add_comm] using
         (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
@@ -199,9 +192,9 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
       (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-  simp only [if_pos rfl] at *
+  simp only [if_pos rfl]
   field_simp
-  ring
+  ring_nf
 
 /-! ## All-index contraction kernels -/
 
