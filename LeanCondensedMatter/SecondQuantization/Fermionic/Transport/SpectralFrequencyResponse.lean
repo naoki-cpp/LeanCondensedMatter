@@ -63,20 +63,6 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
 
 variable {ι : Type*}
 
-/-- A diagonal current-current transition has zero Lehmann weight. -/
-@[simp]
-theorem purePointDirectionalCurrentTransitionWeight_diag
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q : ℝ) (i : ι) :
-    purePointTransitionWeight system data
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K) (i, i) = 0 := by
-  simp [purePointTransitionWeight]
-
 /-- Equal-energy off-diagonal transitions retain the regularized denominator `η - iω`; their
 weight is not assumed to vanish without an additional equality of state probabilities. -/
 theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy

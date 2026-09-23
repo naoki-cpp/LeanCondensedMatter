@@ -13,9 +13,10 @@ The values outside `eta > 0` do not affect any regulator-removal limit, whose so
 `nhdsWithin 0 (Ioi 0)`.
 
 The finite-dimensional Lehmann equality proves that this extension is globally equal to the finite
-resolvent sum.  Consequently the nonresonant limit theorem transfers directly to the physical
-susceptibility.  Combining it with the finite-observation-time convergence theorem also gives both
-three-stage orders with `T -> infinity` taken first.
+resolvent sum.  Its nonpositive-rate branch evaluates the same canonical `LehmannTransitionData`
+records used by the fixed-rate pure-point series.  Consequently the nonresonant limit theorem
+transfers directly to the physical susceptibility.  Combining it with the finite-observation-time
+convergence theorem also gives both three-stage orders with `T -> infinity` taken first.
 -/
 
 namespace QuantumTheory
@@ -59,9 +60,7 @@ noncomputable def finitePurePointPhysicalSusceptibilityExtension
       (purePointNormalizedExpectation system data) A B omega eta hη
   else
     Finset.univ.sum fun mn : ι × ι =>
-      lehmannTerm system.hbar omega eta
-        (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn)
+      (purePointTransitionData system data A B mn).frequencyTerm omega eta
 
 /-- On the physical positive-rate domain, the total extension is the actual switched
 susceptibility. -/
@@ -87,7 +86,8 @@ theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
       system data A B omega eta hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
-  · simp [finitePurePointPhysicalSusceptibilityExtension, hη]
+  · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
+      LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
 
 /-- The physical positive-rate susceptibility has both local nonresonant iterated limits after
 passing to its canonical total extension.  Both orders have the same zero-rate static Lehmann
@@ -110,16 +110,15 @@ theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
             (purePointTransitionWeight system data A B mn)) := by
   let F : ℝ → ℝ → ℂ := fun omega eta =>
     Finset.univ.sum fun mn : ι × ι =>
-      lehmannTerm system.hbar omega eta
-        (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn)
+      (purePointTransitionData system data A B mn).frequencyTerm omega eta
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
-    exact finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
-      system data A B omega eta
+    rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
+    simp [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
   rw [hfun]
-  exact finite_purePointLehmann_has_both_local_iterated_limits
-    system data A B hregular
+  simpa [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight] using
+    finite_purePointLehmann_has_both_local_iterated_limits
+      system data A B hregular
 
 /-- For the actual finite-observation-time response, taking `T -> infinity` first and then either
 local order of `omega -> 0` and `eta -> 0+` gives the same finite static Lehmann value. -/

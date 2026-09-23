@@ -12,8 +12,9 @@ small finite benchmark models.  A finite response calculation only needs the sca
 Eₙ, pₙ, Aₘₙ = ⟨m|A|n⟩, Bₘₙ = ⟨m|B|n⟩.
 ```
 
-`FiniteLehmannTable` stores exactly these quantities.  Its evaluator uses the canonical ordered
-energy gap and transition weight from `Lehmann.lean`, then the existing `lehmannTerm`.
+`FiniteLehmannTable` stores exactly these quantities.  `finiteLehmannTableTransitionData` is the
+explicit scalar adapter to the canonical `LehmannTransitionData` seam in `Lehmann.lean`; evaluation
+then uses the record's fixed-rate frequency term.
 
 The bridge `finiteLehmannTableOfPurePoint` constructs a table from the theorem-level
 `PurePointLehmannData` API and bounded observables.  The main equality proves that evaluating the
@@ -41,28 +42,46 @@ structure FiniteLehmannTable (ι : Type*) where
   /-- Matrix element table `Bₘₙ = ⟨m|B|n⟩` for the source-coupling observable. -/
   matrixB : ι → ι → ℂ
 
-/-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table. -/
-def finiteLehmannTableTransitionWeight
-    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
-  orderedLehmannTransitionWeight hbar
+/-- Adapt one scalar-table ordered pair to the canonical Lehmann transition data. -/
+noncomputable def finiteLehmannTableTransitionData
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι)
+    (mn : ι × ι) : LehmannTransitionData hbar :=
+  orderedLehmannTransitionData hbar
+    (table.energy mn.1) (table.energy mn.2)
     (table.probability mn.1) (table.probability mn.2)
     (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
+
+/-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table.
+
+This compatibility accessor is the `weight` projection of the canonical transition record. -/
+def finiteLehmannTableTransitionWeight
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
+  (finiteLehmannTableTransitionData hbar table mn).weight
+
+@[simp]
+theorem finiteLehmannTableTransitionData_energyGap
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
+    (finiteLehmannTableTransitionData hbar table mn).energyGap =
+      orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2) := rfl
+
+theorem finiteLehmannTableTransitionData_weight
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
+    (finiteLehmannTableTransitionData hbar table mn).weight =
+      finiteLehmannTableTransitionWeight hbar table mn := rfl
 
 /-- Diagonal transitions vanish already at the scalar-table level. -/
 @[simp]
 theorem finiteLehmannTableTransitionWeight_diag
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (i : ι) :
     finiteLehmannTableTransitionWeight hbar table (i, i) = 0 := by
-  simp [finiteLehmannTableTransitionWeight]
+  simp [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData]
 
 /-- Fixed-rate finite Lehmann response evaluated from scalar spectral data. -/
 noncomputable def finiteLehmannTableResponse
     {ι : Type*} [Fintype ι]
     (hbar omega eta : ℝ) (table : FiniteLehmannTable ι) : ℂ :=
   ∑ mn : ι × ι,
-    lehmannTerm hbar omega eta
-      (orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2))
-      (finiteLehmannTableTransitionWeight hbar table mn)
+    (finiteLehmannTableTransitionData hbar table mn).frequencyTerm omega eta
 
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -78,6 +97,16 @@ noncomputable def finiteLehmannTableOfPurePoint
   matrixA := fun m n => inner ℂ (data.basis m) (A (data.basis n))
   matrixB := fun m n => inner ℂ (data.basis m) (B (data.basis n))
 
+/-- The scalar adapter preserves the canonical ordered transition exactly. -/
+@[simp]
+theorem finiteLehmannTableTransitionData_ofPurePoint
+    (system : BoundedFreeSystem H)
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (mn : ι × ι) :
+    finiteLehmannTableTransitionData system.hbar
+        (finiteLehmannTableOfPurePoint system data A B) mn =
+      purePointTransitionData system data A B mn := rfl
+
 /-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level pure-point
 Lehmann series.  This is the main operator-to-calculation bridge. -/
 theorem finiteLehmannTableResponse_ofPurePoint
@@ -89,7 +118,8 @@ theorem finiteLehmannTableResponse_ofPurePoint
         (finiteLehmannTableOfPurePoint system data A B) =
       purePointLehmannSeries system data A B omega eta := by
   rw [purePointLehmannSeries_eq_finite_sum]
-  rfl
+  simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm,
+    purePointTransitionWeight]
 
 end
 end LinearResponse

@@ -104,14 +104,16 @@ theorem twoSiteDimerEnergyBasisCurrent_one_zero :
 theorem twoSiteDimerGroundStateTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    orderedLehmannTransitionWeight, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_one_zero :
     finiteLehmannTableTransitionWeight 1
         twoSiteDimerGroundStateLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteDimerGroundStateLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    orderedLehmannTransitionWeight, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 /-- At `ℏ = 1`, zero driving frequency, and positive switching rate `η = 1`, the dimer's exact
@@ -122,7 +124,8 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue,
+  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
+    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
     twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
     twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
     finiteLehmannTableTransitionWeight_diag,

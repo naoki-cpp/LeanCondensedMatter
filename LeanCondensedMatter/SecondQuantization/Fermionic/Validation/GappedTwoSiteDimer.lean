@@ -209,13 +209,15 @@ private theorem twoSiteGappedBenchmarkTable_excitedEnergy_from_operator :
 private theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
     finiteLehmannTableTransitionWeight 1
         twoSiteGappedBenchmarkLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 private theorem twoSiteGappedBenchmarkTransitionWeight_one_zero :
     finiteLehmannTableTransitionWeight 1
         twoSiteGappedBenchmarkLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
+  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 /-- The table entry `J₋₊ = i` is the normalized Peierls-current matrix element. Both supplied
@@ -257,7 +259,8 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue,
+  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
+    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
     twoSiteGappedBenchmarkLehmannTable_energy_zero,
     twoSiteGappedBenchmarkLehmannTable_energy_one,
     twoSiteGappedBenchmarkTransitionWeight_zero_one,
