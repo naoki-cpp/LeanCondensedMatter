@@ -28,19 +28,12 @@ def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S
   d.componentBlock (vertexOfLeg leg) = B
 
 /-- A leg's partner stays inside the same component part. -/
-theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
+private theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
-  unfold QuarticDiagram.legInBlock
-  have hEq :
-      d.componentBlock (vertexOfLeg leg) =
-        d.componentBlock (vertexOfLeg (d.pairing.partner leg)) := by
-    change d.vertexGraph.componentBlockOn (vertexOfLeg leg) =
-      d.vertexGraph.componentBlockOn (vertexOfLeg (d.pairing.partner leg))
-    exact d.vertexGraph.componentBlockOn_eq_of_reachable
-      (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg).symm
-  rw [hEq]
+  unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
+  rw [d.pairing.vertexGraph_componentBlockOn_partner vertexOfLeg leg]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
