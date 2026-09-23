@@ -197,8 +197,9 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
     rw [freeGibbsDensityOperator_expectation_create_comp_annihilate,
       if_neg hij]
     simp
-  · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_add]
-    rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
+  · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul, map_add, map_neg]
+    rw [map_smul, map_add, map_smul, map_smul,
+      freeGibbsDensityOperator_expectation_annihilate_comp_create,
       freeGibbsDensityOperator_expectation_create_comp_annihilate]
     simp [hij]
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
