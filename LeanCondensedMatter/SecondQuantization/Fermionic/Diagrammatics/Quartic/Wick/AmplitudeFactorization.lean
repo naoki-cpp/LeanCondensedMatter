@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleFintype
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyOrderShuffleFintype
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
@@ -32,64 +32,36 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
           QuarticWickDiagram.orderedSimplexContribution ε β
             (d.restrictComponentConnected B.2).1 order := by
   classical
-  let localContribution :
-      ∀ B : d.componentPartition.parts,
-        Common.QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
-    fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
-      (d.restrictComponentConnected B.2).1 order
-  calc
-    (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
-        ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
-          d.orderedSimplexContribution ε β (d.assembleVertexOrder x.1 x.2) := by
-      rw [← Equiv.sum_comp (Common.QuarticDiagram.componentOrderDecompositionEquiv d).symm]
-      rfl
-    _ = ∑ orders : d.ComponentVertexOrders,
-          ∑ shuffle : d.ComponentShuffle,
-            d.orderedSimplexContribution ε β
-              (d.assembleVertexOrder orders shuffle) := by
-      rw [Fintype.sum_prod_type]
-    _ = ∑ orders : d.ComponentVertexOrders,
-          ∏ B : d.componentPartition.parts, localContribution B (orders B) := by
-      apply Fintype.sum_congr
-      intro orders
-      simp only [QuarticWickDiagram.orderedSimplexContribution]
-      let componentIntegrand :
-          ∀ B : d.componentPartition.parts,
-            (Fin (B : Finset (Fin N)).card → ℝ) → ℂ :=
-        fun B => QuarticWickDiagram.contractionIntegrand ε β
-          (d.restrictComponentConnected B.2).1 (orders B)
-      have hglobal (shuffle : d.ComponentShuffle) :
-          d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) =
-            shuffle.ambientIntegrand componentIntegrand := by
-        funext τ
-        exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
-          ε β orders shuffle τ
-      simp_rw [hglobal]
-      have hcard :
-          (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) = S.card := by
-        rw [Finset.sum_coe_sort]
-        exact d.componentPartition.sum_card_parts
-      simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
-        componentIntegrand] using
-        Combinatorics.FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
-          (ι := d.componentPartition.parts)
-          (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
-          S.card hcard β componentIntegrand
-          (fun B => continuous_contractionIntegrand ε β
-            (d.restrictComponentConnected B.2).1 (orders B))
-    _ = ∏ B : d.componentPartition.parts,
-          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
-            localContribution B order := by
-      simpa using
-        (Finset.prod_univ_sum
-          (fun B : d.componentPartition.parts =>
-            (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
-          localContribution).symm
-    _ = ∏ B : d.componentPartition.parts,
-          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
-            QuarticWickDiagram.orderedSimplexContribution ε β
-              (d.restrictComponentConnected B.2).1 order := by
-      rfl
+  let F := fun B : d.componentPartition.parts => ↥(B : Finset (Fin N))
+  have hcard : (∑ B : d.componentPartition.parts, Fintype.card (F B)) = S.card := by
+    simp only [F, Fintype.card_coe]
+    rw [Finset.sum_coe_sort]
+    exact d.componentPartition.sum_card_parts
+  have hfactor :
+      ∀ (orders : Combinatorics.FamilyOrders F)
+        (shuffle : Combinatorics.FamilySlotShuffleTo
+          (fun B => Fintype.card (F B)) S.card),
+        d.contractionIntegrand ε β
+            (Combinatorics.assembleFamilyOrder F
+              d.componentPartition.equivSigmaParts orders shuffle) =
+          shuffle.ambientIntegrand
+            (fun B => QuarticWickDiagram.contractionIntegrand ε β
+              (d.restrictComponentConnected B.2).1 (orders B)) := by
+    intro orders shuffle
+    funext τ
+    exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
+      ε β orders shuffle τ
+  simpa only [QuarticWickDiagram.orderedSimplexContribution, F, Fintype.card_coe] using
+    Combinatorics.sum_orderedSimplexIntegral_eq_prod_localOrderSums
+      F S.card hcard d.componentPartition.equivSigmaParts β
+      (fun order => d.contractionIntegrand ε β order)
+      (fun B order =>
+        QuarticWickDiagram.contractionIntegrand ε β
+          (d.restrictComponentConnected B.2).1 order)
+      hfactor
+      (fun B order =>
+        continuous_contractionIntegrand ε β
+          (d.restrictComponentConnected B.2).1 order)
 
 /-- A quartic Wick-diagram amplitude is the product of the amplitudes of its connected components. -/
 theorem quarticWickDiagramAmplitude_eq_prod_components
