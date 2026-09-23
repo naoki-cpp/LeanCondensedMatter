@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection
 import Mathlib.Data.Complex.BigOperators
 
 set_option linter.style.header false
@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Pointwise Berry curvature and force-matrix representation
 
-This module uses the direction-indexed pointwise spectral data from `BerryConnection`. Berry
+This module uses the direction-indexed pointwise spectral data from `BerryGeometry.Connection`. Berry
 connection, Hellmann--Feynman, and Born--Fock identities are already stated directionwise on the
 same `PointwiseEigenbasisData`, so curvature proofs specialize them directly without constructing a
 second one-direction record.
