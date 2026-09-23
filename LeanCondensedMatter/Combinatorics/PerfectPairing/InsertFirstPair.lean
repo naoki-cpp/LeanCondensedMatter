@@ -91,18 +91,7 @@ theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions]),
     Equiv.swap_apply_left]
 
-@[simp]
-theorem Pairing.insertFirstPair_partner_chosen {n : ℕ} (pairing : Pairing n)
-    (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
-    (pairing.insertFirstPair j hj).partner j = 0 := by
-  change (Equiv.swap 0 j *
-    (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) j = 0
-  rw [Equiv.Perm.mul_apply,
-    Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions]),
-    Equiv.swap_apply_right]
-
-@[simp]
-theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
+private theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
     (pairing.insertFirstPair j hj).partner
         (deletedPositionsOrderIso n j hj i : Fin (2 * (n + 1))) =
@@ -166,9 +155,12 @@ theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 
       (pairing.partner_ne 0)
   · by_cases hxj : x = pairing.partner 0
     · subst hxj
-      rw [pairing.eraseZeroPair.insertFirstPair_partner_chosen (pairing.partner 0)
-        (pairing.partner_ne 0)]
-      exact (pairing.partner_partner 0).symm
+      have hpartner :=
+        (pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
+          (pairing.partner_ne 0)).partner_partner 0
+      rw [pairing.eraseZeroPair.insertFirstPair_partner_zero (pairing.partner 0)
+        (pairing.partner_ne 0)] at hpartner
+      exact hpartner.trans (pairing.partner_partner 0).symm
     · have hxmem : x ∈ deletedPositions n (pairing.partner 0) := by
         simp [deletedPositions, hx0, hxj]
       set k := pairing.eraseZeroOrderIso.symm ⟨x, hxmem⟩ with hkdef
