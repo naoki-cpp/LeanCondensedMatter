@@ -12,7 +12,8 @@ frequencies away from `omega = 0`.
 If every zero-energy-gap transition has zero spectral weight, then both `omega → 0` followed by
 `eta → 0⁺` and `eta → 0⁺` followed by `omega → 0` exist locally and converge to the same
 unswitched static finite Lehmann sum.  Finite families are represented by
-`κ → LehmannTransitionData`, so the gap and weight cannot drift into independently indexed inputs.
+`κ → LehmannTransitionData hbar`, so the gap, weight, and reduced Planck constant stay on one
+canonical transition seam.
 -/
 
 namespace QuantumTheory
