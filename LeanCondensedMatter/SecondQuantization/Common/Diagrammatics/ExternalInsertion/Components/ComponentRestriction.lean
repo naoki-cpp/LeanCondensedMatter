@@ -342,6 +342,36 @@ theorem ExternalInsertionDiagram.sum_componentInteractionSector_card_eq
   have hcard := Fintype.card_congr d.componentInteractionShuffle.slotEquiv
   simpa [Fintype.card_sigma] using hcard
 
+/-- The ambient interaction vertices are the disjoint union of their component interaction
+sectors. -/
+noncomputable def ExternalInsertionDiagram.interactionVertexComponentEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    ↥S ≃
+      Σ B : d.vertexGraph.componentPartition.parts,
+        ↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) :=
+  d.vertexGraph.componentPartition.equivSigmaSubfinsets
+    S
+    (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
+    (fun _ => Finset.mem_univ _)
+    (fun B => interactionSector
+      (B : Finset (ExternalInsertionVertex E S)))
+    (fun B => interactionSector_subset
+      (B : Finset (ExternalInsertionVertex E S)))
+    (fun B v => mem_interactionSector_subtype
+      (B : Finset (ExternalInsertionVertex E S)) v)
+
+@[simp]
+theorem ExternalInsertionDiagram.interactionVertexComponentEquiv_symm_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (x : Σ B : d.vertexGraph.componentPartition.parts,
+      ↥(interactionSector
+        (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
+  rfl
+
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
