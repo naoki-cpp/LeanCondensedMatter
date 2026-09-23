@@ -44,7 +44,28 @@ private theorem egfBlockCoeff_succ_succ
     intro i
     rw [← map_natCast (PowerSeries.C : R →+* PowerSeries R) (k + 1),
       PowerSeries.coeff_C_mul]
+    simp [Nat.cast_add, Nat.cast_one]
   simp_rw [hnatCoeff, PowerSeries.coeff_derivative] at hderiv
+  have hderiv' :
+      (n + 1 : R) * coeff (n + 1) ((Z - 1) ^ (k + 1)) =
+        (k + 1 : R) *
+          ∑ i ∈ Finset.range (n + 1),
+            coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+    calc
+      (n + 1 : R) * coeff (n + 1) ((Z - 1) ^ (k + 1)) =
+          coeff (n + 1) (U ^ (k + 1)) * (n + 1 : R) := by
+            simp [U, Nat.cast_add, Nat.cast_one, mul_comm]
+      _ = ∑ i ∈ Finset.range (n + 1),
+          (k + 1 : R) * coeff i (U ^ k) *
+            (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            simpa [Nat.cast_add, Nat.cast_one, mul_assoc] using hderiv
+      _ = (k + 1 : R) *
+          ∑ i ∈ Finset.range (n + 1),
+            coeff i (U ^ k) * (coeff (n - i + 1) U * (n - i + 1 : R)) := by
+            rw [Finset.mul_sum]
+            apply Finset.sum_congr rfl
+            intro i hi
+            ring
   have hmain :
       egfBlockCoeff Z (n + 1) (k + 1) =
         ((n.factorial : R) / (k.factorial : R)) *
@@ -57,8 +78,9 @@ private theorem egfBlockCoeff_succ_succ
     have hk1 : (k + 1 : R) ≠ 0 := by
       simpa [Nat.cast_add, Nat.cast_one] using
         (Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k) : ((k + 1 : ℕ) : R) ≠ 0)
-    rw [hderiv]
     field_simp [hkfac, hk1]
+    rw [mul_comm (coeff (n + 1) ((Z - 1) ^ (k + 1))) (n + 1 : R)]
+    rw [hderiv']
     ring
   rw [hmain, Finset.mul_sum]
   have hreflect :
@@ -72,10 +94,11 @@ private theorem egfBlockCoeff_succ_succ
     apply Finset.sum_congr rfl
     intro j hj
     have hjn : j ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hj)
-    have hsub : n - (n - j) = j := Nat.sub_sub_cancel hjn
+    have hpred : n + 1 - 1 = n := by omega
+    have hsub : n - (n - j) = j := by omega
     have hcastSub : (n : R) - (n - j : ℕ) = (j : R) := by
       rw [← Nat.cast_sub (Nat.sub_le n j), hsub]
-    rw [hsub, hcastSub]
+    rw [hpred, hsub, hcastSub]
   rw [hreflect]
   apply Finset.sum_congr rfl
   intro j hj
