@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentEvaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity
 
 set_option linter.style.header false
@@ -63,6 +63,36 @@ theorem pairingWeight_eq_componentExternalOrderSign_mul_prod_components
         ∏ B : d.vertexGraph.componentPartition.parts,
           (d.restrictComponent B).pairing.weight Common.Statistics.fermion := by
   rw [d.weight_eq_inter_mul_prod_components Common.Statistics.fermion,
+    interComponentWeight_eq_componentExternalOrderSign d blockOrder]
+
+
+/-- The canonical scalar evaluation of an arbitrary external-insertion pairing factors into the
+fermionic external-component order sign and the component-local pairing evaluations whenever the
+pair kernel is local under the canonical component leg embeddings. -/
+theorem pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components
+    {S : Finset (Fin N)}
+    (d : Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (blockOrder :
+      d.vertexGraph.componentPartition.parts ≃
+        Fin (Fintype.card d.vertexGraph.componentPartition.parts))
+    (pairValue :
+      Fin (2 * (2 * S.card + E)) → Fin (2 * (2 * S.card + E)) → ℂ)
+    (localPairValue : ∀ B : d.vertexGraph.componentPartition.parts,
+      Fin (2 * (2 * (Common.interactionSector
+        (B : Finset (Common.ExternalInsertionVertex E S))).card + d.externalPairCount B)) →
+      Fin (2 * (2 * (Common.interactionSector
+        (B : Finset (Common.ExternalInsertionVertex E S))).card + d.externalPairCount B)) → ℂ)
+    (hvalue : ∀ B a b,
+      pairValue (d.componentDiagramLeg B a) (d.componentDiagramLeg B b) =
+        localPairValue B a b) :
+    d.pairing.evaluation (d.pairing.weight Common.Statistics.fermion) pairValue =
+      componentExternalOrderSign d blockOrder *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.restrictComponent B).pairing.evaluation
+            ((d.restrictComponent B).pairing.weight Common.Statistics.fermion)
+            (localPairValue B) := by
+  rw [d.evaluation_eq_inter_mul_prod_components Common.Statistics.fermion
+    pairValue localPairValue hvalue,
     interComponentWeight_eq_componentExternalOrderSign d blockOrder]
 
 end Fermionic
