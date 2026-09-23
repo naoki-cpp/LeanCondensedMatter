@@ -41,6 +41,7 @@ private noncomputable def familyGlobalSlots {total : ℕ}
     (order : Fin total ≃ α) (i : ι) : Finset (Fin total) :=
   Finset.univ.image fun x : F i => order.symm (ambientEquiv.symm ⟨i, x⟩)
 
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 private theorem familyGlobalSlot_injective {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) :
@@ -50,6 +51,7 @@ private theorem familyGlobalSlot_injective {total : ℕ}
   have h₂ := ambientEquiv.symm.injective h₁
   exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
+omit [Fintype ι] [Fintype α] in
 private theorem card_familyGlobalSlots {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) :
@@ -189,7 +191,15 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
       have hslot (j : Fin (Fintype.card (F i))) :
           order.symm (ambientEquiv.symm ⟨i, orders i j⟩) =
             shuffle.slotEquiv ⟨i, j⟩ := by
-        simp [order, assembleFamilyOrder, familyOrderedEquiv]
+        have hsigma :
+            (Equiv.sigmaCongrRight orders).symm ⟨i, orders i j⟩ = ⟨i, j⟩ := by
+          rw [show (⟨i, orders i j⟩ : Σ i, F i) =
+            (Equiv.sigmaCongrRight orders) ⟨i, j⟩ by rfl]
+          exact (Equiv.sigmaCongrRight orders).symm_apply_apply ⟨i, j⟩
+        simp [order, assembleFamilyOrder, familyOrderedEquiv, hsigma]
+      change
+        order.symm (ambientEquiv.symm ⟨i, orders i a⟩) <
+          order.symm (ambientEquiv.symm ⟨i, orders i b⟩)
       rw [hslot a, hslot b]
       exact shuffle.strictMono i hab
     apply Prod.ext horders
