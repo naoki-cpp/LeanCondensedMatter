@@ -56,7 +56,7 @@ variable {Operator : Type*} {s : Statistics}
 
 /-- Any normalized expectation satisfying the first-pair recurrence equals the weighted pairing
 sum on every admissible even operator family. -/
-theorem expectation_eq_sum_pairing (data : ExpectationPairingRecursion Operator s) :
+theorem bloch_de_dominicis (data : ExpectationPairingRecursion Operator s) :
     ∀ (n : ℕ) (C : Fin (2 * n) → Operator), data.admissible n C →
       data.expectation (List.ofFn C) =
         ∑ pairing : Pairing n,

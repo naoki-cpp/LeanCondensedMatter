@@ -27,14 +27,14 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
           (B : Finset (TwoPointVertex S))),
           w (d.vertexLabel ⟨v.1, interactionSector_subset
             (B : Finset (TwoPointVertex S)) v.2⟩) := by
+  let e := interactionSectorComponentEquiv d.vertexGraph
   calc
     (∏ v : ↥S, w (d.vertexLabel v)) =
         ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
             (B : Finset (TwoPointVertex S))),
-            w (d.vertexLabel (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) :=
-      Fintype.prod_equiv_sigma d.interactionVertexComponentEquiv
-        (fun v => w (d.vertexLabel v))
+            w (d.vertexLabel (e.symm ⟨B, v⟩)) :=
+      Fintype.prod_equiv_sigma e (fun v => w (d.vertexLabel v))
     _ = ∏ B : d.vertexGraph.componentPartition.parts,
         ∏ v : ↥(interactionSector
           (B : Finset (TwoPointVertex S))),
@@ -46,7 +46,7 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
       intro v
       apply congrArg (fun x : ↥S => w (d.vertexLabel x))
       apply Subtype.ext
-      exact d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
+      exact interactionSectorComponentEquiv_symm_val d.vertexGraph ⟨B, v⟩
 
 /-- The Dyson sign factors into the external component sign and all vacuum-component signs. -/
 theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum

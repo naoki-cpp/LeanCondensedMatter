@@ -33,18 +33,6 @@ theorem PairingOn.transport_partner {α β : Type*} (P : PairingOn β)
   rw [Equiv.permCongr_apply]
   rfl
 
-/-- `PairingOn.transport` as an equivalence for a fixed ambient equivalence. -/
-def PairingOn.transportEquiv {α β : Type*} (e : α ≃ β) :
-    PairingOn β ≃ PairingOn α where
-  toFun P := P.transport e
-  invFun P := P.transport e.symm
-  left_inv P := by
-    ext i
-    simp
-  right_inv P := by
-    ext i
-    simp
-
 @[simp]
 theorem PairingOn.transport_symm_transport {α β : Type*} (P : PairingOn β)
     (e : α ≃ β) :

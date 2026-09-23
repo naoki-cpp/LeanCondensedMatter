@@ -47,7 +47,7 @@ theorem finiteGibbsExpectation_prod_eq_sum_pairing (s : Statistics)
             ∏ pr ∈ pairing.pairs,
               finiteGibbsExpectation energy β ((C pr.1).comp (C pr.2)) := by
   intro n C q c hC hcomm hne
-  exact (finiteGibbsExpectationRecursion s energy β).expectation_eq_sum_pairing
+  exact (finiteGibbsExpectationRecursion s energy β).bloch_de_dominicis
     n C ⟨q, c, hC, hcomm, hne⟩
 
 end BlochDeDominicis

@@ -53,7 +53,7 @@ ExpectationPairingRecursion Operator s
 
 with only the ordered expectation, pair values, admissibility, empty normalization, pair-deletion
 stability, and KMS/exchange first-pair recurrence. The theorem
-`ExpectationPairingRecursion.expectation_eq_sum_pairing` derives the full pairing expansion.
+`ExpectationPairingRecursion.bloch_de_dominicis` derives the full pairing expansion.
 
 The generic recursion has no occupation basis, trace implementation, density-state construction, or
 finite-dimensional assumption. Its `admissible` predicate is where analytic obligations such as
