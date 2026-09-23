@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise
 
