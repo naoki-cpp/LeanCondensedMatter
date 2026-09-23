@@ -160,15 +160,6 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
     exact sub_eq_zero.mp hzero
   simpa using hsum
 
-/-- An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. -/
-theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
-    (n : ℕ) (s : Finset α) (f : α → α → ℕ)
-    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
-    Nat.ModEq n (∑ p ∈ s.offDiag, f p.1 p.2) 0 := by
-  simpa using
-    finset_sum_offDiag_modEq_of_pair_add_modEq n s f (fun _ _ => 0)
-      (fun a ha b hb hab => by simpa using hpair a ha b hb hab)
-
 /-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
 diagonal modulo `n`. -/
 theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
@@ -176,8 +167,11 @@ theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
     Nat.ModEq n (∑ a ∈ s, ∑ b ∈ s, f a b) (∑ a ∈ s, f a a) := by
   classical
-  have hoff :=
-    finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero n s f hpair
+  have hoff :
+      Nat.ModEq n (∑ p ∈ s.offDiag, f p.1 p.2) 0 := by
+    simpa using
+      finset_sum_offDiag_modEq_of_pair_add_modEq n s f (fun _ _ => 0)
+        (fun a ha b hb hab => by simpa using hpair a ha b hb hab)
   have hsplit :
       (∑ a ∈ s, ∑ b ∈ s, f a b) =
         (∑ p ∈ s.diag, f p.1 p.2) + ∑ p ∈ s.offDiag, f p.1 p.2 := by
