@@ -16,8 +16,8 @@ namespace Combinatorics
 
 open intervalIntegral
 
-variable {ι α : Type*} [Fintype ι] [Fintype α]
-variable (F : ι → Type*) [∀ i, Fintype (F i)]
+variable {ι α : Type*} [Fintype ι] [Fintype α] [DecidableEq α]
+variable (F : ι → Type*) [∀ i, Fintype (F i)] [∀ i, DecidableEq (F i)]
 
 noncomputable section
 
