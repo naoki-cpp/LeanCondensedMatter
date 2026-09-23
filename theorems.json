@@ -94186,45 +94186,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (x : (B : ↥d.vertexGraph.componentPartition.parts) × ↥(SecondQuantization.Common.interactionSector ↑B)),\n  ↑(d.interactionVertexComponentEquiv.symm x) = ↑x.snd",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.interactionVertexComponentEquiv_symm_val",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected ↔ SecondQuantization.Common.HasNoVacuumComponent d.vertexGraph",
     "standardAxioms": [
       "Classical.choice",
@@ -95533,7 +95494,7 @@
     ],
     "dependencies": [
       "Fintype.prod_equiv_sigma",
-      "SecondQuantization.Common.TwoPointDiagram.interactionVertexComponentEquiv_symm_val",
+      "SecondQuantization.Common.interactionSectorComponentEquiv_symm_val",
       "SecondQuantization.Common.interactionSector_subset"
     ],
     "crossModuleDirectWrapper": false,
@@ -103511,6 +103472,45 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {External : Type u_1} {Vertex : Type u_2} [inst : DecidableEq External] [inst_1 : Fintype External]\n  [inst_2 : DecidableEq Vertex] {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S))\n  (x : (B : ↥G.componentPartition.parts) × ↥(SecondQuantization.Common.interactionSector ↑B)),\n  ↑((SecondQuantization.Common.interactionSectorComponentEquiv G).symm x) = ↑x.snd",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.interactionSectorComponentEquiv_symm_val",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector",
+    "externalAxioms": [],
+    "docString": "The inverse component decomposition preserves the underlying ambient interaction vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
