@@ -1,4 +1,4 @@
-import Mathlib.Data.Complex.Basic
+import Mathlib.Analysis.Complex.Basic
 import Mathlib.Order.Interval.Set.UnorderedInterval
 import Mathlib.Tactic.Linarith
 
