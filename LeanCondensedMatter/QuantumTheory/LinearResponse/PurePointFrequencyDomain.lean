@@ -40,38 +40,6 @@ noncomputable def purePointAdiabaticTransitionIntegrand
   adiabaticFrequencyPhase omega eta τ *
     purePointTimeDomainTerm system data A B τ mn
 
-/-- A switched transition is its spectral weight times the corresponding damped Lehmann mode. -/
-theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ)
-    (mn : ι × ι) (τ : ℝ) :
-    purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =
-      purePointTransitionWeight system data A B mn *
-        lehmannMode system.hbar omega eta
-          (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ := by
-  rw [purePointAdiabaticTransitionIntegrand,
-    purePointTimeDomainTerm_eq_exp_energyDifference,
-    adiabaticFrequencyPhase, lehmannMode, lehmannModeExponent]
-  rw [show
-      Complex.exp
-          ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
-          (purePointTransitionWeight system data A B mn *
-            Complex.exp
-              (Complex.I *
-                (((((data.energy mn.1 - data.energy mn.2) * τ) /
-                  system.hbar : ℝ)) : ℂ))) =
-        purePointTransitionWeight system data A B mn *
-          (Complex.exp
-              ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
-            Complex.exp
-              (Complex.I *
-                (((((data.energy mn.1 - data.energy mn.2) * τ) /
-                  system.hbar : ℝ)) : ℂ))) by ring]
-  rw [← Complex.exp_add]
-  congr 2
-  push_cast
-  ring
-
 /-- The switched integrand written directly from the canonical transition record. -/
 theorem purePointAdiabaticTransitionIntegrand_eq_transitionMode
     (data : PurePointLehmannData system ι)
@@ -81,8 +49,40 @@ theorem purePointAdiabaticTransitionIntegrand_eq_transitionMode
       (purePointTransitionData system data A B mn).weight *
         lehmannMode system.hbar omega eta
           (purePointTransitionData system data A B mn).energyGap τ := by
-  simpa using
-    purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
+  rw [purePointAdiabaticTransitionIntegrand, purePointTimeDomainTerm,
+    LehmannTransitionData.timeTerm, adiabaticFrequencyPhase,
+    lehmannMode, lehmannModeExponent]
+  rw [show
+      Complex.exp
+          ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
+          ((purePointTransitionData system data A B mn).weight *
+            Complex.exp
+              (Complex.I *
+                (((((purePointTransitionData system data A B mn).energyGap * τ) /
+                  system.hbar : ℝ)) : ℂ))) =
+        (purePointTransitionData system data A B mn).weight *
+          (Complex.exp
+              ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
+            Complex.exp
+              (Complex.I *
+                (((((purePointTransitionData system data A B mn).energyGap * τ) /
+                  system.hbar : ℝ)) : ℂ))) by ring]
+  rw [← Complex.exp_add]
+  congr 2
+  push_cast
+  ring
+
+/-- Compatibility form exposing the historical weight and ordered energy-gap accessors. -/
+theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) (omega eta : ℝ)
+    (mn : ι × ι) (τ : ℝ) :
+    purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =
+      purePointTransitionWeight system data A B mn *
+        lehmannMode system.hbar omega eta
+          (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ := by
+  simpa [purePointTransitionWeight] using
+    purePointAdiabaticTransitionIntegrand_eq_transitionMode
       system data A B omega eta mn τ
 
 /-- The causal integral of one switched transition is its canonical fixed-rate frequency term. -/
