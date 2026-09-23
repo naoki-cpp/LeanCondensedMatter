@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
@@ -75,49 +77,27 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) =
       1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
-  set f : Mode → ℂ := fun j => Complex.exp (-(β : ℂ) * (ε j : ℂ)) with hf
-  set P : ℂ := ∏ j ∈ Finset.univ.erase i, (1 + f j) with hP
-  have hfilter_not :
-      (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·) =
-        (Finset.univ.erase i : Finset Mode).powerset := by
-    ext t
-    simp [Finset.mem_powerset, Finset.subset_erase]
-  have hsum_not :
-      ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
-        freeBoltzmannWeight ε β n = P := by
-    rw [hfilter_not]
-    exact sum_freeBoltzmannWeight_powerset_eq_prod ε β _
-  have hZ : freePartitionFunction ε β = (1 + f i) * P := by
-    rw [freePartitionFunction_eq_prod, hP, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
-  have hPne : P ≠ 0 := by
-    rw [hP, Finset.prod_ne_zero_iff]
-    intro j _
-    rw [hf]
-    simpa [Common.Statistics.zetaInt_fermion] using
-      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (-ε j))
-  have hnum : Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) = f i * P := by
-    have hsplit :
-        Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) +
-          ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
-            freeBoltzmannWeight ε β n
-          = freePartitionFunction ε β := by
-      rw [weightedTrace_numberOperator, freePartitionFunction]
-      exact Finset.sum_filter_add_sum_filter_not Finset.univ (i ∈ ·) (freeBoltzmannWeight ε β)
-    rw [hsum_not, hZ] at hsplit
-    linear_combination hsplit
-  have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
-  have hfi : f i = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹ := by
-    change Complex.exp (-(β : ℂ) * (ε i : ℂ)) = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹
-    rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring, Complex.exp_neg]
-  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
-    funext fun n => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw,
-    Common.normalizedWeightedDiagonal_eq_weightedTrace_div]
-  change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
-    freePartitionFunction ε β = _
-  rw [hnum, hZ, hfi]
-  field_simp
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  change Common.finiteGibbsExpectation (fermionEnergy ε) β
+      ((create i).comp (annihilate i)) =
+    1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
+  have hC :
+      Common.heisenbergEvolve (fermionEnergy ε) (-β) (create i) =
+        Complex.exp (((ε i) * (-β) : ℝ) : ℂ) • create i := by
+    have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
+      (fermionEnergy ε) (ε i) (-β) (create i)
+      (carriesEnergyShift_create ε i)
+    simpa [mul_comm] using h
+  have hcomm :
+      Common.exchangeCommutator Common.Statistics.fermion (create i) (annihilate i) =
+        (1 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      (anticomm_create_annihilate (Mode := Mode) i i)
+  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
+  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
+    (fermionEnergy ε) β (ε i) Common.Statistics.fermion (1 : ℂ)
+    (create i) (annihilate i) hC hcomm hne
+  simpa [Common.Statistics.zetaInt_fermion, mul_comm] using h
 
 end Fermionic
 end SecondQuantization
