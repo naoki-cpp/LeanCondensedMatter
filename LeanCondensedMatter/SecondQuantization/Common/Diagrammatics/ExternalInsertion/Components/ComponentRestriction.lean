@@ -143,7 +143,6 @@ private noncomputable def ExternalInsertionDiagram.componentBlockLegDataEquiv
       d.legInComponent_iff_unflattened B leg).trans
     (d.componentLegDataEquiv B)
 
-/-- Component-leg membership is invariant under the pairing partner permutation. -/
 private theorem ExternalInsertionDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : Finset (ExternalInsertionVertex E S))
