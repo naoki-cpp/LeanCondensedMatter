@@ -60,8 +60,7 @@ noncomputable def finitePurePointPhysicalSusceptibilityExtension
       (purePointNormalizedExpectation system data) A B omega eta hη
   else
     Finset.univ.sum fun mn : ι × ι =>
-      (purePointTransitionData system data A B mn).frequencyTerm
-        system.hbar omega eta
+      (purePointTransitionData system data A B mn).frequencyTerm omega eta
 
 /-- On the physical positive-rate domain, the total extension is the actual switched
 susceptibility. -/
@@ -111,8 +110,7 @@ theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
             (purePointTransitionWeight system data A B mn)) := by
   let F : ℝ → ℝ → ℂ := fun omega eta =>
     Finset.univ.sum fun mn : ι × ι =>
-      (purePointTransitionData system data A B mn).frequencyTerm
-        system.hbar omega eta
+      (purePointTransitionData system data A B mn).frequencyTerm omega eta
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
