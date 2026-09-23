@@ -4790,6 +4790,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.MultiplicativeWeight.cumulantFromMoment_objectMoment",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
       "Combinatorics.permutationSum_eq_momentFromCumulant"
     ],
     "dependencies": [
@@ -4799,9 +4800,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.MultiplicativeWeight.cumulantFromMoment_objectMoment",
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
       "Combinatorics.permutationSum_eq_momentFromCumulant"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6293,7 +6295,6 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
@@ -6312,14 +6313,13 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "Combinatorics.Pairing.pair_or_reverse_mem",
       "Combinatorics.Pairing.presentsPairs_of_partner_blockPair",
-      "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_componentPairEndpoint_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_mem_pairs",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingTimeLocality.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7295,44 +7295,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (p : Fin (2 * n) → Prop)\n  (hpartner : ∀ (i : Fin (2 * n)), p i ↔ p (pairing.partner i)) (pr : pairing.NormalizedPairSubtype p),\n  (Combinatorics.PairingOn.restrict pairing p hpartner).partner\n      ((pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, 0)) =\n    (pairing.normalizedPairSubtypeEndpointEquiv p hpartner) (pr, 1)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
-    "externalAxioms": [],
-    "docString": "On selected normalized-pair endpoints, the restricted partner exchanges endpoint zero and\nendpoint one. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.mem_pairs_iff",
-      "Combinatorics.PairingOn.restrict_partner_val"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1))\n  (x : ↥(Combinatorics.FiniteIndex.deletedPositions n (pairing.partner 0))),\n  pairing.restrictedPartner (pairing.restrictedPartner x) = x",
     "standardAxioms": [
       "Classical.choice",
@@ -8242,7 +8204,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
@@ -8254,13 +8215,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -9615,6 +9575,46 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [inst_2 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {D : Combinatorics.ConnectedDecomposition α} (W : Combinatorics.MultiplicativeWeight D R),\n      (∀ (T : Finset α), ↑T.card.factorial * (PowerSeries.coeff T.card) Z = W.objectMoment T) →\n        ∀ {s : Finset α}, s ≠ ∅ → ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf = W.connectedContribution s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": "Replica-method form of the generic formal linked-cluster theorem.  If the\nfactorial-normalized coefficients of a unit-constant formal power series are the object moments of\na multiplicative connected decomposition, then the factorial-normalized formal-log coefficient is\nthe connected contribution.  The proof factors through the equality of the two replica\npolynomials, not through cumulant inversion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant",
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial",
+      "Finpartition.replicaPolynomial_coeff_one",
+      "PowerSeries.replicaCoeffPolynomial_coeff_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Z : PowerSeries ℂ},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α},\n      s ≠ ∅ →\n        ↑s.card.factorial * (PowerSeries.coeff s.card) Z.logOf =\n          Finpartition.cumulantFromMoment (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) s",
     "standardAxioms": [
@@ -10959,6 +10959,90 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (s : Finset α) (k : ℕ),\n      ↑s.card.factorial / ↑k.factorial * (PowerSeries.coeff s.card) ((Z - 1) ^ k) =\n        ∑ π, Finpartition.partitionProduct (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) ↑π",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": "The falling-factorial coefficient in the power-series replica polynomial is the sum of\nproducts of factorial-normalized moments over set partitions with the corresponding number of\nblocks. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (κ : Finset α → R) (s : Finset α),\n      (∀ (T : Finset α), ↑T.card.factorial * (PowerSeries.coeff T.card) Z = Finpartition.momentFromCumulant κ T) →\n        Z.replicaCoeffPolynomial s.card = Finpartition.replicaPolynomial κ s",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": "Under the forward finite-set moment relation, the fixed-order power-series replica polynomial\nis exactly the finite-set replica polynomial.  This is the algebraic bridge between the two replica\nconstructions and uses no moment-cumulant inversion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
+    "dependencies": [
+      "Combinatorics.replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum",
+      "Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling",
+      "Finpartition.sum_partitionProduct_momentFromCumulant_partsCard_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -20296,7 +20380,7 @@
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Moment.0.Finpartition.partitionProduct_distinguishedBlockEquiv_symm"
+      "Finpartition.partitionProduct_distinguishedBlockEquiv_symm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -20974,6 +21058,47 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) {s : Finset α}\n  {a : α} (ha : a ∈ s) (x : (B : Finpartition.BlockContaining s a) × Finpartition (s \\ ↑B)),\n  Finpartition.partitionProduct κ ((Finpartition.distinguishedBlockEquiv s a ha).symm x) =\n    κ ↑x.fst * Finpartition.partitionProduct κ x.snd",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.partitionProduct_distinguishedBlockEquiv_symm",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.momentFromCumulant_eq_sum_blockContaining",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.partitionProduct_partsCardSuccEquiv_symm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.momentFromCumulant_eq_sum_blockContaining",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.partitionProduct_partsCardSuccEquiv_symm"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B : Finset α},\n  Finpartition.IsIndependentAcross m A B →\n    ∀ (π : Finpartition (A ⊔ B)),\n      Finpartition.partitionProduct m π =\n        Finpartition.partitionProduct m (π.restrict ⋯) * Finpartition.partitionProduct m (π.restrict ⋯)",
     "standardAxioms": [
@@ -21178,7 +21303,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) {S : Finset α},\n  S ≠ ∅ → (Finpartition.replicaPolynomial κ S).coeff 1 = κ S",
     "standardAxioms": [
       "Classical.choice",
@@ -21186,7 +21311,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -21197,14 +21322,18 @@
     "docString": "For nonempty support, the coefficient linear in the replica count is exactly the one-block\ncontribution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.finpartition_eq_indiscrete_of_card_parts_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21215,7 +21344,48 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
+    "statement": "∀ {F : Type u_3} [inst : CommRing F] {α : Type u_4} [inst_1 : DecidableEq α] (κ : Finset α → F) (S : Finset α),\n  Finpartition.replicaPolynomial κ S =\n    ∑ k ∈ Finset.range (S.card + 1),\n      Polynomial.C (∑ π, ↑(π.parts.card.stirlingSecond k) * Finpartition.partitionProduct κ π) * descPochhammer F k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Replica",
+    "externalAxioms": [],
+    "docString": "The replica polynomial in the descending-factorial basis, grouped by the number of outer\nblocks.  The coefficient of the `k`-th descending factorial is the Stirling-weighted sum over all\nfine partitions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "dependencies": [
+      "Finpartition.replicaPolynomial_eq_sum_stirlingSecond_descPochhammer"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {F : Type u_3} [inst : CommRing F] {α : Type u_4} [inst_1 : DecidableEq α] (κ : Finset α → F) (S : Finset α),\n  Finpartition.replicaPolynomial κ S =\n    ∑ π,\n      ∑ k ∈ Finset.range (π.parts.card + 1),\n        Polynomial.C (↑(π.parts.card.stirlingSecond k) * Finpartition.partitionProduct κ π) * descPochhammer F k",
     "standardAxioms": [
       "Classical.choice",
@@ -21223,7 +21393,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -21234,14 +21404,18 @@
     "docString": "The replica polynomial in the descending-factorial basis.  The Stirling number of the second\nkind converts the monomial replica factor for a partition into the falling-factorial basis used by\nthe fixed-order power-series replica polynomial. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Replica.0.Finpartition.X_pow_eq_sum_stirlingSecond_descPochhammer"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Finpartition.replicaPolynomial_eq_sum_descPochhammer_stirling"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21518,6 +21692,7 @@
     "dependents": [
       "Finpartition.card_parts_eq_stirlingSecond",
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
     "dependencies": [],
@@ -21526,9 +21701,10 @@
     "compiledConsumers": [
       "Finpartition.card_parts_eq_stirlingSecond",
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Cumulant.0.Combinatorics.momentFromCumulant_powerSeriesCumulantCoeff",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21539,7 +21715,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) (S : Finset α)\n  (k : ℕ),\n  ∑ σ, Finpartition.partitionProduct (Finpartition.momentFromCumulant κ) ↑σ =\n    ∑ ρ, ↑(ρ.parts.card.stirlingSecond k) * Finpartition.partitionProduct κ ρ",
     "standardAxioms": [
       "Classical.choice",
@@ -21547,7 +21723,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -21558,15 +21734,19 @@
     "docString": "Summing products of moments over outer partitions with `k` blocks can be reindexed by the\nunderlying fine partition.  The multiplicity of a fine partition is the Stirling number counting\nits `k`-block coarsenings. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
     "dependencies": [
       "Finpartition.card_coarsenings_parts_eq_stirlingSecond",
       "Finpartition.sum_Iic_partitionProduct_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -31978,7 +32158,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Field R] [inst_1 : CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (m : ℕ), (Z.replicaCoeffPolynomial m).coeff 1 = ↑m.factorial * (PowerSeries.coeff m) Z.logOf",
     "standardAxioms": [
       "Classical.choice",
@@ -31986,7 +32166,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -31997,15 +32177,19 @@
     "docString": "The coefficient linear in the formal replica count is the factorial-normalized coefficient\nof the formal logarithm. This is the algebraic replica identity, with no analytic continuation in\nthe replica number. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.coeff_sub_one_pow_eq_zero_of_lt",
       "_private.LeanCondensedMatter.Analysis.PowerSeries.Replica.0.PowerSeries.inv_factorial_mul_coeff_one_descPochhammer"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90585,6 +90769,41 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (v : Fin (SecondQuantization.Common.interactionSector ↑B).card),\n  d.componentInteractionShuffle.slotEquiv ⟨B, v⟩ =\n    (S.orderIsoOfFin ⋯).symm ⟨↑(((SecondQuantization.Common.interactionSector ↑B).orderIsoOfFin ⋯) v), ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C → d.componentLegShuffle.blockInversionCount B C ≡ d.componentExternalShuffle.blockInversionCount B C [MOD 2]",
     "standardAxioms": [
@@ -91136,6 +91355,41 @@
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
     ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  ∑ B, (SecondQuantization.Common.interactionSector ↑B).card = S.card",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.sum_componentInteractionSector_card_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The component interaction sectors exhaust the ambient interaction vertices. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -138771,6 +139025,129 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] [CharZero R] {Z : PowerSeries R},\n  PowerSeries.constantCoeff Z = 1 →\n    ∀ (s : Finset α) (k : ℕ),\n      Combinatorics.egfBlockCoeff✝ Z s.card k =\n        ∑ π, Finpartition.partitionProduct (fun T => ↑T.card.factorial * (PowerSeries.coeff T.card) Z) ↑π",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum"
+    ],
+    "dependencies": [
+      "Finpartition.sum_blockContaining_card",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_succ_succ",
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.partitionProduct_partsCardSuccEquiv_symm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.replicaCoeffPolynomial_descPochhammerCoeff_eq_fixedBlockMomentSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_2} [inst : Field R] [CharZero R] (Z : PowerSeries R) (n k : ℕ),\n  Combinatorics.egfBlockCoeff✝ Z (n + 1) (k + 1) =\n    ∑ j ∈ Finset.range (n + 1),\n      ↑(n.choose j) * (↑(j + 1).factorial * (PowerSeries.coeff (j + 1)) Z) * Combinatorics.egfBlockCoeff✝ Z (n - j) k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_succ_succ",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : Field R] (m : Finset α → R) {s : Finset α} {a : α}\n  (ha : a ∈ s) (k : ℕ) (x : (B : Finpartition.BlockContaining s a) × { Q // Q.parts.card = k }),\n  Finpartition.partitionProduct m ↑((Finpartition.partsCardSuccEquiv ha k).symm x) =\n    m ↑x.fst * Finpartition.partitionProduct m ↑x.snd",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.partitionProduct_partsCardSuccEquiv_symm",
+    "module": "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum"
+    ],
+    "dependencies": [
+      "Finpartition.partitionProduct_distinguishedBlockEquiv_symm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge.0.Combinatorics.egfBlockCoeff_eq_fixedBlockMomentSum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B : Finset α},\n  Finpartition.IsIndependentAcross m A B →\n    ∀ T ⊆ A ⊔ B, Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
     "standardAxioms": [
       "Classical.choice",
@@ -138883,45 +139260,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) {s : Finset α}\n  {a : α} (ha : a ∈ s) (x : (B : Finpartition.BlockContaining s a) × Finpartition (s \\ ↑B)),\n  Finpartition.partitionProduct κ ((Finpartition.distinguishedBlockEquiv s a ha).symm x) =\n    κ ↑x.fst * Finpartition.partitionProduct κ x.snd",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Moment.0.Finpartition.partitionProduct_distinguishedBlockEquiv_symm",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Finpartition.momentFromCumulant_eq_sum_blockContaining"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Finpartition.momentFromCumulant_eq_sum_blockContaining"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -141183,6 +141521,41 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} {a : α} (ha : a ∈ s)\n  (x : (B : Finpartition.BlockContaining s a) × Finpartition (s \\ ↑B)),\n  ((Finpartition.distinguishedBlockEquiv s a ha).symm x).parts.card = x.snd.parts.card + 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock.0.Finpartition.card_parts_distinguishedBlockEquiv_symm",
+    "module": "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (P : Finpartition s) {a : α},\n  a ∈ s → insert (P.part a) (P.avoid (P.part a)).parts = P.parts",
     "standardAxioms": [
       "Classical.choice",
@@ -141410,41 +141783,6 @@
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.cumulantFromMoment_atomMoment_eq_mu"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} {a : α} (ha : a ∈ s)\n  (x : (B : Finpartition.BlockContaining s a) × Finpartition (s \\ ↑B)),\n  ((Finpartition.distinguishedBlockEquiv s a ha).symm x).parts.card = x.snd.parts.card + 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.SetPartition.Stirling.0.Finpartition.card_parts_distinguishedBlockEquiv_symm",
-    "module": "LeanCondensedMatter.Combinatorics.SetPartition.Stirling",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
