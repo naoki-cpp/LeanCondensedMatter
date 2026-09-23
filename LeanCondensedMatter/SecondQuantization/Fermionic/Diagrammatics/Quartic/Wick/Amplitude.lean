@@ -99,9 +99,11 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
               (quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2))) := by
-  simpa [orderedQuarticPairValue, timedFieldPairContraction_eq,
-    quarticLegFieldForSequence, quarticLocalLegEnergyShift,
-    quarticLocalLegOperator, Common.quarticLocalLegOperator]
+  rw [orderedQuarticPairValue, timedFieldPairContraction]
+  simp only [timedFieldOperator_quarticLegFieldForSequence,
+    quarticLegOperatorForSequence_eq_smul, LinearMap.smul_comp, LinearMap.comp_smul,
+    smul_smul, map_smul]
+  rfl
 
 /-- A pair value is continuous in the time assignment. -/
 theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
