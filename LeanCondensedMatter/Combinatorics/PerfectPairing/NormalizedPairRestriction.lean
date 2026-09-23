@@ -37,12 +37,12 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
       rw [← hpair.2]
       exact (hpartner pr.1.1.1).1 pr.2
   invFun pos := by
-    generalize hxdef : pairing.positionToPairEndpoint pos.1 = x
+    generalize hxdef : pairing.pairEndpointEquiv.symm pos.1 = x
     rcases x with ⟨pr, k⟩
     refine (⟨pr, ?_⟩, k)
     have hx : pairing.pairEndpoint (pr, k) = pos.1 := by
       have h := pairing.pairEndpointEquiv.right_inv pos.1
-      change pairing.pairEndpoint (pairing.positionToPairEndpoint pos.1) = pos.1 at h
+      change pairing.pairEndpoint (pairing.pairEndpointEquiv.symm pos.1) = pos.1 at h
       rw [hxdef] at h
       exact h
     fin_cases k
@@ -60,7 +60,7 @@ noncomputable def Pairing.normalizedPairSubtypeEndpointEquiv {n : ℕ}
     apply Prod.ext
     · apply Subtype.ext
       exact congrArg Prod.fst h
-    · change (pairing.positionToPairEndpoint
+    · change (pairing.pairEndpointEquiv.symm
           (pairing.pairEndpoint (pr.1, k))).2 = k
       exact congrArg Prod.snd h
   right_inv pos := by
