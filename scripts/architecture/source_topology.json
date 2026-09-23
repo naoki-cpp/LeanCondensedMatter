@@ -253,6 +253,18 @@
         "Mathlib.LinearAlgebra.Matrix.Determinant",
         "Mathlib.LinearAlgebra.Matrix.Permanent"
       ]
+    },
+    {
+      "id": "replicaLinkedClusterIndependence",
+      "roots": [
+        "LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem"
+      ],
+      "forbiddenPrefixes": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Analysis.PowerSeries.Cumulant"
+      ]
     }
   ]
 }
