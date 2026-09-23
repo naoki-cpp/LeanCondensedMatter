@@ -84,24 +84,6 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     field_simp
   · rw [if_neg hij] at h ⊢
     simpa [hij] using h
-    have hC :
-        Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
-          Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-      simpa [mul_comm] using
-        (Common.heisenbergEvolve_eq_smul_of_carriesShift
-          (fermionEnergy ε) (-ε i) (-β) (annihilate i)
-          (carriesEnergyShift_annihilate ε i))
-    have hcomm :
-        Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create j) =
-          (0 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-      simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion, hij] using
-        (anticomm_annihilate_create (Mode := Mode) i j)
-    have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
-    simpa using
-      (Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-        (fermionEnergy ε) β (-ε i) Common.Statistics.fermion 0
-        (annihilate i) (create j) hC hcomm hne)
-
 /-! ## Closed forms of the free thermal Green function -/
 
 /-- `G₀,ᵢᵢ(τ, τ')` for `τ' < τ`. -/
@@ -148,14 +130,14 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  simp only [map_smul, map_add, map_neg]
+  simp only [map_smul, map_add]
   rw [freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd,
     freeGibbsDensityOperator_expectation_numberOperator]
   simp only [smul_eq_mul, one_mul, neg_mul]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
       (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-  rw [if_pos rfl]
+  simp only [if_true]
   field_simp
   ring
 
@@ -215,11 +197,10 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
     rw [freeGibbsDensityOperator_expectation_create_comp_annihilate,
       if_neg hij]
     simp
-  · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul, map_add, map_neg]
+  · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_add]
     rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
-      freeGibbsDensityOperator_expectation_create_comp_annihilate,
-      if_neg hij]
-    simp
+      freeGibbsDensityOperator_expectation_create_comp_annihilate]
+    simp [hij]
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
 operator with an annihilation operator. -/
