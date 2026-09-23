@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 
