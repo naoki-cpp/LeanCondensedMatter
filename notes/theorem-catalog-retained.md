@@ -242,3 +242,10 @@ or consumer structure changes.
   definition: closure of the left summand under the involutive partner map forces closure of the
   right summand as well. The current `splitRightMap` consumer is one construction using this
   independently meaningful decomposition fact.
+- `Combinatorics.Pairing.card_pairs` — canonical cardinality theorem for perfect pairings:
+  a pairing of `Fin (2 * n)` has exactly `n` normalized pairs. This is an independently meaningful
+  combinatorial endpoint even without a current compiled consumer.
+- `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
+  permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
+  count. It records the intrinsic bridge between crossing parity and permutation sign independently
+  of downstream bridge implementations.
