@@ -160,6 +160,7 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ}
   exact eq_of_heq (Sigma.mk.inj_iff.mp h₂).2
 
 /-- Reassembling the extracted local orders and shuffle recovers the global order. -/
+omit [Fintype ι] [Fintype α] in
 private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) :
