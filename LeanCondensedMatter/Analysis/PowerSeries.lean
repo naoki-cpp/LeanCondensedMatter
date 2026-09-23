@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
+import LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
 import LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog
 
