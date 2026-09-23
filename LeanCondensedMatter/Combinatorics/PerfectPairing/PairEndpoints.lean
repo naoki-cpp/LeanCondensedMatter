@@ -33,40 +33,37 @@ theorem Pairing.pairEndpoint_one {n : ℕ} (pairing : Pairing n)
     pairing.pairEndpoint (p, 1) = p.1.2 := by
   simp [Pairing.pairEndpoint]
 
-/-- Recover the normalized pair and endpoint index containing a position. -/
-noncomputable def Pairing.positionToPairEndpoint {n : ℕ} (pairing : Pairing n) :
-    Fin (2 * n) → pairing.NormalizedPair × Fin 2 := by
-  classical
-  intro i
-  by_cases h : i < pairing.partner i
-  · exact (⟨(i, pairing.partner i),
-      (pairing.mem_pairs_iff i (pairing.partner i)).2 ⟨h, rfl⟩⟩, 0)
-  · exact (⟨(pairing.partner i, i),
-      (pairing.mem_pairs_iff (pairing.partner i) i).2
-        ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i),
-          pairing.partner_partner i⟩⟩, 1)
-
 /-- The two endpoints of all normalized pairs are equivalent to the ambient paired positions. -/
 noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
-    pairing.NormalizedPair × Fin 2 ≃ Fin (2 * n) where
-  toFun := pairing.pairEndpoint
-  invFun := pairing.positionToPairEndpoint
-  left_inv := by
-    rintro ⟨⟨⟨a, b⟩, hab⟩, k⟩
+    pairing.NormalizedPair × Fin 2 ≃ Fin (2 * n) := by
+  classical
+  let inverse : Fin (2 * n) → pairing.NormalizedPair × Fin 2 := fun i => by
+    by_cases h : i < pairing.partner i
+    · exact (⟨(i, pairing.partner i),
+        (pairing.mem_pairs_iff i (pairing.partner i)).2 ⟨h, rfl⟩⟩, 0)
+    · exact (⟨(pairing.partner i, i),
+        (pairing.mem_pairs_iff (pairing.partner i) i).2
+          ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i),
+            pairing.partner_partner i⟩⟩, 1)
+  refine
+    { toFun := pairing.pairEndpoint
+      invFun := inverse
+      left_inv := ?_
+      right_inv := ?_ }
+  · rintro ⟨⟨⟨a, b⟩, hab⟩, k⟩
     have hpair := (pairing.mem_pairs_iff a b).1 hab
     have hablt : a < b := hpair.1
     have hpartnera : pairing.partner a = b := hpair.2
     have hpartnerb : pairing.partner b = a := by
       rw [← hpartnera, pairing.partner_partner]
     fin_cases k
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hablt, hpartnera]
+    · simp [inverse, Pairing.pairEndpoint, hablt, hpartnera]
     · have hba : ¬ b < a := not_lt_of_ge (le_of_lt hablt)
-      simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hba, hpartnerb]
-  right_inv := by
-    intro i
+      simp [inverse, Pairing.pairEndpoint, hba, hpartnerb]
+  · intro i
     by_cases h : i < pairing.partner i
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, h]
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, h]
+    · simp [inverse, Pairing.pairEndpoint, h]
+    · simp [inverse, Pairing.pairEndpoint, h]
 
 @[simp]
 theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
@@ -95,7 +92,7 @@ noncomputable def Pairing.normalizedPairOfEndpointEquiv
     {A P : Type*} {n : ℕ} (pairing : Pairing n)
     (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n)) :
     A → pairing.NormalizedPair :=
-  fun a => (pairing.positionToPairEndpoint (e (endpointEquiv (a, 0)))).1
+  fun a => (pairing.pairEndpointEquiv.symm (e (endpointEquiv (a, 0)))).1
 
 /-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
 
@@ -117,7 +114,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
     have hx : endpointEquiv x = p := endpointEquiv.apply_symm_apply p
     rcases x with ⟨a, k⟩
     have hrecover (j : Fin 2) :
-        (pairing.positionToPairEndpoint (pairing.pairEndpoint (localPr, j))).1 = localPr :=
+        (pairing.pairEndpointEquiv.symm (pairing.pairEndpoint (localPr, j))).1 = localPr :=
       congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (localPr, j))
     fin_cases k
     · have hfirst : e (endpointEquiv (a, 0)) = localPr.1.1 := by
@@ -171,14 +168,10 @@ theorem Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
   classical
   unfold Pairing.normalizedPairOfEndpointEquiv
   by_cases h : e (endpointEquiv (a, 0)) < pairing.partner (e (endpointEquiv (a, 0)))
-  · have horder : e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
-      simpa only [hpartner a] using h
-    left
-    simp [Pairing.positionToPairEndpoint, hpartner a, horder]
-  · have horder : ¬ e (endpointEquiv (a, 0)) < e (endpointEquiv (a, 1)) := by
-      simpa only [hpartner a] using h
-    right
-    simp [Pairing.positionToPairEndpoint, hpartner a, horder]
+  · left
+    simp [Pairing.pairEndpointEquiv, h, hpartner a]
+  · right
+    simp [Pairing.pairEndpointEquiv, h, hpartner a]
 
 /-- If the transported endpoint order is already increasing, normalization does not swap the two
 endpoints. -/
