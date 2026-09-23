@@ -106,6 +106,14 @@ structure ExternalInsertionDiagram (ExternalLabel InternalLabel : Type*) (E N : 
   /-- Perfect pairing of all external and interaction legs. -/
   pairing : Pairing (2 * S.card + E)
 
+/-- Product of a commutative local weight over the quartic interaction vertices. External
+insertions carry labels but no scalar interaction weight at this statistics-independent layer. -/
+noncomputable def ExternalInsertionDiagram.vertexWeight {M : Type*} [CommMonoid M]
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (w : InternalLabel → M) : M :=
+  ∏ v : ↥S, w (d.vertexLabel v)
+
 @[ext]
 theorem ExternalInsertionDiagram.ext {S : Finset (Fin N)}
     {d₁ d₂ : ExternalInsertionDiagram ExternalLabel InternalLabel E N S}
