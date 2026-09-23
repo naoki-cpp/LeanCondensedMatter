@@ -453,8 +453,6 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
             fun B => (d.restrictComponentConnected B.2).1.pairing.partner) := rfl
   rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm,
     QuarticDiagram.bigLegEquiv_legOfVertexLocal, Equiv.sigmaCongrRight_apply,
-    show (d.restrictComponentConnected B.2).1.pairing = d.restrictedPairing B.2 from
-      d.restrictComponent_pairing B.2,
     ← hblock0, QuarticDiagram.restrictedPairing_partner_blockLegEquiv,
     QuarticDiagram.bigLegEquiv_symm_sigma_mk, hv2, hl2,
     d.equivSigmaParts_symm_subtypeSubtypeEquivSubtype B.2 w hw,
