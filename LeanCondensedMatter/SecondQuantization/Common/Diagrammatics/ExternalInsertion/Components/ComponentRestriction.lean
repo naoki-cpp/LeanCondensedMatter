@@ -268,6 +268,80 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
       (d.externalSectorOrderIso B e).1 := by
   rfl
 
+/-- The canonical order-preserving shuffle of component-local interaction vertices into the
+ambient interaction-vertex order. -/
+noncomputable def ExternalInsertionDiagram.componentInteractionShuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    FamilySlotShuffleTo
+      (fun B : d.vertexGraph.componentPartition.parts =>
+        (interactionSector
+          (B : Finset (ExternalInsertionVertex E S))).card)
+      S.card where
+  slotEquiv :=
+    (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
+      ((interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).toEquiv).trans <|
+      (d.vertexGraph.componentPartition.equivSigmaSubfinsets
+        S
+        (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
+        (fun _ => Finset.mem_univ _)
+        (fun B => interactionSector
+          (B : Finset (ExternalInsertionVertex E S)))
+        (fun B => interactionSector_subset
+          (B : Finset (ExternalInsertionVertex E S)))
+        (fun B v => mem_interactionSector_subtype
+          (B : Finset (ExternalInsertionVertex E S)) v)).symm.trans
+        (S.orderIsoOfFin rfl).symm.toEquiv
+  strictMono := by
+    intro B a b hab
+    change
+      (S.orderIsoOfFin rfl).symm
+          ⟨((interactionSector
+            (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl a).1,
+            interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S))
+              ((interactionSector
+                (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl a).2⟩ <
+        (S.orderIsoOfFin rfl).symm
+          ⟨((interactionSector
+            (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl b).1,
+            interactionSector_subset
+              (B : Finset (ExternalInsertionVertex E S))
+              ((interactionSector
+                (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl b).2⟩
+    apply (S.orderIsoOfFin rfl).symm.strictMono
+    exact
+      ((interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).strictMono hab
+
+@[simp]
+theorem ExternalInsertionDiagram.componentInteractionShuffle_slotEquiv_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (v : Fin (interactionSector
+      (B : Finset (ExternalInsertionVertex E S))).card) :
+    d.componentInteractionShuffle.slotEquiv ⟨B, v⟩ =
+      (S.orderIsoOfFin rfl).symm
+        ⟨((interactionSector
+          (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).1,
+          interactionSector_subset
+            (B : Finset (ExternalInsertionVertex E S))
+            ((interactionSector
+              (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl v).2⟩ := by
+  rfl
+
+/-- The component interaction sectors exhaust the ambient interaction vertices. -/
+theorem ExternalInsertionDiagram.sum_componentInteractionSector_card_eq
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    (∑ B : d.vertexGraph.componentPartition.parts,
+      (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card) = S.card := by
+  have hcard := Fintype.card_congr d.componentInteractionShuffle.slotEquiv
+  simpa [Fintype.card_sigma] using hcard
+
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
