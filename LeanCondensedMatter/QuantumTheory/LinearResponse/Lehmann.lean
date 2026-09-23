@@ -58,7 +58,7 @@ noncomputable abbrev orderedLehmannTransitionWeight
 The orientation is always the ordered pair `(m,n)`: `energyGap = Eₘ - Eₙ`, while `weight`
 is the physical coefficient `(i / ℏ)(pₘ-pₙ)AₘₙBₙₘ`.  All later representations should adapt to
 this pair rather than choose their own sign or index convention. -/
-structure LehmannTransitionData where
+structure LehmannTransitionData (hbar : ℝ) where
   /-- Ordered energy gap `Eₘ - Eₙ`. -/
   energyGap : ℝ
   /-- Physical transition weight `(i / ℏ)(pₘ-pₙ)AₘₙBₙₘ`. -/
@@ -67,7 +67,7 @@ structure LehmannTransitionData where
 /-- Build the canonical transition data from ordered spectral entries. -/
 noncomputable def orderedLehmannTransitionData
     (hbar energyM energyN probabilityM probabilityN : ℝ)
-    (matrixAMN matrixBNM : ℂ) : LehmannTransitionData where
+    (matrixAMN matrixBNM : ℂ) : LehmannTransitionData hbar where
   energyGap := orderedLehmannEnergyGap energyM energyN
   weight := orderedLehmannTransitionWeight hbar probabilityM probabilityN matrixAMN matrixBNM
 
@@ -173,7 +173,7 @@ namespace LehmannTransitionData
 
 /-- Time-domain contribution of one canonical transition. -/
 noncomputable def timeTerm
-    (transition : LehmannTransitionData) (hbar t : ℝ) : ℂ :=
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (t : ℝ) : ℂ :=
   transition.weight *
     Complex.exp
       (Complex.I * ((((transition.energyGap * t) / hbar : ℝ) : ℂ)))
@@ -181,14 +181,14 @@ noncomputable def timeTerm
 /-- The pure phase in a canonical time-domain transition does not change its norm. -/
 @[simp]
 theorem norm_timeTerm
-    (transition : LehmannTransitionData) (hbar t : ℝ) :
-    ‖transition.timeTerm hbar t‖ = ‖transition.weight‖ := by
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (t : ℝ) :
+    ‖transition.timeTerm t‖ = ‖transition.weight‖ := by
   rw [timeTerm, norm_mul, Complex.norm_exp]
   simp
 
 /-- Fixed-rate frequency-domain contribution of one canonical transition. -/
 noncomputable def frequencyTerm
-    (transition : LehmannTransitionData) (hbar omega eta : ℝ) : ℂ :=
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega eta : ℝ) : ℂ :=
   lehmannTerm hbar omega eta transition.energyGap transition.weight
 
 end LehmannTransitionData
@@ -211,10 +211,10 @@ theorem norm_lehmannTerm_le
 /-- An absolutely summable family of canonical transition weights produces a summable
 fixed-rate frequency series at any strictly positive switching rate. -/
 theorem LehmannTransitionData.summable_frequencyTerm_of_pos
-    {κ : Type*} (hbar omega eta : ℝ)
-    (transition : κ → LehmannTransitionData)
+    {κ : Type*} {hbar : ℝ} (omega eta : ℝ)
+    (transition : κ → LehmannTransitionData hbar)
     (hweight : Summable fun j => ‖(transition j).weight‖) (heta : 0 < eta) :
-    Summable fun j => (transition j).frequencyTerm hbar omega eta := by
+    Summable fun j => (transition j).frequencyTerm omega eta := by
   apply (hweight.mul_left (1 / eta)).of_norm_bounded
   intro j
   simpa [LehmannTransitionData.frequencyTerm] using
@@ -246,7 +246,7 @@ variable {ι : Type*} (system : BoundedFreeSystem H)
 /-- Adapt one operator-level ordered pair to the canonical Lehmann transition data. -/
 noncomputable def purePointTransitionData
     (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) : LehmannTransitionData :=
+    (A B : H →L[ℂ] H) (mn : ι × ι) : LehmannTransitionData system.hbar :=
   orderedLehmannTransitionData system.hbar
     (data.energy mn.1) (data.energy mn.2)
     (data.probability mn.1) (data.probability mn.2)
@@ -288,8 +288,7 @@ noncomputable def purePointLehmannSeries
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
   ∑' mn : ι × ι,
-    (purePointTransitionData system data A B mn).frequencyTerm
-      system.hbar omega eta
+    (purePointTransitionData system data A B mn).frequencyTerm omega eta
 
 /-- Absolute transition-weight summability implies summability of the fixed-rate pure-point
 Lehmann series for every `eta > 0`. -/
@@ -303,7 +302,7 @@ theorem summable_purePointLehmannSeries_of_pos
         (purePointTransitionWeight system data A B mn) := by
   simpa [LehmannTransitionData.frequencyTerm] using
     LehmannTransitionData.summable_frequencyTerm_of_pos
-      system.hbar omega eta (purePointTransitionData system data A B) hsum heta
+      omega eta (purePointTransitionData system data A B) hsum heta
 
 /-- In finite dimension, the absolute transition-weight condition is automatic. -/
 theorem purePointLehmannSummable_of_finite
