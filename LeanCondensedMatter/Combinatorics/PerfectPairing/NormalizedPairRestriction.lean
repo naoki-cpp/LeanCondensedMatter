@@ -91,6 +91,7 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
     (pairing.normalizedPairSubtypeEndpointEquiv p hpartner) e
     (fun pr => by
       rw [hlocal]
+      apply congrArg e
       apply Subtype.ext
       rw [pairing.restrict_partner_val]
       exact ((pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2)
