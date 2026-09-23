@@ -6060,8 +6060,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
     ],
     "dependencies": [
       "Combinatorics.crosses_map_iff"
@@ -6069,8 +6069,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -7455,9 +7455,9 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner"
@@ -7466,9 +7466,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -89795,7 +89795,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "dependencies": [
@@ -89806,7 +89806,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "compiledConsumerCount": 2,
@@ -89966,44 +89966,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p q : (d.restrictComponent B).pairing.NormalizedPair),\n  Combinatorics.Crosses ↑((d.componentNormalizedPairEmbedding B) p) ↑((d.componentNormalizedPairEmbedding B) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The canonical component normalized-pair embedding preserves and reflects geometric crossings. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -90330,44 +90292,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑B)\n  (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((Combinatorics.PairingOn.restrict d.pairing (d.legInComponent ↑B) ⋯).partner leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The restricted vacuum pairing agrees with the component-restricted ambient pairing\nunder the vacuum leg reindexing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148265,6 +148189,44 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (p q : (d.restrictComponent B).pairing.NormalizedPair),\n  Combinatorics.Crosses ↑((d.componentNormalizedPairEmbedding B) p) ↑((d.componentNormalizedPairEmbedding B) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentNormalizedPairEmbedding_crosses_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The canonical component normalized-pair embedding preserves and reflects geometric crossings. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), (↑B).toLeft.card = 2 * d.externalPairCount B",
     "standardAxioms": [
       "Classical.choice",
@@ -148370,7 +148332,7 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
@@ -148381,9 +148343,47 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑B)\n  (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((Combinatorics.PairingOn.restrict d.pairing (d.legInComponent ↑B) ⋯).partner leg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The restricted vacuum pairing agrees with the component-restricted ambient pairing\nunder the vacuum leg reindexing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
