@@ -1,3 +1,5 @@
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
+import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 import Mathlib.Data.Finset.Image
 import Mathlib.Data.Finset.Sum
 
@@ -61,6 +63,32 @@ theorem interactionSector_subset {S : Finset Vertex}
     interactionSector B ⊆ S := by
   intro v hv
   exact (mem_interactionSector B v).1 hv |>.choose
+
+
+/-- The ambient interaction vertices are the dependent disjoint union of the interaction sectors of
+the connected components of an external-plus-interaction graph. -/
+noncomputable def interactionSectorComponentEquiv
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S)) :
+    ↥S ≃ Σ B : G.componentPartition.parts,
+      ↥(interactionSector (B : Finset (External ⊕ ↥S))) :=
+  G.componentPartition.equivSigmaSubfinsets S
+    (fun v => (Sum.inr v : External ⊕ ↥S))
+    (fun _ => Finset.mem_univ _)
+    (fun B => interactionSector (B : Finset (External ⊕ ↥S)))
+    (fun B => interactionSector_subset (B : Finset (External ⊕ ↥S)))
+    (fun B v => mem_interactionSector_subtype
+      (B : Finset (External ⊕ ↥S)) v)
+
+/-- The inverse component decomposition preserves the underlying ambient interaction vertex. -/
+@[simp]
+theorem interactionSectorComponentEquiv_symm_val
+    [DecidableEq External] [Fintype External] [DecidableEq Vertex]
+    {S : Finset Vertex} (G : SimpleGraph (External ⊕ ↥S))
+    (x : Σ B : G.componentPartition.parts,
+      ↥(interactionSector (B : Finset (External ⊕ ↥S)))) :
+    ((interactionSectorComponentEquiv G).symm x : ↥S).1 = x.2.1 :=
+  rfl
 
 end Common
 end SecondQuantization
