@@ -103,16 +103,16 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   have hC :
       Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
-        Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-    exact Common.heisenbergEvolve_eq_smul_of_carriesShift
+        Complex.exp ((-β : ℂ) * (-ε i : ℂ)) • annihilate i :=
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
       (fermionEnergy ε) (-ε i) (-β) (annihilate i)
       (carriesEnergyShift_annihilate ε i)
   have hcomm :
       Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create j) =
         (if i = j then (1 : ℂ) else 0) •
           (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa using
-      (Common.ExchangeAlgebra.exchangeCommutator_annihilate_create
+    simpa [smul_eq_mul] using
+      (Common.ExchangeAlgebra.annihilate_create
         (s := Common.Statistics.fermion) (Config := Occupation Mode) i j)
   have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
   have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
@@ -120,7 +120,11 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl] at h ⊢
-    simpa [Common.Statistics.zetaInt_fermion] using h
+    rw [div_eq_iff] 
+    · simpa [Common.Statistics.zetaInt_fermion, ← Complex.exp_neg, mul_comm] using
+        congrArg (fun z => z * (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)) h
+    · simpa [Common.Statistics.zetaInt_fermion, add_comm] using
+        (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
   · rw [if_neg hij] at h ⊢
     simpa using h
 
@@ -138,7 +142,7 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     LinearMap.comp_smul, smul_smul,
     (Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)).map_smul, smul_eq_mul,
     normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-    freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd]
+    freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd, if_pos rfl]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -185,6 +189,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
       (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
+  simp only [if_pos rfl]
   field_simp
   ring
 
@@ -199,15 +204,15 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   have hC :
       Common.heisenbergEvolve (fermionEnergy ε) (-β) (create j) =
-        Complex.exp (((ε j) * (-β) : ℝ) : ℂ) • create j := by
-    exact Common.heisenbergEvolve_eq_smul_of_carriesShift
+        Complex.exp ((-β : ℂ) * (ε j : ℂ)) • create j :=
+    Common.heisenbergEvolve_eq_smul_of_carriesShift
       (fermionEnergy ε) (ε j) (-β) (create j) (carriesEnergyShift_create ε j)
   have hcomm :
       Common.exchangeCommutator Common.Statistics.fermion (create j) (annihilate i) =
         (if i = j then (1 : ℂ) else 0) •
           (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
     simpa [eq_comm, Common.Statistics.zetaInt_fermion] using
-      (Common.ExchangeAlgebra.exchangeCommutator_create_annihilate
+      (Common.exchangeCommutator_create_annihilate
         (s := Common.Statistics.fermion) (Config := Occupation Mode) j i)
   have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε j) β
   have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
@@ -238,15 +243,13 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   apply Common.normalizedWeightedDiagonal_timeOrderedProduct_eq_zero
   · rw [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-      normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-      (freeGibbsDensityOperator ε β).expectation.map_smul,
-      freeGibbsDensityOperator_expectation_annihilate_comp_create]
-    simp [hij]
+      normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
+    rw [map_smul, freeGibbsDensityOperator_expectation_annihilate_comp_create, if_neg hij,
+      smul_zero]
   · rw [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-      normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation,
-      (freeGibbsDensityOperator ε β).expectation.map_smul,
-      freeGibbsDensityOperator_expectation_create_comp_annihilate]
-    simp [hij]
+      normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
+    rw [map_smul, freeGibbsDensityOperator_expectation_create_comp_annihilate, if_neg hij,
+      smul_zero]
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
