@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
@@ -263,9 +262,24 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (annihilate j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
-  exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
-    (matrixCoeff_annihilate_comp_annihilate i j)
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  have hC :
+      Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
+        Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
+    simpa [mul_comm] using
+      (Common.heisenbergEvolve_eq_smul_of_carriesShift
+        (fermionEnergy ε) (-ε i) (-β) (annihilate i)
+        (carriesEnergyShift_annihilate ε i))
+  have hcomm :
+      Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (annihilate j) =
+        (0 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      (anticomm_annihilate_annihilate (Mode := Mode) i j)
+  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
+  simpa using
+    (Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
+      (fermionEnergy ε) β (-ε i) Common.Statistics.fermion 0
+      (annihilate i) (annihilate j) hC hcomm hne)
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -273,9 +287,23 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create i).comp (create j))) = 0 := by
-  rw [← normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation]
-  exact Common.normalizedWeightedDiagonal_eq_zero_of_matrixCoeff_self_eq_zero _ _
-    (matrixCoeff_create_comp_create i j)
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  have hC :
+      Common.heisenbergEvolve (fermionEnergy ε) (-β) (create i) =
+        Complex.exp (((ε i) * (-β) : ℝ) : ℂ) • create i := by
+    simpa [mul_comm] using
+      (Common.heisenbergEvolve_eq_smul_of_carriesShift
+        (fermionEnergy ε) (ε i) (-β) (create i) (carriesEnergyShift_create ε i))
+  have hcomm :
+      Common.exchangeCommutator Common.Statistics.fermion (create i) (create j) =
+        (0 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
+    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
+      (anticomm_create_create (Mode := Mode) i j)
+  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
+  simpa using
+    (Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
+      (fermionEnergy ε) β (ε i) Common.Statistics.fermion 0
+      (create i) (create j) hC hcomm hne)
 
 end Fermionic
 end SecondQuantization
