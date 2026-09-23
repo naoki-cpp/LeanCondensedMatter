@@ -75,7 +75,18 @@ private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl] at h ⊢
-    simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
+    have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
+    have hden : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
+      simpa [Common.Statistics.zetaInt_fermion, add_comm] using
+        (one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β)
+    have hexp :
+        Complex.exp (-((β : ℂ) * (ε i : ℂ))) =
+          (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹ := by
+      rw [Complex.exp_neg, inv_eq_one_div]
+    rw [show ((-ε i : ℝ) * β : ℂ) = -((β : ℂ) * (ε i : ℂ)) by push_cast; ring,
+      hexp] at h
+    rw [h]
+    field_simp
   · rw [if_neg hij] at h ⊢
     simpa [hij] using h
     have hC :
@@ -143,7 +154,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
   simp only [map_smul, map_add, map_neg]
-  rw [neg_smul, map_smul, map_add, map_neg, map_smul,
+  rw [neg_smul, map_add, map_neg,
     smul_eq_mul, one_smul ℂ,
     freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd,
     freeGibbsDensityOperator_expectation_numberOperator]
@@ -203,14 +214,13 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   split_ifs with hτ hτ'
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
-    rw [map_smul, freeGibbsDensityOperator_expectation_annihilate_comp_create,
+    rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
       if_neg hij, smul_zero, neg_zero]
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
-    rw [map_smul, freeGibbsDensityOperator_expectation_create_comp_annihilate,
+    rw [freeGibbsDensityOperator_expectation_create_comp_annihilate,
       if_neg hij, smul_zero, neg_zero]
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul, map_add, map_neg]
-    rw [map_smul, map_add, map_smul, map_smul,
-      freeGibbsDensityOperator_expectation_annihilate_comp_create,
+    rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
       freeGibbsDensityOperator_expectation_create_comp_annihilate,
       if_neg hij, zero_add, smul_zero, neg_zero]
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
