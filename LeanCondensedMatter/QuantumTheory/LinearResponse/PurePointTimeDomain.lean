@@ -163,8 +163,7 @@ theorem summable_purePointTimeDomainTerm
     Summable (purePointTimeDomainTerm system data A B τ) := by
   apply hsum.2.2.of_norm_bounded
   intro mn
-  rw [purePointTimeDomainTerm_eq_weight_mul_transitionPhase]
-  simp
+  simp [purePointTimeDomainTerm]
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
