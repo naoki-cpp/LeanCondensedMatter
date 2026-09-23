@@ -41868,6 +41868,88 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {hbar : ℝ} (transition : QuantumTheory.LinearResponse.LehmannTransitionData hbar) (t : ℝ),\n  ‖transition.timeTerm t‖ = ‖transition.weight‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": "The pure phase in a canonical time-domain transition does not change its norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} {hbar : ℝ} (omega eta : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  (Summable fun j => ‖(transition j).weight‖) → 0 < eta → Summable fun j => (transition j).frequencyTerm omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": "An absolutely summable family of canonical transition weights produces a summable\nfixed-rate frequency series at any strictly positive switching rate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.summable_purePointLehmannSeries_of_pos"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.norm_lehmannTerm_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.summable_purePointLehmannSeries_of_pos"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (self : QuantumTheory.LinearResponse.NormalizedExpectation H), self.toContinuousLinearMap 1 = 1",
     "standardAxioms": [
@@ -43261,7 +43343,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  hbar ≠ 0 →\n    (∀ j ∈ s, weight j = 0 ∨ energyGap j ≠ 0) →\n      ∀ᶠ (omega : ℝ) in nhds 0,\n        QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n          (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta energyGap weight)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega energyGap weight)",
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      ∀ᶠ (omega : ℝ) in nhds 0,\n        QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n          (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44087,7 +44169,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  hbar ≠ 0 →\n    (∀ j ∈ s, weight j = 0 ∨ energyGap j ≠ 0) →\n      QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta energyGap weight)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 energyGap weight) ∧\n        QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta energyGap weight)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 energyGap weight)",
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition) ∧\n        QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n          (fun omega eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n          (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44161,6 +44243,111 @@
       "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} (hbar : ℝ) (table : QuantumTheory.LinearResponse.FiniteLehmannTable ι) (mn : ι × ι),\n  (QuantumTheory.LinearResponse.finiteLehmannTableTransitionData hbar table mn).energyGap =\n    QuantumTheory.LinearResponse.orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.finiteLehmannTableTransitionData_energyGap",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (mn : ι × ι),\n  QuantumTheory.LinearResponse.finiteLehmannTableTransitionData system.hbar\n      (QuantumTheory.LinearResponse.finiteLehmannTableOfPurePoint system data A B) mn =\n    QuantumTheory.LinearResponse.purePointTransitionData system data A B mn",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.finiteLehmannTableTransitionData_ofPurePoint",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
+    "externalAxioms": [],
+    "docString": "The scalar adapter preserves the canonical ordered transition exactly. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} (hbar : ℝ) (table : QuantumTheory.LinearResponse.FiniteLehmannTable ι) (mn : ι × ι),\n  (QuantumTheory.LinearResponse.finiteLehmannTableTransitionData hbar table mn).weight =\n    QuantumTheory.LinearResponse.finiteLehmannTableTransitionWeight hbar table mn",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.finiteLehmannTableTransitionData_weight",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44959,7 +45146,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar omega : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  (∀ j ∈ s, weight j = 0 ∨ omega + energyGap j / hbar ≠ 0) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n      (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta energyGap weight)\n      (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega energyGap weight)",
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar omega : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  (∀ j ∈ s, (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit\n      (fun eta => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n      (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45659,7 +45846,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar eta : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit\n      (fun omega => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta energyGap weight)\n      (QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar 0 eta energyGap weight)",
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar eta : ℝ)\n  (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  eta ≠ 0 →\n    QuantumTheory.LinearResponse.HasStaticLimit\n      (fun omega => QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar omega eta transition)\n      (QuantumTheory.LinearResponse.finiteLehmannLimitSum s hbar 0 eta transition)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45701,7 +45888,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  hbar ≠ 0 →\n    (∀ j ∈ s, weight j = 0 ∨ energyGap j ≠ 0) →\n      QuantumTheory.LinearResponse.HasStaticLimit\n        (fun omega => QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega energyGap weight)\n        (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 energyGap weight)",
+    "statement": "∀ {κ : Type u_1} (s : Finset κ) (hbar : ℝ) (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar),\n  hbar ≠ 0 →\n    (∀ j ∈ s, (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) →\n      QuantumTheory.LinearResponse.HasStaticLimit\n        (fun omega => QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar omega transition)\n        (QuantumTheory.LinearResponse.finiteUnswitchedLehmannSum s hbar 0 transition)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46395,11 +46582,53 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero",
       "QuantumTheory.LinearResponse.lehmannDenominator_eq_neg_exponent"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι),\n  0 < eta →\n    ∫ (τ : ℝ) in Set.Ioi 0,\n        QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n      (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).frequencyTerm omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
+    "externalAxioms": [],
+    "docString": "The causal integral of one switched transition is its canonical fixed-rate frequency term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent",
+      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46440,10 +46669,10 @@
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
       "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent",
-      "QuantumTheory.LinearResponse.norm_purePointTransitionPhase",
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+      "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47184,7 +47413,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.summable_lehmannTerm_of_pos"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.norm_inv_lehmannDenominator_le"
@@ -47192,7 +47421,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.summable_lehmannTerm_of_pos"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -47264,10 +47493,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
       "QuantumTheory.LinearResponse.summable_purePointBackwardTimeTerm",
-      "QuantumTheory.LinearResponse.summable_purePointForwardTimeTerm",
-      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+      "QuantumTheory.LinearResponse.summable_purePointForwardTimeTerm"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.norm_purePointSchrodingerPhase"
@@ -47275,12 +47502,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
       "QuantumTheory.LinearResponse.summable_purePointBackwardTimeTerm",
-      "QuantumTheory.LinearResponse.summable_purePointForwardTimeTerm",
-      "QuantumTheory.LinearResponse.summable_purePointTimeDomainTerm"
+      "QuantumTheory.LinearResponse.summable_purePointForwardTimeTerm"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47776,6 +48001,76 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (hbar energyM energyN probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ),\n  (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar energyM energyN probabilityM probabilityN matrixAMN\n        matrixBNM).energyGap =\n    QuantumTheory.LinearResponse.orderedLehmannEnergyGap energyM energyN",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.orderedLehmannTransitionData_energyGap",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (hbar energyM energyN probabilityM probabilityN : ℝ) (matrixAMN matrixBNM : ℂ),\n  (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar energyM energyN probabilityM probabilityN matrixAMN\n        matrixBNM).weight =\n    QuantumTheory.LinearResponse.orderedLehmannTransitionWeight hbar probabilityM probabilityN matrixAMN matrixBNM",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.orderedLehmannTransitionData_weight",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ), QuantumTheory.LinearResponse.perturbedDensityOperator system ρ V 0 t = ρ.op",
     "standardAxioms": [
       "Classical.choice",
@@ -47848,6 +48143,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι)\n  (τ : ℝ),\n  QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta\n        (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).energyGap τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
+    "externalAxioms": [],
+    "docString": "The switched integrand written directly from the canonical transition record. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
+      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι)\n  (τ : ℝ),\n  QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta\n        (QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ",
     "standardAxioms": [
       "Classical.choice",
@@ -47855,7 +48193,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -47863,21 +48201,17 @@
     "name": "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
     "externalAxioms": [],
-    "docString": "A switched transition is its spectral weight times the corresponding damped Lehmann mode. ",
+    "docString": "Compatibility form exposing the historical weight and ordered energy-gap accessors. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
+    "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference"
+      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48201,8 +48535,43 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      Complex.exp\n        (Complex.I *\n          ↑(QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ /\n              system.hbar))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
+    "externalAxioms": [],
+    "docString": "The physical transition term written with the explicit energy-difference exponential. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.purePointTransitionPhase system data mn.1 mn.2 τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48214,14 +48583,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference",
+    "name": "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_weight_mul_transitionPhase",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
     "externalAxioms": [],
-    "docString": "The physical transition term written with the explicit energy-difference exponential. ",
+    "docString": "The canonical transition time term agrees with the operator-derived Heisenberg phase. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+      "QuantumTheory.LinearResponse.purePoint_forward_sub_backward_eq_timeDomainSeries"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.purePointTransitionPhase_eq_exp_energyDifference"
@@ -48229,7 +48598,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+      "QuantumTheory.LinearResponse.purePoint_forward_sub_backward_eq_timeDomainSeries"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -48242,8 +48611,43 @@
     "replacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (mn : ι × ι),\n  (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).energyGap =\n    QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.purePointTransitionData_energyGap",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (m n : ι) (t : ℝ),\n  QuantumTheory.LinearResponse.purePointTransitionPhase system data m n t =\n    Complex.exp (Complex.I * ↑((data.energy m - data.energy n) * t / system.hbar))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (m n : ι) (t : ℝ),\n  QuantumTheory.LinearResponse.purePointTransitionPhase system data m n t =\n    Complex.exp\n      (Complex.I *\n        ↑(QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy m) (data.energy n) * t / system.hbar))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48262,13 +48666,52 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference"
+      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_weight_mul_transitionPhase"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference"
+      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_weight_mul_transitionPhase"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (i : ι),\n  QuantumTheory.LinearResponse.purePointTransitionWeight system data A B (i, i) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.purePointTransitionWeight_diag",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": "Diagonal pure-point transitions have zero physical weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -48304,6 +48747,7 @@
       "QuantumTheory.LinearResponse.commutatorSusceptibility_purePoint_eq_timeDomainSeries"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_weight_mul_transitionPhase",
       "QuantumTheory.LinearResponse.summable_purePointBackwardTimeTerm",
       "QuantumTheory.LinearResponse.summable_purePointForwardTimeTerm"
     ],
@@ -49206,47 +49650,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (hbar omega eta : ℝ) (energyGap : κ → ℝ) (weight : κ → ℂ),\n  (Summable fun j => ‖weight j‖) →\n    0 < eta → Summable fun j => QuantumTheory.LinearResponse.lehmannTerm hbar omega eta (energyGap j) (weight j)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.summable_lehmannTerm_of_pos",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
-    "externalAxioms": [],
-    "docString": "An absolutely summable family of transition weights produces a summable Lehmann series at\nany strictly positive switching rate. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.summable_purePointLehmannSeries_of_pos"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.norm_lehmannTerm_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.summable_purePointLehmannSeries_of_pos"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.PurePointTimeDomainSummable system data A B →\n    Summable (QuantumTheory.LinearResponse.purePointBackwardTimeTerm system data A B τ)",
     "standardAxioms": [
       "Classical.choice",
@@ -49353,7 +49756,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.summable_lehmannTerm_of_pos"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -49390,7 +49793,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.norm_purePointTransitionPhase"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -118302,7 +118705,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.purePointDirectionalCurrentTransitionWeight_diag"
+      "QuantumTheory.LinearResponse.purePointTransitionWeight_diag"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -119544,45 +119947,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3}\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (geometry : SecondQuantization.Fermionic.Lattice.LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : SecondQuantization.Fermionic.Lattice.LocallyFiniteHopping Site) (q : ℝ) (i : ι),\n  QuantumTheory.LinearResponse.purePointTransitionWeight system data\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K) (i, i) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.purePointDirectionalCurrentTransitionWeight_diag",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "A diagonal current-current transition has zero Lehmann weight. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
