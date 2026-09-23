@@ -97,7 +97,7 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
   have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
     (fermionEnergy ε) β (ε i) Common.Statistics.fermion (1 : ℂ)
     (create i) (annihilate i) hC hcomm hne
-  simpa [Common.Statistics.zetaInt_fermion, mul_comm] using h
+  simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
 
 end Fermionic
 end SecondQuantization
