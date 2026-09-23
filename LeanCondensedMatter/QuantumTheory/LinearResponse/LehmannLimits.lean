@@ -132,7 +132,7 @@ namespace LehmannTransitionData
 
 /-- Zero-rate contribution of one canonical transition. -/
 noncomputable def unswitchedTerm
-    (transition : LehmannTransitionData) (hbar omega : ℝ) : ℂ :=
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega : ℝ) : ℂ :=
   unswitchedLehmannTerm hbar omega transition.energyGap transition.weight
 
 end LehmannTransitionData
@@ -140,19 +140,19 @@ end LehmannTransitionData
 /-- A finite family of fixed-rate canonical Lehmann transitions. -/
 noncomputable def finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
-    (hbar omega eta : ℝ) (transition : κ → LehmannTransitionData) : ℂ :=
-  s.sum fun j => (transition j).frequencyTerm hbar omega eta
+    (hbar omega eta : ℝ) (transition : κ → LehmannTransitionData hbar) : ℂ :=
+  s.sum fun j => (transition j).frequencyTerm omega eta
 
 /-- The corresponding finite zero-rate sum. -/
 noncomputable def finiteUnswitchedLehmannSum
     {κ : Type*} (s : Finset κ)
-    (hbar omega : ℝ) (transition : κ → LehmannTransitionData) : ℂ :=
-  s.sum fun j => (transition j).unswitchedTerm hbar omega
+    (hbar omega : ℝ) (transition : κ → LehmannTransitionData hbar) : ℂ :=
+  s.sum fun j => (transition j).unswitchedTerm omega
 
 /-- Fixed-nonzero-rate finite Lehmann sums always have a static limit. -/
 theorem hasStaticLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
-    (hbar eta : ℝ) (transition : κ → LehmannTransitionData)
+    (hbar eta : ℝ) (transition : κ → LehmannTransitionData hbar)
     (heta : eta ≠ 0) :
     HasStaticLimit
       (fun omega : ℝ =>
@@ -167,7 +167,7 @@ theorem hasStaticLimit_finiteLehmannLimitSum
 /-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
 theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
-    (hbar omega : ℝ) (transition : κ → LehmannTransitionData)
+    (hbar omega : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hregular : ∀ j ∈ s,
       (transition j).weight = 0 ∨ omega + (transition j).energyGap / hbar ≠ 0) :
     HasAdiabaticRemovalLimit
@@ -184,7 +184,7 @@ theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
 /-- Static continuity of a finite zero-rate nonresonant sum. -/
 theorem hasStaticLimit_finiteUnswitchedLehmannSum
     {κ : Type*} (s : Finset κ)
-    (hbar : ℝ) (transition : κ → LehmannTransitionData)
+    (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
     (hregular : ∀ j ∈ s,
       (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) :
@@ -201,7 +201,7 @@ theorem hasStaticLimit_finiteUnswitchedLehmannSum
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
 theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
     {κ : Type*} (s : Finset κ)
-    (hbar : ℝ) (transition : κ → LehmannTransitionData)
+    (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
     (hregular : ∀ j ∈ s,
       (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) :
@@ -225,8 +225,8 @@ theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
       have hterm : ∀ᶠ omega : ℝ in 𝓝 0,
           HasAdiabaticRemovalLimit
             (fun eta : ℝ =>
-              (transition a).frequencyTerm hbar omega eta)
-            ((transition a).unswitchedTerm hbar omega) := by
+              (transition a).frequencyTerm omega eta)
+            ((transition a).unswitchedTerm omega) := by
         rcases haRegular with hweight | hgap
         · exact Filter.Eventually.of_forall fun omega => by
             simpa [LehmannTransitionData.frequencyTerm,
@@ -255,7 +255,7 @@ theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
 /-- Both local iterated limits exist and agree for a finite static-nonresonant family. -/
 theorem finiteLehmannLimitSum_has_both_local_iterated_limits
     {κ : Type*} (s : Finset κ)
-    (hbar : ℝ) (transition : κ → LehmannTransitionData)
+    (hbar : ℝ) (transition : κ → LehmannTransitionData hbar)
     (hhbar : hbar ≠ 0)
     (hregular : ∀ j ∈ s,
       (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0) :
