@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction
 
 set_option linter.style.header false
 
@@ -24,6 +24,32 @@ noncomputable def timedFieldPairContraction
   (freeGibbsDensityOperator ε β).expectation
     (Common.finiteHilbertOperatorAlgEquiv
       ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
+
+
+/-- Closed form of a bare external-field contraction. The mixed contractions are the
+Bloch–de Dominicis two-point kernels; anomalous contractions vanish. -/
+theorem freeGibbsDensityOperator_expectation_bareExternalFieldOperator_comp
+    (ε : Mode → ℝ) (β : ℝ) (A B : ExternalFieldLabel Mode) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperatorAlgEquiv
+          ((bareExternalFieldOperator A).comp (bareExternalFieldOperator B))) =
+      match A, B with
+      | .annihilation i, .creation j =>
+          if i = j then
+            Complex.exp ((β : ℂ) * (ε i : ℂ)) /
+              (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
+          else 0
+      | .creation i, .annihilation j =>
+          if j = i then 1 / (Complex.exp ((β : ℂ) * (ε j : ℂ)) + 1) else 0
+      | .annihilation _, .annihilation _ => 0
+      | .creation _, .creation _ => 0 := by
+  cases A <;> cases B <;>
+    simp only [bareExternalFieldOperator] <;>
+    first
+    | exact freeGibbsDensityOperator_expectation_annihilate_comp_create ε β _ _
+    | exact freeGibbsDensityOperator_expectation_create_comp_annihilate ε β _ _
+    | exact freeGibbsDensityOperator_expectation_annihilate_comp_annihilate ε β _ _
+    | exact freeGibbsDensityOperator_expectation_create_comp_create ε β _ _
 
 /-- Closed form after extracting the two imaginary-time exponential factors. -/
 theorem timedFieldPairContraction_eq
