@@ -328,7 +328,8 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
             (data.energy mn.1 - data.energy mn.2)
             (purePointTransitionWeight system data A B mn)) := by
   simpa [finiteLehmannLimitSum, finiteUnswitchedLehmannSum,
-    LehmannTransitionData.frequencyTerm, LehmannTransitionData.unswitchedTerm] using
+    LehmannTransitionData.frequencyTerm, LehmannTransitionData.unswitchedTerm,
+    purePointTransitionWeight] using
     finiteLehmannLimitSum_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar
