@@ -361,7 +361,7 @@ theorem ExternalInsertionDiagram.sum_componentInteractionSector_card_eq
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card) = S.card := by
   have hcard := Fintype.card_congr d.interactionVertexComponentEquiv
-  simpa [Fintype.card_sigma] using hcard
+  simpa [Fintype.card_sigma] using hcard.symm
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
