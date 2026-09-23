@@ -43,9 +43,12 @@ theorem timedFieldPairContraction_eq
               if j = i then 1 / (Complex.exp ((β : ℂ) * (ε j : ℂ)) + 1) else 0
           | .annihilation _, .annihilation _ => 0
           | .creation _, .creation _ => 0 := by
-  rw [timedFieldPairContraction, timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul,
-    map_smul_of_tower]
+  rw [timedFieldPairContraction,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+    Common.finiteGibbsExpectation_smul,
+    ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   cases A.label <;> cases B.label <;>
     simp only [bareExternalFieldOperator]
   · rw [freeGibbsDensityOperator_expectation_annihilate_comp_annihilate]
