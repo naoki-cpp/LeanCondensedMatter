@@ -282,16 +282,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionShuffle
     (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
       ((interactionSector
         (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).toEquiv).trans <|
-      (d.vertexGraph.componentPartition.equivSigmaSubfinsets
-        S
-        (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
-        (fun _ => Finset.mem_univ _)
-        (fun B => interactionSector
-          (B : Finset (ExternalInsertionVertex E S)))
-        (fun B => interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)))
-        (fun B v => mem_interactionSector_subtype
-          (B : Finset (ExternalInsertionVertex E S)) v)).symm.trans
+      (interactionSectorComponentEquiv d.vertexGraph).symm.trans
         (S.orderIsoOfFin rfl).symm.toEquiv
   strictMono := by
     intro B a b hab
