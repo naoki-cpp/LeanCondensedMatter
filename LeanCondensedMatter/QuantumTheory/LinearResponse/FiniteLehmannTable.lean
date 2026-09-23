@@ -42,13 +42,6 @@ structure FiniteLehmannTable (ι : Type*) where
   /-- Matrix element table `Bₘₙ = ⟨m|B|n⟩` for the source-coupling observable. -/
   matrixB : ι → ι → ℂ
 
-/-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table. -/
-def finiteLehmannTableTransitionWeight
-    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
-  orderedLehmannTransitionWeight hbar
-    (table.probability mn.1) (table.probability mn.2)
-    (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
-
 /-- Adapt one scalar-table ordered pair to the canonical Lehmann transition data. -/
 noncomputable def finiteLehmannTableTransitionData
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι)
@@ -57,6 +50,13 @@ noncomputable def finiteLehmannTableTransitionData
     (table.energy mn.1) (table.energy mn.2)
     (table.probability mn.1) (table.probability mn.2)
     (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
+
+/-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table.
+
+This compatibility accessor is the `weight` projection of the canonical transition record. -/
+def finiteLehmannTableTransitionWeight
+    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
+  (finiteLehmannTableTransitionData hbar table mn).weight
 
 @[simp]
 theorem finiteLehmannTableTransitionData_energyGap
@@ -75,7 +75,7 @@ theorem finiteLehmannTableTransitionData_weight
 theorem finiteLehmannTableTransitionWeight_diag
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (i : ι) :
     finiteLehmannTableTransitionWeight hbar table (i, i) = 0 := by
-  simp [finiteLehmannTableTransitionWeight]
+  simp [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData]
 
 /-- Fixed-rate finite Lehmann response evaluated from scalar spectral data. -/
 noncomputable def finiteLehmannTableResponse
