@@ -136,10 +136,10 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
         ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
     let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
     have hweight : Summable fun mn : ι × ι =>
-        ‖purePointTransitionWeight system data A B mn‖ := by
+        ‖(purePointTransitionData system data A B mn).weight‖ := by
       simpa only [PurePointLehmannSummable] using hsum.2.2
     have hmajorant : Summable fun mn : ι × ι =>
-        C * ‖purePointTransitionWeight system data A B mn‖ :=
+        C * ‖(purePointTransitionData system data A B mn).weight‖ :=
       hweight.mul_left C
     refine Summable.of_norm_bounded hmajorant fun mn => ?_
     have hnonneg : 0 ≤ ∫ τ : ℝ in Ioi 0,
@@ -150,17 +150,17 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
       (∫ τ : ℝ in Ioi 0,
           ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖) =
         ∫ τ : ℝ in Ioi 0,
-          ‖purePointTransitionWeight system data A B mn‖ *
+          ‖(purePointTransitionData system data A B mn).weight‖ *
             ‖adiabaticFrequencyPhase omega eta τ‖ := by
           apply setIntegral_congr_fun measurableSet_Ioi
           intro τ _
           simp [purePointAdiabaticTransitionIntegrand,
             purePointTimeDomainTerm]
           ring
-      _ = ‖purePointTransitionWeight system data A B mn‖ * C := by
+      _ = ‖(purePointTransitionData system data A B mn).weight‖ * C := by
         rw [integral_const_mul]
-      _ = C * ‖purePointTransitionWeight system data A B mn‖ := by ring
-      _ ≤ C * ‖purePointTransitionWeight system data A B mn‖ := le_rfl
+      _ = C * ‖(purePointTransitionData system data A B mn).weight‖ := by ring
+      _ ≤ C * ‖(purePointTransitionData system data A B mn).weight‖ := le_rfl
   rw [← MeasureTheory.integral_tsum_of_summable_integral_norm
     (μ := volume.restrict (Ioi 0)) hInt hSum]
   rw [purePointLehmannSeries]
