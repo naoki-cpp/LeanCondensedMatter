@@ -86,6 +86,7 @@ private noncomputable def familyOrdersOfOrder {total : ℕ}
     (order : Fin total ≃ α) : FamilyOrders F :=
   fun i => familyOrderOfOrder F ambientEquiv order i
 
+omit [Fintype ι] [Fintype α] in
 private theorem familyOrderOfOrder_slot {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) (j : Fin (Fintype.card (F i))) :
@@ -125,6 +126,7 @@ private noncomputable def familyShuffleOfOrder {total : ℕ}
     exact ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
       (card_familyGlobalSlots F ambientEquiv order i)).strictMono hab
 
+omit [Fintype ι] [Fintype α] in
 private theorem familyOrder_eq_of_strictMono {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι)
