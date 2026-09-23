@@ -45,7 +45,7 @@ structure FiniteLehmannTable (ι : Type*) where
 /-- Adapt one scalar-table ordered pair to the canonical Lehmann transition data. -/
 noncomputable def finiteLehmannTableTransitionData
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι)
-    (mn : ι × ι) : LehmannTransitionData :=
+    (mn : ι × ι) : LehmannTransitionData hbar :=
   orderedLehmannTransitionData hbar
     (table.energy mn.1) (table.energy mn.2)
     (table.probability mn.1) (table.probability mn.2)
@@ -81,7 +81,7 @@ noncomputable def finiteLehmannTableResponse
     {ι : Type*} [Fintype ι]
     (hbar omega eta : ℝ) (table : FiniteLehmannTable ι) : ℂ :=
   ∑ mn : ι × ι,
-    (finiteLehmannTableTransitionData hbar table mn).frequencyTerm hbar omega eta
+    (finiteLehmannTableTransitionData hbar table mn).frequencyTerm omega eta
 
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
