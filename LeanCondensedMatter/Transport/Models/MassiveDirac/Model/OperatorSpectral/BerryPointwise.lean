@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection
+import LeanCondensedMatter.Analysis.Operator.BerryGeometry
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.OperatorSpectral
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 
