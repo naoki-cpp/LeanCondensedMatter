@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Berry.Symmetry
-import LeanCondensedMatter.Transport.Analysis.BandOccupation
+import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false

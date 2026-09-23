@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Model.Kinematics
-import LeanCondensedMatter.Transport.Analysis.BandOccupation
+import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
 
 set_option linter.style.header false
 

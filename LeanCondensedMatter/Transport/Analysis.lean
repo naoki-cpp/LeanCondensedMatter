@@ -3,6 +3,8 @@ import LeanCondensedMatter.Transport.Analysis.BandOccupation
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
+import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
+import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
 
 set_option linter.style.header false
@@ -11,7 +13,8 @@ set_option linter.style.header false
 # Generic transport analysis
 
 Public opt-in package boundary for model-independent analytical utilities used by transport
-consumers. It exports angular-harmonic integrals, generic band and zero-temperature occupation, the explicit
+consumers. It exports angular-harmonic integrals, generic band-state occupation, zero-temperature band filling,
+Lorentzian Fermi-edge analysis, the explicit
 two-dimensional physical-momentum continuum normalization, polar Fourier reduction, and the
 positive transport-lifetime datum.
 

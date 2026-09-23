@@ -52,6 +52,14 @@ The main semantic boundaries are:
   on contact terms, physical volume, driving frequency normalization, or electric-field conversion;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
+`Analysis.BandOccupation` owns only arbitrary occupation-law composition with band energies.
+`Analysis.ZeroTemperatureOccupation` owns the strict scalar Fermi step and its pointwise properties;
+`Analysis.ZeroTemperatureBandFilling` owns zero-temperature occupied regions, Fermi surfaces, and
+filled/empty/partially-filled band predicates; and `Analysis.ZeroTemperatureLorentzian` owns the
+finite-window Fermi-edge integrals, arctangent formulas, broadening limits, and isolated-pole
+weights. This split lets arbitrary-occupation and band-filling consumers avoid the heavier
+Lorentzian edge analysis.
+
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
 `d²p/(2πℏ)²`; it is not a dimension-independent transport invariant. `Analysis.AngularHarmonics`
 owns the reusable constant/first/second harmonic
