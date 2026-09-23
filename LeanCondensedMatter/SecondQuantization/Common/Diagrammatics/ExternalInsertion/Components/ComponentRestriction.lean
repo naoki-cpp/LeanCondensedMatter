@@ -268,6 +268,36 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
       (d.externalSectorOrderIso B e).1 := by
   rfl
 
+/-- The ambient interaction vertices are the disjoint union of their component interaction
+sectors. -/
+noncomputable def ExternalInsertionDiagram.interactionVertexComponentEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    ↥S ≃
+      Σ B : d.vertexGraph.componentPartition.parts,
+        ↥(interactionSector
+          (B : Finset (ExternalInsertionVertex E S))) :=
+  d.vertexGraph.componentPartition.equivSigmaSubfinsets
+    S
+    (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
+    (fun _ => Finset.mem_univ _)
+    (fun B => interactionSector
+      (B : Finset (ExternalInsertionVertex E S)))
+    (fun B => interactionSector_subset
+      (B : Finset (ExternalInsertionVertex E S)))
+    (fun B v => mem_interactionSector_subtype
+      (B : Finset (ExternalInsertionVertex E S)) v)
+
+@[simp]
+theorem ExternalInsertionDiagram.interactionVertexComponentEquiv_symm_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (x : Σ B : d.vertexGraph.componentPartition.parts,
+      ↥(interactionSector
+        (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
+  rfl
+
 /-- The canonical order-preserving shuffle of component-local interaction vertices into the
 ambient interaction-vertex order. -/
 noncomputable def ExternalInsertionDiagram.componentInteractionShuffle
@@ -282,16 +312,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionShuffle
     (Equiv.sigmaCongrRight fun B : d.vertexGraph.componentPartition.parts =>
       ((interactionSector
         (B : Finset (ExternalInsertionVertex E S))).orderIsoOfFin rfl).toEquiv).trans <|
-      (d.vertexGraph.componentPartition.equivSigmaSubfinsets
-        S
-        (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
-        (fun _ => Finset.mem_univ _)
-        (fun B => interactionSector
-          (B : Finset (ExternalInsertionVertex E S)))
-        (fun B => interactionSector_subset
-          (B : Finset (ExternalInsertionVertex E S)))
-        (fun B v => mem_interactionSector_subtype
-          (B : Finset (ExternalInsertionVertex E S)) v)).symm.trans
+      d.interactionVertexComponentEquiv.symm.trans
         (S.orderIsoOfFin rfl).symm.toEquiv
   strictMono := by
     intro B a b hab
@@ -339,38 +360,8 @@ theorem ExternalInsertionDiagram.sum_componentInteractionSector_card_eq
     (∑ B : d.vertexGraph.componentPartition.parts,
       (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card) = S.card := by
-  have hcard := Fintype.card_congr d.componentInteractionShuffle.slotEquiv
+  have hcard := Fintype.card_congr d.interactionVertexComponentEquiv
   simpa [Fintype.card_sigma] using hcard
-
-/-- The ambient interaction vertices are the disjoint union of their component interaction
-sectors. -/
-noncomputable def ExternalInsertionDiagram.interactionVertexComponentEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    ↥S ≃
-      Σ B : d.vertexGraph.componentPartition.parts,
-        ↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) :=
-  d.vertexGraph.componentPartition.equivSigmaSubfinsets
-    S
-    (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
-    (fun _ => Finset.mem_univ _)
-    (fun B => interactionSector
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B => interactionSector_subset
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B v => mem_interactionSector_subtype
-      (B : Finset (ExternalInsertionVertex E S)) v)
-
-@[simp]
-theorem ExternalInsertionDiagram.interactionVertexComponentEquiv_symm_val
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (x : Σ B : d.vertexGraph.componentPartition.parts,
-      ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S)))) :
-    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
-  rfl
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
