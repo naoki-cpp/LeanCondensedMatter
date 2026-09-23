@@ -129,7 +129,7 @@ theorem freeGibbsExpectation_eq_sum_pairing
     ∑ pairing : Pairing n,
       pairing.weight .boson *
         ∏ pr ∈ pairing.pairs, data.pairValue (C pr.1) (C pr.2)
-  exact data.toExpectationPairingRecursion.expectation_eq_sum_pairing n C hC
+  exact data.toExpectationPairingRecursion.bloch_de_dominicis n C hC
 
 end
 end Bosonic

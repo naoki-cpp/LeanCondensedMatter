@@ -671,7 +671,7 @@ theorem completedFreeGibbsExpectation_eq_sum_pairing
           ∏ pr ∈ pairing.pairs,
             completedFreeGibbsExpectation ε β hsum [C pr.1, C pr.2] := by
   simpa [completedFreeGibbsExpectationRecursion] using
-    (Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing
+    (Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis
       (completedFreeGibbsExpectationRecursion ε β hsum) n C hC)
 
 end CompletedThermalLadder

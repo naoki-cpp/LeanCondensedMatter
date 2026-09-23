@@ -374,7 +374,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
       moduleName := freeEntropyModule },
     { declaration := `SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion,
       moduleName := recursionModule },
-    { declaration := `SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.expectation_eq_sum_pairing,
+    { declaration := `SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis,
       moduleName := recursionModule },
   ]
 
