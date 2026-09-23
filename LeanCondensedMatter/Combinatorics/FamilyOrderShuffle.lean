@@ -186,7 +186,11 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
       symm
       apply familyOrder_eq_of_strictMono F ambientEquiv order i (orders i)
       intro a b hab
-      change shuffle.slotEquiv ⟨i, a⟩ < shuffle.slotEquiv ⟨i, b⟩
+      have hslot (j : Fin (Fintype.card (F i))) :
+          order.symm (ambientEquiv.symm ⟨i, orders i j⟩) =
+            shuffle.slotEquiv ⟨i, j⟩ := by
+        simp [order, assembleFamilyOrder, familyOrderedEquiv]
+      rw [hslot a, hslot b]
       exact shuffle.strictMono i hab
     apply Prod.ext horders
     apply FamilySlotShuffleTo.ext
