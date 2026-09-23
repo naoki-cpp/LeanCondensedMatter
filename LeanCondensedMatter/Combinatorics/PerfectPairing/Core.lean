@@ -76,11 +76,6 @@ theorem PairingOn.partner_partner {α : Type*} (pairing : PairingOn α) (i : α)
     pairing.partner (pairing.partner i) = i :=
   pairing.partner_involutive i
 
-/-- The bundled partner permutation satisfies the fixed-point-free involution predicate. -/
-theorem PairingOn.isPairing {α : Type*} (pairing : PairingOn α) :
-    IsPairing pairing.partner :=
-  ⟨pairing.partner_involutive, pairing.partner_ne⟩
-
 /-- Construct a pairing bundle from an internally checked fixed-point-free involution. -/
 def PairingOn.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPairing partner) :
     PairingOn α where
@@ -131,10 +126,6 @@ theorem PairingOn.sigmaCongrRight_partner {ι : Type*} {β : ι → Type*}
 
 /-- The finite enumeration of all perfect pairings of `Fin (2 * n)`. -/
 def allPairings (n : ℕ) : Finset (Pairing n) := Finset.univ
-
-@[simp]
-theorem mem_allPairings (pairing : Pairing n) : pairing ∈ allPairings n := by
-  simp [allPairings]
 
 /-- The normalized ordered pairs `(i, partner i)` with `i < partner i`, one per partner orbit. -/
 def Pairing.pairs {n : ℕ} (pairing : Pairing n) :
