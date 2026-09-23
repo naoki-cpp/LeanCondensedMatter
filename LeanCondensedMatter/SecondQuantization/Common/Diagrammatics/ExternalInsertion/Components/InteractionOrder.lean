@@ -40,36 +40,6 @@ abbrev ExternalInsertionDiagram.ComponentInteractionOrderShuffle
         (B : Finset (ExternalInsertionVertex E S))))
     S.card
 
-/-- The ambient interaction vertices are the disjoint union of their component interaction
-sectors. -/
-noncomputable def ExternalInsertionDiagram.interactionVertexComponentEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    ↥S ≃
-      Σ B : d.vertexGraph.componentPartition.parts,
-        ↥(interactionSector
-          (B : Finset (ExternalInsertionVertex E S))) :=
-  d.vertexGraph.componentPartition.equivSigmaSubfinsets
-    S
-    (fun v : ↥S => (Sum.inr v : ExternalInsertionVertex E S))
-    (fun _ => Finset.mem_univ _)
-    (fun B => interactionSector
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B => interactionSector_subset
-      (B : Finset (ExternalInsertionVertex E S)))
-    (fun B v => mem_interactionSector_subtype
-      (B : Finset (ExternalInsertionVertex E S)) v)
-
-@[simp]
-theorem ExternalInsertionDiagram.interactionVertexComponentEquiv_symm_val
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (x : Σ B : d.vertexGraph.componentPartition.parts,
-      ↥(interactionSector
-        (B : Finset (ExternalInsertionVertex E S)))) :
-    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
-  rfl
-
 /-- Assemble an ambient interaction-vertex order from component-local interaction orders and an
 order-preserving component shuffle. -/
 noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
