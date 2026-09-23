@@ -56,8 +56,9 @@ noncomputable abbrev orderedLehmannTransitionWeight
 /-- Canonical scalar data for one ordered Lehmann transition.
 
 The orientation is always the ordered pair `(m,n)`: `energyGap = Eₘ - Eₙ`, while `weight`
-is the physical coefficient `(i / ℏ)(pₘ-pₙ)AₘₙBₙₘ`.  All later representations should adapt to
-this pair rather than choose their own sign or index convention. -/
+is the physical coefficient `(i / ℏ)(pₘ-pₙ)AₘₙBₙₘ`.  The `hbar` type index ties that weight to
+the same reduced Planck constant used by the time phase and frequency denominator, so later
+representations cannot mix conventions accidentally. -/
 structure LehmannTransitionData (hbar : ℝ) where
   /-- Ordered energy gap `Eₘ - Eₙ`. -/
   energyGap : ℝ
