@@ -5194,45 +5194,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n), pairing.crossingCount = Fintype.card pairing.CrossingPair",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Combinatorics.Pairing.crossingCount_eq_card_crossingPair",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-    "externalAxioms": [],
-    "docString": "`crossingCount` is the cardinality of the canonical crossing-pair type. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {n : ℕ} {ι : Type u_1} {F : ι → Type u_2} [inst : (B : ι) → Fintype (F B)] [inst_1 : Fintype ι]\n  (pairing : Combinatorics.Pairing n) (e : (B : ι) × F B ≃ pairing.NormalizedPair),\n  pairing.crossingCount = ∑ B, ∑ C, pairing.componentCrossingCount e B C",
     "standardAxioms": [
       "Classical.choice",
@@ -5330,7 +5291,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.crossingCount_eq_sum_crosses",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
     "externalAxioms": [],
     "docString": "`crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. ",
     "directWrapperTargetModule": null,
@@ -5340,7 +5301,7 @@
       "Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.crossingCount_eq_card_crossingPair"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing.0.Combinatorics.Pairing.crossingCount_eq_card_crossingPair"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138946,6 +138907,45 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n),\n  pairing.crossingCount = Fintype.card (Combinatorics.Pairing.CrossingPair✝ pairing)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing.0.Combinatorics.Pairing.crossingCount_eq_card_crossingPair",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
+    "externalAxioms": [],
+    "docString": "`crossingCount` is the cardinality of the canonical crossing-pair type. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
