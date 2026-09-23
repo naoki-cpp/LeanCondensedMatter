@@ -106,7 +106,7 @@ record. -/
 noncomputable def purePointTimeDomainTerm
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι) : ℂ :=
-  (purePointTransitionData system data A B mn).timeTerm system.hbar τ
+  (purePointTransitionData system data A B mn).timeTerm τ
 
 /-- The canonical transition time term agrees with the operator-derived Heisenberg phase. -/
 theorem purePointTimeDomainTerm_eq_weight_mul_transitionPhase
