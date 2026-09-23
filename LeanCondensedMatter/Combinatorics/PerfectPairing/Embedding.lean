@@ -51,16 +51,6 @@ noncomputable def Pairing.normalizedPairEmbedding {n m : ℕ}
     · apply e.injective
       exact congrArg (fun z => z.1.2) hpq
 
-@[simp]
-theorem Pairing.normalizedPairEmbedding_apply {n m : ℕ}
-    (small : Pairing n) (big : Pairing m)
-    (e : Fin (2 * n) ↪o Fin (2 * m))
-    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
-    (pr : small.NormalizedPair) :
-    (small.normalizedPairEmbedding big e hpartner pr).1 =
-      (e pr.1.1, e pr.1.2) :=
-  rfl
-
 /-- A partner-intertwining order embedding preserves and reflects crossings between normalized
 pairs. -/
 theorem Pairing.normalizedPairEmbedding_crosses_iff {n m : ℕ}
@@ -71,8 +61,7 @@ theorem Pairing.normalizedPairEmbedding_crosses_iff {n m : ℕ}
     Crosses (small.normalizedPairEmbedding big e hpartner p).1
         (small.normalizedPairEmbedding big e hpartner q).1 ↔
       Crosses p.1 q.1 := by
-  rw [small.normalizedPairEmbedding_apply big e hpartner,
-    small.normalizedPairEmbedding_apply big e hpartner]
+  change Crosses (e p.1.1, e p.1.2) (e q.1.1, e q.1.2) ↔ Crosses p.1 q.1
   exact crosses_map_iff e e.strictMono p.1.1 p.1.2 q.1.1 q.1.2
 
 end Combinatorics
