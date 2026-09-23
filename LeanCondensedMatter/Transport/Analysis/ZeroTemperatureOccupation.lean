@@ -1,4 +1,6 @@
 import Mathlib.Data.Complex.Basic
+import Mathlib.Order.Interval.Set.UnorderedInterval
+import Mathlib.Tactic.Linarith
 
 set_option linter.style.header false
 
@@ -38,6 +40,40 @@ theorem norm_zeroTemperatureOccupation_complex_le_one
     ‖((zeroTemperatureOccupation fermiEnergy energy : ℝ) : ℂ)‖ ≤ 1 := by
   by_cases h : energy < fermiEnergy <;>
     simp [zeroTemperatureOccupation, h]
+
+/-- Below the Fermi level, zero-temperature occupation is identically one on the symmetric window
+with radius half the spectral distance to the Fermi level. -/
+theorem zeroTemperatureOccupation_eq_one_on_center_window
+    (center fermiEnergy : ℝ) (hoccupied : center < fermiEnergy) :
+    ∀ energy ∈ Set.uIcc
+      (center - (fermiEnergy - center) / 2)
+      (center + (fermiEnergy - center) / 2),
+      zeroTemperatureOccupation fermiEnergy energy = 1 := by
+  intro energy henergy
+  have hbounds :
+      center - (fermiEnergy - center) / 2 ≤
+        center + (fermiEnergy - center) / 2 := by
+    linarith
+  rw [Set.uIcc_of_le hbounds] at henergy
+  apply zeroTemperatureOccupation_eq_one
+  linarith [henergy.2]
+
+/-- Above the Fermi level, zero-temperature occupation is identically zero on the symmetric window
+with radius half the spectral distance to the Fermi level. -/
+theorem zeroTemperatureOccupation_eq_zero_on_center_window
+    (center fermiEnergy : ℝ) (hunoccupied : fermiEnergy < center) :
+    ∀ energy ∈ Set.uIcc
+      (center - (center - fermiEnergy) / 2)
+      (center + (center - fermiEnergy) / 2),
+      zeroTemperatureOccupation fermiEnergy energy = 0 := by
+  intro energy henergy
+  have hbounds :
+      center - (center - fermiEnergy) / 2 ≤
+        center + (center - fermiEnergy) / 2 := by
+    linarith
+  rw [Set.uIcc_of_le hbounds] at henergy
+  apply zeroTemperatureOccupation_eq_zero
+  linarith [henergy.1]
 
 end
 end Transport
