@@ -26,7 +26,7 @@ theorem ExternalInsertionDiagram.restrictComponent_vertexLabel_interactionSector
     (v : ↥(interactionSector
       (B : Finset (ExternalInsertionVertex E S)))) :
     (d.restrictComponent B).vertexLabel v =
-      d.vertexLabel (interactionSectorComponentEquiv d.vertexGraph.symm ⟨B, v⟩) := by
+      d.vertexLabel ((interactionSectorComponentEquiv d.vertexGraph).symm ⟨B, v⟩) := by
   apply congrArg d.vertexLabel
   apply Subtype.ext
   rfl
@@ -48,8 +48,8 @@ theorem ExternalInsertionDiagram.vertexWeight_eq_prod_components
         ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
             (B : Finset (ExternalInsertionVertex E S))),
-            w (d.vertexLabel (interactionSectorComponentEquiv d.vertexGraph.symm ⟨B, v⟩)) :=
-      Fintype.prod_equiv_sigma interactionSectorComponentEquiv d.vertexGraph
+            w (d.vertexLabel ((interactionSectorComponentEquiv d.vertexGraph).symm ⟨B, v⟩)) :=
+      Fintype.prod_equiv_sigma (interactionSectorComponentEquiv d.vertexGraph)
         (fun v => w (d.vertexLabel v))
     _ = ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ v : ↥(interactionSector
@@ -59,7 +59,7 @@ theorem ExternalInsertionDiagram.vertexWeight_eq_prod_components
       intro B
       apply Fintype.prod_congr
       intro v
-      rw [d.restrictComponent_vertexLabel_interactionVertexComponentEquiv B v]
+      rw [d.restrictComponent_vertexLabel_interactionSectorComponentEquiv B v]
 
 /-- The Dyson sign and interaction-vertex weight factor together over all connected components. -/
 theorem ExternalInsertionDiagram.dysonSign_mul_vertexWeight_eq_prod_components
