@@ -44,7 +44,8 @@ theorem timedFieldPairContraction_eq
           | .annihilation _, .annihilation _ => 0
           | .creation _, .creation _ => 0 := by
   rw [timedFieldPairContraction, timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul,
+    map_smul_of_tower]
   cases A.label <;> cases B.label <;>
     simp only [bareExternalFieldOperator]
   · rw [freeGibbsDensityOperator_expectation_annihilate_comp_annihilate]
