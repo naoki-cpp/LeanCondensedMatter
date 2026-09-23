@@ -30,7 +30,7 @@ noncomputable def QuarticDiagram.bigLegEquiv {S : Finset (Fin N)} (π : Finparti
         (Equiv.sigmaCongrRight fun B => (quarticLegEquiv (B : Finset (Fin N))).symm)
 
 /-- `bigLegEquiv` at a leg constructed from an ambient vertex and a local leg. -/
-theorem QuarticDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)}
+private theorem QuarticDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)}
     (π : Finpartition S) (v : ↥S) (i : Fin 4) :
     QuarticDiagram.bigLegEquiv π (legOfVertexLocal v i) =
       ⟨(π.equivSigmaParts v).1, legOfVertexLocal (π.equivSigmaParts v).2 i⟩ := by
@@ -41,7 +41,7 @@ theorem QuarticDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)}
   rfl
 
 /-- The inverse of `bigLegEquiv` at a leg belonging to one partition part. -/
-theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
+private theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
     (π : Finpartition S) (B : π.parts)
     (leg' : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ =
@@ -54,7 +54,7 @@ theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
   rfl
 
 /-- The pairing on the ambient legs obtained by gluing the pairings of all partition parts. -/
-noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
+private noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     Combinatorics.Pairing (2 * S.card) :=
   (Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
@@ -69,7 +69,7 @@ noncomputable def QuarticDiagram.reassemble {S : Finset (Fin N)} (π : Finpartit
 
 
 /-- A vertex of a block `B`, included back into the ambient vertex set. -/
-noncomputable def QuarticDiagram.reassembleVertex {S : Finset (Fin N)} (π : Finpartition S)
+private noncomputable def QuarticDiagram.reassembleVertex {S : Finset (Fin N)} (π : Finpartition S)
     (B : π.parts) (v : ↥(B : Finset (Fin N))) : ↥S :=
   π.equivSigmaParts.symm ⟨B, v⟩
 
