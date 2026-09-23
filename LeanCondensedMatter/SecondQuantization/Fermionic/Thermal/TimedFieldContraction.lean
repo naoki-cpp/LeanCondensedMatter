@@ -46,11 +46,11 @@ theorem timedFieldPairContraction_eq
   rw [timedFieldPairContraction, timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
   cases A.label <;> cases B.label <;>
-    simp only [bareExternalFieldOperator] <;>
-    rw [freeGibbsDensityOperator_expectation_annihilate_comp_create
-      <|> freeGibbsDensityOperator_expectation_create_comp_annihilate
-      <|> freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
-      <|> freeGibbsDensityOperator_expectation_create_comp_create]
+    simp only [bareExternalFieldOperator]
+  · rw [freeGibbsDensityOperator_expectation_annihilate_comp_annihilate]
+  · rw [freeGibbsDensityOperator_expectation_annihilate_comp_create]
+  · rw [freeGibbsDensityOperator_expectation_create_comp_annihilate]
+  · rw [freeGibbsDensityOperator_expectation_create_comp_create]
 
 end Fermionic
 end SecondQuantization
