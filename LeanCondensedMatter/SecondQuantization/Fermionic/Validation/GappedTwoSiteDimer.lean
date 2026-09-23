@@ -257,7 +257,8 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp only [Fin.sum_univ_two, Fin.isValue,
+  simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
+    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
     twoSiteGappedBenchmarkLehmannTable_energy_zero,
     twoSiteGappedBenchmarkLehmannTable_energy_one,
     twoSiteGappedBenchmarkTransitionWeight_zero_one,
