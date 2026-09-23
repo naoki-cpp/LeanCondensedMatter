@@ -89895,50 +89895,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B C : ↥d.vertexGraph.componentPartition.parts),\n  B ≠ C → d.componentLegShuffle.blockInversionCount B C ≡ d.componentExternalShuffle.blockInversionCount B C [MOD 2]",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
-    "externalAxioms": [],
-    "docString": "For two distinct connected components, the full flattened-leg interleaving and the\nexternal-only interleaving have the same inversion parity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_eq_sum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegInversionInner_external",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 =\n    d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2",
     "standardAxioms": [
       "Classical.choice",
@@ -89962,7 +89918,10 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegInversionInner_external",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegInversionInner_interaction_mod_two",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_eq_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90709,131 +90668,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (v : ↥S) (i : Fin 4),\n  (SecondQuantization.Common.QuarticDiagram.bigLegEquiv π) (SecondQuantization.Common.legOfVertexLocal v i) =\n    ⟨(π.equivSigmaParts v).fst, SecondQuantization.Common.legOfVertexLocal (π.equivSigmaParts v).snd i⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": "`bigLegEquiv` at a leg constructed from an ambient vertex and a local leg. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts) (leg' : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.QuarticDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ =\n    SecondQuantization.Common.legOfVertexLocal (π.equivSigmaParts.symm ⟨B, SecondQuantization.Common.vertexOfLeg leg'⟩)\n      (SecondQuantization.Common.localLegOfLeg leg')",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
-    "externalAxioms": [],
-    "docString": "The inverse of `bigLegEquiv` at a leg belonging to one partition part. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (v : ↥B), ↑(d.blockVertex hB v) ∈ B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91731,8 +91565,7 @@
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner",
       "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
-      "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_pairing"
+      "SecondQuantization.Common.QuarticDiagram.orderedLegToDiagramLeg_componentOrderedLeg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91879,91 +91712,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts), (d.restrictComponent hB).IsConnected",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
-    "externalAxioms": [],
-    "docString": "Restricting a diagram to a component part produces a connected diagram. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex",
-      "SimpleGraph.mem_componentBlockOn",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponentConnected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts), (d.restrictComponent hB).pairing = d.restrictedPairing hB",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.restrictComponent_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts)\n  (hB' : ↑B ∈ (SecondQuantization.Common.QuarticDiagram.reassemble π F).componentPartition.parts),\n  (SecondQuantization.Common.QuarticDiagram.reassemble π F).restrictComponent hB' = ↑(F B)",
     "standardAxioms": [
@@ -92030,12 +91778,11 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_pairing",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_injective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_injective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -92240,7 +91987,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -92253,13 +92000,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -92292,8 +92039,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "dependencies": [
@@ -92302,52 +92049,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_componentDiagramLeg_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (leg : { leg // d.legInBlock B leg }) (v : ↥B),\n  SecondQuantization.Common.vertexOfLeg ((d.blockLegEquiv hB) leg) = v ↔\n    SecondQuantization.Common.vertexOfLeg ↑leg = d.blockVertex hB v",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
-    "externalAxioms": [],
-    "docString": "`blockLegEquiv` maps a leg to vertex `v` exactly when its ambient vertex is `blockVertex v`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92645,18 +92351,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_comp_create_self",
-      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
+      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_comp_create_self",
-      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self",
+      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero"
     ],
     "compiledConsumerCount": 4,
     "axioms": [],
@@ -128722,10 +128428,10 @@
     "dependencies": [
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128762,12 +128468,13 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "SecondQuantization.Common.Statistics.zetaInt_fermion",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -128847,14 +128554,15 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "SecondQuantization.Common.Statistics.zetaInt_fermion",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_numberOperator",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
       "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
+      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -133270,8 +132978,8 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_of_gt",
     "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_of_gt"
@@ -133279,8 +132987,8 @@
     "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self",
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_gt"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -133313,8 +133021,8 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_of_lt",
     "dependents": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_of_lt"
@@ -133322,8 +133030,8 @@
     "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self",
+      "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_zero_of_lt"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -133343,7 +133051,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": true,
@@ -133356,7 +133064,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering",
     "directWrapperOf": "SecondQuantization.Common.timeOrderedProduct_self_time",
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
     ],
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_self_time"
@@ -133364,7 +133072,7 @@
     "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time"
+      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134146,9 +133854,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
@@ -134158,9 +133866,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
@@ -148723,7 +148431,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
@@ -148732,7 +148440,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -148896,7 +148604,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentInteraction_not_lt_external",
@@ -148905,7 +148613,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -148938,7 +148646,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentExternal_lt_interaction",
@@ -148947,7 +148655,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149070,7 +148778,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne"
@@ -149078,7 +148786,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_blockInversionCount_modEq_two_external"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149173,6 +148881,47 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (v : ↥B), ↑(d.blockVertex hB v) ∈ B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)}, B ∈ d.componentPartition.parts → ∀ {v w : ↥S}, d.vertexGraph.Adj v w → ↑v ∈ B → ↑w ∈ B",
     "standardAxioms": [
       "Classical.choice",
@@ -149220,7 +148969,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -149233,7 +148982,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype",
@@ -149243,7 +148992,90 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts), (d.restrictComponent hB).IsConnected",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
+    "externalAxioms": [],
+    "docString": "Restricting a diagram to a component part produces a connected diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex",
+      "SimpleGraph.mem_componentBlockOn",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponentConnected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (leg : { leg // d.legInBlock B leg }) (v : ↥B),\n  SecondQuantization.Common.vertexOfLeg ((d.blockLegEquiv hB) leg) = v ↔\n    SecondQuantization.Common.vertexOfLeg ↑leg = d.blockVertex hB v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
+    "externalAxioms": [],
+    "docString": "`blockLegEquiv` maps a leg to vertex `v` exactly when its ambient vertex is `blockVertex v`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -149361,8 +149193,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
-      "SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg"
+      "SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149370,6 +149202,90 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_vertexGraph_adj_same_part"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (v : ↥S) (i : Fin 4),\n  (SecondQuantization.Common.QuarticDiagram.bigLegEquiv π) (SecondQuantization.Common.legOfVertexLocal v i) =\n    ⟨(π.equivSigmaParts v).fst, SecondQuantization.Common.legOfVertexLocal (π.equivSigmaParts v).snd i⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
+    "externalAxioms": [],
+    "docString": "`bigLegEquiv` at a leg constructed from an ambient vertex and a local leg. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_fst_eq_part",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts) (leg' : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.QuarticDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ =\n    SecondQuantization.Common.legOfVertexLocal (π.equivSigmaParts.symm ⟨B, SecondQuantization.Common.vertexOfLeg leg'⟩)\n      (SecondQuantization.Common.localLegOfLeg leg')",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
+    "externalAxioms": [],
+    "docString": "The inverse of `bigLegEquiv` at a leg belonging to one partition part. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.blockLegEquiv_symm_reassemble_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_adj_of_adj_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149403,7 +149319,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_eq_subtypeSubtypeEquivSubtype_symm"
     ],
     "crossModuleDirectWrapper": false,
@@ -149545,7 +149461,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts) (v : ↥↑B),\n  SecondQuantization.Common.QuarticDiagram.reassembleVertex π B v = ↑((Equiv.subtypeSubtypeEquivSubtype ⋯).symm v)",
+    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts) (v : ↥↑B),\n  SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B v = ↑((Equiv.subtypeSubtypeEquivSubtype ⋯).symm v)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149586,7 +149502,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts),\n  Function.Injective (SecondQuantization.Common.QuarticDiagram.reassembleVertex π B)",
+    "statement": "∀ {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S) (B : ↥π.parts),\n  Function.Injective (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149625,7 +149541,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts) {u' w' : ↥↑B},\n  (↑(F B)).vertexGraph.Adj u' w' →\n    (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Adj\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex π B u')\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex π B w')",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts) {u' w' : ↥↑B},\n  (↑(F B)).vertexGraph.Adj u' w' →\n    (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Adj\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B u')\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B w')",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149647,8 +149563,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_reachable_of_reachable_component"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassembleVertex_injective"
     ],
     "crossModuleDirectWrapper": false,
@@ -149774,17 +149690,16 @@
       "SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
-      "SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff",
       "SecondQuantization.Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg",
       "SecondQuantization.Common.QuarticDiagram.localLegOfLeg_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_pairing",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
       "SecondQuantization.Common.localLegOfLeg_legOfVertexLocal",
       "SecondQuantization.Common.vertexOfLeg_legOfVertexLocal",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.equivSigmaParts_symm_subtypeSubtypeEquivSubtype",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_equivSigmaParts_snd"
     ],
@@ -149925,7 +149840,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts) {u' w' : ↥↑B},\n  (↑(F B)).vertexGraph.Reachable u' w' →\n    (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Reachable\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex π B u')\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex π B w')",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (π : Finpartition S)\n  (F : (B : ↥π.parts) → SecondQuantization.Common.ConnectedQuarticDiagram Label N ↑B) (B : ↥π.parts) {u' w' : ↥↑B},\n  (↑(F B)).vertexGraph.Reachable u' w' →\n    (SecondQuantization.Common.QuarticDiagram.reassemble π F).vertexGraph.Reachable\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B u')\n      (SecondQuantization.Common.QuarticDiagram.reassembleVertex✝ π B w')",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158042,131 +157957,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsGreenFunction_eq_weightedFreeTwoPointFunction"
     ],
     "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ' < τ →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ' =\n      -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n            SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_gt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_gt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_gt_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) {τ τ' : ℝ},\n  τ < τ' →\n    SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ' =\n      (SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ' (SecondQuantization.Fermionic.create j) ∘ₗ\n          SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_of_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.Statistics.zetaInt_fermion",
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_of_lt_self"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ)\n  (w : SecondQuantization.Fermionic.Occupation Mode → ℂ) (i j : Mode) (τ : ℝ),\n  SecondQuantization.Fermionic.weightedFreeTwoPointFunction✝ ε w i j τ τ =\n    -(SecondQuantization.Common.normalizedWeightedDiagonal w)\n        (2⁻¹ •\n          (SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i) ∘ₗ\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) +\n            -1 •\n              SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.create j) ∘ₗ\n                SecondQuantization.Fermionic.imaginaryTimeEvolve ε τ (SecondQuantization.Fermionic.annihilate i)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.weightedFreeTwoPointFunction_self_time",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.Statistics.zetaInt_fermion",
-      "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
