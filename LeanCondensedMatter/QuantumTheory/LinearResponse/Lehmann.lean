@@ -269,12 +269,6 @@ theorem purePointTransitionData_energyGap
     (purePointTransitionData system data A B mn).energyGap =
       orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) := rfl
 
-theorem purePointTransitionData_weight
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) :
-    (purePointTransitionData system data A B mn).weight =
-      purePointTransitionWeight system data A B mn := rfl
-
 /-- Diagonal pure-point transitions have zero physical weight. -/
 @[simp]
 theorem purePointTransitionWeight_diag
