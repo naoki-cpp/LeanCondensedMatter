@@ -76,19 +76,6 @@ theorem Pairing.normalizedPairSubtypeEndpointEquiv_apply_val {n : ℕ}
       pairing.pairEndpoint (pr.1, k) := by
   rfl
 
-/-- On selected normalized-pair endpoints, the restricted partner exchanges endpoint zero and
-endpoint one. -/
-theorem Pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero {n : ℕ}
-    (pairing : Pairing n) (p : Fin (2 * n) → Prop)
-    (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (pr : pairing.NormalizedPairSubtype p) :
-    (pairing.restrict p hpartner).partner
-        (pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, 0)) =
-      pairing.normalizedPairSubtypeEndpointEquiv p hpartner (pr, 1) := by
-  apply Subtype.ext
-  rw [pairing.restrict_partner_val]
-  exact ((pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
-
 /-- Reindex normalized pairs selected by a partner-invariant predicate into any local pairing whose
 partner is intertwined by the chosen position equivalence. -/
 noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
@@ -103,6 +90,10 @@ noncomputable def Pairing.normalizedPairSubtypeEquivOfEndpointEquiv {n m : ℕ}
   exact localPairing.normalizedPairEquivOfEndpointEquiv
     (pairing.normalizedPairSubtypeEndpointEquiv p hpartner) e
     (fun pr => by
-      rw [hlocal, pairing.restrict_partner_normalizedPairSubtypeEndpoint_zero])
+      rw [hlocal]
+      apply congrArg e
+      apply Subtype.ext
+      rw [pairing.restrict_partner_val]
+      exact ((pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2)
 
 end Combinatorics
