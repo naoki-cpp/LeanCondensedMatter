@@ -25,9 +25,9 @@ General incidence-algebra support such as invariance under order isomorphism, do
 compatibility, and finite dependent-product factorization lives in
 `Combinatorics/IncidenceAlgebra/Mobius.lean`.
 
-The current proof of the explicit factorial formula still uses the formal-power-series cumulant
-bridge. Issue #2613 tracks replacing that proof with a purely finite combinatorial/incidence-algebra
-argument so the set-partition layer no longer depends on `Analysis.PowerSeries.Cumulant`.
+The explicit factorial formula is proved entirely within finite combinatorics. The proof combines
+the finite cumulant-inversion API with the distinguished-block decomposition of set partitions, so
+the set-partition layer does not depend on `Analysis.PowerSeries.Cumulant`.
 
 ## Moment--cumulant inversion
 
@@ -109,8 +109,6 @@ cumulants, and connected decompositions remain in `Combinatorics`.
 
 ## Open work
 
-- Resolve #2613 by replacing the power-series proof of the explicit partition-lattice Möbius formula
-  with a pure finite combinatorial/incidence-algebra proof.
 - Add new combinatorial infrastructure only when a downstream theorem exposes a reusable
   statistics-independent statement.
 - Higher-point/source-insertion linked-cluster developments should reuse the existing partition,
