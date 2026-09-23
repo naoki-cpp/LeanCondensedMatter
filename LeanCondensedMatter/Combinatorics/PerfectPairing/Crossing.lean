@@ -67,7 +67,7 @@ def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
     Crosses pairPair.1 pairPair.2).card
 
 /-- The finite type of ordered normalized pair-of-pairs that contribute to `crossingCount`. -/
-abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
+private abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
   {pairPair : pairing.NormalizedPair × pairing.NormalizedPair //
     Crosses pairPair.1.1 pairPair.2.1}
 
@@ -85,7 +85,7 @@ private def crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
   right_inv _ := rfl
 
 /-- `crossingCount` is the cardinality of the canonical crossing-pair type. -/
-theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
+private theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount = Fintype.card pairing.CrossingPair := by
   have hraw : pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := by
     rw [Pairing.crossingCount]
@@ -108,6 +108,25 @@ theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing 
     pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := hraw
     _ = Fintype.card pairing.CrossingPair :=
       (Fintype.card_congr (crossingPairEquivRaw pairing)).symm
+
+/-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
+theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
+    pairing.crossingCount =
+      ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
+        if Crosses x.1.1 x.2.1 then 1 else 0 := by
+  classical
+  rw [pairing.crossingCount_eq_card_crossingPair]
+  have hcard :
+      Fintype.card pairing.CrossingPair =
+        ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
+          fun x => Crosses x.1.1 x.2.1).card := by
+    exact Fintype.card_of_subtype
+      (p := fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
+      ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
+        fun x => Crosses x.1.1 x.2.1)
+      (fun x => by simp)
+  rw [hcard]
+  simp
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :

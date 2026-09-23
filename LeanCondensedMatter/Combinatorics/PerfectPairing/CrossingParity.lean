@@ -37,25 +37,6 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
 
-/-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
-theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
-    pairing.crossingCount =
-      ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
-        if Crosses x.1.1 x.2.1 then 1 else 0 := by
-  classical
-  rw [pairing.crossingCount_eq_card_crossingPair]
-  have hcard :
-      Fintype.card pairing.CrossingPair =
-        ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
-          fun x => Crosses x.1.1 x.2.1).card := by
-    exact Fintype.card_of_subtype
-      (p := fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
-      ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
-        fun x => Crosses x.1.1 x.2.1)
-      (fun x => by simp)
-  rw [hcard]
-  simp
-
 /-- Double-sum form of `crossingCount_eq_sum_crosses`. -/
 theorem Pairing.crossingCount_eq_sum_sum_crosses {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount =
