@@ -64,7 +64,6 @@ theorem finiteLehmannTableTransitionData_energyGap
     (finiteLehmannTableTransitionData hbar table mn).energyGap =
       orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2) := rfl
 
-@[simp]
 theorem finiteLehmannTableTransitionData_weight
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
     (finiteLehmannTableTransitionData hbar table mn).weight =
