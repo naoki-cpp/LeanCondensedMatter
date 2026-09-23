@@ -142,11 +142,5 @@ noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
       (fun {_} hx => d.componentPartition.le hB hx)).symm v).1
   pairing := d.restrictedPairing hB
 
-theorem QuarticDiagram.restrictComponent_pairing {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) :
-    (d.restrictComponent hB).pairing = d.restrictedPairing hB :=
-  rfl
-
 end Common
 end SecondQuantization
