@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity
 
 set_option linter.style.header false
@@ -108,7 +110,7 @@ theorem pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components
               (d.componentPairEquiv ⟨B, pr⟩).1.1
               (d.componentPairEquiv ⟨B, pr⟩).1.2 := by
         simpa using
-          (Combinatorics.Fintype.prod_equiv_sigma (d.componentPairEquiv).symm
+          (Fintype.prod_equiv_sigma (d.componentPairEquiv).symm
             (fun pr => pairValue pr.1.1 pr.1.2))
       _ = ∏ B : d.vertexGraph.componentPartition.parts,
           ∏ pr : (d.restrictComponent B).pairing.NormalizedPair,
