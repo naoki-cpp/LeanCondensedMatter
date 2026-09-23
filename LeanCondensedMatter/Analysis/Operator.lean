@@ -19,7 +19,8 @@ set_option linter.style.header false
 # Operator analysis
 
 Public routing module for the generic operator-analysis endpoints exported by
-`LeanCondensedMatter.Analysis`, including the independent spectral and Berry-geometry routes. Concrete realizations such as real-line `L²` multiplication,
+`LeanCondensedMatter.Analysis`, including the independent spectral and Berry-geometry routes.
+Concrete realizations such as real-line `L²` multiplication,
 one-dimensional Schwartz kinetic operators, and orbital-angular-momentum facts are intentionally
 opt-in and remain available from their dedicated `Analysis.Operator` leaves.
 
