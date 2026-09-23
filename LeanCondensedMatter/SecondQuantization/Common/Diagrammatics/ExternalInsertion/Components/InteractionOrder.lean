@@ -42,7 +42,7 @@ abbrev ExternalInsertionDiagram.ComponentInteractionOrderShuffle
 
 /-- The ambient interaction vertices are the disjoint union of their component interaction
 sectors. -/
-private noncomputable def ExternalInsertionDiagram.componentInteractionFamilyEquiv
+noncomputable def ExternalInsertionDiagram.interactionVertexComponentEquiv
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     ↥S ≃
@@ -60,6 +60,16 @@ private noncomputable def ExternalInsertionDiagram.componentInteractionFamilyEqu
     (fun B v => mem_interactionSector_subtype
       (B : Finset (ExternalInsertionVertex E S)) v)
 
+@[simp]
+theorem ExternalInsertionDiagram.interactionVertexComponentEquiv_symm_val
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (x : Σ B : d.vertexGraph.componentPartition.parts,
+      ↥(interactionSector
+        (B : Finset (ExternalInsertionVertex E S)))) :
+    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
+  rfl
+
 /-- Assemble an ambient interaction-vertex order from component-local interaction orders and an
 order-preserving component shuffle. -/
 noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
@@ -72,7 +82,7 @@ noncomputable def ExternalInsertionDiagram.assembleInteractionOrder
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    d.componentInteractionFamilyEquiv orders shuffle
+    d.interactionVertexComponentEquiv orders shuffle
 
 /-- A global interaction-vertex order is equivalent to component-local interaction orders together
 with an order-preserving component shuffle. Empty interaction sectors remain represented as
@@ -86,7 +96,7 @@ noncomputable def ExternalInsertionDiagram.componentInteractionOrderDecompositio
     (fun B : d.vertexGraph.componentPartition.parts =>
       ↥(interactionSector
         (B : Finset (ExternalInsertionVertex E S))))
-    d.componentInteractionFamilyEquiv
+    d.interactionVertexComponentEquiv
 
 end Common
 end SecondQuantization
