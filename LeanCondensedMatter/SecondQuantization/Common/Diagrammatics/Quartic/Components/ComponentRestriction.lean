@@ -27,7 +27,6 @@ def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
   d.componentBlock (vertexOfLeg leg) = B
 
-/-- A leg's partner stays inside the same component part. -/
 private theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
