@@ -76,6 +76,10 @@ private theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
   unfold TwoPointDiagram.legInComponent
+  change
+    (d.pairing.vertexGraph twoPointVertexOfLeg).componentBlock (twoPointVertexOfLeg leg) = B ↔
+      (d.pairing.vertexGraph twoPointVertexOfLeg).componentBlock
+        (twoPointVertexOfLeg (d.pairing.partner leg)) = B
   rw [d.pairing.vertexGraph_componentBlock_partner twoPointVertexOfLeg leg]
 
 /-- The partner permutation restricted to the legs of one full component. -/
