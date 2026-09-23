@@ -26,41 +26,6 @@ namespace Combinatorics
 def IsPairing {α : Type*} (partner : Equiv.Perm α) : Prop :=
   Function.Involutive partner ∧ ∀ i, partner i ≠ i
 
-/-- Reindexing a fixed-point-free involution along an equivalence preserves the pairing property. -/
-theorem IsPairing.permCongr {α β : Type*} {partner : Equiv.Perm α}
-    (h : IsPairing partner) (e : α ≃ β) : IsPairing (e.permCongr partner) := by
-  constructor
-  · intro x
-    simp [Equiv.permCongr_apply, h.1 (e.symm x)]
-  · intro x hx
-    rw [Equiv.permCongr_apply] at hx
-    apply h.2 (e.symm x)
-    apply e.injective
-    simpa using hx
-
-/-- The disjoint sum of two pairing permutations is again a pairing permutation. -/
-theorem IsPairing.sumCongr {α β : Type*} {p : Equiv.Perm α} {q : Equiv.Perm β}
-    (hp : IsPairing p) (hq : IsPairing q) :
-    IsPairing (Equiv.sumCongr p q) := by
-  constructor
-  · rintro (x | x)
-    · exact congrArg Sum.inl (hp.1 x)
-    · exact congrArg Sum.inr (hq.1 x)
-  · rintro (x | x)
-    · exact fun h => hp.2 x (Sum.inl.inj h)
-    · exact fun h => hq.2 x (Sum.inr.inj h)
-
-/-- A dependent sum of pairing permutations is again a pairing permutation. -/
-theorem IsPairing.sigmaCongrRight {ι : Type*} {β : ι → Type*}
-    (F : ∀ i, Equiv.Perm (β i)) (hF : ∀ i, IsPairing (F i)) :
-    IsPairing (Equiv.sigmaCongrRight F) := by
-  constructor
-  · rintro ⟨i, x⟩
-    simp [(hF i).1 x]
-  · rintro ⟨i, x⟩
-    simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
-    exact (hF i).2 x
-
 instance decidableIsPairing {α : Type*} [Fintype α] [DecidableEq α]
     (partner : Equiv.Perm α) : Decidable (IsPairing partner) :=
   inferInstanceAs (Decidable (
@@ -126,8 +91,14 @@ def PairingOn.ofPartner {α : Type*} (partner : Equiv.Perm α) (hpartner : IsPai
 /-- The disjoint sum of two pairings. -/
 def PairingOn.sumCongr {α β : Type*} (left : PairingOn α) (right : PairingOn β) :
     PairingOn (α ⊕ β) :=
-  PairingOn.ofPartner (Equiv.sumCongr left.partner right.partner)
-    (IsPairing.sumCongr left.isPairing right.isPairing)
+  PairingOn.ofPartner (Equiv.sumCongr left.partner right.partner) (by
+    constructor
+    · rintro (x | x)
+      · exact congrArg Sum.inl (left.partner_involutive x)
+      · exact congrArg Sum.inr (right.partner_involutive x)
+    · rintro (x | x)
+      · exact fun h => left.partner_ne x (Sum.inl.inj h)
+      · exact fun h => right.partner_ne x (Sum.inr.inj h))
 
 @[simp]
 theorem PairingOn.sumCongr_partner_inl {α β : Type*}
@@ -144,8 +115,13 @@ theorem PairingOn.sumCongr_partner_inr {α β : Type*}
 /-- The dependent sum of a family of pairings. -/
 def PairingOn.sigmaCongrRight {ι : Type*} {β : ι → Type*}
     (F : ∀ i, PairingOn (β i)) : PairingOn (Σ i, β i) :=
-  PairingOn.ofPartner (Equiv.sigmaCongrRight fun i => (F i).partner)
-    (IsPairing.sigmaCongrRight (fun i => (F i).partner) fun i => (F i).isPairing)
+  PairingOn.ofPartner (Equiv.sigmaCongrRight fun i => (F i).partner) (by
+    constructor
+    · rintro ⟨i, x⟩
+      simp [(F i).partner_involutive x]
+    · rintro ⟨i, x⟩
+      simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
+      exact (F i).partner_ne x)
 
 @[simp]
 theorem PairingOn.sigmaCongrRight_partner {ι : Type*} {β : ι → Type*}
