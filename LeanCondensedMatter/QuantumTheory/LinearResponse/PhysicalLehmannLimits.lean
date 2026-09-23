@@ -87,7 +87,7 @@ theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
   · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
-      LehmannTransitionData.frequencyTerm]
+      LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
 
 /-- The physical positive-rate susceptibility has both local nonresonant iterated limits after
 passing to its canonical total extension.  Both orders have the same zero-rate static Lehmann
@@ -114,9 +114,9 @@ theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
-    simp [F, LehmannTransitionData.frequencyTerm]
+    simp [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
   rw [hfun]
-  simpa [F, LehmannTransitionData.frequencyTerm] using
+  simpa [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight] using
     finite_purePointLehmann_has_both_local_iterated_limits
       system data A B hregular
 
