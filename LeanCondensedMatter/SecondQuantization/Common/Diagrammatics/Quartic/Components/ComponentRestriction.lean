@@ -32,6 +32,10 @@ private theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock QuarticDiagram.componentBlock
+  change
+    (d.pairing.vertexGraph vertexOfLeg).componentBlockOn (vertexOfLeg leg) = B ↔
+      (d.pairing.vertexGraph vertexOfLeg).componentBlockOn
+        (vertexOfLeg (d.pairing.partner leg)) = B
   rw [d.pairing.vertexGraph_componentBlockOn_partner vertexOfLeg leg]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
