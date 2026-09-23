@@ -178,6 +178,14 @@ noncomputable def timeTerm
     Complex.exp
       (Complex.I * ((((transition.energyGap * t) / hbar : ℝ) : ℂ)))
 
+/-- The pure phase in a canonical time-domain transition does not change its norm. -/
+@[simp]
+theorem norm_timeTerm
+    (transition : LehmannTransitionData) (hbar t : ℝ) :
+    ‖transition.timeTerm hbar t‖ = ‖transition.weight‖ := by
+  rw [timeTerm, norm_mul, Complex.norm_exp]
+  simp
+
 /-- Fixed-rate frequency-domain contribution of one canonical transition. -/
 noncomputable def frequencyTerm
     (transition : LehmannTransitionData) (hbar omega eta : ℝ) : ℂ :=
@@ -279,7 +287,7 @@ theorem purePointTransitionWeight_diag
 def PurePointLehmannSummable
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) : Prop :=
-  Summable fun mn : ι × ι => ‖purePointTransitionWeight system data A B mn‖
+  Summable fun mn : ι × ι => ‖(purePointTransitionData system data A B mn).weight‖
 
 /-- The fixed-positive-rate pure-point Lehmann series. -/
 noncomputable def purePointLehmannSeries
