@@ -16,11 +16,6 @@ the four cross-pair endpoint comparisons.
 
 namespace Combinatorics
 
-/-- A Boolean-style inversion indicator is the corresponding power of `-1`. -/
-theorem if_negOne_one_eq_negOne_pow_indicator (p : Prop) [Decidable p] :
-    (if p then (-1 : ℤˣ) else 1) = (-1) ^ (if p then 1 else 0) := by
-  by_cases hp : p <;> simp [hp]
-
 /-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
 def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
   if k = 0 then pair.1 else pair.2
@@ -70,7 +65,7 @@ theorem Pairing.crossingCount_eq_sum_sum_crosses {n : ℕ} (pairing : Pairing n)
 
 /-- Two normalized pairs with disjoint endpoints cross in one orientation exactly when their four
 cross-pair endpoint comparisons have odd parity. -/
-theorem pairEndpointInversionCount_mod_two_eq_one_iff_crosses {n : ℕ}
+private theorem pairEndpointInversionCount_mod_two_eq_one_iff_crosses {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n))
     (hleft : left.1 < left.2) (hright : right.1 < right.2)
     (h11 : left.1 ≠ right.1) (h12 : left.1 ≠ right.2)
@@ -162,7 +157,7 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
 
 /-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
 diagonal modulo `n`. -/
-theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
+private theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     (n : ℕ) (s : Finset α) (f : α → α → ℕ)
     (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
     Nat.ModEq n (∑ a ∈ s, ∑ b ∈ s, f a b) (∑ a ∈ s, f a a) := by
