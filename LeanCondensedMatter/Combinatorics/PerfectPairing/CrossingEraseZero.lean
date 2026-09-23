@@ -15,25 +15,6 @@ namespace Combinatorics
 
 open FiniteIndex
 
-theorem Pairing.eraseZeroPair_crosses_iff {n : ℕ} (pairing : Pairing (n + 1))
-    (i k p q : Fin (2 * n)) :
-    Crosses (i, k) (p, q) ↔
-      Crosses
-        ((pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))),
-          (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))))
-        ((pairing.eraseZeroOrderIso p : Fin (2 * (n + 1))),
-          (pairing.eraseZeroOrderIso q : Fin (2 * (n + 1)))) := by
-  constructor
-  · rintro ⟨hik, hkp, hpq⟩
-    exact ⟨pairing.eraseZeroOrderIso.strictMono hik,
-      pairing.eraseZeroOrderIso.strictMono hkp,
-      pairing.eraseZeroOrderIso.strictMono hpq⟩
-  · rintro ⟨hik, hkp, hpq⟩
-    refine ⟨?_, ?_, ?_⟩
-    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hik
-    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hkp
-    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hpq
-
 /-- Every normalized pair other than `firstPair` has both endpoints away from `0` and its
 partner. -/
 theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pairing (n + 1))
@@ -126,7 +107,10 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
         exact Finset.mem_erase.2 ⟨fun h => hmapPair_ne_zero P (by rw [h]; rfl), hPmem⟩
       · rw [hA]
         exact Finset.mem_erase.2 ⟨fun h => hmapPair_ne_zero Q (by rw [h]; rfl), hQmem⟩
-      · exact (pairing.eraseZeroPair_crosses_iff P.1 P.2 Q.1 Q.2).1 (by simpa using hcross)
+      · exact (crosses_map_iff
+          (fun i : Fin (2 * n) => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
+          (fun _ _ h => pairing.eraseZeroOrderIso.strictMono h)
+          P.1 P.2 Q.1 Q.2).2 (by simpa using hcross)
     · rintro ⟨P, Q⟩ _ ⟨P', Q'⟩ _ h
       simp only [Prod.mk.injEq] at h
       obtain ⟨h1, h2⟩ := h
@@ -160,7 +144,9 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
         · rw [pairing.eraseZeroPair_mem_pairs_iff]
           simp only [OrderIso.apply_symm_apply]
           rwa [Prod.mk.eta]
-        · rw [pairing.eraseZeroPair_crosses_iff]
+        · rw [← crosses_map_iff
+            (fun i : Fin (2 * n) => (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))))
+            (fun _ _ h => pairing.eraseZeroOrderIso.strictMono h)]
           simp only [OrderIso.apply_symm_apply]
           rwa [Prod.mk.eta, Prod.mk.eta]
       · simp only [mapPair, OrderIso.apply_symm_apply, Prod.mk.eta]
