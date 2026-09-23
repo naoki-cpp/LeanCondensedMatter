@@ -15,8 +15,15 @@ namespace Combinatorics
 /-- Transport a pairing along an ambient equivalence `e`, where `e` maps new positions to old
 positions. -/
 def PairingOn.transport {α β : Type*} (P : PairingOn β) (e : α ≃ β) : PairingOn α :=
-  PairingOn.ofPartner (e.symm.permCongr P.partner)
-    (IsPairing.permCongr P.isPairing e.symm)
+  PairingOn.ofPartner (e.symm.permCongr P.partner) (by
+    constructor
+    · intro x
+      simp [Equiv.permCongr_apply, P.partner_involutive (e x)]
+    · intro x hx
+      rw [Equiv.permCongr_apply] at hx
+      apply P.partner_ne (e x)
+      apply e.symm.injective
+      simpa using hx)
 
 @[simp]
 theorem PairingOn.transport_partner {α β : Type*} (P : PairingOn β)
