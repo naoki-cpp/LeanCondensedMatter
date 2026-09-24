@@ -164,8 +164,8 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
     lowerEnergy upperEnergy occupation
   have hdenominator : denominator ≠ 0 := by
     dsimp [denominator]
-    simpa using finiteVolumeConductivityDenominator_ne_zero convention 0 eta
-      (Or.inr heta)
+    simpa [adiabaticElectricFieldFactor] using
+      finiteVolumeConductivityDenominator_ne_zero convention 0 eta (Or.inr heta)
   change (denominator * integral) * denominator⁻¹ = integral
   calc
     (denominator * integral) * denominator⁻¹ =

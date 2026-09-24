@@ -35,40 +35,6 @@ namespace Transport
 def adiabaticElectricFieldFactor (ω η : ℝ) : ℂ :=
   -(η : ℂ) + Complex.I * (ω : ℂ)
 
-@[simp]
-theorem adiabaticElectricFieldFactor_re (ω η : ℝ) :
-    (adiabaticElectricFieldFactor ω η).re = -η := by
-  simp [adiabaticElectricFieldFactor]
-
-@[simp]
-theorem adiabaticElectricFieldFactor_im (ω η : ℝ) :
-    (adiabaticElectricFieldFactor ω η).im = ω := by
-  simp [adiabaticElectricFieldFactor]
-
-@[simp]
-theorem adiabaticElectricFieldFactor_zero_frequency (η : ℝ) :
-    adiabaticElectricFieldFactor 0 η = -(η : ℂ) := by
-  simp [adiabaticElectricFieldFactor]
-
-@[simp]
-theorem adiabaticElectricFieldFactor_zero_switching (ω : ℝ) :
-    adiabaticElectricFieldFactor ω 0 = Complex.I * (ω : ℂ) := by
-  simp [adiabaticElectricFieldFactor]
-
-/-- The electric-field conversion factor is nonzero whenever the driving frequency and switching
-rate are not both zero. -/
-theorem adiabaticElectricFieldFactor_ne_zero
-    (ω η : ℝ) (hrate : ω ≠ 0 ∨ η ≠ 0) :
-    adiabaticElectricFieldFactor ω η ≠ 0 := by
-  intro hzero
-  have hre : -η = 0 := by
-    simpa [adiabaticElectricFieldFactor] using congrArg Complex.re hzero
-  have him : ω = 0 := by
-    simpa [adiabaticElectricFieldFactor] using congrArg Complex.im hzero
-  rcases hrate with hω | hη
-  · exact hω him
-  · exact hη (neg_eq_zero.mp hre)
-
 /-- Combined conversion from total-current/vector-potential response to
 current-density/electric-field response. -/
 noncomputable def finiteVolumeConductivityNormalization
@@ -82,7 +48,14 @@ theorem finiteVolumeConductivityDenominator_ne_zero
     (volume.volume : ℂ) * adiabaticElectricFieldFactor ω η ≠ 0 := by
   apply mul_ne_zero
   · exact_mod_cast ne_of_gt volume.volume_pos
-  · exact adiabaticElectricFieldFactor_ne_zero ω η hrate
+  · intro hzero
+    have hre : -η = 0 := by
+      simpa [adiabaticElectricFieldFactor] using congrArg Complex.re hzero
+    have him : ω = 0 := by
+      simpa [adiabaticElectricFieldFactor] using congrArg Complex.im hzero
+    rcases hrate with hω | hη
+    · exact hω him
+    · exact hη (neg_eq_zero.mp hre)
 
 /-- Convert a total-current response coefficient with respect to vector potential into an
 intensive electric-field conductivity. -/

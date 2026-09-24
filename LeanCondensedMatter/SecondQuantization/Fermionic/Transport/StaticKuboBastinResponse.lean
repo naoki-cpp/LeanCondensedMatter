@@ -152,7 +152,7 @@ theorem finiteVolumeConductivityNormalization_zero_frequency
     (convention : QuantumTheory.Transport.PositiveVolume) (eta : ℝ) :
     finiteVolumeConductivityNormalization convention 0 eta =
       (((convention.volume : ℂ) * (-(eta : ℂ))))⁻¹ := by
-  simp [finiteVolumeConductivityNormalization]
+  simp [finiteVolumeConductivityNormalization, adiabaticElectricFieldFactor]
 
 end
 end Transport
