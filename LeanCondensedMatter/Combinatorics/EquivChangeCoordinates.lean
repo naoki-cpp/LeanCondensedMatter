@@ -25,7 +25,6 @@ theorem changeCoordinates_apply {α β γ : Type*}
   rfl
 
 /-- A coordinate system differs from itself by the identity equivalence. -/
-@[simp]
 theorem changeCoordinates_self {α β : Type*} (e : α ≃ β) :
     e.changeCoordinates e = Equiv.refl β := by
   ext x
@@ -33,7 +32,6 @@ theorem changeCoordinates_self {α β : Type*} (e : α ≃ β) :
   simp
 
 /-- Reversing a coordinate change swaps its source and target systems. -/
-@[simp]
 theorem changeCoordinates_symm {α β γ : Type*} (source : α ≃ β) (target : α ≃ γ) :
     (source.changeCoordinates target).symm = target.changeCoordinates source := by
   ext x

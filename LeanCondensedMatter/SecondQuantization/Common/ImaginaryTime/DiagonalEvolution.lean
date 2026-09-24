@@ -95,13 +95,11 @@ noncomputable def diagonalEvolutionEquiv (energy : Config → ℝ) (τ : ℝ) :
     rw [diagonalEvolution_comp_neg]
     rfl
 
-@[simp]
 theorem diagonalEvolutionEquiv_apply (energy : Config → ℝ) (τ : ℝ)
     (x : AlgebraicFock Config) :
     diagonalEvolutionEquiv energy τ x = diagonalEvolution energy τ x :=
   rfl
 
-@[simp]
 theorem diagonalEvolutionEquiv_symm_apply (energy : Config → ℝ) (τ : ℝ)
     (x : AlgebraicFock Config) :
     (diagonalEvolutionEquiv energy τ).symm x = diagonalEvolution energy (-τ) x :=
