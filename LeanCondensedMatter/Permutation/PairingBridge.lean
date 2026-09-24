@@ -77,7 +77,6 @@ private def sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm (Fin (2 * m)) :=
   ((e.symm.trans ((Equiv.sumComm (Fin m) (Fin m)).trans (Equiv.sumCongr σ.symm σ))).trans e)
 
-@[simp]
 private theorem sidePartner_inl (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     sidePartner e σ (e (Sum.inl i)) = e (Sum.inr (σ i)) := by
   simp [sidePartner]
@@ -93,7 +92,7 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x
     cases y with
-    | inl i => simp
+    | inl i => simp [sidePartner_inl]
     | inr j => simp
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x
@@ -112,14 +111,13 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
 private def sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : Pairing m :=
   PairingOn.ofPartner (sidePartner e σ) (isPairing_sidePartner e σ)
 
-@[simp]
 private theorem sidePairing_partner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     (sidePairing e σ).partner = sidePartner e σ :=
   rfl
 
 private theorem isBipartite_sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     (sidePairing e σ).IsBipartite e :=
-  fun i => ⟨σ i, by simp⟩
+  fun i => ⟨σ i, by simp [sidePairing_partner, sidePartner_inl]⟩
 
 private theorem sidePairing_sideMatching (e : SideSplitting m) {P : Pairing m}
     (h : P.IsBipartite e) : sidePairing e (P.sideMatching e h) = P := by
@@ -155,7 +153,7 @@ private theorem sidePair_mem_pairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m
     sidePair e σ i ∈ (sidePairing e σ).pairs := by
   rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
   · rw [sidePair, if_pos h]
-    exact (Pairing.mem_pairs_iff _ _ _).2 ⟨h, by simp⟩
+    exact (Pairing.mem_pairs_iff _ _ _).2 ⟨h, by simp [sidePairing_partner, sidePartner_inl]⟩
   · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
   · rw [sidePair, if_neg (asymm h)]
     refine (Pairing.mem_pairs_iff _ _ _).2 ⟨h, ?_⟩

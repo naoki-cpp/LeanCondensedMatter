@@ -31,7 +31,6 @@ private noncomputable def gibbsOpUnit (Hop : Observable H) (β : ℝ) : (H →L[
   cfcUnits (fun x : ℝ => Real.exp (-β * x)) Hop.1
     (fun x _ => (Real.exp_pos _).ne') (hf := by fun_prop) (ha := Hop.2)
 
-@[simp]
 private theorem coe_gibbsOpUnit (Hop : Observable H) (β : ℝ) :
     (gibbsOpUnit Hop β : H →L[ℂ] H) = gibbsOp Hop β := by
   rfl
@@ -49,7 +48,7 @@ theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β)) : FiniteDimensional ℂ H := by
   let u := gibbsOpUnit Hop β
   have hcompact_u : IsCompactOperator (u : H →L[ℂ] H) := by
-    simpa [u] using hcompact
+    simpa [u, coe_gibbsOpUnit] using hcompact
   have hcompact_one : IsCompactOperator (1 : H →L[ℂ] H) := by
     have hcompact_inv_mul :
         IsCompactOperator ((↑u⁻¹ : H →L[ℂ] H) * (u : H →L[ℂ] H)) := by
