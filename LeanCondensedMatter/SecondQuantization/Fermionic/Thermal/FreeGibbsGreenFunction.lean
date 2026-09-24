@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -10,8 +9,7 @@ set_option linter.style.header false
 
 This module defines the finite free-fermion imaginary-time Green function directly from the
 canonical Gibbs density operator. Coordinate lemmas for off-diagonal mixed contractions remain
-private proof infrastructure. Arbitrary weighted two-point functionals are kept private here as
-coordinate lemmas rather than exported as a competing thermal-state API.
+private proof infrastructure.
 
 Off-diagonal vanishing of the *mixed* contractions is mode-specific rather than a particle-number
 selection rule: those operators have zero total charge, but toggling distinct modes cannot return an
@@ -36,17 +34,7 @@ noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
   - (freeGibbsDensityOperator ε β).expectation
       (Common.finiteHilbertOperatorAlgEquiv (twoPointTimeOrderedProduct ε i j τ τ'))
 
-/-! ## Gibbs-state bridge and BDD mixed contractions -/
-
-omit [LinearOrder Mode] in
-private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
-    (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A =
-      (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) := by
-  have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
-    funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw]
+/-! ## BDD mixed contractions -/
 
 private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
