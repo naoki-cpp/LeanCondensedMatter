@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 
 set_option linter.style.header false
 
@@ -84,5 +85,48 @@ theorem Pairing.normalizedPairSigmaEquiv_apply_of_strictMono [Fintype ι]
     (Pairing.componentPairEndpointEquiv componentPairing) positionEquiv
     (global.componentPairEndpointEquiv_partner componentPairing positionEquiv hpartner)
   exact hmono B (((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2).1
+
+
+/-- A product over the pairs of a global pairing factors over component pairings whenever a
+component-pair equivalence identifies the normalized endpoints and the pair kernel is local under
+that identification. -/
+theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
+    {R : Type*} [CommMonoid R] (global : Pairing n)
+    (componentPairing : ∀ B, Pairing (m B))
+    (componentPairEquiv : (Σ B, (componentPairing B).NormalizedPair) ≃ global.NormalizedPair)
+    (pairValue : Fin (2 * n) → Fin (2 * n) → R)
+    (localPairValue : ∀ B, Fin (2 * m B) → Fin (2 * m B) → R)
+    (hvalue : ∀ B pr,
+      pairValue (componentPairEquiv ⟨B, pr⟩).1.1
+          (componentPairEquiv ⟨B, pr⟩).1.2 =
+        localPairValue B pr.1.1 pr.1.2) :
+    (∏ pr ∈ global.pairs, pairValue pr.1 pr.2) =
+      ∏ B, ∏ pr ∈ (componentPairing B).pairs,
+        localPairValue B pr.1 pr.2 := by
+  classical
+  calc
+    (∏ pr ∈ global.pairs, pairValue pr.1 pr.2) =
+        ∏ pr : global.NormalizedPair, pairValue pr.1.1 pr.1.2 :=
+      Finset.prod_subtype _ (fun _ => Iff.rfl) _
+    _ = ∏ B, ∏ pr : (componentPairing B).NormalizedPair,
+          pairValue (componentPairEquiv ⟨B, pr⟩).1.1
+            (componentPairEquiv ⟨B, pr⟩).1.2 := by
+      simpa using
+        (Fintype.prod_equiv_sigma componentPairEquiv.symm
+          (fun pr => pairValue pr.1.1 pr.1.2))
+    _ = ∏ B, ∏ pr : (componentPairing B).NormalizedPair,
+          localPairValue B pr.1.1 pr.1.2 := by
+      apply Fintype.prod_congr
+      intro B
+      apply Fintype.prod_congr
+      intro pr
+      exact hvalue B pr
+    _ = ∏ B, ∏ pr ∈ (componentPairing B).pairs,
+          localPairValue B pr.1 pr.2 := by
+      apply Fintype.prod_congr
+      intro B
+      exact (Finset.prod_subtype
+        (componentPairing B).pairs (fun _ => Iff.rfl)
+        (fun pr => localPairValue B pr.1 pr.2)).symm
 
 end Combinatorics
