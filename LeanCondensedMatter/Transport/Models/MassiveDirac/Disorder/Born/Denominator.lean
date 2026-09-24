@@ -29,7 +29,7 @@ open QuantumTheory.Transport
 open scoped Interval
 
 /-- Radial specialization of the arbitrary-regulator Green denominator in polynomial form. -/
-theorem pauliGreenDenominatorOfRegulator_radial_eq
+private theorem pauliGreenDenominatorOfRegulator_radial_eq
     (v m probeEnergy regulator p : ℝ) :
     pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator =
       spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2 -
