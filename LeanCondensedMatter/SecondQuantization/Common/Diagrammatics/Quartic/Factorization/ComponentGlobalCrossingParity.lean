@@ -127,21 +127,15 @@ private theorem QuarticDiagram.componentCrossingCount_self
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
         (d.componentPairEquiv orders shuffle) B B =
       ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
-  classical
-  rw [Combinatorics.Pairing.componentCrossingCount, Fintype.sum_prod_type,
-    Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses]
-  exact Combinatorics.sum_sum_crosses_eq_of_equiv
-    (fun p : d.LocalOrderedPair orders B =>
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1)
-    (fun p : d.LocalOrderedPair orders B => p.1)
+  exact Combinatorics.Pairing.componentCrossingCount_self_eq
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    ((d.restrictComponent B.2).pairingInOrder (orders B))
+    (d.componentPairEquiv orders shuffle) B
     (Equiv.refl (d.LocalOrderedPair orders B))
-    (fun p q => by
-      simp only [Equiv.refl_apply]
-      rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
-      exact Combinatorics.crosses_map_iff
-        (d.componentOrderedLeg shuffle B)
-        (d.componentOrderedLeg_strictMono shuffle B)
-        p.1.1 p.1.2 q.1.1 q.1.2)
+    (d.componentOrderedLeg shuffle B)
+    (d.componentOrderedLeg_strictMono shuffle B)
+    (fun pr => by
+      simpa using d.componentPairEquiv_apply orders shuffle B pr)
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
