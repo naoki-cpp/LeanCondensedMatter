@@ -56,7 +56,6 @@ def interactionVertexPositionRelabel {n : ℕ} (π : Equiv.Perm (Fin n)) :
 
 /-- Relabeling standard two-point legs by the inverse slot permutation is the inverse leg
 relabeling. -/
-@[simp]
 theorem interactionVertexLegRelabel_symm {n : ℕ} (π : Equiv.Perm (Fin n)) :
     interactionVertexLegRelabel π.symm = (interactionVertexLegRelabel π).symm := by
   ext leg
@@ -66,7 +65,6 @@ theorem interactionVertexLegRelabel_symm {n : ℕ} (π : Equiv.Perm (Fin n)) :
 
 /-- The flattened position relabeling induced by the inverse slot permutation is the inverse
 flattened position relabeling. -/
-@[simp]
 theorem interactionVertexPositionRelabel_symm {n : ℕ} (π : Equiv.Perm (Fin n)) :
     interactionVertexPositionRelabel π.symm =
       (interactionVertexPositionRelabel π).symm := by
