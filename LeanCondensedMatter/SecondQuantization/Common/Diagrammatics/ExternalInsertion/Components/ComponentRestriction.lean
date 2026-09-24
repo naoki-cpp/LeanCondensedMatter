@@ -387,35 +387,13 @@ theorem ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_p
       (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     d.componentDiagramLeg B ((d.restrictComponent B).pairing.partner p) =
       d.pairing.partner (d.componentDiagramLeg B p) := by
-  let leg := (d.componentBlockLegEquiv B).symm p
-  have h := d.pairing.restrictAlongEquiv_partner
-    (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
-    (fun i => d.legInComponent_partner_iff
-      (B : Finset (ExternalInsertionVertex E S)) i)
-    (d.componentBlockLegEquiv B) leg
-  have h' := congrArg
-    (fun q => (((d.componentBlockLegEquiv B).symm q :
-      {leg : Fin (2 * (2 * S.card + E)) //
-        d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :
-          Fin (2 * (2 * S.card + E)))) h
-  calc
-    d.componentDiagramLeg B ((d.restrictComponent B).pairing.partner p) =
-        (((d.pairing.restrict
-          (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
-          (fun i => d.legInComponent_partner_iff
-            (B : Finset (ExternalInsertionVertex E S)) i)).partner leg :
-          {leg : Fin (2 * (2 * S.card + E)) //
-            d.legInComponent (B : Finset (ExternalInsertionVertex E S)) leg}) :
-              Fin (2 * (2 * S.card + E))) := by
-      simpa [ExternalInsertionDiagram.componentDiagramLeg,
-        ExternalInsertionDiagram.restrictComponent, leg] using h'
-    _ = d.pairing.partner (d.componentDiagramLeg B p) := by
-      rw [d.pairing.restrict_partner_val
-        (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
-        (fun i => d.legInComponent_partner_iff
-          (B : Finset (ExternalInsertionVertex E S)) i)]
-      rfl
-
+  simpa [ExternalInsertionDiagram.componentDiagramLeg,
+    ExternalInsertionDiagram.restrictComponent] using
+    d.pairing.restrictAlongEquiv_partner_symm_val
+      (d.legInComponent (B : Finset (ExternalInsertionVertex E S)))
+      (fun i => d.legInComponent_partner_iff
+        (B : Finset (ExternalInsertionVertex E S)) i)
+      (d.componentBlockLegEquiv B) p
 
 /-- On an external slot, the component leg embedding is the ambient external slot selected by
 the component's increasing external-sector order. -/
