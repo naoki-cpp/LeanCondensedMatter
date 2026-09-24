@@ -141,6 +141,9 @@ theorem coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog
       (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) := by
   by_cases hm : m = 0
   · subst m
+    rw [PowerSeries.coeff_zero_eq_constantCoeff,
+      constantCoeff_permutationConnectedCycleSeries,
+      constantCoeff_formalTraceLogOneSubSeries]
     simp
   · obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hm
     rw [coeff_permutationConnectedCycleSeries_of_pos ζ K (n + 1) (by omega)]
