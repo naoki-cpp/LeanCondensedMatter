@@ -760,24 +760,6 @@ noncomputable def ExternalInsertionDiagram.restrictedVacuumPairing {S : Finset (
     (fun leg => d.legInComponent_partner_iff (B : Finset (ExternalInsertionVertex E S)) leg)
     (d.vacuumBlockLegEquiv B hVac)
 
-/-- The restricted vacuum pairing agrees with the component-restricted ambient pairing
-under the vacuum leg reindexing. -/
-private theorem ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S)))
-    (leg : {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg}) :
-    (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
-      d.vacuumBlockLegEquiv B hVac
-        ((d.pairing.restrict (d.legInComponent B)
-          (fun i => d.legInComponent_partner_iff
-            (B : Finset (ExternalInsertionVertex E S)) i)).partner leg) := by
-  simpa only [ExternalInsertionDiagram.restrictedVacuumPairing] using
-    d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
-      (fun i => d.legInComponent_partner_iff
-        (B : Finset (ExternalInsertionVertex E S)) i)
-      (d.vacuumBlockLegEquiv B hVac) leg
-
 /-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
 noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
