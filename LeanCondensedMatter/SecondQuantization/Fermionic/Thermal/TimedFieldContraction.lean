@@ -26,9 +26,25 @@ noncomputable def timedFieldPairContraction
       ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
 
 
+/-- Closed form after extracting the two imaginary-time exponential factors. -/
+theorem timedFieldPairContraction_eq
+    (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) :
+    timedFieldPairContraction ε β A B =
+      Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
+        Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
+          (freeGibbsDensityOperator ε β).expectation
+            (Common.finiteHilbertOperatorAlgEquiv
+              ((bareExternalFieldOperator A.label).comp
+                (bareExternalFieldOperator B.label))) := by
+  simp only [timedFieldPairContraction,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+    Common.finiteGibbsExpectation_smul]
+
 /-- Closed form of a time-labelled pair contraction. The mixed contractions are the
 Bloch–de Dominicis two-point kernels; anomalous contractions vanish. -/
-theorem timedFieldPairContraction_eq
+theorem timedFieldPairContraction_eq_closed_form
     (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) :
     timedFieldPairContraction ε β A B =
       Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
@@ -43,12 +59,7 @@ theorem timedFieldPairContraction_eq
               if j = i then 1 / (Complex.exp ((β : ℂ) * (ε j : ℂ)) + 1) else 0
           | .annihilation _, .annihilation _ => 0
           | .creation _, .creation _ => 0 := by
-  rw [timedFieldPairContraction,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-    Common.finiteGibbsExpectation_smul,
-    ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  rw [timedFieldPairContraction_eq]
   cases A.label <;> cases B.label <;>
     simp only [bareExternalFieldOperator]
   · rw [freeGibbsDensityOperator_expectation_annihilate_comp_annihilate]
