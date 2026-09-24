@@ -96,6 +96,7 @@ theorem pauliGreenDenominator_radial_im
   · rw [pauliGreenDenominator, SpectralSide.regulator_retarded,
       pauliGreenDenominatorOfRegulator_radial_im]
     simp only [SpectralSide.sign_retarded]
+    ring
   · rw [pauliGreenDenominator, SpectralSide.regulator_advanced,
       pauliGreenDenominatorOfRegulator_radial_im]
     simp only [SpectralSide.sign_advanced]
