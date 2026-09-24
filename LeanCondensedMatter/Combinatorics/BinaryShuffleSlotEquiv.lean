@@ -2,6 +2,8 @@ import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Sort
+import Mathlib.Data.Fintype.Perm
+import Mathlib.Data.Fintype.Powerset
 
 set_option linter.style.header false
 

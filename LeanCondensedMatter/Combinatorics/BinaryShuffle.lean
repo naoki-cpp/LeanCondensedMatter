@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
@@ -112,12 +112,12 @@ theorem card_succ_succ (m n : ℕ) :
 /-- A finite sum over shuffles with no left slots has one term. -/
 theorem sum_zero_left [AddCommMonoid M] (n : ℕ) (F : BinaryShuffle 0 n → M) :
     ∑ σ : BinaryShuffle 0 n, F σ = F (allRight n) := by
-  simpa [zeroLeftEquiv] using (Equiv.sum_comp (zeroLeftEquiv n).symm F).symm
+  simpa [zeroLeftEquiv, one_nsmul] using (Equiv.sum_comp (zeroLeftEquiv n).symm F).symm
 
 /-- A finite sum over shuffles with no right slots has one term. -/
 theorem sum_zero_right [AddCommMonoid M] (m : ℕ) (F : BinaryShuffle m 0 → M) :
     ∑ σ : BinaryShuffle m 0, F σ = F (allLeft m) := by
-  simpa [zeroRightEquiv] using (Equiv.sum_comp (zeroRightEquiv m).symm F).symm
+  simpa [zeroRightEquiv, one_nsmul] using (Equiv.sum_comp (zeroRightEquiv m).symm F).symm
 
 /-- Split a finite shuffle sum by the side that supplies the outermost slot. -/
 theorem sum_succ_succ [AddCommMonoid M] (m n : ℕ)

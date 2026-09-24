@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
+import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Finset.Sort
 import Mathlib.Logic.Equiv.Set
 
