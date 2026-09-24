@@ -38,6 +38,7 @@ noncomputable def assembleFamilyOrderOfSize {total : ℕ} (size : ι → ℕ)
     Fin total ≃ α :=
   shuffle.slotEquiv.symm.trans ((familyOrderedEquiv F size orders).trans ambientEquiv.symm)
 
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 @[simp]
 theorem assembleFamilyOrderOfSize_symm_apply {total : ℕ} (size : ι → ℕ)
     (ambientEquiv : α ≃ Σ i, F i)
@@ -46,8 +47,14 @@ theorem assembleFamilyOrderOfSize_symm_apply {total : ℕ} (size : ι → ℕ)
     (i : ι) (j : Fin (size i)) :
     (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle).symm
         (ambientEquiv.symm ⟨i, orders i j⟩) = shuffle.slotEquiv ⟨i, j⟩ := by
-  simp [assembleFamilyOrderOfSize, familyOrderedEquiv]
+  have hsigma :
+      (Equiv.sigmaCongrRight orders).symm ⟨i, orders i j⟩ = ⟨i, j⟩ := by
+    rw [show (⟨i, orders i j⟩ : Σ i, F i) =
+      (Equiv.sigmaCongrRight orders) ⟨i, j⟩ by rfl]
+    exact (Equiv.sigmaCongrRight orders).symm_apply_apply ⟨i, j⟩
+  simp [assembleFamilyOrderOfSize, familyOrderedEquiv, hsigma]
 
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
 theorem assembleFamilyOrderOfSize_eq_order {total : ℕ} (size : ι → ℕ)
     (ambientEquiv : α ≃ Σ i, F i)
     (orders : FamilyOrdersOf F size)
@@ -61,10 +68,11 @@ theorem assembleFamilyOrderOfSize_eq_order {total : ℕ} (size : ι → ℕ)
         shuffle.slotEquiv := by
     ext z
     obtain ⟨i, j⟩ := z
+    change order.symm (ambientEquiv.symm ⟨i, orders i j⟩) = _
     exact hslot i j
   ext i
-  change shuffle.slotEquiv.symm
-      ((familyOrderedEquiv F size orders).trans ambientEquiv.symm i) = order i
+  change (familyOrderedEquiv F size orders).trans ambientEquiv.symm
+      (shuffle.slotEquiv.symm i) = order i
   rw [← hshuffle]
   simp [Equiv.trans_assoc]
 
