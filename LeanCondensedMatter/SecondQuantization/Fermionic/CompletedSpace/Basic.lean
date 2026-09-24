@@ -68,19 +68,6 @@ noncomputable def algebraicToCompleted :
     OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode :=
   Common.algebraicToCompleted
 
-@[simp]
-theorem algebraicToCompleted_basisState (n : Occupation Mode) :
-    algebraicToCompleted (basisState n) = completedBasisState n := by
-  simpa [algebraicToCompleted, basisState, completedBasisState] using
-    (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
-
-/-- Finite-support fermionic Fock vectors are dense in the completed `ℓ²` space. -/
-theorem algebraicToCompleted_denseRange :
-    DenseRange
-      (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
-  simpa [algebraicToCompleted] using
-    (Common.algebraicToCompleted_denseRange (Config := Occupation Mode))
-
 variable [LinearOrder Mode]
 
 /-- The completed single-mode number operator. It is the orthogonal coordinate projection onto

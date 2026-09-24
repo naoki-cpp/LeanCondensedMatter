@@ -106,7 +106,12 @@ private theorem eventually_dist_completedModeTruncation_lt
     (ψ : CompletedFockSpace Mode) {ε : ℝ} (hε : 0 < ε) :
     ∃ S₀ : Finset Mode, ∀ S, S₀ ⊆ S → dist (completedModeTruncation S ψ) ψ < ε := by
   have hhalf : 0 < ε / 2 := half_pos hε
-  rcases algebraicToCompleted_denseRange.exists_dist_lt ψ hhalf with ⟨x, hx⟩
+  have hdense :
+      DenseRange
+        (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
+    simpa [algebraicToCompleted] using
+      (Common.algebraicToCompleted_denseRange (Config := Occupation Mode))
+  rcases hdense.exists_dist_lt ψ hhalf with ⟨x, hx⟩
   refine ⟨algebraicModeSupport x, ?_⟩
   intro S hS
   have hfix := completedModeTruncation_algebraicToCompleted_of_subset S x hS
