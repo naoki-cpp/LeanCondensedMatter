@@ -115,19 +115,18 @@ private theorem hasDerivAt_retardedAdvancedResolventDifference
     (-(retardedResolvent hamiltonian energy broadening) ^ 2 -
       (-(advancedResolvent hamiltonian energy broadening) ^ 2))
     energy
-  have hside (side : SpectralSide) :
-      HasDerivAt (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
-        (-(spectralResolvent side hamiltonian energy broadening) ^ 2) energy :=
-    hasDerivAt_spectralResolvent_energy
-      side hamiltonian hself energy broadening (ne_of_gt hbroadening)
   have hretarded :
       HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
         (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      hasDerivAt_spectralResolvent_energy
+        .retarded hamiltonian hself energy broadening (ne_of_gt hbroadening)
   have hadvanced :
       HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
         (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      hasDerivAt_spectralResolvent_energy
+        .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
   exact hretarded.sub hadvanced
 
 /-- Product differentiation of the standard Smrčka–Středa surface factor. -/
@@ -141,19 +140,18 @@ private theorem hasDerivAt_smrckaStredaSurfaceFactor
       (smrckaStredaSurfaceFactorDerivative
         hamiltonian current₁ current₂ energy broadening)
       energy := by
-  have hside (side : SpectralSide) :
-      HasDerivAt (fun x : ℝ => spectralResolvent side hamiltonian x broadening)
-        (-(spectralResolvent side hamiltonian energy broadening) ^ 2) energy :=
-    hasDerivAt_spectralResolvent_energy
-      side hamiltonian hself energy broadening (ne_of_gt hbroadening)
   have hretarded :
       HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
         (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      hasDerivAt_spectralResolvent_energy
+        .retarded hamiltonian hself energy broadening (ne_of_gt hbroadening)
   have hadvanced :
       HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
         (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      hasDerivAt_spectralResolvent_energy
+        .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
   have hleftRetarded := (hretarded.const_mul current₁).mul_const current₂
   have hleftAdvanced := (hadvanced.const_mul current₂).mul_const current₁
   have hleft := hleftRetarded.sub hleftAdvanced
@@ -206,16 +204,16 @@ private theorem continuous_retardedAdvancedResolventDifference_energy
   change Continuous
     ((fun energy : ℝ => retardedResolvent hamiltonian energy broadening) -
       fun energy : ℝ => advancedResolvent hamiltonian energy broadening)
-  have hside (side : SpectralSide) :
-      Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) :=
-    continuous_spectralResolvent_energy
-      side hamiltonian hself broadening (ne_of_gt hbroadening)
   have hretarded : Continuous (fun energy : ℝ =>
       retardedResolvent hamiltonian energy broadening) := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      continuous_spectralResolvent_energy
+        .retarded hamiltonian hself broadening (ne_of_gt hbroadening)
   have hadvanced : Continuous (fun energy : ℝ =>
       advancedResolvent hamiltonian energy broadening) := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      continuous_spectralResolvent_energy
+        .advanced hamiltonian hself broadening (ne_of_gt hbroadening)
   exact hretarded.sub hadvanced
 
 private theorem continuous_retardedAdvancedResolventDifferenceDerivative_energy
@@ -224,16 +222,16 @@ private theorem continuous_retardedAdvancedResolventDifferenceDerivative_energy
     Continuous (fun energy : ℝ =>
       retardedAdvancedResolventDifferenceDerivative hamiltonian energy broadening) := by
   unfold retardedAdvancedResolventDifferenceDerivative
-  have hside (side : SpectralSide) :
-      Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) :=
-    continuous_spectralResolvent_energy
-      side hamiltonian hself broadening (ne_of_gt hbroadening)
   have hretarded : Continuous (fun energy : ℝ =>
       retardedResolvent hamiltonian energy broadening) := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      continuous_spectralResolvent_energy
+        .retarded hamiltonian hself broadening (ne_of_gt hbroadening)
   have hadvanced : Continuous (fun energy : ℝ =>
       advancedResolvent hamiltonian energy broadening) := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      continuous_spectralResolvent_energy
+        .advanced hamiltonian hself broadening (ne_of_gt hbroadening)
   exact (hretarded.pow 2).neg.sub ((hadvanced.pow 2).neg)
 
 private theorem continuous_smrckaStredaSurfaceFactorDerivative_energy
@@ -243,16 +241,16 @@ private theorem continuous_smrckaStredaSurfaceFactorDerivative_energy
     Continuous (fun energy : ℝ =>
       smrckaStredaSurfaceFactorDerivative
         hamiltonian current₁ current₂ energy broadening) := by
-  have hside (side : SpectralSide) :
-      Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) :=
-    continuous_spectralResolvent_energy
-      side hamiltonian hself broadening (ne_of_gt hbroadening)
   have hretarded : Continuous (fun energy : ℝ =>
       retardedResolvent hamiltonian energy broadening) := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      continuous_spectralResolvent_energy
+        .retarded hamiltonian hself broadening (ne_of_gt hbroadening)
   have hadvanced : Continuous (fun energy : ℝ =>
       advancedResolvent hamiltonian energy broadening) := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      continuous_spectralResolvent_energy
+        .advanced hamiltonian hself broadening (ne_of_gt hbroadening)
   have hdifference :=
     continuous_retardedAdvancedResolventDifference_energy
       hamiltonian hself broadening hbroadening
@@ -328,16 +326,16 @@ theorem continuous_regularizedBastinOperatorIntegrand_energy
     Continuous (fun energy : ℝ =>
       regularizedBastinOperatorIntegrand
         hamiltonian current₁ current₂ energy broadening) := by
-  have hside (side : SpectralSide) :
-      Continuous (fun energy : ℝ => spectralResolvent side hamiltonian energy broadening) :=
-    continuous_spectralResolvent_energy
-      side hamiltonian hself broadening (ne_of_gt hbroadening)
   have hretarded : Continuous (fun energy : ℝ =>
       retardedResolvent hamiltonian energy broadening) := by
-    simpa only [retardedResolvent] using hside .retarded
+    simpa only [retardedResolvent] using
+      continuous_spectralResolvent_energy
+        .retarded hamiltonian hself broadening (ne_of_gt hbroadening)
   have hadvanced : Continuous (fun energy : ℝ =>
       advancedResolvent hamiltonian energy broadening) := by
-    simpa only [advancedResolvent] using hside .advanced
+    simpa only [advancedResolvent] using
+      continuous_spectralResolvent_energy
+        .advanced hamiltonian hself broadening (ne_of_gt hbroadening)
   have hdifference :=
     continuous_retardedAdvancedResolventDifference_energy
       hamiltonian hself broadening hbroadening
