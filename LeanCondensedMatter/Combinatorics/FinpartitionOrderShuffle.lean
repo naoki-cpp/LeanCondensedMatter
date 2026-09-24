@@ -56,8 +56,8 @@ theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.Pa
     (shuffle : π.PartShuffle) :
     π.PartOrdersCompatible (π.assembleOrder orders shuffle) orders := by
   intro B
-  simpa [Finpartition.PartOrdersCompatible,
-    Finpartition.assembleOrder] using shuffle.strictMono B
+  simpa [Finpartition.PartOrdersCompatible, Finpartition.assembleOrder,
+    Equiv.changeCoordinates_symm] using shuffle.strictMono B
 
 /-- Reassembling a global order from compatible part-local orders and its extracted shuffle is the
 original global order. -/
@@ -211,6 +211,6 @@ noncomputable def orderDecompositionEquiv (π : Finpartition s) :
     have hpart := congrArg (fun partOrders => π.partEquiv partOrders) horders
     rw [hpart]
     ext slot
-    simp [Finpartition.assembleOrder]
+    simp [Finpartition.assembleOrder, Equiv.changeCoordinates_symm]
 
 end Finpartition
