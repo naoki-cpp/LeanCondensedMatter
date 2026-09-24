@@ -3,7 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
 
@@ -24,19 +23,6 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-omit [LinearOrder Mode] in
-/-- The total free Boltzmann weight is nonzero. -/
-theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
-    Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
-  simpa [Common.weightSum, freePartitionFunction] using freePartitionFunction_ne_zero ε β
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The fermionic free Boltzmann weight is definitionally the Common weight at `fermionEnergy`. -/
-theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
-    (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n :=
-  rfl
-
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
@@ -48,9 +34,8 @@ theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupati
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as
-a product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form (not
-just `s = univ`) is what lets `freeGibbsDensityOperator_expectation_numberOperator` below reuse
-this for the mode-`i`-removed partial product `s = univ.erase i`. -/
+a product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form
+keeps the mode-set factorization available independently of the `s = univ` partition function. -/
 theorem sum_freeBoltzmannWeight_powerset_eq_prod (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
     ∑ t ∈ s.powerset, freeBoltzmannWeight ε β t =
       ∏ j ∈ s, (1 + Complex.exp (-(β : ℂ) * (ε j : ℂ))) := by
