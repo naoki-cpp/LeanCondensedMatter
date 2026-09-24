@@ -332,7 +332,6 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
   simp_rw [hpoint]
   rw [intervalIntegral.integral_neg,
     intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi]
-  rfl
 
 /-- The second-cosine full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierSecondCosineAngularKernel_neg (z : ℝ) :
