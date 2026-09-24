@@ -119,24 +119,6 @@ private theorem QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero
   rw [hcross]
   exact d.sum_componentOrderedLeg_inversions_mod_two_eq_zero shuffle B C hBC
 
-/-- The diagonal oriented crossing count is the local crossing count of that component. -/
-private theorem QuarticDiagram.componentCrossingCount_self
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) :
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-        (d.componentPairEquiv orders shuffle) B B =
-      ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
-  exact Combinatorics.Pairing.componentCrossingCount_self_eq
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-    ((d.restrictComponent B.2).pairingInOrder (orders B))
-    (d.componentPairEquiv orders shuffle) B
-    (Equiv.refl (d.LocalOrderedPair orders B))
-    (d.componentOrderedLeg shuffle B)
-    (d.componentOrderedLeg_strictMono shuffle B)
-    (fun pr => by
-      simpa using d.componentPairEquiv_apply orders shuffle B pr)
-
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
 theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
@@ -153,7 +135,15 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
   apply congrArg (fun n : ℕ => n % 2)
   apply Finset.sum_congr rfl
   intro B _
-  exact d.componentCrossingCount_self orders shuffle B
+  exact Combinatorics.Pairing.componentCrossingCount_self_eq
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    ((d.restrictComponent B.2).pairingInOrder (orders B))
+    (d.componentPairEquiv orders shuffle) B
+    (Equiv.refl (d.LocalOrderedPair orders B))
+    (d.componentOrderedLeg shuffle B)
+    (d.componentOrderedLeg_strictMono shuffle B)
+    (fun pr => by
+      simpa using d.componentPairEquiv_apply orders shuffle B pr)
 
 /-- Pairing weight factors over connected components for every component shuffle. -/
 theorem QuarticDiagram.pairingInOrder_weight_eq_prod_components
