@@ -33,9 +33,9 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     FixedExternalTwoPointWickDiagram Mode d.1.externalInteractionPart.card i j :=
   ⟨d.1.externalPiece, by
-    change (d.1.externalPieceOfCardEq rfl).externalLabel = d.1.externalLabel
-    exact Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel d.1 rfl
-      |>.trans d.2⟩
+    unfold Common.TwoPointDiagram.externalPiece
+    rw [Common.TwoPointDiagram.externalPieceOfCardEq_externalLabel]
+    exact d.2⟩
 
 end Fermionic
 end SecondQuantization
