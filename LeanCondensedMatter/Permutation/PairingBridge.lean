@@ -81,7 +81,6 @@ private theorem sidePartner_inl (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) 
     sidePartner e σ (e (Sum.inl i)) = e (Sum.inr (σ i)) := by
   simp [sidePartner]
 
-@[simp]
 private theorem sidePartner_inr (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (j : Fin m) :
     sidePartner e σ (e (Sum.inr j)) = e (Sum.inl (σ.symm j)) := by
   simp [sidePartner]
@@ -92,7 +91,7 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x
     cases y with
-    | inl i => simp [sidePartner_inl]
+    | inl i => simp [sidePartner_inl, sidePartner_inr]
     | inr j => simp [sidePartner_inl, sidePartner_inr]
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x

@@ -139,7 +139,6 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumComponentPairEquiv
         TwoPointDiagram.slotSplitVacuumComponentPairEmbedding_card_eq
           T ext vac C τ τ' σ⟩)
 
-@[simp]
 private theorem TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)

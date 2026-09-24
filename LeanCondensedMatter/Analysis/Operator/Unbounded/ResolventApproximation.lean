@@ -36,7 +36,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def imaginaryParameter (r : ℝ) : ℂ :=
   (r : ℂ) * I
 
-@[simp]
 private theorem imaginaryParameter_im (r : ℝ) : (imaginaryParameter r).im = r := by
   simp [imaginaryParameter]
 
@@ -47,16 +46,15 @@ private theorem star_imaginaryParameter (r : ℝ) :
 
 private theorem imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
     (imaginaryParameter r).im ≠ 0 := by
-  simpa using ne_of_gt hr
+  simpa [imaginaryParameter_im] using ne_of_gt hr
 
 private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
     (star (imaginaryParameter r)).im ≠ 0 := by
-  simpa using neg_ne_zero.mpr (ne_of_gt hr)
+  simpa [imaginaryParameter_im] using neg_ne_zero.mpr (ne_of_gt hr)
 
 private noncomputable def regularizerCoefficient (r : ℝ) : ℂ :=
   ((r / 2 : ℝ) : ℂ) * I
 
-@[simp]
 private theorem star_regularizerCoefficient (r : ℝ) :
     star (regularizerCoefficient r) = -regularizerCoefficient r := by
   simp [regularizerCoefficient]

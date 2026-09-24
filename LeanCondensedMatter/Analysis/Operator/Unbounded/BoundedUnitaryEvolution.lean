@@ -31,7 +31,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def unitaryTimeCoefficient (t : ℝ) : ℂ :=
   -((t : ℂ) * I)
 
-@[simp]
 private theorem unitaryTimeCoefficient_zero : unitaryTimeCoefficient 0 = 0 := by
   simp [unitaryTimeCoefficient]
 
@@ -40,7 +39,6 @@ private theorem unitaryTimeCoefficient_add (t s : ℝ) :
   simp [unitaryTimeCoefficient]
   ring
 
-@[simp]
 private theorem star_unitaryTimeCoefficient (t : ℝ) :
     star (unitaryTimeCoefficient t) = unitaryTimeCoefficient (-t) := by
   simp [unitaryTimeCoefficient]
@@ -53,7 +51,7 @@ omit [CompleteSpace H] in
 @[simp]
 theorem boundedUnitaryEvolution_zero (B : H →L[ℂ] H) :
     boundedUnitaryEvolution B 0 = 1 := by
-  simp [boundedUnitaryEvolution]
+  simp [boundedUnitaryEvolution, unitaryTimeCoefficient_zero]
 
 omit [CompleteSpace H] in
 private theorem exp_argument_mem_ball (B : H →L[ℂ] H) (t : ℝ) :
@@ -95,7 +93,7 @@ theorem boundedUnitaryEvolution_star
     star (boundedUnitaryEvolution B t) = boundedUnitaryEvolution B (-t) := by
   have hBstar : star B = B := by
     simpa only [isSelfAdjoint_iff] using hB
-  simp [boundedUnitaryEvolution, NormedSpace.star_exp, hBstar]
+  simp [boundedUnitaryEvolution, NormedSpace.star_exp, hBstar, star_unitaryTimeCoefficient]
 
 /-- A bounded self-adjoint exponential has its adjoint as a left inverse. -/
 theorem boundedUnitaryEvolution_star_mul

@@ -33,7 +33,6 @@ noncomputable def twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ
       List.ofFn fun l : Fin 4 =>
         imaginaryTimeEvolve ε (σ v) (quarticLocalLegOperator (q v) l)
 
-@[simp]
 private theorem twoPointTimedEventAtomicOperators_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (e : Fin 2) :
     twoPointTimedEventAtomicOperators ε i j τ τ' q σ (Sum.inl e) =
@@ -52,14 +51,6 @@ theorem twoPointTimedEventAtomicOperators_interaction {n : ℕ} (ε : Mode → �
 private def twoPointTimedEventAtomicArity {n : ℕ} : TwoPointTimedEvent n → ℕ
   | .inl _ => 1
   | .inr _ => 4
-
-@[simp]
-private theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
-    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (event : TwoPointTimedEvent n) :
-    (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event).length =
-      twoPointTimedEventAtomicArity event := by
-  cases event <;> simp [twoPointTimedEventAtomicArity]
 
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
 private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)

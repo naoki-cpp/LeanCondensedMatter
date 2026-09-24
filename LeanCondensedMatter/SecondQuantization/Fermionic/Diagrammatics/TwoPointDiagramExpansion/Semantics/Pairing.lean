@@ -56,7 +56,7 @@ private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
       twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
   cases event with
   | inl e =>
-      simp [twoPointTimedEventAtomicFields, timedFieldOperator]
+      simp [twoPointTimedEventAtomicFields, timedFieldOperator, twoPointTimedEventAtomicOperators]
   | inr v =>
       rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
         List.map_ofFn]
