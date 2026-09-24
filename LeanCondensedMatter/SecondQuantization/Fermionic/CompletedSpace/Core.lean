@@ -32,7 +32,8 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
-      fermionPhase, algebraicToCompleted, basisState, completedBasisState]
+      fermionPhase, algebraicToCompleted, basisState, completedBasisState,
+      Common.algebraicToCompleted_basisState]
 
 /-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
@@ -47,7 +48,8 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
       (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
-      fermionPhase, algebraicToCompleted, basisState, completedBasisState]
+      fermionPhase, algebraicToCompleted, basisState, completedBasisState,
+      Common.algebraicToCompleted_basisState]
   · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
 
 end
