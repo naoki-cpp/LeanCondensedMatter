@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
