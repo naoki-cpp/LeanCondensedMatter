@@ -1210,7 +1210,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -73746,43 +73746,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ),\n  MeasureTheory.Integrable\n    (QuantumTheory.Transport.finiteKuboBastinCommonVertexEnergyKernel system data interpolation measured source omega\n      eta)\n    MeasureTheory.volume",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
-    "module": "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.integrable_purePointKuboBastinCommonVertexTransitionIntegrand"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (interpolation : QuantumTheory.Transport.PurePointOccupationInterpolation system data) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (mn : ι × ι),\n  MeasureTheory.Integrable\n    (QuantumTheory.Transport.purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation measured\n      source omega eta mn)\n    MeasureTheory.volume",
     "standardAxioms": [
@@ -73791,7 +73754,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -73803,7 +73766,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
       "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
     "dependencies": [
@@ -73813,10 +73775,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.integrable_finiteKuboBastinCommonVertexEnergyKernel",
       "QuantumTheory.Transport.integral_finiteKuboBastinCommonVertexEnergyKernel"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92955,7 +92916,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -93036,7 +92997,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -106910,8 +106871,7 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_perm_canonical",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -106920,10 +106880,9 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_perm_canonical",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
       "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.interactionEvent_mem_orderedTwoPointTimedEvents"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107758,7 +107717,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -133812,68 +133771,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {k : ℕ} {α : Type u_1} (f : Fin (k + 1) → α), Finsupp.finSuccFamily✝ f none = f 0",
-    "standardAxioms": [
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.finSuccFamily_none",
-    "module": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {k : ℕ} {α : Type u_1} (f : Fin (k + 1) → α) (i : Fin k), Finsupp.finSuccFamily✝ f (some i) = f i.succ",
-    "standardAxioms": [
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.finSuccFamily_some",
-    "module": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {R : Type u_3} [inst : Fintype α] [inst_1 : Fintype β] [inst_2 : NormedCommRing R]\n  (e : α ≃ β) (f : β → ℕ → R) (a : β → R),\n  HasSum (fun n => ∏ i, f (e i) (n i)) (∏ i, a (e i)) → HasSum (fun n => ∏ i, f i (n i)) (∏ i, a i)",
     "standardAxioms": [
@@ -142089,41 +141986,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] {B : Finset α} (τ : Combinatorics.SingleOrbitPerm✝ B)\n  (_x : ↥B), ↑((Combinatorics.connectedSubtypePerm✝ τ) _x) = ↑τ ↑_x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.connectedSubtypePerm_apply",
-    "module": "LeanCondensedMatter.Permutation.ConnectedDecomposition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] {B : Finset α} (τ : Combinatorics.SingleOrbitPerm✝ B),\n  (Combinatorics.connectedSubtypePerm✝ τ).IsCycleOn Set.univ",
     "standardAxioms": [
@@ -142682,41 +142544,6 @@
       "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] {S : Finset α} (σ : Combinatorics.SupportedPerm✝ S)\n  (B : ↥(Combinatorics.orbitFinpartitionOn✝ S ↑σ).parts) (_x : ↥↑B),\n  ↑((Combinatorics.restrictOrbitBlockSubtype✝ σ B) _x) = ↑σ ↑_x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.restrictOrbitBlockSubtype_apply",
-    "module": "LeanCondensedMatter.Permutation.ConnectedDecomposition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147381,41 +147208,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} (e : Config ≃ Config) (ψ : ↥(SecondQuantization.Common.CompletedFock Config)) (c : Config),\n  ↑((SecondQuantization.Common.completedReindexLinear✝ e) ψ) c = ↑ψ (e c)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry.0.SecondQuantization.Common.completedReindexLinear_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Config : Type u_1} (e : Config ≃ Config) (ψ : ↥(SecondQuantization.Common.CompletedFock Config)),\n  (SecondQuantization.Common.completedReindexLinear✝ e.symm) ((SecondQuantization.Common.completedReindexLinear✝ e) ψ) =\n    ψ",
     "standardAxioms": [
@@ -150051,7 +149843,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -156071,14 +155863,14 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (n : ℕ),\n  (List.map SecondQuantization.Fermionic.twoPointTimedEventAtomicArity✝\n        ([Sum.inl 0, Sum.inl 1] ++ SecondQuantization.Common.twoPointInteractionEventList n)).sum =\n    2 * (2 * n + 1)",
     "standardAxioms": [
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -156089,56 +155881,13 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  (SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length = 2 * (2 * n + 1)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening",
-    "externalAxioms": [],
-    "docString": "A two-point insertion with `n` quartic vertices contains exactly `4n + 2` atomic operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_perm",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.canonicalTwoPointTimedEventAtomicAritySum",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators_length"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [
-      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -156230,15 +155979,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ)\n  (event : SecondQuantization.Common.TwoPointTimedEvent n),\n  (SecondQuantization.Fermionic.twoPointTimedEventAtomicOperators ε i j τ τ' q σ event).length =\n    SecondQuantization.Fermionic.twoPointTimedEventAtomicArity✝ event",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -156249,16 +155998,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.mixedTimeOrderedAtomicOperators_length"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
