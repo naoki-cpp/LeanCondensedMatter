@@ -33,6 +33,17 @@ noncomputable def flatVertexLegPairValue {n : ℕ}
   timedFieldPairContraction ε β
     (quarticLegFieldForSequence q τ a) (quarticLegFieldForSequence q τ b)
 
+private theorem flatVertexLegPairValue_eq_finiteGibbsExpectation {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
+    flatVertexLegPairValue ε β q τ a b =
+      Common.finiteGibbsExpectation (fermionEnergy ε) β
+        ((quarticLegOperatorForSequence ε q τ a).comp
+          (quarticLegOperatorForSequence ε q τ b)) := by
+  rw [flatVertexLegPairValue, timedFieldPairContraction,
+    timedFieldOperator_quarticLegFieldForSequence, timedFieldOperator_quarticLegFieldForSequence,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+
 /-- Canonical scalar value of a flattened-leg pairing. -/
 noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
@@ -62,9 +73,7 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  rw [flatVertexLegPairValue, timedFieldPairContraction,
-    timedFieldOperator_quarticLegFieldForSequence, timedFieldOperator_quarticLegFieldForSequence,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+  rw [flatVertexLegPairValue_eq_finiteGibbsExpectation,
     quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
     Common.finiteGibbsExpectation_smul,
