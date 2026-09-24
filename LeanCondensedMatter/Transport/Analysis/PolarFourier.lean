@@ -291,8 +291,8 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
       polarFourierRadialPhase z (θ - Real.pi) := by
   unfold polarFourierRadialPhase
   apply congrArg Complex.exp
+  rw [Real.cos_sub_pi]
   push_cast
-  rw [Real.cos_sub, Real.cos_pi, Real.sin_pi]
   ring
 
 /-- The zeroth full-angle radial Fourier kernel is even in its radial argument. -/
@@ -302,7 +302,9 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
   let f : ℝ → ℂ := fun θ => polarFourierRadialPhase z θ
   have hf : Function.Periodic f (2 * Real.pi) := by
     intro θ
-    simp [f, polarFourierRadialPhase, Real.cos_add_two_pi]
+    dsimp [f]
+    unfold polarFourierRadialPhase
+    rw [Real.cos_add_two_pi]
   unfold polarFourierZerothAngularKernel
   simp_rw [polarFourierRadialPhase_neg_eq_shift_pi]
   simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
@@ -315,17 +317,22 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
   have hf : Function.Periodic f (2 * Real.pi) := by
     intro θ
-    simp [f, polarFourierRadialPhase, Real.cos_add_two_pi]
+    dsimp [f]
+    unfold polarFourierRadialPhase
+    rw [Real.cos_add_two_pi]
   have hpoint (θ : ℝ) :
       polarFourierRadialPhase (-z) θ * ((Real.cos θ : ℝ) : ℂ) =
         -f (θ - Real.pi) := by
     rw [polarFourierRadialPhase_neg_eq_shift_pi]
-    simp [f, Real.cos_sub]
+    dsimp [f]
+    rw [Real.cos_sub_pi]
+    push_cast
+    ring
   unfold polarFourierFirstCosineAngularKernel
   simp_rw [hpoint]
-  rw [intervalIntegral.integral_neg]
-  congr 1
-  simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
+  rw [intervalIntegral.integral_neg,
+    intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi]
+  rfl
 
 /-- The second-cosine full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierSecondCosineAngularKernel_neg (z : ℝ) :
@@ -336,13 +343,18 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
   have hf : Function.Periodic f (2 * Real.pi) := by
     intro θ
-    simp [f, polarFourierRadialPhase, Real.cos_add_two_pi, Real.sin_add_two_pi]
+    dsimp [f]
+    unfold polarFourierRadialPhase
+    rw [Real.cos_add_two_pi, Real.sin_add_two_pi]
   have hpoint (θ : ℝ) :
       polarFourierRadialPhase (-z) θ *
           ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) =
         f (θ - Real.pi) := by
     rw [polarFourierRadialPhase_neg_eq_shift_pi]
-    simp [f, Real.cos_sub, Real.sin_sub]
+    dsimp [f]
+    rw [Real.cos_sub_pi, Real.sin_sub_pi]
+    push_cast
+    ring
   unfold polarFourierSecondCosineAngularKernel
   simp_rw [hpoint]
   simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
