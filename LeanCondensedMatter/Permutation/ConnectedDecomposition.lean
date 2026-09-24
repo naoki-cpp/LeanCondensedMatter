@@ -170,7 +170,6 @@ private noncomputable def restrictOrbitBlockConnected {S : Finset α} (σ : Supp
     extendBlockPerm_isCycleOn B.1 (restrictOrbitBlockSubtype σ B)
       (restrictOrbitBlockSubtype_isCycleOn σ B)⟩
 
-@[simp]
 private theorem restrictOrbitBlockConnected_apply {S : Finset α} (σ : SupportedPerm S)
     (B : (orbitFinpartitionOn S σ.1).parts) (x : B.1) :
     (restrictOrbitBlockConnected σ B).1 x = σ.1 x := by

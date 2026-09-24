@@ -81,7 +81,6 @@ private theorem sidePartner_inl (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) 
     sidePartner e σ (e (Sum.inl i)) = e (Sum.inr (σ i)) := by
   simp [sidePartner]
 
-@[simp]
 private theorem sidePartner_inr (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (j : Fin m) :
     sidePartner e σ (e (Sum.inr j)) = e (Sum.inl (σ.symm j)) := by
   simp [sidePartner]

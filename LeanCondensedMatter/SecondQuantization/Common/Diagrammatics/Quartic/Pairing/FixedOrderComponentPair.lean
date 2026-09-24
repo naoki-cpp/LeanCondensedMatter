@@ -74,7 +74,6 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
     cases hs
     rfl
 
-@[simp]
 private theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) (C : d.componentPartition.parts)

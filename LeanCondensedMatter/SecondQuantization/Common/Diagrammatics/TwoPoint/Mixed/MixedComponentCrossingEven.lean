@@ -313,7 +313,6 @@ private theorem TwoPointDiagram.mixedVacuumInteractionPosition_eq_direct
   rw [Equiv.apply_symm_apply,
     d.mixedVacuumPositionDataEquiv_direct τ τ' σ C hVac v l]
 
-@[simp]
 private theorem TwoPointDiagram.mixedVacuumInteractionPosition_val
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))

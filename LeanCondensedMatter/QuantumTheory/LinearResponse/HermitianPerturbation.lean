@@ -37,7 +37,6 @@ private noncomputable def operatorStarLinearIsometry :
   toLinearMap := (starL' ℝ).toLinearEquiv.toLinearMap
   norm_map' := norm_star
 
-@[simp]
 private theorem operatorStarLinearIsometry_apply (A : H →L[ℂ] H) :
     operatorStarLinearIsometry A = star A := by
   change (starL' ℝ) A = star A
@@ -61,7 +60,7 @@ theorem isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdj
     star (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) =
         operatorStarLinearIsometry
           (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
-      simp
+      simp [operatorStarLinearIsometry_apply]
     _ = ∫ s in (0 : ℝ)..t,
           operatorStarLinearIsometry (timeDependentInteractionPerturbation system V s) := by
       symm
@@ -71,7 +70,7 @@ theorem isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdj
     _ = ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
       apply intervalIntegral.integral_congr
       intro s _
-      simpa using
+      simpa [operatorStarLinearIsometry_apply] using
         (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
           system V hV s).star_eq
 

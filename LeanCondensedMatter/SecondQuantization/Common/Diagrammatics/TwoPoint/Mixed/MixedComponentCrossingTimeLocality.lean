@@ -96,7 +96,6 @@ private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOr
   rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
   exact hOrder
 
-@[simp]
 private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -107,7 +106,6 @@ private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
       d.mixedExternalComponentPairEquiv τ τ' σ pr := by
   simp [TwoPointDiagram.mixedComponentPairTimeEquiv]
 
-@[simp]
 private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
