@@ -51,11 +51,6 @@ noncomputable def TwoPointDiagram.externalPiece
       (Finset.univ : Finset (Fin d.externalInteractionPart.card)) :=
   d.externalPieceOfCardEq rfl
 
-theorem TwoPointDiagram.externalPiece_externalLabel
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
-    d.externalPiece.externalLabel = d.externalLabel := by
-  exact d.externalPieceOfCardEq_externalLabel rfl
-
 @[simp]
 theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
