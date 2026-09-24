@@ -11,9 +11,10 @@ and side-indexed imaginary part kept together; the two surviving Born self-energ
 inherit one indexed complex boundary theorem before physical damping consumers project concrete
 channels to their imaginary parts.
 
-The coordinate-valued denominator limits remain available as analytic ingredients and convenience
-APIs. No ultraviolet removal, renormalization prescription, simultaneous limit, or exact
-disorder-average claim is introduced here.
+The complex denominator boundary limit is the canonical convergence API; its real and imaginary
+coordinates are exposed through projection lemmas on the boundary value itself. No ultraviolet
+removal, renormalization prescription, simultaneous limit, or exact disorder-average claim is
+introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
@@ -22,83 +23,6 @@ noncomputable section
 
 open Filter
 open QuantumTheory.Transport
-
-/-- At fixed finite cutoff beyond the on-shell circle, the real part of the shared denominator
-integral has a finite `η → 0⁺` limit. The endpoint norms remain explicit; no ultraviolet or
-renormalization interpretation is attached to this finite limit. -/
-theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
-    (side : SpectralSide) (v m probeEnergy pMax : ℝ)
-    (hvelocity : v ≠ 0) (hmetal : |m| < probeEnergy)
-    (hcutoff : probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2) :
-    Tendsto
-      (fun broadening : ℝ =>
-        (finiteCutoffContinuumBornDenominatorIntegral
-          side v m probeEnergy broadening pMax).re)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds
-        (-(((2 : ℝ) * v ^ 2)⁻¹) *
-          (Real.log
-              ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
-            Real.log
-              ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖))) := by
-  have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
-  have hmetalSq : m ^ 2 < probeEnergy ^ 2 := by
-    rw [← sq_abs m]
-    nlinarith [abs_nonneg m]
-  have hzeroRe :
-      0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
-    rw [pauliGreenDenominator_radial_re]
-    nlinarith
-  have hcutoffRe :
-      (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
-    rw [pauliGreenDenominator_radial_re]
-    nlinarith
-  have hzeroDen :
-      pauliGreenDenominator side v m 0 0 probeEnergy 0 ≠ 0 := by
-    intro hzero
-    have hre :
-        (pauliGreenDenominator side v m 0 0 probeEnergy 0).re = 0 := by
-      simpa using congrArg Complex.re hzero
-    linarith
-  have hcutoffDen :
-      pauliGreenDenominator side v m pMax 0 probeEnergy 0 ≠ 0 := by
-    intro hzero
-    have hre :
-        (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re = 0 := by
-      simpa using congrArg Complex.re hzero
-    linarith
-  have hnorm (p : ℝ) :
-      Tendsto
-        (fun broadening : ℝ =>
-          ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds ‖pauliGreenDenominator side v m p 0 probeEnergy 0‖) := by
-    have hcontinuous :
-        ContinuousAt
-          (fun broadening : ℝ =>
-            ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖) 0 := by
-      unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
-        spectralParameterOfRegulator SpectralSide.regulator
-      fun_prop
-    exact hcontinuous.tendsto.mono_left inf_le_left
-  have hzeroNormNe :
-      ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖ ≠ 0 := by
-    simpa using hzeroDen
-  have hcutoffNormNe :
-      ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ ≠ 0 := by
-    simpa using hcutoffDen
-  have hlogCutoff := (hnorm pMax).log hcutoffNormNe
-  have hlogZero := (hnorm 0).log hzeroNormNe
-  have hdiff := hlogCutoff.sub hlogZero
-  refine ((tendsto_const_nhds : Tendsto
-    (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
-    (nhdsWithin 0 (Set.Ioi 0))
-    (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
-  filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-  have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
-  exact (finiteCutoffContinuumBornDenominatorIntegral_re_eq
-    side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
 
 /-- Complex finite-cutoff metallic boundary value of the common Born denominator integral. The
 imaginary component retains the retarded/advanced side through `side.sign`; it is intentionally not
@@ -153,9 +77,75 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
         (nhds
           (finiteCutoffContinuumBornDenominatorIntegralBoundaryValue
             side v m probeEnergy pMax).re) := by
-    simpa using
-      (tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero
-        side v m probeEnergy pMax hvelocity hmetal hcutoff)
+    change Tendsto
+      (fun broadening : ℝ =>
+        (finiteCutoffContinuumBornDenominatorIntegral
+          side v m probeEnergy broadening pMax).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (-(((2 : ℝ) * v ^ 2)⁻¹) *
+          (Real.log
+              ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ -
+            Real.log
+              ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖)))
+    have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
+    have hprobeEnergy : probeEnergy ≠ 0 := ne_of_gt hprobe
+    have hmetalSq : m ^ 2 < probeEnergy ^ 2 := by
+      rw [← sq_abs m]
+      nlinarith [abs_nonneg m]
+    have hzeroRe :
+        0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
+      rw [pauliGreenDenominator_radial_re]
+      nlinarith
+    have hcutoffRe :
+        (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re < 0 := by
+      rw [pauliGreenDenominator_radial_re]
+      nlinarith
+    have hzeroDen :
+        pauliGreenDenominator side v m 0 0 probeEnergy 0 ≠ 0 := by
+      intro hzero
+      have hreZero :
+          (pauliGreenDenominator side v m 0 0 probeEnergy 0).re = 0 := by
+        simpa using congrArg Complex.re hzero
+      linarith
+    have hcutoffDen :
+        pauliGreenDenominator side v m pMax 0 probeEnergy 0 ≠ 0 := by
+      intro hzero
+      have hreZero :
+          (pauliGreenDenominator side v m pMax 0 probeEnergy 0).re = 0 := by
+        simpa using congrArg Complex.re hzero
+      linarith
+    have hnorm (p : ℝ) :
+        Tendsto
+          (fun broadening : ℝ =>
+            ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖)
+          (nhdsWithin 0 (Set.Ioi 0))
+          (nhds ‖pauliGreenDenominator side v m p 0 probeEnergy 0‖) := by
+      have hcontinuous :
+          ContinuousAt
+            (fun broadening : ℝ =>
+              ‖pauliGreenDenominator side v m p 0 probeEnergy broadening‖) 0 := by
+        unfold pauliGreenDenominator pauliGreenDenominatorOfRegulator energySq
+          spectralParameterOfRegulator SpectralSide.regulator
+        fun_prop
+      exact hcontinuous.tendsto.mono_left inf_le_left
+    have hzeroNormNe :
+        ‖pauliGreenDenominator side v m 0 0 probeEnergy 0‖ ≠ 0 := by
+      simpa using hzeroDen
+    have hcutoffNormNe :
+        ‖pauliGreenDenominator side v m pMax 0 probeEnergy 0‖ ≠ 0 := by
+      simpa using hcutoffDen
+    have hlogCutoff := (hnorm pMax).log hcutoffNormNe
+    have hlogZero := (hnorm 0).log hzeroNormNe
+    have hdiff := hlogCutoff.sub hlogZero
+    refine ((tendsto_const_nhds : Tendsto
+      (fun _ : ℝ => -(((2 : ℝ) * v ^ 2)⁻¹))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-(((2 : ℝ) * v ^ 2)⁻¹)))).mul hdiff).congr' ?_
+    filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
+    have hbroadening_ne : broadening ≠ 0 := ne_of_gt hbroadening
+    exact (finiteCutoffContinuumBornDenominatorIntegral_re_eq
+      side v m probeEnergy broadening pMax hvelocity hprobeEnergy hbroadening_ne).symm
   have him :
       Tendsto
         (fun broadening : ℝ =>
@@ -174,29 +164,6 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
         (tendsto_const_nhds : Tendsto (fun _ : ℝ => Complex.I)
           (nhdsWithin 0 (Set.Ioi 0)) (nhds Complex.I)))
   simpa only [Complex.re_add_im] using hcomplex
-
-private theorem tendsto_bornSelfEnergyChannelWeight_broadening_zero
-    (channel : BornSelfEnergyChannel) (side : SpectralSide)
-    (m probeEnergy : ℝ) :
-    Tendsto
-      (fun broadening : ℝ =>
-        bornSelfEnergyChannelWeight channel side m probeEnergy broadening)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (bornSelfEnergyChannelWeight channel side m probeEnergy 0)) := by
-  cases channel with
-  | scalar =>
-      have hcontinuous :
-          ContinuousAt
-            (fun broadening : ℝ =>
-              bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening) 0 := by
-        unfold bornSelfEnergyChannelWeight bornSelfEnergyChannelWeightOfRegulator
-          spectralParameterOfRegulator SpectralSide.regulator
-        fun_prop
-      exact hcontinuous.tendsto.mono_left inf_le_left
-  | z =>
-      simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator] using
-        (tendsto_const_nhds : Tendsto (fun _ : ℝ => (m : ℂ))
-          (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)))
 
 /-- At fixed finite cutoff beyond the on-shell circle, either surviving Born self-energy channel
 converges to its zero-broadening numerator times the common complex denominator boundary value. -/
@@ -217,8 +184,26 @@ theorem tendsto_finiteCutoffContinuumBornIntegral_broadening_zero
   have hJ :=
     tendsto_finiteCutoffContinuumBornDenominatorIntegral_broadening_zero
       side v m probeEnergy pMax hvelocity hmetal hcutoff
-  have hweight :=
-    tendsto_bornSelfEnergyChannelWeight_broadening_zero channel side m probeEnergy
+  have hweight :
+      Tendsto
+        (fun broadening : ℝ =>
+          bornSelfEnergyChannelWeight channel side m probeEnergy broadening)
+        (nhdsWithin 0 (Set.Ioi 0))
+        (nhds (bornSelfEnergyChannelWeight channel side m probeEnergy 0)) := by
+    cases channel with
+    | scalar =>
+        have hcontinuous :
+            ContinuousAt
+              (fun broadening : ℝ =>
+                bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening) 0 := by
+          unfold bornSelfEnergyChannelWeight bornSelfEnergyChannelWeightOfRegulator
+            spectralParameterOfRegulator SpectralSide.regulator
+          fun_prop
+        exact hcontinuous.tendsto.mono_left inf_le_left
+    | z =>
+        simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator] using
+          (tendsto_const_nhds : Tendsto (fun _ : ℝ => (m : ℂ))
+            (nhdsWithin 0 (Set.Ioi 0)) (nhds (m : ℂ)))
   refine (hweight.mul hJ).congr' ?_
   filter_upwards with broadening
   rw [finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral]
