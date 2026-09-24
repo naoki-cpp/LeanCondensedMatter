@@ -95,20 +95,6 @@ private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
   simp [twoPointTimedEventAtomicArity]
   omega
 
-/-- A two-point insertion with `n` quartic vertices contains exactly `4n + 2` atomic operators. -/
-@[simp]
-private theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
-    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length = 2 * (2 * n + 1) := by
-  rw [mixedTimeOrderedAtomicOperators, List.length_flatMap]
-  simp_rw [twoPointTimedEventAtomicOperators_length]
-  calc
-    ((orderedTwoPointTimedEvents τ τ' σ).map twoPointTimedEventAtomicArity).sum =
-        (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
-          twoPointTimedEventAtomicArity).sum :=
-      ((orderedTwoPointTimedEvents_perm τ τ' σ).map twoPointTimedEventAtomicArity).sum_eq
-    _ = 2 * (2 * n + 1) := canonicalTwoPointTimedEventAtomicAritySum n
-
 /-- The event-level mixed time-ordered product is exactly the fermionic external-order sign times
 the composed product of its `4n + 2` atomic creation/annihilation operators. -/
 theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}

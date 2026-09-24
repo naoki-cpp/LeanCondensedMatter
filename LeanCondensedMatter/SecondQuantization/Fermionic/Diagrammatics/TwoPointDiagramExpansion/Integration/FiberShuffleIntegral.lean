@@ -226,7 +226,7 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
       (fun q : Fin k => σ ((shuffle.sdiffLeftSlotsOrderEquiv q).1)) =
         (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
     funext q
-    rw [shuffle.sdiffLeftSlotsOrderEquiv_val]
+    exact congrArg σ (shuffle.sdiffLeftSlots_orderEmbOfFin q)
   have hvacValue :
       orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData

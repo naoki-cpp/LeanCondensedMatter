@@ -34,16 +34,6 @@ private def schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ
   ψ.postcompCLM Complex.imCLM
 
 @[simp]
-private theorem schwartzRealPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    schwartzRealPart1D ψ x = (ψ x).re :=
-  rfl
-
-@[simp]
-private theorem schwartzImaginaryPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
-    schwartzImaginaryPart1D ψ x = (ψ x).im :=
-  rfl
-
-@[simp]
 private theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzRealPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).re := by
   have h : HasDerivAt (schwartzRealPart1D ψ)

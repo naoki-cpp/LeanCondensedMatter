@@ -74,14 +74,6 @@ private def finSuccFamily {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) : Opti
   | none => f 0
   | Option.some i => f i.succ
 
-@[simp]
-private theorem finSuccFamily_none {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) :
-    finSuccFamily f none = f 0 := rfl
-
-@[simp]
-private theorem finSuccFamily_some {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) (i : Fin k) :
-    finSuccFamily f (Option.some i) = f i.succ := rfl
-
 private theorem prod_finSuccFamily
     {k : ℕ} {R : Type*} [CommMonoid R] (a : Fin (k + 1) → R) :
     (∏ i : Option (Fin k), finSuccFamily a i) = ∏ i : Fin (k + 1), a i := by

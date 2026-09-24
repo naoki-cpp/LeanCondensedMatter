@@ -100,12 +100,6 @@ private noncomputable def restrictOrbitBlockSubtype {S : Finset α} (σ : Suppor
     (B : (orbitFinpartitionOn S σ.1).parts) : Equiv.Perm B.1 :=
   Equiv.Perm.subtypePermOfFintype σ.1 (fun _ hx => apply_mem_orbitBlock σ B hx)
 
-@[simp]
-private theorem restrictOrbitBlockSubtype_apply {S : Finset α} (σ : SupportedPerm S)
-    (B : (orbitFinpartitionOn S σ.1).parts) (_x : B.1) :
-    ((restrictOrbitBlockSubtype σ B _x : B.1) : α) = σ.1 _x :=
-  rfl
-
 private theorem restrictOrbitBlockSubtype_isCycleOn {S : Finset α} (σ : SupportedPerm S)
     (B : (orbitFinpartitionOn S σ.1).parts) :
     (restrictOrbitBlockSubtype σ B).IsCycleOn Set.univ := by
@@ -197,12 +191,6 @@ private theorem connected_apply_mem {B : Finset α} (τ : SingleOrbitPerm B)
 private noncomputable def connectedSubtypePerm {B : Finset α} (τ : SingleOrbitPerm B) :
     Equiv.Perm B :=
   Equiv.Perm.subtypePermOfFintype τ.1 (fun _ hx => connected_apply_mem τ hx)
-
-@[simp]
-private theorem connectedSubtypePerm_apply {B : Finset α} (τ : SingleOrbitPerm B)
-    (_x : B) :
-    ((connectedSubtypePerm τ _x : B) : α) = τ.1 _x :=
-  rfl
 
 private theorem connectedSubtypePerm_isCycleOn {B : Finset α} (τ : SingleOrbitPerm B) :
     (connectedSubtypePerm τ).IsCycleOn Set.univ := by
