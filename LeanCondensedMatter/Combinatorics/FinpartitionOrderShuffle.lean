@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.FamilyOrderShuffle
 import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
@@ -21,7 +21,9 @@ variable {α : Type*} [DecidableEq α] {s : Finset α}
 
 /-- An ordering of the elements in every part of a finite partition. -/
 abbrev PartOrders (π : Finpartition s) :=
-  ∀ B : π.parts, Fin (B : Finset α).card ≃ ↥(B : Finset α)
+  Combinatorics.FamilyOrdersOf
+    (fun B : π.parts => ↥(B : Finset α))
+    (fun B : π.parts => (B : Finset α).card)
 
 /-- An order-preserving interleaving of all part-local slots into the ambient slots. -/
 abbrev PartShuffle (π : Finpartition s) :=
@@ -37,7 +39,10 @@ noncomputable def partEquiv (π : Finpartition s) (orders : π.PartOrders) :
 /-- Assemble a global order from part-local orders and an order-preserving shuffle. -/
 noncomputable def assembleOrder (π : Finpartition s) (orders : π.PartOrders)
     (shuffle : π.PartShuffle) : Fin s.card ≃ ↥s :=
-  shuffle.slotEquiv.changeCoordinates (π.partEquiv orders)
+  Combinatorics.assembleFamilyOrderOfSize
+    (F := fun B : π.parts => ↥(B : Finset α))
+    (size := fun B : π.parts => (B : Finset α).card)
+    π.equivSigmaParts orders shuffle
 
 /-- A family of part-local orders is compatible with a global order when every part appears in the
 ambient slots in precisely that local order. -/
@@ -56,8 +61,16 @@ theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.Pa
     (shuffle : π.PartShuffle) :
     π.PartOrdersCompatible (π.assembleOrder orders shuffle) orders := by
   intro B
-  simpa [Finpartition.PartOrdersCompatible, Finpartition.assembleOrder,
-    Equiv.changeCoordinates_symm] using shuffle.strictMono B
+  have hslot (i : Fin (B : Finset α).card) :
+      (π.assembleOrder orders shuffle).symm (π.partEquiv orders ⟨B, i⟩) =
+        shuffle.slotEquiv ⟨B, i⟩ := by
+    simpa [Finpartition.assembleOrder, Finpartition.partEquiv] using
+      (Combinatorics.assembleFamilyOrderOfSize_symm_apply
+        (F := fun B : π.parts => ↥(B : Finset α))
+        (size := fun B : π.parts => (B : Finset α).card)
+        π.equivSigmaParts orders shuffle B i)
+  intro i j hij
+  simpa only [hslot i, hslot j] using shuffle.strictMono B hij
 
 /-- Reassembling a global order from compatible part-local orders and its extracted shuffle is the
 original global order. -/
@@ -65,8 +78,12 @@ original global order. -/
 theorem assembleOrder_shuffleOfOrder (π : Finpartition s) (order : Fin s.card ≃ ↥s)
     (orders : π.PartOrders) (h : π.PartOrdersCompatible order orders) :
     π.assembleOrder orders (π.shuffleOfOrder order orders h) = order := by
-  ext i
-  simp [Finpartition.assembleOrder, Finpartition.shuffleOfOrder]
+  apply Combinatorics.assembleFamilyOrderOfSize_eq_order
+    (F := fun B : π.parts => ↥(B : Finset α))
+    (size := fun B : π.parts => (B : Finset α).card)
+    π.equivSigmaParts orders (π.shuffleOfOrder order orders h) order
+  intro B j
+  rfl
 
 /-- The ambient slot occupied by an element of part `B`. -/
 noncomputable def partGlobalSlot (π : Finpartition s) (order : Fin s.card ≃ ↥s)
@@ -187,30 +204,11 @@ theorem partOrders_eq_of_compatible (π : Finpartition s) (order : Fin s.card �
 /-- A global finite-set order is equivalent to part-local orders together with an order-preserving
 shuffle of their slots. -/
 noncomputable def orderDecompositionEquiv (π : Finpartition s) :
-    (Fin s.card ≃ ↥s) ≃ π.PartOrders × π.PartShuffle where
-  toFun order :=
-    let orders := π.partOrdersOfOrder order
-    ⟨orders, π.shuffleOfOrder order orders (π.partOrdersCompatible_partOrdersOfOrder order)⟩
-  invFun x := π.assembleOrder x.1 x.2
-  left_inv order := by
-    dsimp
-    exact π.assembleOrder_shuffleOfOrder order
-      (π.partOrdersOfOrder order) (π.partOrdersCompatible_partOrdersOfOrder order)
-  right_inv x := by
-    obtain ⟨orders, shuffle⟩ := x
-    dsimp
-    have horders : π.partOrdersOfOrder (π.assembleOrder orders shuffle) = orders :=
-      (π.partOrders_eq_of_compatible
-        (π.assembleOrder orders shuffle) orders
-        (π.partOrdersCompatible_assembleOrder orders shuffle)).symm
-    refine Prod.ext horders ?_
-    apply Combinatorics.FamilySlotShuffleTo.ext
-    change (π.partEquiv
-      (π.partOrdersOfOrder (π.assembleOrder orders shuffle))).trans
-        (π.assembleOrder orders shuffle).symm = shuffle.slotEquiv
-    have hpart := congrArg (fun partOrders => π.partEquiv partOrders) horders
-    rw [hpart]
-    ext slot
-    simp [Finpartition.assembleOrder, Equiv.changeCoordinates_symm]
+    (Fin s.card ≃ ↥s) ≃ π.PartOrders × π.PartShuffle :=
+  Combinatorics.familyOrderDecompositionEquivOfSize
+    (F := fun B : π.parts => ↥(B : Finset α))
+    (size := fun B : π.parts => (B : Finset α).card)
+    (hcard := fun B => Fintype.card_coe (B : Finset α))
+    π.equivSigmaParts
 
 end Finpartition
