@@ -7454,10 +7454,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner"
@@ -7465,12 +7464,55 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "SecondQuantization.Common.TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {β : Type u_2} (pairing : Combinatorics.PairingOn α) (p : α → Prop)\n  (hpartner : ∀ (i : α), p i ↔ p (pairing.partner i)) (e : { i // p i } ≃ β) (i : β),\n  ↑(e.symm ((pairing.restrictAlongEquiv p hpartner e).partner i)) = pairing.partner ↑(e.symm i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
+    "externalAxioms": [],
+    "docString": "Transporting a restricted partner back to the ambient subtype recovers the ambient partner\nas its underlying value. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner"
+    ],
+    "dependencies": [
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
+      "Combinatorics.PairingOn.restrict_partner_val"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -7501,7 +7543,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
@@ -7513,7 +7555,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.mixedRestrictedPartner_val",
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
@@ -72426,191 +72468,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (ω η : ℝ), (QuantumTheory.Transport.adiabaticElectricFieldFactor ω η).im = ω",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.adiabaticElectricFieldFactor_im",
-    "module": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ω η : ℝ), ω ≠ 0 ∨ η ≠ 0 → QuantumTheory.Transport.adiabaticElectricFieldFactor ω η ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.adiabaticElectricFieldFactor_ne_zero",
-    "module": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "externalAxioms": [],
-    "docString": "The electric-field conversion factor is nonzero whenever the driving frequency and switching\nrate are not both zero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.finiteVolumeConductivityDenominator_ne_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.finiteVolumeConductivityDenominator_ne_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (ω η : ℝ), (QuantumTheory.Transport.adiabaticElectricFieldFactor ω η).re = -η",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.adiabaticElectricFieldFactor_re",
-    "module": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (η : ℝ), QuantumTheory.Transport.adiabaticElectricFieldFactor 0 η = -↑η",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.adiabaticElectricFieldFactor_zero_frequency",
-    "module": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin",
-      "SecondQuantization.Fermionic.Transport.finiteVolumeConductivityNormalization_zero_frequency"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin",
-      "SecondQuantization.Fermionic.Transport.finiteVolumeConductivityNormalization_zero_frequency"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (ω : ℝ), QuantumTheory.Transport.adiabaticElectricFieldFactor ω 0 = Complex.I * ↑ω",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.adiabaticElectricFieldFactor_zero_switching",
-    "module": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) channel.measured channel.source omega\n        eta heta +\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n        channel.observableVariation =\n    QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
     "standardAxioms": [
@@ -73664,8 +73521,7 @@
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.PositiveVolume.volume_pos",
-      "QuantumTheory.Transport.adiabaticElectricFieldFactor_ne_zero"
+      "QuantumTheory.Transport.PositiveVolume.volume_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -89241,8 +89097,7 @@
     "dependents": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion_eq_ite",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing",
-      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff"
+      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -89250,10 +89105,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion_eq_ite",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing",
-      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "SecondQuantization.Fermionic.sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff"
+      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89801,9 +89655,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_partner"
     ],
     "dependencies": [
-      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
-      "Combinatorics.PairingOn.restrict_partner_val",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -90135,41 +89987,6 @@
       "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  (∃ p, d.componentDiagramLeg B p = leg) ↔ d.legInComponent (↑B) leg",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The image of the canonical component leg embedding is exactly the ambient legs incident to that\nconnected component. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90827,8 +90644,8 @@
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
-      "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val"
+      "Combinatorics.PairingOn.restrictAlongEquiv_partner_symm_val",
+      "SecondQuantization.Common.QuarticDiagram.legInBlock_partner_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -91216,6 +91033,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
@@ -91227,13 +91045,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing",
       "SecondQuantization.Common.QuarticDiagram.restrictedPairing_partner_blockLegEquiv",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner",
       "SecondQuantization.Common.QuarticDiagram.restrictedPartner_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91953,7 +91772,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
@@ -91965,12 +91783,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92001,7 +91818,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
@@ -92013,12 +91829,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentPartition_partner",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100989,15 +100804,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β A =\n    (SecondQuantization.Common.normalizedWeightedDiagonal (SecondQuantization.Common.boltzmannWeight energy β)) A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -101008,9 +100823,7 @@
     "docString": "The canonical finite Gibbs expectation agrees with the normalized Boltzmann-weighted diagonal\ncoordinate formula. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.normalizedWeightedDiagonal_eq_weightedTrace_div",
@@ -101019,10 +100832,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101402,19 +101213,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core.0.SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -117172,7 +116983,6 @@
       "SecondQuantization.Fermionic.Transport.finiteDisorderConfigurationStaticConductivity_eq_tracedBastin"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.adiabaticElectricFieldFactor_zero_frequency",
       "QuantumTheory.Transport.finiteVolumeConductivityDenominator_ne_zero",
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedBastin",
       "SecondQuantization.Fermionic.Transport.finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotentialResponse_mul_normalization",
@@ -118382,9 +118192,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin"
     ],
-    "dependencies": [
-      "QuantumTheory.Transport.adiabaticElectricFieldFactor_zero_frequency"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -127735,7 +127543,9 @@
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq",
+      "SecondQuantization.Common.finiteGibbsExpectation_smul",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation"
     ],
     "crossModuleDirectWrapper": false,
@@ -127746,80 +127556,6 @@
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ)\n  (pairing : Combinatorics.Pairing (2 * n)),\n  SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β q τ pairing =\n    Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing *\n      ∏ pr ∈ pairing.pairs, SecondQuantization.Fermionic.flatVertexLegPairValue ε β q τ pr.1 pr.2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.flatVertexLegPairingEvaluation_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.freeBoltzmannWeight ε β n =\n    SecondQuantization.Common.boltzmannWeight (SecondQuantization.Fermionic.fermionEnergy ε) β n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "The fermionic free Boltzmann weight is definitionally the Common weight at `fermionEnergy`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128304,6 +128040,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
@@ -128313,8 +128050,7 @@
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -128322,6 +128058,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
@@ -128331,8 +128068,7 @@
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.flatVertexLegPairValue_eq_finiteGibbsExpectation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment.0.SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd"
     ],
     "compiledConsumerCount": 13,
     "axioms": [
@@ -128876,7 +128612,6 @@
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
     "dependencies": [
@@ -128889,10 +128624,9 @@
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries_ne_zero",
       "SecondQuantization.Fermionic.normalizedAnalyticDysonPartitionFunction_zero",
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero",
-      "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131234,8 +130968,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq"
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
     ],
     "dependencies": [
       "SecondQuantization.Common.QuarticLocalLeg.heisenbergEvolve_operator",
@@ -131245,8 +130979,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq"
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.zetaCommutator_quarticLegOperatorForSequence"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -131560,7 +131294,7 @@
     "name": "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
     "externalAxioms": [],
-    "docString": "**The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as\na product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form (not\njust `s = univ`) is what lets `freeGibbsDensityOperator_expectation_numberOperator` below reuse\nthis for the mode-`i`-removed partial product `s = univ.erase i`. ",
+    "docString": "**The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as\na product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form\nkeeps the mode-set factorization available independently of the `s = univ` partition function. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -131776,7 +131510,6 @@
       "SecondQuantization.Fermionic.fixedExternalFiberSum_eq_cauchyFactor"
     ],
     "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion",
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
     ],
     "crossModuleDirectWrapper": false,
@@ -133434,43 +133167,6 @@
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.binaryEntropy_fermiDiracOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.log_purePointPartitionFunction_fermionEnergy_eq_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Common.weightSum (SecondQuantization.Fermionic.freeBoltzmannWeight ε β) ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.weightSum_freeBoltzmannWeight_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "The total free Boltzmann weight is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -148219,6 +147915,41 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (leg : Fin (2 * (2 * S.card + E))),\n  (∃ p, d.componentDiagramLeg B p = leg) ↔ d.legInComponent (↑B) leg",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
+    "externalAxioms": [],
+    "docString": "The image of the canonical component leg embedding is exactly the ambient legs incident to that\nconnected component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts), (↑B).toLeft.card = 2 * d.externalPairCount B",
     "standardAxioms": [
       "Classical.choice",
@@ -148310,7 +148041,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -148322,9 +148053,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
     ],
     "dependencies": [
       "Combinatorics.Pairing.vertexGraph_reachable_partner",
@@ -148333,49 +148062,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_restrictComponent_pairing_partner",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even"
     ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (B : ↥d.vertexGraph.componentPartition.parts) (hVac : SecondQuantization.Common.ComponentIsVacuum ↑B)\n  (leg : { leg // d.legInComponent (↑B) leg }),\n  (d.restrictedVacuumPairing B hVac).partner ((d.vacuumBlockLegEquiv B hVac) leg) =\n    (d.vacuumBlockLegEquiv B hVac) ((Combinatorics.PairingOn.restrict d.pairing (d.legInComponent ↑B) ⋯).partner leg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction",
-    "externalAxioms": [],
-    "docString": "The restricted vacuum pairing agrees with the component-restricted ambient pairing\nunder the vacuum leg reindexing. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "Combinatorics.PairingOn.restrictAlongEquiv_partner",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_partner_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155415,48 +155104,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ a ∘ₗ\n        SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ b) =\n    Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n a) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q a) *\n        Complex.exp\n          ↑(τ (SecondQuantization.Common.flatVertexIndex n b) *\n              SecondQuantization.Fermionic.quarticLegEnergyShiftForSequence ε q b) *\n      SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n a))\n            (SecondQuantization.Common.flatLocalLeg n a) ∘ₗ\n          SecondQuantization.Fermionic.quarticLocalLegOperator (q (SecondQuantization.Common.flatVertexIndex n b))\n            (SecondQuantization.Common.flatLocalLeg n b))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
-      "SecondQuantization.Fermionic.quarticLegOperatorForSequence_eq_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))),\n  SecondQuantization.Fermionic.flatVertexLegPairValue ε β q τ a b =\n    SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ a ∘ₗ\n        SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ b)",
     "standardAxioms": [
       "Classical.choice",
@@ -157866,45 +157513,6 @@
       "SecondQuantization.Fermionic.freeGibbsGreenFunction_self_time_self"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Common.normalizedWeightedDiagonal (SecondQuantization.Fermionic.freeBoltzmannWeight ε β)) A =\n    (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction.0.SecondQuantization.Fermionic.normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal",
-      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
