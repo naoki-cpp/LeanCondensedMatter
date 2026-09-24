@@ -108,7 +108,7 @@ theorem norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
         .retarded band v m p offset radius broadening hradius hoffset
   have ha : ‖a‖ ≤ (radialBastinMassWindowMargin m radius)⁻¹ := by
     dsimp [a]
-    simpa only [SpectralSide.regulator_advanced, sub_eq_add_neg] using
+    simpa [SpectralSide.regulator_advanced, sub_eq_add_neg] using
       norm_radialSpectatorResolvent_le_inv_margin
         .advanced band v m p offset radius broadening hradius hoffset
   have hr2 : ‖r ^ 2‖ ≤ (radialBastinMassWindowMargin m radius)⁻¹ ^ 2 := by
