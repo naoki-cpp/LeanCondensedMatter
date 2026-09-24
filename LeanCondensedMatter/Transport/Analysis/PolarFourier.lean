@@ -286,7 +286,7 @@ private theorem intervalIntegral_fullPeriod_comp_sub_eq
   simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
 
 /-- Reversing the radial Fourier argument is equivalent to shifting the polar angle by π. -/
-theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
+private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
     polarFourierRadialPhase (-z) θ =
       polarFourierRadialPhase z (θ - Real.pi) := by
   unfold polarFourierRadialPhase
