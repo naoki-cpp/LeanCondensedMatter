@@ -75,4 +75,20 @@ theorem PairingOn.restrictAlongEquiv_partner {α β : Type*} (pairing : PairingO
       e ((pairing.restrict p hpartner).partner i) := by
   simp [PairingOn.restrictAlongEquiv]
 
+
+/-- Transporting a restricted partner back to the ambient subtype recovers the ambient partner
+as its underlying value. -/
+@[simp]
+theorem PairingOn.restrictAlongEquiv_partner_symm_val {α β : Type*} (pairing : PairingOn α)
+    (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i))
+    (e : {i : α // p i} ≃ β) (i : β) :
+    ((e.symm ((pairing.restrictAlongEquiv p hpartner e).partner i) :
+        {i : α // p i}) : α) =
+      pairing.partner (e.symm i) := by
+  let j := e.symm i
+  have h := pairing.restrictAlongEquiv_partner p hpartner e j
+  have h' := congrArg (fun q => ((e.symm q : {i : α // p i}) : α)) h
+  simpa [j] using h'
+
+
 end Combinatorics

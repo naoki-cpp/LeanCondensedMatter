@@ -215,21 +215,10 @@ theorem QuarticDiagram.componentDiagramLeg_restrictedPairing_partner
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     d.componentDiagramLeg B ((d.restrictedPairing B.2).partner p) =
       d.pairing.partner (d.componentDiagramLeg B p) := by
-  let leg := (d.blockLegEquiv B.2).symm p
-  have h := d.restrictedPairing_partner_blockLegEquiv B.2 leg
-  have h' := congrArg
-    (fun q => (((d.blockLegEquiv B.2).symm q :
-      {leg : Fin (2 * (2 * S.card)) // d.legInBlock (B : Finset (Fin N)) leg}) :
-        Fin (2 * (2 * S.card)))) h
-  calc
-    d.componentDiagramLeg B ((d.restrictedPairing B.2).partner p) =
-        ((d.restrictedPartner (B : Finset (Fin N)) leg :
-          {leg : Fin (2 * (2 * S.card)) // d.legInBlock (B : Finset (Fin N)) leg}) :
-            Fin (2 * (2 * S.card))) := by
-      simpa [QuarticDiagram.componentDiagramLeg, leg] using h'
-    _ = d.pairing.partner (d.componentDiagramLeg B p) := by
-      rw [d.restrictedPartner_val (B : Finset (Fin N))]
-      rfl
+  simpa [QuarticDiagram.componentDiagramLeg, QuarticDiagram.restrictedPairing] using
+    d.pairing.restrictAlongEquiv_partner_symm_val
+      (d.legInBlock (B : Finset (Fin N)))
+      (fun i => d.legInBlock_partner_iff i) (d.blockLegEquiv B.2) p
 
 /-- The assembled global ordered pairing partner is the component ordered-leg embedding of the
 component-local ordered pairing partner. -/
