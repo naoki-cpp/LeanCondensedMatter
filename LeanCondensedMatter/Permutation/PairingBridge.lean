@@ -91,7 +91,7 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x
     cases y with
-    | inl i => simp [sidePartner_inl]
+    | inl i => simp [sidePartner_inl, sidePartner_inr]
     | inr j => simp [sidePartner_inl, sidePartner_inr]
   · intro x
     obtain ⟨y, rfl⟩ := e.surjective x
