@@ -54,7 +54,6 @@ private noncomputable def completedSignedToggle (i : Mode) :
       (fun n => norm_fermionPhase i (toggleOccupation i n))).toContinuousLinearMap.comp
     (completedToggle i)
 
-@[simp]
 private theorem completedSignedToggle_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
     completedSignedToggle i ψ n =

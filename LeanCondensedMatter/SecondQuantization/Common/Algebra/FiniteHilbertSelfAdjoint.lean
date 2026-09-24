@@ -34,7 +34,7 @@ private noncomputable def finiteHilbertOperatorMatrix
     (finiteHilbertOrthonormalBasis (Config := Config)).toBasis
     (finiteHilbertOperatorAlgEquiv A).toLinearMap
 
-@[simp] private theorem finiteHilbertOperatorMatrix_apply
+private theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
   unfold finiteHilbertOperatorMatrix

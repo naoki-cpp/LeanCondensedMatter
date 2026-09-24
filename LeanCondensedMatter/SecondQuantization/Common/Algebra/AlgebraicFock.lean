@@ -158,7 +158,6 @@ private noncomputable def diagonalOperatorLinear {Config : Type*} (a : Config �
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   Finsupp.lift (AlgebraicFock Config) ℂ Config fun c => a c • basisState c
 
-@[simp]
 private theorem diagonalOperatorLinear_basisState {Config : Type*} (a : Config → ℂ) (c : Config) :
     diagonalOperatorLinear a (basisState c) = a c • basisState c := by
   change Finsupp.lift _ ℂ _ (fun c => a c • basisState c) (Finsupp.single c 1) = a c • basisState c

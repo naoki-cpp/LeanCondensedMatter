@@ -40,7 +40,7 @@ private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
       apply h
       simp [hμ]
 
-@[simp] private theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0)
+private theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0)
     (a : { μ : ℝ // μ ≠ 0 }) :
     ((eigenvalueScaleEquiv hc a : { μ : ℝ // μ ≠ 0 }) : ℝ) = c * a.1 := rfl
 

@@ -36,7 +36,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def imaginaryParameter (r : ℝ) : ℂ :=
   (r : ℂ) * I
 
-@[simp]
 private theorem imaginaryParameter_im (r : ℝ) : (imaginaryParameter r).im = r := by
   simp [imaginaryParameter]
 
@@ -64,7 +63,6 @@ private theorem star_regularizerCoefficient (r : ℝ) :
 private noncomputable def approximationCoefficient (r : ℝ) : ℂ :=
   ((r ^ 2 / 2 : ℝ) : ℂ)
 
-@[simp]
 private theorem star_approximationCoefficient (r : ℝ) :
     star (approximationCoefficient r) = approximationCoefficient r := by
   simp [approximationCoefficient]
