@@ -26,14 +26,15 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedCreate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (create i (basisState n))
-  rw [show algebraicToCompleted (basisState n) = completedBasisState n by
+  have hbasis (m : Occupation Mode) :
+      algebraicToCompleted (basisState m) = completedBasisState m := by
     simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)]
+      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
+  rw [hbasis n]
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
-      fermionPhase, algebraicToCompleted, basisState, completedBasisState,
-      Common.algebraicToCompleted_basisState]
+      fermionPhase, hbasis]
 
 /-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
@@ -43,13 +44,14 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedAnnihilate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (annihilate i (basisState n))
-  rw [show algebraicToCompleted (basisState n) = completedBasisState n by
+  have hbasis (m : Occupation Mode) :
+      algebraicToCompleted (basisState m) = completedBasisState m := by
     simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)]
+      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
+  rw [hbasis n]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
-      fermionPhase, algebraicToCompleted, basisState, completedBasisState,
-      Common.algebraicToCompleted_basisState]
+      fermionPhase, hbasis]
   · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
 
 end
