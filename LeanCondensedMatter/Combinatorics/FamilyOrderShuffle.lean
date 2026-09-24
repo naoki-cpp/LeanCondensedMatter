@@ -38,6 +38,36 @@ noncomputable def assembleFamilyOrderOfSize {total : ℕ} (size : ι → ℕ)
     Fin total ≃ α :=
   shuffle.slotEquiv.symm.trans ((familyOrderedEquiv F size orders).trans ambientEquiv.symm)
 
+@[simp]
+theorem assembleFamilyOrderOfSize_symm_apply {total : ℕ} (size : ι → ℕ)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (orders : FamilyOrdersOf F size)
+    (shuffle : FamilySlotShuffleTo size total)
+    (i : ι) (j : Fin (size i)) :
+    (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle).symm
+        (ambientEquiv.symm ⟨i, orders i j⟩) = shuffle.slotEquiv ⟨i, j⟩ := by
+  simp [assembleFamilyOrderOfSize, familyOrderedEquiv]
+
+theorem assembleFamilyOrderOfSize_eq_order {total : ℕ} (size : ι → ℕ)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (orders : FamilyOrdersOf F size)
+    (shuffle : FamilySlotShuffleTo size total)
+    (order : Fin total ≃ α)
+    (hslot : ∀ i j,
+      order.symm (ambientEquiv.symm ⟨i, orders i j⟩) = shuffle.slotEquiv ⟨i, j⟩) :
+    assembleFamilyOrderOfSize F size ambientEquiv orders shuffle = order := by
+  have hshuffle :
+      (familyOrderedEquiv F size orders).trans (ambientEquiv.symm.trans order.symm) =
+        shuffle.slotEquiv := by
+    ext z
+    obtain ⟨i, j⟩ := z
+    exact hslot i j
+  ext i
+  change shuffle.slotEquiv.symm
+      ((familyOrderedEquiv F size orders).trans ambientEquiv.symm i) = order i
+  rw [← hshuffle]
+  simp [Equiv.trans_assoc]
+
 /-- Assemble a global order from local fiber orders and an order-preserving family shuffle. -/
 noncomputable def assembleFamilyOrder {total : ℕ}
     (ambientEquiv : α ≃ Σ i, F i)
