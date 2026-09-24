@@ -36,6 +36,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def imaginaryParameter (r : ℝ) : ℂ :=
   (r : ℂ) * I
 
+@[simp]
 private theorem imaginaryParameter_im (r : ℝ) : (imaginaryParameter r).im = r := by
   simp [imaginaryParameter]
 

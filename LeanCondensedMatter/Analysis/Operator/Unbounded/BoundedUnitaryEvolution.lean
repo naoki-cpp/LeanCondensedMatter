@@ -31,6 +31,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def unitaryTimeCoefficient (t : ℝ) : ℂ :=
   -((t : ℂ) * I)
 
+@[simp]
 private theorem unitaryTimeCoefficient_zero : unitaryTimeCoefficient 0 = 0 := by
   simp [unitaryTimeCoefficient]
 

@@ -37,6 +37,7 @@ private noncomputable def operatorStarLinearIsometry :
   toLinearMap := (starL' ℝ).toLinearEquiv.toLinearMap
   norm_map' := norm_star
 
+@[simp]
 private theorem operatorStarLinearIsometry_apply (A : H →L[ℂ] H) :
     operatorStarLinearIsometry A = star A := by
   change (starL' ℝ) A = star A
