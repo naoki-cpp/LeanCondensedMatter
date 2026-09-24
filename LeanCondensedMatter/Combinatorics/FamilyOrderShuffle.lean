@@ -18,14 +18,25 @@ namespace Combinatorics
 variable {ι α : Type*} [Fintype ι] [Fintype α]
 variable (F : ι → Type*) [∀ i, Fintype (F i)]
 
-/-- One order for every fiber of a finite family. -/
-abbrev FamilyOrders :=
-  ∀ i, Fin (Fintype.card (F i)) ≃ F i
+/-- One order for every fiber when the block size is supplied explicitly. -/
+abbrev FamilyOrdersOf (F : ι → Type*) (size : ι → ℕ) :=
+  ∀ i, Fin (size i) ≃ F i
+
+/-- One order for every fiber, using the canonical finite cardinality as its block size. -/
+abbrev FamilyOrders := FamilyOrdersOf F (fun i => Fintype.card (F i))
 
 /-- Identify local ordered slots with the disjoint union of the family fibers. -/
-private noncomputable def familyOrderedEquiv (orders : FamilyOrders F) :
-    (Σ i, Fin (Fintype.card (F i))) ≃ Σ i, F i :=
+private noncomputable def familyOrderedEquiv (size : ι → ℕ) (orders : FamilyOrdersOf F size) :
+    (Σ i, Fin (size i)) ≃ Σ i, F i :=
   Equiv.sigmaCongrRight orders
+
+/-- Assemble a global order with an explicitly indexed family of block sizes. -/
+noncomputable def assembleFamilyOrderOfSize {total : ℕ} (size : ι → ℕ)
+    (ambientEquiv : α ≃ Σ i, F i)
+    (orders : FamilyOrdersOf F size)
+    (shuffle : FamilySlotShuffleTo size total) :
+    Fin total ≃ α :=
+  shuffle.slotEquiv.symm.trans ((familyOrderedEquiv F size orders).trans ambientEquiv.symm)
 
 /-- Assemble a global order from local fiber orders and an order-preserving family shuffle. -/
 noncomputable def assembleFamilyOrder {total : ℕ}
@@ -33,7 +44,7 @@ noncomputable def assembleFamilyOrder {total : ℕ}
     (orders : FamilyOrders F)
     (shuffle : FamilySlotShuffleTo (fun i => Fintype.card (F i)) total) :
     Fin total ≃ α :=
-  shuffle.slotEquiv.symm.trans ((familyOrderedEquiv F orders).trans ambientEquiv.symm)
+  assembleFamilyOrderOfSize F (fun i => Fintype.card (F i)) ambientEquiv orders shuffle
 
 /-- Ambient slots occupied by one family fiber under a global order. -/
 private noncomputable def familyGlobalSlots {total : ℕ}
@@ -72,68 +83,74 @@ private noncomputable def familyGlobalSlotEquiv {total : ℕ}
       simp [familyGlobalSlots]))
 
 /-- Canonical increasing-slot order on one fiber induced by a global order. -/
-private noncomputable def familyOrderOfOrder {total : ℕ}
+private noncomputable def familyOrderOfOrder {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι) :
-    Fin (Fintype.card (F i)) ≃ F i :=
+    Fin (size i) ≃ F i :=
   ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-      (card_familyGlobalSlots F ambientEquiv order i)).toEquiv.trans
+      ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))).toEquiv.trans
     (familyGlobalSlotEquiv F ambientEquiv order i).symm
 
 /-- Canonical family of local orders induced by a global order. -/
-private noncomputable def familyOrdersOfOrder {total : ℕ}
+private noncomputable def familyOrdersOfOrder {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
-    (order : Fin total ≃ α) : FamilyOrders F :=
-  fun i => familyOrderOfOrder F ambientEquiv order i
+    (order : Fin total ≃ α) : FamilyOrdersOf F size :=
+  fun i => familyOrderOfOrder F size hcard ambientEquiv order i
 
 omit [Fintype ι] [Fintype α] in
-private theorem familyOrderOfOrder_slot {total : ℕ}
+private theorem familyOrderOfOrder_slot {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
-    (order : Fin total ≃ α) (i : ι) (j : Fin (Fintype.card (F i))) :
-    order.symm (ambientEquiv.symm ⟨i, familyOrderOfOrder F ambientEquiv order i j⟩) =
+    (order : Fin total ≃ α) (i : ι) (j : Fin (size i)) :
+    order.symm (ambientEquiv.symm ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i j⟩) =
       ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-        (card_familyGlobalSlots F ambientEquiv order i) j : Fin total) := by
+        ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j : Fin total) := by
   change
     order.symm
         (ambientEquiv.symm
           ⟨i, (familyGlobalSlotEquiv F ambientEquiv order i).symm
             ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-              (card_familyGlobalSlots F ambientEquiv order i) j)⟩) = _
+              ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j)⟩) = _
   have h := congrArg Subtype.val
-    ((familyGlobalSlotEquiv F ambientEquiv order i).apply_symm_apply
+      ((familyGlobalSlotEquiv F ambientEquiv order i).apply_symm_apply
       ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-        (card_familyGlobalSlots F ambientEquiv order i) j))
+        ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i)) j))
   exact h
 
 /-- Extract the order-preserving family shuffle induced by a global order. -/
-private noncomputable def familyShuffleOfOrder {total : ℕ}
+private noncomputable def familyShuffleOfOrder {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) :
-    FamilySlotShuffleTo (fun i => Fintype.card (F i)) total where
-  slotEquiv := (familyOrderedEquiv F (familyOrdersOfOrder F ambientEquiv order)).trans
+    FamilySlotShuffleTo size total where
+  slotEquiv :=
+    (familyOrderedEquiv F size (familyOrdersOfOrder F size hcard ambientEquiv order)).trans
     (ambientEquiv.symm.trans order.symm)
   strictMono := by
     intro i a b hab
     change
       order.symm
           (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F ambientEquiv order i a⟩) <
+            ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i a⟩) <
         order.symm
           (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F ambientEquiv order i b⟩)
-    rw [familyOrderOfOrder_slot F ambientEquiv order i a,
-      familyOrderOfOrder_slot F ambientEquiv order i b]
+            ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i b⟩)
+    rw [familyOrderOfOrder_slot F size hcard ambientEquiv order i a,
+      familyOrderOfOrder_slot F size hcard ambientEquiv order i b]
     exact ((familyGlobalSlots F ambientEquiv order i).orderIsoOfFin
-      (card_familyGlobalSlots F ambientEquiv order i)).strictMono hab
+      ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))).strictMono hab
 
 omit [Fintype ι] [Fintype α] in
-private theorem familyOrder_eq_of_strictMono {total : ℕ}
+private theorem familyOrder_eq_of_strictMono {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) (i : ι)
-    (localOrder : Fin (Fintype.card (F i)) ≃ F i)
+    (localOrder : Fin (size i) ≃ F i)
     (hlocal : StrictMono
       (fun j => order.symm (ambientEquiv.symm ⟨i, localOrder j⟩))) :
-    localOrder = familyOrderOfOrder F ambientEquiv order i := by
+    localOrder = familyOrderOfOrder F size hcard ambientEquiv order i := by
   apply Equiv.ext
   intro j
   have hmem : ∀ k, order.symm (ambientEquiv.symm ⟨i, localOrder k⟩) ∈
@@ -142,18 +159,18 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ}
     simp [familyGlobalSlots]
   have hunique := Finset.orderEmbOfFin_unique
     (s := familyGlobalSlots F ambientEquiv order i)
-    (h := card_familyGlobalSlots F ambientEquiv order i)
+    (h := (card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))
     (f := fun k => order.symm (ambientEquiv.symm ⟨i, localOrder k⟩))
     hmem hlocal
   have hj := congrFun hunique j
   have hcanonical :
       order.symm
           (ambientEquiv.symm
-            ⟨i, familyOrderOfOrder F ambientEquiv order i j⟩) =
+            ⟨i, familyOrderOfOrder F size hcard ambientEquiv order i j⟩) =
         ((familyGlobalSlots F ambientEquiv order i).orderEmbOfFin
-          (card_familyGlobalSlots F ambientEquiv order i)) j := by
+          ((card_familyGlobalSlots F ambientEquiv order i).trans (hcard i))) j := by
     simpa only [Finset.coe_orderIsoOfFin_apply] using
-      familyOrderOfOrder_slot F ambientEquiv order i j
+      familyOrderOfOrder_slot F size hcard ambientEquiv order i j
   have hslot := hj.trans hcanonical.symm
   have h₁ := order.symm.injective hslot
   have h₂ := ambientEquiv.symm.injective h₁
@@ -161,37 +178,39 @@ private theorem familyOrder_eq_of_strictMono {total : ℕ}
 
 omit [Fintype ι] [Fintype α] in
 /-- Reassembling the extracted local orders and shuffle recovers the global order. -/
-private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ}
+private theorem assembleFamilyOrder_ordersOfOrder_shuffleOfOrder {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i)
     (order : Fin total ≃ α) :
-    assembleFamilyOrder F ambientEquiv
-        (familyOrdersOfOrder F ambientEquiv order)
-        (familyShuffleOfOrder F ambientEquiv order) = order := by
+    assembleFamilyOrderOfSize F size ambientEquiv
+        (familyOrdersOfOrder F size hcard ambientEquiv order)
+        (familyShuffleOfOrder F size hcard ambientEquiv order) = order := by
   ext j
-  simp [assembleFamilyOrder, familyShuffleOfOrder, familyOrderedEquiv]
+  simp [assembleFamilyOrderOfSize, familyShuffleOfOrder, familyOrderedEquiv]
 
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. Empty fibers are retained as zero-size shuffle blocks. -/
-noncomputable def familyOrderDecompositionEquiv {total : ℕ}
+noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι → ℕ)
+    (hcard : ∀ i, Fintype.card (F i) = size i)
     (ambientEquiv : α ≃ Σ i, F i) :
     (Fin total ≃ α) ≃
-      FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total where
+      FamilyOrdersOf F size × FamilySlotShuffleTo size total where
   toFun order :=
-    (familyOrdersOfOrder F ambientEquiv order,
-      familyShuffleOfOrder F ambientEquiv order)
-  invFun x := assembleFamilyOrder F ambientEquiv x.1 x.2
+    (familyOrdersOfOrder F size hcard ambientEquiv order,
+      familyShuffleOfOrder F size hcard ambientEquiv order)
+  invFun x := assembleFamilyOrderOfSize F size ambientEquiv x.1 x.2
   left_inv order :=
-    assembleFamilyOrder_ordersOfOrder_shuffleOfOrder F ambientEquiv order
+    assembleFamilyOrder_ordersOfOrder_shuffleOfOrder F size hcard ambientEquiv order
   right_inv x := by
     obtain ⟨orders, shuffle⟩ := x
-    let order := assembleFamilyOrder F ambientEquiv orders shuffle
+    let order := assembleFamilyOrderOfSize F size ambientEquiv orders shuffle
     have horders :
-        familyOrdersOfOrder F ambientEquiv order = orders := by
+        familyOrdersOfOrder F size hcard ambientEquiv order = orders := by
       funext i
       symm
-      apply familyOrder_eq_of_strictMono F ambientEquiv order i (orders i)
+      apply familyOrder_eq_of_strictMono F size hcard ambientEquiv order i (orders i)
       intro a b hab
-      have hslot (j : Fin (Fintype.card (F i))) :
+      have hslot (j : Fin (size i)) :
           order.symm (ambientEquiv.symm ⟨i, orders i j⟩) =
             shuffle.slotEquiv ⟨i, j⟩ := by
         have hsigma :
@@ -199,7 +218,7 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
           rw [show (⟨i, orders i j⟩ : Σ i, F i) =
             (Equiv.sigmaCongrRight orders) ⟨i, j⟩ by rfl]
           exact (Equiv.sigmaCongrRight orders).symm_apply_apply ⟨i, j⟩
-        simp [order, assembleFamilyOrder, familyOrderedEquiv, hsigma]
+        simp [order, assembleFamilyOrderOfSize, familyOrderedEquiv, hsigma]
       change
         order.symm (ambientEquiv.symm ⟨i, orders i a⟩) <
           order.symm (ambientEquiv.symm ⟨i, orders i b⟩)
@@ -208,10 +227,18 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
     apply Prod.ext horders
     apply FamilySlotShuffleTo.ext
     change
-      (familyOrderedEquiv F (familyOrdersOfOrder F ambientEquiv order)).trans
+      (familyOrderedEquiv F size (familyOrdersOfOrder F size hcard ambientEquiv order)).trans
           (ambientEquiv.symm.trans order.symm) = shuffle.slotEquiv
     rw [horders]
     ext z
-    simp [order, assembleFamilyOrder]
+    simp [order, assembleFamilyOrderOfSize]
+
+/-- A global order on a finite family is equivalent to local fiber orders together with an
+order-preserving family shuffle. -/
+noncomputable def familyOrderDecompositionEquiv {total : ℕ}
+    (ambientEquiv : α ≃ Σ i, F i) :
+    (Fin total ≃ α) ≃
+      FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
+  familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
 
 end Combinatorics
