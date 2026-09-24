@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.FiniteBroa
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderWeakDisorder
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection
+import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Transport.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
@@ -28,8 +29,13 @@ piece plus three quarters of the side-jump-type piece, while the `r_x Γ_y` cont
 remaining quarter of the side-jump-type piece plus the Gaussian-skew-type piece. These mechanism
 names remain theorem-level classifications rather than primitive conductivity definitions.
 
+The Gaussian crossed `X/Psi` route remains distinct from the non-crossing ladder. Its regulated
+real-space Fourier blocks carry their physical momentum measures upstream, so the conductivity
+boundary attaches only the two physical current scales and the trace-only Bastin prefactor.
+Evaluation of the crossed scalar kernels and their regulator limits remains downstream.
+
 Formalism-specific analysis, including finite-`η` Středa momentum integration, radial reduction, and
 zero-broadening/weak-disorder response limits, remains upstream under the corresponding Bastin/Středa
-owners; this layer exposes conductivity-level results. Crossed `X/Ψ` and non-Gaussian `C3`
-contributions remain separate downstream extensions.
+owners; this layer exposes conductivity-level results. Non-Gaussian `C3` contributions remain a
+separate downstream extension.
 -/
