@@ -6881,6 +6881,49 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} {n : ℕ} [inst : Fintype ι] {R : Type u_2} [inst_1 : CommMonoid R]\n  (global : Combinatorics.Pairing n) (componentPairing : (B : ι) → Combinatorics.Pairing (m B))\n  (componentPairEquiv : (B : ι) × (componentPairing B).NormalizedPair ≃ global.NormalizedPair)\n  (pairValue : Fin (2 * n) → Fin (2 * n) → R) (localPairValue : (B : ι) → Fin (2 * m B) → Fin (2 * m B) → R),\n  (∀ (B : ι) (pr : (componentPairing B).NormalizedPair),\n      pairValue (↑(componentPairEquiv ⟨B, pr⟩)).1 (↑(componentPairEquiv ⟨B, pr⟩)).2 =\n        localPairValue B (↑pr).1 (↑pr).2) →\n    ∏ pr ∈ global.pairs, pairValue pr.1 pr.2 = ∏ B, ∏ pr ∈ (componentPairing B).pairs, localPairValue B pr.1 pr.2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.prod_pairs_eq_prod_components",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
+    "externalAxioms": [],
+    "docString": "A product over the pairs of a global pairing factors over component pairings whenever a\ncomponent-pair equivalence identifies the normalized endpoints and the pair kernel is local under\nthat identification. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components"
+    ],
+    "dependencies": [
+      "Fintype.prod_equiv_sigma"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n) (τ : Equiv.Perm (Fin (2 * n))),\n  pairing.PresentsPairs τ →\n    Equiv.Perm.sign τ =\n      ((-1) ^ ∑ k, if (Combinatorics.blockPair τ k).2 < (Combinatorics.blockPair τ k).1 then 1 else 0) *\n        (-1) ^ pairing.crossingCount",
     "standardAxioms": [
       "Classical.choice",
@@ -8274,7 +8317,6 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries_of_pos",
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
       "Combinatorics.formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log"
     ],
@@ -8285,11 +8327,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries_of_pos",
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
       "Combinatorics.formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8366,11 +8407,10 @@
       "Combinatorics.permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog"
     ],
     "dependencies": [
-      "Combinatorics.coeff_formalTraceLogOneSubSeries",
       "Combinatorics.coeff_formalTraceLogOneSubSeries_of_pos",
       "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
-      "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.coeff_permutationConnectedCycleSeries",
-      "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.connectedCycleCoeff_zero"
+      "Combinatorics.constantCoeff_formalTraceLogOneSubSeries",
+      "Combinatorics.constantCoeff_permutationConnectedCycleSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -8471,7 +8511,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ),\n  PowerSeries.constantCoeff (Combinatorics.formalTraceLogOneSubSeries ζ K) = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -8479,7 +8519,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -8490,14 +8530,18 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog"
+    ],
     "dependencies": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8508,7 +8552,7 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] (ζ : ℂ) (K : Matrix ι ι ℂ),\n  PowerSeries.constantCoeff (Combinatorics.permutationConnectedCycleSeries ζ K) = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -8516,7 +8560,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -8527,15 +8571,19 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.coeff_permutationConnectedCycleSeries",
       "_private.LeanCondensedMatter.Permutation.ConnectedCycleSeries.0.Combinatorics.connectedCycleCoeff_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21098,21 +21146,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54460,8 +54506,8 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -54469,8 +54515,8 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
       "QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -57448,8 +57494,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_radialEnergyDerivative",
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge.0.QuantumTheory.Transport.Models.MassiveDirac.continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound.0.QuantumTheory.Transport.Models.MassiveDirac.abs_radialInterbandCurrentCoefficient_le_velocity_sq"
     ],
@@ -57463,8 +57509,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_radialEnergyDerivative",
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialEnergyBridge.0.QuantumTheory.Transport.Models.MassiveDirac.continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image",
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorBound.0.QuantumTheory.Transport.Models.MassiveDirac.abs_radialInterbandCurrentCoefficient_le_velocity_sq"
     ],
@@ -62316,47 +62362,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m radius pMax : ℝ),\n  0 ≤ pMax →\n    MeasureTheory.Integrable\n      (fun x => QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax)\n      (MeasureTheory.volume.restrict (Set.Icc 0 pMax))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.integrable_radialInterbandBastinDominatingConstant",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The constant dominating function is integrable on every finite radial interval. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (aR aA bR bA dR dA : ℂ) (coefficients : QuantumTheory.Transport.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aR bR dR θ *\n          QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator coefficients *\n        QuantumTheory.Transport.Models.MassiveDirac.polarPauliOperator aA bA dA θ =\n    QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator\n      (QuantumTheory.Transport.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Transport.Models.MassiveDirac.pauliRungAngularCoefficient aR aA dR dA) coefficients)",
     "standardAxioms": [
       "Classical.choice",
@@ -63607,48 +63612,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p\n                  broadening‖ ≤\n              QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The explicit radial constant dominates the finite-broadening radial Bastin density pointwise on\n`0 ≤ p ≤ pMax`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m p : ℝ),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.radialInterbandCurrentAmplitude band e v m p‖ ≤ e ^ 2 * v ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -63738,7 +63701,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -63751,7 +63714,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le",
@@ -63762,7 +63725,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -65633,90 +65596,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (e v m radius pMax : ℝ),\n  0 ≤ pMax → 0 ≤ QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant_nonneg",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The radial dominating constant is nonnegative for a nonnegative radial cutoff. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.integrable_radialInterbandBastinDominatingConstant"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.integrable_radialInterbandBastinDominatingConstant"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The pair bound is nonnegative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant_nonneg"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant_nonneg"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Transport.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius",
     "standardAxioms": [
       "Classical.choice",
@@ -65738,7 +65617,7 @@
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -65746,7 +65625,7 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -65766,7 +65645,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -65779,7 +65658,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap"
@@ -65787,7 +65666,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -66265,132 +66144,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "The real radial Bastin density is strongly measurable for positive broadening. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m broadening : ℝ),\n  m ≠ 0 →\n    MeasureTheory.StronglyMeasurable fun z =>\n      ↑(QuantumTheory.Transport.lorentzianSpectralKernel z.2 broadening) *\n        QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m z.1 0\n          (z.2, broadening)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every\nstrictly positive broadening. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.bandSign_oppositeBand",
-      "QuantumTheory.Transport.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius\n            broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "For positive broadening the radial target-centered Bastin pair is strongly measurable as a\nfunction of radial momentum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {M : Type u_1} [inst : AddCommMonoid M] (f : QuantumTheory.Transport.Models.MassiveDirac.Band → M),\n  ∑ band, f band =\n    f QuantumTheory.Transport.Models.MassiveDirac.Band.lower + f QuantumTheory.Transport.Models.MassiveDirac.Band.upper",
     "standardAxioms": [
       "Classical.choice",
@@ -66590,8 +66343,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
@@ -66600,8 +66353,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -66635,7 +66388,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.bandSign_oppositeBand",
@@ -66650,7 +66403,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -69200,56 +68953,15 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.integrable_radialInterbandBastinDominatingConstant",
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
-      "QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius pMax : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        ∀ (bound : ℝ → ℝ),\n          (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n              MeasureTheory.AEStronglyMeasurable\n                (fun p =>\n                  QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p\n                    broadening)\n                (MeasureTheory.volume.restrict (Set.Icc 0 pMax))) →\n            (∀ᶠ (broadening : ℝ) in nhdsWithin 0 (Set.Ioi 0),\n                ∀ᵐ (p : ℝ) ∂MeasureTheory.volume.restrict (Set.Icc 0 pMax),\n                  ‖QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p\n                        broadening‖ ≤\n                    bound p) →\n              MeasureTheory.Integrable bound (MeasureTheory.volume.restrict (Set.Icc 0 pMax)) →\n                Filter.Tendsto\n                  (fun broadening =>\n                    QuantumTheory.Transport.Models.MassiveDirac.finiteRadialInterbandBastinPairIntegral band e v m\n                      radius pMax broadening)\n                  (nhdsWithin 0 (Set.Ioi 0))\n                  (nhds\n                    (QuantumTheory.Transport.Models.MassiveDirac.finiteRadialCleanInterbandBastinPairIntegral band e v m\n                      pMax))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "Dominated convergence passes `η → 0⁺` through the finite radial momentum integral once a\nsingle integrable radial bound and eventual measurability are supplied. The pointwise convergence\nhypothesis is not repeated: it follows from nonzero mass and `radius < 2|m|`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69769,49 +69481,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius p : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds (QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity band e v m p))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
-    "externalAxioms": [],
-    "docString": "Nonzero mass makes the fixed-window pointwise Bastin-pair limit uniform whenever one radius\nsatisfies `radius < 2|m|` at every radial momentum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m px py probeEnergy : ℝ),\n  probeEnergy ≠ QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.spectralDifferenceCoefficient band v m px py probeEnergy broadening)\n      (nhds 0) (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -69945,7 +69614,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -69958,7 +69627,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
@@ -69966,7 +69635,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -89938,7 +89607,7 @@
       "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
-      "Fintype.prod_equiv_sigma",
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentPairEquiv_apply",
       "SecondQuantization.Common.ExternalInsertionDiagram.weight_eq_inter_mul_prod_components"
     ],
@@ -91347,7 +91016,7 @@
       "SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components"
     ],
     "dependencies": [
-      "Fintype.prod_equiv_sigma",
+      "Combinatorics.Pairing.prod_pairs_eq_prod_components",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components"
     ],
@@ -135499,7 +135168,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -135890,7 +135559,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -138309,7 +137978,7 @@
     ],
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -138350,7 +138019,7 @@
     ],
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -141461,7 +141130,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
       "Combinatorics.coeff_permutationConnectedCycleSeries_zero_exchange",
       "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
@@ -141471,13 +141139,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.coeff_permutationConnectedCycleSeries_of_pos",
       "Combinatorics.coeff_permutationConnectedCycleSeries_zero_exchange",
       "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
       "Combinatorics.permutationConnectedCycleSeries_eq_mk_trace"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141541,7 +141208,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -141552,7 +141219,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.coeff_permutationConnectedCycleSeries_zero_exchange",
       "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
       "Combinatorics.permutationConnectedCycleSeries_eq_mk_trace"
@@ -141561,12 +141227,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog",
       "Combinatorics.coeff_permutationConnectedCycleSeries_zero_exchange",
       "Combinatorics.constantCoeff_permutationConnectedCycleSeries",
       "Combinatorics.permutationConnectedCycleSeries_eq_mk_trace"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143702,7 +143367,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -143833,7 +143498,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -145967,7 +145632,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -147052,7 +146717,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -147091,7 +146756,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -154598,7 +154263,7 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
-    "simpLemma": true,
+    "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
@@ -158784,6 +158449,260 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_projectorResolventCoefficient_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p\n                  broadening‖ ≤\n              QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinDominatingConstant e v m radius pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "The explicit radial constant dominates the finite-broadening radial Bastin density pointwise on\n`0 ≤ p ≤ pMax`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "The pair bound is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "The real radial Bastin density is strongly measurable for positive broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m broadening : ℝ),\n  m ≠ 0 →\n    MeasureTheory.StronglyMeasurable fun z =>\n      ↑(QuantumTheory.Transport.lorentzianSpectralKernel z.2 broadening) *\n        QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m z.1 0\n          (z.2, broadening)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every\nstrictly positive broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.bandSign_oppositeBand",
+      "QuantumTheory.Transport.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius\n            broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "For positive broadening the radial target-centered Bastin pair is strongly measurable as a\nfunction of radial momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m radius p : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Transport.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds (QuantumTheory.Transport.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity band e v m p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
+    "externalAxioms": [],
+    "docString": "Nonzero mass makes the fixed-window pointwise Bastin-pair limit uniform whenever one radius\nsatisfies `radius < 2|m|` at every radial momentum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
+      "QuantumTheory.Transport.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
