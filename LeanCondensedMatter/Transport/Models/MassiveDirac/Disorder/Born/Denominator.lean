@@ -58,17 +58,6 @@ private theorem pauliGreenDenominatorOfRegulator_radial_im
   simp [spectralParameterOfRegulator, pow_two]
   ring
 
-/-- The squared arbitrary-regulator radial denominator norm is an explicit real polynomial. -/
-private theorem pauliGreenDenominatorOfRegulator_radial_sq_norm
-    (v m probeEnergy regulator p : ℝ) :
-    ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ ^ 2 =
-      (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
-        (2 * probeEnergy * regulator) ^ 2 := by
-  rw [Complex.sq_norm, Complex.normSq_apply]
-  rw [pauliGreenDenominatorOfRegulator_radial_re,
-    pauliGreenDenominatorOfRegulator_radial_im]
-  ring
-
 /-- The arbitrary-regulator radial denominator norm is the square root of its explicit polynomial. -/
 private theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
     (v m probeEnergy regulator p : ℝ) :
@@ -76,8 +65,15 @@ private theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
       Real.sqrt
         ((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
           (2 * probeEnergy * regulator) ^ 2) := by
-  rw [← pauliGreenDenominatorOfRegulator_radial_sq_norm,
-    Real.sqrt_sq (norm_nonneg _)]
+  have hsq :
+      ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ ^ 2 =
+        (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
+          (2 * probeEnergy * regulator) ^ 2 := by
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    rw [pauliGreenDenominatorOfRegulator_radial_re,
+      pauliGreenDenominatorOfRegulator_radial_im]
+    ring
+  rw [← hsq, Real.sqrt_sq (norm_nonneg _)]
 
 /-- Physical-side radial real part, retained for broadening-limit consumers. -/
 @[simp]
@@ -336,32 +332,6 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
   funext p
   ring
 
-/-- For nonzero Dirac velocity, the arbitrary-regulator radial Green denominator norm diverges at
-large momentum. -/
-private theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
-    (v m probeEnergy regulator : ℝ) (hvelocity : v ≠ 0) :
-    Tendsto
-      (fun p : ℝ =>
-        ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
-      atTop atTop := by
-  simpa [Function.comp_def, pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt] using
-    Real.tendsto_sqrt_atTop.comp
-      (tendsto_continuumBornRadialNormPolynomial_atTop
-        v m probeEnergy regulator hvelocity)
-
-/-- The logarithm carrying the cutoff dependence of the arbitrary-regulator Born denominator real
-part tends to `+∞`. -/
-private theorem tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop
-    (v m probeEnergy regulator : ℝ) (hvelocity : v ≠ 0) :
-    Tendsto
-      (fun p : ℝ => Real.log
-        ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
-      atTop atTop := by
-  simpa [Function.comp_def] using
-    Real.tendsto_log_atTop.comp
-      (tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
-        v m probeEnergy regulator hvelocity)
-
 /-- At fixed finite nonzero signed regulator, the exact continuum Born denominator real part has a
 logarithmic ultraviolet divergence to `-∞`. -/
 theorem tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop
@@ -372,8 +342,21 @@ theorem tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop
         (finiteCutoffContinuumBornDenominatorIntegralOfRegulator
           v m probeEnergy regulator pMax).re)
       atTop atBot := by
-  have hlog := tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop
-    v m probeEnergy regulator hvelocity
+  have hnorm :
+      Tendsto
+        (fun p : ℝ =>
+          ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
+        atTop atTop := by
+    simpa [Function.comp_def, pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt] using
+      Real.tendsto_sqrt_atTop.comp
+        (tendsto_continuumBornRadialNormPolynomial_atTop
+          v m probeEnergy regulator hvelocity)
+  have hlog :
+      Tendsto
+        (fun p : ℝ => Real.log
+          ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)
+        atTop atTop := by
+    simpa [Function.comp_def] using Real.tendsto_log_atTop.comp hnorm
   have hdiff :
       Tendsto
         (fun pMax : ℝ =>
