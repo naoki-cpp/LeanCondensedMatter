@@ -92029,15 +92029,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) (v : ↥B),\n  (Equiv.subtypeSubtypeEquivSubtype ⋯) ⟨d.blockVertex hB v, ⋯⟩ = v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -92048,16 +92048,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133923,7 +133919,6 @@
     "dependents": [
       "SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
@@ -133935,11 +133930,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex",
       "SimpleGraph.componentBlockOn_eq_of_reachable",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.part_subset_reassemble_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_componentBlock_subset_part"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148955,7 +148949,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -148967,17 +148961,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149029,15 +149021,15 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) {v w : ↥S} (p : d.vertexGraph.Walk v w) (hv : ↑v ∈ B),\n  ∃ (hw : ↑w ∈ B),\n    (d.restrictComponent hB).vertexGraph.Reachable ((Equiv.subtypeSubtypeEquivSubtype ⋯) ⟨v, hv⟩)\n      ((Equiv.subtypeSubtypeEquivSubtype ⋯) ⟨w, hw⟩)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -149048,9 +149040,7 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype",
       "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff",
@@ -149058,52 +149048,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts), (d.restrictComponent hB).IsConnected",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_isConnected",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
-    "externalAxioms": [],
-    "docString": "Restricting a diagram to a component part produces a connected diagram. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.subtypeSubtypeEquivSubtype_blockVertex",
-      "SimpleGraph.mem_componentBlockOn",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.blockVertex_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected.0.SecondQuantization.Common.QuarticDiagram.reachable_restrictComponent_of_walk"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponentConnected"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
