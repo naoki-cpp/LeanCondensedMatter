@@ -68,7 +68,8 @@ theorem assembleFamilyOrderOfSize_eq_order {total : ℕ} (size : ι → ℕ)
         shuffle.slotEquiv := by
     ext z
     obtain ⟨i, j⟩ := z
-    simpa [familyOrderedEquiv, Equiv.trans_apply] using hslot i j
+    simpa [familyOrderedEquiv, Equiv.trans_apply] using
+      congrArg (fun x => x.val) (hslot i j)
   ext i
   change (familyOrderedEquiv F size orders).trans ambientEquiv.symm
       (shuffle.slotEquiv.symm i) = order i
