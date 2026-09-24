@@ -103,8 +103,10 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
   simp only [timedFieldOperator_quarticLegFieldForSequence,
     quarticLegOperatorForSequence_eq_smul, LinearMap.smul_comp, LinearMap.comp_smul,
     smul_smul, map_smul]
-  simp [quarticLegEnergyShiftForSequence, Common.flatVertexIndex, Common.flatLocalLeg,
-    smul_eq_mul, mul_comm]
+  rw [quarticLegEnergyShiftForSequence, quarticLegEnergyShiftForSequence,
+    Common.flatVertexIndex, Common.flatVertexIndex, Common.flatLocalLeg, Common.flatLocalLeg]
+  simp only [smul_eq_mul]
+  ring
 
 /-- A pair value is continuous in the time assignment. -/
 theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
