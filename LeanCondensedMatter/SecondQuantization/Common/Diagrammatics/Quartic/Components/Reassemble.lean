@@ -53,19 +53,14 @@ private theorem QuarticDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
     Equiv.sigmaProdDistrib_symm_apply, Equiv.prodCongr_symm, Equiv.refl_symm]
   rfl
 
-/-- The pairing on the ambient legs obtained by gluing the pairings of all partition parts. -/
-private noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
-    (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
-    Combinatorics.Pairing (2 * S.card) :=
-  (Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
-    (QuarticDiagram.bigLegEquiv π)
-
 /-- Reassemble an ambient labelled quartic diagram from connected diagrams on partition parts. -/
 noncomputable def QuarticDiagram.reassemble {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
     QuarticDiagram Label N S where
   vertexLabel v := (F (π.equivSigmaParts v).1).1.vertexLabel (π.equivSigmaParts v).2
-  pairing := QuarticDiagram.reassemblePairing π F
+  pairing :=
+    (Combinatorics.PairingOn.sigmaCongrRight fun B => (F B).1.pairing).transport
+      (QuarticDiagram.bigLegEquiv π)
 
 
 /-- A vertex of a block `B`, included back into the ambient vertex set. -/
@@ -304,7 +299,7 @@ private theorem QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk
     (QuarticDiagram.reassemble π F).pairing.partner
         ((QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩) =
       (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
-  simp [QuarticDiagram.reassemble, QuarticDiagram.reassemblePairing]
+  simp [QuarticDiagram.reassemble]
 
 private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     {S : Finset (Fin N)} (π : Finpartition S)
