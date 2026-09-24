@@ -39,13 +39,6 @@ noncomputable def continuumL2Multiplication1D :
       (L2MultiplicationRealLine.ComplexL2 →ₗ[ℂ] L2MultiplicationRealLine.ComplexL2) :=
   L2MultiplicationRealLine.multiplicationLinear
 
-@[simp]
-theorem continuumL2Multiplication1D_apply
-    (f : L2MultiplicationRealLine.ComplexLInf) (ψ : L2MultiplicationRealLine.ComplexL2) :
-    continuumL2Multiplication1D f ψ =
-      L2MultiplicationRealLine.multiplicationOperator f ψ :=
-  rfl
-
 /-- The abstract fermionic charge density specialized to canonical bounded multiplication on
 `L²(ℝ, ℂ)`. -/
 noncomputable def continuumL2ChargeDensity1D (q : ℂ) :
