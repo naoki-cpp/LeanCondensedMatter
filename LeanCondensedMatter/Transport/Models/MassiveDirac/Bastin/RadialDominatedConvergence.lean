@@ -41,7 +41,7 @@ def radialCleanInterbandBastinPairLimitDensity
 
 /-- Nonzero mass makes the fixed-window pointwise Bastin-pair limit uniform whenever one radius
 satisfies `radius < 2|m|` at every radial momentum. -/
-theorem tendsto_radialInterbandBastinPairDensity
+private theorem tendsto_radialInterbandBastinPairDensity
     (band : Band) (e v m radius p : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|) :
     Tendsto
@@ -78,7 +78,7 @@ def radialInterbandBastinPairUniformBound
   2 * (radialInterbandSpectatorUniformBound e v m radius * Real.pi)
 
 /-- The pair bound is nonnegative. -/
-theorem radialInterbandBastinPairUniformBound_nonneg
+private theorem radialInterbandBastinPairUniformBound_nonneg
     (e v m radius : ℝ) :
     0 ≤ radialInterbandBastinPairUniformBound e v m radius := by
   unfold radialInterbandBastinPairUniformBound
@@ -93,7 +93,7 @@ def radialInterbandBastinDominatingConstant
 
 /-- Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every
 strictly positive broadening. -/
-theorem stronglyMeasurable_radialInterbandPoleIntegrand
+private theorem stronglyMeasurable_radialInterbandPoleIntegrand
     (band : Band) (e v m broadening : ℝ) (hm : m ≠ 0) :
     StronglyMeasurable
       (fun z : ℝ × ℝ =>
@@ -125,7 +125,7 @@ theorem stronglyMeasurable_radialInterbandPoleIntegrand
 
 /-- For positive broadening the radial target-centered Bastin pair is strongly measurable as a
 function of radial momentum. -/
-theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
+private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
     (band : Band) (e v m radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
@@ -177,7 +177,7 @@ theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
   exact hscaled
 
 /-- The real radial Bastin density is strongly measurable for positive broadening. -/
-theorem stronglyMeasurable_radialInterbandBastinPairDensity
+private theorem stronglyMeasurable_radialInterbandBastinPairDensity
     (band : Band) (e v m radius broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hbroadening : 0 < broadening) :
     StronglyMeasurable
@@ -197,7 +197,7 @@ theorem stronglyMeasurable_radialInterbandBastinPairDensity
 
 /-- The explicit radial constant dominates the finite-broadening radial Bastin density pointwise on
 `0 ≤ p ≤ pMax`. -/
-theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
+private theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
     (band : Band) (e v m radius pMax p broadening : ℝ)
     (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
     (hp : p ∈ Set.Icc (0 : ℝ) pMax) (hbroadening : 0 < broadening) :
