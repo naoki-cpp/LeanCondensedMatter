@@ -101,19 +101,6 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
     ExternalInsertionDiagram.componentLegInversionCount,
     cross, inv, selected] using hsum
 
-private theorem ExternalInsertionDiagram.componentCrossingCount_self
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) :
-    d.pairing.componentCrossingCount d.componentPairEquiv B B =
-      (d.restrictComponent B).pairing.crossingCount := by
-  exact Combinatorics.Pairing.componentCrossingCount_self_eq
-    d.pairing (d.restrictComponent B).pairing d.componentPairEquiv B
-    (Equiv.refl (d.restrictComponent B).pairing.NormalizedPair)
-    (d.componentDiagramLeg B)
-    (d.componentDiagramLegOrderEmbedding B).strictMono
-    (fun pr => by simpa using d.componentPairEquiv_apply B pr)
-
 /-- The ambient crossing count is the sum of all component-local crossing counts plus the residual
 crossing count between distinct connected components. -/
 theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
@@ -126,7 +113,12 @@ theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
   apply congrArg (fun n : ℕ => n + d.interComponentCrossingCount)
   apply Finset.sum_congr rfl
   intro B _
-  exact d.componentCrossingCount_self B
+  exact Combinatorics.Pairing.componentCrossingCount_self_eq
+    d.pairing (d.restrictComponent B).pairing d.componentPairEquiv B
+    (Equiv.refl (d.restrictComponent B).pairing.NormalizedPair)
+    (d.componentDiagramLeg B)
+    (d.componentDiagramLegOrderEmbedding B).strictMono
+    (fun pr => by simpa using d.componentPairEquiv_apply B pr)
 
 /-- The exchange-statistics weight factors into the residual inter-component exchange sign and the
 product of component-local pairing weights. -/
