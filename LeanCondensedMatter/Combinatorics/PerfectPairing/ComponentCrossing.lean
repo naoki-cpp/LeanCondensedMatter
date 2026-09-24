@@ -164,7 +164,7 @@ theorem Pairing.componentCrossingCount_self_eq
   exact sum_sum_crosses_eq_of_equiv
     (fun p : F B => (e ⟨B, p⟩).1)
     (fun pr : localPairing.NormalizedPair => pr.1)
-    localEquiv
+    localEquiv.symm
     (fun p q => by
       rw [← localEquiv.apply_symm_apply p, ← localEquiv.apply_symm_apply q,
         hpair, hpair]
