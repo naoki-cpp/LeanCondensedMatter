@@ -79,8 +79,12 @@ theorem pauliGreenDenominator_radial_re
     (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).re =
       probeEnergy ^ 2 - broadening ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
-  cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.regulator, SpectralSide.sign]
+  cases side
+  · rw [pauliGreenDenominator, SpectralSide.regulator_retarded,
+      pauliGreenDenominatorOfRegulator_radial_re]
+  · rw [pauliGreenDenominator, SpectralSide.regulator_advanced,
+      pauliGreenDenominatorOfRegulator_radial_re]
+    ring
 
 /-- Physical-side radial imaginary part, retained for broadening-limit consumers. -/
 @[simp]
@@ -88,8 +92,14 @@ theorem pauliGreenDenominator_radial_im
     (side : SpectralSide) (v m probeEnergy broadening p : ℝ) :
     (pauliGreenDenominator side v m p 0 probeEnergy broadening).im =
       2 * side.sign * probeEnergy * broadening := by
-  cases side <;>
-    simp [pauliGreenDenominator, SpectralSide.regulator, SpectralSide.sign]
+  cases side
+  · rw [pauliGreenDenominator, SpectralSide.regulator_retarded,
+      pauliGreenDenominatorOfRegulator_radial_im]
+    simp only [SpectralSide.sign_retarded]
+  · rw [pauliGreenDenominator, SpectralSide.regulator_advanced,
+      pauliGreenDenominatorOfRegulator_radial_im]
+    simp only [SpectralSide.sign_advanced]
+    ring
 
 private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
