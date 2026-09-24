@@ -168,7 +168,7 @@ theorem Pairing.componentCrossingCount_self_eq
     (fun p q => by
       rw [← localEquiv.apply_symm_apply p, ← localEquiv.apply_symm_apply q,
         hpair, hpair]
-      exact crosses_map_iff position hmono
+      simpa using crosses_map_iff position hmono
         (localEquiv.symm p).1.1 (localEquiv.symm p).1.2
         (localEquiv.symm q).1.1 (localEquiv.symm q).1.2)
 
