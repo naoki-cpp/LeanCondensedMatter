@@ -290,10 +290,9 @@ theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
     polarFourierRadialPhase (-z) θ =
       polarFourierRadialPhase z (θ - Real.pi) := by
   unfold polarFourierRadialPhase
-  rw [Real.cos_sub]
-  simp
   apply congrArg Complex.exp
   push_cast
+  rw [Real.cos_sub, Real.cos_pi, Real.sin_pi]
   ring
 
 /-- The zeroth full-angle radial Fourier kernel is even in its radial argument. -/
