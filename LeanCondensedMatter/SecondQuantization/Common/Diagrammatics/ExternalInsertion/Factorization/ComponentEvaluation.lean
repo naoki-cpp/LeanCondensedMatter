@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
@@ -48,42 +47,12 @@ theorem ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components
             (localPairValue B) := by
   classical
   simp only [Pairing.evaluation]
-  have hpair :
-      (∏ pr ∈ d.pairing.pairs, pairValue pr.1 pr.2) =
-        ∏ B : d.vertexGraph.componentPartition.parts,
-          ∏ pr ∈ (d.restrictComponent B).pairing.pairs,
-            localPairValue B pr.1 pr.2 := by
-    calc
-      (∏ pr ∈ d.pairing.pairs, pairValue pr.1 pr.2) =
-          ∏ pr : d.pairing.NormalizedPair, pairValue pr.1.1 pr.1.2 :=
-        Finset.prod_subtype _ (fun _ => Iff.rfl) _
-      _ = ∏ B : d.vertexGraph.componentPartition.parts,
-          ∏ pr : (d.restrictComponent B).pairing.NormalizedPair,
-            pairValue
-              (d.componentPairEquiv ⟨B, pr⟩).1.1
-              (d.componentPairEquiv ⟨B, pr⟩).1.2 := by
-        simpa using
-          (Fintype.prod_equiv_sigma (d.componentPairEquiv).symm
-            (fun pr => pairValue pr.1.1 pr.1.2))
-      _ = ∏ B : d.vertexGraph.componentPartition.parts,
-          ∏ pr : (d.restrictComponent B).pairing.NormalizedPair,
-            localPairValue B pr.1.1 pr.1.2 := by
-        apply Fintype.prod_congr
-        intro B
-        apply Fintype.prod_congr
-        intro pr
-        rw [d.componentPairEquiv_apply B pr]
-        exact hvalue B pr.1.1 pr.1.2
-      _ = ∏ B : d.vertexGraph.componentPartition.parts,
-          ∏ pr ∈ (d.restrictComponent B).pairing.pairs,
-            localPairValue B pr.1 pr.2 := by
-        apply Fintype.prod_congr
-        intro B
-        exact
-          (Finset.prod_subtype
-            (d.restrictComponent B).pairing.pairs
-            (fun _ => Iff.rfl)
-            (fun pr => localPairValue B pr.1 pr.2)).symm
+  have hpair := Pairing.prod_pairs_eq_prod_components
+    d.pairing (fun B => (d.restrictComponent B).pairing)
+    d.componentPairEquiv pairValue localPairValue
+    (fun B pr => by
+      rw [d.componentPairEquiv_apply B pr]
+      exact hvalue B pr.1.1 pr.1.2)
   rw [d.weight_eq_inter_mul_prod_components s, hpair, Finset.prod_mul_distrib]
   ring
 

@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
@@ -43,46 +42,13 @@ theorem QuarticDiagram.pairingInOrder_evaluation_eq_prod_components
           (localPairValue B) := by
   classical
   simp only [Combinatorics.Pairing.evaluation]
-  have hpair :
-      (∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
-        pairValue pr.1 pr.2) =
-        ∏ B : d.componentPartition.parts,
-          ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
-            localPairValue B pr.1 pr.2 := by
-    calc
-      (∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
-          pairValue pr.1 pr.2) =
-          (∏ pr : (d.pairingInOrder
-            (d.assembleVertexOrder orders shuffle)).NormalizedPair,
-            pairValue pr.1.1 pr.1.2) :=
-        Finset.prod_subtype _ (fun _ => Iff.rfl) _
-      _ = ∏ B : d.componentPartition.parts,
-          ∏ pr : d.LocalOrderedPair orders B,
-            pairValue
-              (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.1
-              (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.2 :=
-        by
-          simpa using
-            (Fintype.prod_equiv_sigma (d.componentPairEquiv orders shuffle).symm
-              (fun pr => pairValue pr.1.1 pr.1.2))
-      _ = ∏ B : d.componentPartition.parts,
-          ∏ pr : d.LocalOrderedPair orders B,
-            localPairValue B pr.1.1 pr.1.2 := by
-        apply Fintype.prod_congr
-        intro B
-        apply Fintype.prod_congr
-        intro pr
-        rw [d.componentPairEquiv_apply orders shuffle B pr]
-        exact hvalue B pr.1.1 pr.1.2
-      _ = ∏ B : d.componentPartition.parts,
-          ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
-            localPairValue B pr.1 pr.2 := by
-        apply Fintype.prod_congr
-        intro B
-        exact (Finset.prod_subtype
-          ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
-          (fun _ => Iff.rfl)
-          (fun pr => localPairValue B pr.1 pr.2)).symm
+  have hpair := Pairing.prod_pairs_eq_prod_components
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
+    (d.componentPairEquiv orders shuffle) pairValue localPairValue
+    (fun B pr => by
+      rw [d.componentPairEquiv_apply orders shuffle B pr]
+      exact hvalue B pr.1.1 pr.1.2)
   rw [d.pairingInOrder_weight_eq_prod_components s orders shuffle, hpair,
     ← Finset.prod_mul_distrib]
 
