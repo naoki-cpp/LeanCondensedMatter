@@ -35,7 +35,6 @@ private noncomputable def QuarticDiagram.componentOrderedLegEquiv {S : Finset (F
       ((Equiv.prodCongr shuffle.slotEquiv (Equiv.refl (Fin 4))).trans
         (orderedQuarticLegEquiv S.card).symm))
 
-@[simp]
 private theorem QuarticDiagram.componentOrderedLegEquiv_apply {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts)

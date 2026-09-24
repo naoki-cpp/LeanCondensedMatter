@@ -44,7 +44,6 @@ noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
     ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
   standardSlotEquivOfCardEq T rfl
 
-@[simp]
 theorem standardSlotEquiv_symm_coe (T : Finset (Fin N))
     (v : ↥(Finset.univ : Finset (Fin T.card))) :
     (((standardSlotEquiv T).symm v : ↥T) : Fin N) =

@@ -51,7 +51,6 @@ noncomputable def TwoPointDiagram.externalPiece
       (Finset.univ : Finset (Fin d.externalInteractionPart.card)) :=
   d.externalPieceOfCardEq rfl
 
-@[simp]
 theorem TwoPointDiagram.externalPiece_externalLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
     d.externalPiece.externalLabel = d.externalLabel := by
@@ -72,7 +71,6 @@ theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
       (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) h
       ⟨v, Finset.mem_univ v⟩))
 
-@[simp]
 theorem TwoPointDiagram.externalPiece_vertexLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (v : Fin d.externalInteractionPart.card) :

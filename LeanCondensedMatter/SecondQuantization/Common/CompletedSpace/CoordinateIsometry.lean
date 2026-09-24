@@ -36,19 +36,13 @@ private noncomputable def completedReindexLinear (e : Config ≃ Config) :
     ext c
     rfl
 
-@[simp]
-private theorem completedReindexLinear_apply (e : Config ≃ Config)
-    (ψ : CompletedFock Config) (c : Config) :
-    completedReindexLinear e ψ c = ψ (e c) :=
-  rfl
-
 private theorem norm_completedReindexLinear_le (e : Config ≃ Config)
     (ψ : CompletedFock Config) :
     ‖completedReindexLinear e ψ‖ ≤ ‖ψ‖ := by
   apply lp.norm_le_of_tsum_le (p := (2 : ℝ≥0∞)) (by norm_num) (norm_nonneg ψ)
   rw [lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num) ψ]
   exact le_of_eq <| by
-    simpa [completedReindexLinear_apply] using
+    simpa [completedReindexLinear] using
       (Equiv.tsum_eq e (fun c : Config => ‖ψ c‖ ^ (2 : ℝ≥0∞).toReal))
 
 @[simp]
@@ -56,7 +50,7 @@ private theorem completedReindexLinear_symm_apply (e : Config ≃ Config)
     (ψ : CompletedFock Config) :
     completedReindexLinear e.symm (completedReindexLinear e ψ) = ψ := by
   ext c
-  simp
+  simp [completedReindexLinear]
 
 private theorem norm_completedReindexLinear (e : Config ≃ Config)
     (ψ : CompletedFock Config) :
