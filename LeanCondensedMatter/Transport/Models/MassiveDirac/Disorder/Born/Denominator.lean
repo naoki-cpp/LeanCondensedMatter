@@ -41,7 +41,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_eq
 /-- The arbitrary-regulator radial denominator has real part
 `ε² - γ² - m² - v²p²`. -/
 @[simp]
-theorem pauliGreenDenominatorOfRegulator_radial_re
+private theorem pauliGreenDenominatorOfRegulator_radial_re
     (v m probeEnergy regulator p : ℝ) :
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).re =
       probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2 := by
@@ -50,7 +50,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_re
 
 /-- The arbitrary-regulator radial denominator has momentum-independent imaginary part `2εγ`. -/
 @[simp]
-theorem pauliGreenDenominatorOfRegulator_radial_im
+private theorem pauliGreenDenominatorOfRegulator_radial_im
     (v m probeEnergy regulator p : ℝ) :
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).im =
       2 * probeEnergy * regulator := by
@@ -59,7 +59,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_im
   ring
 
 /-- The squared arbitrary-regulator radial denominator norm is an explicit real polynomial. -/
-theorem pauliGreenDenominatorOfRegulator_radial_sq_norm
+private theorem pauliGreenDenominatorOfRegulator_radial_sq_norm
     (v m probeEnergy regulator p : ℝ) :
     ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ ^ 2 =
       (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 +
@@ -70,7 +70,7 @@ theorem pauliGreenDenominatorOfRegulator_radial_sq_norm
   ring
 
 /-- The arbitrary-regulator radial denominator norm is the square root of its explicit polynomial. -/
-theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
+private theorem pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt
     (v m probeEnergy regulator p : ℝ) :
     ‖pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ =
       Real.sqrt
@@ -97,67 +97,6 @@ theorem pauliGreenDenominator_radial_im
   cases side <;>
     simp [pauliGreenDenominator, SpectralSide.regulator, SpectralSide.sign]
 
-/-- At nonzero probe energy and regulator, the radial denominator path lies in the principal-log
-slit plane. -/
-theorem pauliGreenDenominatorOfRegulator_radial_mem_slitPlane
-    (v m probeEnergy regulator p : ℝ)
-    (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
-    pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator ∈ Complex.slitPlane := by
-  rw [Complex.mem_slitPlane_iff]
-  right
-  rw [pauliGreenDenominatorOfRegulator_radial_im]
-  exact mul_ne_zero (mul_ne_zero (by norm_num) hprobeEnergy) hregulator
-
-/-- The derivative of the arbitrary-regulator quadratic radial denominator is `-2 v² p`. -/
-theorem hasDerivAt_pauliGreenDenominatorOfRegulator_radial
-    (v m probeEnergy regulator p : ℝ) :
-    HasDerivAt
-      (fun q : ℝ => pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator)
-      (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-  have hcomplex :
-      HasDerivAt
-        (fun z : ℂ =>
-          spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2 -
-            (v : ℂ) ^ 2 * z ^ 2)
-        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) (p : ℂ) := by
-    convert (hasDerivAt_const (p : ℂ)
-      (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2)).sub
-        (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
-      first | rfl | (simp only [id]; ring)
-  have hreal := hcomplex.comp_ofReal
-  convert hreal using 1
-  funext q
-  exact pauliGreenDenominatorOfRegulator_radial_eq v m probeEnergy regulator q
-
-/-- The principal logarithm of the arbitrary-regulator radial denominator differentiates to
-`-2v²` times the common Born radial denominator integrand. -/
-theorem hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial
-    (v m probeEnergy regulator p : ℝ)
-    (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
-    HasDerivAt
-      (fun q : ℝ => Complex.log
-        (pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator))
-      ((-2 : ℂ) * (v : ℂ) ^ 2 *
-        continuumBornRadialDenominatorIntegrandOfRegulator
-          v m probeEnergy regulator p) p := by
-  have hlog := (hasDerivAt_pauliGreenDenominatorOfRegulator_radial
-    v m probeEnergy regulator p).clog_real
-      (pauliGreenDenominatorOfRegulator_radial_mem_slitPlane
-        v m probeEnergy regulator p hprobeEnergy hregulator)
-  convert hlog using 1
-  unfold continuumBornRadialDenominatorIntegrandOfRegulator
-    massiveDiracRadialDenominatorKernel
-  have hden :
-      massiveDiracRadialDenominator v p
-          (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
-        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
-    rw [pauliGreenDenominatorOfRegulator_radial_eq]
-    unfold massiveDiracRadialDenominator
-    push_cast
-    ring
-  rw [hden, div_eq_mul_inv]
-  ring
-
 private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
     (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
     Continuous (continuumBornRadialDenominatorIntegrandOfRegulator
@@ -178,36 +117,8 @@ private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
   funext p
   simp [hden p]
 
-/-- Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the
-endpoint principal-log difference. -/
-theorem neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
-    (v m probeEnergy regulator pMax : ℝ)
-    (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
-    ((-2 : ℂ) * (v : ℂ) ^ 2) *
-        finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-          v m probeEnergy regulator pMax =
-      Complex.log
-          (pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -
-        Complex.log
-          (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator) := by
-  have hint : IntervalIntegrable
-      (fun p : ℝ =>
-        ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          continuumBornRadialDenominatorIntegrandOfRegulator
-            v m probeEnergy regulator p)
-      volume 0 pMax :=
-    ((continuous_continuumBornRadialDenominatorIntegrandOfRegulator
-      v m probeEnergy regulator hregulator).const_mul
-        ((-2 : ℂ) * (v : ℂ) ^ 2)).intervalIntegrable 0 pMax
-  have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (fun p _ => hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial
-      v m probeEnergy regulator p hprobeEnergy hregulator) hint
-  rw [← hftc]
-  unfold finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-  rw [intervalIntegral.integral_const_mul]
-
 /-- Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. -/
-theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
+private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     (v m probeEnergy regulator pMax : ℝ)
     (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
     finiteCutoffContinuumBornDenominatorIntegralOfRegulator
@@ -217,9 +128,74 @@ theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
             (pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -
           Complex.log
             (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator)) := by
-  have hmain :=
-    neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
-      v m probeEnergy regulator pMax hprobeEnergy hregulator
+  have hdenDeriv (p : ℝ) :
+      HasDerivAt
+        (fun q : ℝ => pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator)
+        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
+    have hcomplex :
+        HasDerivAt
+          (fun z : ℂ =>
+            spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2 -
+              (v : ℂ) ^ 2 * z ^ 2)
+          (-2 * (v : ℂ) ^ 2 * (p : ℂ)) (p : ℂ) := by
+      convert (hasDerivAt_const (p : ℂ)
+        (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2)).sub
+          (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
+        first | rfl | (simp only [id]; ring)
+    have hreal := hcomplex.comp_ofReal
+    convert hreal using 1
+    funext q
+    exact pauliGreenDenominatorOfRegulator_radial_eq v m probeEnergy regulator q
+  have hlogDeriv (p : ℝ) :
+      HasDerivAt
+        (fun q : ℝ => Complex.log
+          (pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator))
+        ((-2 : ℂ) * (v : ℂ) ^ 2 *
+          continuumBornRadialDenominatorIntegrandOfRegulator
+            v m probeEnergy regulator p) p := by
+    have hslit :
+        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator ∈
+          Complex.slitPlane := by
+      rw [Complex.mem_slitPlane_iff]
+      right
+      rw [pauliGreenDenominatorOfRegulator_radial_im]
+      exact mul_ne_zero (mul_ne_zero (by norm_num) hprobeEnergy) hregulator
+    have hlog := (hdenDeriv p).clog_real hslit
+    convert hlog using 1
+    unfold continuumBornRadialDenominatorIntegrandOfRegulator
+      massiveDiracRadialDenominatorKernel
+    have hden :
+        massiveDiracRadialDenominator v p
+            (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
+          pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
+      rw [pauliGreenDenominatorOfRegulator_radial_eq]
+      unfold massiveDiracRadialDenominator
+      push_cast
+      ring
+    rw [hden, div_eq_mul_inv]
+    ring
+  have hint : IntervalIntegrable
+      (fun p : ℝ =>
+        ((-2 : ℂ) * (v : ℂ) ^ 2) *
+          continuumBornRadialDenominatorIntegrandOfRegulator
+            v m probeEnergy regulator p)
+      volume 0 pMax :=
+    ((continuous_continuumBornRadialDenominatorIntegrandOfRegulator
+      v m probeEnergy regulator hregulator).const_mul
+        ((-2 : ℂ) * (v : ℂ) ^ 2)).intervalIntegrable 0 pMax
+  have hmain :
+      ((-2 : ℂ) * (v : ℂ) ^ 2) *
+          finiteCutoffContinuumBornDenominatorIntegralOfRegulator
+            v m probeEnergy regulator pMax =
+        Complex.log
+            (pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -
+          Complex.log
+            (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator) := by
+    have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun p _ => hlogDeriv p) hint
+    rw [← hftc]
+    unfold finiteCutoffContinuumBornDenominatorIntegralOfRegulator
+    rw [intervalIntegral.integral_const_mul]
   have hv : (v : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hvelocity
   have hcoeff : ((-2 : ℂ) * (v : ℂ) ^ 2) ≠ 0 := by
     exact mul_ne_zero (by norm_num) (pow_ne_zero 2 hv)
@@ -234,7 +210,7 @@ private theorem continuumBornDenominatorLogPrefactor_eq_ofReal (v : ℝ) :
   rfl
 
 /-- Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. -/
-theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
+private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
     (v m probeEnergy regulator pMax : ℝ)
     (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
     (finiteCutoffContinuumBornDenominatorIntegralOfRegulator
@@ -273,7 +249,7 @@ theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_p
   simp
 
 /-- Exact arbitrary-regulator finite-cutoff imaginary part of the shared denominator integral. -/
-theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
+private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
     (v m probeEnergy regulator pMax : ℝ)
     (hvelocity : v ≠ 0) (hprobeEnergy : probeEnergy ≠ 0) (hregulator : regulator ≠ 0) :
     (finiteCutoffContinuumBornDenominatorIntegralOfRegulator
@@ -362,7 +338,7 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
 
 /-- For nonzero Dirac velocity, the arbitrary-regulator radial Green denominator norm diverges at
 large momentum. -/
-theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
+private theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
     (v m probeEnergy regulator : ℝ) (hvelocity : v ≠ 0) :
     Tendsto
       (fun p : ℝ =>
@@ -375,7 +351,7 @@ theorem tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop
 
 /-- The logarithm carrying the cutoff dependence of the arbitrary-regulator Born denominator real
 part tends to `+∞`. -/
-theorem tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop
+private theorem tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop
     (v m probeEnergy regulator : ℝ) (hvelocity : v ≠ 0) :
     Tendsto
       (fun p : ℝ => Real.log
