@@ -51,15 +51,6 @@ noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
   pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (flatVertexLegPairValue ε β q τ)
 
-@[simp]
-theorem flatVertexLegPairingEvaluation_eq {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (τ : Fin n → ℝ) (pairing : Pairing (2 * n)) :
-    flatVertexLegPairingEvaluation ε β q τ pairing =
-      pairing.weight Common.Statistics.fermion *
-        ∏ pr ∈ pairing.pairs, flatVertexLegPairValue ε β q τ pr.1 pr.2 :=
-  rfl
-
 /-! ## Pair-kernel regularity -/
 
 /-- Closed form of the canonical flattened-leg pair kernel. -/
