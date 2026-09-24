@@ -146,6 +146,32 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           if position C q < position B p then 1 else 0) % 2 := by
       rw [Fintype.sum_prod_type]
 
+/-- The diagonal component crossing count agrees with a local pairing's crossing count when
+the component equivalence maps local normalized pairs by a strictly monotone ambient position
+map. -/
+theorem Pairing.componentCrossingCount_self_eq
+    {m : ℕ} (pairing : Pairing n) (localPairing : Pairing m)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B : ι)
+    (localEquiv : localPairing.NormalizedPair ≃ F B)
+    (position : Fin (2 * m) → Fin (2 * n)) (hmono : StrictMono position)
+    (hpair : ∀ pr : localPairing.NormalizedPair,
+      (e ⟨B, localEquiv pr⟩).1 =
+        (position pr.1.1, position pr.1.2)) :
+    pairing.componentCrossingCount e B B = localPairing.crossingCount := by
+  classical
+  rw [Pairing.componentCrossingCount, Fintype.sum_prod_type,
+    Pairing.crossingCount_eq_sum_sum_crosses]
+  exact sum_sum_crosses_eq_of_equiv
+    (fun p : F B => (e ⟨B, p⟩).1)
+    (fun pr : localPairing.NormalizedPair => pr.1)
+    localEquiv.symm
+    (fun p q => by
+      rw [← localEquiv.apply_symm_apply p, ← localEquiv.apply_symm_apply q,
+        hpair, hpair]
+      simpa using crosses_map_iff position hmono
+        (localEquiv.symm p).1.1 (localEquiv.symm p).1.2
+        (localEquiv.symm q).1.1 (localEquiv.symm q).1.2)
+
 /-- The crossing count is the double sum of the oriented component crossing counts. -/
 theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
