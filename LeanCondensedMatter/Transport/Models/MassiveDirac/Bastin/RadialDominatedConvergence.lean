@@ -72,38 +72,6 @@ def finiteRadialCleanInterbandBastinPairIntegral
   ∫ p in Set.Icc 0 pMax,
     radialCleanInterbandBastinPairLimitDensity band e v m p
 
-/-- Dominated convergence passes `η → 0⁺` through the finite radial momentum integral once a
-single integrable radial bound and eventual measurability are supplied. The pointwise convergence
-hypothesis is not repeated: it follows from nonzero mass and `radius < 2|m|`. -/
-theorem tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
-    (band : Band) (e v m radius pMax : ℝ)
-    (hm : m ≠ 0) (hradiusPos : 0 < radius) (hradius : radius < 2 * |m|)
-    (bound : ℝ → ℝ)
-    (hMeasurable :
-      ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
-        AEStronglyMeasurable
-          (fun p => radialInterbandBastinPairDensity
-            band e v m radius p broadening)
-          (volume.restrict (Set.Icc 0 pMax)))
-    (hBound :
-      ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
-        ∀ᵐ p ∂(volume.restrict (Set.Icc 0 pMax)),
-          ‖radialInterbandBastinPairDensity band e v m radius p broadening‖ ≤ bound p)
-    (hBoundIntegrable :
-      Integrable bound (volume.restrict (Set.Icc 0 pMax))) :
-    Tendsto
-      (fun broadening : ℝ =>
-        finiteRadialInterbandBastinPairIntegral
-          band e v m radius pMax broadening)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (finiteRadialCleanInterbandBastinPairIntegral band e v m pMax)) := by
-  unfold finiteRadialInterbandBastinPairIntegral finiteRadialCleanInterbandBastinPairIntegral
-  exact tendsto_integral_filter_of_dominated_convergence
-    bound hMeasurable hBound hBoundIntegrable
-    (ae_of_all _ fun p =>
-      tendsto_radialInterbandBastinPairDensity
-        band e v m radius p hm hradiusPos hradius)
-
 /-- Uniform norm bound for the complete energy-integrated radial Bastin pair. -/
 def radialInterbandBastinPairUniformBound
     (e v m radius : ℝ) : ℝ :=
@@ -122,13 +90,6 @@ theorem radialInterbandBastinPairUniformBound_nonneg
 def radialInterbandBastinDominatingConstant
     (e v m radius pMax : ℝ) : ℝ :=
   pMax * radialInterbandBastinPairUniformBound e v m radius
-
-/-- The radial dominating constant is nonnegative for a nonnegative radial cutoff. -/
-theorem radialInterbandBastinDominatingConstant_nonneg
-    (e v m radius pMax : ℝ) (hpMax : 0 ≤ pMax) :
-    0 ≤ radialInterbandBastinDominatingConstant e v m radius pMax := by
-  unfold radialInterbandBastinDominatingConstant
-  exact mul_nonneg hpMax (radialInterbandBastinPairUniformBound_nonneg e v m radius)
 
 /-- Joint strong measurability of the Lorentzian-weighted radial spectator integrand for every
 strictly positive broadening. -/
@@ -269,21 +230,6 @@ theorem norm_radialInterbandBastinPairDensity_le_dominatingConstant
     _ ≤ pMax * radialInterbandBastinPairUniformBound e v m radius :=
       mul_le_mul_of_nonneg_right hp.2 hB
 
-/-- The constant dominating function is integrable on every finite radial interval. -/
-theorem integrable_radialInterbandBastinDominatingConstant
-    (e v m radius pMax : ℝ) (hpMax : 0 ≤ pMax) :
-    Integrable
-      (fun _ : ℝ => radialInterbandBastinDominatingConstant e v m radius pMax)
-      (volume.restrict (Set.Icc 0 pMax)) := by
-  have hD := radialInterbandBastinDominatingConstant_nonneg
-    e v m radius pMax hpMax
-  refine MeasureTheory.IntegrableOn.of_bound
-    isCompact_Icc.measure_lt_top
-    (aestronglyMeasurable_const)
-    (radialInterbandBastinDominatingConstant e v m radius pMax) ?_
-  exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun _ _ => by
-    simp [Real.norm_eq_abs, abs_of_nonneg hD])
-
 /-- The model-specific nonzero-mass bounds discharge all hypotheses of finite-radial dominated
 convergence. Thus the finite-broadening radial momentum integral converges to the integral of the
 clean local limit profile as `η → 0⁺`. -/
@@ -297,8 +243,8 @@ theorem tendsto_finiteRadialInterbandBastinPairIntegral
           band e v m radius pMax broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (finiteRadialCleanInterbandBastinPairIntegral band e v m pMax)) := by
-  apply tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
-    band e v m radius pMax hm hradiusPos hradius
+  unfold finiteRadialInterbandBastinPairIntegral finiteRadialCleanInterbandBastinPairIntegral
+  apply tendsto_integral_filter_of_dominated_convergence
     (fun _ : ℝ => radialInterbandBastinDominatingConstant e v m radius pMax)
   · filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
     exact (stronglyMeasurable_radialInterbandBastinPairDensity
@@ -307,8 +253,18 @@ theorem tendsto_finiteRadialInterbandBastinPairIntegral
     exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun p hp =>
       norm_radialInterbandBastinPairDensity_le_dominatingConstant
         band e v m radius pMax p broadening hm hradiusPos hradius hp hbroadening)
-  · exact integrable_radialInterbandBastinDominatingConstant
-      e v m radius pMax hpMax
+  · have hD : 0 ≤ radialInterbandBastinDominatingConstant e v m radius pMax := by
+      unfold radialInterbandBastinDominatingConstant
+      exact mul_nonneg hpMax (radialInterbandBastinPairUniformBound_nonneg e v m radius)
+    refine MeasureTheory.IntegrableOn.of_bound
+      isCompact_Icc.measure_lt_top
+      aestronglyMeasurable_const
+      (radialInterbandBastinDominatingConstant e v m radius pMax) ?_
+    exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun _ _ => by
+      simp [Real.norm_eq_abs, abs_of_nonneg hD])
+  · exact ae_of_all _ fun p =>
+      tendsto_radialInterbandBastinPairDensity
+        band e v m radius p hm hradiusPos hradius
 
 end
 
