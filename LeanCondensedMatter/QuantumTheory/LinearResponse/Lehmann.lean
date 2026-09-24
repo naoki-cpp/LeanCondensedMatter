@@ -134,6 +134,15 @@ theorem lehmannDenominator_re
     (lehmannDenominator hbar omega eta energyGap).re = eta := by
   simp [lehmannDenominator]
 
+/-- A nonzero switching rate makes every scalar Lehmann denominator nonzero. -/
+theorem lehmannDenominator_ne_zero
+    (hbar omega eta energyGap : ℝ) (heta : eta ≠ 0) :
+    lehmannDenominator hbar omega eta energyGap ≠ 0 := by
+  intro hzero
+  have hre : eta = 0 := by
+    simpa [lehmannDenominator] using congrArg Complex.re hzero
+  exact heta hre
+
 /-- The switching rate is a lower bound for the norm of every Lehmann denominator. -/
 theorem eta_le_norm_lehmannDenominator
     (hbar omega eta energyGap : ℝ) :

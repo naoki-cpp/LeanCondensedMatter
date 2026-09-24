@@ -39,15 +39,6 @@ def HasLocalAdiabaticThenStaticLimit
       HasAdiabaticRemovalLimit (fun eta => F omega eta) (regulatorRemoved omega)) ∧
     HasStaticLimit regulatorRemoved L
 
-/-- A nonzero switching rate makes every scalar Lehmann denominator nonzero. -/
-theorem lehmannDenominator_ne_zero
-    (hbar omega eta energyGap : ℝ) (heta : eta ≠ 0) :
-    lehmannDenominator hbar omega eta energyGap ≠ 0 := by
-  intro hzero
-  have hre : eta = 0 := by
-    simpa [lehmannDenominator] using congrArg Complex.re hzero
-  exact heta hre
-
 /-- At zero switching rate, nonzero detuning makes the scalar denominator nonzero. -/
 theorem lehmannDenominator_zero_rate_ne_zero
     (hbar omega energyGap : ℝ)

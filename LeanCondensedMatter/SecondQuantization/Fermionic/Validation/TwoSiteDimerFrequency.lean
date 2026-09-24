@@ -48,15 +48,6 @@ def twoSiteDimerComplexRate (omega eta : ℝ) : ℂ :=
 def twoSiteDimerFrequencyDenominator (omega eta : ℝ) : ℂ :=
   twoSiteDimerComplexRate omega eta ^ 2 + 4
 
-/-- A nonzero switching rate keeps either dimer transition denominator nonzero. -/
-theorem twoSiteDimerLehmannDenominator_ne_zero
-    (omega eta gap : ℝ) (heta : eta ≠ 0) :
-    lehmannDenominator 1 omega eta gap ≠ 0 := by
-  intro hzero
-  have hre : eta = 0 := by
-    simpa [lehmannDenominator] using congrArg Complex.re hzero
-  exact heta hre
-
 /-- The closed response denominator factors into the two physical transition denominators. -/
 theorem twoSiteDimerFrequencyDenominator_eq_transitionProduct
     (omega eta : ℝ) :
@@ -73,8 +64,8 @@ theorem twoSiteDimerFrequencyDenominator_ne_zero
     twoSiteDimerFrequencyDenominator omega eta ≠ 0 := by
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   exact mul_ne_zero
-    (twoSiteDimerLehmannDenominator_ne_zero omega eta (-2) heta)
-    (twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta)
+    (lehmannDenominator_ne_zero 1 omega eta (-2) heta)
+    (lehmannDenominator_ne_zero 1 omega eta 2 heta)
 
 /-- Closed finite-frequency current-current Lehmann response of the unit-hopping dimer:
 `χ_JJ = 4 / ((η - iω)² + 4)` at every nonzero switching rate. -/
@@ -83,8 +74,8 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
     finiteLehmannTableResponse 1 omega eta twoSiteDimerGroundStateLehmannTable =
       4 * (twoSiteDimerFrequencyDenominator omega eta)⁻¹ := by
   classical
-  have hminus := twoSiteDimerLehmannDenominator_ne_zero omega eta (-2) heta
-  have hplus := twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta
+  have hminus := lehmannDenominator_ne_zero 1 omega eta (-2) heta
+  have hplus := lehmannDenominator_ne_zero 1 omega eta 2 heta
   have hgapMinus : ((-1 : ℝ) - 1) = -2 := by norm_num
   have hgapPlus : ((1 : ℝ) + 1) = 2 := by norm_num
   unfold finiteLehmannTableResponse
