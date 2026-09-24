@@ -11,9 +11,10 @@ and side-indexed imaginary part kept together; the two surviving Born self-energ
 inherit one indexed complex boundary theorem before physical damping consumers project concrete
 channels to their imaginary parts.
 
-The coordinate-valued denominator limits remain available as analytic ingredients and convenience
-APIs. No ultraviolet removal, renormalization prescription, simultaneous limit, or exact
-disorder-average claim is introduced here.
+The complex denominator boundary limit is the canonical convergence API; its real and imaginary
+coordinates are exposed through projection lemmas on the boundary value itself. No ultraviolet
+removal, renormalization prescription, simultaneous limit, or exact disorder-average claim is
+introduced here.
 -/
 
 namespace QuantumTheory.Transport.Models.MassiveDirac
