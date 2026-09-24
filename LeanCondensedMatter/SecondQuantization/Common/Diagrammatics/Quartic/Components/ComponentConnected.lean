@@ -130,35 +130,29 @@ private theorem QuarticDiagram.reachable_restrictComponent_of_walk {S : Finset (
       d.blockVertex_subtypeSubtypeEquivSubtype hB _ hx]
     exact hadj
 
-/-- Restricting a diagram to a component part produces a connected diagram. -/
-private theorem QuarticDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) :
-    (d.restrictComponent hB).IsConnected := by
-  refine ⟨fun u w => ?_, ?_⟩
-  · have hw : d.componentBlock (d.blockVertex hB w) = B := by
-      unfold QuarticDiagram.componentBlock
-      exact (d.componentPartition.part_eq_iff_mem hB).2 (d.blockVertex_mem hB w)
-    have hmem : (d.blockVertex hB u : Fin N) ∈ d.componentBlock (d.blockVertex hB w) := by
-      rw [hw]
-      exact d.blockVertex_mem hB u
-    change (d.blockVertex hB u : Fin N) ∈
-      d.vertexGraph.componentBlockOn (d.blockVertex hB w) at hmem
-    obtain ⟨_, hreach⟩ := (d.vertexGraph.mem_componentBlockOn (d.blockVertex hB w)).1 hmem
-    obtain ⟨p⟩ :=
-      (hreach : d.vertexGraph.Reachable (d.blockVertex hB u) (d.blockVertex hB w))
-    obtain ⟨hw', hreach2⟩ :=
-      d.reachable_restrictComponent_of_walk hB p (d.blockVertex_mem hB u)
-    rwa [d.subtypeSubtypeEquivSubtype_blockVertex hB u,
-      d.subtypeSubtypeEquivSubtype_blockVertex hB w] at hreach2
-  · obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
-    exact ⟨x, by rw [← hx]; exact d.componentPartition.mem_part hxS⟩
-
 /-- `restrictComponent`, packaged as a connected labelled quartic diagram. -/
 noncomputable def QuarticDiagram.restrictComponentConnected {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : ConnectedQuarticDiagram Label N B :=
-  ⟨d.restrictComponent hB, d.restrictComponent_isConnected hB⟩
+  ⟨d.restrictComponent hB, by
+      refine ⟨fun u w => ?_, ?_⟩
+      · have hw : d.componentBlock (d.blockVertex hB w) = B := by
+          unfold QuarticDiagram.componentBlock
+          exact (d.componentPartition.part_eq_iff_mem hB).2 (d.blockVertex_mem hB w)
+        have hmem : (d.blockVertex hB u : Fin N) ∈ d.componentBlock (d.blockVertex hB w) := by
+          rw [hw]
+          exact d.blockVertex_mem hB u
+        change (d.blockVertex hB u : Fin N) ∈
+          d.vertexGraph.componentBlockOn (d.blockVertex hB w) at hmem
+        obtain ⟨_, hreach⟩ := (d.vertexGraph.mem_componentBlockOn (d.blockVertex hB w)).1 hmem
+        obtain ⟨p⟩ :=
+          (hreach : d.vertexGraph.Reachable (d.blockVertex hB u) (d.blockVertex hB w))
+        obtain ⟨hw', hreach2⟩ :=
+          d.reachable_restrictComponent_of_walk hB p (d.blockVertex_mem hB u)
+        rwa [d.subtypeSubtypeEquivSubtype_blockVertex hB u,
+          d.subtypeSubtypeEquivSubtype_blockVertex hB w] at hreach2
+      · obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
+        exact ⟨x, by rw [← hx]; exact d.componentPartition.mem_part hxS⟩⟩
 
 end Common
 end SecondQuantization
