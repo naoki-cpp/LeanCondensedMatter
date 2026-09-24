@@ -70,22 +70,15 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
     Common.finiteGibbsExpectation_smul,
     ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
-/-- The canonical flattened-leg pair kernel is continuous in the vertex-time assignment. -/
-theorem continuous_flatVertexLegPairValue {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (a b : Fin (2 * (2 * n))) :
-    Continuous (fun τ : Fin n → ℝ => flatVertexLegPairValue ε β q τ a b) := by
-  simp only [flatVertexLegPairValue_eq]
-  fun_prop
-
 /-- Canonical pairing evaluation is continuous in the vertex-time assignment. -/
 theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
   simp only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation]
-  exact continuous_const.mul (continuous_finsetProd _ fun pr _ =>
-    continuous_flatVertexLegPairValue ε β q pr.1 pr.2)
+  exact continuous_const.mul (continuous_finsetProd _ fun pr _ => by
+    simp only [flatVertexLegPairValue_eq]
+    fun_prop)
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
