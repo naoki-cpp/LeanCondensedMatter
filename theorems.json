@@ -63382,48 +63382,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m p offset radius broadening : ℝ),\n  radius < 2 * |m| →\n    |offset| ≤ radius →\n      ‖(↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) -\n              ↑broadening * Complex.I)⁻¹‖ ≤\n        (QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
-    "externalAxioms": [],
-    "docString": "The advanced opposite-band resolvent obeys the same momentum- and broadening-independent\ninverse-margin bound. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_advancedDenominator",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(QuantumTheory.Transport.lorentzianSpectralKernel offset broadening) *\n                QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Transport.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              QuantumTheory.Transport.lorentzianSpectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
@@ -63509,7 +63467,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m p offset radius broadening : ℝ),\n  radius < 2 * |m| →\n    |offset| ≤ radius →\n      ‖(↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n              ↑broadening * Complex.I)⁻¹‖ ≤\n        (QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius)⁻¹",
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Transport.Models.MassiveDirac.Band)\n  (v m p offset radius broadening : ℝ),\n  radius < 2 * |m| →\n    |offset| ≤ radius →\n      ‖(↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n              ↑(side.regulator broadening) * Complex.I)⁻¹‖ ≤\n        (QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius)⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63521,18 +63479,18 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin",
+    "name": "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin",
     "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
     "externalAxioms": [],
-    "docString": "The retarded opposite-band resolvent is uniformly bounded by the inverse mass-window margin. ",
+    "docString": "Either physical spectral-side opposite-band resolvent is uniformly bounded by the\ninverse mass-window margin. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_retardedDenominator",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_pos"
+      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_pos",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -63618,10 +63576,11 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin",
       "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandCurrentAmplitude_le",
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin",
-      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin",
+      "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
+      "QuantumTheory.Transport.SpectralSide.regulator_advanced",
+      "QuantumTheory.Transport.SpectralSide.regulator_retarded"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -64906,8 +64865,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -64919,8 +64878,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_advancedDenominator",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_retardedDenominator"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.abs_interbandEnergyGap_add_offset_ge_sub_radius",
@@ -64929,90 +64887,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_advancedDenominator",
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_retardedDenominator"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m p offset radius broadening : ℝ),\n  |offset| ≤ radius →\n    QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius ≤\n      ‖↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) -\n          ↑broadening * Complex.I‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_advancedDenominator",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
-    "externalAxioms": [],
-    "docString": "The advanced complex spectator denominator has the same uniform norm lower bound. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Transport.Models.MassiveDirac.Band) (v m p offset radius broadening : ℝ),\n  |offset| ≤ radius →\n    QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius ≤\n      ‖↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n          ↑broadening * Complex.I‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_retardedDenominator",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
-    "externalAxioms": [],
-    "docString": "The same real separation lower-bounds the norm of the retarded complex spectator denominator,\nfor arbitrary broadening. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -65033,7 +64908,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65045,17 +64920,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin",
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin"
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_advancedRadialSpectatorResolvent_le_inv_margin",
-      "QuantumTheory.Transport.Models.MassiveDirac.norm_retardedRadialSpectatorResolvent_le_inv_margin"
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70599,6 +70472,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
@@ -70609,12 +70483,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70750,6 +70625,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
@@ -70760,12 +70636,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
       "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -157631,6 +157508,47 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.norm_radialInterbandCurrentAmplitude_le"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Transport.Models.MassiveDirac.Band)\n  (v m p offset radius broadening : ℝ),\n  |offset| ≤ radius →\n    QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin m radius ≤\n      ‖↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n          ↑(side.regulator broadening) * Complex.I‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound",
+    "externalAxioms": [],
+    "docString": "The real separation lower-bounds the norm of either physical spectral-side\nspectator denominator, for arbitrary broadening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.norm_radialSpectatorResolvent_le_inv_margin"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
