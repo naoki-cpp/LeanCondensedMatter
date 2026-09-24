@@ -29,6 +29,11 @@ private noncomputable def schwartzConj1D (f : SchwartzMap ℝ ℂ) : SchwartzMap
   f.postcompCLM
     ((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ)
 
+@[simp]
+private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
+    schwartzConj1D f x = star (f x) :=
+  rfl
+
 private theorem deriv_schwartzConj1D (f : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzConj1D f) x = star (deriv f x) := by
   change deriv (fun y : ℝ => star (f y)) x = star (deriv (f : ℝ → ℂ) x)

@@ -46,7 +46,7 @@ private theorem
         orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
       unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
       unfold FixedExternalTwoPointWickDiagram.externalPiece
-      rw [d.1.externalPieceOfCardEq_vertexLabel rfl]
+      rw [d.1.externalPiece_vertexLabel]
       rfl
 
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart
@@ -146,12 +146,12 @@ private theorem
           apply congrArg g
           apply congrArg d.1.vertexLabel
           apply Subtype.ext
-          have h := Common.standardSlotEquivOfCardEq_symm_coe d.1.externalInteractionPart rfl (e v)
+          have h := Common.standardSlotEquiv_symm_coe d.1.externalInteractionPart (e v)
           simpa [e] using h
         _ = g (d.externalPiece.1.vertexLabel (e v)) := by
           symm
           unfold FixedExternalTwoPointWickDiagram.externalPiece
-          exact congrArg g (d.1.externalPieceOfCardEq_vertexLabel rfl (e v).1)
+          exact congrArg g (d.1.externalPiece_vertexLabel (e v).1)
     _ = orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
       unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
       let e : Fin d.1.externalInteractionPart.card ≃

@@ -51,6 +51,11 @@ noncomputable def TwoPointDiagram.externalPiece
       (Finset.univ : Finset (Fin d.externalInteractionPart.card)) :=
   d.externalPieceOfCardEq rfl
 
+theorem TwoPointDiagram.externalPiece_externalLabel
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
+    d.externalPiece.externalLabel = d.externalLabel := by
+  exact d.externalPieceOfCardEq_externalLabel rfl
+
 @[simp]
 theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -65,6 +70,13 @@ theorem TwoPointDiagram.externalPieceOfCardEq_vertexLabel
     (Subtype.ext (standardSlotEquivOfCardEq_symm_coe
       (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) h
       ⟨v, Finset.mem_univ v⟩))
+
+theorem TwoPointDiagram.externalPiece_vertexLabel
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (v : Fin d.externalInteractionPart.card) :
+    d.externalPiece.vertexLabel ⟨v, Finset.mem_univ _⟩ =
+      d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
+  exact d.externalPieceOfCardEq_vertexLabel rfl v
 
 private noncomputable def TwoPointDiagram.externalPieceLegEquiv
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))) :
@@ -186,7 +198,7 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
       rw [hk, d.externalSlotLegSplitting_interaction_externalPart, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
       apply Prod.ext
-      · exact Subtype.ext (standardSlotEquivOfCardEq_symm_coe d.externalInteractionPart rfl v)
+      · exact Subtype.ext (standardSlotEquiv_symm_coe d.externalInteractionPart v)
       · rfl
 
 /-- The atomic partner map is natural under the canonical external-piece slot embedding. -/
