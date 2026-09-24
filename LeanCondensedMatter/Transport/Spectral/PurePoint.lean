@@ -39,17 +39,6 @@ theorem resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
     system.hamiltonian.1 system.hamiltonian.2
     (data.hamiltonian_apply_basis n) energy regulator hregulator
 
-/-- The canonical side-indexed spectral resolvent acts diagonally on the supplied pure-point energy
-basis at nonzero physical broadening. -/
-theorem spectralResolvent_apply_purePointBasis_at_energy
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (n : ι) :
-    spectralResolvent side system.hamiltonian.1 energy broadening (data.basis n) =
-      (spectralParameter side energy broadening - (data.energy n : ℂ))⁻¹ • data.basis n := by
-  simpa only [spectralResolvent, spectralParameter] using
-    resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
-      system data energy (side.regulator broadening)
-      (side.regulator_ne_zero hbroadening) n
-
 /-- On a pure-point energy basis, the square of a resolvent with arbitrary nonzero signed regulator
 has the squared scalar denominator. -/
 theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
@@ -68,18 +57,6 @@ theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
   rw [resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
     system data energy regulator hregulator n]
   rw [smul_smul, pow_two]
-
-/-- The square of the canonical side-indexed spectral resolvent acts diagonally with the squared
-side-indexed scalar denominator at nonzero physical broadening. -/
-theorem spectralResolvent_sq_apply_purePointBasis_at_energy
-    (side : SpectralSide) (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (n : ι) :
-    ((spectralResolvent side system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
-      ((spectralParameter side energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
-        data.basis n := by
-  simpa only [spectralResolvent, spectralParameter] using
-    resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
-      system data energy (side.regulator broadening)
-      (side.regulator_ne_zero hbroadening) n
 
 end
 end Transport
