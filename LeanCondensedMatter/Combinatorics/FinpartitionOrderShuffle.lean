@@ -70,8 +70,7 @@ theorem partOrdersCompatible_assembleOrder (π : Finpartition s) (orders : π.Pa
         (size := fun B : π.parts => (B : Finset α).card)
         π.equivSigmaParts orders shuffle B i)
   intro i j hij
-  rw [hslot i, hslot j]
-  exact shuffle.strictMono B hij
+  simpa only [hslot i, hslot j] using shuffle.strictMono B hij
 
 /-- Reassembling a global order from compatible part-local orders and its extracted shuffle is the
 original global order. -/
