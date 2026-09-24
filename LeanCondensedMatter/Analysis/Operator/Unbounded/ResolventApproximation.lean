@@ -64,7 +64,6 @@ private theorem star_regularizerCoefficient (r : ℝ) :
 private noncomputable def approximationCoefficient (r : ℝ) : ℂ :=
   ((r ^ 2 / 2 : ℝ) : ℂ)
 
-@[simp]
 private theorem star_approximationCoefficient (r : ℝ) :
     star (approximationCoefficient r) = approximationCoefficient r := by
   simp [approximationCoefficient]

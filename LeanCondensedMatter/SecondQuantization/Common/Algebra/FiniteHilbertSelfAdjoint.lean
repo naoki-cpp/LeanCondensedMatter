@@ -34,7 +34,7 @@ private noncomputable def finiteHilbertOperatorMatrix
     (finiteHilbertOrthonormalBasis (Config := Config)).toBasis
     (finiteHilbertOperatorAlgEquiv A).toLinearMap
 
-@[simp] private theorem finiteHilbertOperatorMatrix_apply
+private theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
   unfold finiteHilbertOperatorMatrix
@@ -65,7 +65,7 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
     rw [LinearMap.toMatrix_adjoint] at hmat
     change star (finiteHilbertOperatorMatrix A n m) =
       finiteHilbertOperatorMatrix B m n at hmat
-    simpa using hmat
+    simpa [finiteHilbertOperatorMatrix_apply] using hmat
   · intro h
     have hmat :
         LinearMap.toMatrix b b
@@ -75,7 +75,7 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
       rw [LinearMap.toMatrix_adjoint]
       change star (finiteHilbertOperatorMatrix A n m) =
         finiteHilbertOperatorMatrix B m n
-      simpa using h m n
+      simpa [finiteHilbertOperatorMatrix_apply] using h m n
     have hlin :
         LinearMap.adjoint (finiteHilbertOperatorAlgEquiv A).toLinearMap =
           (finiteHilbertOperatorAlgEquiv B).toLinearMap :=

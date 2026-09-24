@@ -28,7 +28,6 @@ private noncomputable def connectedCycleCoeff
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
         (Nat.factorial m : ℂ)
 
-@[simp]
 private theorem connectedCycleCoeff_zero
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     connectedCycleCoeff ζ K 0 = 0 := by
@@ -106,7 +105,7 @@ theorem permutationConnectedCycleSeries_eq_mk_trace
   rw [coeff_permutationConnectedCycleSeries, PowerSeries.coeff_mk]
   by_cases hm : m = 0
   · subst m
-    simp
+    simp [connectedCycleCoeff_zero]
   · rw [connectedCycleCoeff_eq_pow_mul_trace_div ζ K m (Nat.pos_of_ne_zero hm)]
     simp [hm]
 
@@ -118,7 +117,7 @@ theorem coeff_permutationConnectedCycleSeries_zero_exchange
       if m = 1 then Matrix.trace K else 0 := by
   classical
   cases m with
-  | zero => simp
+  | zero => simp [connectedCycleCoeff_zero]
   | succ n =>
       cases n with
       | zero =>

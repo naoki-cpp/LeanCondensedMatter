@@ -23,14 +23,12 @@ private noncomputable def Pairing.componentPairEndpointEquiv
   (Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
     (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)
 
-@[simp]
 private theorem Pairing.componentPairEndpointEquiv_apply_zero
     (componentPairing : ∀ B, Pairing (m B))
     (B : ι) (pr : (componentPairing B).NormalizedPair) :
     Pairing.componentPairEndpointEquiv componentPairing (⟨B, pr⟩, 0) = ⟨B, pr.1.1⟩ := by
   simp [Pairing.componentPairEndpointEquiv]
 
-@[simp]
 private theorem Pairing.componentPairEndpointEquiv_apply_one
     (componentPairing : ∀ B, Pairing (m B))
     (B : ι) (pr : (componentPairing B).NormalizedPair) :
