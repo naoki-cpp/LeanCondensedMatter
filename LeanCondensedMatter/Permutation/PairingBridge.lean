@@ -77,6 +77,7 @@ private def sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm (Fin (2 * m)) :=
   ((e.symm.trans ((Equiv.sumComm (Fin m) (Fin m)).trans (Equiv.sumCongr σ.symm σ))).trans e)
 
+@[simp]
 private theorem sidePartner_inl (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     sidePartner e σ (e (Sum.inl i)) = e (Sum.inr (σ i)) := by
   simp [sidePartner]
@@ -111,6 +112,7 @@ private theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fi
 private def sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : Pairing m :=
   PairingOn.ofPartner (sidePartner e σ) (isPairing_sidePartner e σ)
 
+@[simp]
 private theorem sidePairing_partner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     (sidePairing e σ).partner = sidePartner e σ :=
   rfl

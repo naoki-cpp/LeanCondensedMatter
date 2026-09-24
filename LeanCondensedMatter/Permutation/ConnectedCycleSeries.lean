@@ -28,6 +28,7 @@ private noncomputable def connectedCycleCoeff
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
         (Nat.factorial m : ℂ)
 
+@[simp]
 private theorem connectedCycleCoeff_zero
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     connectedCycleCoeff ζ K 0 = 0 := by
