@@ -150,20 +150,20 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
 the component equivalence maps local normalized pairs by a strictly monotone ambient position
 map. -/
 theorem Pairing.componentCrossingCount_self_eq
-    {m : ℕ} (pairing : Pairing n) (local : Pairing m)
+    {m : ℕ} (pairing : Pairing n) (localPairing : Pairing m)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B : ι)
-    (localEquiv : local.NormalizedPair ≃ F B)
+    (localEquiv : localPairing.NormalizedPair ≃ F B)
     (position : Fin (2 * m) → Fin (2 * n)) (hmono : StrictMono position)
-    (hpair : ∀ pr : local.NormalizedPair,
+    (hpair : ∀ pr : localPairing.NormalizedPair,
       (e ⟨B, localEquiv pr⟩).1 =
         (position pr.1.1, position pr.1.2)) :
-    pairing.componentCrossingCount e B B = local.crossingCount := by
+    pairing.componentCrossingCount e B B = localPairing.crossingCount := by
   classical
   rw [Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Pairing.crossingCount_eq_sum_sum_crosses]
   exact sum_sum_crosses_eq_of_equiv
     (fun p : F B => (e ⟨B, p⟩).1)
-    (fun pr : local.NormalizedPair => pr.1)
+    (fun pr : localPairing.NormalizedPair => pr.1)
     localEquiv
     (fun p q => by
       rw [← localEquiv.apply_symm_apply p, ← localEquiv.apply_symm_apply q,
