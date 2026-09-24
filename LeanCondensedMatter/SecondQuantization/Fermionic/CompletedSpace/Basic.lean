@@ -69,11 +69,6 @@ noncomputable def algebraicToCompleted :
   Common.algebraicToCompleted
 
 @[simp]
-theorem algebraicToCompleted_apply (x : OccupationFock Mode) (n : Occupation Mode) :
-    algebraicToCompleted x n = x n :=
-  rfl
-
-@[simp]
 theorem algebraicToCompleted_basisState (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
   simpa [algebraicToCompleted, basisState, completedBasisState] using

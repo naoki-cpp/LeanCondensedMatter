@@ -75,12 +75,6 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
   change (if i ∈ n then 1 else 0) = 1
   simp [hi]
 
-@[simp]
-theorem particleNumber_vacuum :
-    particleNumber (vacuum : Occupation Mode) = 0 := by
-  rw [particleNumber_eq_card]
-  exact Finset.card_empty
-
 variable [DecidableEq Mode]
 
 /-- **Occupying mode `i`.** Adds `i` to the occupied set; a no-op if `i` was already occupied
