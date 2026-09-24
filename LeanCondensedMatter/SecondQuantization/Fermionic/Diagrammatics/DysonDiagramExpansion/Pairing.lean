@@ -62,19 +62,6 @@ theorem flatVertexLegPairingEvaluation_eq {n : ℕ}
 
 /-! ## Pair-kernel regularity -/
 
-private theorem finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
-        ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b)) =
-      Complex.exp ((τ (flatVertexIndex n a) * quarticLegEnergyShiftForSequence ε q a : ℝ) : ℂ) *
-        Complex.exp ((τ (flatVertexIndex n b) * quarticLegEnergyShiftForSequence ε q b : ℝ) : ℂ) *
-        Common.finiteGibbsExpectation (fermionEnergy ε) β
-          ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
-            (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
-  rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, Common.finiteGibbsExpectation_smul]
-
 /-- Closed form of the canonical flattened-leg pair kernel. -/
 theorem flatVertexLegPairValue_eq {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
@@ -86,8 +73,11 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  rw [flatVertexLegPairValue_eq_finiteGibbsExpectation]
-  exact finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq ε β q τ a b
+  rw [flatVertexLegPairValue_eq_finiteGibbsExpectation,
+    quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+    Common.finiteGibbsExpectation_smul,
+    ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 /-- The canonical flattened-leg pair kernel is continuous in the vertex-time assignment. -/
 theorem continuous_flatVertexLegPairValue {n : ℕ}
