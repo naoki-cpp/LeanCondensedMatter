@@ -71,7 +71,6 @@ noncomputable def permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
   PowerSeries.mk (connectedCycleCoeff ζ K)
 
-@[simp]
 private theorem coeff_permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
@@ -117,7 +116,7 @@ theorem coeff_permutationConnectedCycleSeries_zero_exchange
       if m = 1 then Matrix.trace K else 0 := by
   classical
   cases m with
-  | zero => simp [connectedCycleCoeff_zero]
+  | zero => simp [coeff_permutationConnectedCycleSeries, connectedCycleCoeff_zero]
   | succ n =>
       cases n with
       | zero =>

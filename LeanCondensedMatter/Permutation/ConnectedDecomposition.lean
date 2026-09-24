@@ -118,7 +118,6 @@ private noncomputable def extendBlockPerm (B : Finset α) (τ : Equiv.Perm B) : 
   τ.extendDomain (Equiv.refl B)
 
 omit [Fintype α] in
-@[simp]
 private theorem extendBlockPerm_apply_mem (B : Finset α) (τ : Equiv.Perm B)
     {x : α} (hx : x ∈ B) :
     extendBlockPerm B τ x = (τ ⟨x, hx⟩ : B) := by
