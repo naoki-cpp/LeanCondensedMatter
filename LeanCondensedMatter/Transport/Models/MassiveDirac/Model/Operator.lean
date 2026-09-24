@@ -176,22 +176,18 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
   rw [hcoefficients]
   exact InternalSpace.pauliCombination_ofReal_isHermitian u
 
-private theorem directionPauli_isHermitian (direction : Fin 2) :
-    (directionPauli direction).IsHermitian := by
-  exact InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)
-
 /-- The velocity matrix is Hermitian in either in-plane direction. -/
 theorem velocity_isHermitian (direction : Fin 2) (v : ℝ) :
     (velocity direction v).IsHermitian := by
   unfold velocity
-  exact (directionPauli_isHermitian direction).smul (by simp [isSelfAdjoint_iff])
+  exact (InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)).smul (by simp [isSelfAdjoint_iff])
 
 /-- The charge-current matrix is Hermitian in either in-plane direction. -/
 theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
     (current direction e v).IsHermitian := by
   unfold current velocity
   exact
-    ((directionPauli_isHermitian direction).smul (by simp [isSelfAdjoint_iff])).smul
+    ((InternalSpace.pauliBasis_isHermitian (inPlanePauliAxis direction)).smul (by simp [isSelfAdjoint_iff])).smul
       (by simp [isSelfAdjoint_iff])
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
