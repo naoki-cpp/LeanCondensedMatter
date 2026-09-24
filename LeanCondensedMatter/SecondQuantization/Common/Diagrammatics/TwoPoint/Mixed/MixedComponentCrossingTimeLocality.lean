@@ -440,27 +440,6 @@ private theorem TwoPointDiagram.mixedComponentCrosses_iff_of_positionOrder
     · simpa [q0, p1, endpointVal] using h01.mpr ht01
     · simpa [p1, q1, endpointVal] using h11.mpr ht11
 
-private theorem TwoPointDiagram.mixedComponentCrossingCount_eq_of_positionOrder
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts)
-    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
-      p.1 < q.1 ↔
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1) :
-    d.mixedComponentCrossingCount τ τ' σ B =
-      d.mixedComponentCrossingCount τ τ' υ B := by
-  classical
-  unfold TwoPointDiagram.mixedComponentCrossingCount
-    TwoPointDiagram.mixedComponentOrientedCrossingCount
-  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
-    (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)
-    (d.mixedComponentPairTimeEquiv τ τ' σ υ B)
-    (fun p q =>
-      d.mixedComponentCrosses_iff_of_positionOrder τ τ' σ υ B hOrder p q)
-
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
 theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
@@ -517,10 +496,19 @@ theorem TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
     d.mixedComponentWeight s τ τ' σ B =
       d.mixedComponentWeight s τ τ' υ B := by
-  unfold TwoPointDiagram.mixedComponentWeight
-  rw [d.mixedComponentCrossingCount_eq_of_positionOrder τ τ' σ υ B
-    (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-      τ τ' σ υ B hChamber)]
+  unfold TwoPointDiagram.mixedComponentWeight,
+    TwoPointDiagram.mixedComponentCrossingCount,
+    TwoPointDiagram.mixedComponentOrientedCrossingCount
+  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
+  congr 1
+  exact sum_sum_crosses_eq_of_equiv
+    (fun p : d.MixedComponentPair τ τ' σ B => p.1.1)
+    (fun p : d.MixedComponentPair τ τ' υ B => p.1.1)
+    (d.mixedComponentPairTimeEquiv τ τ' σ υ B)
+    (fun p q =>
+      d.mixedComponentCrosses_iff_of_positionOrder τ τ' σ υ B
+        (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
+          τ τ' σ υ B hChamber) p q)
 
 end Common
 end SecondQuantization
