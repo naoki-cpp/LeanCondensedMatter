@@ -40,7 +40,6 @@ private theorem pauliGreenDenominatorOfRegulator_radial_eq
 
 /-- The arbitrary-regulator radial denominator has real part
 `ε² - γ² - m² - v²p²`. -/
-@[simp]
 private theorem pauliGreenDenominatorOfRegulator_radial_re
     (v m probeEnergy regulator p : ℝ) :
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).re =
@@ -49,7 +48,6 @@ private theorem pauliGreenDenominatorOfRegulator_radial_re
   simp [spectralParameterOfRegulator, pow_two]
 
 /-- The arbitrary-regulator radial denominator has momentum-independent imaginary part `2εγ`. -/
-@[simp]
 private theorem pauliGreenDenominatorOfRegulator_radial_im
     (v m probeEnergy regulator p : ℝ) :
     (pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).im =
