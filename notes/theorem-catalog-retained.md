@@ -129,9 +129,6 @@ or consumer structure changes.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
-- `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate` — canonical multiplicity-preservation
-  theorem under unitary conjugation. Although its current project consumer is the summability proof,
-  equality of eigenspace dimensions is independently useful operator-theory API.
 - `Combinatorics.BinaryShuffle.toSlotShuffle_injective` — canonical injectivity property of the public
   forgetful map from recursive binary shuffles to ambient slot shuffles. It participates in both the
   cardinality argument and the final equivalence construction, so it is not merely one-use routing.
@@ -196,9 +193,6 @@ or consumer structure changes.
   norm estimate that currently consumes it.
 - `QuantumTheory.POVM.hasSum_inner_apply` — canonical diagonal weak-operator consequence of strong
   POVM normalization and a reusable bridge from operator normalization to Born probabilities.
-- `QuantumTheory.Transport.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator` —
-  model-level spectral identity expressing the Hamiltonian eigenvalue equation on each band
-  projector.
 - `QuantumTheory.Transport.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
   canonical closed numerator/denominator form of the arbitrary-regulator Massive Dirac Green
   operator.
@@ -236,12 +230,6 @@ or consumer structure changes.
   coefficients to Gibbs-expectation continuity.
 - `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
   estimate bounding truncation error by twice the distance to any fixed point of the truncation.
-- `SecondQuantization.Fermionic.norm_completedToggleLinear` — canonical norm-preservation law for the
-  completed occupation-toggle map, stronger and more reusable than its downstream one-sided bound.
-- `Combinatorics.Pairing.isSplit_inr` — canonical consequence of the asymmetric `IsSplit`
-  definition: closure of the left summand under the involutive partner map forces closure of the
-  right summand as well. The current `splitRightMap` consumer is one construction using this
-  independently meaningful decomposition fact.
 - `Combinatorics.Pairing.card_pairs` — canonical cardinality theorem for perfect pairings:
   a pairing of `Fin (2 * n)` has exactly `n` normalized pairs. This is an independently meaningful
   combinatorial endpoint even without a current compiled consumer.
