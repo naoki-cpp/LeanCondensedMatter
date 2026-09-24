@@ -565,7 +565,7 @@ noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
 
 /-- The image of the canonical component leg embedding is exactly the ambient legs incident to that
 connected component. -/
-theorem ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff
+private theorem ExternalInsertionDiagram.exists_componentDiagramLeg_eq_iff
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (B : d.vertexGraph.componentPartition.parts)
