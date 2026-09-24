@@ -76,9 +76,9 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
   ext n
   rw [completedModeTruncation_apply]
   by_cases hn : x n = 0
-  · simp [algebraicToCompleted_apply, hn]
+  · simp [algebraicToCompleted, Common.algebraicToCompleted_apply, hn]
   · have hnsub : n ⊆ S := (occupation_subset_algebraicModeSupport x n hn).trans hS
-    simp [algebraicToCompleted_apply, hnsub]
+    simp [algebraicToCompleted, Common.algebraicToCompleted_apply, hnsub]
 
 /-- A contraction that fixes `φ` moves `ψ` by at most twice the distance from `ψ` to `φ`. -/
 theorem dist_completedModeTruncation_le_two_mul_of_fixed
