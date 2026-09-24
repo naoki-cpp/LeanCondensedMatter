@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
@@ -79,7 +78,7 @@ theorem FamilySlotShuffle.headTailLocalSlotEquiv_symm_inr (size : Fin (k + 1) �
 def FamilySlotShuffle.headTailSlotEquiv {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) :
     Fin (size 0) ⊕ (Σ i : Fin k, Fin (size i.succ)) ≃ Fin (∑ i, size i) :=
-  (FamilySlotShuffle.headTailLocalSlotEquiv size).changeCoordinates shuffle.slotEquiv
+  (FamilySlotShuffle.headTailLocalSlotEquiv size).symm.trans shuffle.slotEquiv
 
 /-- Combine a head-versus-tail binary shuffle with an internal tail-family shuffle. -/
 noncomputable def FamilySlotShuffle.cons (size : Fin (k + 1) → ℕ)

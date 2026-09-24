@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.FamilyOrderShuffle
-import LeanCondensedMatter.Combinatorics.EquivChangeCoordinates
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
 import Mathlib.Logic.Equiv.Set
