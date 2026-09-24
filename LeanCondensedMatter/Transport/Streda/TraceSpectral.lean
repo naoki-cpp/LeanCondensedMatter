@@ -154,9 +154,10 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
       ((spectralResolvent side system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
         (stredaSpectralFactor system data side energy broadening n) ^ 2 • data.basis n := by
     intro n
-    simpa only [stredaSpectralFactor] using
-      spectralResolvent_sq_apply_purePointBasis_at_energy
-        side system data energy broadening (ne_of_gt hbroadening) n
+    simpa only [spectralResolvent, spectralParameter, stredaSpectralFactor] using
+      resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
+        system data energy (side.regulator broadening)
+        (side.regulator_ne_zero (ne_of_gt hbroadening)) n
   have hretardedMiddle : ∀ n : ι,
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
         (stredaSpectralFactor system data .retarded energy broadening n) ^ 2 • data.basis n := by
@@ -176,9 +177,10 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
     have hside (side : SpectralSide) :
         spectralResolvent side system.hamiltonian.1 energy broadening (data.basis n) =
           stredaSpectralFactor system data side energy broadening n • data.basis n := by
-      simpa only [stredaSpectralFactor] using
-        spectralResolvent_apply_purePointBasis_at_energy
-          side system data energy broadening (ne_of_gt hbroadening) n
+      simpa only [spectralResolvent, spectralParameter, stredaSpectralFactor] using
+        resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+          system data energy (side.regulator broadening)
+          (side.regulator_ne_zero (ne_of_gt hbroadening)) n
     have hretarded :
         retardedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
           stredaSpectralFactor system data .retarded energy broadening n • data.basis n := by
