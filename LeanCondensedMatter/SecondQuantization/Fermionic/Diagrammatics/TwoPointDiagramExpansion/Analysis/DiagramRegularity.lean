@@ -32,7 +32,8 @@ private theorem continuous_orderedTwoPointLegPairContraction
       orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
   rcases x with x | x <;> rcases y with y | y <;>
     simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
-      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, timedFieldPairContraction_eq] <;>
+      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel,
+      timedFieldPairContraction_eq_closed_form] <;>
     fun_prop
 
 /-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
