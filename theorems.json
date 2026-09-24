@@ -8301,6 +8301,84 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) {total : ℕ} (size : ι → ℕ) (ambientEquiv : α ≃ (i : ι) × F i)\n  (orders : Combinatorics.FamilyOrdersOf F size) (shuffle : Combinatorics.FamilySlotShuffleTo size total)\n  (order : Fin total ≃ α),\n  (∀ (i : ι) (j : Fin (size i)), order.symm (ambientEquiv.symm ⟨i, (orders i) j⟩) = shuffle.slotEquiv ⟨i, j⟩) →\n    Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv orders shuffle = order",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.assembleFamilyOrderOfSize_eq_order",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.assembleOrder_shuffleOfOrder"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.assembleOrder_shuffleOfOrder"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) {total : ℕ} (size : ι → ℕ) (ambientEquiv : α ≃ (i : ι) × F i)\n  (orders : Combinatorics.FamilyOrdersOf F size) (shuffle : Combinatorics.FamilySlotShuffleTo size total) (i : ι)\n  (j : Fin (size i)),\n  (Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv orders shuffle).symm\n      (ambientEquiv.symm ⟨i, (orders i) j⟩) =\n    shuffle.slotEquiv ⟨i, j⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.assembleFamilyOrderOfSize_symm_apply",
+    "module": "LeanCondensedMatter.Combinatorics.FamilyOrderShuffle",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Finpartition.partOrdersCompatible_assembleOrder"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.partOrdersCompatible_assembleOrder"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n),\n  Combinatorics.blockPair τ k =\n    (τ ((Combinatorics.pairSlotIndexEquiv n).symm (k, 0)), τ ((Combinatorics.pairSlotIndexEquiv n).symm (k, 1)))",
     "standardAxioms": [
       "Classical.choice",
@@ -18828,8 +18906,6 @@
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
       "Equiv.changeCoordinates_self",
       "Equiv.changeCoordinates_trans",
-      "Finpartition.assembleOrder_shuffleOfOrder",
-      "Finpartition.partOrdersCompatible_assembleOrder",
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
     ],
     "dependencies": [],
@@ -18840,11 +18916,9 @@
       "Combinatorics.FamilySlotShuffle.mem_tailSlots_iff",
       "Equiv.changeCoordinates_self",
       "Equiv.changeCoordinates_trans",
-      "Finpartition.assembleOrder_shuffleOfOrder",
-      "Finpartition.partOrdersCompatible_assembleOrder",
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_componentSlot_val"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Quot.sound"
     ],
@@ -18888,14 +18962,14 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} (source : α ≃ β) (target : α ≃ γ),\n  (source.changeCoordinates target).symm = target.changeCoordinates source",
     "standardAxioms": [
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -18906,16 +18980,12 @@
     "docString": "Reversing a coordinate change swaps its source and target systems. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "Finpartition.partOrdersCompatible_assembleOrder"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "Finpartition.partOrdersCompatible_assembleOrder"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -18983,7 +19053,7 @@
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
     "dependencies": [
-      "Equiv.changeCoordinates_apply"
+      "Combinatorics.assembleFamilyOrderOfSize_eq_order"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -20161,8 +20231,7 @@
     "dependents": [],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.strictMono",
-      "Equiv.changeCoordinates_apply",
-      "Equiv.changeCoordinates_symm"
+      "Combinatorics.assembleFamilyOrderOfSize_symm_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -20186,7 +20255,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -20206,10 +20275,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Finpartition.orderDecompositionEquiv",
       "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder_fixedOrderComponentShuffle"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58028,137 +58096,6 @@
     "replacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n            probeEnergy regulator pMax =\n          -(2 * ↑v ^ 2)⁻¹ *\n            (Complex.log\n                (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                  regulator) -\n              Complex.log\n                (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                  regulator))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).im =\n          -(2 * v ^ 2)⁻¹ *\n            ((QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                  regulator).arg -\n              (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                  regulator).arg)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "Exact arbitrary-regulator finite-cutoff imaginary part of the shared denominator integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_im_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornDenominatorLogPrefactor_eq_ofReal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_im_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).re =\n          -(2 * v ^ 2)⁻¹ *\n            (Real.log\n                ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                    regulator‖ -\n              Real.log\n                ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                    regulator‖)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_re_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornDenominatorLogPrefactor_eq_ofReal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_re_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).re =\n          -(2 * v ^ 2)⁻¹ *\n            (Real.log\n                √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2) ^ 2 +\n                    (2 * probeEnergy * regulator) ^ 2) -\n              Real.log √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2))",
     "standardAxioms": [
@@ -58180,8 +58117,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -58220,8 +58157,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_im_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero"
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -58262,8 +58199,8 @@
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegral_re_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
-      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero"
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -61467,90 +61404,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  probeEnergy ≠ 0 →\n    regulator ≠ 0 →\n      HasDerivAt\n        (fun q =>\n          Complex.log\n            (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m q 0 probeEnergy\n              regulator))\n        (-2 * ↑v ^ 2 *\n          QuantumTheory.Transport.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy\n            regulator p)\n        p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The principal logarithm of the arbitrary-regulator radial denominator differentiates to\n`-2v²` times the common Born radial denominator integrand. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_mem_slitPlane"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  HasDerivAt\n    (fun q =>\n      QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator)\n    (-2 * ↑v ^ 2 * ↑p) p",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The derivative of the arbitrary-regulator quadratic radial denominator is `-2 v² p`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (e v : ℝ) (coefficients : Fin 2 → ℂ),\n  QuantumTheory.Transport.Models.MassiveDirac.inPlaneCurrentOperator e v coefficients =\n    (↑(-e) * ↑v) • QuantumTheory.Transport.Models.MassiveDirac.inPlanePauliVertexOperator coefficients",
     "standardAxioms": [
       "Classical.choice",
@@ -63369,48 +63222,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  probeEnergy ≠ 0 →\n    regulator ≠ 0 →\n      -2 * ↑v ^ 2 *\n          QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n            probeEnergy regulator pMax =\n        Complex.log\n            (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n              regulator) -\n          Complex.log\n            (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "Before dividing by `-2v²`, the arbitrary-regulator finite-cutoff denominator integral is the\nendpoint principal-log difference. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy =\n        QuantumTheory.Transport.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy +\n            -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n              (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2))) +\n          -(e ^ 2 / QuantumTheory.Transport.Models.MassiveDirac.planckFromReduced hbar) *\n            (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))",
     "standardAxioms": [
       "Classical.choice",
@@ -64214,267 +64025,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator =\n    QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator ^ 2 - ↑m ^ 2 - ↑v ^ 2 * ↑p ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "Radial specialization of the arbitrary-regulator Green denominator in polynomial form. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).im =\n    2 * probeEnergy * regulator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The arbitrary-regulator radial denominator has momentum-independent imaginary part `2εγ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_mem_slitPlane",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_mem_slitPlane",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  probeEnergy ≠ 0 →\n    regulator ≠ 0 →\n      QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator ∈\n        Complex.slitPlane",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_mem_slitPlane",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "At nonzero probe energy and regulator, the radial denominator path lies in the principal-log\nslit plane. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.hasDerivAt_log_pauliGreenDenominatorOfRegulator_radial"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ =\n    √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The arbitrary-regulator radial denominator norm is the square root of its explicit polynomial. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).re =\n    probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The arbitrary-regulator radial denominator has real part\n`ε² - γ² - m² - v²p²`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ ^ 2 =\n    (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_sq_norm",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The squared arbitrary-regulator radial denominator norm is an explicit real polynomial. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening p : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator side v m p 0 probeEnergy broadening).im =\n    2 * side.sign * probeEnergy * broadening",
     "standardAxioms": [
       "Classical.choice",
@@ -64498,7 +64048,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im"
+      "QuantumTheory.Transport.SpectralSide.regulator_advanced",
+      "QuantumTheory.Transport.SpectralSide.regulator_retarded",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -64542,7 +64094,9 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+      "QuantumTheory.Transport.SpectralSide.regulator_advanced",
+      "QuantumTheory.Transport.SpectralSide.regulator_retarded",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -67014,8 +66568,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_continuumBornRadialNormPolynomial_atTop"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69196,47 +68751,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator : ℝ),\n  v ≠ 0 →\n    Filter.Tendsto\n      (fun p =>\n        Real.log\n          ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)\n      Filter.atTop Filter.atTop",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "The logarithm carrying the cutoff dependence of the arbitrary-regulator Born denominator real\npart tends to `+∞`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Transport.Models.MassiveDirac.Band)\n  (v m px py : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.Models.MassiveDirac.projectorResolventCoefficient\n          (QuantumTheory.Transport.spectralParameter side\n            (QuantumTheory.Transport.Models.MassiveDirac.bandEnergy band v m px py) broadening)\n          (QuantumTheory.Transport.Models.MassiveDirac.oppositeBand band) v m px py)\n      (nhds 0) (nhds (↑(QuantumTheory.Transport.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹)",
     "standardAxioms": [
       "Classical.choice",
@@ -69307,48 +68821,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.tendsto_interbandSpectatorCurrentFactor_at_bandPole"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v m probeEnergy regulator : ℝ),\n  v ≠ 0 →\n    Filter.Tendsto\n      (fun p =>\n        ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖)\n      Filter.atTop Filter.atTop",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop",
-    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": "For nonzero Dirac velocity, the arbitrary-regulator radial Green denominator norm diverges at\nlarge momentum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt",
-      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_continuumBornRadialNormPolynomial_atTop"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_log_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -71090,6 +70562,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator"
     ],
@@ -71098,10 +70572,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71237,6 +70713,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
     ],
@@ -71245,10 +70723,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge_zero_disorder",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
       "QuantumTheory.Transport.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137098,7 +136578,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α),\n  Combinatorics.assembleFamilyOrder F ambientEquiv (Combinatorics.familyOrdersOfOrder✝ F ambientEquiv order)\n      (Combinatorics.familyShuffleOfOrder✝ F ambientEquiv order) =\n    order",
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ} (size : ι → ℕ)\n  (hcard : ∀ (i : ι), Fintype.card (F i) = size i) (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α),\n  Combinatorics.assembleFamilyOrderOfSize F size ambientEquiv\n      (Combinatorics.familyOrdersOfOrder✝ F size hcard ambientEquiv order)\n      (Combinatorics.familyShuffleOfOrder✝ F size hcard ambientEquiv order) =\n    order",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137121,7 +136601,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.familyOrderDecompositionEquiv"
+      "Combinatorics.familyOrderDecompositionEquivOfSize"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -137163,11 +136643,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder",
       "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrderOfOrder_slot",
       "_private.LeanCondensedMatter.Combinatorics.FamilyOrderShuffle.0.Combinatorics.familyOrder_eq_of_strictMono"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137217,7 +136696,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι) (j : Fin (Fintype.card (F i))),\n  order.symm (ambientEquiv.symm ⟨i, (Combinatorics.familyOrderOfOrder✝ F ambientEquiv order i) j⟩) =\n    ↑(((Combinatorics.familyGlobalSlots✝ F ambientEquiv order i).orderIsoOfFin ⋯) j)",
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ} (size : ι → ℕ)\n  (hcard : ∀ (i : ι), Fintype.card (F i) = size i) (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι)\n  (j : Fin (size i)),\n  order.symm (ambientEquiv.symm ⟨i, (Combinatorics.familyOrderOfOrder✝ F size hcard ambientEquiv order i) j⟩) =\n    ↑(((Combinatorics.familyGlobalSlots✝ F ambientEquiv order i).orderIsoOfFin ⋯) j)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137258,7 +136737,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ}\n  (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι) (localOrder : Fin (Fintype.card (F i)) ≃ F i),\n  (StrictMono fun j => order.symm (ambientEquiv.symm ⟨i, localOrder j⟩)) →\n    localOrder = Combinatorics.familyOrderOfOrder✝ F ambientEquiv order i",
+    "statement": "∀ {ι : Type u_1} {α : Type u_2} (F : ι → Type u_3) [inst : (i : ι) → Fintype (F i)] {total : ℕ} (size : ι → ℕ)\n  (hcard : ∀ (i : ι), Fintype.card (F i) = size i) (ambientEquiv : α ≃ (i : ι) × F i) (order : Fin total ≃ α) (i : ι)\n  (localOrder : Fin (size i) ≃ F i),\n  (StrictMono fun j => order.symm (ambientEquiv.symm ⟨i, localOrder j⟩)) →\n    localOrder = Combinatorics.familyOrderOfOrder✝ F size hcard ambientEquiv order i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158294,7 +157773,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -158307,16 +157786,16 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
     ],
     "dependencies": [
       "QuantumTheory.Transport.Models.MassiveDirac.continuous_inv_pauliGreenDenominatorOfRegulator_radial",
-      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -158349,17 +157828,150 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
-      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n            probeEnergy regulator pMax =\n          -(2 * ↑v ^ 2)⁻¹ *\n            (Complex.log\n                (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                  regulator) -\n              Complex.log\n                (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                  regulator))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).im =\n          -(2 * v ^ 2)⁻¹ *\n            ((QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                  regulator).arg -\n              (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                  regulator).arg)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "Exact arbitrary-regulator finite-cutoff imaginary part of the shared denominator integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_im_eq"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornDenominatorLogPrefactor_eq_ofReal",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_im_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        (QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m\n              probeEnergy regulator pMax).re =\n          -(2 * v ^ 2)⁻¹ *\n            (Real.log\n                ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy\n                    regulator‖ -\n              Real.log\n                ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy\n                    regulator‖)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_re_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuumBornDenominatorLogPrefactor_eq_ofReal",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral_re_eq",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158399,6 +158011,183 @@
       "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator =\n    QuantumTheory.Transport.spectralParameterOfRegulator probeEnergy regulator ^ 2 - ↑m ^ 2 - ↑v ^ 2 * ↑p ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "Radial specialization of the arbitrary-regulator Green denominator in polynomial form. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).im =\n    2 * probeEnergy * regulator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "The arbitrary-regulator radial denominator has momentum-independent imaginary part `2εγ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  ‖QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator‖ =\n    √((probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2) ^ 2 + (2 * probeEnergy * regulator) ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "The arbitrary-regulator radial denominator norm is the square root of its explicit polynomial. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq_log_sqrt_polynomial",
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy regulator p : ℝ),\n  (QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator).re =\n    probeEnergy ^ 2 - regulator ^ 2 - m ^ 2 - v ^ 2 * p ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re",
+    "module": "LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "The arbitrary-regulator radial denominator has real part\n`ε² - γ² - m² - v²p²`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominator_radial_re",
+      "_private.LeanCondensedMatter.Transport.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Transport.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158516,13 +158305,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_pauliGreenDenominatorOfRegulator_radial_norm_atTop"
+      "QuantumTheory.Transport.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
