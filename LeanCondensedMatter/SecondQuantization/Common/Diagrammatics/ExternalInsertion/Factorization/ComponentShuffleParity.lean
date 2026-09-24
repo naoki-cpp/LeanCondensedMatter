@@ -43,7 +43,6 @@ private noncomputable def ExternalInsertionDiagram.componentLegPosition
     ((externalInsertionLegEquiv (d.externalPairCount B)
       (interactionSector (B : Finset (ExternalInsertionVertex E S)))).symm p)
 
-@[simp]
 private theorem ExternalInsertionDiagram.componentLegPosition_external
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -56,7 +55,6 @@ private theorem ExternalInsertionDiagram.componentLegPosition_external
         (interactionSector (B : Finset (ExternalInsertionVertex E S))) e) = _
   exact d.componentDiagramLeg_external B e
 
-@[simp]
 private theorem ExternalInsertionDiagram.componentLegPosition_interaction
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
